@@ -1,0 +1,676 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SettingsDialog_base</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>SettingsDialog_base</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>627</width>
+            <height>481</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>HP Device Manager - Settings</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QPushButton" row="1" column="3">
+            <property name="name">
+                <cstring>pushButton30</cstring>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="2">
+            <property name="name">
+                <cstring>pushButton31</cstring>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QTabWidget" row="0" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>TabWidget</cstring>
+            </property>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>CleaningLevels</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Auto Refresh</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>textLabel3_2_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>&lt;b&gt;Configure the rate at which devices are automaically refreshed&lt;/b&gt;</string>
+                        </property>
+                    </widget>
+                    <widget class="Line" row="1" column="0">
+                        <property name="name">
+                            <cstring>line1_2_2</cstring>
+                        </property>
+                        <property name="frameShape">
+                            <enum>HLine</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Sunken</enum>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                    </widget>
+                    <spacer row="3" column="0">
+                        <property name="name">
+                            <cstring>spacer8</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>200</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QButtonGroup" row="2" column="0">
+                        <property name="name">
+                            <cstring>CleaningLevel</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Auto refresh rate</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <spacer row="0" column="1">
+                                <property name="name">
+                                    <cstring>spacer9_2</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>181</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>layout7</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QSpinBox">
+                                        <property name="name">
+                                            <cstring>AutoRefreshRate</cstring>
+                                        </property>
+                                        <property name="wrapping">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="buttonSymbols">
+                                            <enum>PlusMinus</enum>
+                                        </property>
+                                        <property name="maxValue">
+                                            <number>360</number>
+                                        </property>
+                                        <property name="minValue">
+                                            <number>5</number>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>textLabel1_3</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>seconds</string>
+                                        </property>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>EmailAlerts</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Email Alerts</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
+                        <property name="name">
+                            <cstring>textLabel3_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>&lt;b&gt;Configure if the HP Device Manager will send email on alerts&lt;/b&gt;</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel21</cstring>
+                        </property>
+                        <property name="text">
+                            <string>SMTP server name:</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel20</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Email address(es):</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" row="3" column="2">
+                        <property name="name">
+                            <cstring>EmailAddress</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" row="4" column="2">
+                        <property name="name">
+                            <cstring>SMTPServer</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="Line" row="1" column="0" rowspan="1" colspan="3">
+                        <property name="name">
+                            <cstring>line1_2_2_2</cstring>
+                        </property>
+                        <property name="frameShape">
+                            <enum>HLine</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Sunken</enum>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="6" column="2">
+                        <property name="name">
+                            <cstring>layout1</cstring>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>Username</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel1</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Username:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="1" column="0">
+                                <property name="name">
+                                    <cstring>textLabel2</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Password:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="1" column="1">
+                                <property name="name">
+                                    <cstring>Password</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="echoMode">
+                                    <enum>Password</enum>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QCheckBox" row="5" column="2">
+                        <property name="name">
+                            <cstring>ServerRequiresPasswd</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>Server requires username and password:</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="3">
+                        <property name="name">
+                            <cstring>EmailCheckBox</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Send email when status alerts occur:</string>
+                        </property>
+                    </widget>
+                    <spacer row="7" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>spacer11</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>471</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="8" column="2">
+                        <property name="name">
+                            <cstring>spacer5</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>71</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QPushButton" row="7" column="0">
+                        <property name="name">
+                            <cstring>EmailTestButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Test</string>
+                        </property>
+                    </widget>
+                    <spacer row="8" column="0">
+                        <property name="name">
+                            <cstring>spacer12</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </grid>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>FunctionCommands</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Function Commands</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="Line" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>line1_2_2_3</cstring>
+                        </property>
+                        <property name="frameShape">
+                            <enum>HLine</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Sunken</enum>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel3_2_2_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>&lt;b&gt;Configure what commands to run for device functions&lt;/b&gt;</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel1_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Print Command</string>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="3" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>layout8</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>PrintCommand</cstring>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel1_2_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Scan Command</string>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>layout9</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>ScanCommand</cstring>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QLabel" row="6" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel1_2_3_3</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Access Photo Cards Command</string>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="7" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>layout10</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>AccessPCardCommand</cstring>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QLabel" row="8" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel1_2_3</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Send Fax Command</string>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="9" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>layout11</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>SendFaxCommand</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QLabel" row="10" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>textLabel1_2_3_2</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>Make Copies Command</string>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="11" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>layout12</cstring>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>MakeCopiesCommand</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                    <widget class="QPushButton" row="13" column="0">
+                        <property name="name">
+                            <cstring>DefaultsButton</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Set Defaults</string>
+                        </property>
+                    </widget>
+                    <spacer row="13" column="1">
+                        <property name="name">
+                            <cstring>spacer8_2</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>471</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="12" column="0">
+                        <property name="name">
+                            <cstring>spacer9</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>81</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </grid>
+            </widget>
+        </widget>
+        <spacer row="1" column="1">
+            <property name="name">
+                <cstring>spacer40</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>430</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>pushButton31</sender>
+        <signal>clicked()</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>pushButton30</sender>
+        <signal>clicked()</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>EmailCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>EmailAddress</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>EmailCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SMTPServer</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>ServerRequiresPasswd</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>Username</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>ServerRequiresPasswd</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>Password</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>EmailCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ServerRequiresPasswd</receiver>
+        <slot>&lt;No)</slot>
+    </connection>
+    <connection>
+        <sender>CleaningLevel</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>CleaningLevel_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>DefaultsButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>DefaultsButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>TabWidget</sender>
+        <signal>currentChanged(QWidget*)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>TabWidget_currentChanged(QWidget*)</slot>
+    </connection>
+    <connection>
+        <sender>EmailTestButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>EmailTestButton_clicked()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>TabWidget</tabstop>
+    <tabstop>pushButton30</tabstop>
+    <tabstop>pushButton31</tabstop>
+    <tabstop>EmailAddress</tabstop>
+    <tabstop>SMTPServer</tabstop>
+    <tabstop>Username</tabstop>
+    <tabstop>Password</tabstop>
+    <tabstop>ServerRequiresPasswd</tabstop>
+    <tabstop>EmailCheckBox</tabstop>
+    <tabstop>EmailTestButton</tabstop>
+    <tabstop>PrintCommand</tabstop>
+    <tabstop>ScanCommand</tabstop>
+    <tabstop>AccessPCardCommand</tabstop>
+    <tabstop>SendFaxCommand</tabstop>
+    <tabstop>MakeCopiesCommand</tabstop>
+    <tabstop>DefaultsButton</tabstop>
+</tabstops>
+<slots>
+    <slot>PrintCmdChangeButton_clicked()</slot>
+    <slot>ScanCmdChangeButton_clicked()</slot>
+    <slot>AccessPCardCmdChangeButton_clicked()</slot>
+    <slot>SendFaxCmdChangeButton_clicked()</slot>
+    <slot>MakeCopiesCmdChangeButton_clicked()</slot>
+    <slot>CleaningLevel_clicked( int )</slot>
+    <slot>pushButton5_clicked()</slot>
+    <slot>DefaultsButton_clicked()</slot>
+    <slot>TabWidget_currentChanged( QWidget * )</slot>
+    <slot>pushButton6_clicked()</slot>
+    <slot>EmailTestButton_clicked()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

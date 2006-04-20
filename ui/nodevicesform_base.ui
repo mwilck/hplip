@@ -1,0 +1,111 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>NoDevicesForm_base</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>NoDevicesForm_base</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>809</width>
+            <height>222</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>HP Device Manager - No Installed HP Devices</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>Icon</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>0</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="frameShape">
+                <enum>NoFrame</enum>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>textLabel7</cstring>
+            </property>
+            <property name="text">
+                <string>&lt;b&gt;No installed HP devices found.&lt;/b&gt; To install a device, use the &lt;u&gt;CUPS web interface&lt;/u&gt; (http://localhost:631) or the &lt;u&gt;printer installation utility&lt;/u&gt; that came with your operating system.
+After setting up a printer, you must press &lt;tt&gt;F6&lt;/tt&gt; or chose &lt;tt&gt;Device | Refresh All&lt;/tt&gt; for the printer to appear in the HP Device Manager.&lt;p&gt;
+&lt;i&gt;Note: Only devices installed with the hp: CUPS backend will appear in the HP Device Manager.&lt;/i&gt;&lt;p&gt;</string>
+            </property>
+            <property name="alignment">
+                <set>WordBreak|AlignVCenter</set>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="3">
+            <property name="name">
+                <cstring>ExitButton</cstring>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="2">
+            <property name="name">
+                <cstring>CUPSButton</cstring>
+            </property>
+            <property name="text">
+                <string>CUPS Web Interface</string>
+            </property>
+        </widget>
+        <spacer row="1" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>spacer43</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>520</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>CUPSButton</sender>
+        <signal>clicked()</signal>
+        <receiver>NoDevicesForm_base</receiver>
+        <slot>CUPSButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>ExitButton</sender>
+        <signal>clicked()</signal>
+        <receiver>NoDevicesForm_base</receiver>
+        <slot>ExitButton_clicked()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in implementation">nodevicesform_base.ui.h</include>
+</includes>
+<slots>
+    <slot>CUPSButton_clicked()</slot>
+    <slot>ExitButton_clicked()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

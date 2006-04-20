@@ -1,0 +1,334 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>UnloadForm_base</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>UnloadForm_base</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>689</width>
+            <height>661</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>HP Device Manager - Unload Files from Photo Card</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QGroupBox" row="0" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Device:</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>DeviceText</cstring>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QPushButton" row="4" column="2">
+            <property name="name">
+                <cstring>UnloadButton</cstring>
+            </property>
+            <property name="text">
+                <string>Unload Selected Files</string>
+            </property>
+        </widget>
+        <spacer row="4" column="0">
+            <property name="name">
+                <cstring>spacer1</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>211</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QPushButton" row="4" column="1">
+            <property name="name">
+                <cstring>CancelButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Unload Directory:</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLineEdit" row="0" column="0">
+                    <property name="name">
+                        <cstring>UnloadDirectoryEdit</cstring>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="1">
+                    <property name="name">
+                        <cstring>UnloadDirectoryBrowseButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Browse...</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>FileRemovalGroup</cstring>
+            </property>
+            <property name="title">
+                <string>File Removal:</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QRadioButton" row="0" column="0">
+                    <property name="name">
+                        <cstring>LeaveAllRadio</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Leave all files on photo card</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QRadioButton" row="1" column="0">
+                    <property name="name">
+                        <cstring>RemoveSelectedRadio</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Remove selected files</string>
+                    </property>
+                </widget>
+                <widget class="QRadioButton" row="2" column="0">
+                    <property name="name">
+                        <cstring>RemoveAllRadio</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Remove all files</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="title">
+                <string>Select Files to Unload from Photo Card:</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QIconView" row="0" column="0" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>IconView</cstring>
+                    </property>
+                    <property name="resizePolicy">
+                        <enum>AutoOneFit</enum>
+                    </property>
+                    <property name="selectionMode">
+                        <enum>Multi</enum>
+                    </property>
+                    <property name="resizeMode">
+                        <enum>Adjust</enum>
+                    </property>
+                    <property name="maxItemWidth">
+                        <number>200</number>
+                    </property>
+                    <property name="autoArrange">
+                        <bool>false</bool>
+                    </property>
+                    <property name="itemsMovable">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="1" column="0">
+                    <property name="name">
+                        <cstring>SelectAllButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Select All</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="1" column="1">
+                    <property name="name">
+                        <cstring>SelectNoneButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Select None</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="1" column="3">
+                    <property name="name">
+                        <cstring>ShowThumbnailsButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Show Thumbnails</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="2">
+                    <property name="name">
+                        <cstring>spacer2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>360</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </grid>
+        </widget>
+    </grid>
+</widget>
+<menubar>
+    <property name="name">
+        <cstring>MenuBar</cstring>
+    </property>
+</menubar>
+<toolbars>
+</toolbars>
+<connections>
+    <connection>
+        <sender>SelectAllButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>SelectAllButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>SelectNoneButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>SelectNoneButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>IconView</sender>
+        <signal>doubleClicked(QIconViewItem*)</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>IconView_doubleClicked(QIconViewItem*)</slot>
+    </connection>
+    <connection>
+        <sender>UnloadDirectoryBrowseButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>UnloadDirectoryBrowseButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>UnloadButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>UnloadButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>IconView</sender>
+        <signal>rightButtonClicked(QIconViewItem*,const QPoint&amp;)</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>IconView_rightButtonClicked(QIconViewItem*,const QPoint&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>FileRemovalGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>FileRemovalGroup_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>IconView</sender>
+        <signal>clicked(QIconViewItem*)</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>IconView_clicked(QIconViewItem*)</slot>
+    </connection>
+    <connection>
+        <sender>IconView</sender>
+        <signal>selectionChanged()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>IconView_selectionChanged()</slot>
+    </connection>
+    <connection>
+        <sender>ShowThumbnailsButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>ShowThumbnailsButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>CancelButton</sender>
+        <signal>clicked()</signal>
+        <receiver>UnloadForm_base</receiver>
+        <slot>CancelButton_clicked()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in implementation">unloadform_base.ui.h</include>
+</includes>
+<slots>
+    <slot>fileNew()</slot>
+    <slot>fileOpen()</slot>
+    <slot>fileSave()</slot>
+    <slot>fileSaveAs()</slot>
+    <slot>filePrint()</slot>
+    <slot>fileExit()</slot>
+    <slot>editUndo()</slot>
+    <slot>editRedo()</slot>
+    <slot>editCut()</slot>
+    <slot>editCopy()</slot>
+    <slot>editPaste()</slot>
+    <slot>editFind()</slot>
+    <slot>helpIndex()</slot>
+    <slot>helpContents()</slot>
+    <slot>helpAbout()</slot>
+    <slot>SelectAllButton_clicked()</slot>
+    <slot>SelectNoneButton_clicked()</slot>
+    <slot>IconView_doubleClicked( QIconViewItem * )</slot>
+    <slot>UnloadDirectoryBrowseButton_clicked()</slot>
+    <slot>UnloadButton_clicked()</slot>
+    <slot>IconView_rightButtonClicked( QIconViewItem *, const QPoint &amp; )</slot>
+    <slot>FileRemovalGroup_clicked( int )</slot>
+    <slot>IconView_selectionChanged( QIconViewItem * )</slot>
+    <slot>IconView_clicked( QIconViewItem *, const QPoint &amp; )</slot>
+    <slot>IconView_clicked( QIconViewItem * )</slot>
+    <slot>IconView_currentChanged( QIconViewItem * )</slot>
+    <slot>IconView_selectionChanged()</slot>
+    <slot>ShowThumbnailsButton_clicked()</slot>
+    <slot>CancelButton_clicked()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
