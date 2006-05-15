@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'devmgr4_base.ui'
 #
-# Created: Mon Dec 12 14:27:37 2005
+# Created: Fri May 5 14:41:40 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.14.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -195,7 +195,6 @@ class DevMgr4_base(QMainWindow):
         DevMgr4_baseLayout.addWidget(self.splitter2,0,0)
 
         self.helpContentsAction = QAction(self,"helpContentsAction")
-        self.helpContentsAction.setEnabled(0)
         self.helpIndexAction = QAction(self,"helpIndexAction")
         self.helpIndexAction.setEnabled(0)
         self.helpAboutAction = QAction(self,"helpAboutAction")
@@ -217,33 +216,33 @@ class DevMgr4_base(QMainWindow):
 
         self.MenuBar = QMenuBar(self,"MenuBar")
 
+        self.MenuBar.setAcceptDrops(0)
 
         self.Device = QPopupMenu(self)
         self.setupDevice.addTo(self.Device)
         self.Device.insertSeparator()
         self.deviceRescanAction.addTo(self.Device)
         self.deviceRefreshAll.addTo(self.Device)
-        self.autoRefresh.addTo(self.Device)
         self.Device.insertSeparator()
         self.deviceExitAction.addTo(self.Device)
-        self.MenuBar.insertItem(QString(""),self.Device,1)
+        self.MenuBar.insertItem(QString(""),self.Device,2)
 
         self.Configure = QPopupMenu(self)
         self.settingsConfigure.addTo(self.Configure)
-        self.MenuBar.insertItem(QString(""),self.Configure,2)
+        self.MenuBar.insertItem(QString(""),self.Configure,3)
 
         self.helpMenu = QPopupMenu(self)
-        self.viewSupportAction.addTo(self.helpMenu)
         self.helpContentsAction.addTo(self.helpMenu)
-        self.helpIndexAction.addTo(self.helpMenu)
         self.helpMenu.insertSeparator()
         self.helpAboutAction.addTo(self.helpMenu)
-        self.MenuBar.insertItem(QString(""),self.helpMenu,3)
+        self.MenuBar.insertItem(QString(""),self.helpMenu,4)
+
+        self.MenuBar.insertSeparator(5)
 
 
         self.languageChange()
 
-        self.resize(QSize(910,546).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(838,493).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.helpIndexAction,SIGNAL("activated()"),self.helpIndex)
@@ -305,7 +304,7 @@ class DevMgr4_base(QMainWindow):
         self.Tabs.changeTab(self.TabPage_3,self.__tr("Panel"))
         self.helpContentsAction.setText(self.__tr("Contents"))
         self.helpContentsAction.setMenuText(self.__tr("&Contents..."))
-        self.helpContentsAction.setAccel(QString.null)
+        self.helpContentsAction.setToolTip(self.__tr("Help Contents (F1)"))
         self.helpIndexAction.setText(self.__tr("Index"))
         self.helpIndexAction.setMenuText(self.__tr("&Index..."))
         self.helpIndexAction.setAccel(QString.null)
@@ -326,7 +325,7 @@ class DevMgr4_base(QMainWindow):
         self.settingsEmailAlertsAction.setText(self.__tr("Email alerts..."))
         self.settingsEmailAlertsAction.setMenuText(self.__tr("Email alerts..."))
         self.settingsEmailAlertsAction.setToolTip(self.__tr("Configure email alerts"))
-        self.settingsConfigure.setText(self.__tr("Configure HP Device Manager..."))
+        self.settingsConfigure.setText(self.__tr("Settings..."))
         self.settingsConfigure.setAccel(self.__tr("F2"))
         self.deviceRefreshAll.setText(self.__tr("Refresh All"))
         self.deviceRefreshAll.setAccel(self.__tr("F6"))
@@ -338,12 +337,12 @@ class DevMgr4_base(QMainWindow):
         self.setupDevice.setToolTip(self.__tr("Device Settings (F3)"))
         self.setupDevice.setAccel(self.__tr("F3"))
         self.viewSupportAction.setText(self.__tr("Support..."))
-        if self.MenuBar.findItem(1):
-            self.MenuBar.findItem(1).setText(self.__tr("Device"))
         if self.MenuBar.findItem(2):
-            self.MenuBar.findItem(2).setText(self.__tr("Configure"))
+            self.MenuBar.findItem(2).setText(self.__tr("Device"))
         if self.MenuBar.findItem(3):
-            self.MenuBar.findItem(3).setText(self.__tr("&Help"))
+            self.MenuBar.findItem(3).setText(self.__tr("Configure"))
+        if self.MenuBar.findItem(4):
+            self.MenuBar.findItem(4).setText(self.__tr("&Help"))
 
 
     def fileNew(self):

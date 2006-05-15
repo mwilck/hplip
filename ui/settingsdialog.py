@@ -30,6 +30,13 @@ class SettingsDialog(SettingsDialog_base):
         SettingsDialog_base.__init__(self,parent,name,modal,fl)
         self.DefaultsButton.setEnabled(False)
         self.hpssd_sock = hpssd_sock
+        #print repr(user_cfg.refresh.enable)
+        #self.auto_refresh = utils.to_bool(user_cfg.refresh.enable)
+        #self.autoRefreshCheckBox.setChecked(self.auto_refresh)
+        
+        self.sendmail = utils.which('sendmail')
+        if not self.sendmail:
+            self.EmailTestButton.setEnabled(False)
 
     def PrintCmdChangeButton_clicked(self):
         pass
@@ -64,13 +71,50 @@ class SettingsDialog(SettingsDialog_base):
         else:
             self.DefaultsButton.setEnabled(False)
 
-
     def EmailTestButton_clicked(self): 
-        email_address = str(self.EmailAddress.text())
-        smtp_server = str(self.SMTPServer.text())
-        username = str(self.Username.text())
-        password = str(self.Password.text())
-        resultCode = service.testEmail(self.hpssd_sock, email_address, smtp_server, username, password)
-        if resultCode != ERROR_SUCCESS:
-            log.debug("Failure-Result_Code: %s" % resultCode)
-        log.debug("Success-Result_Code: %s" % resultCode)
+        email_to_addresses = str(self.EmailAddress.text())
+        email_from_address = str(self.senderLineEdit.text())
+        
+        if not email_to_addresses or not email_from_address:
+            QMessageBox.warning(self,
+                                 self.caption(),
+                                 self.__tr("<b>One or more email addresses are missing.</b><p>Please enter this information and try again."),
+                                  QMessageBox.Ok,
+                                  QMessageBox.NoButton,
+                                  QMessageBox.NoButton)
+            return
+        
+        user_cfg.alerts.email_to_addresses = email_to_addresses
+        user_cfg.alerts.email_from_address = email_from_address
+        user_cfg.alerts.email_alerts = True
+        
+        service.setAlerts(self.hpssd_sock, 
+                          True,
+                          email_from_address,
+                          email_to_addresses)
+
+        result_code = service.testEmail(self.hpssd_sock, prop.username)
+        log.debug(result_code)
+        
+        QMessageBox.information(self,
+                     self.caption(),
+                     self.__tr("<p><b>Please check your email for a test message.</b><p>If the message doesn't arrive, please check your settings and try again."),
+                      QMessageBox.Ok,
+                      QMessageBox.NoButton,
+                      QMessageBox.NoButton)
+
+        
+    def autoRefreshCheckBox_clicked(self):
+        pass
+        
+    def CleaningLevel_clicked(self,a0):
+        pass
+        
+    def refreshScopeButtonGroup_clicked(self,a0):
+        self.auto_refresh_type = int(a0)
+        
+        
+    def __tr(self,s,c = None):
+        return qApp.translate("SettingsDialog",s,c)
+
+        

@@ -586,7 +586,10 @@ DRIVER_ERROR LJJetReady::Encapsulate (const RASTERDATA* InputRaster, BOOL bLastP
  	pCompressor = (ModeJPEG*)GetCompressor();
 
     wCoordinate = (unsigned short int)pCompressor->GetCoordinates() - 128;
-	err = Send ((const BYTE *)&wCoordinate, sizeof(unsigned short int));
+//	err = Send ((const BYTE *)&wCoordinate, sizeof(unsigned short int));
+    res[0] = wCoordinate & 0xFF;
+    res[1] = ((wCoordinate & 0xFF00) >> 8);
+    err = Send ((const BYTE *) res, 2);
 	ERRCHECK;
 
 	BYTE JrStripHeight[] = {0xF8,0x6D,0xC1,0x80,0x00,0xF8,0x63};
@@ -1346,7 +1349,10 @@ BOOL ModeJPEG::Process
 				}	
 
 				//Write the source width to the printer;
-				err = thePrinter->Send ((const BYTE*)&sourcewidth, sizeof(unsigned short int));
+//				err = thePrinter->Send ((const BYTE*)&sourcewidth, sizeof(unsigned short int));
+                res[0] = sourcewidth & 0x00FF;
+                res[1] = ((sourcewidth & 0xFF00) >> 8);
+                err = thePrinter->Send ((const BYTE *) res, 2);
 				ERRCHECK;
 				//  0xF8       - unsigned 8 bit attribute
 				//  0x6C       - source width attribute
@@ -1356,7 +1362,10 @@ BOOL ModeJPEG::Process
 				ERRCHECK;
 				
 				//Write the source height to the printer
-				err = thePrinter->Send ((const BYTE*)&sourceheight, sizeof(unsigned short int));
+//				err = thePrinter->Send ((const BYTE*)&sourceheight, sizeof(unsigned short int));
+                res[0] = sourceheight & 0x00FF;
+                res[1] = ((sourceheight & 0xFF00) >> 8);
+                err = thePrinter->Send ((const BYTE *) res, 2);
 				ERRCHECK;
 				// 0xF8       - unsigned 8 bit attribute
 				// 0x6B       - source height attribute
@@ -1367,7 +1376,10 @@ BOOL ModeJPEG::Process
 				
 				unsigned short int stripcount = sourceheight / MOJAVE_STRIP_HEIGHT;
 				//stripcount = 4;
-				err = thePrinter->Send ((const BYTE *)&stripcount, sizeof(stripcount));
+//				err = thePrinter->Send ((const BYTE *)&stripcount, sizeof(stripcount));
+                res[0] = stripcount & 0x00FF;
+                res[1] = ((stripcount & 0xFF00) >> 8);
+                err = thePrinter->Send ((const BYTE *) res, 2);
 				ERRCHECK;
 				//0xF8       - unsigned 8 bit attribute
 				//0x93       - special attribute 1 for strip count  
@@ -1433,6 +1445,7 @@ BOOL ModeJPEG::Process
 				err = thePrinter->Send ((const BYTE *)JrQTSeq, sizeof(JrQTSeq));
 				ERRCHECK;
 
+#ifdef APDK_LITTLE_ENDIAN
 				//VWritePrinter((VOID*) pQTableInfo->qtable0, sizeof(DWORD) * QTABLE_SIZE);
 				err = thePrinter->Send ((const BYTE *)qTableInfo.qtable0, sizeof(DWORD) * QTABLE_SIZE);
 				ERRCHECK;
@@ -1445,7 +1458,35 @@ BOOL ModeJPEG::Process
 				//VWritePrinter((VOID*) pQTableInfo->qtable2, sizeof(DWORD) * QTABLE_SIZE);
 				err = thePrinter->Send ((const BYTE *)qTableInfo.qtable2, sizeof(DWORD) * QTABLE_SIZE);
 				ERRCHECK;
-           
+#else
+                BYTE    szStr[sizeof (DWORD) * QTABLE_SIZE * 3];
+                BYTE    *p;
+                p = szStr;
+                for (int i = 0; i < QTABLE_SIZE; i++)
+                {
+                    *p++ = qTableInfo.qtable0[i] & 0xFF;
+                    *p++ = (qTableInfo.qtable0[i] >> 8) & 0xFF;
+                    *p++ = (qTableInfo.qtable0[i] >> 16) & 0xFF;
+                    *p++ = (qTableInfo.qtable0[i] >> 24) & 0xFF;
+                }
+                for (int i = 0; i < QTABLE_SIZE; i++)
+                {
+                    *p++ = qTableInfo.qtable1[i] & 0xFF;
+                    *p++ = (qTableInfo.qtable1[i] >> 8) & 0xFF;
+                    *p++ = (qTableInfo.qtable1[i] >> 16) & 0xFF;
+                    *p++ = (qTableInfo.qtable1[i] >> 24) & 0xFF;
+                }
+                for (int i = 0; i < QTABLE_SIZE; i++)
+                {
+                    *p++ = qTableInfo.qtable2[i] & 0xFF;
+                    *p++ = (qTableInfo.qtable2[i] >> 8) & 0xFF;
+                    *p++ = (qTableInfo.qtable2[i] >> 16) & 0xFF;
+                    *p++ = (qTableInfo.qtable2[i] >> 24) & 0xFF;
+                }
+                err = thePrinter->Send ((const BYTE *) szStr, 3 * sizeof (DWORD) * QTABLE_SIZE);
+                ERRCHECK;
+
+#endif
 				// Start of JPEG Control
 				// 0x8001 JPEG Control register
 				// size - unsigned 32 bit number 0x0000_002C

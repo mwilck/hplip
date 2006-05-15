@@ -277,7 +277,10 @@ def main(args):
     except Error:
         log.error("Unable to create client object.")
         sys.exit(1)
-
+    except socket.error:
+        log.error("Unable to connect to HPLIP I/O (hpiod).")
+        return 1
+        
     log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
     log.set_module('toolbox')
     log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))

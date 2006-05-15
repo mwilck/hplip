@@ -494,13 +494,14 @@ class UnloadForm(UnloadForm_base):
         # display with imagemagick?
 
     def Properties(self, item):
-        if not item.exif_info:
-            item.exif_info = self.pc.get_exif_path(item.path)
+        if item is not None:
+            if not item.exif_info:
+                item.exif_info = self.pc.get_exif_path(item.path)
 
-        ImagePropertiesDlg(item.filename, item.dirname,
-                            '/'.join([item.mime_type, item.mime_subtype]),
-                            utils.format_bytes(item.size, True),
-                            item.exif_info, self).exec_loop()
+            ImagePropertiesDlg(item.filename, item.dirname,
+                                '/'.join([item.mime_type, item.mime_subtype]),
+                                utils.format_bytes(item.size, True),
+                                item.exif_info, self).exec_loop()
 
 
 

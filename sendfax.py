@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '1.7'
+__version__ = '2.1'
 __title__ = 'PC Sendfax Utility'
 __doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers. The utility can be invoked directly, or by printing to the appropriate fax CUPS printer." 
 
@@ -52,7 +52,7 @@ from ui.faxsendjobform import FaxSendJobForm
 
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: hp-sendfax [PRINTER|DEVICE-URI] [OPTIONS]", "", "summary", True),
+         ("Usage: hp-sendfax [PRINTER|DEVICE-URI] [OPTIONS] [FILES]", "", "summary", True),
          utils.USAGE_ARGS,
          utils.USAGE_DEVICE,
          utils.USAGE_PRINTER,
@@ -61,6 +61,12 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_BUS1, utils.USAGE_BUS2,         
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
+         ("[FILES]", "", "header", False),
+         ("An optional list of files to add to the fax job.", "", "option", True),
+         utils.USAGE_NOTES,
+         utils.USAGE_STD_NOTES1,
+         utils.USAGE_STD_NOTES2,
+         utils.USAGE_SPACE,
          utils.USAGE_SEEALSO,
          ("hp-fab", "", "seealso", False),
         ]
@@ -222,20 +228,13 @@ def main(args):
     
     device_uri = None
     printer_name = None
-    num_copies = 1
-    fax_file = ''
-    title = ''
-    job_id = -1
-    standalone = True
-    username = ''
-    job_size = 0
+    username = prop.username
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],'l:hz:d:p:b:g', 
             ['device=', 'printer=', 'level=', 
-             'standalone', 'job', 'help', 'help-rest', 
-             'help-man', 'logfile=', 'bus=', 'jobsize=',
-             'title=', 'jobid=', 'user='])
+             'help', 'help-rest', 
+             'help-man', 'logfile=', 'bus='])
 
     except getopt.GetoptError, e:
         log.error(e)
@@ -278,31 +277,6 @@ def main(args):
             if not device.validateBusList(bus):
                 usage()
             
-        elif o == '--standalone':
-            standalone = True
-        
-        elif o == '--job':
-            standalone = False
-            
-        elif o == '--title':
-            title = a
-            
-        elif o == '--jobsize':
-            try:
-                job_size = int(a)
-            except ValueError:
-                job_size = 0
-                
-        elif o == '--user':
-            username = a
-            
-        elif o == '--jobid':
-            try:
-                job_id = int(a)
-            except ValueError:
-                job_id = 0
-            
-            
             
     utils.log_title(__title__, __version__)
     
@@ -310,22 +284,14 @@ def main(args):
     os.umask (0077)
     log.set_module('sendfax')
 
-    if not username:
-        username = prop.username
-        
-    # If hpssd is running as root, drop privledges
-    # to the user that initiated the print job
-    if os.getuid() == 0:
-        log.debug("Dropping to user: %s" % username)
-        uid, gid = pwd.getpwnam(username)[2:4]
-        os.setegid(gid)
-        os.seteuid(uid)
-
     global client
     try:
         client = fax_client(username)
     except Error:
         log.error("Unable to create client object.")
+        sys.exit(1)
+    except socket.error:
+        log.error("Unable to connect to HPLIP I/O. Please (re)start HPLIP and try again.")
         sys.exit(1)
         
     # create the main application object
@@ -336,12 +302,7 @@ def main(args):
     sendfax = FaxSendJobForm(client.socket,
                              device_uri,  
                              printer_name, 
-                             username, 
-                             job_id, 
-                             title,  
-                             fax_file, 
-                             standalone,
-                             job_size)
+                             args) 
                              
     app.setMainWidget(sendfax)
 

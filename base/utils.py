@@ -149,7 +149,7 @@ def ifelse(cond, t, f):
 
 def to_bool_str(s, default='0'):
     """ Convert an arbitrary 0/1/T/F/Y/N string to a normalized string 0/1."""
-    if len(s):
+    if isinstance(s, str) and s:
         if s[0].lower() in ['1', 't', 'y']:
             return '1'
         elif s[0].lower() in ['0', 'f', 'n']:
@@ -159,11 +159,13 @@ def to_bool_str(s, default='0'):
 
 def to_bool(s, default=False):
     """ Convert an arbitrary 0/1/T/F/Y/N string to a boolean True/False value."""
-    if len(s):
+    if isinstance(s, str) and s:
         if s[0].lower() in ['1', 't', 'y']:
             return True
         elif s[0].lower() in ['0', 'f', 'n']:
             return False
+    elif isinstance(s, bool):
+        return s
 
     return default
 
@@ -618,10 +620,10 @@ def deviceDefaultFunctions():
     path = which('hp-sendfax')
 
     if len(path):
-        cmd_fax = 'hp-sendfax -d %FAX_URI% --standalone'
+        cmd_fax = 'hp-sendfax -d %FAX_URI%'
 
     else:
-        cmd_fax = 'python %HOME%/sendfax.py -d %FAX_URI% --standalone'
+        cmd_fax = 'python %HOME%/sendfax.py -d %FAX_URI%'
 
     
     # Fax Address Book
@@ -885,7 +887,7 @@ class ModelParser:
 
         elif name == 'model':
             self.model = {}
-            self.cur_model = str(attrs['name']).replace('_', ' ').                replace('HP', '').replace('hp', '').strip()
+            self.cur_model = str(attrs['name']).replace('_', ' ').strip() #.replace('HP', '').replace('hp', '').strip()
             self.in_model = True
             self.stack = []
 
@@ -911,6 +913,7 @@ class ModelParser:
                 log.error("Duplicate model in XML: %s" % self.cur_model)
                 raise Error(ERROR_INTERNAL)
 
+            print self.cur_model
             self.models[self.cur_model] = self.model
 
             self.model = None

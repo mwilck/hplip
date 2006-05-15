@@ -40,8 +40,17 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = hpijs$(EXEEXT) hppgsz$(EXEEXT)
-DIST_COMMON = $(am__configure_deps) $(srcdir)/../../config.guess \
+bin_PROGRAMS = hpijs$(EXEEXT)
+noinst_PROGRAMS = hppgsz$(EXEEXT)
+DIST_COMMON = $(am__configure_deps) $(am__dist_www0_DATA_DIST) \
+	$(am__dist_www1_DATA_DIST) $(am__dist_www21_DATA_DIST) \
+	$(am__dist_www22_DATA_DIST) $(am__dist_www23_DATA_DIST) \
+	$(am__dist_www241_DATA_DIST) $(am__dist_www242_DATA_DIST) \
+	$(am__dist_www243_DATA_DIST) $(am__dist_www24_DATA_DIST) \
+	$(am__dist_www2_DATA_DIST) $(am__dist_www3_DATA_DIST) \
+	$(am__dist_www4_DATA_DIST) $(am__dist_www5_DATA_DIST) \
+	$(am__dist_www61_DATA_DIST) $(am__dist_www6_DATA_DIST) \
+	$(am__dist_www7_DATA_DIST) $(srcdir)/../../config.guess \
 	$(srcdir)/../../config.sub $(srcdir)/../../depcomp \
 	$(srcdir)/../../install-sh $(srcdir)/../../ltmain.sh \
 	$(srcdir)/../../missing $(srcdir)/Makefile.am \
@@ -56,9 +65,17 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" \
+	"$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" \
+	"$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" \
+	"$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" \
+	"$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" \
+	"$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" \
+	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
+	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
+	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
 	"$(DESTDIR)$(docdir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-PROGRAMS = $(bin_PROGRAMS)
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am__objects_1 = models.$(OBJEXT) breaks_open.$(OBJEXT) \
 	dj9xxvip.$(OBJEXT) dj9xx.$(OBJEXT) capture.$(OBJEXT) \
 	colormatch.$(OBJEXT) colormatcher_open.$(OBJEXT) \
@@ -115,14 +132,56 @@ CXXLINK = $(LIBTOOL) --mode=link --tag=CXX $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(hpijs_SOURCES) $(hppgsz_SOURCES)
 DIST_SOURCES = $(hpijs_SOURCES) $(hppgsz_SOURCES)
+am__dist_www0_DATA_DIST = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html \
+	$(wwwsrc)/features.html $(wwwsrc)/index.html \
+	$(wwwsrc)/legal.html $(wwwsrc)/license.html \
+	$(wwwsrc)/mailing_lists.html $(wwwsrc)/release_notes.html \
+	$(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html \
+	$(wwwsrc)/system_requirements.html
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+dist_www0DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www1_DATA_DIST = $(wwwsrc)/howtos/*
+dist_www1DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www2_DATA_DIST = $(wwwsrc)/install/index.html
+dist_www2DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www21_DATA_DIST = $(wwwsrc)/install/step1/*
+dist_www21DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www22_DATA_DIST = $(wwwsrc)/install/step2/*
+dist_www22DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www23_DATA_DIST = $(wwwsrc)/install/step3/*
+dist_www23DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www24_DATA_DIST = $(wwwsrc)/install/step4/index.html
+dist_www24DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www241_DATA_DIST = $(wwwsrc)/install/step4/cups/*
+dist_www241DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www242_DATA_DIST = $(wwwsrc)/install/step4/setup/*
+dist_www242DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www243_DATA_DIST = $(wwwsrc)/install/step4/suse/*
+dist_www243DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www3_DATA_DIST = $(wwwsrc)/styles/*
+dist_www3DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www4_DATA_DIST = $(wwwsrc)/images/*
+dist_www4DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www5_DATA_DIST = $(wwwsrc)/supported_devices/*
+dist_www5DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www6_DATA_DIST = $(wwwsrc)/tech_docs/*
+dist_www6DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www61_DATA_DIST = $(wwwsrc)/tech_docs/man_pages/*
+dist_www61DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www7_DATA_DIST = $(wwwsrc)/troubleshooting/*
+dist_www7DATA_INSTALL = $(INSTALL_DATA)
 docDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(doc_DATA)
+DATA = $(dist_www0_DATA) $(dist_www1_DATA) $(dist_www2_DATA) \
+	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
+	$(dist_www24_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
+	$(dist_www243_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
+	$(dist_www5_DATA) $(dist_www6_DATA) $(dist_www61_DATA) \
+	$(dist_www7_DATA) $(doc_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -244,7 +303,7 @@ docdir = $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL = HPLIP-0_9_9_10
+APDKLABEL = HPLIP-0_9_11_11
 APDKCOMMON = slimhost/source/common
 APDKOPEN = slimhost/source/open
 APDKDEBUG = slimhost/source/debug
@@ -286,7 +345,7 @@ apdk_SOURCES = models.cpp breaks_open.cpp \
 	ljcolor.cpp ljcolor.h pscript.h \
 	printerproxy.cpp printerfactory.cpp printerproxy.h printerfactory.h \
 	ljjetready.cpp ljjetready.h jdatadbf.c jccolor.c ljfastraster.cpp ljfastraster.h \
-	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h
+	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h psb9100.h
 
 hpijs_SOURCES = $(apdk_SOURCES) hpijs.cpp ijs_server.c ijs.c hpijsfax.cpp services.cpp \
     hpijs.h ijs.h ijs_server.h services.h ijs_client.h hpiom.c hpiom.h \
@@ -294,8 +353,45 @@ hpijs_SOURCES = $(apdk_SOURCES) hpijs.cpp ijs_server.c ijs.c hpijsfax.cpp servic
 
 hppgsz_SOURCES = $(apdk_SOURCES) PrinterProperties.cpp PrinterProperties.h
 @HPLIP_BUILD_TRUE@hpijs_LDADD = ../../libhpip.la
-doc_DATA = hpijs_readme.html gs_hpijs.png COPYING README_LIBJPG
+doc_DATA = COPYING README_LIBJPG
 bin_SCRIPTS = $(rip)
+wwwsrc = ../../doc
+
+# HPLIP and HPIJS documention are the same, only install one copy if HPLIP build.
+@HPLIP_BUILD_FALSE@www0dir = $(docdir)
+@HPLIP_BUILD_FALSE@dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
+@HPLIP_BUILD_FALSE@    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+
+@HPLIP_BUILD_FALSE@www1dir = $(docdir)/howtos
+@HPLIP_BUILD_FALSE@dist_www1_DATA = $(wwwsrc)/howtos/*
+@HPLIP_BUILD_FALSE@www2dir = $(docdir)/install
+@HPLIP_BUILD_FALSE@dist_www2_DATA = $(wwwsrc)/install/index.html
+@HPLIP_BUILD_FALSE@www21dir = $(docdir)/install/step1
+@HPLIP_BUILD_FALSE@dist_www21_DATA = $(wwwsrc)/install/step1/*
+@HPLIP_BUILD_FALSE@www22dir = $(docdir)/install/step2
+@HPLIP_BUILD_FALSE@dist_www22_DATA = $(wwwsrc)/install/step2/*
+@HPLIP_BUILD_FALSE@www23dir = $(docdir)/install/step3
+@HPLIP_BUILD_FALSE@dist_www23_DATA = $(wwwsrc)/install/step3/*
+@HPLIP_BUILD_FALSE@www24dir = $(docdir)/install/step4
+@HPLIP_BUILD_FALSE@dist_www24_DATA = $(wwwsrc)/install/step4/index.html
+@HPLIP_BUILD_FALSE@www241dir = $(docdir)/install/step4/cups
+@HPLIP_BUILD_FALSE@dist_www241_DATA = $(wwwsrc)/install/step4/cups/*
+@HPLIP_BUILD_FALSE@www242dir = $(docdir)/install/step4/setup
+@HPLIP_BUILD_FALSE@dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
+@HPLIP_BUILD_FALSE@www243dir = $(docdir)/install/step4/suse
+@HPLIP_BUILD_FALSE@dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+@HPLIP_BUILD_FALSE@www3dir = $(docdir)/styles
+@HPLIP_BUILD_FALSE@dist_www3_DATA = $(wwwsrc)/styles/*
+@HPLIP_BUILD_FALSE@www4dir = $(docdir)/images
+@HPLIP_BUILD_FALSE@dist_www4_DATA = $(wwwsrc)/images/*
+@HPLIP_BUILD_FALSE@www5dir = $(docdir)/supported_devices
+@HPLIP_BUILD_FALSE@dist_www5_DATA = $(wwwsrc)/supported_devices/*
+@HPLIP_BUILD_FALSE@www6dir = $(docdir)/tech_docs
+@HPLIP_BUILD_FALSE@dist_www6_DATA = $(wwwsrc)/tech_docs/*
+@HPLIP_BUILD_FALSE@www61dir = $(docdir)/tech_docs/man_pages
+@HPLIP_BUILD_FALSE@dist_www61_DATA = $(wwwsrc)/tech_docs/man_pages/*
+@HPLIP_BUILD_FALSE@www7dir = $(docdir)/troubleshooting
+@HPLIP_BUILD_FALSE@dist_www7_DATA = $(wwwsrc)/troubleshooting/*
 EXTRA_DIST = $(doc_DATA) ppd foomatic-rip hpijs-ppd gdevijs-krgb-1.2-gs7.07.patch gdevijs-krgb-1.2-gs8.50.patch
 all: all-am
 
@@ -358,6 +454,13 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  echo " rm -f $$p $$f"; \
+	  rm -f $$p $$f ; \
+	done
+
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; for p in $$list; do \
 	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
@@ -520,6 +623,278 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
+install-dist_www0DATA: $(dist_www0_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www0dir)" || $(mkdir_p) "$(DESTDIR)$(www0dir)"
+	@list='$(dist_www0_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www0DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www0dir)/$$f'"; \
+	  $(dist_www0DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www0dir)/$$f"; \
+	done
+
+uninstall-dist_www0DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www0_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www0dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www0dir)/$$f"; \
+	done
+install-dist_www1DATA: $(dist_www1_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www1dir)" || $(mkdir_p) "$(DESTDIR)$(www1dir)"
+	@list='$(dist_www1_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www1DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www1dir)/$$f'"; \
+	  $(dist_www1DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www1dir)/$$f"; \
+	done
+
+uninstall-dist_www1DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www1_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www1dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www1dir)/$$f"; \
+	done
+install-dist_www2DATA: $(dist_www2_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www2dir)" || $(mkdir_p) "$(DESTDIR)$(www2dir)"
+	@list='$(dist_www2_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www2DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www2dir)/$$f'"; \
+	  $(dist_www2DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www2dir)/$$f"; \
+	done
+
+uninstall-dist_www2DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www2_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www2dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www2dir)/$$f"; \
+	done
+install-dist_www21DATA: $(dist_www21_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www21dir)" || $(mkdir_p) "$(DESTDIR)$(www21dir)"
+	@list='$(dist_www21_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www21DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www21dir)/$$f'"; \
+	  $(dist_www21DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www21dir)/$$f"; \
+	done
+
+uninstall-dist_www21DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www21_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www21dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www21dir)/$$f"; \
+	done
+install-dist_www22DATA: $(dist_www22_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www22dir)" || $(mkdir_p) "$(DESTDIR)$(www22dir)"
+	@list='$(dist_www22_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www22DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www22dir)/$$f'"; \
+	  $(dist_www22DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www22dir)/$$f"; \
+	done
+
+uninstall-dist_www22DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www22_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www22dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www22dir)/$$f"; \
+	done
+install-dist_www23DATA: $(dist_www23_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www23dir)" || $(mkdir_p) "$(DESTDIR)$(www23dir)"
+	@list='$(dist_www23_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www23DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www23dir)/$$f'"; \
+	  $(dist_www23DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www23dir)/$$f"; \
+	done
+
+uninstall-dist_www23DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www23_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www23dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www23dir)/$$f"; \
+	done
+install-dist_www24DATA: $(dist_www24_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www24dir)" || $(mkdir_p) "$(DESTDIR)$(www24dir)"
+	@list='$(dist_www24_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www24DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www24dir)/$$f'"; \
+	  $(dist_www24DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www24dir)/$$f"; \
+	done
+
+uninstall-dist_www24DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www24_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www24dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www24dir)/$$f"; \
+	done
+install-dist_www241DATA: $(dist_www241_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www241dir)" || $(mkdir_p) "$(DESTDIR)$(www241dir)"
+	@list='$(dist_www241_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www241DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www241dir)/$$f'"; \
+	  $(dist_www241DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www241dir)/$$f"; \
+	done
+
+uninstall-dist_www241DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www241_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www241dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www241dir)/$$f"; \
+	done
+install-dist_www242DATA: $(dist_www242_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www242dir)" || $(mkdir_p) "$(DESTDIR)$(www242dir)"
+	@list='$(dist_www242_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www242DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www242dir)/$$f'"; \
+	  $(dist_www242DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www242dir)/$$f"; \
+	done
+
+uninstall-dist_www242DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www242_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www242dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www242dir)/$$f"; \
+	done
+install-dist_www243DATA: $(dist_www243_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www243dir)" || $(mkdir_p) "$(DESTDIR)$(www243dir)"
+	@list='$(dist_www243_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www243DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www243dir)/$$f'"; \
+	  $(dist_www243DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www243dir)/$$f"; \
+	done
+
+uninstall-dist_www243DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www243_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www243dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www243dir)/$$f"; \
+	done
+install-dist_www3DATA: $(dist_www3_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www3dir)" || $(mkdir_p) "$(DESTDIR)$(www3dir)"
+	@list='$(dist_www3_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www3DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www3dir)/$$f'"; \
+	  $(dist_www3DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www3dir)/$$f"; \
+	done
+
+uninstall-dist_www3DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www3_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www3dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www3dir)/$$f"; \
+	done
+install-dist_www4DATA: $(dist_www4_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www4dir)" || $(mkdir_p) "$(DESTDIR)$(www4dir)"
+	@list='$(dist_www4_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www4DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www4dir)/$$f'"; \
+	  $(dist_www4DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www4dir)/$$f"; \
+	done
+
+uninstall-dist_www4DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www4_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www4dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www4dir)/$$f"; \
+	done
+install-dist_www5DATA: $(dist_www5_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www5dir)" || $(mkdir_p) "$(DESTDIR)$(www5dir)"
+	@list='$(dist_www5_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www5DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www5dir)/$$f'"; \
+	  $(dist_www5DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www5dir)/$$f"; \
+	done
+
+uninstall-dist_www5DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www5_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www5dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www5dir)/$$f"; \
+	done
+install-dist_www6DATA: $(dist_www6_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www6dir)" || $(mkdir_p) "$(DESTDIR)$(www6dir)"
+	@list='$(dist_www6_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www6DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www6dir)/$$f'"; \
+	  $(dist_www6DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www6dir)/$$f"; \
+	done
+
+uninstall-dist_www6DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www6_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www6dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www6dir)/$$f"; \
+	done
+install-dist_www61DATA: $(dist_www61_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www61dir)" || $(mkdir_p) "$(DESTDIR)$(www61dir)"
+	@list='$(dist_www61_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www61DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www61dir)/$$f'"; \
+	  $(dist_www61DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www61dir)/$$f"; \
+	done
+
+uninstall-dist_www61DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www61_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www61dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www61dir)/$$f"; \
+	done
+install-dist_www7DATA: $(dist_www7_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www7dir)" || $(mkdir_p) "$(DESTDIR)$(www7dir)"
+	@list='$(dist_www7_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www7DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www7dir)/$$f'"; \
+	  $(dist_www7DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www7dir)/$$f"; \
+	done
+
+uninstall-dist_www7DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www7_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www7dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www7dir)/$$f"; \
+	done
 install-docDATA: $(doc_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(docdir)" || $(mkdir_p) "$(DESTDIR)$(docdir)"
@@ -589,7 +964,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/../..
+	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/../..
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -717,7 +1092,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -746,7 +1121,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool \
+	clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -765,7 +1141,14 @@ info: info-am
 
 info-am:
 
-install-data-am: install-docDATA
+install-data-am: install-dist_www0DATA install-dist_www1DATA \
+	install-dist_www21DATA install-dist_www22DATA \
+	install-dist_www23DATA install-dist_www241DATA \
+	install-dist_www242DATA install-dist_www243DATA \
+	install-dist_www24DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA install-docDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -798,24 +1181,49 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
 	uninstall-docDATA uninstall-info-am
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
 .PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-binPROGRAMS clean-generic clean-libtool ctags dist \
-	dist-all dist-bzip2 dist-gzip dist-shar dist-tarZ dist-zip \
-	distcheck distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distcleancheck distdir \
-	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-binPROGRAMS install-binSCRIPTS \
-	install-data install-data-am install-data-hook install-docDATA \
-	install-exec install-exec-am install-info install-info-am \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS uninstall-binSCRIPTS \
+	clean-binPROGRAMS clean-generic clean-libtool \
+	clean-noinstPROGRAMS ctags dist dist-all dist-bzip2 dist-gzip \
+	dist-shar dist-tarZ dist-zip distcheck distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distcleancheck distdir distuninstallcheck dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-binSCRIPTS install-data \
+	install-data-am install-data-hook install-dist_www0DATA \
+	install-dist_www1DATA install-dist_www21DATA \
+	install-dist_www22DATA install-dist_www23DATA \
+	install-dist_www241DATA install-dist_www242DATA \
+	install-dist_www243DATA install-dist_www24DATA \
+	install-dist_www2DATA install-dist_www3DATA \
+	install-dist_www4DATA install-dist_www5DATA \
+	install-dist_www61DATA install-dist_www6DATA \
+	install-dist_www7DATA install-docDATA install-exec \
+	install-exec-am install-info install-info-am install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-binPROGRAMS uninstall-binSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
 	uninstall-docDATA uninstall-hook uninstall-info-am
 
 
@@ -867,6 +1275,10 @@ get-apdk-tip:
 	rm -rf slimhost
 
 get-ppd: 
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db
@@ -898,6 +1310,10 @@ get-ppd:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-tip:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
@@ -929,6 +1345,10 @@ get-ppd-tip:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-shadow:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
@@ -967,6 +1387,10 @@ get-ppd-shadow:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-user:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
@@ -998,6 +1422,10 @@ get-ppd-user:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-user-shadow:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
@@ -1066,6 +1494,14 @@ test-ppd:
 	cp foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
+
+test-clean:
+	cd foomatic-db-hpijs; \
+	make clean
+	cd foomatic-filters; \
+	make clean
+	cd foomatic-db-engine; \
+	make clean
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

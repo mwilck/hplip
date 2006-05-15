@@ -17,15 +17,19 @@
 /DESKJET_990C.png/1.3/Wed Apr 27 23:45:30 2005/-kb/
 /DESKJET_995C.png/1.3/Wed Apr 27 23:45:30 2005/-kb/
 /Deskjet_3740.png/1.1/Wed Apr 27 23:45:31 2005/-kb/
+/Deskjet_5400_series.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
 /Deskjet_5700.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
+/Deskjet_5900_series.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
 /Deskjet_6500.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /Deskjet_6800.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_2000C.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
+/HP_2500C.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
 /HP_BI_3000.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_Business_Inkjet_1200.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_Color_LaserJet_1500.png/1.4/Fri Jan  6 21:39:35 2006/-kb/
 /HP_Color_LaserJet_2840.png/1.1/Fri Jul 22 17:07:39 2005/-kb/
 /HP_Color_LaserJet_4500.png/1.4/Fri Jan  6 21:39:35 2006/-kb/
+/HP_Color_LaserJet_4730mfp.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
 /HP_Color_LaserJet_8550.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_LJ1xxx.png/1.4/Fri Jan  6 21:39:34 2006/-kb/
 /HP_LaserJet_1012.png/1.4/Fri Jan  6 21:39:35 2006/-kb/
@@ -35,6 +39,8 @@
 /HP_LaserJet_4000.png/1.4/Fri Jan  6 21:39:34 2006/-kb/
 /HP_LaserJet_4100_MFP.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_LaserJet_4M.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
+/HP_LaserJet_5Si.png/1.5/Tue Apr  4 18:26:18 2006/-kb/
+/HP_LaserJet_6MP.png/1.5/Tue Apr  4 18:26:18 2006/-kb/
 /HP_LaserJet_8100_Series.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_LaserJet_9000_MFP.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
 /HP_LaserJet_9040_MFP.png/1.3/Wed Apr 27 23:45:31 2005/-kb/
@@ -47,10 +53,15 @@
 /LASERJET_5500dtn.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /LASERJET_5550.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /LASERJET_5550DTN.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
+/OFFICEJET_PRO_1150C.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
+/OfficeJet_5105.png/1.1/Tue Apr  4 18:26:18 2006/-kb/
 /OfficeJet_6100_Series.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /OfficeJet_G85.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
+/OfficeJet_Series_300.png/1.1/Tue Apr  4 21:41:45 2006/-kb/
 /Officejet_6150_Series.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
+/Officejet_6200_series.png/1.5/Tue Apr  4 21:41:45 2006/-kb/
 /Officejet_7200_series.png/1.2/Fri Jan  6 21:39:34 2006/-kb/
+/Officejet_9100_series.png/1.1/Tue Apr  4 21:41:45 2006/-kb/
 /PHOTOSMART_100.png/1.4/Fri Jan  6 21:39:34 2006/-kb/
 /PHOTOSMART_1218.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /PHOTOSMART_1315.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
@@ -66,6 +77,7 @@
 /Photosmart_8250.png/1.1/Thu Jan 19 18:10:02 2006/-kb/
 /Photosmart_8400_series.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /Photosmart_8750_series.png/1.1/Fri Jan  6 23:17:10 2006/-kb/
+/Photosmart_Pro_B9180.png/1.1/Thu Mar  9 00:04:29 2006/-kb/
 /align10.png/1.1/Thu Aug 11 16:27:24 2005/-kb/
 /audio.png/1.4/Wed Apr 27 23:45:43 2005/-kb/
 /bmp.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
@@ -94,6 +106,7 @@
 /deskjet_5552.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /deskjet_5600.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
 /deskjet_6120.png/1.4/Fri Jan  6 21:39:35 2006/-kb/
+/dj350.png/1.1/Tue Mar 28 00:05:24 2006/-kb/
 /dj450.png/1.4/Fri Jan  6 21:39:35 2006/-kb/
 /down.png/1.4/Tue Jan 17 23:10:11 2006/-kb/
 /error.png/1.3/Wed Apr 27 23:45:43 2005/-kb/
@@ -166,6 +179,7 @@
 /next.png/1.2/Tue Nov 22 23:24:30 2005/-kb/
 /officejet_4200_series.png/1.2/Fri Jan  6 21:39:34 2006/-kb/
 /officejet_500.png/1.1/Fri Jan  6 23:17:10 2006/-kb/
+/officejet_5500_series.png/1.1/Fri Apr 14 16:01:30 2006/-kb/
 /officejet_5600.png/1.1/Fri Jan  6 23:17:10 2006/-kb/
 /officejet_k550.png/1.1/Fri Jan  6 23:22:59 2006/-kb/
 /officejet_k80.png/1.1/Fri Jan  6 23:17:10 2006/-kb/
@@ -199,6 +213,6 @@
 /warning.png/1.3/Wed Apr 27 23:45:44 2005/-kb/
 /warning_small.png/1.1/Wed Apr 27 23:45:44 2005/-kb/
 /zca.png/1.3/Wed Apr 27 23:45:44 2005/-kb/
-/Deskjet_350.png/1.1/Fri Mar 10 17:45:42 2006/-kb/
-/Photosmart_Pro_B9180.png/1.1/Thu Mar  9 00:04:29 2006/-kb/
+/opensource-75x65.png/1.1/Fri May  5 22:12:05 2006/-kb/
+/powered_by_python.png/1.1/Fri May  5 22:12:05 2006/-kb/
 D

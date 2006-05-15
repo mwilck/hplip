@@ -338,7 +338,7 @@ int DevDiscovery()
       cnt = ma.ndevice;
 
       /* Add deviceID for CUPS 1.2, if available. */
-      tail = ma.data;
+      tail = (char *)ma.data;
       for (i=0; i<cnt; i++)
       {
          id[0] = 0;

@@ -180,7 +180,6 @@ public:
 #endif
         "officejet 4115\0"
         "officejet 5500\0"
-        "officejet 6200\0"
         "psc 11\0"
         "psc 12\0"
         "psc 13\0"

@@ -147,6 +147,8 @@ if d.device_uri is None and device_uri:
 
 if not devid_mode:
     log.info("")
+    log.info(utils.bold(d.device_uri))
+    log.info("")
 
 try:
     d.open()

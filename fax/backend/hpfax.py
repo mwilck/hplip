@@ -57,6 +57,7 @@ try:
     from base.g import *
     from base.codes import *
     from base import device, utils, msg
+    from base.service import sendEvent
 except ImportError:
     syslog.syslog(syslog.LOG_CRIT, "Error importing HPLIP modules.")
     sys.exit(1)
@@ -106,7 +107,7 @@ if len( args ) == 0:
         devices = device.probeDevices(sock=None, bus='usb,par', timeout=5,
                                       ttl=4, filter='fax', format='cups')
     except Error:
-        log.error("Unable to contact HPLIP I/O (hpssd).")
+        log.stderr("ERROR: Unable to contact HPLIP I/O (hpssd).")
         sys.exit(1)
 
     if len(devices):
@@ -123,7 +124,7 @@ else:
         device_uri = os.environ['DEVICE_URI']
         printer_name = os.environ['PRINTER']
     except KeyError:
-        log.error("Improper environment: Must be run by CUPS.")
+        log.stderr("ERROR: Improper environment: Must be run by CUPS.")
         sys.exit(1)
         
     log.debug(args)
@@ -131,7 +132,7 @@ else:
     try:
         job_id, username, title, copies, options = args[0:5]
     except IndexError:
-        log.error("Invalid command line: Invalid arguments.")
+        log.stderr("ERROR: Invalid command line: Invalid arguments.")
         sys.exit(1)
         
     try:
@@ -139,19 +140,19 @@ else:
     except IndexError:
         input_fd = 0
         
-    log.stderr("hpfax: URI=%s, Printer=%s, Job ID=%s, User=%s, Title=%s, Copies=%s, Options=%s" % \
-        (device_uri, printer_name, job_id, username, title, copies, options))
+    #log.error("INFO: URI=%s, Printer=%s, Job ID=%s, User=%s, Title=%s, Copies=%s, Options=%s" % \
+    #    (device_uri, printer_name, job_id, username, title, copies, options))
 
     pdb = pwd.getpwnam(username)
     home_folder, uid, gid = pdb[5], pdb[2], pdb[3]
     
-    log.stderr("hpfax: User home=%s, Uid=%d, Gid=%d" % (home_folder, uid, gid))
+    #log.error("INFO: User home=%s, Uid=%d, Gid=%d" % (home_folder, uid, gid))
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((prop.hpssd_host, prop.hpssd_port))
     except socket.error:
-        log.error("Unable to contact HPLIP I/O (hpssd).")
+        log.error("ERROR: Unable to contact HPLIP I/O (hpssd).")
         sys.exit(1)
 
     try:
@@ -166,8 +167,17 @@ else:
                                  })
                            
     except Error:
-        log.error("Unable to send event to HPLIP I/O (hpssd).")
-        sys.exit(1)      
+        log.stderr("ERROR: Unable to send event to HPLIP I/O (hpssd).")
+        sys.exit(1) 
+   
+    if result_code == ERROR_GUI_NOT_AVAILABLE:
+        # New behavior in 0.9.11
+        log.stderr("ERROR: You must run hp-sendfax first. Run hp-sendfax now and then restart this queue to continue.")
+        
+        sendEvent(sock, EVENT_ERROR_FAX_MUST_RUN_SENDFAX_FIRST, 'event',
+                  job_id, username, device_uri)
+        
+        sys.exit(1)
 
     bytes_read = 0
     while True:

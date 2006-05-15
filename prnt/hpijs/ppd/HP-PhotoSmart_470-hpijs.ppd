@@ -82,8 +82,8 @@ le=- -"
 
 *FoomaticRIPOption Model: enum CmdLine A 100
 *FoomaticRIPOptionSetting Model=HP-PhotoSmart_470: " -sDeviceManufactu&&
-rer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;deskjet 5550&quot;&&
-"
+rer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;Photosmart 470&quo&&
+t;"
 *End
 
 *OpenGroup: General/General

@@ -11,7 +11,43 @@ hplipdir = $(datadir)/hplip
 rundir = /var/run
 
 docdir = $(datadir)/doc/$(distdir)
-doc_DATA =  hplip_readme.html hplip_overview.png COPYING
+doc_DATA = COPYING 
+
+wwwsrc = doc
+
+www0dir = $(docdir)
+dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
+    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+www1dir = $(docdir)/howtos
+dist_www1_DATA = $(wwwsrc)/howtos/*
+www2dir = $(docdir)/install
+dist_www2_DATA = $(wwwsrc)/install/index.html
+www21dir = $(docdir)/install/step1
+dist_www21_DATA = $(wwwsrc)/install/step1/*
+www22dir = $(docdir)/install/step2
+dist_www22_DATA = $(wwwsrc)/install/step2/*
+www23dir = $(docdir)/install/step3
+dist_www23_DATA = $(wwwsrc)/install/step3/*
+www24dir = $(docdir)/install/step4
+dist_www24_DATA = $(wwwsrc)/install/step4/index.html
+www241dir = $(docdir)/install/step4/cups
+dist_www241_DATA = $(wwwsrc)/install/step4/cups/*
+www242dir = $(docdir)/install/step4/setup
+dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
+www243dir = $(docdir)/install/step4/suse
+dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+www3dir = $(docdir)/styles
+dist_www3_DATA = $(wwwsrc)/styles/*
+www4dir = $(docdir)/images
+dist_www4_DATA = $(wwwsrc)/images/*
+www5dir = $(docdir)/supported_devices
+dist_www5_DATA = $(wwwsrc)/supported_devices/*
+www6dir = $(docdir)/tech_docs
+dist_www6_DATA = $(wwwsrc)/tech_docs/*
+www61dir = $(docdir)/tech_docs/man_pages
+dist_www61_DATA = $(wwwsrc)/tech_docs/man_pages/*
+www7dir = $(docdir)/troubleshooting
+dist_www7_DATA = $(wwwsrc)/troubleshooting/*
 
 dist_hplip_DATA = $(doc_DATA) hplip.conf
 dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh
@@ -137,7 +173,7 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/faxaddrbookform.py ui/faxaddrbookeditform_base.py ui/align10form.py ui/align10form_base.py \
     ui/informationform_base.py ui/informationform.py ui/supportform_base.py ui/supportform.py \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
-    ui/coverpageform_base.py ui/coverpageform.py
+    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -145,7 +181,8 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
     ui/cleaningform2_base.ui ui/waitform_base.ui ui/coloradjform_base.ui ui/faxaddrbookeditform_base.ui \
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
     ui/align10form_base.ui ui/informationform_base.ui ui/supportform_base.ui \
-    plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui
+    plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
+    ui/faxallowabletypesdlg_base.ui
 
 # ui plugins
 pluginsdir = $(hplipdir)/plugins
@@ -237,24 +274,24 @@ install-data-hook: test-destdir
 #
 #       Edit hpiod.conf in destdir.
 	echo -e "\n[$(PACKAGE)]\nversion=$(VERSION)\njdprobe=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -e "[dirs]\nhome=$(hplipdir)\nrun=$(rundir)\nppd=$(hpppddir)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -ne "# Following values are determined at configure time and cannot be changed.\n[configure]\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
+	echo -e "[dirs]\nhome=$(hplipdir)\nrun=$(rundir)\nppd=$(hpppddir)\ndoc=$(docdir)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
+	echo -e "# Following values are determined at configure time and cannot be changed.\n[configure]" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 	if [ "$(rpm_install)" = "yes" ]; then \
-	   echo -ne "rpm-install=1\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "rpm-install=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	else \
-	   echo -ne "rpm-install=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "rpm-install=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi 
 	if [ "$(network_build)" = "yes" ]; then \
-	   echo -ne "network-build=1\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "network-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	else \
-	   echo -ne "network-build=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "network-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
 	if [ "$(pp_build)" = "yes" ]; then \
-	   echo -ne "pp-build=1\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "pp-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	else \
-	   echo -ne "pp-build=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	   echo -e "pp-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
-	echo -ne "internal-tag=$(PACKAGE_BUGREPORT)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
+	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
 
 #
 #       Edit hpiod.sh in destdir.

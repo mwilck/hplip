@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+ <head>
+  <title>HPLIP Installation - Step 4 - SUSE</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <!-- <link rel="stylesheet" href="../../../styles/style.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../../../styles/rest.css" type="text/css" /> 
+  <link rel="stylesheet" href="../../../styles/default.css" type="text/css" /> 
+       <meta name="author" content="" />
+       <meta name="email" content="" />
+ </head>
+
+ <body>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td align="left" valign="top">
+                <a href="../../../index.html"><img src="../../../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
+                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
+            </td>
+        </tr>
+    </table>
+
+    <table  border="0" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <tr>
+        <!-- LEFT SIDE NAVIGATION -->
+            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
+                <div class="menuheader">About</div> 
+                <menu compact="compact">
+                    <li><a href="../../../features.html" title="">Features</a></li> 
+                    <li><a href="../../../screenshots.html" title="">Screenshots</a></li> 
+                    <li><a href="../../../faqs.html" title="FAQs">FAQs</a></li> 
+                </menu>
+
+                <div class="menuheader">Setup and Installation</div> 
+                <menu compact="compact">
+                    <li><a href="../../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+                    <li><a href="../../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="../../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+                </menu>
+
+                <div class="menuheader">Usage and Support</div> 
+                <menu compact="compact">
+                    <li><a href="../../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+                    <li><a href="../../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+                    <li><a href="../../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+                    <li><a href="../../../release_notes.html" title="Release Notes">Release Notes</a></li>
+                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
+                </menu>
+
+                <div class="menuheader">Resources</div>
+                <menu compact="compact">
+                    <li><a href="../../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+                    <li><a href="../../../license.html" title="Software License">Software License</a></li> 
+                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
+                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
+                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../../contacts.html" title="Contacts">Contacts</a></li>
+                </menu>
+            </td>
+
+        <!-- CONTENT -->
+
+        <a href="../../../index.html">Home</a> > <a href="../../index.html">Installation</a> > <a href="../index.html">Step 4</a> > SUSE
+
+        <td align="left" valign="top" class="content">
+        <div class="document" id="installation-step-4-suse">
+<h1 class="title">Installation - Step 4 - SUSE</h1>
+<p><em>Note:  The instructions hp-setup tool should be able to easily configure your printer in SUSE.  If you continue to have problems then please follow these instructions.</em></p>
+<ol class="arabic simple">
+<li>Use a USB/Parallel cable to connect the printer to the computer or connect the printer to a network.</li>
+</ol>
+<p><em>Note: See your printer documentation for specific instructions on connecting the USB, Parallel or Network cable to your printer and computer.</em></p>
+<ol class="arabic simple" start="2">
+<li>If you are connecting your printer via a network interface use the above network instructions to determine the network printer address using the hp-makeuri process.</li>
+<li>Open a console/terminal window.</li>
+<li>Enter this command:</li>
+</ol>
+<pre class="literal-block">
+$ hp-info
+</pre>
+<ol class="arabic simple" start="5">
+<li>Copy the device URI for your printer. (Example: &quot;hp:/usb/OfficeJet_6100_Series?serial=MY27H134G22R&quot;)</li>
+</ol>
+<p>Follow these steps to open the YaST Printer Configuration tool:</p>
+<ol class="arabic simple" start="6">
+<li>Click the Menu button -&gt; System -&gt; YaST.</li>
+<li>In the left pane of the YaST dialog box, click Hardware.</li>
+</ol>
+<div align="center" class="align-center"><img src="/images/yast_opening_hw.png" alt="YAST"/></div><ol class="arabic simple" start="8">
+<li>In the right pane of the YaST dialog box, click Printer.</li>
+</ol>
+<div align="center" class="align-center"><img src="/images/yast_hardware.png" alt="YAST"/></div><p>Follow these steps to configure the printer:</p>
+<ol class="arabic simple" start="9">
+<li>On the YaST Printer Configuration dialog box, click Other in the Printers to Configure list, and then click Configure.</li>
+</ol>
+<div align="center" class="align-center"><img src="/images/yast_other_printer.png" alt="YAST"/></div><ol class="arabic simple" start="10">
+<li>In the Select your Printer Type list, click Other kind of setup, and then click Next.</li>
+</ol>
+<div align="center" class="align-center"><img src="/images/yast_other_kind.png" alt="YAST"/></div><ol class="arabic simple" start="11">
+<li>In the URI text box, paste the URI you copied in step 2c, and then click Next.</li>
+</ol>
+<p>On the Queue name dialog box do these steps:</p>
+<ol class="arabic simple" start="12">
+<li>Enter a name for your HP printer in the Name box.</li>
+</ol>
+<p><em>Note: The name you enter must not contain spaces.</em></p>
+<ol class="arabic simple" start="13">
+<li>Enter a description of the printer in the Description of Printer box.</li>
+<li>Click Next.</li>
+</ol>
+<p>On the Printer Model dialog box, do these steps:</p>
+<ol class="arabic simple" start="15">
+<li>Under Select manufacturer, click HP.</li>
+<li>Under Select model, click the printer model.</li>
+</ol>
+<div align="center" class="align-center"><img src="/images/yast_printer_model.png" alt="YAST"/></div><ol class="arabic simple" start="17">
+<li>Click Next.</li>
+<li>Review the configuration, and then click OK.</li>
+<li>Click Finish.</li>
+</ol>
+<p>The system saves the print queue.</p>
+<p>Follow these steps to print a test page:</p>
+<ol class="arabic simple" start="20">
+<li>Open the HP Device Manager:</li>
+<li>Open a console/terminal window.</li>
+</ol>
+<ol class="arabic simple" start="23">
+<li>Enter this command:</li>
+</ol>
+<pre class="literal-block">
+$ hp-toolbox
+</pre>
+<p><em>Note: You can also open the HP Device Manager by using the GNOME or KDE menu system.</em></p>
+<div align="center" class="align-center"><img src="/images/hplip_device_manager.png" alt="HPLIP"/></div><ol class="arabic simple" start="24">
+<li>Click your HP printer in the left pane.</li>
+<li>Click the Tools &amp; Settings tab, and then click Print Test Page.</li>
+</ol>
+</div>
+
+
+        <hr size="1"/>
+        <small>Last update: Wed Mar 15 16:23:14 2006</small>
+
+        <!-- FOOTER -->
+    </table>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <!-- <tr><td colspan="3" class="footer"></td> -->
+        <tr>
+            <td class="footer"><a href="../../../legal.html">Legal Notices</a></td>
+            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
+            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../../images/sflogo.png"/></a></td>
+        </tr>
+    
+    </table>
+</body>
+
+</html>

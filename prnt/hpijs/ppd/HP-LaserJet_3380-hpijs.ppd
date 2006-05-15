@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(HP LaserJet 3380)"
+*Product:	"(hp LaserJet 3380)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,16 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  CMD:PJL,MLC,BIDI-ECP,PCL,POSTSCRIPT,PCLXL;
-  MDL:hp LaserJet 3380;
-  CLS:PRINTER;
-  DES:Hewlett-Packard LaserJet 3380;
-  MEM:23MB;
-  COMMENT:RES=1200x1;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp LaserJet 3380;CMD:PJL,MLC,BIDI-ECP,PCL,POSTSCRIPT,PCLXL;DES:Hewlett-Packard LaserJet 3380;"
 *DefaultResolution: 600dpi
 
 

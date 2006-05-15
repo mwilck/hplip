@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '3.4'
+__version__ = '4.0'
 __title__ = 'Testpage Print Utility'
 __doc__ = "Print a tespage to a printer. Prints a summary of device information and shows the printer's margins."
 
@@ -29,6 +29,7 @@ import sys
 import os
 import getopt
 import re
+import time
 
 # Local
 from base.g import *
@@ -45,6 +46,9 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_BUS1, utils.USAGE_BUS2,         
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
+         utils.USAGE_SPACE,
+         utils.USAGE_NOTES,
+         utils.USAGE_STD_NOTES1, utils.USAGE_STD_NOTES2, 
         ]
 
 def usage(typ='text'):
@@ -141,25 +145,116 @@ try:
         log.error("Unable to print to printer. Please check device and try again.")
         sys.exit(1)
     
+    if len(d.cups_printers) == 0:
+        log.error("No printer queues found for device.")
+        sys.exit(1)
+        
+    elif len(d.cups_printers) > 1:
+        log.info("\nMultiple printers (queues) found in CUPS for device.")
+        log.info(utils.bold("\nPlease choose the printer (queue) to use for the test page:\n"))
+        
+        max_name = 24
+        for q in d.cups_printers:
+            max_name = max(max_name, len(q))
+            
+        formatter = utils.TextFormatter(
+            (
+                {'width': 4, 'margin': 2},
+                {'width': max_name, 'margin': 2},
+            )
+        )
+        
+        log.info(formatter.compose(("Num.", "CUPS printer (queue)")))
+        log.info(formatter.compose(('-'*4, '-'*(max_name))))
+        
+        x = 0
+        for q in d.cups_printers:
+            log.info(formatter.compose((str(x), d.cups_printers[x])))
+            x += 1
+            
+        while 1:
+            user_input = raw_input(utils.bold("\nEnter number 0...%d for printer (q=quit) ?" % (x-1)))
+
+            if user_input == '':
+                log.warn("Invalid input - enter a numeric value or 'q' to quit.")
+                continue
+
+            if user_input.strip()[0] in ('q', 'Q'):
+                sys.exit(0)
+
+            try:
+                i = int(user_input)
+            except ValueError:
+                log.warn("Invalid input - enter a numeric value or 'q' to quit.")
+                continue
+
+            if i < 0 or i > (x-1):
+                log.warn("Invalid input - enter a value between 0 and %d or 'q' to quit." % (x-1))
+                continue
+
+            break
+            
+        printer_name = d.cups_printers[i]
+            
+    else:
+        printer_name = d.cups_printers[0]
+        
+    log.info("")
+    
     if d.isIdleAndNoError():
         d.close()
-        log.info( "Printing test page..." )
+        log.info( "Printing test page to printer %s..." % printer_name)
         try:
-            d.printTestPage()
+            d.printTestPage(printer_name)
         except Error, e:
             if e.opt == ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE:
                 log.error("No CUPS queue found for device. Please install the printer in CUPS and try again.")
             else:
                 log.error("An error occured (code=%d)." % e.opt)
         else:
-            log.info("Page has been sent to printer...")
+            log.info("Test page has been sent to printer. Waiting for printout to complete...")
             
-        sys.exit(0)
+            time.sleep(5)
+            i = 0
+
+            while True:
+                time.sleep(5)
+                
+                try:
+                    d.queryDevice(quick=True)
+                except Error, e:
+                    log.error("An error has occured.")
+                
+                if d.error_state == ERROR_STATE_CLEAR:
+                    break
+                
+                elif d.error_state == ERROR_STATE_ERROR:
+                    log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
+                    break
+                    
+                elif d.error_state == ERROR_STATE_WARNING:
+                    log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
+                
+                else: # ERROR_STATE_BUSY
+                    update_spinner()
+                    
+                i += 1
+                
+                if i > 24:  # 2min
+                    break
+
+        #sys.exit(0)
     else:
         log.error("Device is busy or in an error state. Please check device and try again.")
         sys.exit(1)
+        
+        
 finally:
     d.close()
     
-log.info("")
+    log.info("")
+    log.info(utils.red("If an error occured, or the test page failed to print, refer to the HPLIP website"))
+    log.info(utils.red("at: http://hplip.sourceforge.net for troubleshooting and support."))
+    log.info("")
+
 log.info("Done.")

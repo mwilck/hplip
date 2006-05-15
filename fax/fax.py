@@ -22,7 +22,7 @@
 from __future__ import generators
 
 # Std Lib
-import sys, os.path, mmap, struct, time, threading, Queue, socket
+import sys, os, os.path, mmap, struct, time, threading, Queue, socket
 from cStringIO import StringIO
 
 # Local
@@ -200,7 +200,18 @@ PAGE_HEADER_SIZE = 24
 class FaxAddressBook(KirbyBase):
     def __init__(self):
         KirbyBase.__init__(self)
-        self._fab = os.path.expanduser('~/.hplip.fab') # Table name (filename)
+        
+        # Transitional code to handle moving of db file
+        t = os.path.expanduser('~/.hplip.fab') # old location
+        self._fab = os.path.expanduser('~/hpfax/fab.db') # new location
+        
+        fax_dir = os.path.expanduser("~/hpfax")
+        if not os.path.exists(fax_dir):
+            os.mkdir(fax_dir)
+        
+        if os.path.exists(t) and not os.path.exists(self._fab):
+            import shutil
+            shutil.move(t, self._fab)
 
         if not os.path.exists(self._fab):
             log.debug("Creating new fax address book: %s" % self._fab)

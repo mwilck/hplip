@@ -19,7 +19,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QPushButton" row="1" column="3">
+        <widget class="QPushButton" row="1" column="2">
             <property name="name">
                 <cstring>pushButton30</cstring>
             </property>
@@ -27,7 +27,7 @@
                 <string>OK</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="1" column="2">
+        <widget class="QPushButton" row="1" column="1">
             <property name="name">
                 <cstring>pushButton31</cstring>
             </property>
@@ -35,7 +35,24 @@
                 <string>Cancel</string>
             </property>
         </widget>
-        <widget class="QTabWidget" row="0" column="0" rowspan="1" colspan="4">
+        <spacer row="1" column="0">
+            <property name="name">
+                <cstring>spacer40</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>430</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QTabWidget" row="0" column="0" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>TabWidget</cstring>
             </property>
@@ -55,7 +72,7 @@
                             <cstring>textLabel3_2_2</cstring>
                         </property>
                         <property name="text">
-                            <string>&lt;b&gt;Configure the rate at which devices are automaically refreshed&lt;/b&gt;</string>
+                            <string>&lt;b&gt;Configure if and when device(s) are automatically refreshed&lt;/b&gt;</string>
                         </property>
                     </widget>
                     <widget class="Line" row="1" column="0">
@@ -72,7 +89,7 @@
                             <enum>Horizontal</enum>
                         </property>
                     </widget>
-                    <spacer row="3" column="0">
+                    <spacer row="5" column="0">
                         <property name="name">
                             <cstring>spacer8</cstring>
                         </property>
@@ -85,22 +102,30 @@
                         <property name="sizeHint">
                             <size>
                                 <width>20</width>
-                                <height>200</height>
+                                <height>30</height>
                             </size>
                         </property>
                     </spacer>
-                    <widget class="QButtonGroup" row="2" column="0">
+                    <widget class="QCheckBox" row="2" column="0">
+                        <property name="name">
+                            <cstring>autoRefreshCheckBox</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Enable device auto refresh</string>
+                        </property>
+                    </widget>
+                    <widget class="QButtonGroup" row="3" column="0">
                         <property name="name">
                             <cstring>CleaningLevel</cstring>
                         </property>
                         <property name="title">
-                            <string>Auto refresh rate</string>
+                            <string>Auto Interval</string>
                         </property>
                         <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <spacer row="0" column="1">
+                            <spacer row="0" column="2">
                                 <property name="name">
                                     <cstring>spacer9_2</cstring>
                                 </property>
@@ -112,12 +137,20 @@
                                 </property>
                                 <property name="sizeHint">
                                     <size>
-                                        <width>181</width>
+                                        <width>290</width>
                                         <height>20</height>
                                     </size>
                                 </property>
                             </spacer>
-                            <widget class="QLayoutWidget" row="0" column="0">
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel1_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Refresh every:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget" row="0" column="1">
                                 <property name="name">
                                     <cstring>layout7</cstring>
                                 </property>
@@ -129,6 +162,9 @@
                                         <property name="name">
                                             <cstring>AutoRefreshRate</cstring>
                                         </property>
+                                        <property name="enabled">
+                                            <bool>false</bool>
+                                        </property>
                                         <property name="wrapping">
                                             <bool>true</bool>
                                         </property>
@@ -136,10 +172,13 @@
                                             <enum>PlusMinus</enum>
                                         </property>
                                         <property name="maxValue">
-                                            <number>360</number>
+                                            <number>60</number>
                                         </property>
                                         <property name="minValue">
-                                            <number>5</number>
+                                            <number>1</number>
+                                        </property>
+                                        <property name="value">
+                                            <number>1</number>
                                         </property>
                                     </widget>
                                     <widget class="QLabel">
@@ -147,10 +186,48 @@
                                             <cstring>textLabel1_3</cstring>
                                         </property>
                                         <property name="text">
-                                            <string>seconds</string>
+                                            <string>minutes</string>
                                         </property>
                                     </widget>
                                 </hbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QButtonGroup" row="4" column="0">
+                        <property name="name">
+                            <cstring>refreshScopeButtonGroup</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Device(s) to Refresh </string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QRadioButton" row="0" column="0">
+                                <property name="name">
+                                    <cstring>radioButton1</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Only currently selected device</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>radioButton2</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="text">
+                                    <string>All devices</string>
+                                </property>
                             </widget>
                         </grid>
                     </widget>
@@ -167,7 +244,7 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
+                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
                         <property name="name">
                             <cstring>textLabel3_2</cstring>
                         </property>
@@ -175,39 +252,7 @@
                             <string>&lt;b&gt;Configure if the HP Device Manager will send email on alerts&lt;/b&gt;</string>
                         </property>
                     </widget>
-                    <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>textLabel21</cstring>
-                        </property>
-                        <property name="text">
-                            <string>SMTP server name:</string>
-                        </property>
-                    </widget>
-                    <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>textLabel20</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Email address(es):</string>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" row="3" column="2">
-                        <property name="name">
-                            <cstring>EmailAddress</cstring>
-                        </property>
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" row="4" column="2">
-                        <property name="name">
-                            <cstring>SMTPServer</cstring>
-                        </property>
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                    </widget>
-                    <widget class="Line" row="1" column="0" rowspan="1" colspan="3">
+                    <widget class="Line" row="1" column="0" rowspan="1" colspan="2">
                         <property name="name">
                             <cstring>line1_2_2_2</cstring>
                         </property>
@@ -221,73 +266,28 @@
                             <enum>Horizontal</enum>
                         </property>
                     </widget>
-                    <widget class="QLayoutWidget" row="6" column="2">
+                    <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>layout1</cstring>
+                            <cstring>EmailCheckBox</cstring>
                         </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLineEdit" row="0" column="1">
-                                <property name="name">
-                                    <cstring>Username</cstring>
-                                </property>
-                                <property name="enabled">
-                                    <bool>false</bool>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>textLabel1</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Username:</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="1" column="0">
-                                <property name="name">
-                                    <cstring>textLabel2</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Password:</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="1" column="1">
-                                <property name="name">
-                                    <cstring>Password</cstring>
-                                </property>
-                                <property name="enabled">
-                                    <bool>false</bool>
-                                </property>
-                                <property name="echoMode">
-                                    <enum>Password</enum>
-                                </property>
-                            </widget>
-                        </grid>
+                        <property name="text">
+                            <string>Send email when device errors occur:</string>
+                        </property>
                     </widget>
-                    <widget class="QCheckBox" row="5" column="2">
+                    <widget class="QPushButton" row="6" column="0">
                         <property name="name">
-                            <cstring>ServerRequiresPasswd</cstring>
+                            <cstring>EmailTestButton</cstring>
                         </property>
                         <property name="enabled">
                             <bool>false</bool>
                         </property>
                         <property name="text">
-                            <string>Server requires username and password:</string>
+                            <string>Test</string>
                         </property>
                     </widget>
-                    <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="3">
+                    <spacer row="6" column="1">
                         <property name="name">
-                            <cstring>EmailCheckBox</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Send email when status alerts occur:</string>
-                        </property>
-                    </widget>
-                    <spacer row="7" column="1" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>spacer11</cstring>
+                            <cstring>spacer9_3</cstring>
                         </property>
                         <property name="orientation">
                             <enum>Horizontal</enum>
@@ -297,12 +297,126 @@
                         </property>
                         <property name="sizeHint">
                             <size>
-                                <width>471</width>
+                                <width>491</width>
                                 <height>20</height>
                             </size>
                         </property>
                     </spacer>
-                    <spacer row="8" column="2">
+                    <widget class="QGroupBox" row="3" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>groupBox1</cstring>
+                        </property>
+                        <property name="title">
+                            <string>To: Address(es)</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>layout11</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>textLabel20</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Email address(es):</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLayoutWidget">
+                                        <property name="name">
+                                            <cstring>layout8</cstring>
+                                        </property>
+                                        <vbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QLineEdit">
+                                                <property name="name">
+                                                    <cstring>EmailAddress</cstring>
+                                                </property>
+                                                <property name="enabled">
+                                                    <bool>false</bool>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>textLabel1</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>&lt;i&gt;Note: Separate multiple email address with a commas.&lt;/i&gt;</string>
+                                                </property>
+                                            </widget>
+                                        </vbox>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="4" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>groupBox2</cstring>
+                        </property>
+                        <property name="title">
+                            <string>From: Address</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>layout12</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>textLabel2</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Sender email address:</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLayoutWidget">
+                                        <property name="name">
+                                            <cstring>layout10</cstring>
+                                        </property>
+                                        <vbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QLineEdit">
+                                                <property name="name">
+                                                    <cstring>senderLineEdit</cstring>
+                                                </property>
+                                                <property name="enabled">
+                                                    <bool>false</bool>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>textLabel3</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>&lt;i&gt;Note: This should generally be your email address.&lt;/i&gt;</string>
+                                                </property>
+                                            </widget>
+                                        </vbox>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <spacer row="5" column="1">
                         <property name="name">
                             <cstring>spacer5</cstring>
                         </property>
@@ -315,19 +429,11 @@
                         <property name="sizeHint">
                             <size>
                                 <width>20</width>
-                                <height>71</height>
+                                <height>90</height>
                             </size>
                         </property>
                     </spacer>
-                    <widget class="QPushButton" row="7" column="0">
-                        <property name="name">
-                            <cstring>EmailTestButton</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Test</string>
-                        </property>
-                    </widget>
-                    <spacer row="8" column="0">
+                    <spacer row="5" column="0">
                         <property name="name">
                             <cstring>spacer12</cstring>
                         </property>
@@ -340,7 +446,7 @@
                         <property name="sizeHint">
                             <size>
                                 <width>20</width>
-                                <height>20</height>
+                                <height>80</height>
                             </size>
                         </property>
                     </spacer>
@@ -554,23 +660,6 @@
                 </grid>
             </widget>
         </widget>
-        <spacer row="1" column="1">
-            <property name="name">
-                <cstring>spacer40</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>430</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
     </grid>
 </widget>
 <connections>
@@ -591,30 +680,6 @@
         <signal>toggled(bool)</signal>
         <receiver>EmailAddress</receiver>
         <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>EmailCheckBox</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>SMTPServer</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>ServerRequiresPasswd</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>Username</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>ServerRequiresPasswd</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>Password</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>EmailCheckBox</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>ServerRequiresPasswd</receiver>
-        <slot>&lt;No)</slot>
     </connection>
     <connection>
         <sender>CleaningLevel</sender>
@@ -640,16 +705,54 @@
         <receiver>SettingsDialog_base</receiver>
         <slot>EmailTestButton_clicked()</slot>
     </connection>
+    <connection>
+        <sender>EmailCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>senderLineEdit</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>EmailCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>EmailTestButton</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>autoRefreshCheckBox</sender>
+        <signal>clicked()</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>autoRefreshCheckBox_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>autoRefreshCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AutoRefreshRate</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>autoRefreshCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>radioButton1</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>autoRefreshCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>radioButton2</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>refreshScopeButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>refreshScopeButtonGroup_clicked(int)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>TabWidget</tabstop>
     <tabstop>pushButton30</tabstop>
     <tabstop>pushButton31</tabstop>
     <tabstop>EmailAddress</tabstop>
-    <tabstop>SMTPServer</tabstop>
-    <tabstop>Username</tabstop>
-    <tabstop>Password</tabstop>
-    <tabstop>ServerRequiresPasswd</tabstop>
     <tabstop>EmailCheckBox</tabstop>
     <tabstop>EmailTestButton</tabstop>
     <tabstop>PrintCommand</tabstop>
@@ -659,6 +762,9 @@
     <tabstop>MakeCopiesCommand</tabstop>
     <tabstop>DefaultsButton</tabstop>
 </tabstops>
+<includes>
+    <include location="local" impldecl="in implementation">settingsdialog_base.ui.h</include>
+</includes>
 <slots>
     <slot>PrintCmdChangeButton_clicked()</slot>
     <slot>ScanCmdChangeButton_clicked()</slot>
@@ -671,6 +777,8 @@
     <slot>TabWidget_currentChanged( QWidget * )</slot>
     <slot>pushButton6_clicked()</slot>
     <slot>EmailTestButton_clicked()</slot>
+    <slot>autoRefreshCheckBox_clicked()</slot>
+    <slot>refreshScopeButtonGroup_clicked( int )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

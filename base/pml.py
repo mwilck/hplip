@@ -130,7 +130,7 @@ def buildPMLSetPacket(oid, value, data_type): # String dotted notation
 
     return p
 
-def ConvertToPMLDataFormat(value, data_type):
+def ConvertToPMLDataFormat(value, data_type): 
     if data_type in (TYPE_ENUMERATION, TYPE_SIGNED_INTEGER, TYPE_COLLECTION):
         data = struct.pack(">i", int(value))
 
@@ -147,7 +147,8 @@ def ConvertToPMLDataFormat(value, data_type):
         data = struct.pack(">f", float(value))
 
     elif data_type == TYPE_STRING:
-        data = struct.pack(">BB%ss" % len(value), 0x01, 0x15, value)
+        #data = struct.pack(">BB%ss" % len(value), 0x01, 0x15, value)
+        data = struct.pack(">BB%ss" % len(value), 0x00, 0x0e, value) # changed for K80, seems to work on others...
 
     elif data_type == TYPE_BINARY:
         if type(value) == type(''):

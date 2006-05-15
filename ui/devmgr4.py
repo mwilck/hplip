@@ -59,9 +59,10 @@ from faxsettingsform import FaxSettingsForm
 from informationform import InformationForm
 from supportform import SupportForm
 
-MIN_AUTO_REFRESH_RATE = 5
-MAX_AUTO_REFRESH_RATE = 360
-DEF_AUTO_REFRESH_RATE = 30
+# all in minutes
+MIN_AUTO_REFRESH_RATE = 1
+MAX_AUTO_REFRESH_RATE = 60
+DEF_AUTO_REFRESH_RATE = 1
 
 
 class JobListViewItem(QListViewItem):
@@ -179,7 +180,7 @@ class ScrollSuppliesView(QScrollView):
         self.pix_light_gray_and_photo_black = QPixmap(os.path.join(prop.image_dir, 'icon_light_grey_and_photo_black.png'))
         self.pix_light_gray = QPixmap(os.path.join(prop.image_dir, 'icon_light_grey.png'))
         self.pix_photo_gray = QPixmap(os.path.join(prop.image_dir, 'icon_photo_black.png'))
-        
+
         self.TYPE_TO_PIX_MAP = {AGENT_TYPE_BLACK: self.pix_black,
                                AGENT_TYPE_CMY: self.pix_tricolor,
                                AGENT_TYPE_KCM: self.pix_photo,
@@ -200,13 +201,13 @@ class ScrollSuppliesView(QScrollView):
                                AGENT_TYPE_G: self.pix_grey,
                                AGENT_TYPE_PG: self.pix_photo_gray,                             
                                }
-        
+
         self.row_height = 100
 
     def viewportResizeEvent(self, e):
         for x in self.items:
             self.items[x].resize(e.size().width(), self.row_height)
-                       
+
     def getIcon(self, agent_kind, agent_type):
         if agent_kind in (AGENT_KIND_SUPPLY,
                           AGENT_KIND_HEAD,
@@ -282,8 +283,8 @@ class ScrollSuppliesView(QScrollView):
         elif agent_type == AGENT_TYPE_PG:
             b = QBrush(QColor(128, 128, 128))
             pp.fillRect(0, 0, fw, h, b)
-            
-        
+
+
 
         # draw black frame
         pp.drawRect(0, 0, w, h)
@@ -512,14 +513,19 @@ class devmgr4(DevMgr4_base):
                            }
 
         self.email_alerts = utils.to_bool(user_cfg.alerts.email_alerts) or False
-        self.email_address = user_cfg.alerts.email_address
-        self.smtp_server = user_cfg.alerts.smtp_server
+        self.email_to_addresses = user_cfg.alerts.email_to_addresses
+        self.email_from_address = user_cfg.alerts.email_from_address
         self.auto_refresh = utils.to_bool(user_cfg.refresh.enable) or False
 
         try:
             self.auto_refresh_rate = int(user_cfg.refresh.rate)
         except ValueError:    
             self.auto_refresh_rate = DEF_AUTO_REFRESH_RATE
+            
+        try:
+            self.auto_refresh_type = int(user_cfg.refresh.type)
+        except ValueError:
+            self.auto_refresh_type = 0 # refresh 1 (1=refresh all)
 
         cmd_print, cmd_scan, cmd_pcard, \
             cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
@@ -539,10 +545,11 @@ class devmgr4(DevMgr4_base):
         log.debug("Copy command: %s " % self.cmd_copy)
         log.debug("Scan command: %s" % self.cmd_scan)
         log.debug("Email alerts: %s" % self.email_alerts)
-        log.debug("Email address: %s" % self.email_address)
-        log.debug("SMTP server: %s" % self.smtp_server)
+        log.debug("Email to address(es): %s" % self.email_to_addresses)
+        log.debug("Email from address: %s" % self.email_from_address)
         log.debug("Auto refresh: %s" % self.auto_refresh)
         log.debug("Auto refresh rate: %s" % self.auto_refresh_rate)
+        log.debug("Auto refresh type: %s" % self.auto_refresh_type)
 
         if not self.auto_refresh:
             self.autoRefresh.toggle()
@@ -575,15 +582,18 @@ class devmgr4(DevMgr4_base):
         self.connect(self.refresh_timer, SIGNAL('timeout()'), self.TimedRefresh)
 
         if MIN_AUTO_REFRESH_RATE <= self.auto_refresh_rate <= MAX_AUTO_REFRESH_RATE:
-            self.refresh_timer.start(self.auto_refresh_rate * 1000)
+            self.refresh_timer.start(self.auto_refresh_rate * 60000)
 
 
     def TimedRefresh(self):
         if self.auto_refresh:
             log.debug("Refresh timer...")
             self.CleanupChildren()
-            self.UpdateDevice()
-
+            
+            if self.auto_refresh_type == 0:
+                self.UpdateDevice()
+            else:
+                self.RescanDevices()
 
     def autoRefresh_toggled(self,a0):
         self.auto_refresh = bool(a0)
@@ -713,7 +723,7 @@ class devmgr4(DevMgr4_base):
             tech_type = d.tech_type
         except AttributeError:
             tech_type = TECH_TYPE_NONE
-        
+
         if error_state != ERROR_STATE_CLEAR:
             if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
                 status_icon = self.STATUS_HISTORY_ICONS[error_state][0] # ink
@@ -877,18 +887,18 @@ class devmgr4(DevMgr4_base):
     def UpdatePrintJobsTab(self):
         self.PrintJobList.clear()
         num_jobs = 0
-        
+
         if self.cur_device.supported:
             jobs = cups.getJobs()
-    
+
             for j in jobs:
                 if j.dest in self.cur_device.cups_printers:
-    
+
                     JobListViewItem(self.PrintJobList, j.dest, j.id,
                                      self.JOB_STATES[j.state], j.user, j.title)
-    
+
                     num_jobs += 1
-    
+
         self.CancelPrintJobButton.setEnabled(num_jobs > 0)
 
 
@@ -1005,7 +1015,7 @@ class devmgr4(DevMgr4_base):
                 tech_type = d.tech_type
             except AttributeError:
                 tech_type = TECH_TYPE_NONE
-            
+
             if error_state != ERROR_STATE_CLEAR:
                 if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
                     status_pix = self.STATUS_HISTORY_ICONS[error_state][0] # ink
@@ -1174,7 +1184,7 @@ class devmgr4(DevMgr4_base):
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
-            
+
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
 
@@ -1198,7 +1208,7 @@ class devmgr4(DevMgr4_base):
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
-            
+
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
 
@@ -1234,7 +1244,7 @@ class devmgr4(DevMgr4_base):
 
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
-        
+
                 if pq_diag == 1:
                     maint.printQualityDiagType1(d, self.LoadPaperUI)
 
@@ -1258,7 +1268,7 @@ class devmgr4(DevMgr4_base):
 
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
-            
+
                 if linefeed_type == 1:
                     maint.linefeedCalType1(d, self.LoadPaperUI)
 
@@ -1287,9 +1297,14 @@ class devmgr4(DevMgr4_base):
     def settingsConfigure_activated(self, tab_to_show=0):
         dlg = SettingsDialog(self.hpssd_sock, self)
 
+        dlg.autoRefreshCheckBox.setChecked(self.auto_refresh)
+        dlg.AutoRefreshRate.setValue(self.auto_refresh_rate) # min
+        dlg.refreshScopeButtonGroup.setButton(self.auto_refresh_type)
+        dlg.auto_refresh_type = self.auto_refresh_type
+
         dlg.EmailCheckBox.setChecked(self.email_alerts)
-        dlg.EmailAddress.setText(self.email_address)
-        dlg.SMTPServer.setText(self.smtp_server)
+        dlg.EmailAddress.setText(self.email_to_addresses)
+        dlg.senderLineEdit.setText(self.email_from_address)
 
         dlg.PrintCommand.setText(self.cmd_print)
         dlg.ScanCommand.setText(self.cmd_scan)
@@ -1297,7 +1312,6 @@ class devmgr4(DevMgr4_base):
         dlg.SendFaxCommand.setText(self.cmd_fax)
         dlg.MakeCopiesCommand.setText(self.cmd_copy)
 
-        dlg.AutoRefreshRate.setValue(self.auto_refresh_rate)
 
         dlg.TabWidget.setCurrentPage(tab_to_show)
 
@@ -1309,25 +1323,32 @@ class devmgr4(DevMgr4_base):
             self.cmd_fax   = str(dlg.SendFaxCommand.text())
             self.cmd_copy  = str(dlg.MakeCopiesCommand.text())
 
+
             self.email_alerts = bool(dlg.EmailCheckBox.isChecked())
-            self.email_address = str(dlg.EmailAddress.text())
-            self.smtp_server = str(dlg.SMTPServer.text())
+            self.email_to_addresses = str(dlg.EmailAddress.text())
+            self.email_from_address = str(dlg.senderLineEdit.text())
 
+            old_auto_refresh = self.auto_refresh
+            self.auto_refresh = bool(dlg.autoRefreshCheckBox.isChecked())
             new_refresh_value = int(dlg.AutoRefreshRate.value())
+            self.auto_refresh_type = dlg.auto_refresh_type
 
-            if new_refresh_value != self.auto_refresh_rate:
-                self.auto_refresh_rate = new_refresh_value
-                self.refresh_timer.changeInterval(self.auto_refresh_rate * 1000)
+            if self.auto_refresh and new_refresh_value != self.auto_refresh_rate:
+                    self.auto_refresh_rate = new_refresh_value
+                    self.refresh_timer.changeInterval(self.auto_refresh_rate * 60000)
+
+            if old_auto_refresh != self.auto_refresh:
+                self.autoRefresh.toggle()
 
             self.SetAlerts()
             self.SaveConfig()
-
+            
 
     def SetAlerts(self):
         service.setAlerts(self.hpssd_sock,
                           self.email_alerts,
-                          self.email_address,
-                          self.smtp_server)
+                          self.email_to_addresses,
+                          self.email_from_address)
 
 
     def SaveConfig(self):
@@ -1336,11 +1357,12 @@ class devmgr4(DevMgr4_base):
         user_cfg.commands.fax = self.cmd_fax
         user_cfg.commands.scan = self.cmd_scan
         user_cfg.commands.cpy = self.cmd_copy
-        user_cfg.alerts.email_address = self.email_address
+        user_cfg.alerts.email_to_addresses = self.email_to_addresses
+        user_cfg.alerts.email_from_address = self.email_from_address
         user_cfg.alerts.email_alerts = self.email_alerts
-        user_cfg.alerts.smtp_server = self.smtp_server
         user_cfg.refresh.enable = self.auto_refresh
         user_cfg.refresh.rate = self.auto_refresh_rate
+        user_cfg.refresh.type = self.auto_refresh_type
 
 
     def SuccessUI(self):
@@ -1425,10 +1447,10 @@ class devmgr4(DevMgr4_base):
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
-            
+
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
-            
+
                 if align_type == ALIGN_TYPE_AUTO:
                     ok = maint.AlignType1(d, self.LoadPaperUI)
 
@@ -1501,7 +1523,7 @@ class devmgr4(DevMgr4_base):
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
-            
+
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
 
@@ -1534,21 +1556,39 @@ class devmgr4(DevMgr4_base):
 
     def PrintTestPageButton_clicked(self):
         d = self.cur_device
+
+        printer_name = d.cups_printers[0]
+
+        if len(d.cups_printers) > 1:
+            from chooseprinterdlg import ChoosePrinterDlg2
+            dlg = ChoosePrinterDlg2(d.cups_printers)
+
+            if dlg.exec_loop() == QDialog.Accepted:
+                printer_name = dlg.printer_name
+
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
 
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
-
+                d.close()
+                
                 if self.LoadPaperUI():
-                    d.printTestPage()
+                    d.printTestPage(printer_name)
+
+                    QMessageBox.information(self,
+                                         self.caption(),
+                                         self.__tr("<p><b>A test page should be printing on your printer.</b><p>If the page fails to print, please visit http://hplip.sourceforge.net for troubleshooting and support."),
+                                          QMessageBox.Ok,
+                                          QMessageBox.NoButton,
+                                          QMessageBox.NoButton)
 
             else:
+                d.close()
                 self.CheckDeviceUI()
 
         finally:
-            d.close()
             QApplication.restoreOverrideCursor()
 
 
@@ -1577,10 +1617,10 @@ class devmgr4(DevMgr4_base):
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
             d.open()
-            
+
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
-                
+
                 if clean_type == CLEAN_TYPE_PCL:
                     maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
                                     maint.wipeAndSpitType1, self.LoadPaperUI,
@@ -1719,6 +1759,12 @@ class devmgr4(DevMgr4_base):
 
     def addressBookButton_clicked(self):
         self.RunCommand(self.cmd_fab)
+        
+    def helpContents(self):
+        f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
+        log.debug(f)
+        utils.openURL(f)
+        
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;
-  MDL:HP LaserJet 3300/3310/3320;
-  CLS:PRINTER;
-  DES:Hewlett-Packard LaserJet 3300/3310/3320;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 3300/3310/3320;CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;DES:Hewlett-Packard LaserJet 3300/3310/3320;"
 *DefaultResolution: 600dpi
 
 

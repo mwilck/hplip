@@ -1189,7 +1189,7 @@ DRIVER_ERROR Printer::SetPenInfo
         else
         {
             TRACE("Printer::SetPenInfo - Unsupported DeviceID %s.\n", pSS->strDevID);
-            ASSERT (0);  // you must have a printer with a new version that is not supported yet!
+/*            ASSERT (0);  // you must have a printer with a new version that is not supported yet! */
             return BAD_DEVICE_ID;  // - code should never reach this point
         }
     }

@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/dwelch/linux-imaging-and-printing/src/ui/supportform_base.ui'
+# Form implementation generated from reading ui file 'supportform_base.ui'
 #
-# Created: Tue Sep 13 11:53:43 2005
+# Created: Tue Apr 25 09:04:41 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
 
-import sys
 from qt import *
 
 
@@ -32,11 +31,6 @@ class SupportForm_base(QDialog):
 
         self.tab = QWidget(self.tabWidget2,"tab")
         tabLayout = QGridLayout(self.tab,1,1,11,6,"tabLayout")
-
-        self.textLabel6 = QLabel(self.tab,"textLabel6")
-        self.textLabel6.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
-
-        tabLayout.addWidget(self.textLabel6,4,0)
 
         self.hpinktjetButton = QPushButton(self.tab,"hpinktjetButton")
         self.hpinktjetButton.setPaletteForegroundColor(QColor(0,0,255))
@@ -63,8 +57,13 @@ class SupportForm_base(QDialog):
         self.line2_3.setFrameShape(QFrame.HLine)
 
         tabLayout.addWidget(self.line2_3,1,0)
-        spacer3 = QSpacerItem(20,51,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        tabLayout.addItem(spacer3,5,0)
+        spacer3 = QSpacerItem(20,50,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        tabLayout.addItem(spacer3,4,0)
+
+        self.textLabel6_2_3 = QLabel(self.tab,"textLabel6_2_3")
+        self.textLabel6_2_3.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
+
+        tabLayout.addWidget(self.textLabel6_2_3,5,0)
         self.tabWidget2.insertTab(self.tab,QString.fromLatin1(""))
 
         self.tab_2 = QWidget(self.tabWidget2,"tab_2")
@@ -182,10 +181,10 @@ class SupportForm_base(QDialog):
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - Support Information"))
         self.pushButton4.setText(self.__tr("Close"))
-        self.textLabel6.setText(self.__tr("On this HP sponsored website, you will find FAQs, open discussion forums, installation instructions, a product support table, and other support materials."))
-        self.hpinktjetButton.setText(self.__tr("http://hpinkjet.sourceforge.net"))
-        self.textLabel2.setText(self.__tr("HPLIP is free, open source software distributed under the MIT, BSD, and GPL licenses.  <b><i>HP does not provide formal consumer or commercial support for this software. </i></b><p>Support is provided informally through a series of resources on the website:"))
+        self.hpinktjetButton.setText(self.__tr("http://hplip.sourceforge.net"))
+        self.textLabel2.setText(self.__tr("HPLIP is free, open source software distributed under the MIT, BSD, and GPL licenses.  <b><i>HP does not provide formal consumer or commercial support for this software.</i></b><p> Support is provided informally through a series of resources on a Sourceforge.net website. On this HP sponsored website, you will find FAQs, open discussion forums, installation instructions, a product support table, and other support materials."))
         self.textLabel2_2.setText(self.__tr("<b>HP Sponsored Support</b>"))
+        self.textLabel6_2_3.setText(self.__tr("NOTE: Sourceforge.net is owned and operated by OSTG, Inc. and is not affiliated with HP."))
         self.tabWidget2.changeTab(self.tab,self.__tr("HP"))
         self.textLabel2_2_2.setText(self.__tr("<b>README File</b>"))
         self.textLabel2_3.setText(self.__tr("A readme file was shipped with your version of HPLIP. This file contains the product support table, a troubleshooting guide, and other support resources."))
@@ -217,11 +216,3 @@ class SupportForm_base(QDialog):
 
     def __tr(self,s,c = None):
         return qApp.translate("SupportForm_base",s,c)
-
-if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = SupportForm_base()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()

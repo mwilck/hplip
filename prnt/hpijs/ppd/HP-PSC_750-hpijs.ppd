@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:PSC 750;
-  CMD:MLC,PCL,PML;
-  CLASS:PRINTER;
-  DESCRIPTION:Hewlett-Packard PSC 700 Series;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:PSC 750;CMD:MLC,PCL,PML;DESCRIPTION:Hewlett-Packard PSC 700 Series;"
 *DefaultResolution: 1200dpi
 
 

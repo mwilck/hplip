@@ -54,7 +54,7 @@ def unregisterGUI(sock, username, pid, typ):
 
 
 
-def testEmail(sock, email_address, smtp_server, username, password):
+def testEmail(sock, username): 
     fields = {}
     result_code = ERROR_SUCCESS
     try:
@@ -62,13 +62,7 @@ def testEmail(sock, email_address, smtp_server, username, password):
             msg.xmitMessage(sock,
                             "TestEmail",
                             None,
-                            {
-                                'email-address' : email_address,
-                                'smtp-server' : smtp_server,
-                                'username'      : username,
-                                'server-pass'   : password,
-                            }
-                            )
+                            {'username': username,})
     except Error, e:
         result_code = e.opt
         utils.log_exception()
@@ -93,8 +87,15 @@ def sendEvent(sock, event, typ='event', jobid=0,
     msg.sendEvent(sock, 'Event', data, fields)
 
 
+def setAlertsEx(sock):
+    email_to_addresses = user_cfg.alerts.email_to_addresses
+    email_from_address = user_cfg.alerts.email_from_address
+    email_alerts = user_cfg.alerts.email_alerts
+    
+    setAlerts(sock, email_alerts, email_from_address, email_to_addresses)
+    
 
-def setAlerts(sock, email_alerts, email_address, smtp_server):
+def setAlerts(sock, email_alerts, email_from_address, email_to_addresses): 
     fields, data, result_code = \
         msg.xmitMessage(sock,
                         "SetAlerts",
@@ -102,7 +103,7 @@ def setAlerts(sock, email_alerts, email_address, smtp_server):
                         {
                             'username'      : prop.username,
                             'email-alerts'  : email_alerts,
-                            'email-address' : email_address,
-                            'smtp-server'   : smtp_server,
-                        }
-                        )
+                            'email-from-address' : email_from_address,
+                            'email-to-addresses' : email_to_addresses,
+                        })
+                        

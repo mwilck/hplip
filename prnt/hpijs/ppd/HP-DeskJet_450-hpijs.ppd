@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:hp;
-  MDL:dj450;
-  CMD:MLC,PCL,PML,DESKJET,DW-PCL,DYN;
-  CLS:PRINTER;
-  DES:hp dj450;
-"
-*End
+*1284DeviceID: "MFG:hp;MDL:dj450;CMD:MLC,PCL,PML,DESKJET,DW-PCL,DYN;DES:hp dj450;"
 *DefaultResolution: 1200dpi
 
 

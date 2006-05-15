@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+ <head>
+  <title>Printer/Fax Setup Utility</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <!-- <link rel="stylesheet" href="../../styles/style.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../../styles/rest.css" type="text/css" /> 
+  <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
+       <meta name="author" content="" />
+       <meta name="email" content="" />
+ </head>
+
+ <body>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td align="left" valign="top">
+                <a href="../../index.html"><img src="../../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
+                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
+            </td>
+        </tr>
+    </table>
+
+    <table  border="0" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <tr>
+        <!-- LEFT SIDE NAVIGATION -->
+            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
+                <div class="menuheader">About</div> 
+                <menu compact="compact">
+                    <li><a href="../../features.html" title="">Features</a></li> 
+                    <li><a href="../../screenshots.html" title="">Screenshots</a></li> 
+                    <li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
+                </menu>
+
+                <div class="menuheader">Setup and Installation</div> 
+                <menu compact="compact">
+                    <li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+                    <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+                </menu>
+
+                <div class="menuheader">Usage and Support</div> 
+                <menu compact="compact">
+                    <li><a href="../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+                    <li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+                    <li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+                    <li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
+                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
+                </menu>
+
+                <div class="menuheader">Resources</div>
+                <menu compact="compact">
+                    <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+                    <li><a href="../../license.html" title="Software License">Software License</a></li> 
+                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
+                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
+                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
+                </menu>
+            </td>
+
+        <!-- CONTENT -->
+
+        <a href="../../index.html">Home</a> > <a href="../index.html">Technical Documentation</a> > <a href="index.html">Man Pages</a> > hp-setup
+
+        <td align="left" valign="top" class="content">
+        <div class="document">
+<p>Installs HPLIP printers and faxes in the CUPS spooler. Tries to automatically determine the correct PPD file to use. Allows the printing of a testpage. Performs basic fax parameter setup.</p>
+<p><strong>Usage: hp-setup [OPTIONS] [SERIAL NO.|USB ID|IP|DEVNODE]</strong></p>
+<p><strong>[SERIAL NO.|USB ID|IP|DEVNODE]</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><em>USB IDs (usb only):</em></td>
+<td>&quot;xxx:yyy&quot; where 'xxx' is the USB bus ID and 'yyy' is the USB device ID. (Note: The ':' and all leading zeros must be present.)</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>Use the 'lsusb' command to obtain this information.</td>
+</tr>
+<tr><td><em>IPs (network only):</em></td>
+<td>IPv4 address &quot;a.b.c.d&quot; or &quot;hostname&quot;</td>
+</tr>
+<tr><td><em>DEVNODE (parallel only):</em></td>
+<td>&quot;/dev/parportX&quot;, X=0,1,2,...</td>
+</tr>
+<tr><td><em>SERIAL NO. (usb and parallel only):</em></td>
+<td>&quot;serial no.&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>[OPTIONS]</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><em>Automatic mode:</em></td>
+<td>-a or --auto</td>
+</tr>
+<tr><td><em>To specify the port on a multi-port JetDirect:</em></td>
+<td>-p&lt;port&gt; or --port=&lt;port&gt; (Valid values are 1*, 2, and 3. *default)</td>
+</tr>
+<tr><td><em>No testpage in automatic mode:</em></td>
+<td>-x</td>
+</tr>
+<tr><td><em>To specify a CUPS printer queue name:</em></td>
+<td>-n&lt;printer&gt; or --printer=&lt;printer&gt;</td>
+</tr>
+<tr><td><em>To specify a CUPS fax queue name:</em></td>
+<td>-f&lt;fax&gt; or --fax=&lt;fax&gt;</td>
+</tr>
+<tr><td><em>Type of queue(s) to install:</em></td>
+<td>-t&lt;typelist&gt; or --type=&lt;typelist&gt;. &lt;typelist&gt;: print*, fax* (*default)</td>
+</tr>
+<tr><td><em>Bus to probe (if device not specified):</em></td>
+<td>-b&lt;bus&gt; or --bus=&lt;bus&gt;</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>&lt;bus&gt;: cups*, usb*, net, bt, fw, par* (*default) (Note: bt and fw not supported in this release</td>
+</tr>
+<tr><td><em>Set the logging level:</em></td>
+<td>-l&lt;level&gt; or --logging=&lt;level&gt;</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>&lt;level&gt;: none, info*, error, warn, debug (*default)</td>
+</tr>
+<tr><td><em>Run in debug mode:</em></td>
+<td>-g (same as option: -ldebug)</td>
+</tr>
+<tr><td><em>This help information:</em></td>
+<td>-h or --help</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><em>One USB printer attached, automatic:</em></td>
+<td>$ hp-setup -a</td>
+</tr>
+<tr><td><em>USB, IDs specified:</em></td>
+<td>$ hp-setup 001:002</td>
+</tr>
+<tr><td><em>Network:</em></td>
+<td>$ hp-setup 66.35.250.209</td>
+</tr>
+<tr><td><em>Network, Jetdirect port 2:</em></td>
+<td>$ hp-setup --port=2 66.35.250.209</td>
+</tr>
+<tr><td><em>Parallel:</em></td>
+<td>$ hp-setup /dev/parport0</td>
+</tr>
+<tr><td><em>USB or parallel, using serial number:</em></td>
+<td>$ hp-setup US12345678A</td>
+</tr>
+<tr><td><em>USB, automatic:</em></td>
+<td>$ hp-setup --auto 001:002</td>
+</tr>
+<tr><td><em>Parallel, automatic, no testpage:</em></td>
+<td>$ hp-setup -a -x /dev/parport0</td>
+</tr>
+<tr><td><em>Parallel, choose device:</em></td>
+<td>$ hp-setup -b par</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="2"><ol class="first last arabic simple">
+<li>If no serial number, USB ID, IP, or device node is specified, the USB and parallel busses will be probed for devices.</li>
+</ol>
+</td>
+</tr>
+<tr><td colspan="2"><ol class="first last arabic simple" start="2">
+<li>Using 'lsusb' to obtain USB IDs: (example)</li>
+</ol>
+</td>
+</tr>
+<tr><td colspan="2">$ lsusb</td>
+</tr>
+<tr><td colspan="2">Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard</td>
+</tr>
+<tr><td colspan="2">$ hp-setup --auto 003:011</td>
+</tr>
+<tr><td colspan="2">(Note: You may have to run 'lsusb' from /sbin or another location. Use '$ locate lsusb' to determine this.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See Also:</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference" href="makeuri.html">hp-makeuri</a></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+        <hr size="1"/>
+        <small>Last update: Tue May  9 11:19:01 2006</small>
+
+        <!-- FOOTER -->
+    </table>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <!-- <tr><td colspan="3" class="footer"></td> -->
+        <tr>
+            <td class="footer"><a href="../../legal.html">Legal Notices</a></td>
+            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
+            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png"/></a></td>
+        </tr>
+    
+    </table>
+</body>
+
+</html>

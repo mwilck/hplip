@@ -52,12 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:OfficeJet;
-  CMD:MLC,PCL,PML;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:OfficeJet;CMD:MLC,PCL,PML;"
 *DefaultResolution: 300dpi
 
 

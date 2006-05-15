@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HP;
-  MDL:Deskjet 6500;
-  CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;
-  CLS:PRINTER;
-  DES:6540;
-"
-*End
+*1284DeviceID: "MFG:HP;MDL:Deskjet 6500;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;DES:6540;"
 *DefaultResolution: 1200dpi
 
 

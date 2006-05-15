@@ -86,6 +86,7 @@ class PhoneNumValidator(QValidator):
             return QValidator.Invalid, pos
         else:
             return QValidator.Acceptable, pos
+            
 
 # **************************************************************************** #
 
@@ -264,9 +265,10 @@ class FaxAddrBookGroupsForm(FaxAddrBookGroupsForm_base):
 
 class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
 
-    def __init__(self,parent = None,name = None,modal = 0,fl = 0):
+    def __init__(self, editing=True, parent = None,name = None,modal = 0,fl = 0):
         FaxAddrBookEditForm_base.__init__(self,parent,name,modal,fl)
         self.recno = -1
+        self.editing = editing
         self.faxEdit.setValidator(PhoneNumValidator(self.faxEdit))
 
     def setDlgData(self, abe):
@@ -343,10 +345,18 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
     def CheckOKButton(self, nickname=None, fax=None):
         if nickname is None:
             nickname = str(self.nicknameEdit.text())
+        
         if fax is None:
             fax = str(self.faxEdit.text())
+            
+        ok = len(nickname) and len(fax)
+        
+        if nickname and not self.editing:
+            for x in db.AllRecordEntries():
+                if nickname == x.name:
+                    ok = False
 
-        self.OKButton.setEnabled(len(nickname) and len(fax))
+        self.OKButton.setEnabled(ok)
 
 
     def __tr(self,s,c = None):
@@ -435,7 +445,7 @@ class FaxAddrBookForm(FaxAddrBookForm_base):
         self.UpdateList()
 
     def newButton_clicked(self):
-        dlg = FaxAddrBookEditForm(self)
+        dlg = FaxAddrBookEditForm(False, self)
         dlg.setGroups()
         dlg.groupsButton2.setEnabled(False)
         if dlg.exec_loop() == QDialog.Accepted:
@@ -447,7 +457,7 @@ class FaxAddrBookForm(FaxAddrBookForm_base):
         return fax.AddressBookEntry(db.select(['recno'], [self.current.recno])[0])
 
     def editButton_clicked(self):
-        dlg = FaxAddrBookEditForm(self)
+        dlg = FaxAddrBookEditForm(True, self)
         dlg.setDlgData(self.CurrentRecordEntry())
         if dlg.exec_loop() == QDialog.Accepted:
             db.update(['recno'], [self.current.recno], dlg.getDlgData())

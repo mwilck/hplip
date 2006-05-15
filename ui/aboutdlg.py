@@ -21,9 +21,13 @@
 
 import sys
 from qt import *
+from base.g import *
 from aboutdlg_base import AboutDlg_base
+import os.path
 
 class AboutDlg(AboutDlg_base):
     def __init__(self,parent = None,name = None,modal = 0,fl = 0):
         AboutDlg_base.__init__(self,parent,name,modal,fl)
 
+        self.pyPixmap.setPixmap(QPixmap(os.path.join(prop.image_dir, 'powered_by_python.png')))
+        self.osiPixmap.setPixmap(QPixmap(os.path.join(prop.image_dir, 'opensource-75x65.png')))

@@ -52,15 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  CMD:PJL,PML,DW-PCL,JR4.1;
-  1284.4DL:4d,4e,1;
-  MDL:hp color LaserJet 3550;
-  CLS:PRINTER;
-  DES:Hewlett-Packard color LaserJet 3550;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp color LaserJet 3550;CMD:PJL,PML,DW-PCL,JR4.1;DES:Hewlett-Packard color LaserJet 3550;"
 *DefaultResolution: 600dpi
 
 

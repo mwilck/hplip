@@ -80,7 +80,7 @@
                             <cursor>13</cursor>
                         </property>
                         <property name="text">
-                            <string>http://hpinkjet.sourceforge.net</string>
+                            <string>http://hplip.sourceforge.net</string>
                         </property>
                     </widget>
                     <widget class="QLabel" row="2" column="0">
@@ -507,9 +507,6 @@
         <slot>hpinktjetButton_2_clicked()</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">supportform_base.ui.h</include>
-</includes>
 <slots>
     <slot>hpinktjetButton_clicked()</slot>
     <slot>linuxprintingButton_clicked()</slot>

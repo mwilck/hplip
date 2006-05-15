@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HEWLETT-PACKARD;
-  MDL:OFFICEJET PRO 1170C SERIES;
-  CMD:PCL,MLC,PML,PJL;
-  CLS:PRINTER;
-  DES:Hewlett-Packard OfficeJet Pro 1170C Series;
-"
-*End
+*1284DeviceID: "MFG:HEWLETT-PACKARD;MDL:OFFICEJET PRO 1170C SERIES;CMD:PCL,MLC,PML,PJL;DES:Hewlett-Packard OfficeJet Pro 1170C Series;"
 *DefaultResolution: 600dpi
 
 

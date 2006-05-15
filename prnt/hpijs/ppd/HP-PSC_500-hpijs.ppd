@@ -52,15 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HEWLETT-PACKARD;
-  MDL:PSC 500;
-  CMD:MLC,PCL,PML,SCL;
-  CLS:PRINTER;
-  DES:Hewlett-Packard PSC 500;
-  CMT:OFFICEJET PRO;
-"
-*End
+*1284DeviceID: "MFG:HEWLETT-PACKARD;MDL:PSC 500;CMD:MLC,PCL,PML,SCL;DES:Hewlett-Packard PSC 500;"
 *DefaultResolution: 600dpi
 
 

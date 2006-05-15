@@ -52,13 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:officejet 7100 series;
-  CMD:MLC,PCL,PML,DW-PCL,BIDI-ECP;
-  CLASS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:officejet 7100 series;CMD:MLC,PCL,PML,DW-PCL,BIDI-ECP;"
 *DefaultResolution: 1200dpi
 
 

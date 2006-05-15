@@ -751,7 +751,12 @@ DRIVER_ERROR DJ9xxVIP::ParsePenInfo(PEN_TYPE& ePen, BOOL QueryPrinter)
     }
 
     DRIVER_ERROR err = SetPenInfo (str, QueryPrinter);
-    ERRCHECK;
+//    ERRCHECK;
+    if (err != NO_ERROR)
+    {
+        ePen = BOTH_PENS;
+        return NO_ERROR;
+    }
     iNumMissingPens = 0;
 
     // the first byte indicates how many pens are supported

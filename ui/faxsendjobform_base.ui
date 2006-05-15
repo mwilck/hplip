@@ -126,7 +126,7 @@
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QLayoutWidget" row="0" column="0" rowspan="1" colspan="2">
+                            <widget class="QLayoutWidget" row="0" column="0" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>layout9</cstring>
                                 </property>
@@ -157,7 +157,7 @@
                                     </widget>
                                 </hbox>
                             </widget>
-                            <widget class="QPushButton" row="2" column="1">
+                            <widget class="QPushButton" row="1" column="2">
                                 <property name="name">
                                     <cstring>addFilePushButton</cstring>
                                 </property>
@@ -168,7 +168,7 @@
                                     <string>Add to List</string>
                                 </property>
                             </widget>
-                            <spacer row="2" column="0">
+                            <spacer row="1" column="1">
                                 <property name="name">
                                     <cstring>spacer8</cstring>
                                 </property>
@@ -180,11 +180,19 @@
                                 </property>
                                 <property name="sizeHint">
                                     <size>
-                                        <width>361</width>
+                                        <width>170</width>
                                         <height>20</height>
                                     </size>
                                 </property>
                             </spacer>
+                            <widget class="QPushButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>allowableTypesPushButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Show Types...</string>
+                                </property>
+                            </widget>
                         </grid>
                     </widget>
                     <widget class="QGroupBox" row="8" column="0">
@@ -985,6 +993,12 @@
         <receiver>FaxSendJobForm_base</receiver>
         <slot>settingsPushButton_clicked()</slot>
     </connection>
+    <connection>
+        <sender>allowableTypesPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>FaxSendJobForm_base</receiver>
+        <slot>allowableTypesPushButton_clicked()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>fileListView</tabstop>
@@ -1003,6 +1017,9 @@
     <tabstop>selectionEdit</tabstop>
     <tabstop>printerNameComboBox</tabstop>
 </tabstops>
+<includes>
+    <include location="local" impldecl="in implementation">faxsendjobform_base.ui.h</include>
+</includes>
 <slots>
     <slot>individualSendListView_clicked( QListViewItem * )</slot>
     <slot>groupSendListView_clicked( QListViewItem * )</slot>
@@ -1022,6 +1039,7 @@
     <slot>printerNameComboBox_highlighted( const QString &amp; )</slot>
     <slot>editCoverpagePushButton_clicked()</slot>
     <slot>settingsPushButton_clicked()</slot>
+    <slot>allowableTypesPushButton_clicked()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

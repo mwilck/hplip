@@ -52,13 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:Printer/Scanner/Copier 300;
-  CMD:MLC,PCL,PML;
-  CLASS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:Printer/Scanner/Copier 300;CMD:MLC,PCL,PML;"
 *DefaultResolution: 600dpi
 
 

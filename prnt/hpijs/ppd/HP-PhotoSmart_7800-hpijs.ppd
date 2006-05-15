@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(photosmart 7800)"
+*Product:	"(Photosmart 7800 series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HP;
-  MDL:Photosmart 7800 series;
-  CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;
-  CLS:PRINTER;
-  DES:7850;
-"
-*End
+*1284DeviceID: "MFG:HP;MDL:Photosmart 7800 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;DES:7850;"
 *DefaultResolution: 1200dpi
 
 

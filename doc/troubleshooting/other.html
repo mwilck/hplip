@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+ <head>
+  <title>HPLIP Troubleshooting - General/Other</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
+  <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
+       <meta name="author" content="" />
+       <meta name="email" content="" />
+ </head>
+
+ <body>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td align="left" valign="top">
+                <a href="../index.html"><img src="../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
+                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
+            </td>
+        </tr>
+    </table>
+
+    <table  border="0" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <tr>
+        <!-- LEFT SIDE NAVIGATION -->
+            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
+                <div class="menuheader">About</div> 
+                <menu compact="compact">
+                    <li><a href="../features.html" title="">Features</a></li> 
+                    <li><a href="../screenshots.html" title="">Screenshots</a></li> 
+                    <li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
+                </menu>
+
+                <div class="menuheader">Setup and Installation</div> 
+                <menu compact="compact">
+                    <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+                    <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+                </menu>
+
+                <div class="menuheader">Usage and Support</div> 
+                <menu compact="compact">
+                    <li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+                    <li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+                    <li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+                    <li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
+                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
+                </menu>
+
+                <div class="menuheader">Resources</div>
+                <menu compact="compact">
+                    <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
+                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+                    <li><a href="../license.html" title="Software License">Software License</a></li> 
+                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
+                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
+                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
+                </menu>
+            </td>
+
+        <!-- CONTENT -->
+
+        <a href="../index.html">Home</a> > <a href="index.html">Troubleshooting</a> > General/Other
+
+        <td align="left" valign="top" class="content">
+        <div class="document" id="general-other-troubleshooting">
+<h1 class="title">General/Other Troubleshooting</h1>
+<p><strong>Issue 1: I am seeing messages like &quot;Unable to find GUI for username...&quot; and &quot;No GUI available&quot; in the system log.</strong></p>
+<p>Solution:</p>
+<p>These are normal and should not cause any concerns.</p>
+<p><strong>Issue 2: How do I check the syslog for HPLIP system errors?</strong></p>
+<p>Solution:</p>
+<p>With superuser (su/sudo) privileges, use the following command to view the syslog. Look for any errors during the time of the failure.</p>
+<pre class="literal-block">
+# tail -f /var/log/messages
+</pre>
+<p><strong>Issue 3: How to debug HPLIP.</strong></p>
+<p>Solution:</p>
+<p>Debugging HPLIP is a several step process.  Use su/sudo as applicable for your configuration and step.</p>
+<p>The HPSSD process provides various services to HPLIP client applications. Maintains persistant device status.  Putting hpssd in debug mode will assist in troubleshooting connection problems.</p>
+<p>This will restart HPLIP and CUPS:</p>
+<pre class="literal-block">
+# /etc/init.d/hplip restart
+</pre>
+<pre class="literal-block">
+# /etc/init.d/cups restart
+</pre>
+<p>for Ubuntu</p>
+<pre class="literal-block">
+$ /etc/init.d/cupsys restart
+</pre>
+<p>Go to the hplip working directory:</p>
+<pre class="literal-block">
+cd /usr/share/hplip
+</pre>
+<p>Find the hpssd.py process number:</p>
+<pre class="literal-block">
+# ps ax | grep hp
+</pre>
+<p>Find the line that looks like:</p>
+<pre class="literal-block">
+4193 ?        S      0:00 python ./hpssd.py
+</pre>
+<p>Kill the hpssd.py process:</p>
+<pre class="literal-block">
+# kill 4193
+</pre>
+<p>for Ubuntu</p>
+<pre class="literal-block">
+$ sudo kill 4193
+</pre>
+<p>Start the hpssd.py process in debug mode:</p>
+<pre class="literal-block">
+# python ./hpssd.py -g
+</pre>
+<p>You should see something like this:</p>
+<pre class="literal-block">
+hpssd [DEBUG]: port=36181
+hpssd Listening on localhost:36181
+hpssd [DEBUG]: Starting async loop...
+</pre>
+<p>Then open a new terminal/console window: (Shift-Control-T if you are using Terminal)</p>
+<p>Run the hp-toolbox in debug mode:</p>
+<pre class="literal-block">
+# hp-toolbox -g
+</pre>
+<p>Attempt to do the function you are having issues with, when the error occurs, note the information displayed for both the hp-toolbox and for hpssd.</p>
+<p><strong>Issue 4:  When I go to login to the CUPS web interface (http://localhost:631) it asks for my root password--and my root password doesn't give me access.</strong></p>
+<p>Solution:</p>
+<p>First verify with your distribution the proper way in each to install a printer for your system.</p>
+<p>To enable the CUPS web interface follow these directions.</p>
+<p>Edit the cupsd.conf file.</p>
+<pre class="literal-block">
+# gedit /etc/cups/cupsd.conf
+</pre>
+<p>Find this section:</p>
+<pre class="literal-block">
+# Restrict access to the admin pages...
+&lt;Location /admin&gt;
+#Order allow,deny
+#Allow localhost
+&lt;/Location&gt;
+</pre>
+<p>Change it to:</p>
+<pre class="literal-block">
+# Restrict access to the admin pages...
+&lt;Location /admin&gt;
+Order allow,deny
+Allow localhost
+&lt;/Location&gt;
+</pre>
+<p>Save/Exit, restart CUPS:</p>
+<pre class="literal-block">
+# /etc/init.d/cups restart
+</pre>
+<p>for Ubuntu</p>
+<pre class="literal-block">
+$ /etc/init.d/cupsys restart
+</pre>
+<p>Open your web browser, go to <a class="reference" href="http://localhost:631">http://localhost:631</a>.  Complete the administrative tasks you need to complete.</p>
+</div>
+
+
+        <hr size="1"/>
+        <small>Last update: Thu Mar 16 17:21:05 2006</small>
+
+        <!-- FOOTER -->
+    </table>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <!-- <tr><td colspan="3" class="footer"></td> -->
+        <tr>
+            <td class="footer"><a href="../legal.html">Legal Notices</a></td>
+            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
+            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png"/></a></td>
+        </tr>
+    
+    </table>
+</body>
+
+</html>

@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp LaserJet 4345 mfp;CMD:PJL,MLC,POSTSCRIPT,PJL,PCLXL,PCL;"
 *DefaultResolution: 600dpi
 
 

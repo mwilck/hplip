@@ -27,8 +27,9 @@
 
 static const int PrintPort[] = { 0, 9100, 9101, 9102 };
 static const int ScanPort0[] = { 0, 9290, 9291, 9292 };
-static const int ScanPort1[] = { 0, 8290, 8291, 8292 };        /* hack for CLJ28xx */
 static const int GenericPort[] = { 0, 9220, 9221, 9222 };
+static const int ScanPort1[] = { 0, 8290, 0, 0 };        /* hack for CLJ28xx */
+static const int GenericPort1[] = { 0, 8292, 0, 0 };     /* hack for CLJ28xx (fax) */
 
 JetDirectChannel::JetDirectChannel(Device *pDev) : Channel(pDev)
 {
@@ -112,7 +113,10 @@ int JetDirectChannel::Open(char *sendBuf, int *result)
       case FAX_SEND_CHANNEL:
       case CONFIG_UPLOAD_CHANNEL:
       case CONFIG_DOWNLOAD_CHANNEL:
-         port = GenericPort[pD->GetPort()];
+         if (pDev->GetScanPort() == SCAN_PORT0)
+            port = GenericPort[pD->GetPort()];
+         else
+            port = GenericPort1[pD->GetPort()];
          pin.sin_port = htons(port);
          if ((Socket = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
          {  
@@ -124,31 +128,33 @@ int JetDirectChannel::Open(char *sendBuf, int *result)
             syslog(LOG_ERR, "unable to connect to port %d JetDirectChannel::Open: %m %s %s %d\n", port, pDev->GetURI(), __FILE__, __LINE__);  
             goto bugout;  
          } 
-         
-         r = ReadReply();
-         if (r != 220)
-         {  
-            syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
-            goto bugout;  
-         } 
 
-         len = sprintf(buf, "open %d\n", GetSocketID());
-         send(Socket, buf, len, 0);
-         r = ReadReply();
-         if (r != 200)
-         {  
-            syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
-            goto bugout;  
-         } 
-
-         len = sprintf(buf, "data\n");
-         send(Socket, "data\n", len, 0);
-         r = ReadReply();
-         if (r != 200)
-         {  
-            syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
-            goto bugout;  
+         if (pDev->GetScanPort() == SCAN_PORT0)
+         {
+            r = ReadReply();
+            if (r != 220)
+            {  
+               syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
+               goto bugout;  
+            } 
+            len = sprintf(buf, "open %d\n", GetSocketID());
+            send(Socket, buf, len, 0);
+            r = ReadReply();
+            if (r != 200)
+            {  
+               syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
+               goto bugout;  
+            } 
+            len = sprintf(buf, "data\n");
+            send(Socket, "data\n", len, 0);
+            r = ReadReply();
+            if (r != 200)
+            {  
+               syslog(LOG_ERR, "invalid response %d port %d JetDirectChannel::Open: %s %s %d\n", r, port, pDev->GetURI(), __FILE__, __LINE__);  
+               goto bugout;  
+            }
          }
+
          break;
       case EWS_CHANNEL:
          port = 80;

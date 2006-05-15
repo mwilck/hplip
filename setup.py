@@ -41,13 +41,14 @@ nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
 USAGE = [ (__doc__, "", "name", True),
           ("Usage: hp-setup [OPTIONS] [SERIAL NO.|USB ID|IP|DEVNODE]", "", "summary", True),
           ("[SERIAL NO.|USB ID|IP|DEVNODE]", "", "heading", False),
-          ("USB IDs (usb only):", """"xxx:yyy" where xxx is the USB bus ID and yyy is the USB device ID. The ':' must be present.""", 'option', False),
-          ("", """Use the 'lsusb' command to obtain this information.""", "option", False),
+          ("USB IDs (usb only):", """"xxx:yyy" where 'xxx' is the USB bus ID and 'yyy' is the USB device ID. (Note: The ':' and all leading zeros must be present.)""", 'option', False),
+          ("", "Use the 'lsusb' command to obtain this information.", "option", False),
           ("IPs (network only):", 'IPv4 address "a.b.c.d" or "hostname"', "option", False),
           ("DEVNODE (parallel only):", '"/dev/parportX", X=0,1,2,...', "option", False),
           ("SERIAL NO. (usb and parallel only):", '"serial no."', "option", True),
           utils.USAGE_OPTIONS,
           ("Automatic mode:", "-a or --auto", "option", False),
+          ("To specify the port on a multi-port JetDirect:", "-p<port> or --port=<port> (Valid values are 1\*, 2, and 3. \*default)", "option", False),
           ("No testpage in automatic mode:", "-x", "option", False),
           ("To specify a CUPS printer queue name:", "-n<printer> or --printer=<printer>", "option", False),
           ("To specify a CUPS fax queue name:", "-f<fax> or --fax=<fax>", "option", False),
@@ -56,10 +57,12 @@ USAGE = [ (__doc__, "", "name", True),
           utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
           utils.USAGE_HELP,
           utils.USAGE_EXAMPLES,
-          ("USB:", "$ hp-setup 001:002", "example", False),
+          ("One USB printer attached, automatic:", "$ hp-setup -a", "example", False),
+          ("USB, IDs specified:", "$ hp-setup 001:002", "example", False),
           ("Network:", "$ hp-setup 66.35.250.209", "example", False),
+          ("Network, Jetdirect port 2:", "$ hp-setup --port=2 66.35.250.209", "example", False),
           ("Parallel:", "$ hp-setup /dev/parport0", "example", False),
-          ("USB or parallel:", "$ hp-setup US12345678A", "example", False),
+          ("USB or parallel, using serial number:", "$ hp-setup US12345678A", "example", False),
           ("USB, automatic:", "$ hp-setup --auto 001:002", "example", False),
           ("Parallel, automatic, no testpage:", "$ hp-setup -a -x /dev/parport0", "example", False),
           ("Parallel, choose device:", "$ hp-setup -b par", "example", False),
@@ -647,7 +650,9 @@ if setup_print:
                             update_spinner()
                             
                         i += 1
-                        if i > 100: break
+                        
+                        if i > 24:  # 2min
+                            break
 
                 
                 else:
@@ -843,7 +848,7 @@ if setup_fax:
                         else:
                             phone_num = raw_input(utils.bold("\nEnter the fax phone number for this device (q=quit) ?"))
                             
-                        if current_phone_num and phone_num.strip().lower() == 'c':
+                        if current_phone_num and (not phone_num or phone_num.strip().lower() == 'c'):
                             phone_num = current_phone_num
                         
                         if phone_num.strip().lower() == 'q':
@@ -872,7 +877,7 @@ if setup_fax:
                         else:
                             station_name = raw_input(utils.bold("\nEnter the name and/or company for this device (q=quit) ?"))
                         
-                        if current_station_name and station_name.strip().lower() == 'c':
+                        if current_station_name and (not station_name or station_name.strip().lower() == 'c'):
                             station_name = current_station_name
                         
                         if station_name.strip().lower() == 'q':

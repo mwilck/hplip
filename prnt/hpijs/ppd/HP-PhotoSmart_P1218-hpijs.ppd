@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HP;
-  MDL:PHOTOSMART 1218;
-  CMD:MLC,PCL,PML,BIDI-ECP,ECP18,DW-PCL;
-  CLS:PRINTER;
-  DES:hp photosmart 1218;
-"
-*End
+*1284DeviceID: "MFG:HP;MDL:PHOTOSMART 1218;CMD:MLC,PCL,PML,BIDI-ECP,ECP18,DW-PCL;DES:hp photosmart 1218;"
 *DefaultResolution: 1200dpi
 
 

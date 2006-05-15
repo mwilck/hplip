@@ -52,15 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HEWLETT-PACKARD;
-  MDL:OFFICEJET R80;
-  CMD:MLC,PCL,PML,SCL;
-  CLS:PRINTER;
-  DES:Hewlett-Packard OfficeJet R80;
-  CMT:OFFICEJET PRO;
-"
-*End
+*1284DeviceID: "MFG:HEWLETT-PACKARD;MDL:OFFICEJET R80;CMD:MLC,PCL,PML,SCL;DES:Hewlett-Packard OfficeJet R80;"
 *DefaultResolution: 600dpi
 
 

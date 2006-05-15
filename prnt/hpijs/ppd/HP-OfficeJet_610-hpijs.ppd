@@ -52,13 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:OfficeJet Series 600;
-  CMD:MLC,PCL,PML;
-  CLASS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:OfficeJet Series 600;CMD:MLC,PCL,PML;"
 *DefaultResolution: 600dpi
 
 

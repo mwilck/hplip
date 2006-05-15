@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:HP LaserJet 1100;
-  DES:HP LaserJet 1100A Printer-Copier-Scanner;
-  CMD:MLC,MFPDTF1,PCL,PJL;
-  CLS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1100;CMD:MLC,MFPDTF1,PCL,PJL;DES:HP LaserJet 1100A Printer-Copier-Scanner;"
 *DefaultResolution: 600dpi
 
 

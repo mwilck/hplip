@@ -46,14 +46,14 @@
 #
 
 
-__version__ = '7.4'
+__version__ = '7.5'
 __title__ = "Services and Status Daemon"
 __doc__ = "Provides various services to HPLIP client applications. Maintains persistant device status."
 
 
 # Std Lib
 import sys, socket, os, os.path, signal, getopt, glob, time, select
-import smtplib, threading, gettext, re, xml.parsers.expat, fcntl
+import popen2, threading, gettext, re, xml.parsers.expat, fcntl
 import cStringIO, pwd
 
 from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, \
@@ -776,13 +776,10 @@ class hpssd_handler(dispatcher):
     def handle_setalerts(self):
         result_code = ERROR_SUCCESS
         username = self.fields.get('username', '')
-        email_alerts = self.fields.get('email-alerts', False)
-        email_address = self.fields.get('email-address', '')
-        smtp_server = self.fields.get('smtp-server', '')
 
-        alerts[username] = {'email-alerts'  : email_alerts,
-                            'email-address' : email_address,
-                            'smtp-server'   : smtp_server,
+        alerts[username] = {'email-alerts'       : utils.to_bool(self.fields.get('email-alerts', '0')),
+                            'email-from-address' : self.fields.get('email-from-address', ''),
+                            'email-to-addresses' : self.fields.get('email-to-addresses', ''),
                            }
 
         self.out_buffer = buildResultMessage('SetAlertsResult', None, result_code)
@@ -805,65 +802,19 @@ class hpssd_handler(dispatcher):
 
     def handle_test_email(self):
         result_code = ERROR_SUCCESS
+        username = self.fields.get('username', prop.username)
+
         try:
-            to_address = self.fields['email-address']
-            smtp_server = self.fields['smtp-server']
-            username = self.fields['username']
-            server_pass = self.fields['server-pass']
-            from_address = '@localhost'
+            message = QueryString('email_test_message')
+        except Error:
+            message = ''
+            
+        try:
+            subject = QueryString('email_test_subject')
+        except Error:
+            subject = ''
 
-            try:
-                if username and server_pass:
-                    from_address = username + "@" + smtp_server
-                else:
-                    stringName = socket.gethostname()
-                    from_address = stringName + from_address
-                log.debug("Return address: %s" % from_address)
-            except Error:
-                log.debug("Can't open socket")
-                result_code = ERROR_TEST_EMAIL_FAILED
-                raise Error(ERROR_TEST_EMAIL_FAILED)
-
-            msg = "From: %s\r\nTo: %s\r\n" % (from_address, to_address)
-            try:
-
-
-                subject_string = QueryString('email_test_subject')
-                log.debug("Subject (%s)" % subject_string)
-            except Error:
-                subject_string = None
-                result_code = ERROR_TEST_EMAIL_FAILED
-                raise Error(ERROR_TEST_EMAIL_FAILED)
-
-
-            try:
-                message_string = QueryString('email_test_message')
-                log.debug("Message (%s)" % message_string)
-            except Error:
-                message_string = None
-                result_code = ERROR_TEST_EMAIL_FAILED
-                raise Error(ERROR_TEST_EMAIL_FAILED)
-
-            # Use NULL address for envelope sender
-            from_address = '<>'
-
-            msg = ''.join([msg, subject_string, '\r\n\r\n', message_string])
-
-            try:
-                mt = MailThread(msg, smtp_server, from_address, to_address, username, server_pass)
-                mt.start()
-                mt.join() # wait for thread to finish
-                result_code = mt.result # get the result
-                log.debug("MailThread had an exception (%s)" %  str(result_code))
-            except Error:
-                log.debug("MailThread TRY: had an exception (%s)" %  str(result_code))
-                result_code = ERROR_TEST_EMAIL_FAILED
-                raise Error(ERROR_TEST_EMAIL_FAILED)
-
-        except Error, e:
-            log.error("Error: %d", e.opt)
-
-        log.debug("hpssd.py::handle_email_test::Current error code: %s" % str(result_code))
+        result_code = self.sendEmail(username, subject, message, True)
         self.out_buffer = buildResultMessage('TestEmailResult', None, result_code)
 
 
@@ -898,6 +849,15 @@ class hpssd_handler(dispatcher):
                                                 (jobid, username, code,
                                                  short_string, long_string))
                                                  
+            # return True if added code is the same 
+            # as the previous code (dup_event)
+            try:
+                prev_code = devices[device_uri].history.get()[-2][11]
+            except IndexError:
+                return False
+            else:
+                return code == prev_code
+                
         
     # sent by hpfax: to indicate the start of a complete fax rendering job
     def handle_hpfaxbegin(self):      
@@ -913,6 +873,7 @@ class hpssd_handler(dispatcher):
         
         # Send an early warning to the hp-sendfax UI so that
         # the response time to something happening is as short as possible
+        result_code = ERROR_GUI_NOT_AVAILABLE
         for handler in socket_map:
             handler_obj = socket_map[handler]        
             
@@ -931,11 +892,12 @@ class hpssd_handler(dispatcher):
                                  'device-uri' : device_uri,
                                  'printer' : printer_name,
                                  'title' : title,
-                                })        
+                                })
                 
                 loopback_trigger.pull_trigger()        
+                result_code = ERROR_SUCCESS
         
-        self.out_buffer = buildResultMessage('HPFaxBeginResult', None, ERROR_SUCCESS)
+        self.out_buffer = buildResultMessage('HPFaxBeginResult', None, result_code)
         
         
     # sent by hpfax: to transfer completed fax rendering data
@@ -987,43 +949,6 @@ class hpssd_handler(dispatcher):
                 loopback_trigger.pull_trigger()
                 break
 
-            
-        else:
-            # launch it
-            pid = os.fork()
-            if not pid:
-                # child
-                os.setsid()
-                os.chdir("/")
-                os.umask(0)
-                
-                if utils.which('hp-sendfax'):
-                    params = ['hp-sendfax'] 
-                    exec_name = 'hp-sendfax'
-                else:
-                    params = ['python',  os.path.join(prop.home_dir, 'sendfax.py')]
-                    exec_name = 'python'
-
-                params.extend(['--job',
-                               '--printer=%s' % printer_name,
-                               '--title=%s' % title,
-                               '--jobid=%s' % job_id,
-                               '--user=%s' % username,
-                               '--jobsize=%d' % job_size])
-                
-                log.debug(params)
-                
-                home = pwd.getpwnam(username)[5]
-                
-                os.execvpe(exec_name, 
-                           params, 
-                           {'DISPLAY': ':0.0', 
-                            'HOME' : home,
-                            'USER' : username, 
-                            'PATH' : '/usr/bin:/usr/local/bin',
-                            'LANG' : 'POSIX',
-                            'LC_ALL' : 'POSIX' }) 
-        
         self.out_buffer = buildResultMessage('HPFaxEndResult', None, ERROR_SUCCESS)
 
         
@@ -1093,8 +1018,9 @@ class hpssd_handler(dispatcher):
         retry_timeout = self.fields.get('retry-timeout', 0)
         user_alerts = alerts.get(username, {})        
 
+        dup_event = False
         if event_code <= EVENT_MAX_USER_EVENT:
-            self.createHistory(device_uri, event_code, job_id, username)
+            dup_event = self.createHistory(device_uri, event_code, job_id, username)
 
         pull = False
         if not no_fwd:
@@ -1125,21 +1051,56 @@ class hpssd_handler(dispatcher):
 
             if event_code <= EVENT_MAX_USER_EVENT and \
                 user_alerts.get('email-alerts', False) and \
-                event_type == 'error':
+                event_type == 'error' and \
+                not dup_event:
 
-                fromaddr = prop.username + '@localhost'
-                toaddrs = user_alerts.get('email-address', 'root@localhost').split()
-                smtp_server = user_alerts.get('smtp-server', 'localhost')
-                msg = "From: %s\r\nTo: %s\r\n\r\n" % (fromaddr, ', '.join(toaddrs))
-                msg = msg + 'Printer: %s\r\nCode: %d\r\nError: %s\r\n' % (device_uri, event_code, error_string_short)
+                try:
+                    subject = QueryString('email_alert_subject') + device_uri
+                except Error:
+                    subject = device_uri
+                
+                message = '\n'.join([device_uri, 
+                                     time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime()),
+                                     error_string_short, 
+                                     error_string_long,
+                                     str(event_code)])
+                                     
+                self.sendEmail(username, subject, message, False)
+                
+                
+    def sendEmail(self, username, subject, message, wait):
+        msg = cStringIO.StringIO()
+        result_code = ERROR_SUCCESS
+        
+        user_alerts = alerts.get(username, {}) 
+        from_address = user_alerts.get('email-from-address', '')
+        to_addresses = user_alerts.get('email-to-addresses', from_address)
+        
+        t = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
+        UUID = file("/proc/sys/kernel/random/uuid").readline().rstrip("\n")
+        
+        msg.write("Date: %s\n" % t)
+        msg.write("From: <%s>\n" % from_address)
+        msg.write("To: %s\n" % to_addresses)
+        msg.write("Message-Id: <%s %s>\n" % (UUID, t))
+        msg.write('Content-Type: text/plain\n')
+        msg.write("Content-Transfer-Encoding: 7bit\n")
+        msg.write('Mime-Version: 1.0\n')
+        msg.write("Subject: %s\n" % subject)
+        msg.write('\n')
+        msg.write(message)
+        #msg.write('\n')
+        email_message = msg.getvalue()
+        log.debug(repr(email_message))
 
-                mt = MailThread(msg,
-                                smtp_server,
-                                fromaddr,
-                                toaddrs,
-                                prop.username,
-                                '')
-                mt.start()
+        mt = MailThread(email_message, from_address)
+        mt.start()
+        
+        if wait:
+            mt.join() # wait for thread to finish
+            result_code = mt.result
+            
+        return result_code
 
 
     def handle_probedevicesfiltered(self):
@@ -1319,58 +1280,38 @@ class hpssd_handler(dispatcher):
 
 
 class MailThread(threading.Thread):
-    def __init__(self, message, smtp_server, from_addr, to_addr_list, username, server_pass):
+    def __init__(self, message, from_address):
         threading.Thread.__init__(self)
         self.message = message
-        self.smtp_server = smtp_server
-        self.to_addr_list = to_addr_list
-        self.from_addr = from_addr
+        self.from_address = from_address
         self.result = ERROR_SUCCESS
-        self.username = username
-        self.server_pass = server_pass
 
     def run(self):
         log.debug("Starting Mail Thread...")
-        try:
-            try:
-                log.debug("Attempting to connect to SMTP server: %s:%d" % (self.smtp_server, smtplib.SMTP_PORT))
-                server = smtplib.SMTP(self.smtp_server, smtplib.SMTP_PORT, 'localhost')
-            except:
-                self.result = ERROR_SMTP_CONNECT_ERROR
-                return
-            server.set_debuglevel(True)
-            if self.username and self.server_pass:
-                try:
-                    server.starttls();
-                    server.login(self.username, self.server_pass)
-                except (smtplib.SMTPHeloError, smtplib.SMTPException), e:
-                    log.error("SMTP Server Login Error: Unable to connect to server: %s" % e)
-                    self.result = ERROR_SMTP_HELO_ERROR
-
-                except (smtplib.SMTPAuthenticationError), e:
-                    log.error("SMTP Server Login Error: Unable to authenicate with server: %s" % e)
-                    self.result = ERROR_SMTP_CONNECT_ERROR
-        except smtplib.SMTPConnectError, e:
-            log.error("SMTP Error: Unable to connect to server: %s" % e)
-            self.result = ERROR_SMTP_CONNECT_ERROR
-
-        try:
-            server.sendmail(self.from_addr, self.to_addr_list, self.message)
-            log.debug("hpssd.py::MailThread::Current error code: %s" % str(self.result))
-        except smtplib.SMTPRecipientsRefused, e:
-            log.error("SMTP Errror: All recepients refused: %s" % e)
-            self.result = ERROR_SMTP_RECIPIENTS_REFUSED
-        except smtplib.SMTPHeloError, e:
-            log.error("SMTP Errror: Invalid server response to HELO command: %s" % e)
-            self.result = ERROR_SMTP_HELO_ERROR
-        except smtplib.SMTPSenderRefused, e:
-            log.error("SMTP Errror: Recepient refused: %s" % e)
-            self.result = ERROR_SMTP_SENDER_REFUSED
-        except smtplib.SMTPDataError, e:
-            log.error("SMTP Errror: Unknown error: %s" % e)
-            self.result = ERROR_SMTP_DATA_ERROR
-
-        server.quit()
+        sendmail = utils.which('sendmail')
+        
+        if sendmail:
+            sendmail = os.path.join(sendmail, 'sendmail')
+            sendmail += ' -t -r %s' % self.from_address
+            
+            log.debug(sendmail)
+            std_out, std_in, std_err = popen2.popen3(sendmail) 
+            log.debug(repr(self.message))
+            std_in.write(self.message)
+            std_in.close()
+            
+            r, w, e = select.select([std_err], [], [], 2.0)
+            
+            if r:
+                err = std_err.read()
+                if err:
+                    log.error(repr(err))
+                    self.result = ERROR_TEST_EMAIL_FAILED
+            
+        else:
+            log.error("Mail send failed. sendmail not found.")
+            self.result = ERROR_TEST_EMAIL_FAILED
+            
         log.debug("Exiting mail thread")
 
 

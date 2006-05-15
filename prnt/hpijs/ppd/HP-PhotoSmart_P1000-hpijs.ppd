@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HEWLETT-PACKARD;
-  MDL:PHOTOSMART P1000;
-  CMD:MLC,PCL,PML;
-  CLASS:PRINTER;
-  DESCRIPTION:Hewlett-Packard PhotoSmart P1000;
-"
-*End
+*1284DeviceID: "MFG:HEWLETT-PACKARD;MDL:PHOTOSMART P1000;CMD:MLC,PCL,PML;DESCRIPTION:Hewlett-Packard PhotoSmart P1000;"
 *DefaultResolution: 1200dpi
 
 

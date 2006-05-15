@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>910</width>
-            <height>546</height>
+            <width>838</width>
+            <height>493</height>
         </rect>
     </property>
     <property name="caption">
@@ -628,12 +628,14 @@
     <property name="name">
         <cstring>MenuBar</cstring>
     </property>
+    <property name="acceptDrops">
+        <bool>false</bool>
+    </property>
     <item text="Device" name="Device">
         <action name="setupDevice"/>
         <separator/>
         <action name="deviceRescanAction"/>
         <action name="deviceRefreshAll"/>
-        <action name="autoRefresh"/>
         <separator/>
         <action name="deviceExitAction"/>
     </item>
@@ -641,12 +643,11 @@
         <action name="settingsConfigure"/>
     </item>
     <item text="&amp;Help" name="helpMenu">
-        <action name="viewSupportAction"/>
         <action name="helpContentsAction"/>
-        <action name="helpIndexAction"/>
         <separator/>
         <action name="helpAboutAction"/>
     </item>
+    <separator/>
 </menubar>
 <toolbars>
 </toolbars>
@@ -655,17 +656,14 @@
         <property name="name">
             <cstring>helpContentsAction</cstring>
         </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
         <property name="text">
             <string>Contents</string>
         </property>
         <property name="menuText">
             <string>&amp;Contents...</string>
         </property>
-        <property name="accel">
-            <string></string>
+        <property name="toolTip">
+            <string>Help Contents (F1)</string>
         </property>
     </action>
     <action>
@@ -972,9 +970,6 @@
         <slot>viewSupportAction_activated()</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">devmgr4_base.ui.h</include>
-</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>

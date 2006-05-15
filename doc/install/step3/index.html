@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+ <head>
+  <title>HPLIP Installation - Step 3 - Download and install software</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <!-- <link rel="stylesheet" href="../../styles/style.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../../styles/rest.css" type="text/css" /> 
+  <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
+       <meta name="author" content="" />
+       <meta name="email" content="" />
+ </head>
+
+ <body>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td align="left" valign="top">
+                <a href="../../index.html"><img src="../../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
+                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
+            </td>
+        </tr>
+    </table>
+
+    <table  border="0" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <tr>
+        <!-- LEFT SIDE NAVIGATION -->
+            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
+                <div class="menuheader">About</div> 
+                <menu compact="compact">
+                    <li><a href="../../features.html" title="">Features</a></li> 
+                    <li><a href="../../screenshots.html" title="">Screenshots</a></li> 
+                    <li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
+                </menu>
+
+                <div class="menuheader">Setup and Installation</div> 
+                <menu compact="compact">
+                    <li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+                    <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+                </menu>
+
+                <div class="menuheader">Usage and Support</div> 
+                <menu compact="compact">
+                    <li><a href="../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+                    <li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+                    <li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+                    <li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
+                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
+                </menu>
+
+                <div class="menuheader">Resources</div>
+                <menu compact="compact">
+                    <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+                    <li><a href="../../license.html" title="Software License">Software License</a></li> 
+                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
+                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
+                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
+                </menu>
+            </td>
+
+        <!-- CONTENT -->
+
+        <a href="../../index.html">Home</a> > <a href="../index.html">Installation</a> > Step 3
+
+        <td align="left" valign="top" class="content">
+        <div class="document" id="installation-step-3-download-and-install-hplip-software">
+<h1 class="title">Installation - Step 3 - Download and install HPLIP software</h1>
+<p>If you already have the latest HP printing software installed, then proceed to <a class="reference" href="/install/step4/index.html">Step 4: Add the Printer</a>.</p>
+<p>If the HP printing software is not included with your Linux distribution, or you want to ensure that you have the latest version of the software, follow these steps to download and install the HP printing software.</p>
+<p><em>Warning: If you are upgrading HPLIP and HPLIP is already preinstalled with your distribution, or you if you installed HPLIP using an RPM, DEB, or other package, please uninstall the previous version using the method specific for your distribution.  If you do not do this, you may have package conflict issues or functionality problems.</em></p>
+<ol class="arabic simple">
+<li>Download the HPLIP tar file that contains the current HP printing software from the <a class="reference" href="http://sourceforge.net/project/showfiles.php?group_id=149981">HPLIP sourceforge download page</a>.</li>
+<li>Make note the folder in which you save the HPLIP tar.gz file.</li>
+<li>Open a console/terminal window.</li>
+<li>Enter this command to navigate to the folder that contains the HPLIP tar file that you downloaded in step 1:</li>
+</ol>
+<pre class="literal-block">
+$ cd [file path]
+</pre>
+<p>(for example: $ cd /home/user/documents)</p>
+<ol class="arabic simple" start="5">
+<li>Enter this command to extract the driver files from the HPLIP tar file:</li>
+</ol>
+<pre class="literal-block">
+$ tar xvfz [HPLIP filename.tar.gz]
+</pre>
+<p>(for example: $ tar xvfz hplip-0.9.tar.gz)</p>
+<p>The files are extracted to a directory named for the HPLIP version (for example, &quot;hplip-0.9&quot;).</p>
+<ol class="arabic simple" start="6">
+<li>Enter this command to navigate to the directory containing the HPLIP files:</li>
+</ol>
+<pre class="literal-block">
+$ cd [folder name]
+</pre>
+<p>(Example: # cd hplip-0.8)</p>
+<ol class="arabic simple" start="7">
+<li>Enter this command (for 32-bit only - for 64-bit, skip this step and do step 8):</li>
+</ol>
+<pre class="literal-block">
+$ ./configure --prefix=/usr
+</pre>
+<ol class="arabic simple" start="8">
+<li><strong>IMPORTANT!</strong> For <strong>64-bit</strong> Systems only enter this command:</li>
+</ol>
+<pre class="literal-block">
+# ./configure --prefix=/usr --libdir=/usr/lib64
+</pre>
+<ol class="arabic simple" start="9">
+<li>Enter this command:</li>
+</ol>
+<pre class="literal-block">
+$ make
+</pre>
+<ol class="arabic simple" start="10">
+<li>Follow these steps to log in as the super user:</li>
+</ol>
+<p><em>If you are using Ubuntu skip this step.</em></p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+$ su
+</pre>
+<ol class="arabic simple" start="11">
+<li>Press Enter.</li>
+<li>Enter the root password.</li>
+</ol>
+<p><em>Warning: The root password gives you administrative privileges on the system.</em></p>
+<ol class="arabic simple" start="13">
+<li>Press Enter.</li>
+<li>Enter this command (except on Ubuntu - skip to step 15):</li>
+</ol>
+<pre class="literal-block">
+# make install
+</pre>
+<ol class="arabic simple" start="15">
+<li>For Ubuntu only, Enter this command:</li>
+</ol>
+<pre class="literal-block">
+# sudo make install
+</pre>
+<ol class="arabic simple" start="16">
+<li>Enter this command (except on Ubuntu - skip to step 17):</li>
+</ol>
+<pre class="literal-block">
+# /etc/init.d/hplip restart
+</pre>
+<ol class="arabic simple" start="17">
+<li>For Ubuntu only, enter this command:</li>
+</ol>
+<pre class="literal-block">
+# sudo /etc/init.d/hplip restart
+</pre>
+<ol class="arabic simple" start="18">
+<li>Enter this command (except on Ubuntu - skip to step 19):</li>
+</ol>
+<pre class="literal-block">
+# /etc/init.d/cups restart
+</pre>
+<ol class="arabic simple" start="19">
+<li>For Ubuntu, enter this command:</li>
+</ol>
+<pre class="literal-block">
+# sudo /etc/init.d/cupsys restart
+</pre>
+<p><a class="reference" href="/install/step4/index.html">Proceed to step 4.</a></p>
+</div>
+
+
+        <hr size="1"/>
+        <small>Last update: Fri Mar  3 16:45:41 2006</small>
+
+        <!-- FOOTER -->
+    </table>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <!-- <tr><td colspan="3" class="footer"></td> -->
+        <tr>
+            <td class="footer"><a href="../../legal.html">Legal Notices</a></td>
+            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
+            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png"/></a></td>
+        </tr>
+    
+    </table>
+</body>
+
+</html>

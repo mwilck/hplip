@@ -132,7 +132,8 @@ for o, a in opts:
 utils.log_title(__title__, __version__)
             
 
-try:
+#try:
+if 1:
     a = QApplication(sys.argv)
     QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
 
@@ -142,7 +143,12 @@ try:
         splash.message(__tr("Loading..."), Qt.AlignBottom)
         splash.show()
 
-    w = unloadform.UnloadForm(bus, device_uri, printer_name)
+    try:
+        w = unloadform.UnloadForm(bus, device_uri, printer_name)
+    except Error:
+        log.error("Unable to connect to HPLIP I/O. Please (re)start HPLIP and try again.")
+        sys.exit(1)
+        
     a.setMainWidget(w)
     w.show()
 
@@ -150,7 +156,7 @@ try:
         splash.finish(w)
 
     a.exec_loop()
-except Exception, e:
-    log.exception()
+#except Exception, e:
+    #log.exception()
 
 

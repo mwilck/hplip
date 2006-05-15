@@ -52,13 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:psc 1200 series;
-  CMD:LDL,MLC,PML,DYN;
-  CLS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:psc 1200 series;CMD:LDL,MLC,PML,DYN;"
 *DefaultResolution: 600dpi
 
 

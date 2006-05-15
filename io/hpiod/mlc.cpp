@@ -227,7 +227,7 @@ int MlcChannel::MlcReverseReply(int fd, unsigned char *buf, int bufsize)
       {
          if ((len = pDev->Read(fd, pBuf, size, 2000000)) < 0)   /* wait 2 second */
          {
-            syslog(LOG_ERR, "unable to read MlcReverseReply header: %m bytesRead=%d %s %d\n", sizeof(MLCHeader)-size, __FILE__, __LINE__);
+            syslog(LOG_ERR, "unable to read MlcReverseReply header: %m bytesRead=%zd %s %d\n", sizeof(MLCHeader)-size, __FILE__, __LINE__);
             stat = 2;  /* short timeout */
             goto bugout;
          }
@@ -272,7 +272,7 @@ int MlcChannel::MlcReverseReply(int fd, unsigned char *buf, int bufsize)
       {
          if ((len = pDev->Read(fd, pBuf, size)) < 0)
          {
-            syslog(LOG_ERR, "unable to read MlcReverseReply data: %m exp=%d act=%d %s %d\n", pklen-sizeof(MLCHeader), pklen-sizeof(MLCHeader)-size, __FILE__, __LINE__);
+            syslog(LOG_ERR, "unable to read MlcReverseReply data: %m exp=%zd act=%zd %s %d\n", pklen-sizeof(MLCHeader), pklen-sizeof(MLCHeader)-size, __FILE__, __LINE__);
             stat = 1;
             goto bugout;
          }

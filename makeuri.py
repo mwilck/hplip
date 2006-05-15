@@ -17,10 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #
-# Author: Don Welch, Smith Kennedy
+# Authors: Don Welch, Smith Kennedy
 #
 
-__version__ = '4.1'
+__version__ = '4.2'
 __title__ = 'Device URI Creation Utility'
 __doc__ = "Creates device URIs for local and network connected printers for use with CUPS."
 
@@ -40,34 +40,31 @@ from base import device, utils
 USAGE = [ (__doc__, "", "name", True),
           ("Usage: hp-makeuri [OPTIONS] [SERIAL NO.|USB ID|IP|DEVNODE]", "", "summary", True),
           ("[SERIAL NO.|USB ID|IP|DEVNODE]", "", "heading", False),
-          ("USB IDs (usb only):", """"xxx:yyy" where xxx is the USB bus ID and yyy is the USB device ID. The ':' must be present.""", 'option', False),
-          ("", """Use the 'lsusb' command to obtain this information.""", "option", False),
+          ("USB IDs (usb only):", """"xxx:yyy" where xxx is the USB bus ID and yyy is the USB device ID. The ':' and all leading zeroes must be present.""", 'option', False),
+          ("", """(Use the 'lsusb' command to obtain this information. See Note 1.)""", "option", False),
           ("IPs (network only):", 'IPv4 address "a.b.c.d" or "hostname"', "option", False),
           ("DEVNODE (parallel only):", '"/dev/parportX", X=0,1,2,...', "option", False),
           ("SERIAL NO. (usb and parallel only):", '"serial no."', "option", True),
           utils.USAGE_OPTIONS,
           ("To specify the port on a multi-port JetDirect:", "-p<port> or --port=<port> (Valid values are 1\*, 2, and 3. \*default)", "option", False),
-          ("Show the CUPS URI only (quiet mode)(Note 1):", "-c or --cups", "option", False),
-          ("Show the SANE URI only (quiet mode)(Note 1):", "-s or --sane", "option", False),
-          ("Show the HP Fax URI only (quiet mode)(Note 1):", "-f or --fax", "option", False),
+          ("Show the CUPS URI only (quiet mode):", "-c or --cups", "option", False),
+          ("Show the SANE URI only (quiet mode):", "-s or --sane", "option", False),
+          ("Show the HP Fax URI only (quiet mode):", "-f or --fax", "option", False),
           utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
           utils.USAGE_HELP,
           utils.USAGE_EXAMPLES,
           ("USB:", "$ hp-makeuri 001:002", "example", False),
           ("Network:", "$ hp-makeuri 66.35.250.209", "example", False),
           ("Parallel:", "$ hp-makeuri /dev/parport0", "example", False),
-          ("USB or parallel:", "$ hp-makeuri US12345678A", "example", False),
-          ("USB, automatic:", "$ hp-makeuri --auto 001:002", "example", False),
-          ("Parallel, automatic, no testpage:", "$ hp-makeuri /dev/parport0", "example", False),
-          ("Parallel, choose device:", "$ hp-makeuri -b par", "example", False),
+          ("USB or parallel (using serial number):", "$ hp-makeuri US123456789", "example", False),
           utils.USAGE_SPACE,
           utils.USAGE_NOTES,
-          ("1. If no serial number, USB ID, IP, or device node is specified, the USB and parallel busses will be probed for devices.", "", 'note', False),
-          ("2. Using 'lsusb' to obtain USB IDs: (example)", "", 'note', False),
+          ("1. Example using 'lsusb' to obtain USB bus ID and USB device ID (example only, the values you obtain will differ) :", "", 'note', False),
           ("   $ lsusb", "", 'note', False),
           ("   Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard", "", 'note', False),
           ("   $ hp-makeuri 003:011", "", 'note', False),
-          ("   (Note: You may have to run 'lsusb' from /sbin or another location. Use '$ locate lsusb' to determine this.)", "", 'note', False),
+          ("   (Note: You may have to run 'lsusb' from /sbin or another location. Use '$ locate lsusb' to determine this.)", "", 'note', True),
+          utils.USAGE_SPACE,
           utils.USAGE_SEEALSO,
           ("hp-setup", "", "seealso", False),
         ]
@@ -103,7 +100,6 @@ log_level = 'info'
 cups_quiet_mode = False
 sane_quiet_mode = False
 fax_quiet_mode = False
-bus = 'usb,par'
 jd_port = 1
 
 for o, a in opts:

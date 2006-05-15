@@ -246,6 +246,9 @@ string_table = {
 
 '1806' :            (lambda : _('Service request.'),
                       '%try_again%'),
+                      
+'1807' :            (lambda : _('Fuser error.'),
+                      '%try_again%'),
 
 '1900' :            (lambda : _('Unsupported printer model.'),
                       ''),
@@ -284,20 +287,23 @@ string_table = {
                       '%try_again%'),
 
 '5021' :            (lambda : _('Device is busy.'),
-                      '%try_again%'),
+                      ''),
 
 '5030' :            ('%unknown_error%',
                       '%try_again%'),
 
 '5031' :            ('%5021%',
-                      '%try_again%'),
+                      ''),
 
 '5033' :            (lambda : _('Unsupported I/O bus.'),
                       '%try_again%'),
 
 '5034' :            (lambda : _('Device does not support requested operation.'),
                       '%try_again%'),
-
+                      
+'5052' :            (lambda : _('To send a fax you must run hp-sendfax first.'),
+                      'Restart the CUPS queue and run hp-sendfax.'),
+                      
 '6000' :            (lambda : _('Photocard unload started.'),
                       ''),
 
@@ -547,11 +553,14 @@ string_table = {
 'agent_level_out'          : (lambda : _('Very low'),
                                ''),
 
-'email_test_subject'      : (lambda : _('Subject: HPLIP: Email Alert Test'),
+'email_test_subject'      : (lambda : _('HPLIP: Email alert test message'),
                                ''),
 
 'email_test_message'      : (lambda : _('This email is to test the functionality of email alerts'),
                                ''),
+
+'email_alert_subject'      : (lambda : _('HPLIP: Error/alert on device: '),
+                             ''),
 
 }
 

@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  CMD:PJL,MLC,PCL,PCLXL,POSTSCRIPT;
-  MDL:HP LaserJet 1220;
-  CLS:PRINTER;
-  DES:Hewlett-Packard LaserJet 1220;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1220;CMD:PJL,MLC,PCL,PCLXL,POSTSCRIPT;DES:Hewlett-Packard LaserJet 1220;"
 *DefaultResolution: 600dpi
 
 

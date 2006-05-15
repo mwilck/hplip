@@ -34,7 +34,7 @@ import httplib
 # Local
 from g import *
 from codes import *
-import msg, utils, status, pml, slp
+import msg, utils, status, pml, slp, service
 from prnt import pcl, ldl, cups
 
 DEFAULT_PROBE_BUS = 'usb,par,cups'
@@ -557,6 +557,8 @@ class Device(object):
 
         log.debug("hpssd socket: %d" % self.hpssd_sock.fileno())
 
+        service.setAlertsEx(self.hpssd_sock)
+        
         self.mq = {} # Model query
         self.dq = {} # Device query
         self.cups_printers = []
@@ -600,10 +602,10 @@ class Device(object):
             self.first_cups_printer = ''
 
         if self.mq.get('fax-type', FAX_TYPE_NONE) != FAX_TYPE_NONE:
-            self.dq.update({ 'fax-uri' : self.device_uri.replace('hp:/', 'hpfax:/')})
+            self.dq.update({ 'fax-uri' : self.device_uri.replace('hp:/', 'hpfax:/').replace('hpaio:/', 'hpfax:/')})
 
         if self.mq.get('scan-type', SCAN_TYPE_NONE) != SCAN_TYPE_NONE:
-            self.dq.update({ 'scan-uri' : self.device_uri.replace('hp:/', 'hpaio:/')})
+            self.dq.update({ 'scan-uri' : self.device_uri.replace('hp:/', 'hpaio:/').replace('hpfax:/', 'hpaio:/')})
 
         self.dq.update({
             'back-end'         : self.back_end,
@@ -624,7 +626,7 @@ class Device(object):
             'device-state'     : self.device_state,
             'error-state'      : self.error_state,
             'device-uri'       : self.device_uri,
-            'cups-uri'         : self.device_uri,
+            'cups-uri'         : self.device_uri.replace('hpfax:/', 'hp:/').replace('hpaio:/', 'hp:/'),
             })
 
         self.device_vars = {
@@ -706,7 +708,7 @@ class Device(object):
                                       )
 
             if result_code != ERROR_SUCCESS:
-                self.sendEvent(EVENT_ERROR_DEVICE_NOT_FOUND)
+                self.sendEvent(EVENT_ERROR_DEVICE_NOT_FOUND, typ='error')
                 log.error("Unable to communicate with device: %s" % self.device_uri)
                 raise Error(ERROR_DEVICE_NOT_FOUND)
             else:
@@ -1006,11 +1008,17 @@ class Device(object):
                     status_code = STATUS_FAX_RX_ACTIVE
 
 
-            self.sendEvent(status_code)
+            typ = 'event'
+            self.error_state = STATUS_TO_ERROR_STATE_MAP.get(status_code, ERROR_STATE_CLEAR)
+            if self.error_state == ERROR_STATE_ERROR:
+                typ = 'error'
+            
+            #print status_code, self.error_state, typ
+            self.sendEvent(status_code, typ=typ)
 
             try:
                 self.dq.update({'status-desc' : self.queryString(status_code),
-                                'error-state' : STATUS_TO_ERROR_STATE_MAP.get(status_code, ERROR_STATE_CLEAR),
+                                'error-state' : self.error_state,
                                 })
 
             except (KeyError, Error):
@@ -1038,8 +1046,7 @@ class Device(object):
                                           'panel-line1': line1,
                                           'panel-line2': line2,})
 
-
-                    if r_type > 0: # and self.is_local:
+                    if r_type > 0:
                         if self.r_values is None:
                             fields, data, result_code = \
                                 self.xmitHpssdMessage('GetValue', {'device-uri': self.device_uri, 'key': 'r_value'})
@@ -1084,7 +1091,9 @@ class Device(object):
                                         self.closePrint()
 
 
-                                elif status_type == STATUS_TYPE_S_SNMP:
+                                elif (status_type ==  STATUS_TYPE_S and not self.is_local) or \
+                                      status_type == STATUS_TYPE_S_SNMP:
+                                    
                                     try:
                                         result_code, r_value = self.getPML(pml.OID_R_SETTING)
 
@@ -1100,6 +1109,7 @@ class Device(object):
                                                 self.xmitHpssdMessage('SetValue', {'device-uri': self.device_uri, 'key': 'r_value', 'value': r_value})
                                         else:
                                             r_value = 0
+                                            
                                     finally:
                                         self.closePML()
 
@@ -1512,73 +1522,11 @@ class Device(object):
         self.printData(data, direct=True)
 
 
-    def printGzipFile(self, file_name, direct=False, raw=True, remove=False):
-        return self.printFile(file_name, direct, raw, remove)
+    def printGzipFile(self, file_name, printer_name=None, direct=False, raw=True, remove=False):
+        return self.printFile(file_name, printer_name, direct, raw, remove)
 
-    def printFile(self, file_name, direct=False, raw=True, remove=False):
-        is_gzip = os.path.splitext(file_name)[-1].lower() == '.gz'
-        log.debug("Printing file '%s' (gzip=%s, direct=%s, raw=%s, remove=%s)" %
-                   (file_name, is_gzip, direct, raw, remove))
-
-        if direct: # implies raw==True
-            if is_gzip:
-                self.writePrint(gzip.open(file_name, 'r').read())
-            else:
-                self.writePrint(file(file_name, 'r').read())
-
-        elif len(self.cups_printers) > 0:
-            if is_gzip:
-                c = 'gunzip -c %s | lpr -P%s' % (file_name, self.cups_printers[0])
-            else:
-                c = 'lpr -P%s %s' % (self.cups_printers[0], file_name)
-
-            if raw:
-                c = ''.join([c, ' -l'])
-
-            if remove:
-                c = ''.join([c, ' -r'])
-
-            log.debug(c)
-            os.system(c)
-
-        else:
-            raise Error(ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE)
-
-    def printTestPage(self):
-        return self.printParsedGzipPostscript(os.path.join( prop.home_dir, 'data',
-                                              'ps', 'testpage.ps.gz' ))
-
-
-    def printData(self, data, direct=True, raw=True):
-        if direct:
-            self.writePrint(data)
-        else:
-            temp_file_fd, temp_file_name = utils.make_temp_file()
-            os.write(temp_file_fd, data)
-            os.close(temp_file_fd)
-
-            self.printFile(temp_file_name, direct, raw, remove=True)
-
-
-    def cancelJob(self, jobid):
-        cups.cancelJob(jobid)
-        self.sendEvent(STATUS_PRINTER_CANCELING, jobid)
-
-    def sendEvent(self, event, jobid=0, typ='event'): 
-        msg.sendEvent(self.hpssd_sock, 'Event', None,
-                      {
-                          'job-id'        : jobid,
-                          'event-type'    : typ,
-                          'event-code'    : event,
-                          'username'      : prop.username,
-                          'device-uri'    : self.device_uri,
-                          'retry-timeout' : 0,
-                      }
-                     )
-
-
-    def printParsedGzipPostscript(self, print_file):
-        # direct=False, raw=False
+    def printParsedGzipPostscript(self, print_file, printer_name=None):
+        # always: direct=False, raw=False, remove=True
         try:
             os.stat(print_file)
         except OSError:
@@ -1622,7 +1570,78 @@ class Device(object):
         f.close()
         os.close(temp_file_fd)
 
-        self.printFile(temp_file_name, direct=False, raw=False, remove=True)
+        self.printFile(temp_file_name, printer_name, direct=False, raw=False, remove=True)
+
+    def printFile(self, file_name, printer_name=None, direct=False, raw=True, remove=False):
+        is_gzip = os.path.splitext(file_name)[-1].lower() == '.gz'
+        
+        if printer_name is None:
+            try:
+                printer_name = self.cups_printers[0]
+            except IndexError:
+                raise Error(ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE)
+        
+        log.debug("Printing file '%s' to queue '%s' (gzip=%s, direct=%s, raw=%s, remove=%s)" %
+                   (file_name, printer_name, is_gzip, direct, raw, remove))
+        
+        if direct: # implies raw==True
+            if is_gzip:
+                self.writePrint(gzip.open(file_name, 'r').read())
+            else:
+                self.writePrint(file(file_name, 'r').read())
+
+        else:
+            raw_str = ''
+            rem_str = ''
+            
+            if raw:
+                raw_str = '-l'
+            
+            if remove:
+                rem_str = '-r'
+            
+            if is_gzip:
+                c = 'gunzip -c %s | lpr %s %s -P%s' % (file_name, raw_str, rem_str, printer_name)
+            else:
+                c = 'lpr -P%s %s %s %s' % (printer_name, raw_str, rem_str, file_name)
+
+            log.debug(c)
+            os.system(c)
+
+
+    def printTestPage(self, printer_name=None):
+        return self.printParsedGzipPostscript(os.path.join( prop.home_dir, 'data',
+                                              'ps', 'testpage.ps.gz' ), printer_name)
+
+
+    def printData(self, data, printer_name=None, direct=True, raw=True):
+        if direct:
+            self.writePrint(data)
+        else:
+            temp_file_fd, temp_file_name = utils.make_temp_file()
+            os.write(temp_file_fd, data)
+            os.close(temp_file_fd)
+
+            self.printFile(temp_file_name, printer_name, direct, raw, remove=True)
+
+
+    def cancelJob(self, jobid):
+        cups.cancelJob(jobid)
+        self.sendEvent(STATUS_PRINTER_CANCELING, jobid)
+
+    def sendEvent(self, event, jobid=0, typ='event'): 
+        msg.sendEvent(self.hpssd_sock, 'Event', None,
+                      {
+                          'job-id'        : jobid,
+                          'event-type'    : typ,
+                          'event-code'    : event,
+                          'username'      : prop.username,
+                          'device-uri'    : self.device_uri,
+                          'retry-timeout' : 0,
+                      }
+                     )
+
+
 
     def queryHistory(self):
         fields, data, result_code = \

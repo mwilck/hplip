@@ -2,7 +2,7 @@ docdir	= $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL=HPLIP-0_9_9_10
+APDKLABEL=HPLIP-0_9_11_11
 APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug
@@ -28,7 +28,7 @@ cupshook =
 uncupshook =
 endif
 
-bin_PROGRAMS = hpijs hppgsz
+bin_PROGRAMS = hpijs
 apdk_SOURCES = models.cpp breaks_open.cpp \
 	dj9xxvip.cpp dj9xx.cpp capture.cpp colormatch.cpp colormatcher_open.cpp \
 	compression.cpp context.cpp create_so.cpp creator.cpp \
@@ -54,18 +54,59 @@ apdk_SOURCES = models.cpp breaks_open.cpp \
 	ljcolor.cpp ljcolor.h pscript.h \
 	printerproxy.cpp printerfactory.cpp printerproxy.h printerfactory.h \
 	ljjetready.cpp ljjetready.h jdatadbf.c jccolor.c ljfastraster.cpp ljfastraster.h \
-	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h
+	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h psb9100.h
 hpijs_SOURCES = $(apdk_SOURCES) hpijs.cpp ijs_server.c ijs.c hpijsfax.cpp services.cpp \
     hpijs.h ijs.h ijs_server.h services.h ijs_client.h hpiom.c hpiom.h \
 	hplip_api.c hplip_api.h
+
+noinst_PROGRAMS = hppgsz
 hppgsz_SOURCES = $(apdk_SOURCES) PrinterProperties.cpp PrinterProperties.h
 
 if HPLIP_BUILD
 hpijs_LDADD = ../../libhpip.la
 endif
 
-doc_DATA = hpijs_readme.html gs_hpijs.png COPYING README_LIBJPG
+doc_DATA = COPYING README_LIBJPG
 bin_SCRIPTS = $(rip)
+
+wwwsrc = ../../doc
+
+# HPLIP and HPIJS documention are the same, only install one copy if HPLIP build.
+if !HPLIP_BUILD
+www0dir = $(docdir)
+dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
+    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+www1dir = $(docdir)/howtos
+dist_www1_DATA = $(wwwsrc)/howtos/*
+www2dir = $(docdir)/install
+dist_www2_DATA = $(wwwsrc)/install/index.html
+www21dir = $(docdir)/install/step1
+dist_www21_DATA = $(wwwsrc)/install/step1/*
+www22dir = $(docdir)/install/step2
+dist_www22_DATA = $(wwwsrc)/install/step2/*
+www23dir = $(docdir)/install/step3
+dist_www23_DATA = $(wwwsrc)/install/step3/*
+www24dir = $(docdir)/install/step4
+dist_www24_DATA = $(wwwsrc)/install/step4/index.html
+www241dir = $(docdir)/install/step4/cups
+dist_www241_DATA = $(wwwsrc)/install/step4/cups/*
+www242dir = $(docdir)/install/step4/setup
+dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
+www243dir = $(docdir)/install/step4/suse
+dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+www3dir = $(docdir)/styles
+dist_www3_DATA = $(wwwsrc)/styles/*
+www4dir = $(docdir)/images
+dist_www4_DATA = $(wwwsrc)/images/*
+www5dir = $(docdir)/supported_devices
+dist_www5_DATA = $(wwwsrc)/supported_devices/*
+www6dir = $(docdir)/tech_docs
+dist_www6_DATA = $(wwwsrc)/tech_docs/*
+www61dir = $(docdir)/tech_docs/man_pages
+dist_www61_DATA = $(wwwsrc)/tech_docs/man_pages/*
+www7dir = $(docdir)/troubleshooting
+dist_www7_DATA = $(wwwsrc)/troubleshooting/*
+endif
 
 EXTRA_DIST = $(doc_DATA) ppd foomatic-rip hpijs-ppd gdevijs-krgb-1.2-gs7.07.patch gdevijs-krgb-1.2-gs8.50.patch
 
@@ -117,6 +158,10 @@ get-apdk-tip:
 	rm -rf slimhost
 
 get-ppd: 
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db
@@ -148,6 +193,10 @@ get-ppd:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-tip:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
@@ -179,6 +228,10 @@ get-ppd-tip:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-shadow:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
@@ -217,6 +270,10 @@ get-ppd-shadow:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-user:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
@@ -248,6 +305,10 @@ get-ppd-user:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-ppd-user-shadow:
+	rm -rf foomatic-db-engine
+	rm -rf foomatic-filters
+	rm -rf foomatic-db
+	rm -rf foomatic-db-hpijs
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
 	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
@@ -316,3 +377,13 @@ test-ppd:
 	cp foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
+
+test-clean:
+	cd foomatic-db-hpijs; \
+	make clean
+	cd foomatic-filters; \
+	make clean
+	cd foomatic-db-engine; \
+	make clean
+
+

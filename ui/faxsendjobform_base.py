@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faxsendjobform_base.ui'
 #
-# Created: Mon Feb 27 16:38:21 2006
+# Created: Tue Apr 11 10:17:21 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.14.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,14 +72,18 @@ class FaxSendJobForm_base(QDialog):
         self.browsePushButton = QPushButton(self.buttonGroup3,"browsePushButton")
         layout9.addWidget(self.browsePushButton)
 
-        buttonGroup3Layout.addMultiCellLayout(layout9,0,0,0,1)
+        buttonGroup3Layout.addMultiCellLayout(layout9,0,0,0,2)
 
         self.addFilePushButton = QPushButton(self.buttonGroup3,"addFilePushButton")
         self.addFilePushButton.setEnabled(0)
 
-        buttonGroup3Layout.addWidget(self.addFilePushButton,2,1)
-        spacer8 = QSpacerItem(361,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        buttonGroup3Layout.addItem(spacer8,2,0)
+        buttonGroup3Layout.addWidget(self.addFilePushButton,1,2)
+        spacer8 = QSpacerItem(170,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        buttonGroup3Layout.addItem(spacer8,1,1)
+
+        self.allowableTypesPushButton = QPushButton(self.buttonGroup3,"allowableTypesPushButton")
+
+        buttonGroup3Layout.addWidget(self.allowableTypesPushButton,1,0)
 
         tabLayout.addWidget(self.buttonGroup3,7,0)
 
@@ -326,6 +330,7 @@ class FaxSendJobForm_base(QDialog):
         self.connect(self.printerNameComboBox,SIGNAL("highlighted(const QString&)"),self.printerNameComboBox_highlighted)
         self.connect(self.editCoverpagePushButton,SIGNAL("clicked()"),self.editCoverpagePushButton_clicked)
         self.connect(self.settingsPushButton,SIGNAL("clicked()"),self.settingsPushButton_clicked)
+        self.connect(self.allowableTypesPushButton,SIGNAL("clicked()"),self.allowableTypesPushButton_clicked)
 
         self.setTabOrder(self.fileListView,self.fileEdit)
         self.setTabOrder(self.fileEdit,self.browsePushButton)
@@ -356,6 +361,7 @@ class FaxSendJobForm_base(QDialog):
         self.textLabel1_2.setText(self.__tr("File:"))
         self.browsePushButton.setText(self.__tr("Browse..."))
         self.addFilePushButton.setText(self.__tr("Add to List"))
+        self.allowableTypesPushButton.setText(self.__tr("Show Types..."))
         self.groupBox1.setTitle(self.__tr("Coverpage"))
         self.addCoverpagePushButton.setText(self.__tr("Add to List..."))
         self.editCoverpagePushButton.setText(self.__tr("Edit..."))
@@ -449,6 +455,9 @@ class FaxSendJobForm_base(QDialog):
 
     def settingsPushButton_clicked(self):
         print "FaxSendJobForm_base.settingsPushButton_clicked(): Not implemented yet"
+
+    def allowableTypesPushButton_clicked(self):
+        print "FaxSendJobForm_base.allowableTypesPushButton_clicked(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("FaxSendJobForm_base",s,c)

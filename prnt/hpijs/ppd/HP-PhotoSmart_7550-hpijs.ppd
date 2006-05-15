@@ -52,15 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:hp;
-  MDL:photosmart 7550;
-  CID:hpdeskjet_5550A851;
-  CMD:MLC,PCL,PML,DW-PCL,DYN,DESKJET;
-  CLS:PRINTER;
-  DES:hp photosmart 7550;
-"
-*End
+*1284DeviceID: "MFG:hp;MDL:photosmart 7550;CMD:MLC,PCL,PML,DW-PCL,DYN,DESKJET;DES:hp photosmart 7550;"
 *DefaultResolution: 1200dpi
 
 

@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(deskjet 5740)"
+*Product:	"(Deskjet 5700)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,14 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:HP;
-  MDL:Deskjet 5700;
-  CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;
-  CLS:PRINTER;
-  DES:574X;
-"
-*End
+*1284DeviceID: "MFG:HP;MDL:Deskjet 5700;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;DES:574X;"
 *DefaultResolution: 1200dpi
 
 

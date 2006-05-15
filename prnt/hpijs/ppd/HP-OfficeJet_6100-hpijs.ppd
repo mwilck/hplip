@@ -52,13 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "
-  MFG:Hewlett-Packard;
-  MDL:OfficeJet 6100 Series;
-  CMD:MLC,PCL,PML,DW-PCL,DYN;
-  CLS:PRINTER;
-"
-*End
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:OfficeJet 6100 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;"
 *DefaultResolution: 1200dpi
 
 

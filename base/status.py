@@ -225,45 +225,54 @@ def parseSStatus(s, z=''):
 def parseVStatus(s):
     pens, pen, c = [], {}, 0
     fields = s.split(',')
-    for p in fields[0]:
-        if c == 0:
-            assert p == '$'
-            c += 1
-        elif c == 1:
-            if p in ('a', 'A'):
-                pen['type'], pen['kind'] = AGENT_TYPE_NONE, AGENT_KIND_NONE
-            c += 1
-        elif c == 2:
-            pen['health'] = AGENT_HEALTH_OK
-            pen['kind'] = AGENT_KIND_HEAD_AND_SUPPLY
-            if   p in ('b', 'B'): pen['type'] = AGENT_TYPE_BLACK
-            elif p in ('c', 'C'): pen['type'] = AGENT_TYPE_CMY
-            elif p in ('d', 'D'): pen['type'] = AGENT_TYPE_KCM
-            elif p in ('u', 'U'): pen['type'], pen['health'] = AGENT_TYPE_NONE, AGENT_HEALTH_MISINSTALLED
-            c += 1
-        elif c == 3:
-            if p == '0': pen['state'] = 1
-            else: pen['state'] = 0
-
-            pen['level'] = 0
-            i = 8
-
-            while True:
-                try:
-                    f = fields[i]
-                except IndexError:
-                    break
-                else:
-                    if f[:2] == 'KP' and pen['type'] == AGENT_TYPE_BLACK:
-                        pen['level'] = int(f[2:])
-                    elif f[:2] == 'CP' and pen['type'] == AGENT_TYPE_CMY:
-                        pen['level'] = int(f[2:])
-                i += 1
-
-            pens.append(pen)
-            pen = {}
-            c = 0
-
+    f0 = fields[0]
+    
+    if len(f0) == 20:
+        # TODO: $H00000000$M00000000 style (OJ Pro 1150/70)
+        # Need spec
+        pass
+    elif len(f0) == 8:
+        for p in f0:
+            if c == 0:
+                #assert p == '$'
+                c += 1
+            elif c == 1:
+                if p in ('a', 'A'):
+                    pen['type'], pen['kind'] = AGENT_TYPE_NONE, AGENT_KIND_NONE
+                c += 1
+            elif c == 2:
+                pen['health'] = AGENT_HEALTH_OK
+                pen['kind'] = AGENT_KIND_HEAD_AND_SUPPLY
+                if   p in ('b', 'B'): pen['type'] = AGENT_TYPE_BLACK
+                elif p in ('c', 'C'): pen['type'] = AGENT_TYPE_CMY
+                elif p in ('d', 'D'): pen['type'] = AGENT_TYPE_KCM
+                elif p in ('u', 'U'): pen['type'], pen['health'] = AGENT_TYPE_NONE, AGENT_HEALTH_MISINSTALLED
+                c += 1
+            elif c == 3:
+                if p == '0': pen['state'] = 1
+                else: pen['state'] = 0
+    
+                pen['level'] = 0
+                i = 8
+    
+                while True:
+                    try:
+                        f = fields[i]
+                    except IndexError:
+                        break
+                    else:
+                        if f[:2] == 'KP' and pen['type'] == AGENT_TYPE_BLACK:
+                            pen['level'] = int(f[2:])
+                        elif f[:2] == 'CP' and pen['type'] == AGENT_TYPE_CMY:
+                            pen['level'] = int(f[2:])
+                    i += 1
+    
+                pens.append(pen)
+                pen = {}
+                c = 0
+    else:
+        pass
+        
     if fields[2] == 'DN':
         top_lid = 1
     else:
@@ -804,6 +813,128 @@ def getFaxStatus(dev):
         
     return tx_active, rx_active
     
+    
+TYPE6_STATUS_CODE_MAP = {
+    -19928: STATUS_PRINTER_IDLE,
+    -18995: STATUS_PRINTER_CANCELING,
+    -17974: STATUS_PRINTER_WARMING_UP,
+    -17973: STATUS_PRINTER_PEN_CLEANING, # sic
+    -18993: STATUS_PRINTER_BUSY,
+    -17949: STATUS_PRINTER_BUSY,
+    -19720: STATUS_PRINTER_MANUAL_DUPLEX_BLOCK,
+    -19678: STATUS_PRINTER_BUSY,
+    -19695: STATUS_PRINTER_OUT_OF_PAPER,
+    -17985: STATUS_PRINTER_MEDIA_JAM,
+    -19731: STATUS_PRINTER_OUT_OF_PAPER,
+    -18974: STATUS_PRINTER_BUSY, #?
+    -19730: STATUS_PRINTER_OUT_OF_PAPER,
+    -19729: STATUS_PRINTER_OUT_OF_PAPER,
+    -19933: STATUS_PRINTER_HARD_ERROR, # out of memory
+    -17984: STATUS_PRINTER_DOOR_OPEN, 
+    -19694: STATUS_PRINTER_DOOR_OPEN,
+    -18992: STATUS_PRINTER_MANUAL_FEED_BLOCKED, # ?
+    -19690: STATUS_PRINTER_MEDIA_JAM, # tray 1
+    -19689: STATUS_PRINTER_MEDIA_JAM, # tray 2
+    -19611: STATUS_PRINTER_MEDIA_JAM, # tray 3
+    -19686: STATUS_PRINTER_MEDIA_JAM,
+    -19688: STATUS_PRINTER_MEDIA_JAM, # paper path
+    -19685: STATUS_PRINTER_MEDIA_JAM, # cart area
+    -19684: STATUS_PRINTER_MEDIA_JAM, # output bin
+    -18848: STATUS_PRINTER_MEDIA_JAM, # duplexer
+    -18847: STATUS_PRINTER_MEDIA_JAM, # door open
+    -18846: STATUS_PRINTER_MEDIA_JAM, # tray 2
+    -19687: STATUS_PRINTER_MEDIA_JAM, # open door
+    -17992: STATUS_PRINTER_MEDIA_JAM, # mispick
+    -19700: STATUS_PRINTER_HARD_ERROR, # invalid driver
+    -17996: STATUS_PRINTER_FUSER_ERROR, # fuser error
+    -17983: STATUS_PRINTER_FUSER_ERROR,
+    -17982: STATUS_PRINTER_FUSER_ERROR,
+    -17981: STATUS_PRINTER_FUSER_ERROR,
+    -17971: STATUS_PRINTER_FUSER_ERROR,
+    -17995: STATUS_PRINTER_HARD_ERROR, # beam error
+    -17994: STATUS_PRINTER_HARD_ERROR, # scanner error
+    -17993: STATUS_PRINTER_HARD_ERROR, # fan error
+    -18994: STATUS_PRINTER_HARD_ERROR,
+    -17986: STATUS_PRINTER_HARD_ERROR,
+    -19904: STATUS_PRINTER_HARD_ERROR,
+    -19701: STATUS_PRINTER_NON_HP_INK, # [sic]
+    -19613: STATUS_PRINTER_IDLE, # HP
+    -19654: STATUS_PRINTER_NON_HP_INK, # [sic]
+    -19682: STATUS_PRINTER_HARD_ERROR, # resinstall
+    -19693: STATUS_PRINTER_IDLE, # ?? To Accept
+    -19752: STATUS_PRINTER_LOW_TONER,
+    -19723: STATUS_PRINTER_BUSY,
+    -19703: STATUS_PRINTER_BUSY,
+    -19739: STATUS_PRINTER_NO_TONER,
+    -19927: STATUS_PRINTER_BUSY,
+    -19932: STATUS_PRINTER_BUSY,
+    -19931: STATUS_PRINTER_BUSY,
+    -11989: STATUS_PRINTER_BUSY,
+    -11995: STATUS_PRINTER_BUSY, # ADF loaded
+    -19954: STATUS_PRINTER_CANCELING,
+    -19955: STATUS_PRINTER_REPORT_PRINTING,
+    -19956: STATUS_PRINTER_REPORT_PRINTING,
+    -19934: STATUS_PRINTER_HARD_ERROR,
+    -19930: STATUS_PRINTER_BUSY,
+    -11990: STATUS_PRINTER_DOOR_OPEN,
+    -11999: STATUS_PRINTER_MEDIA_JAM, # ADF
+    -12000: STATUS_PRINTER_MEDIA_JAM, # ADF
+    -11998: STATUS_PRINTER_MEDIA_JAM, # ADF
+    -11986: STATUS_PRINTER_HARD_ERROR, # scanner
+    -11994: STATUS_PRINTER_BUSY,
+    -14967: STATUS_PRINTER_BUSY,
+    -19912: STATUS_PRINTER_HARD_ERROR,
+    -14962: STATUS_PRINTER_BUSY, # copy pending
+    -14971: STATUS_PRINTER_BUSY, # copying
+    -14973: STATUS_PRINTER_BUSY, # copying being canceled
+    -14972: STATUS_PRINTER_BUSY, # copying canceled
+    -14966: STATUS_PRINTER_DOOR_OPEN,
+    -14974: STATUS_PRINTER_MEDIA_JAM,
+    -14969: STATUS_PRINTER_HARD_ERROR,
+    -14968: STATUS_PRINTER_HARD_ERROR,
+    -12996: STATUS_PRINTER_BUSY, # scan
+    -12994: STATUS_PRINTER_BUSY, # scan
+    -12993: STATUS_PRINTER_BUSY, # scan
+    -12991: STATUS_PRINTER_BUSY, # scan
+    -12995: STATUS_PRINTER_BUSY, # scan
+    -12997: STATUS_PRINTER_HARD_ERROR, # scan
+    -12990: STATUS_PRINTER_BUSY,
+    -12998: STATUS_PRINTER_BUSY,
+    -13000: STATUS_PRINTER_DOOR_OPEN,
+    -12999: STATUS_PRINTER_MEDIA_JAM,
+    -13859: STATUS_PRINTER_BUSY,
+    -13858: STATUS_PRINTER_BUSY, #</DevStatusDialingOut>
+    -13868: STATUS_PRINTER_BUSY, #</DevStatusRedialPending>
+    -13867: STATUS_PRINTER_BUSY, #</DevStatusFaxSendCanceled>
+    -13857: STATUS_PRINTER_BUSY, #</DevStatusConnecting>
+    -13856: STATUS_PRINTER_BUSY, #</DevStatusSendingPage>
+    -13855: STATUS_PRINTER_BUSY, #</DevStatusOnePageSend>
+    -13854: STATUS_PRINTER_BUSY, #</DevStatusMultiplePagesSent>
+    -13853: STATUS_PRINTER_BUSY, #</DevStatusSenderCancelingFax>
+    -13839: STATUS_PRINTER_BUSY, #</DevStatusIncomingCall>
+    -13842: STATUS_PRINTER_BUSY, #</DevStatusBlockingFax>
+    -13838: STATUS_PRINTER_BUSY, #</DevStatusReceivingFax>
+    -13847: STATUS_PRINTER_BUSY, #</DevStatusSinglePageReceived>
+    -13846: STATUS_PRINTER_BUSY, #</DevStatusDoublePagesReceived>
+    -13845: STATUS_PRINTER_BUSY, #</DevStatusTriplePagesReceived>
+    -13844: STATUS_PRINTER_BUSY, #</DevStatusPrintingFax>
+    -13840: STATUS_PRINTER_BUSY, #</DevStatusCancelingFaxPrint>
+    -13843: STATUS_PRINTER_BUSY, #</DevStatusFaxCancelingReceive>
+    -13850: STATUS_PRINTER_BUSY, #</DevStatusFaxCanceledReceive>
+    -13851: STATUS_PRINTER_BUSY, #</DevStatusFaxDelayedSendMemoryFull>
+    -13836: STATUS_PRINTER_BUSY, #</DevStatusNoDialTone>
+    -13864: STATUS_PRINTER_BUSY, #</DevStatusNoFaxAnswer>
+    -13863: STATUS_PRINTER_BUSY, #</DevStatusFaxBusy>
+    -13865: STATUS_PRINTER_BUSY, #</DevStatusNoDocumentSent>
+    -13862: STATUS_PRINTER_BUSY, #</DevStatusFaxSendError>
+    -13837: STATUS_PRINTER_BUSY, #</DevStatusT30Error>
+    -13861: STATUS_PRINTER_BUSY, #</DevStatusFaxMemoryFullSend>
+    -13866: STATUS_PRINTER_BUSY, #</DevStatusADFNotCleared>
+    -13841: STATUS_PRINTER_BUSY, #</DevStatusNoFaxDetected>
+    -13848: STATUS_PRINTER_BUSY, #</DevStatusFaxMemoryFullReceive>
+    -13849: STATUS_PRINTER_BUSY, #</DevStatusFaxReceiveError>
+    0: STATUS_UNKNOWN, #</DevStatusUnknown>
+}    
 
 def StatusType6(dev): #  LaserJet Status (XML)
     info_device_status = cStringIO.StringIO()
@@ -821,12 +952,14 @@ def StatusType6(dev): #  LaserJet Status (XML)
     if info_device_status:
         device_status = utils.XMLToDictParser().parseXML(info_device_status)
         log.debug_block("info_device_status", info_device_status)
+        log.debug(device_status)
 
     if info_ssp:
         ssp = utils.XMLToDictParser().parseXML(info_ssp)
         log.debug_block("info_spp", info_ssp)
+        log.debug(ssp)
     
-    status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code', 0)
+    status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
     black_supply_level = device_status.get('devicestatuspage-suppliesstatus-blacksupply-percentremaining', 0)
     black_supply_low = ssp.get('suppliesstatuspage-blacksupply-lowreached', 0)
     agents = []
@@ -873,6 +1006,7 @@ def StatusType6(dev): #  LaserJet Status (XML)
              'in-tray1' :    1,
              'in-tray2' :    1,
              'media-path' :  1,
+             'status-code' : TYPE6_STATUS_CODE_MAP.get(status_code, STATUS_PRINTER_IDLE),
            }     
     
         

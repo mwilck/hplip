@@ -130,6 +130,8 @@ def xmitMessage(sock, msg_type, payload=None,
                  other_fields={},
                  timeout=prop.read_timeout):
 
+    fields, data, result_code = {}, '', ERROR_INTERNAL
+    
     msg_type = msg_type.lower().strip()
     m = buildMessage(msg_type, payload, other_fields)
 

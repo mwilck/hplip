@@ -111,7 +111,7 @@ int usb_wait_urb_ex(usb_dev_handle *dev, struct usbdevfs_urb *urb, int timeout)
 
    if (context != (void *)urb)
    {
-      syslog(LOG_ERR, "error wrong URB reaped: exp=%x act=%x %s %d", (int)urb, (int)context, __FILE__, __LINE__);
+      syslog(LOG_ERR, "error wrong URB reaped: exp=%p act=%p %s %d", urb, context, __FILE__, __LINE__);
       return -errno;
    }
 
@@ -128,7 +128,7 @@ int usb_reap_urb_ex(usb_dev_handle *dev, struct usbdevfs_urb *urb)
    if (ret < 0)
    {
      //      if (errno != EINVAL)
-         syslog(LOG_ERR, "error discarding URB: %m urb=%x %s %d", (int)urb, __FILE__, __LINE__);
+      syslog(LOG_ERR, "error discarding URB: %m urb=%p %s %d", urb, __FILE__, __LINE__);
       return -errno;
    }
 
