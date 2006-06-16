@@ -31,7 +31,9 @@ def AlignType1(dev, loadpaper_ui): # Auto VIP
     ok = loadpaper_ui()
     if ok:
         dev.writeEmbeddedPML(pml.OID_AUTO_ALIGNMENT,
-                              pml.AUTO_ALIGNMENT, style=0)
+                             pml.AUTO_ALIGNMENT, style=0, 
+                             direct=False)
+        dev.closePrint()
 
     return ok
 
@@ -360,9 +362,12 @@ def AlignType10(dev, loadpaper_ui, align_ui):
     pen_config = status.getPenConfiguration(dev.getStatusFromDeviceID())
     log.debug("Pen config=%d" % pen_config)
 
-    pattern = 1
-    if pen_config == AGENT_CONFIG_COLOR_AND_BLACK:
+    if pen_config == AGENT_CONFIG_BLACK_ONLY:
+        pattern = 1
+
+    elif pen_config == AGENT_CONFIG_COLOR_AND_BLACK:
         pattern = 2
+
     elif pen_config in (AGENT_CONFIG_COLOR_AND_PHOTO, AGENT_CONFIG_COLOR_AND_GREY):
         pattern = 3
 
@@ -379,7 +384,7 @@ def AlignType10(dev, loadpaper_ui, align_ui):
                 state = 1
 
         elif state == 1:
-            values = align_ui(pattern)
+            values = align_ui(pattern, ALIGN_TYPE_LBOW)
             log.debug(values)
             alignType10Phase2(dev, values, pattern)
             state = 2
@@ -394,32 +399,176 @@ def AlignType10(dev, loadpaper_ui, align_ui):
 def alignType10Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_ALIGNMENT_PAGE)
+    
+    dev.closePrint()
+    
 
 def alignType10Phase2(dev, values, pattern):
-    #if pattern == 2:
-    #    pattern = 3
     i, p = 0, ''.join([pcl.UEL, '\n'])
+
     for x in values:
         i += 1
         if not x:
             break
         p = ''.join([p, pcl.ESC, '*o5W\x1a', chr(i), '\x00', chr(pattern), chr(x), '\n'])
-    
+
     p = ''.join([p, pcl.UEL]) 
-    
+
     dev.printData(p)
+    dev.closePrint()
 
 def alignType10Phase3(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_ALIGNMENT_PAGE_VERIFICATION)
+                         
+    dev.closePrint()
 
 
+def align10and11Controls(pattern, align_type):
+    if align_type == ALIGN_TYPE_LIDIL_0_5_4:
+        if pattern == 1:
+            controls = { 'A' : (True, 23),
+                         'B' : (True, 9),
+                         'C' : (True, 9),
+                         'D' : (False, 0),
+                         'E' : (False, 0),
+                         'F' : (False, 0),
+                         'G' : (False, 0),
+                         'H' : (False, 0),}
+        elif pattern == 2: # K + color (ii)
+            controls = { 'A' : (True, 17),
+                         'B' : (True, 23),
+                         'C' : (True, 23),
+                         'D' : (True, 23),
+                         'E' : (True, 9),
+                         'F' : (True, 9),
+                         'G' : (True, 9),
+                         'H' : (True, 9),}
+    
+        elif pattern == 3: # color + photo (iii)
+            controls = { 'A' : (True, 9),
+                         'B' : (True, 23),
+                         'C' : (True, 23),
+                         'D' : (True, 23),
+                         'E' : (True, 9),
+                         'F' : (True, 9),
+                         'G' : (True, 9),
+                         'H' : (True, 9),}    
 
+    else:
+        if pattern == 1:
+            controls = {'A' : (True, 23),
+                         'B' : (True, 9),
+                         'C' : (True, 9),
+                         'D' : (False, 0),
+                         'E' : (False, 0),
+                         'F' : (False, 0),
+                         'G' : (False, 0),
+                         'H' : (False, 0),}
+        elif pattern == 2:
+            controls = {'A' : (True, 23),
+                        'B' : (True, 17),
+                         'C' : (True, 23),
+                         'D' : (True, 23),
+                         'E' : (True, 9),
+                         'F' : (True, 9),
+                         'G' : (True, 9),
+                         'H' : (True, 9),}
+        
+        elif pattern == 3:
+            controls = {'A' : (True, 23),
+                         'B' : (True, 9),
+                         'C' : (True, 23),
+                         'D' : (True, 23),
+                         'E' : (True, 9),
+                         'F' : (True, 9),
+                         'G' : (True, 9),
+                         'H' : (True, 9),}
+    
+    return controls
+
+                    
+def AlignType11(dev, loadpaper_ui, align_ui, invalidpen_ui):
+    pen_config = status.getPenConfiguration(dev.getStatusFromDeviceID())
+    log.debug("Pen config=%d" % pen_config)
+
+    if pen_config in (AGENT_CONFIG_BLACK_ONLY, AGENT_CONFIG_COLOR_ONLY): # (i)
+        pattern = 1
+
+    if pen_config == AGENT_CONFIG_COLOR_AND_BLACK: # (ii)
+        pattern = 2
+
+    elif pen_config == AGENT_CONFIG_COLOR_AND_PHOTO: # (iii)
+        pattern = 3
+        
+    elif pen_config == AGENT_CONFIG_PHOTO_ONLY:
+        invalidpen_ui()
+        return
+
+    log.debug("Pattern=%d" % pattern)
+
+    state = 0
+
+    while state != -1:
+        if state == 0:
+            state = -1
+            ok = loadpaper_ui()
+            if ok:
+                alignType11Phase1(dev)
+                state = 1
+
+        elif state == 1:
+            values = align_ui(pattern, ALIGN_TYPE_LIDIL_0_5_4)
+            log.debug(values)
+            alignType11Phase2(dev, values, pattern, pen_config)
+            state = 2
+
+        elif state == 2:
+            state = -1
+            ok = loadpaper_ui()
+            if ok:
+                alignType11Phase3(dev)
+
+
+def alignType11Phase1(dev):
+    dev.printData(ldl.buildResetPacket())
+    dev.printData(ldl.buildReportPagePacket(ldl.COMMAND_REPORT_PAGE_PEN_CALIBRATION))
+    dev.closePrint()
+    
+
+def alignType11Phase2(dev, values, pattern, pen_config):
+    active_colors = 0
+
+    if pen_config == AGENT_CONFIG_BLACK_ONLY:
+        active_colors = ldl.COMMAND_SET_PEN_ALIGNMENT_3_K
+        values = values[:3]
+
+    elif pen_config == AGENT_CONFIG_COLOR_ONLY:
+        active_colors = COMMAND_SET_PEN_ALIGNMENT_3_COLOR
+        values = values[:3]
+
+    elif pen_config == AGENT_CONFIG_COLOR_AND_BLACK:
+        active_colors = ldl.COMMAND_SET_PEN_ALIGNMENT_3_K | ldl.COMMAND_SET_PEN_ALIGNMENT_3_COLOR
+
+    elif pen_config == AGENT_CONFIG_COLOR_AND_PHOTO:
+        active_colors = ldl.COMMAND_SET_PEN_ALIGNMENT_3_COLOR | ldl.COMMAND_SET_PEN_ALIGNMENT_3_PHOTO
+
+    log.debug("Active colors=0x%x Values=%s" % (active_colors, values))
+
+    dev.printData(ldl.buildSetPenAlignment3Packet(active_colors, values))
+    dev.closePrint()
+
+
+def alignType11Phase3(dev):
+    dev.printData(ldl.buildReportPagePacket(ldl.COMMAND_REPORT_PAGE_PEN_CALIBRATION_VERIFY))
+    dev.closePrint()
+    
 def alignType2Phase1(dev): # Type 2 (8xx)
     dev.writeEmbeddedPML(pml.OID_AGENT2_VERTICAL_ALIGNMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT2_HORIZONTAL_ALIGNMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT1_BIDIR_ADJUSTMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT2_BIDIR_ADJUSTMENT, 0)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'align1_8xx.pcl.gz'))
 
 
@@ -429,6 +578,7 @@ def alignType2Phase2(dev, a, b, c, d): # (8xx)
     dev.writeEmbeddedPML(pml.OID_AGENT1_BIDIR_ADJUSTMENT, (c - 3) * 12)
     dev.writeEmbeddedPML(pml.OID_AGENT2_BIDIR_ADJUSTMENT, (d - 3) * 12)
     dev.writeEmbeddedPML(pml.OID_MARKING_AGENTS_INITIALIZED, 3)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'align2_8xx.pcl.gz'))
 
 
@@ -437,6 +587,7 @@ def alignType3Phase1(dev): # Type 3 (9xx)
     dev.writeEmbeddedPML(pml.OID_AGENT2_HORIZONTAL_ALIGNMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT1_BIDIR_ADJUSTMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT2_BIDIR_ADJUSTMENT, 0)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'align1_9xx.pcl.gz'))
 
 
@@ -445,14 +596,16 @@ def alignType3Phase2(dev, a, b, c, d): # Type 3 (9xx)
     dev.writeEmbeddedPML(pml.OID_AGENT2_HORIZONTAL_ALIGNMENT, (6 - b) * 12)
     dev.writeEmbeddedPML(pml.OID_AGENT1_BIDIR_ADJUSTMENT, (6 - c) * 12)
     dev.writeEmbeddedPML(pml.OID_AGENT2_BIDIR_ADJUSTMENT, (6 - d) * 6)
-
+    dev.closePrint()
 
 def alignType3Phase3(dev): # Type 3 (9xx)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'align3_9xx.pcl.gz'))
 
 
 def alignType3Phase4(dev, zca): # Type 3 (9xx)
     dev.writeEmbeddedPML(pml.OID_MARKING_AGENTS_INITIALIZED, 3)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'align2_9xx.pcl.gz'))
 
 
@@ -472,6 +625,7 @@ def alignType4Phase1(dev): # Type 4 (xBow/LIDIL 0.3.8)
         ldl_file = 'cb2pcal.ldl.gz'
 
     dev.printData(ldl.buildSetPrinterAlignmentPacket(0, 0, 0, 0))
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'ldl', ldl_file))
 
 
@@ -503,6 +657,7 @@ def alignType4Phase2(dev, a, b, c, d, e): # Type 4 (LIDIL 0.3.8)
 
     # Set alignment
     dev.printData(ldl.buildSetPensAlignedPacket())
+    dev.closePrint()
 
 
 def alignType4Phase3(dev): # Type 4 (LIDIL 0.3.8)
@@ -540,7 +695,8 @@ def alignType5Phase1(dev): # Type 5 (xBow+/LIDIL 0.4.3)
     dev.printData(ldl.buildColorBidiPacket(0))
     dev.printData(ldl.buildPhotoHuePacket(0))
     dev.printData(ldl.buildColorHuePacket(0))
-
+    dev.closePrint()
+    
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'ldl', ldl_file))
 
 
@@ -599,10 +755,11 @@ def alignType5Phase2(dev, a, b, c, d, e, f, g): # Type 5 (xBow+/LIDIL 0.4.3)
 
     # Set alignment
     dev.printData(ldl.buildSetPensAlignedPacket())
+    dev.closePrint()
 
 
 def alignType5Phase3(dev): # Type 5 (xBow+/LIDIL 0.4.3)
-
+    dev.closePrint()
     if dev.pen_config == AGENT_CONFIG_COLOR_AND_BLACK:
         dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'ldl', "cb2pcal_done.ldl.gz"))
 
@@ -612,7 +769,7 @@ def alignType5Phase3(dev): # Type 5 (xBow+/LIDIL 0.4.3)
 
 def alignType6Phase1(dev): # Type 6 (xBow AiO)
     dev.printData(ldl.buildPrintInternalPagePacket())
-
+    dev.closePrint()
 
 def alignType7Phase1(dev): # Type 7 (xBow VIP)
     # Zero out all alignment values
@@ -646,6 +803,7 @@ def alignType7Phase1(dev): # Type 7 (xBow VIP)
     elif dev.pen_config == AGENT_CONFIG_COLOR_AND_PHOTO:
         pcl_file = 'crcpcal.pcl.gz'
 
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', pcl_file))
 
 
@@ -697,8 +855,10 @@ def alignType7Phase2(dev, a, b, c, d, e, f, g): # Type 7 (xBow VIP)
         dev.writeEmbeddedPML(pml.OID_AGENT3_HORIZONTAL_ALIGNMENT, hort)
         dev.writeEmbeddedPML(pml.OID_AGENT3_VERTICAL_ALIGNMENT, vert)
 
-
+    dev.closePrint()
+    
 def alignType7Phase3(dev): # Type 7 (xBow VIP)
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', "crcaldone.pcl.gz"))
 
 
@@ -711,6 +871,7 @@ def alignType8Phase1(dev): # 450
     else:
         f, num_inks = 'align4_450.pcl.gz', 4
 
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', f))
 
     return num_inks
@@ -777,7 +938,7 @@ def alignType8Phase2(dev, num_inks, a, b, c, d): # 450
               pcl.UEL])
 
     dev.printData(s)
-
+    dev.closePrint()
 
 # ********************** Clean **********************
 
@@ -861,45 +1022,43 @@ def cleaning(dev, clean_type, level1, level2, level3,
 
 
 def print_clean_test_page(dev):
-
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data',
                       'ps', 'clean_page.pdf.gz'), raw=False)
 
 
 def cleanType1(dev): # PCL, Level 1
     dev.writeEmbeddedPML(pml.OID_CLEAN, pml.CLEAN_CLEAN)
-
+    dev.closePrint()
 
 def primeType1(dev): # PCL, Level 2
     dev.writeEmbeddedPML(pml.OID_CLEAN, pml.CLEAN_PRIME)
-
+    dev.closePrint()
 
 def wipeAndSpitType1(dev): # PCL, Level 3
     dev.writeEmbeddedPML(pml.OID_CLEAN, pml.CLEAN_WIPE_AND_SPIT)
-
+    dev.closePrint()
 
 def cleanType2(dev): # LIDIL, Level 1
-    p = ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
-                             ldl.COMMAND_HANDLE_PEN,
-                             ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL1)
-
-    dev.printData(p)
-
+    dev.printData(ldl.buildResetPacket())
+    dev.printData(ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
+                                       ldl.COMMAND_HANDLE_PEN,
+                                       ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL1))
+    dev.closePrint()
 
 def primeType2(dev): # LIDIL, Level 2
-    p = ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
-                             ldl.COMMAND_HANDLE_PEN,
-                             ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL2)
-
-    dev.printData(p)
-
+    dev.printData(ldl.buildResetPacket())
+    dev.printData(ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
+                                       ldl.COMMAND_HANDLE_PEN,
+                                       ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL2))
+    dev.closePrint()
 
 def wipeAndSpitType2(dev): # LIDIL, Level 3
-    p = ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
-                             ldl.COMMAND_HANDLE_PEN,
-                             ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL3)
-
-    dev.printData(p)
+    dev.printData(ldl.buildResetPacket())
+    dev.printData(ldl.buildLIDILPacket(ldl.PACKET_TYPE_COMMAND,
+                                       ldl.COMMAND_HANDLE_PEN,
+                                       ldl.COMMAND_HANDLE_PEN_CLEAN_LEVEL3))
+    dev.closePrint()
 
 
 # ********************** Color Cal **********************
@@ -954,11 +1113,11 @@ def colorCalType1PenCheck(dev): # 450
 
 
 def colorCalType1Phase1(dev): # 450
+    dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', 'colorcal1_450.pcl.gz'))
 
 
 def colorCalType1Phase2(dev, value): # 450
-
     color_cal = {1 : ('\x0f\x3c', '\x17\x0c'),
                   2 : ('\x10\xcc', '\x15\x7c'),
                   3 : ('\x12\x5c', '\x13\xec'),
@@ -977,7 +1136,7 @@ def colorCalType1Phase2(dev, value): # 450
                   pcl.UEL])
 
     dev.printData(s)
-
+    dev.closePrint()
 
 #
 # COLOR CAL TYPE 2
@@ -1032,7 +1191,8 @@ def colorCalType2PenCheck(dev):
 def colorCalType2Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
-
+    
+    dev.closePrint()
 
 
 def colorCalType2Phase2(dev, value):
@@ -1043,7 +1203,7 @@ def colorCalType2Phase2(dev, value):
                    '\x1b%-12345X'])
 
     dev.printData(p)
-
+    dev.closePrint()
 
 
 #
@@ -1107,6 +1267,7 @@ def colorCalType3PenCheck(dev):
 def colorCalType3Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
+    dev.closePrint()
 
 def colorCalType3Phase2(dev, A, B):
     photo_adj = colorcal.PHOTO_ALIGN_TABLE[A][B]
@@ -1114,7 +1275,7 @@ def colorCalType3Phase2(dev, A, B):
     adj_value = (color_adj << 8L) + photo_adj
 
     dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_SELECTION, adj_value)
-
+    dev.closePrint()
 
 def colorCalType4(dev, loadpaper_ui, colorcal_ui, wait_ui):
     state = 0
@@ -1152,7 +1313,9 @@ def colorCalType4(dev, loadpaper_ui, colorcal_ui, wait_ui):
 
 def colorCalType4Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
-                            pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
+                         pml.PRINT_INTERNAL_PAGE_COLOR_CAL, style=0, 
+                         direct=False)
+    dev.closePrint()
 
 
 def colorCalType4AdjValue(value):
@@ -1201,22 +1364,29 @@ def colorCalType4Phase2(dev, values):
     dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_6,
                             madj)
 
+    dev.closePrint()
 
-
+    
 def colorCalType4Phase3(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_PALETTE_CMYK_PAGE)
+    dev.closePrint()
 
 
 
 def colorCalType5(dev, loadpaper_ui):
     if loadpaper_ui():
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 20;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
-    
+        dev.closePrint()
+
 def linefeedCalType1(dev, loadpaper_ui):
     if loadpaper_ui():
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 3;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
-    
+        dev.closePrint()
+
 def printQualityDiagType1(dev, loadpaper_ui):
     if loadpaper_ui():
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 14;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
+        dev.closePrint()
+
+        

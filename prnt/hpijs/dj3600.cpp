@@ -41,21 +41,6 @@ APDK_BEGIN_NAMESPACE
 DJ3600::DJ3600 (SystemServices* pSS, BOOL proto)
     : DJ3320 (pSS, proto)
 {
-    if (!proto && IOMode.bDevID)
-    {
-        bCheckForCancelButton = TRUE;
-        constructor_error = VerifyPenInfo ();
-        CERRCHECK;
-    }
-    else
-        ePen = BOTH_PENS;
-
-    if (pSendBuffer)
-    {
-        pSS->FreeMem (pSendBuffer);
-    }
-    pSendBuffer = pSS->AllocMem (iBuffSize);
-    CNEWCHECK (pSendBuffer);
 }
 
 /*

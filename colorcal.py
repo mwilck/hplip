@@ -118,6 +118,93 @@ def photoPenRequired2():
     log.error("Photo cartridge or photo blue cartridge not installed.\nPlease install the photo (or photo blue) cartridge and try again.")
 
 
+def colorCal4():
+    log.info("""Instructions:\n1. Hold the calibration page at arm's length in front of your eyes.
+2. Tilt the page away from you. Look at the two large squares, each containing colored patches. For each large square, find the colored path that most closely matches the background color. Each patch has an associated letter and number.
+""")
+    values = [0, 0, 0, 0]
+    ok = True
+    while True:
+        x = raw_input(utils.bold('Enter the letter (A-N) and number (1-14) for the gray plot (eg, "C5") or "q" to quit: '))
+        
+        if x.lower().strip() == 'q':
+            ok = False
+            break
+            
+        if x.lower().strip() == 'd': # use defaults
+            values[0], values[1] = -1, -1
+            break
+        
+        if len(x) < 2:
+            log.error("You must enter at least two characters (a letter and a number)")
+            continue
+            
+        if len(x) > 3:
+            log.error('Enter only a single letter and a one or two digit number (eg, "C5").')
+            continue
+            
+        letter = x[0].lower()
+        
+        if letter not in 'abcdefghijklmn':
+            log.error("You must enter a letter 'A' thru 'N'")
+            continue
+        
+        try:
+            number = int(x[1:])
+        except ValueError:
+            log.error("You must enter a letter followed by a number 1 thru 14.")
+            continue
+            
+        if 0 < number < 15:
+            log.error("You must enter a letter followed by a number 1 thru 14.")
+            continue
+            
+        values[0] = ord(str(letter).upper()) - ord('A')
+        values[1] = number - 1
+        break
+    
+    if ok:
+        while True:
+            x = raw_input(utils.bold('Enter the letter (P-V) and number (1-7) for the color plot (eg, "R3") or "q" to quit: '))
+            
+            if x.lower().strip() == 'q':
+                ok = False
+                break
+                
+            if x.lower().strip() == 'd': # use defaults
+                values[2], values[3] = -1, -1
+                break
+    
+            if len(x) < 2:
+                log.error("You must enter at least two characters (a letter and a number)")
+                continue
+                
+            if len(x) > 3:
+                log.error('Enter only a single letter and a one or two digit number (eg, "R3").')
+                continue
+                
+            letter = x[0].lower()
+            
+            if letter not in 'pqrstuv':
+                log.error("You must enter a letter 'P' thru 'V'")
+                continue
+            
+            try:
+                number = int(x[1:])
+            except ValueError:
+                log.error("You must enter a letter followed by a number 1 thru 7.")
+                continue
+                
+            if 0 < number < 8:
+                log.error("You must enter a letter followed by a number 1 thru 7.")
+                continue
+                
+            values[2] = ord(str(letter).upper()) - ord('P')
+            values[3] = number - 1
+            break
+    
+    return ok, values
+
 
 try:
     opts, args = getopt.getopt(sys.argv[1:],
@@ -226,14 +313,16 @@ try:
             maint.colorCalType1(d, loadPlainPaper, colorCal, photoPenRequired)
         
         elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
-            ok = maint.colorCalType2(d, loadPlainPaper, colorCal2, invalidPen)
+            maint.colorCalType2(d, loadPlainPaper, colorCal2, invalidPen)
         
         elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
-            ok = maint.colorCalType3(d, loadPlainPaper, colorAdj, photoPenRequired2)
+            maint.colorCalType3(d, loadPlainPaper, colorAdj, photoPenRequired2)
         
-        elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
-            log.error("Not implemented yet. Please use the HP Device Manager.")
-        
+        elif color_cal_type == COLOR_CAL_TYPE_CONNERY: # 4
+            maint.colorCalType4(d, loadPlainPaper, colorCal4, None)
+            
+        elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU: # 5
+            maint.colorCalType5(d, loadPlainPaper)
         else:
             log.error("Invalid color calibration type.")
     

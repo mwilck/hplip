@@ -68,6 +68,9 @@ friend class Tester;
 #ifdef APDK_DJ9xxVIP
 friend class DJGenericVIP;
 #endif
+#ifdef APDK_DJ3320
+friend class DJ4100;
+#endif
 public:
    PrintMode(uint32_t *map1,uint32_t *map2=(uint32_t*)NULL);
 

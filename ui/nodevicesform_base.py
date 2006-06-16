@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/dwelch/linux-imaging-and-printing/src/ui/nodevicesform_base.ui'
+# Form implementation generated from reading ui file 'nodevicesform_base.ui'
 #
-# Created: Fri Apr 1 14:51:29 2005
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Wed May 31 16:32:54 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
 
-import sys
 from qt import *
 
 
@@ -54,8 +53,8 @@ class NoDevicesForm_base(QDialog):
 
 
     def languageChange(self):
-        self.setCaption(self.__tr("HP Device Manager - No Installed HP Devices"))
-        self.textLabel7.setText(self.__tr("<b>No installed HP devices found.</b> To install a device, use the <u>CUPS web interface</u> (http://localhost:631) or the <u>printer installation utility</u> that came with your operating system.\n"
+        self.setCaption(self.__tr("HP Device Manager - No Installed HP Devices Found"))
+        self.textLabel7.setText(self.__tr("<b>No Installed HP Devices Found.</b><p>To install a device, use <b>hp-setup</b> (in a shell/terminal), the <b>CUPS web interface</b> (open a browser to: http://localhost:631 or press the button below), or the <b>printer installation utility</b> that came with your operating system.\n"
 "After setting up a printer, you must press <tt>F6</tt> or chose <tt>Device | Refresh All</tt> for the printer to appear in the HP Device Manager.<p>\n"
 "<i>Note: Only devices installed with the hp: CUPS backend will appear in the HP Device Manager.</i><p>"))
         self.ExitButton.setText(self.__tr("OK"))
@@ -70,11 +69,3 @@ class NoDevicesForm_base(QDialog):
 
     def __tr(self,s,c = None):
         return qApp.translate("NoDevicesForm_base",s,c)
-
-if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = NoDevicesForm_base()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()

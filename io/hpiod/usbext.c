@@ -33,7 +33,7 @@ struct usb_dev_handle {
   int fd;
 };
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
 #else
 

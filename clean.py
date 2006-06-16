@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '1.6'
+__version__ = '1.7'
 __title__ = 'Printer Cartridge Cleaning Utility'
 __doc__ = "Cartridge cleaning utility for HPLIP supported inkjet printers."
 
@@ -107,6 +107,8 @@ for o, a in opts:
 
     elif o in ('-l', '--logging'):
         log_level = a.lower().strip()
+        if not log.set_level(log_level):
+            usage()
         
     elif o == '-g':
         log.set_level('debug')
@@ -124,9 +126,6 @@ if level < 1 or level > 3:
     level = 1
 
 if not device.validateBusList(bus):
-    usage()
-
-if not log.set_level(log_level):
     usage()
 
 if device_uri and printer_name:

@@ -225,7 +225,7 @@ int MlcChannel::MlcReverseReply(int fd, unsigned char *buf, int bufsize)
       size = sizeof(MLCHeader);
       while (size > 0)
       {
-         if ((len = pDev->Read(fd, pBuf, size, 2000000)) < 0)   /* wait 2 second */
+         if ((len = pDev->Read(fd, pBuf, size, 4000000)) < 0)   /* wait 4 seconds, same as dot4 */
          {
             syslog(LOG_ERR, "unable to read MlcReverseReply header: %m bytesRead=%zd %s %d\n", sizeof(MLCHeader)-size, __FILE__, __LINE__);
             stat = 2;  /* short timeout */
@@ -488,9 +488,9 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
 
          if (len < 0)
          {
-            /* Got a timeout, if timeout occured after read started thats an error. */
-            if (total > 0)
-               syslog(LOG_ERR, "unable to read MlcReverseData header: %m\n");
+            /* Got a timeout, if exception timeout or timeout occured after read started thats an error. */
+            if (timeout >= EXCEPTION_TIMEOUT || total > 0)
+               syslog(LOG_ERR, "unable to read MlcReverseData header: %m %s %s %d\n", pDev->GetURI(), __FILE__, __LINE__);
             goto bugout;
          }
          size-=len;
@@ -540,7 +540,7 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
 
       total = 0;  /* eat packet header */
    
-      /* Read packet data field without exception_timeout. */
+      /* Read packet data field with exception_timeout. */
       while (size > 0)
       {
          if ((len = pDev->Read(fd, buf+total, size)) < 0)

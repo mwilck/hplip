@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
  <head>
-  <title>HPLIP Installation - Step 2 - Fedora Core 4</title>
+  <title>HPLIP Installation - Step 2 - Fedora Core 4/5</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
   <!-- <link rel="stylesheet" href="../../styles/style.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../styles/rest.css" type="text/css" /> 
@@ -58,21 +58,20 @@
                 <menu compact="compact">
                     <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../../license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../../about.html" title="About">About HPLIP</a></li>
                     <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
 
         <!-- CONTENT -->
 
-        <a href="../../index.html">Home</a> > <a href="../index.html">Installation</a> > <a href="index.html">Step 2</a> > Fedora Core 4
+        <a href="../../index.html">Home</a> > <a href="../index.html">Installation</a> > <a href="index.html">Step 2</a> > Fedora Core 4/5
 
         <td align="left" valign="top" class="content">
-        <div class="document" id="installation-step-2-fedora-core-4">
-<h1 class="title">Installation - Step 2 - Fedora Core 4</h1>
+        <div class="document" id="installation-step-2-fedora-core-4-5">
+<h1 class="title">Installation - Step 2 - Fedora Core 4/5</h1>
 <ol class="arabic simple">
 <li>Open a console/terminal window.</li>
 <li>Follow these steps to log in as the super user</li>
@@ -92,98 +91,30 @@ $ su
 </li>
 <li><p class="first">Press Enter.</p>
 </li>
-<li><p class="first">Configure Fedora Core 4 using YUM;</p>
+<li><p class="first">Configure Fedora Core 4/5 using YUM;</p>
 </li>
-<li><p class="first">Enter this command: (if GCC compiler is not already installed)</p>
+<li><p class="first">Enter this command:</p>
 </li>
 </ol>
 <pre class="literal-block">
-# yum install gcc-c++
+# yum install gcc-c++ cups-devel python-devel PyQt net-snmp-devel libjpeg-devel libusb-devel
 </pre>
 <ol class="arabic simple" start="9">
-<li>Enter this command:</li>
-</ol>
-<pre class="literal-block">
-# yum install cups-devel python-devel PyQt net-snmp-devel libjpeg-devel libusb-devel
-</pre>
-<ol class="arabic simple" start="10">
 <li>Fedora Core 3 systems may also need to enter this command:</li>
 </ol>
 <pre class="literal-block">
 # yum install sip
 </pre>
-<ol class="arabic simple" start="11">
-<li>For Fedora Core 4, you must disable SELinux protection. Click the Desktop Menu item &gt; System Settings &gt; Security Level &gt; then the SELinux Tab Remove the check mark next to the setting &quot;&quot;Enforcing Current:&quot;.</li>
-</ol>
-<p><em>Note: There may be a Fedora Core 4 RPM available from Redhat that makes adjusting this security level unnecessary.</em></p>
-<p><strong>Optional: Configure Fedora Core 4 for using APT</strong></p>
-<p><em>Note: This step is not needed if YUM correctly installed the required packages. The APT instructions are provided if there are issues using YUM to install the required packages.</em></p>
-<ol class="arabic simple">
-<li>Enter this command:</li>
-</ol>
-<dl class="docutils">
-<dt>::</dt>
-<dd># rpm -ivh <a class="reference" href="http://ftp.freshrpms.net/pub/fedora/linux/extras/4">http://ftp.freshrpms.net/pub/fedora/linux/extras/4</a> /i386/apt-0.5.15cnc7-6.fc4.i386.rpm</dd>
-</dl>
-<ol class="arabic simple" start="2">
-<li>Press Enter.</li>
-<li>The system should prompt something like this:</li>
-</ol>
-<pre class="literal-block">
-Preparing...
-#################################### [100%] 1:apt
-#################################### [100%]
-</pre>
-<ol class="arabic simple" start="4">
-<li>Type:</li>
-</ol>
-<pre class="literal-block">
-# gedit /etc/apt/souces.list
-</pre>
-<ol class="arabic simple" start="5">
-<li>Add the following lines to the top of the sources.list file:</li>
-</ol>
-<pre class="literal-block">
-rpm http://ayo.freshrpms.net fedora/linux/4/i386 core updates freshrpms
-rpm http://ayo.freshrpms.net fedora/linux/4/i386 tupdates
-rpm http://ayo.freshrpms.net fedora/linux/1/i386 core updates freshrpms
-</pre>
-<ol class="arabic simple" start="6">
-<li>Click Save.</li>
-<li>Click File, then Quit.</li>
-<li>Enter this command:</li>
-</ol>
-<pre class="literal-block">
-# rpm --import /usr/share/rhn/RPM-GPG-KEY*
-</pre>
-<ol class="arabic simple" start="9">
-<li>Enter this command: (if GCC compiler is not already installed)</li>
-</ol>
-<pre class="literal-block">
-# apt-get install gcc
-</pre>
 <ol class="arabic simple" start="10">
-<li>Enter this command:</li>
+<li>For Fedora Core 4/5, you must disable SELinux protection. Click the Desktop Menu item &gt; System Settings &gt; Security Level &gt; then the SELinux Tab Remove the check mark next to the setting &quot;&quot;Enforcing Current:&quot;.</li>
 </ol>
-<pre class="literal-block">
-# apt-get install cups-devel python-devel PyQt net-snmp-devel libjpeg-devel
-</pre>
-<ol class="arabic simple" start="11">
-<li>Fedora Core 3 systems need to enter this command:</li>
-</ol>
-<pre class="literal-block">
-# apt-get install sip
-</pre>
-<ol class="arabic simple" start="12">
-<li>For Fedora Core 4, you must disable SELinux protection. Click the Desktop Menu item &gt; System Settings &gt; Security Level &gt; then the SELinux Tab Remove the check mark next to the setting &quot;&quot;Enforcing Current:&quot;.</li>
-</ol>
-<p><em>Alternatively, there is a Fedora Core 4 HPLIP RPM available from Redhat that makes adjusting this security level unnecessary.</em></p>
-<p><a class="reference" href="/install/step3/index.html">Proceed to step 3.</a></p>
+<p><em>Note: There may be a Fedora Core 4/5 RPM available from Redhat that makes adjusting this security level unnecessary.</em></p>
+<p><a class="reference" href="../step3/index.html">Proceed to step 3.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Wed Mar 22 12:53:21 2006</small>
+        <small>Last update: Mon Jun 12 13:52:59 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -198,7 +129,7 @@ rpm http://ayo.freshrpms.net fedora/linux/1/i386 core updates freshrpms
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

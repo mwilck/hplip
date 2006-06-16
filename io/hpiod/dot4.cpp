@@ -240,7 +240,7 @@ int Dot4Channel::Dot4ReverseReply(int fd, unsigned char *buf, int bufsize)
       size = sizeof(DOT4Header);
       while (size > 0)
       {
-         if ((len = pDev->Read(fd, pBuf, size, 2000000)) < 0)   /* wait 2 second */
+         if ((len = pDev->Read(fd, pBuf, size, 4000000)) < 0)   /* wait 4 seconds, 2 fails on PS2575 1200dpi uncompressed scanning  */
          {
             syslog(LOG_ERR, "unable to read Dot4ReverseReply header: %m bytesRead=%zd %s %d\n", sizeof(DOT4Header)-size, __FILE__, __LINE__);
             stat = 2;  /* short timeout */
@@ -323,6 +323,20 @@ int Dot4Channel::Dot4Init(int fd)
             /* hack for usblp.c 2.6.5 */
             syslog(LOG_INFO, "invalid DOT4InitReply retrying... %s %d\n", __FILE__, __LINE__);
             sleep(1);   
+            cnt++;
+            continue;
+         }
+         if (stat == 2 && cnt<1)
+         {
+            /* hack for Fullhouse, Swami and Northstar */
+            syslog(LOG_INFO, "invalid DOT4InitReply retrying command... %s %d\n", __FILE__, __LINE__);
+            memset(buf, 0, sizeof(DOT4Init));
+            n = sizeof(DOT4Init);
+            pCmd->h.length = htons(n);
+            pCmd->h.credit = 1;       /* transaction credit for reply */
+            pCmd->cmd = DOT4_INIT;
+            pCmd->rev = 0x20;
+            pDev->Write(fd, pCmd, n);
             cnt++;
             continue;
          }
@@ -466,9 +480,9 @@ int Dot4Channel::Dot4ReverseData(int fd, int sockid, unsigned char *buf, int len
 
          if (len < 0)
          {
-            /* Got a timeout, if timeout occured after read started thats an error. */
-            if (total > 0)
-               syslog(LOG_ERR, "unable to read Dot4ReverseData header: %m %s %d\n", __FILE__, __LINE__);
+            /* Got a timeout, if exception timeout or timeout occured after read started thats an error. */
+            if (timeout >= EXCEPTION_TIMEOUT || total > 0)
+               syslog(LOG_ERR, "unable to read Dot4ReverseData header: %m %s %s %d\n", pDev->GetURI(), __FILE__, __LINE__);
             goto bugout;
          }
          size-=len;
@@ -518,7 +532,7 @@ int Dot4Channel::Dot4ReverseData(int fd, int sockid, unsigned char *buf, int len
 
       total = 0;  /* eat packet header */
    
-      /* Read packet data field without exception_timeout. */
+      /* Read packet data field with exception_timeout. */
       while (size > 0)
       {
          if ((len = pDev->Read(fd, buf+total, size)) < 0)

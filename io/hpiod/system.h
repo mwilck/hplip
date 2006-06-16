@@ -71,6 +71,7 @@ public:
    int IsUdev(char *dnode);
    int IsInterface(struct usb_device *dev, int dclass);
    int GetModel(char *id, char *buf, int bufSize);
+   int GetModel2(char *id, char *raw, int rawSize, char *buf, int bufSize);
    int GetSerialNum(char *id, char *buf, int bufSize);
    int DeviceCleanUp(SessionAttributes *sa);
    int SetPml(int device, int channel, char *snmp_iod, int type, unsigned char *data, int dataLen, char *sendBuf);

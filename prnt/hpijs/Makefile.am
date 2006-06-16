@@ -2,7 +2,7 @@ docdir	= $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL=HPLIP-0_9_11_11
+APDKLABEL=HPLIP-0_9_11_11C
 APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug
@@ -50,8 +50,8 @@ apdk_SOURCES = models.cpp breaks_open.cpp \
 	interp.h interp_data_50.h io_defs.h job.h models.h modes.h pmselect.h \
 	printer.h psp100.h psp470.h resources.h scaler_open.h scaler_prop.h script.h \
 	systemservices.h unistd_.h djgenericvip.h ljmono.h ljmono.cpp \
-	dj3320.cpp dj3320.h dj3320_cmap.cpp dj3600.cpp dj3600.h dj3600_cmap.cpp ldlencap.h \
-	ljcolor.cpp ljcolor.h pscript.h \
+	dj3320.cpp dj3320.h dj3320_cmap.cpp dj3600.cpp dj3600.h dj3600_cmap.cpp dj4100.h \
+	dj4100_cmap.cpp ldlencap.h ljcolor.cpp ljcolor.h pscript.h \
 	printerproxy.cpp printerfactory.cpp printerproxy.h printerfactory.h \
 	ljjetready.cpp ljjetready.h jdatadbf.c jccolor.c ljfastraster.cpp ljfastraster.h \
 	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h psb9100.h
@@ -108,7 +108,7 @@ www7dir = $(docdir)/troubleshooting
 dist_www7_DATA = $(wwwsrc)/troubleshooting/*
 endif
 
-EXTRA_DIST = $(doc_DATA) ppd foomatic-rip hpijs-ppd gdevijs-krgb-1.2-gs7.07.patch gdevijs-krgb-1.2-gs8.50.patch
+EXTRA_DIST = $(doc_DATA) ppd foomatic-rip hpijs-ppd gdevijs-krgb-1.3-gs8.54.patch
 
 install-data-hook: $(foomatichook) $(cupshook)
 uninstall-hook: $(unfoomatichook) $(uncupshook)

@@ -32,8 +32,9 @@
 #include <sys/time.h>
 #include <usb.h>
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 #else
+#include <linux/compiler.h>
 #include <linux/usbdevice_fs.h>
 
 #ifdef __cplusplus

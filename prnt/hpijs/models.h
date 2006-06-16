@@ -69,6 +69,7 @@ typedef enum PRINTER_TYPE               // typedef'ed for C interface
 	eLJColor,
 	ePScript,
 	eDJ3600,
+    eDJ4100,
 	eLJJetReady,
     eLJFastRaster,
     MAX_PRINTER_TYPE
@@ -106,6 +107,7 @@ const char ModelName[MAX_PRINTER_TYPE][13] =
 	"ColorLaser",
 	"PostScript",
 	"DJ3600",
+    "DJ4100",
 	"LJJetReady",
     "LJFastRaster"
 };

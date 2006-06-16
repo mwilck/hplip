@@ -974,7 +974,7 @@ PyObject *  getPPDPageSize( PyObject * self, PyObject * args )
 
     if( ppd_file != NULL )
     {
-        //ppd_size_t *size;
+        ppd_size_t *size;
         float      width;
         float      length;
 
@@ -987,12 +987,15 @@ PyObject *  getPPDPageSize( PyObject * self, PyObject * args )
             //return Py_BuildValue( "" );
         }
 
-        //size   = ppdPageSize(ppd, page_size->text );
+        size   = ppdPageSize(ppd_file, page_size->text );
+        
+        //PyRun_SimpleString( "print '3'" );
+        
         width  = ppdPageWidth(ppd_file, page_size->text );
         length = ppdPageLength(ppd_file, page_size->text );
         //PyRun_SimpleString( "print '3'" );
 
-        return Py_BuildValue( "(sff)", page_size->text, width, length );
+        return Py_BuildValue("(sffffff)", page_size->text, width, length, size->left, size->bottom, size->right, size->top);
     }
     else
     {

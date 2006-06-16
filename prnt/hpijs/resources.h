@@ -51,5 +51,6 @@ extern const unsigned char HT1200x1200x1_PhotoPres970_open[1024];
 extern const unsigned char HT600x600x4_Pres970_open[1024];
 
 extern const unsigned char HT300x3004level970_open[1024];
+extern const unsigned char HT1200x1200x1PhotoBest_open[];
 
 APDK_END_NAMESPACE

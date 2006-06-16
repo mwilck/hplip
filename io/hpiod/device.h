@@ -71,7 +71,7 @@ typedef struct
    int Interface;
    int AltSetting;
    int urb_write_active;             /* 0=no, 1=yes */
-#if defined(__APPLE__) && defined(__MACH__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 #else
    struct usbdevfs_urb urb_write;     /* host to device */
    struct usbdevfs_urb urb_read;     /* device to host */

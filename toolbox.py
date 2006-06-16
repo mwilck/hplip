@@ -238,7 +238,7 @@ def main(args):
     prop.prog = sys.argv[0]
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'l:hg', 
+        opts, args = getopt.getopt(args, 'l:hg', 
             ['level=', 'help', 'help-rest', 'help-man'])
 
     except getopt.GetoptError:
@@ -289,6 +289,7 @@ def main(args):
     global app
     app = QApplication(sys.argv)
 
+    global hpiod_sock
     hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))

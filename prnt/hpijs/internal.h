@@ -447,6 +447,7 @@ class DJ350Proxy;
 
 #if defined(APDK_DJ3600) && defined (APDK_DJ3320)
 class DJ3600Proxy;
+class DJ4100Proxy;
 #endif
 
 #if defined (APDK_DJ3320)
@@ -588,6 +589,7 @@ public:
 
 #if defined(APDK_DJ3600) && defined (APDK_DJ3320)
     static DJ3600Proxy s_DJ3600Proxy;
+    static DJ4100Proxy s_DJ4100Proxy;
 #endif
 
 #if defined (APDK_DJ3320)
@@ -614,6 +616,7 @@ typedef struct
 {
     const uint32_t *ulMap1;
     const uint32_t *ulMap2;
+    const unsigned char *ulMap3;
 } ColorMap;
 
 

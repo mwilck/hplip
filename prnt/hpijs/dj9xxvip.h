@@ -64,6 +64,16 @@ public:
 
     virtual PHOTOTRAY_STATE PhotoTrayEngaged (BOOL bQueryPrinter);
 
+    inline virtual BOOL SupportSeparateBlack (PrintMode *pCurrentMode)
+    {
+        if (pCurrentMode->medium == mediaAuto ||
+            pCurrentMode->medium == mediaPlain)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
 protected:
 
 #ifdef APDK_HP_UX

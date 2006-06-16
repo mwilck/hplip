@@ -144,6 +144,40 @@ restart() {
         start
 }       
 
+debug() {
+        # Allow core dumps.
+        ulimit -c unlimited
+
+        echo -n $"Starting hpiod: "
+        cd $HPIODDIR
+        ./hpiod >/dev/null 2>&1
+        RETVAL=$?
+        if [ $RETVAL -eq 0 ]; then
+           echo -ne "                                           [  OK  ]\r"
+        else
+           echo -ne "                                           [FAILED]\r"
+        fi
+        echo
+        [ $RETVAL = 0 ] && [ -d /var/lock/subsys ] && touch /var/lock/subsys/hpiod
+        echo -n $"Starting hpssd: "
+        cd $HPSSDDIR
+        ./hpssd.py >/dev/null 2>&1
+        RETVAL=$?
+        if [ $RETVAL -eq 0 ]; then
+           echo -ne "                                           [  OK  ]\r"
+        else
+           echo -ne "                                           [FAILED]\r"
+        fi
+        echo
+        [ $RETVAL = 0 ] && [ -d /var/lock/subsys ] && touch /var/lock/subsys/hpssd.py
+        if [ -f /var/lock/subsys/hpiod -a -f /var/lock/subsys/hpssd.py ]; then
+           touch /var/lock/subsys/hplip
+           return 0
+        else
+           return 1
+	fi
+}
+
 case "$1" in
   start)
         start
@@ -160,6 +194,9 @@ case "$1" in
         ;;
   condrestart)
         [ -f /var/lock/subsys/hpiod ] && [ -f /var/lock/subsys/hpssd.py ] && restart || :
+        ;;
+  debug)
+        debug
         ;;
   *)
         echo $"Usage: $0 {start|stop|status|restart|condrestart}"

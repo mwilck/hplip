@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.4'
+__version__ = '2.5'
 __title__ = 'Printer Cartridge Alignment Utility'
 __doc__ = "Cartridge alignment utility for HPLIP supported inkjet printers."
 
@@ -59,10 +59,10 @@ USAGE = [(__doc__, "", "name", True),
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-align', __version__)
     sys.exit(0)
-    
+
 
 def enterNumber(text, minimum, maximum):
     while True:
@@ -111,6 +111,9 @@ def bothPensRequired():
 def invalidPen():
     log.error("Invalid cartridge(s) installed.\nPlease install valid cartridges and try again.")
 
+def invalidPen2():
+    log.error("Invalid cartridge(s) installed. Cannot align with only the photo cartridge installed.\nPlease install other cartridges and try again.")
+
 def aioUI1():
     log.info("To perform alignment, you will need the alignment page that is automatically\nprinted after you install a print cartridge.")
     log.info("If you would like to cancel, enter 'C' or 'c'")
@@ -135,38 +138,13 @@ def aioUI1():
     elif x[0] == 'y':
         return True
 
-def type10Align(pattern):
-    if pattern == 1:
-        controls = { 'A' : (True, 23),
-                     'B' : (True, 9),
-                     'C' : (True, 9),
-                     'D' : (False, 0),
-                     'E' : (False, 0),
-                     'F' : (False, 0),
-                     'G' : (False, 0),
-                     'H' : (False, 0),}
-    elif pattern == 2:
-        controls = { 'A' : (True, 23),
-                     'B' : (True, 17),
-                     'C' : (True, 23),
-                     'D' : (True, 23),
-                     'E' : (True, 9),
-                     'F' : (True, 9),
-                     'G' : (True, 9),
-                     'H' : (True, 9),}
-    
-    elif pattern == 3:
-        controls = { 'A' : (True, 23),
-                     'B' : (True, 9),
-                     'C' : (True, 23),
-                     'D' : (True, 23),
-                     'E' : (True, 9),
-                     'F' : (True, 9),
-                     'G' : (True, 9),
-                     'H' : (True, 9),}    
-
+def type10and11Align(pattern, align_type):
+    controls = maint.align10and11Controls(pattern, align_type)
     values = []
-    for line in controls:
+    s_controls = controls.keys()
+    s_controls.sort()
+
+    for line in s_controls:
         if not controls[line][0]:
             values.append(0)
         else:
@@ -174,13 +152,12 @@ def type10Align(pattern):
                            1, controls[line][1] )
             if not cont:
                 sys.exit(0)
-            
+
             values.append(value)
-                
 
     return values
-    
-                
+
+
 def aioUI2():
     log.info("")
     log.info(utils.bold("Follow these steps to complete the alignment:"))
@@ -217,7 +194,7 @@ if os.getenv("HPLIP_DEBUG"):
 for o, a in opts:
     if o in ('-h', '--help'):
         usage()
-    
+
     elif o == '--help-rest':
         usage('rest')
 
@@ -242,7 +219,7 @@ for o, a in opts:
         log_level = a.lower().strip()
         if not log.set_level(log_level):
             usage()
-            
+
     elif o == '-g':
         log.set_level('debug')
 
@@ -256,7 +233,7 @@ if device_uri and printer_name:
     usage()
 
 utils.log_title(__title__, __version__)
-    
+
 if not device_uri and not printer_name:
     try:
         device_uri = device.getInteractiveDeviceURI(bus)
@@ -280,55 +257,58 @@ if d.device_uri is None and device_uri:
     log.error("Malformed/invalid device-uri: %s" % device_uri)
     sys.exit(0)
 
-    
+
 try:
     try:
         d.open()
     except Error:
         log.error("Device is busy or in an error state. Please check device and try again.")
         sys.exit(1)
-    
+
     if d.isIdleAndNoError():
         align_type = d.mq.get('align-type', 0)
         log.debug("Alignment type=%d" % align_type)
-        
+
         if align_type == ALIGN_TYPE_NONE:
             log.error("Alignment not supported or required by device.")
             sys.exit(0)
-        
+
         if align_type == ALIGN_TYPE_AUTO:
             maint.AlignType1(d, loadPlainPaper)
-        
+
         elif align_type == ALIGN_TYPE_8XX:
             maint.AlignType2(d, loadPlainPaper, enterAlignmentNumber,
                               bothPensRequired)
-        
+
         elif align_type in (ALIGN_TYPE_9XX,ALIGN_TYPE_9XX_NO_EDGE_ALIGN):
             maint.AlignType3(d, loadPlainPaper, enterAlignmentNumber,
                               enterPaperEdge, update_spinner)
-        
+
         elif align_type == ALIGN_TYPE_LIDIL_AIO:
             maint.AlignType6(d, aioUI1, aioUI2, loadPlainPaper)
-        
+
         elif align_type == ALIGN_TYPE_DESKJET_450:
             maint.AlignType8(d, loadPlainPaper, enterAlignmentNumber)
-        
+
         elif align_type in (ALIGN_TYPE_LIDIL_0_3_8, ALIGN_TYPE_LIDIL_0_4_3, ALIGN_TYPE_LIDIL_VIP):
-        
+
             maint.AlignxBow(d, align_type, loadPlainPaper, enterAlignmentNumber, enterPaperEdge,
                              invalidPen, colorAdj)
-                             
-        elif align_type == ALIGN_TYPE_LBOW:
-            maint.AlignType10(d, loadPlainPaper, type10Align)
-            
+
+        elif align_type  == ALIGN_TYPE_LBOW:
+            maint.AlignType10(d, loadPlainPaper, type10and11Align)
+
+        elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
+            maint.AlignType11(d, loadPlainPaper, type10and11Align, invalidPen2)
+
         else:
             log.error("Invalid alignment type.")
-    
+
     else:
         log.error("Device is busy or in an error state. Please check device and try again.")
 
 finally:
     d.close()
-    
+
 log.info("")
 log.info('Done.')

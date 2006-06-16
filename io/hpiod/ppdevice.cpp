@@ -834,7 +834,8 @@ int ParDevice::Open(char *sendBuf, int *result)
       if ((OpenFD = open(dev, O_RDWR | O_NOCTTY)) < 0)            
       {
          *result = R_IO_ERROR;
-         syslog(LOG_ERR, "unable to ParDevice::Open %s: %m: %s %d\n", URI, __FILE__, __LINE__);
+         if (strcmp(uriModel, "ANY") != 0)
+            syslog(LOG_ERR, "unable to ParDevice::Open %s: %m: %s %d\n", URI, __FILE__, __LINE__);
          goto blackout;
       }
 

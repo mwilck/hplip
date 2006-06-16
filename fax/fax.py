@@ -623,26 +623,28 @@ class FaxSendThread(threading.Thread):
                 for fax_file in self.fax_file_list: # (file, type, desc, title)
                     fax_file_name, fax_file_type, fax_file_desc, fax_file_title, fax_file_pages = fax_file
 
-                    if fax_file_type == "application/hplip-fax": # already rendered
-                        self.rendered_file_list.append((fax_file_name, "application/hplip-fax", "HP Fax", fax_file_title))
-                        log.debug("Processing pre-rendered file: %s (%d pages)" % (fax_file_name, fax_file_pages))
-
-                    elif fax_file_type == "application/hplip-fax-coverpage": # render later
+                    if fax_file_type == "application/hplip-fax-coverpage": # render later
                         cover_page_present = True
                         log.debug("Skipping coverpage")
 
+                    #if fax_file_type == "application/hplip-fax": # already rendered
                     else:
-                        log.debug("Processing file: %s" % fax_file_name)
-                        # render each file
-                        f, canceled = self.render_file(fax_file_name, fax_file_title, fax_file_type)
+                        self.rendered_file_list.append((fax_file_name, "application/hplip-fax", "HP Fax", fax_file_title))
+                        log.debug("Processing pre-rendered file: %s (%d pages)" % (fax_file_name, fax_file_pages))
 
-                        if canceled:
-                            state = STATE_ABORTED
-                        elif not f:
-                            state = STATE_ERROR # Timeout
-                        else:
-                            log.debug("Rendered file into %s" % f)
-                            self.rendered_file_list.append((f, "application/hplip-fax", "HP Fax", fax_file_title))
+
+##                    else:
+##                        log.debug("Processing file: %s" % fax_file_name)
+##                        # render each file
+##                        f, canceled = self.render_file(fax_file_name, fax_file_title, fax_file_type)
+##
+##                        if canceled:
+##                            state = STATE_ABORTED
+##                        elif not f:
+##                            state = STATE_ERROR # Timeout
+##                        else:
+##                            log.debug("Rendered file into %s" % f)
+##                            self.rendered_file_list.append((f, "application/hplip-fax", "HP Fax", fax_file_title))
 
                     if self.check_for_cancel():
                         state = STATE_ABORTED

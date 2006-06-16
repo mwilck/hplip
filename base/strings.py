@@ -42,6 +42,12 @@ string_table = {
 
 '501' :             (lambda : _('Print job has completed.'),
                      ''),
+                     
+'600' :             (lambda : _('Started rendering a fax job.'),
+                     ''),
+
+'601' :             (lambda : _('Rendering job completed.'),
+                     ''),
 
 '1000' :            (lambda : _('The printer is idle.'),
                       ''),
@@ -280,6 +286,18 @@ string_table = {
 '3005' :            (lambda : _('Fax receive job continuing.'),
                       ''),
 
+'4000' :            (lambda : _('Copy job started.'),
+                      ''),
+
+'4001' :            (lambda : _('Copy job complete.'),
+                      ''),
+
+'4002' :            (lambda : _('Copy job failed.'),
+                      '%try_again%'),
+
+'4003' :            (lambda : _('Copy job canceled.'),
+                      ''),
+
 '5002' :            (lambda : _('Device is powered down or unplugged.'),
                       '%5012%'),
 
@@ -287,6 +305,9 @@ string_table = {
                       '%try_again%'),
 
 '5021' :            (lambda : _('Device is busy.'),
+                      ''),
+
+'5022' :            (lambda : _('No data.'),
                       ''),
 
 '5030' :            ('%unknown_error%',
@@ -302,7 +323,7 @@ string_table = {
                       '%try_again%'),
                       
 '5052' :            (lambda : _('To send a fax you must run hp-sendfax first.'),
-                      'Restart the CUPS queue and run hp-sendfax.'),
+                      'Run hp-sendfax now to continue. Fax will resume within 30 seconds.'),
                       
 '6000' :            (lambda : _('Photocard unload started.'),
                       ''),

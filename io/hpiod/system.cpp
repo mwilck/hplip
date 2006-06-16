@@ -273,6 +273,27 @@ int System::GeneralizeSerial(char *sz, char *buf, int bufSize)
    return i;   /* length does not include zero termination */
 }
 
+int System::GetModel2(char *id, char *raw, int rawSize, char *buf, int bufSize)
+{
+   char *pMd;
+   int i;
+
+   buf[0] = 0;
+
+   if ((pMd = strstr(id, "MDL:")) != NULL)
+      pMd+=4;
+   else if ((pMd = strstr(id, "MODEL:")) != NULL)
+      pMd+=6;
+   else
+      return 0;
+
+   for (i=0; (pMd[i] != ';') && (i < rawSize); i++)
+      raw[i] = pMd[i];
+   raw[i] = 0;
+
+   return GeneralizeModel(pMd, buf, bufSize);
+}
+
 //System::GetModel
 //! Parse the model from the IEEE 1284 device id string.
 /*!
@@ -441,9 +462,11 @@ int System::UsbDiscovery(char *lst, int *cnt)
    struct usb_bus *bus;
    struct usb_device *dev;
    usb_dev_handle *hd;
+   char rmodel[128];
+   char rserial[128];
    char model[128];
    char serial[128];
-   char sz[256];
+   char sz[LINE_SIZE];
    int size=0;
 
    usb_find_busses();
@@ -459,28 +482,37 @@ int System::UsbDiscovery(char *lst, int *cnt)
             continue;
          }
 
-         model[0] = serial[0] = sz[0] = 0;
+         model[0] = serial[0] = rmodel[0] = rserial[0] = sz[0] = 0;
 
          if (dev->descriptor.idVendor == 0x3f0 && IsInterface(dev, 7))
          {
             /* Found hp device. */
-            if (usb_get_string_simple(hd, dev->descriptor.iProduct, sz, sizeof(sz)) < 0)
+            if (usb_get_string_simple(hd, dev->descriptor.iProduct, rmodel, sizeof(rmodel)) < 0)
                syslog(LOG_ERR, "invalid product id string: %m %s %d\n", __FILE__, __LINE__);
             else
-               GeneralizeModel(sz, model, sizeof(model));
+               GeneralizeModel(rmodel, model, sizeof(model));
 
-            if (usb_get_string_simple(hd, dev->descriptor.iSerialNumber, sz, sizeof(sz)) < 0)
+            if (usb_get_string_simple(hd, dev->descriptor.iSerialNumber, rserial, sizeof(rserial)) < 0)
                syslog(LOG_ERR, "invalid serial id string: %m %s %d\n", __FILE__, __LINE__);
             else
-               GeneralizeSerial(sz, serial, sizeof(serial));
+               GeneralizeSerial(rserial, serial, sizeof(serial));
 
             if (!serial[0])
                strcpy(serial, "0"); /* no serial number, make it zero */
 
             if (model[0])
             {
-               sprintf(sz, "hp:/usb/%s?serial=%s", model, serial);
-               size += sprintf(lst+size,"direct %s \"HP %s\" \"%s\"\n", sz, model, sz);
+               snprintf(sz, sizeof(sz), "hp:/usb/%s?serial=%s", model, serial);
+
+               /*
+                * For Cups 1.2 we append a dummy deviceid. A valid deviceid would require us to claim the USB interface, thus removing usblp. 
+                * This will allow us to do discovery and not disable other CUPS backend(s) who use /dev/usb/lpx instead of libusb.
+                */
+               if (strncasecmp(rmodel, "hp ", 3) == 0)
+                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, &rmodel[3], &rmodel[3], rmodel, rmodel, rserial);
+               else
+                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, rmodel, rmodel, rmodel, rmodel, rserial);
+
                *cnt+=1;
             }
 	 }
@@ -499,7 +531,8 @@ int System::UsbDiscovery(char *lst, int *cnt)
 int System::ParDiscovery(char *lst, int *cnt)
 {
    MsgAttributes ma2;
-   char dev[255];
+   char dev[LINE_SIZE];
+   char rmodel[128];
    char model[128];
    char sendBuf[2048];
    char *id;
@@ -519,9 +552,13 @@ int System::ParDiscovery(char *lst, int *cnt)
 
          if (id[0] != 0 && IsHP(id))
          {
-            GetModel(id, model, sizeof(model));
-            sprintf(dev, "hp:/par/%s?device=/dev/parport%d", model, i);
-            size += sprintf(lst+size,"direct %s \"HP %s\" \"%s\"\n", dev, model, dev);
+            GetModel2(id, rmodel, sizeof(rmodel), model, sizeof(model));
+            snprintf(dev, sizeof(dev), "hp:/par/%s?device=/dev/parport%d", model, i);
+
+            if (strncasecmp(rmodel, "hp ", 3) == 0)
+               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s HPLIP\" \"%s\"\n", dev, &rmodel[3], &rmodel[3], id);
+            else
+               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s HPLIP\" \"%s\"\n", dev, rmodel, rmodel, id);
             *cnt+=1;
          }
       }

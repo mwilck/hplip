@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.0'
+__version__ = '2.1'
 __title__ = 'Dependency/Version Check Utility'
 __doc__ = "Check the existence and versions of HPLIP dependencies."
 
@@ -114,7 +114,7 @@ log.info(utils.bold("Basic system info..."))
 status, output = run('uname -a')
 log.info("--> %s" % output)
 
-log.info(utils.bold("\nCurrently (previously) installed version..."))
+log.info(utils.bold("\nCurrently/previously installed version..."))
 v = sys_cfg.hplip.version
 if v:
     log.info("--> %s" % v )
@@ -218,7 +218,7 @@ log.info(utils.bold("\nChecking for library dependencies..."))
 ldconfig = utils.which('ldconfig')
 status, output = run('%s -p' % os.path.join(ldconfig, 'ldconfig'))
 
-checklib(output, "libsnmp")
+checklib(output, "libnetsnmp")
 checklib(output, "libjpeg")
 checklib(output, "libusb")
 checklib(output, "libcrypto")

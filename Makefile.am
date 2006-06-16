@@ -11,13 +11,25 @@ hplipdir = $(datadir)/hplip
 rundir = /var/run
 
 docdir = $(datadir)/doc/$(distdir)
-doc_DATA = COPYING 
+doc_DATA = COPYING scan/sane/hpaio.desc
 
 wwwsrc = doc
-
 www0dir = $(docdir)
-dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
-    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+
+dist_www0_DATA = $(wwwsrc)/contacts.html \
+                 $(wwwsrc)/faqs.html \
+                 $(wwwsrc)/features.html \
+                 $(wwwsrc)/index.html \
+                 $(wwwsrc)/legal.html \
+                 $(wwwsrc)/license.html \
+                 $(wwwsrc)/mailing_lists.html \
+                 $(wwwsrc)/release_notes.html \
+                 $(wwwsrc)/screenshots.html \
+                 $(wwwsrc)/support_statement.html \
+                 $(wwwsrc)/system_requirements.html \
+                 $(wwwsrc)/about.html \
+                 $(wwwsrc)/other_support.html
+
 www1dir = $(docdir)/howtos
 dist_www1_DATA = $(wwwsrc)/howtos/*
 www2dir = $(docdir)/install
@@ -121,7 +133,7 @@ noinst_DATA = build-pcardext build-cupsext
 # prnt
 prntdir = $(hplipdir)/prnt
 cupsextdir = $(hplipdir)/prnt/cupsext
-dist_prnt_SCRIPTS = prnt/cups.py prnt/__init__.py prnt/ldl.py prnt/pcl.py prnt/colorcal.py 
+dist_prnt_SCRIPTS = prnt/cups.py prnt/__init__.py prnt/ldl.py prnt/pcl.py prnt/colorcal.py prnt/printable_areas.py
 #noinst_SCRIPTS = prnt/cupsext/setup.py prnt/cupsext/cupsext.c build-cupsext
 #noinst_DATA = build-cupsext
 
@@ -171,7 +183,7 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/colorcal4form_base.py ui/colorcal4form_base.ui ui/printerform.py ui/printerform_base.ui ui/printerform_base.py \
     ui/faxaddrbookgroupsform_base.py ui/faxaddrbookgroupeditform_base.py ui/faxaddrbookform_base.py \
     ui/faxaddrbookform.py ui/faxaddrbookeditform_base.py ui/align10form.py ui/align10form_base.py \
-    ui/informationform_base.py ui/informationform.py ui/supportform_base.py ui/supportform.py \
+    ui/informationform_base.py ui/informationform.py  \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
     ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py
 
@@ -180,7 +192,7 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
     ui/nodevicesform_base.ui ui/cleaningform_base.ui ui/colorcalform_base.ui ui/devmgr4_base.ui ui/loadpaperform_base.ui \
     ui/cleaningform2_base.ui ui/waitform_base.ui ui/coloradjform_base.ui ui/faxaddrbookeditform_base.ui \
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
-    ui/align10form_base.ui ui/informationform_base.ui ui/supportform_base.ui \
+    ui/align10form_base.ui ui/informationform_base.ui  \
     plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
     ui/faxallowabletypesdlg_base.ui
 
@@ -197,6 +209,22 @@ build-cupsext:
 	cd prnt/cupsext; \
 	$(PYTHON) setup.py build
 
+install-pcardext:
+	cd pcard/pcardext; \
+	if [ "$(DESTDIR)" = "" ]; then \
+	   $(PYTHON) setup.py install; \
+	else \
+	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
+	fi
+
+install-cupsext:
+	cd prnt/cupsext; \
+	if [ "$(DESTDIR)" = "" ]; then \
+	   $(PYTHON) setup.py install; \
+	else \
+	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
+	fi
+
 install-exec-hook: test-destdir
 #
 #       Do full install if not rpm_install.
@@ -212,7 +240,7 @@ install-exec-hook: test-destdir
 	   fi \
 	fi
 
-install-data-hook: test-destdir
+install-data-hook: test-destdir install-pcardext install-cupsext
 	if [ "$(ICON_FILE)" = "hplip.desktop" ]; then \
 	   echo -e "[Desktop Entry]" > $(srcdir)/$(ICON_FILE); \
 	   echo -e "Version=0.6" >> $(srcdir)/$(ICON_FILE); \
@@ -247,22 +275,6 @@ install-data-hook: test-destdir
 	   fi \
 	fi
 #
-#       Install pcard extension.
-	cd pcard/pcardext; \
-	if [ "$(DESTDIR)" = "" ]; then \
-	   $(PYTHON) setup.py install; \
-	else \
-	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
-	fi
-#
-#       Install cups extension.
-	cd prnt/cupsext; \
-	if [ "$(DESTDIR)" = "" ]; then \
-	   $(PYTHON) setup.py install; \
-	else \
-	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
-	fi
-##
 #       Remove .py extensions in destdir and if not rpm_install create hp-xxx commands in bindir.
 	for i in $(dist_cmd_SCRIPTS); do \
 	    newname=$${i%.*}; \
@@ -370,5 +382,5 @@ dist-hook:
 	   cp -f data/xml/unreleased/*.xml $(distdir)/data/xml/; \
 	fi
 
-.PHONY: build-pcardext build-cupsext test-destdir
+.PHONY: build-pcardext build-cupsext install-pcardext install-cupsext test-destdir
 

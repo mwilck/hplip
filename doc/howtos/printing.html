@@ -58,10 +58,9 @@
                 <menu compact="compact">
                     <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
                     <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
@@ -73,12 +72,148 @@
         <td align="left" valign="top" class="content">
         <div class="document" id="printing-how-tos">
 <h1 class="title">Printing How-Tos</h1>
-<p>This section is in progress and will feature how to print full bleed photos, and how to print from GIMP as well as other useful information on printing.</p>
+<p><a class="reference" href="#kview">Fullbleed Printing Method Number 1: Using KView or Gwenview</a></p>
+<p><a class="reference" href="#lpr">Fullbleed Printing Method Number 2: Using lpr</a></p>
+<p><a class="reference" href="#troubleshooting">Fullbleed Troubleshooting</a></p>
+<p><a class="reference" href="#gimp">Printing from The GIMP</a></p>
+<div class="section">
+<h1><a id="id1" name="id1"><span id="kview"></span>Fullbleed Printing Method Number 1: Using KView or Gwenview</a></h1>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_1.png" src="../images/fullbleed_1.png" />
+<p class="caption">Image before scaled to correct size in GIMP</p>
+</div>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li>Open the image to be printed with with GIMP</li>
+<li>Click the &quot;Image&quot; toolbar.</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_2.png" src="../images/fullbleed_2.png" />
+<p class="caption">Image toolbar</p>
+</div>
+<ol class="arabic simple" start="3">
+<li>Click &quot;Scale Image...&quot;</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_3.png" src="../images/fullbleed_3.png" />
+<p class="caption">Scale Image dialog</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Click the &quot;link&quot; between Width and Height, this breaks the aspect link.</li>
+<li>Change the &quot;pixels&quot; drop down to &quot;inches&quot;</li>
+<li>Change the Width/Height to the appropriate paper size. Ie, Width &quot;8.5&quot; Height &quot;11&quot;</li>
+<li>Click &quot;Scale&quot;, the image may change size in the GIMP viewer.</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_4.png" src="../images/fullbleed_4.png" />
+<p class="caption">Image after scaled to correct size in GIMP</p>
+</div>
+<ol class="arabic simple" start="8">
+<li>Click File &quot;Save as...&quot;</li>
+<li>Change the &quot;Save in Folder..&quot; and the file name to something other than the original file.</li>
+<li>Click &quot;Save&quot;</li>
+<li>Dialog may appear regarding &quot;Image Quality&quot;, change this to 100.</li>
+<li>Click &quot;Ok&quot;, the image should be saved.</li>
+<li>Close/Exit GIMP</li>
+<li>Open the image using KVIEW or GWenview. (right click, open with kview, etc)</li>
+<li>Click File then Print.  The print dialog appears.</li>
+<li>Select the printer to be used to print.</li>
+<li>Click the &quot;Properties&quot; button.</li>
+<li>On the General Tab, verify, Page Size and Orientation.</li>
+<li>On the Margins Tab, verify, &quot;Use custom margins&quot; is checked.  All margins set to 0.000.</li>
+<li>On the Driver Settings Tab, verify, Page Size, and Resolution, Ink Type, Media Type.  The latter option MUST be something like &quot;1200 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper&quot;</li>
+<li>Click Ok</li>
+<li>Click the Image Settings Tab</li>
+<li>Make sure &quot;Fit image to page size&quot; and &quot;Center image on page&quot; are checked.</li>
+<li>Click Print.</li>
+</ol>
+</div>
+<div class="section">
+<h1><a id="id2" name="id2"><span id="lpr"></span>Fullbleed Printing Method Number 2: Using lpr</a></h1>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_1.png" src="../images/fullbleed_1.png" />
+<p class="caption">Image before scaled to correct size in GIMP</p>
+</div>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li>Open the image to be printed with with GIMP</li>
+<li>Click the &quot;Image&quot; toolbar.</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_2.png" src="../images/fullbleed_2.png" />
+<p class="caption">Image toolbar</p>
+</div>
+<ol class="arabic simple" start="3">
+<li>Click &quot;Scale Image...&quot;</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_3.png" src="../images/fullbleed_3.png" />
+<p class="caption">Scale Image dialog</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Click the &quot;link&quot; between Width and Height, this breaks the aspect link.</li>
+<li>Change the &quot;pixels&quot; drop down to &quot;inches&quot;</li>
+<li>Change the Width/Height to the appropriate paper size. Ie, Width &quot;8.5&quot; Height &quot;11&quot;</li>
+<li>Click &quot;Scale&quot;, the image may change size in the GIMP viewer.</li>
+</ol>
+<div align="center" class="figure">
+<img alt="../images/fullbleed_4.png" src="../images/fullbleed_4.png" />
+<p class="caption">Image after scaled to correct size in GIMP</p>
+</div>
+<ol class="arabic simple" start="8">
+<li>Click File &quot;Save as...&quot;</li>
+</ol>
+<p><strong>Note</strong>: Make sure to save the filename is .ps (or postscript)!</p>
+<ol class="arabic simple" start="9">
+<li>Change the &quot;Save in Folder..&quot; and the file name to something other than the original file.</li>
+<li>Click &quot;Save&quot;</li>
+<li>The &quot;Save as Postscript&quot; dialog will appear, change the &quot;Unit&quot; to Inches, and verify the demensions match for the paper size you are printing to.</li>
+<li>Click &quot;Ok&quot;, the image should be saved.</li>
+<li>Close/Exit GIMP</li>
+<li>Open a terminal window.</li>
+<li>Goto the directory where you saved the image.  Example:</li>
+</ol>
+<pre class="literal-block">
+cd ~/Desktop
+</pre>
+<ol class="arabic simple" start="16">
+<li>Enter this command:</li>
+</ol>
+<pre class="literal-block">
+lpr -Pprinter_name filename.ps
+</pre>
+</div>
+<div class="section">
+<h1><a id="id3" name="id3"><span id="troubleshooting"></span>Fullbleed Troubleshooting</a></h1>
+<ol class="arabic simple">
+<li>Make sure the image is scaled to the same size as the paper.</li>
+<li>Make sure the printer is set to fullbleed mode.  This is found on the printer properties dialog or in the CUPS printer administration page.</li>
+<li>Make sure your printer is set to use the correct size of paper that you are trying to print on.</li>
+<li>Make sure the printer is set to the correct region and language.</li>
+<li>Make sure the print orientation is set correctly.</li>
+</ol>
+<p><strong>Special Note regarding orientation:</strong>  If the page orentiation is portrait, and you want to print a fullbleed 3x5 photo, make sure the photo is scaled to 3&quot; width, by 5&quot; height.  If you wish to print the image in the landscape orentiation make sure to scale the image to the correct size and orentiation.</p>
+</div>
+<div class="section">
+<h1><a id="id4" name="id4"><span id="gimp"></span>Printing from The GIMP</a></h1>
+<p><em>NOTE: HP recommends that you use GIMPPrint/GuttenPrint v5.0 or greater.</em></p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li>Select &quot;Print...&quot; in GIMP.</li>
+<li>Click &quot;Setup Printer...&quot;</li>
+<li>For the Printer Make:, choose &quot;Adobe&quot;</li>
+<li>For the Printer Model, choose &quot;PostScript Level 2&quot;</li>
+<li>Make sure that &quot;Standard Command&quot; is selected.</li>
+<li>For &quot;Printer Queue&quot;, choose your CUPS installed printer/queue.</li>
+<li>Click &quot;OK&quot;</li>
+<li>Click &quot;Print&quot; on the print dialog.</li>
+</ol>
+</div>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Thu Mar 16 17:21:04 2006</small>
+        <small>Last update: Mon Jun 12 13:52:59 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -93,7 +228,7 @@
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

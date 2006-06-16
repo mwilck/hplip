@@ -123,7 +123,7 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
                 parseDeviceURI(d)
 
             if bus == 'par': # ...parallel does not. Must get Device ID to obtain it...
-                
+
                 mq, data, result_code = \
                     msg.xmitMessage(hpssd_sock, 'QueryModel', None, 
                     {'device-uri' : d,})
@@ -136,7 +136,7 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
                                       'io-control' :  mq.get('io-control', '0'),
                                       'io-scan-port': mq.get('io-scan-port', '0'),
                                     })
-                                    
+
                 if result_code == ERROR_SUCCESS:
                     device_id = fields['device-id']
 
@@ -199,16 +199,19 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=[
         return devices[0][0]
 
     else:
+        rows, cols = utils.ttysize()
+        if cols > 100: cols = 100
+        
         log.info(utils.bold("\nChoose device from probed devices connected on bus(es): %s:\n" % bus))
         formatter = utils.TextFormatter(
                 (
                     {'width': 4},
                     {'width': max_deviceid_size, 'margin': 2},
-                    {'width': 100-max_deviceid_size-8, 'margin': 2},
+                    {'width': cols-max_deviceid_size-8, 'margin': 2},
                 )
             )
         log.info(formatter.compose(("Num.", "Device-URI", "CUPS printer(s)")))
-        log.info(formatter.compose(('-'*4, '-'*(max_deviceid_size), '-'*(80-max_deviceid_size-10))))
+        log.info(formatter.compose(('-'*4, '-'*(max_deviceid_size), '-'*(cols-max_deviceid_size-10))))
 
         for y in range(x):
             log.info(formatter.compose((str(y), devices[y][0], ', '.join(devices[y][1]))))
@@ -241,7 +244,7 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=[
 
 
 def probeDevices(sock=None, bus='cups,usb,par', timeout=5,
-                  ttl=4, filter='none', format='default'):
+                  ttl=4, filter='none', format='cups'):
 
     close_sock = False
 
@@ -262,8 +265,8 @@ def probeDevices(sock=None, bus='cups,usb,par', timeout=5,
                            'bus' : bus,
                            'timeout' : timeout,
                            'ttl' : ttl,
-                           'format' : format,
                            'filter' : filter,
+                           'format' : 'cups'
                           }
                        )
 
@@ -277,7 +280,7 @@ def probeDevices(sock=None, bus='cups,usb,par', timeout=5,
     probed_devices = []
 
     for t in temp:
-        probed_devices.append(t.split(',')[0])
+        probed_devices.append(t.split()[0])
 
     return probed_devices
 
@@ -558,7 +561,7 @@ class Device(object):
         log.debug("hpssd socket: %d" % self.hpssd_sock.fileno())
 
         service.setAlertsEx(self.hpssd_sock)
-        
+
         self.mq = {} # Model query
         self.dq = {} # Device query
         self.cups_printers = []
@@ -906,7 +909,90 @@ class Device(object):
         return status.parseStatus(parseDeviceID(self.raw_deviceID))
 
 
-    def queryDevice(self, quick=False):
+    def __parseRValues(self, r_value):
+        r_value_str = str(r_value)
+        r_value_str = ''.join(['0'*(9 - len(r_value_str)), r_value_str])
+        rg, rr = r_value_str[:3], r_value_str[3:]
+        r_value = int(rr)
+        self.r_values = r_value, r_value_str, rg, rr
+        return r_value, r_value_str, rg, rr
+    
+    
+    def getRValues(self, r_type, status_type, dynamic_counters):
+        r_value, r_value_str, rg, rr = 0, '000000000', '000', '000000'
+        
+        if r_type > 0 and \
+            dynamic_counters != STATUS_DYNAMIC_COUNTERS_NONE:
+            
+            if self.r_values is None:
+                fields, data, result_code = \
+                    self.xmitHpssdMessage('GetValue', {'device-uri': self.device_uri, 'key': 'r_value'})
+
+                if result_code == ERROR_SUCCESS and data:
+                    try:
+                        r_value = int(data.strip())
+                    except:
+                        pass
+                    else:
+                        log.debug("r_value=%d" % r_value)
+                        r_value, r_value_str, rg, rr = self.__parseRValues(r_value)
+                        
+                        return r_value, r_value_str, rg, rr
+
+            if self.r_values is None:   
+            
+                if status_type ==  STATUS_TYPE_S and \
+                    self.is_local and \
+                    dynamic_counters != STATUS_DYNAMIC_COUNTERS_PML_SNMP:
+                    
+                    try:    
+                        try:
+                            r_value = self.getDynamicCounter(140)
+
+                            if r_value is not None:
+                                log.debug("r_value=%d" % r_value)
+                                r_value, r_value_str, rg, rr = self.__parseRValues(r_value)
+
+                                fields, data, result_code = \
+                                    self.xmitHpssdMessage('SetValue', {'device-uri': self.device_uri, 'key': 'r_value', 'value': r_value})
+
+                            else:
+                                log.error("Error attempting to read r-value (2).")
+                                r_value = 0
+                        except Error:
+                            log.error("Error attempting to read r-value (1).")
+                            r_value = 0
+                    finally:
+                        self.closePrint()
+
+
+                elif (status_type ==  STATUS_TYPE_S and 
+                      dynamic_counters == STATUS_DYNAMIC_COUNTERS_PCL and 
+                      not self.is_local) or \
+                      dynamic_counters == STATUS_DYNAMIC_COUNTERS_PML_SNMP:
+
+                    try:
+                        result_code, r_value = self.getPML(pml.OID_R_SETTING)
+
+                        if r_value is not None:
+                            log.debug("r_value=%d" % r_value)
+                            r_value, r_value_str, rg, rr = self.__parseRValues(r_value)
+                                
+                            fields, data, result_code = \
+                                self.xmitHpssdMessage('SetValue', {'device-uri': self.device_uri, 'key': 'r_value', 'value': r_value})
+                        else:
+                            r_value = 0
+
+                    finally:
+                        self.closePML()
+
+            else:
+                r_value, r_value_str, rg, rr = self.r_values
+
+        return r_value, r_value_str, rg, rr
+        
+        
+    def queryDevice(self, quick=False, no_fwd=False):
         if not self.supported:
             self.dq = {}
             return
@@ -914,6 +1000,8 @@ class Device(object):
         r_type = self.mq.get('r-type', 0)
         tech_type = self.mq.get('tech-type', TECH_TYPE_NONE)
         status_type = self.mq.get('status-type', STATUS_TYPE_NONE)
+        battery_check = self.mq.get('status-battery-check', STATUS_BATTERY_CHECK_NONE)
+        dynamic_counters = self.mq.get('status-dynamic-counters', STATUS_DYNAMIC_COUNTERS_NONE)
         io_mode = self.mq.get('io-mode', IO_MODE_UNI)
 
         # Turn off status if local connection and bi-di not avail.
@@ -960,9 +1048,9 @@ class Device(object):
 
             if status_type == STATUS_TYPE_NONE:
                 log.warn("No status available for device.")
-                status_block = {'status-code' : STATUS_PRINTER_IDLE}
+                status_block = {'status-code' : STATUS_UNKNOWN}
 
-            elif status_type in (STATUS_TYPE_VSTATUS, STATUS_TYPE_S, STATUS_TYPE_S_SNMP):
+            elif status_type in (STATUS_TYPE_VSTATUS, STATUS_TYPE_S):
                 log.debug("Type 1/2 (S: or VSTATUS:) status")
                 status_block = status.parseStatus(self.deviceID)
 
@@ -970,17 +1058,15 @@ class Device(object):
                 log.debug("Type 3 LaserJet status")
                 status_block = status.StatusType3(self, self.deviceID)
 
-            elif status_type == STATUS_TYPE_S_W_BATTERY:
-                log.debug("Type 4 S: status with battery check")
-                status_block = status.parseStatus(self.deviceID)
-                status.BatteryCheck(self, status_block)
-
             elif status_type == STATUS_TYPE_LJ_XML:
                 log.debug("Type 6: LJ XML")
                 status_block = status.StatusType6(self)
 
             else:
                 log.error("Unimplemented status type: %d" % status_type)
+                
+            if battery_check:
+                status.BatteryCheck(self, status_block)
 
             if status_block:
                 log.debug(status_block)
@@ -997,9 +1083,9 @@ class Device(object):
             status_code = self.dq.get('status-code', STATUS_UNKNOWN)
 
             if not quick and \
-                self.mq.get('fax-type', 0) and \
+                self.mq.get('fax-type', FAX_TYPE_NONE) and \
                 status_code == STATUS_PRINTER_IDLE:
-                
+
                 tx_active, rx_active = status.getFaxStatus(self)
 
                 if tx_active:
@@ -1012,9 +1098,8 @@ class Device(object):
             self.error_state = STATUS_TO_ERROR_STATE_MAP.get(status_code, ERROR_STATE_CLEAR)
             if self.error_state == ERROR_STATE_ERROR:
                 typ = 'error'
-            
-            #print status_code, self.error_state, typ
-            self.sendEvent(status_code, typ=typ)
+
+            self.sendEvent(status_code, typ=typ, no_fwd=no_fwd)
 
             try:
                 self.dq.update({'status-desc' : self.queryString(status_code),
@@ -1026,103 +1111,40 @@ class Device(object):
                                 'error-state' : ERROR_STATE_CLEAR,
                                 })
 
-            if not quick:
-                r_value, rg, rr, r_value_str = 0, '000', '000000', '000000000'
+            r_value = 0
 
-                if status_type != STATUS_TYPE_NONE:
+            if not quick and status_type != STATUS_TYPE_NONE:
+                if self.panel_check:
+                    self.panel_check = bool(self.mq.get('panel-check-type', 0))
 
-                    if self.panel_check:
-                        self.panel_check = bool(self.mq.get('panel-check-type', 0))
+                if self.panel_check and status_type in (STATUS_TYPE_LJ, STATUS_TYPE_S, STATUS_TYPE_VSTATUS):
+                    try:
+                        self.panel_check, line1, line2 = status.PanelCheck(self)
+                    finally:
+                        self.closePML()
 
-                    if self.panel_check and status_type in (STATUS_TYPE_NONE, STATUS_TYPE_LJ, 
-                                                            STATUS_TYPE_S_W_BATTERY, STATUS_TYPE_S_SNMP):
+                    self.dq.update({'panel': int(self.panel_check),
+                                      'panel-line1': line1,
+                                      'panel-line2': line2,})
 
-                        try:
-                            self.panel_check, line1, line2 = status.PanelCheck(self)
-                        finally:
-                            self.closePML()
-
-                        self.dq.update({'panel': int(self.panel_check),
-                                          'panel-line1': line1,
-                                          'panel-line2': line2,})
-
-                    if r_type > 0:
-                        if self.r_values is None:
-                            fields, data, result_code = \
-                                self.xmitHpssdMessage('GetValue', {'device-uri': self.device_uri, 'key': 'r_value'})
-
-                            if result_code == ERROR_SUCCESS and data:
-                                try:
-                                    r_value = int(data.strip())
-                                except:
-                                    pass
-                                else:
-                                    log.debug("r_value=%d" % r_value)
-                                    r_value_str = str(r_value)
-                                    r_value_str = ''.join(['0'*(9 - len(r_value_str)), r_value_str])
-                                    rg, rr = r_value_str[:3], r_value_str[3:]
-                                    r_value = int(rr)
-                                    self.r_values = r_value, r_value_str, rg, rr
-
-                            if self.r_values is None:
-                                if status_type ==  STATUS_TYPE_S and self.is_local:
-                                    try:    
-                                        try:
-                                            r_value = self.getDynamicCounter(140)
-
-                                            if r_value is not None:
-                                                log.debug("r_value=%d" % r_value)
-                                                r_value_str = str(r_value)
-                                                r_value_str = ''.join(['0'*(9 - len(r_value_str)), r_value_str])
-                                                rg, rr = r_value_str[:3], r_value_str[3:]
-                                                r_value = int(rr)
-                                                self.r_values = r_value, r_value_str, rg, rr
-
-                                                fields, data, result_code = \
-                                                    self.xmitHpssdMessage('SetValue', {'device-uri': self.device_uri, 'key': 'r_value', 'value': r_value})
-
-                                            else:
-                                                log.error("Error attempting to read r-value (2).")
-                                                r_value = 0
-                                        except Error:
-                                            log.error("Error attempting to read r-value (1).")
-                                            r_value = 0
-                                    finally:
-                                        self.closePrint()
-
-
-                                elif (status_type ==  STATUS_TYPE_S and not self.is_local) or \
-                                      status_type == STATUS_TYPE_S_SNMP:
-                                    
-                                    try:
-                                        result_code, r_value = self.getPML(pml.OID_R_SETTING)
-
-                                        if r_value is not None:
-                                            log.debug("r_value=%d" % r_value)
-                                            r_value_str = str(r_value)
-                                            r_value_str = ''.join(['0'*(9 - len(r_value_str)), r_value_str])
-                                            rg, rr = r_value_str[:3], r_value_str[3:]
-                                            r_value = int(rr)
-                                            self.r_values = r_value, r_value_str, rg, rr
-
-                                            fields, data, result_code = \
-                                                self.xmitHpssdMessage('SetValue', {'device-uri': self.device_uri, 'key': 'r_value', 'value': r_value})
-                                        else:
-                                            r_value = 0
-                                            
-                                    finally:
-                                        self.closePML()
-
-                        else:
-                            r_value, r_value_str, rg, rr = self.r_values
-
+                
+                if dynamic_counters != STATUS_DYNAMIC_COUNTERS_NONE:
+                    r_value, r_value_str, rg, rr = self.getRValues(r_type, status_type, dynamic_counters)
+                else:
+                    r_value, r_value_str, rg, rr = 0, '000000000', '000', '000000'
+                    
                 self.dq.update({'r'  : r_value,
                                 'rs' : r_value_str,
                                 'rg' : rg,
                                 'rr' : rr,
                               })
-
+                    
             if not quick:
+                # Make sure there is some valid agent data for this r_value
+                # If not, fall back to r_value == 0
+                if r_value > 0 and self.mq.get('r%d-agent1-kind', 0) == 0:
+                    r_value = 0
+
                 a = 1
                 while True:
                     mq_agent_kind = self.mq.get('r%d-agent%d-kind' % (r_value, a), 0)
@@ -1134,7 +1156,7 @@ class Device(object):
                     mq_agent_sku = self.mq.get('r%d-agent%d-sku' % (r_value, a), '')
 
                     found = False
-                    
+
                     for agent in agents:
                         agent_kind = agent['kind']
                         agent_type = agent['type']
@@ -1151,14 +1173,14 @@ class Device(object):
 
                         query = 'agent_%s_%s' % (AGENT_types.get(agent_type, 'unknown'), 
                                                  AGENT_kinds.get(agent_kind, 'unknown'))
-                        
+
                         try:
                             agent_desc = self.queryString(query)
                         except Error:
                             agent_desc = ''
-                        
+
                         query = 'agent_health_ok'
-                        
+
                         # If printer is not in an error state, and
                         # if agent health is OK, check for low supplies. If low, use
                         # the agent level trigger description for the agent description.
@@ -1167,24 +1189,24 @@ class Device(object):
                             (agent_health == AGENT_HEALTH_OK or 
                              (agent_health == AGENT_HEALTH_FAIR_MODERATE and agent_kind == AGENT_KIND_HEAD)) and \
                             agent_level_trigger >= AGENT_LEVEL_TRIGGER_MAY_BE_LOW:
-    
+
                             # Low
                             query = 'agent_level_%s' % AGENT_levels.get(agent_level_trigger, 'unknown')
-    
+
                             if tech_type in (TECH_TYPE_MONO_INK, TECH_TYPE_COLOR_INK):
                                 code = agent_type + STATUS_PRINTER_LOW_INK_BASE
                             else:
                                 code = agent_type + STATUS_PRINTER_LOW_TONER_BASE
-    
+
                             self.dq['status-code'] = code
                             try:
                                 self.dq['status-desc'] = self.queryString(code)
                             except Error:
                                 self.dq['status-desc'] = ''
-    
+
                             self.dq['error-state'] = STATUS_TO_ERROR_STATE_MAP.get(code, ERROR_STATE_LOW_SUPPLIES)
                             self.sendEvent(code)
-                            
+
                             if agent_level_trigger in (AGENT_LEVEL_TRIGGER_PROBABLY_OUT, AGENT_LEVEL_TRIGGER_ALMOST_DEFINITELY_OUT):
                                 query = 'agent_level_out'
                             else:
@@ -1194,8 +1216,8 @@ class Device(object):
                             agent_health_desc = self.queryString(query)
                         except Error:
                             agent_health_desc = ''
-                                
-                        
+
+
                         self.dq.update(
                         {
                             'agent%d-kind' % a :          agent_kind,
@@ -1220,12 +1242,12 @@ class Device(object):
 
                         query = 'agent_%s_%s' % (AGENT_types.get(mq_agent_type, 'unknown'),
                                                  AGENT_kinds.get(mq_agent_kind, 'unknown'))
-                        
+
                         try:
                             agent_desc = self.queryString(query)
                         except Error:
                             agent_desc = ''
-                            
+
                         try:
                             agent_health_desc = self.queryString("agent_health_misinstalled")
                         except Error:
@@ -1248,7 +1270,7 @@ class Device(object):
                             'agent%d-id' % a :            0,
                             'agent%d-health-desc' % a :   agent_health_desc,
                         })
-                        
+
                     a += 1
 
                 else: # Create agent keys for not-found devices
@@ -1256,6 +1278,11 @@ class Device(object):
                     r_value = 0
                     if r_type > 0 and self.r_values is not None:
                         r_value = self.r_values[0]
+
+                    # Make sure there is some valid agent data for this r_value
+                    # If not, fall back to r_value == 0
+                    if r_value > 0 and self.mq.get('r%d-agent1-kind', 0) == 0:
+                        r_value = 0
 
                     a = 1
                     while True:
@@ -1268,7 +1295,7 @@ class Device(object):
                         mq_agent_sku = self.mq.get('r%d-agent%d-sku' % (r_value, a), '')
                         query = 'agent_%s_%s' % (AGENT_types.get(mq_agent_type, 'unknown'),
                                                  AGENT_kinds.get(mq_agent_kind, 'unknown'))
-                        
+
                         try:
                             agent_desc = self.queryString(query)
                         except Error:
@@ -1297,7 +1324,7 @@ class Device(object):
 
         for d in self.dq:
             self.__dict__[d.replace('-','_')] = self.dq[d]
-            
+
         log.debug(self.dq)
 
 
@@ -1351,9 +1378,16 @@ class Device(object):
 
 
     def getDynamicCounter(self, counter, convert_to_int=True):
-        if 'DYN' in self.deviceID.get('CMD', '').split(','):
-
-            self.printData(pcl.buildDynamicCounter(counter), direct=True)
+        #status_type = self.mq.get('status-type', STATUS_TYPE_NONE)
+        #if 'DYN' in self.deviceID.get('CMD', '').split(','):
+        dyanamic_counters = self.mq.get('status-dynamic-counters', STATUS_DYNAMIC_COUNTERS_NONE)
+        if dyanamic_counters != STATUS_DYNAMIC_COUNTERS_NONE:
+            
+            if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+                self.printData(ldl.buildResetPacket(), direct=True) 
+                self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
+            else:
+                self.printData(pcl.buildDynamicCounter(counter), direct=True)
 
             value, tries, times_seen, sleepy_time, max_tries = 0, 0, 0, 0.1, 5
             time.sleep(0.1)
@@ -1382,10 +1416,19 @@ class Device(object):
                         return value
 
                 if tries > max_tries:
-                    self.printData(pcl.buildDynamicCounter(0), direct=True)
+                    if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+                        self.printData(ldl.buildResetPacket())
+                        self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
+                    else:
+                        self.printData(pcl.buildDynamicCounter(0), direct=True)
+                    
                     return None
 
-                self.printData(pcl.buildDynamicCounter(counter), direct=True)
+                if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+                    self.printData(ldl.buildResetPacket())
+                    self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
+                else:
+                    self.printData(pcl.buildDynamicCounter(counter), direct=True)
 
         else:
             raise Error(ERROR_DEVICE_DOES_NOT_SUPPORT_OPERATION)
@@ -1519,7 +1562,7 @@ class Device(object):
                                                     value,
                                                     oid[1])))
 
-        self.printData(data, direct=True)
+        self.printData(data, direct=direct, raw=True)
 
 
     def printGzipFile(self, file_name, printer_name=None, direct=False, raw=True, remove=False):
@@ -1574,16 +1617,16 @@ class Device(object):
 
     def printFile(self, file_name, printer_name=None, direct=False, raw=True, remove=False):
         is_gzip = os.path.splitext(file_name)[-1].lower() == '.gz'
-        
+
         if printer_name is None:
             try:
                 printer_name = self.cups_printers[0]
             except IndexError:
                 raise Error(ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE)
-        
+
         log.debug("Printing file '%s' to queue '%s' (gzip=%s, direct=%s, raw=%s, remove=%s)" %
                    (file_name, printer_name, is_gzip, direct, raw, remove))
-        
+
         if direct: # implies raw==True
             if is_gzip:
                 self.writePrint(gzip.open(file_name, 'r').read())
@@ -1593,13 +1636,13 @@ class Device(object):
         else:
             raw_str = ''
             rem_str = ''
-            
+
             if raw:
                 raw_str = '-l'
-            
+
             if remove:
                 rem_str = '-r'
-            
+
             if is_gzip:
                 c = 'gunzip -c %s | lpr %s %s -P%s' % (file_name, raw_str, rem_str, printer_name)
             else:
@@ -1622,14 +1665,14 @@ class Device(object):
             os.write(temp_file_fd, data)
             os.close(temp_file_fd)
 
-            self.printFile(temp_file_name, printer_name, direct, raw, remove=True)
+            self.printFile(temp_file_name, printer_name, False, raw, remove=True)
 
 
     def cancelJob(self, jobid):
         cups.cancelJob(jobid)
         self.sendEvent(STATUS_PRINTER_CANCELING, jobid)
 
-    def sendEvent(self, event, jobid=0, typ='event'): 
+    def sendEvent(self, event, jobid=0, typ='event', no_fwd=False): 
         msg.sendEvent(self.hpssd_sock, 'Event', None,
                       {
                           'job-id'        : jobid,
@@ -1638,6 +1681,7 @@ class Device(object):
                           'username'      : prop.username,
                           'device-uri'    : self.device_uri,
                           'retry-timeout' : 0,
+                          'no-fwd'        : no_fwd,
                       }
                      )
 

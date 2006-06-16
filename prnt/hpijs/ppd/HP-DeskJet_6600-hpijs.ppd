@@ -117,6 +117,30 @@ llBleed"
 *End
 *CloseUI: *PrintoutMode
 
+*OpenUI *InputSlot/Media Source: PickOne
+*FoomaticRIPOption InputSlot: enum CmdLine C
+*OrderDependency: 100 AnySetup *InputSlot
+*DefaultInputSlot: Default
+*InputSlot Default/Printer default: "%% FoomaticRIPOptionSetting: InputSlot=Default"
+*FoomaticRIPOptionSetting InputSlot=Default: ",PS:MediaPosition=7"
+*InputSlot PhotoTray/Photo Tray: "%% FoomaticRIPOptionSetting: InputSlot=PhotoTray"
+*FoomaticRIPOptionSetting InputSlot=PhotoTray: ",PS:MediaPosition=6"
+*InputSlot Upper/Upper Tray: "%% FoomaticRIPOptionSetting: InputSlot=Upper"
+*FoomaticRIPOptionSetting InputSlot=Upper: ",PS:MediaPosition=1"
+*InputSlot Lower/Lower Tray: "%% FoomaticRIPOptionSetting: InputSlot=Lower"
+*FoomaticRIPOptionSetting InputSlot=Lower: ",PS:MediaPosition=4"
+*InputSlot Envelope/Envelope Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Envelope"
+*FoomaticRIPOptionSetting InputSlot=Envelope: ",PS:MediaPosition=3"
+*InputSlot LargeCapacity/Large Capacity Tray: "%% FoomaticRIPOptionSetting: InputSlot=LargeCapacity"
+*FoomaticRIPOptionSetting InputSlot=LargeCapacity: ",PS:MediaPosition=&&
+5"
+*End
+*InputSlot Manual/Manual Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
+*FoomaticRIPOptionSetting InputSlot=Manual: ",PS:MediaPosition=2"
+*InputSlot MPTray/Multi Purpose Tray: "%% FoomaticRIPOptionSetting: InputSlot=MPTray"
+*FoomaticRIPOptionSetting InputSlot=MPTray: ",PS:MediaPosition=8"
+*CloseUI: *InputSlot
+
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
 *OrderDependency: 105 AnySetup *PageSize
@@ -299,30 +323,6 @@ dDEVICEHEIGHTPOINTS=567"
 *PaperDimension Oufuku/Oufuku-Hagaki: "420 567"
 *PaperDimension w558h774/16K: "558 774"
 *PaperDimension w612h935/Executive (JIS): "612 935"
-
-*OpenUI *InputSlot/Media Source: PickOne
-*FoomaticRIPOption InputSlot: enum CmdLine C
-*OrderDependency: 100 AnySetup *InputSlot
-*DefaultInputSlot: Default
-*InputSlot Default/Printer default: "%% FoomaticRIPOptionSetting: InputSlot=Default"
-*FoomaticRIPOptionSetting InputSlot=Default: ",PS:MediaPosition=7"
-*InputSlot PhotoTray/Photo Tray: "%% FoomaticRIPOptionSetting: InputSlot=PhotoTray"
-*FoomaticRIPOptionSetting InputSlot=PhotoTray: ",PS:MediaPosition=6"
-*InputSlot Upper/Upper Tray: "%% FoomaticRIPOptionSetting: InputSlot=Upper"
-*FoomaticRIPOptionSetting InputSlot=Upper: ",PS:MediaPosition=1"
-*InputSlot Lower/Lower Tray: "%% FoomaticRIPOptionSetting: InputSlot=Lower"
-*FoomaticRIPOptionSetting InputSlot=Lower: ",PS:MediaPosition=4"
-*InputSlot Envelope/Envelope Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Envelope"
-*FoomaticRIPOptionSetting InputSlot=Envelope: ",PS:MediaPosition=3"
-*InputSlot LargeCapacity/Large Capacity Tray: "%% FoomaticRIPOptionSetting: InputSlot=LargeCapacity"
-*FoomaticRIPOptionSetting InputSlot=LargeCapacity: ",PS:MediaPosition=&&
-5"
-*End
-*InputSlot Manual/Manual Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
-*FoomaticRIPOptionSetting InputSlot=Manual: ",PS:MediaPosition=2"
-*InputSlot MPTray/Multi Purpose Tray: "%% FoomaticRIPOptionSetting: InputSlot=MPTray"
-*FoomaticRIPOptionSetting InputSlot=MPTray: ",PS:MediaPosition=8"
-*CloseUI: *InputSlot
 
 *OpenUI *Duplex/Double-Sided Printing: PickOne
 *FoomaticRIPOption Duplex: enum CmdLine A

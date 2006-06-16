@@ -1,7 +1,7 @@
 /*****************************************************************************\
   dj3320.cpp : Implimentation for the DJ3320 class
 
-  Copyright (c) 2001 - 2002, Hewlett-Packard Co.
+  Copyright (c) 2001 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -70,6 +70,9 @@ DJ3320::DJ3320 (SystemServices* pSS, BOOL proto)
 {
 
     pLDLEncap = NULL;
+    m_iBytesPerSwing = 2;
+    m_iLdlVersion = 1;
+    m_iColorPenResolution = 300;
 
     if (IOMode.bDevID)
     {
@@ -80,7 +83,6 @@ DJ3320::DJ3320 (SystemServices* pSS, BOOL proto)
     }
     else
         ePen = BOTH_PENS;    // matches default mode
-
     CMYMap = ulMapDJ3320_CMY_3x3x1;
     InitPrintModes ();
 
@@ -155,8 +157,8 @@ DRIVER_ERROR DJ3320::SetPens (PEN_TYPE eNewPen)
 
 DJ3320::~DJ3320 ()
 {
-    if (ePen == COLOR_PEN && pMode[GRAYMODE_INDEX])
-    {
+   if (ePen == COLOR_PEN && pMode[GRAYMODE_INDEX])
+   {
         delete pMode[GRAYMODE_INDEX];
         pMode[GRAYMODE_INDEX] = NULL;
     }
@@ -1594,9 +1596,13 @@ void LDLEncap::AllocateSwathBuffer (unsigned int RasterSize)
     m_iImageWidth = size;
 
     constructor_error = NO_ERROR;
+    m_ldlCompressData = NULL;
 
 #ifdef  APDK_LDL_COMPRESS
-    m_ldlCompressData = new comp_ptrs_t;
+    if (pPrinterXBow->m_iLdlVersion == 1)
+    {
+        m_ldlCompressData = new comp_ptrs_t;
+    }
 #endif
 
     if (m_iBitDepth == 2)
@@ -1604,10 +1610,11 @@ void LDLEncap::AllocateSwathBuffer (unsigned int RasterSize)
         size *= 2;
     }
 
-    int     m_szCompressBufSize = LDL_MAX_IMAGE_SIZE+20;    // additional space for load sweep command
-    m_szCompressBuf = new BYTE[m_szCompressBufSize];
-    CNEWCHECK (m_szCompressBuf);
-    memset (m_szCompressBuf, 0, m_szCompressBufSize);
+    int     iSwings = pPrinterXBow->m_iBytesPerSwing / 2;
+    int     iCompressBufSize = iSwings * LDL_MAX_IMAGE_SIZE+20;    // additional space for load sweep command
+    m_szCompressBuf = new BYTE[iCompressBufSize];
+    CNEWCHECK (iCompressBufSize);
+    memset (m_szCompressBuf, 0, iCompressBufSize);
 
     BYTE    *p = NULL;
     int     iSwathBuffSize;
@@ -1624,7 +1631,7 @@ void LDLEncap::AllocateSwathBuffer (unsigned int RasterSize)
         if (m_sSwathHeight * 1200 / m_iYResolution > 400)
             m_sSwathHeight = m_iYResolution / 3;
     }
-    else if (m_iYResolution > 300 && m_iNumColors > 1 && m_iBitDepth == 1)
+    else if (m_cPrintQuality != QUALITY_DRAFT && m_iYResolution > 300 && m_iNumColors > 1 && m_iBitDepth == 1) // Collie change
     {
         m_sSwathHeight = (m_sSwathHeight / 4) * 4 * 2;
         if (m_sSwathHeight > 200)
@@ -1637,13 +1644,16 @@ void LDLEncap::AllocateSwathBuffer (unsigned int RasterSize)
     if (m_cPrintQuality == QUALITY_NORMAL)
         m_sSwathHeight = 96 * 2;
 
+    if (m_cPrintQuality == QUALITY_DRAFT && pPrinterXBow->ePen != BLACK_PEN)
+    {
+        m_sSwathHeight *= iSwings;
+    }
+
     while (m_sSwathHeight > 16)
     {
         iSwathBuffSize = m_iNumColors * sizeof (BYTE *) +
                          m_iNumColors * m_sSwathHeight * sizeof (BYTE *) +
                          size * m_iNumColors * m_sSwathHeight;
-		// Camera folks ask this be AllocMem instead of new
-		// if ((p = new BYTE[iSwathBuffSize]) == NULL)
         if ((p = m_pSys->AllocMem(iSwathBuffSize)) == NULL)
         {
             m_sSwathHeight = (m_sSwathHeight / 16) * 8;
@@ -1657,8 +1667,6 @@ void LDLEncap::AllocateSwathBuffer (unsigned int RasterSize)
         iSwathBuffSize = m_iNumColors * sizeof (BYTE *) +
                          m_iNumColors * m_sSwathHeight * sizeof (BYTE *) +
                          size * m_iNumColors * m_sSwathHeight;
-	// Camera folks ask this be AllocMem instead of new
-	//        p = new BYTE[iSwathBuffSize];
         p = m_pSys->AllocMem(iSwathBuffSize);
         CNEWCHECK (p);
     }
@@ -1812,7 +1820,7 @@ DRIVER_ERROR LDLEncap::Encapsulate (const BYTE *input, DWORD size, BOOL bLastPla
         if (iPlaneNum == 0)
         {
             if (!input)
-                memset (m_SwathData[iCPlane][iRowNum], 0, m_iImageWidth);
+                memset (m_SwathData[iCPlane][iRowNum], 0, m_iImageWidth * 2);
             else
                 memcpy (m_SwathData[iCPlane][iRowNum], input, size);
         }
@@ -1836,6 +1844,15 @@ DRIVER_ERROR LDLEncap::Encapsulate (const BYTE *input, DWORD size, BOOL bLastPla
             BYTE    r2b1 = 0;
             BYTE    r2b2 = 0;
             BYTE    bitmask[8] = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
+
+            // Collie changes
+            int     iNextBitPos = m_iImageWidth;
+            int     iJIncrement = 1;
+            if (pPrinterXBow->m_iLdlVersion == 2)
+            {
+                iNextBitPos = 1;
+                iJIncrement = 2;
+            }
 
             memcpy (m_szCompressBuf, m_SwathData[iCPlane][m_iNextRaster], size);
 
@@ -1914,11 +1931,11 @@ DRIVER_ERROR LDLEncap::Encapsulate (const BYTE *input, DWORD size, BOOL bLastPla
                     }
                 }
                 m_SwathData[iCPlane][m_iNextRaster][j] = r1b1;
-                m_SwathData[iCPlane][m_iNextRaster][j+m_iImageWidth] = r1b2;
+                m_SwathData[iCPlane][m_iNextRaster][j+iNextBitPos] = r1b2;
                 m_SwathData[iCPlane][m_iNextRaster+1][j]   = r2b1;
-                m_SwathData[iCPlane][m_iNextRaster+1][j+m_iImageWidth] = r2b2;
+                m_SwathData[iCPlane][m_iNextRaster+1][j+iNextBitPos] = r2b2;
 
-                j++;
+                j += iJIncrement;
             }
 
 			if (m_iNumColors == 6)
@@ -1995,14 +2012,18 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
     int     iColors = 0;
     UInt32  uiSwathSize = 0;
 
+    int     iSwings = pPrinterXBow->m_iBytesPerSwing;
 
     if (m_iNumColors == 1)
 	{
         bColorPresent = 0;
+        bPhotoPresent = 0;
+/* 
 		if (pPrinterXBow->ePen == BLACK_PEN)
 			bPhotoPresent = 0;
 		else
 			bBlackPresent = 0;
+ */
 	}
     if (m_iNumColors == 3)
 	{
@@ -2026,6 +2047,11 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
     int     count;
     int     iStartRaster = m_cPassNumber % (2 * m_iBitDepth);
     BYTE    mask = 0xFF;
+
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        iStartRaster = 0;   // Version 2 - REVISIT
+    }
 
     if (m_cPrintQuality != QUALITY_DRAFT && m_iYResolution != 300)
     {
@@ -2053,8 +2079,15 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 			iColors = 6;
 			LastColor = 6;
 			StartColor = 0;
-			// 1200 dpi split into two
-			size = GetSwathWidth (StartColor, LastColor, iCurRasterSize/* * m_iBitDepth*/);
+            if (pPrinterXBow->m_iLdlVersion == 1)
+            {
+			    // 1200 dpi split into two
+			    size = GetSwathWidth (StartColor, LastColor, iCurRasterSize/* * m_iBitDepth*/);
+            }
+            else
+            {
+                size = GetSwathWidth (StartColor, LastColor, iCurRasterSize * m_iBitDepth);
+            }
 		}
 		else
 		{
@@ -2068,31 +2101,44 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 
     if (bPhotoPresent && size)
     {
-        if (size % 2)
-            size = ((size / 2) + 1) * 2;
-        RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) * DEVUNITS_XBOW/600;
+        if (size % iSwings)
+            size = ((size/iSwings) + 1) * iSwings;
+        if (pPrinterXBow->m_iLdlVersion == 1)
+        {
+            RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) *
+                                    (DEVUNITS_XBOW / 600);
+        }
+        else
+        {
+            RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) *
+                                    (DEVUNITS_XBOW / (600 * m_iBitDepth));
+        }
         Int16   sLastNozzle;
         Int16   sFirstNozzle = 1;
-//        int     iExtra = 0;
         unsigned int    uSweepSize;
-        int     jDelta = m_iYResolution / 300;
+        int     jDelta = m_iYResolution / pPrinterXBow->m_iColorPenResolution;
         jDelta *= m_iBitDepth;
 
         uiSwathSize = size * iColors * sCurSwathHeight / jDelta;
 
-        uSweepSize = sCurSwathHeight * 2 / jDelta;
+        uSweepSize = sCurSwathHeight * iSwings / jDelta;
         n = LDL_MAX_IMAGE_SIZE / (uSweepSize);
         count = 0;
 
         if (m_iBitDepth == 2)
             iStartRaster = (4 - (iStartRaster+1)) % 4;
 
+        if (pPrinterXBow->m_iLdlVersion == 2)
+        {
+            iStartRaster = 0;   // Collie - REVISIT
+        }
+
         sLastNozzle = sFirstNozzle - 1 + sCurSwathHeight / jDelta;
 
         BYTE *cb = m_szCompressBuf + 16;    // load sweep command
-        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE);
+        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
 
-
+        
 		// 1200 dpi split into two
         int    ib = 0;
 
@@ -2113,13 +2159,13 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
         {
             if (m_cPrintDirection == PRNDRN_RIGHTTOLEFT)
             {
-                start = size - 2;
-                delta = -2;
+                start = size - iSwings;
+                delta = -iSwings;
             }
             else
             {
                 start = 0;
-                delta = 2;
+                delta = iSwings;
             }
 
             err = PrintSweep (uiSwathSize, bColorPresent, FALSE, bPhotoPresent,
@@ -2128,21 +2174,25 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             ERRCHECK;
 
             i = start + ib * m_iImageWidth;     // 1200 dpi split into two
-            for (int l = 0; l < size; l += 2)
+            for (int l = 0; l < size; l += iSwings)   // Collie
             {
 				for (int k = StartColor+1; k < LastColor; k++)
 				{
 					mask = csavMask;
 					for (j = iOffset + iStartRaster; j < sCurSwathHeight; j += jDelta)
 					{
-						*cb++ = m_SwathData[k][j][i]   & mask;
-						*cb++ = m_SwathData[k][j][i+1] & mask;
+                        for (int is = 0; is < iSwings; is++)
+                        {
+						    *cb++ = m_SwathData[k][j][i+is]   & mask;
+                        }
 						mask = ~mask;
 					}
 					for (j = iStartRaster; j < iOffset; j += jDelta)
 					{
-						*cb++ = m_SwathData[k][j][i]   & mask;
-						*cb++ = m_SwathData[k][j][i+1] & mask;
+                        for (int is = 0; is < iSwings; is++)
+                        {
+						    *cb++ = m_SwathData[k][j][i+is]   & mask;
+                        }
 						mask = ~mask;
 					}
 
@@ -2150,7 +2200,7 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 					if (count == n)
 					{
 						err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-						memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+						memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
 						cb = m_szCompressBuf+16;
 						count = 0;
 						ERRCHECK;
@@ -2159,14 +2209,18 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 				mask = csavMask;
 				for (j = iOffset + iStartRaster; j < sCurSwathHeight; j += jDelta)
 				{
-					*cb++ = m_SwathData[0][j][i]   & mask;
-					*cb++ = m_SwathData[0][j][i+1] & mask;
+                    for (int is = 0; is < iSwings; is++)
+                    {
+					    *cb++ = m_SwathData[0][j][i + is]   & mask;
+                    }
 					mask = ~mask;
 				}
 				for (j = iStartRaster; j < iOffset; j += jDelta)
 				{
-					*cb++ = m_SwathData[0][j][i]   & mask;
-					*cb++ = m_SwathData[0][j][i+1] & mask;
+                    for (int is = 0; is < iSwings; is++)
+                    {
+					    *cb++ = m_SwathData[0][j][i + is]   & mask;
+                    }
 					mask = ~mask;
 				}
 
@@ -2174,7 +2228,7 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 				if (count == n)
 				{
 					err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-					memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+				    memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
 					cb = m_szCompressBuf+16;
 					count = 0;
 					ERRCHECK;
@@ -2184,17 +2238,21 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             if (count != 0)
             {
                 err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
                 cb = m_szCompressBuf+16;
                 count = 0;
                 ERRCHECK;
             }
 
-            LeftEdge += 2;
-            RightEdge += 2;
-
             if (m_bBidirectionalPrintingOn)
                 m_cPrintDirection = (m_cPrintDirection + 1) % 2;
+
+            if (pPrinterXBow->m_iLdlVersion == 2) // Collie
+            {
+                break;
+            }
+            LeftEdge += 2;
+            RightEdge += 2;
 
         }   // 1200 dpi split into two - end of for ib = 0 loop
 
@@ -2213,8 +2271,15 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             StartColor = 0;
             LastColor  = 3;
         }
-        // 1200 dpi split into two
-        size = GetSwathWidth (StartColor, LastColor, iCurRasterSize/* * m_iBitDepth*/);
+        if (pPrinterXBow->m_iLdlVersion == 1)
+        {
+            // 1200 dpi split into two
+            size = GetSwathWidth (StartColor, LastColor, iCurRasterSize/* * m_iBitDepth*/);
+        }
+        else
+        {
+            size = GetSwathWidth (StartColor, LastColor, iCurRasterSize * m_iBitDepth);
+        }
         sColorSize = size;
     }
 /*
@@ -2223,29 +2288,44 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 
     if (!bPhotoPresent && bColorPresent && size)
     {
-        if (size % 2)
-            size = ((size / 2) + 1) * 2;
-        RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) * DEVUNITS_XBOW/600;
+        if (size % iSwings)
+            size = ((size / iSwings) + 1) * iSwings;
+
+        if (pPrinterXBow->m_iLdlVersion == 1)
+        {
+            RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) *
+                                    (DEVUNITS_XBOW / 600);
+        }
+        else
+        {
+            RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) *
+                                    (DEVUNITS_XBOW / (600 * m_iBitDepth));
+        }
         Int16   sLastNozzle;
         Int16   sFirstNozzle = 1;
-//        int     iExtra = 0;
         unsigned int    uSweepSize;
-        int     jDelta = m_iYResolution / 300;
+        int     jDelta = m_iYResolution / pPrinterXBow->m_iColorPenResolution;
         jDelta *= m_iBitDepth;
 
         uiSwathSize = size * iColors * sCurSwathHeight / jDelta;
 
-        uSweepSize = sCurSwathHeight * 2 / jDelta;
+        uSweepSize = sCurSwathHeight * iSwings / jDelta;
         n = LDL_MAX_IMAGE_SIZE / (uSweepSize);
         count = 0;
 
         if (m_iBitDepth == 2)
+        {
             iStartRaster = (4 - (iStartRaster+1)) % 4;
+            if (pPrinterXBow->m_iLdlVersion == 2)
+            {
+                iStartRaster = m_cPassNumber % (m_iBitDepth);
+            }
+        }
 
         sLastNozzle = sFirstNozzle - 1 + sCurSwathHeight / jDelta;
 
         BYTE *cb = m_szCompressBuf + 16;    // load sweep command
-        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE);
+        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
 
 
 		// 1200 dpi split into two
@@ -2261,36 +2341,39 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
         {
             if (m_cPrintDirection == PRNDRN_RIGHTTOLEFT)
             {
-                start = size - 2;
-                delta = -2;
+                start = size - iSwings;
+                delta = -iSwings;
             }
             else
             {
                 start = 0;
-                delta = 2;
+                delta = iSwings;
             }
-
             err = PrintSweep (uiSwathSize, bColorPresent, FALSE, FALSE,
                               iVertPosn, LeftEdge, RightEdge, m_cPrintDirection,
                               sFirstNozzle, sLastNozzle);
             ERRCHECK;
 
             i = start + ib * m_iImageWidth;     // 1200 dpi split into two
-            for (int l = 0; l < size; l += 2)
+            for (int l = 0; l < size; l += iSwings)   // Collie
             {
                 for (int k = StartColor; k < LastColor; k++)
                 {
                     mask = csavMask;
                     for (j = iOffset + iStartRaster; j < sCurSwathHeight; j += jDelta)
                     {
-                        *cb++ = m_SwathData[k][j][i]   & mask;
-                        *cb++ = m_SwathData[k][j][i+1] & mask;
+                        for (int is = 0; is < iSwings; is++)
+                        {
+                            *cb++ = m_SwathData[k][j][i + is]   & mask;
+                        }
                         mask = ~mask;
                     }
                     for (j = iStartRaster; j < iOffset; j += jDelta)
                     {
-                        *cb++ = m_SwathData[k][j][i]   & mask;
-                        *cb++ = m_SwathData[k][j][i+1] & mask;
+                        for (int is = 0; is < iSwings; is++)
+                        {
+                            *cb++ = m_SwathData[k][j][i + is]   & mask;
+                        }
                         mask = ~mask;
                     }
 
@@ -2298,7 +2381,8 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
                     if (count == n)
                     {
                         err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-                        memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+                        memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
+
                         cb = m_szCompressBuf+16;
                         count = 0;
                         ERRCHECK;
@@ -2306,11 +2390,13 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 
                 }
                 i = i + delta;
+
             }
             if (count != 0)
             {
                 err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
+
                 cb = m_szCompressBuf+16;
                 count = 0;
                 ERRCHECK;
@@ -2321,9 +2407,12 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
 
             if (m_bBidirectionalPrintingOn)
                 m_cPrintDirection = (m_cPrintDirection + 1) % 2;
+            if (pPrinterXBow->m_iLdlVersion == 2) // Collie
+            {
+                break;
+            }
 
         }   // 1200 dpi split into two - end of for ib = 0 loop
-
     }
 
 /*
@@ -2331,18 +2420,20 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
  */
 
     size = 0;
-
     if (bBlackPresent)
         size = GetSwathWidth (0, 1, iCurRasterSize);
 
-    if (size % 2)
-	        size = ((size/2) + 1) * 2;
+    if (size % iSwings)
+	    size = ((size/iSwings) + 1) * iSwings;
 
     RightEdge = LeftEdge + (size * 8 * 600 / m_iXResolution - 1 * (600 / m_iYResolution)) * DEVUNITS_XBOW/600;
 	
     if (bBlackPresent && size && m_iBitDepth != 2 &&
         ((m_cPassNumber % 2) == 0 || m_cPrintQuality == QUALITY_DRAFT))
     {
+        Int16   sLastNozzle = 0;
+        Int16   sFirstNozzle = 1;
+
         int     xDelta = 0;
         BYTE    cVertAlign = 0;
 
@@ -2351,27 +2442,37 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             cVertAlign = m_cKtoCVertAlign;
         }
 
-        if (bColorPresent && sColorSize)
+        if (bColorPresent && sColorSize && m_bBidirectionalPrintingOn)
             m_cPrintDirection = PRNDRN_RIGHTTOLEFT;
-
         if (m_cPrintDirection == PRNDRN_RIGHTTOLEFT)
         {
-            start = size - 2;
-            delta = -2;
+            start = size - iSwings;
+            delta = -iSwings;
+        }
+        else
+        {
+            start = 0;
+            delta = iSwings;
         }
         if (m_iYResolution == 300)
-            xDelta = 2;
-        uiSwathSize = ((size/2) * sCurSwathHeight * 2 * 600 / m_iYResolution);
+            xDelta = iSwings;
+        uiSwathSize = ((size/iSwings) * sCurSwathHeight * iSwings * (600 * m_iBitDepth)/ m_iYResolution);
+
+        if (pPrinterXBow->m_iLdlVersion == 2 && m_iNumColors != 1)
+        {
+            sFirstNozzle = 9;
+        }
 
 		err = PrintSweep (uiSwathSize, FALSE, bBlackPresent, FALSE,
-						  (iVertPosn + cVertAlign), LeftEdge, RightEdge, m_cPrintDirection, 1);
+						  (iVertPosn + cVertAlign), LeftEdge, RightEdge, m_cPrintDirection, sFirstNozzle, sLastNozzle);
+
         ERRCHECK;
 
         i = start;
         BYTE *cb = m_szCompressBuf+16;
-        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE);
+        memset (m_szCompressBuf, 0x0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
 
-        n = LDL_MAX_IMAGE_SIZE / (sCurSwathHeight * 2 * 600 / m_iYResolution);
+        n = LDL_MAX_IMAGE_SIZE / (sCurSwathHeight * iSwings * 600 / m_iYResolution);
         count = 0;
 
         iOffset = 0;
@@ -2381,18 +2482,22 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             iOffset = iOffset + iOffset * (m_cPassNumber % 4);
         }
 
-        for (int l = 0; l < size; l += 2)
+        for (int l = 0; l < size; l += iSwings) // Collie
         {
             for (j = iOffset; j < sCurSwathHeight; j++)
             {
-                *cb++ = m_SwathData[0][j][i]   & mask;
-                *cb++ = m_SwathData[0][j][i+1] & mask;
+                for (int is = 0; is < iSwings; is++)
+                {
+                    *cb++ = m_SwathData[0][j][i + is]   & mask;
+                }
                 cb += xDelta;
             }
             for (j = 0; j < iOffset; j++)
             {
-                *cb++ = m_SwathData[0][j][i]   & mask;
-                *cb++ = m_SwathData[0][j][i+1] & mask;
+                for (int is = 0; is < iSwings; is++)
+                {
+                    *cb++ = m_SwathData[0][j][i + is]   & mask;
+                }
                 cb += xDelta;
             }
 
@@ -2400,7 +2505,8 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
             if (count == n)
             {
                 err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+                memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
+
                 cb = m_szCompressBuf+16;
                 count = 0;
                 ERRCHECK;
@@ -2410,7 +2516,8 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
         if (count != 0)
         {
             err = LoadSweepData (m_szCompressBuf, (unsigned int) (cb - m_szCompressBuf-16));
-            memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE);
+            memset (m_szCompressBuf, 0, LDL_MAX_IMAGE_SIZE * (iSwings / 2));
+
             cb = m_szCompressBuf+16;
             count = 0;
             ERRCHECK;
@@ -2428,22 +2535,23 @@ DRIVER_ERROR LDLEncap::ProcessSwath (int iCurRasterSize)
         m_iVertPosn += ((((sCurSwathHeight/(4 * m_iBitDepth))) * 600 / m_iYResolution) * DEVUNITS_XBOW / 600) / m_iBitDepth;
 		if (m_iBitDepth == 1)
         {
-            if (m_cPassNumber % (2 * m_iBitDepth))
-                m_iVertPosn += 4 / m_iBitDepth;
+            if (m_cPassNumber % 2)
+                m_iVertPosn += 4;
             else
-                m_iVertPosn -= 4 / m_iBitDepth;
+                m_iVertPosn -= 4;
         }
         else
         {
             m_iVertPosn -= 2;
             if ((m_cPassNumber % 4) == 0)
-                m_iVertPosn += 8;
+                  m_iVertPosn += (DEVUNITS_XBOW / pPrinterXBow->m_iColorPenResolution);
         }
         m_iRasterCount = (sCurSwathHeight - sCurSwathHeight / (4 * m_iBitDepth)) * m_iNumColors;
     }
     else
     {
-        m_iVertPosn += sCurSwathHeight * 2 * 4;
+        m_iVertPosn += ((sCurSwathHeight * 4 * 600) / m_iYResolution);
+
     }
 
     return err;
@@ -2477,6 +2585,7 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
 {
     // determine how many colors will be generated
     UInt16 colorcount = 0;
+    UInt32  uiAffectedColors = 0;
     if (ColorPresent == TRUE) colorcount += 3;
     if (BlackPresent == TRUE) colorcount++;
 	if (PhotoPresent == TRUE) 
@@ -2487,24 +2596,54 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
 			colorcount+=3;
 	}
 
-    UInt16  mem_needed =   SIZEOF_LDLHDR
+    UInt16  mem_needed;
+    if (pPrinterXBow->m_iLdlVersion == 1)
+    {
+        mem_needed =   SIZEOF_LDLHDR
                          + SIZEOF_LDL_PRTSWP_CMDOPT
                          + SIZEOF_LDL_PRTSWP_OPTFLDS
                          + SIZEOF_LDL_PRTSWP_COLROPT * colorcount
                          + SIZEOF_LDLTERM;
-    if (colorcount != 0)
-        mem_needed += SIZEOF_LDL_COLROPT_ACTIVECOLR;
+    
+        if (colorcount != 0)
+            mem_needed += SIZEOF_LDL_COLROPT_ACTIVECOLR;
+    }
+    else
+    {
+        mem_needed =   SIZEOF_LDLHDR
+                         + SIZEOF_LDL_PRTSWP_CMDOPT + 7
+                         + SIZEOF_LDL_PRTSWP_OPTFLDS
+                         + SIZEOF_LDL_PRTSWP_COLROPT + 4
+                         + SIZEOF_LDLTERM;
+    }
 
     memset (m_szCmdBuf, 0, mem_needed);
 
     FillLidilHeader (NULL, eLDLPrintSweep, mem_needed);
 
     int     index = SIZEOF_LDLHDR;
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        m_szCmdBuf[index++] = 1;    // Version number
+    }
     WRITE32 (SweepSize);
     WRITE32 (VerticalPosition);
-    WRITE32 (m_iLeftMargin);    // Left Margin - currently set to 0.25 inch. May need to change with papersize
-    m_szCmdBuf[index++] = SWINGFMT_UNCOMPRSS;
+    WRITE32 (m_iLeftMargin);
+    if (pPrinterXBow->m_iLdlVersion == 1)
+    {
+        // LIDIL First Version
+        m_szCmdBuf[index++] = SWINGFMT_UNCOMPRSS;
+    }
+    else
+    {
+        // LIDIL Second Version
+        m_szCmdBuf[index++] = 1;
+    }
     m_szCmdBuf[index++] = PrintDirection;
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        WRITE32 (0); // Shingle mask
+    }
     WRITE32 (IPS_CARRSPEED|IPS_INIPRNSPEED|ACCURATEPOSN_NEEDED);
  // Carriage Speed - 25 for plain, 12 for photo
     if (m_cPrintQuality == QUALITY_BEST && m_cMediaType == MEDIA_PHOTO)
@@ -2513,6 +2652,10 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
         m_szCmdBuf[index++] = 25;
     m_szCmdBuf[index++] = 4; // Initial Print Speed
     m_szCmdBuf[index++] = 1; // Need Accurate Position
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        m_szCmdBuf[index++] = 1; // Number of entries in the sweep
+    }
 
     // fill in the color information
     if(colorcount == 0)
@@ -2531,10 +2674,16 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
         UInt16 offset = eLDLBlack;
         UInt16 iDataRes;
         UInt16 iPrintRes;
+        uiAffectedColors = offset;
+        if (BlackPresent == TRUE)
+        {
+            uiAffectedColors = 0x1;
+        }
         if(BlackPresent == FALSE && PhotoPresent == FALSE)
         {
             offset = eLDLCyan;
             colormask=0x02;
+            uiAffectedColors |= 0x0000000e;
         }
         else if (BlackPresent == FALSE && PhotoPresent == TRUE)
         {
@@ -2542,51 +2691,89 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
 			{
 				offset = eLDLCyan;
 				colormask=0x02;
+                uiAffectedColors |= 0x0000007e;
 			}
 			else
 			{
 				offset = eLDLLoBlack;
 				colormask=0x40;
+                uiAffectedColors |= 0x00000070;
 			}
         }
 
         int actv_colr_index = index;
-        index += 2;
+        int iColorRes = 300;
+        if (pPrinterXBow->m_iLdlVersion == 1)
+        {
+            index += 2;
+        }
+        else
+        {
+            iColorRes = 600;
+        }
         for(UInt16 i = offset; colr_found < colorcount && i < eLDLMaxColor; i++)
         {
             colr_found++;
             colrpresent = colrpresent | colormask;
 
+            if (pPrinterXBow->m_iLdlVersion == 2)
+            {
+                WRITE32 (uiAffectedColors);
+            }
             WRITE32 (LeftEdge);
             WRITE32 (RightEdge);
             WRITE32 (LeftEdge);
             WRITE32 (RightEdge);
 
-            if (i == 0)
+            if ((i == 0 && pPrinterXBow->m_iLdlVersion == 1) || (BlackPresent && pPrinterXBow->m_iLdlVersion == 2))
             {
                 iDataRes = 600;
                 iPrintRes = 1200;
             }
             else
             {
-                iDataRes = 300;
-                iPrintRes = 300;
+                iDataRes  = iColorRes; // 300;
+                iPrintRes = iColorRes; // 300;
             }
             WRITE16 (iDataRes);         // Vertical Data Resolution
             WRITE16 (iPrintRes);        // Vertical Print Resolution
-            WRITE16 (m_iXResolution);   // Horizontal Data Resolution
+
+            if (pPrinterXBow->m_iLdlVersion == 2)
+            {
+                WRITE16 (m_iXResolution * m_iBitDepth);   // Horizontal Data Resolution // Collie
+            }
+            else
+            {
+                WRITE16 (m_iXResolution);
+            }
+
 			if (m_iXResolution == 300)
 			{
 				WRITE16 (600);   // Force 2 drop for draft mode.
 			}
             else
 			{
-				WRITE16 (m_iXResolution);   // Horizontal Print Resolution
+                if (pPrinterXBow->m_iLdlVersion == 2)
+                {
+				    WRITE16 (m_iXResolution * m_iBitDepth);   // Horizontal Print Resolution // Collie
+                }
+                else
+                {
+                    WRITE16 (m_iXResolution);
+                }
 			}
             WRITE16 (sFirstNozzle);
             if (sLastNozzle == 0)
             {
-                WRITE16 (sFirstNozzle - 1 + (((m_iRasterCount / m_iNumColors) * iPrintRes) / m_iYResolution));
+                int     iTmp = m_iRasterCount / m_iNumColors;
+                if (pPrinterXBow->m_iLdlVersion == 2)
+                {
+                    WRITE16 (sFirstNozzle - 1 + ((iTmp * iPrintRes) / (m_iYResolution * m_iBitDepth))); // Collie
+                }
+                else
+                {
+                    WRITE16 (sFirstNozzle - 1 + ((iTmp * iPrintRes) / (m_iYResolution)))
+                }
             }
             else
             {
@@ -2595,13 +2782,25 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
 
             m_szCmdBuf[index++] = 0;    // Vertical Alignment
             colormask = colormask << 1;
+            if (pPrinterXBow->m_iLdlVersion == 2)
+            {
+                break;
+            }
+
         }
         // write the active color field
         mem_needed = index;
-        index = actv_colr_index;
-        WRITE16 (colrpresent);
-        index = mem_needed;
+        if (pPrinterXBow->m_iLdlVersion == 1)
+        {
+            index = actv_colr_index;
+            WRITE16 (colrpresent);
+            index = mem_needed;
+        }
 
+        if (pPrinterXBow->m_iLdlVersion == 2)
+        {
+            m_szCmdBuf[index++] = 0; // # of entries in the shingle array
+        }
         m_szCmdBuf[index++] = FRAME_SYN;
         mem_needed = index;
     }
@@ -2613,7 +2812,6 @@ DRIVER_ERROR LDLEncap::PrintSweep (UInt32 SweepSize,
 
 DRIVER_ERROR LDLEncap::LoadSweepData (BYTE *imagedata, int imagesize)
 {
-
     UInt16 mem_needed = SIZEOF_LDLHDR + SIZEOF_LDL_LDSWPDATA_CMDOPT
                                       + SIZEOF_LDLTERM;
     UInt16 diff=0;
@@ -2766,6 +2964,10 @@ DRIVER_ERROR LDLEncap::StartJob ()
     }
 
     UInt16 mem_needed = SIZEOF_LDLHDR + SIZEOF_LDL_JOB_CMDOPT + SIZEOF_LDLTERM;
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        mem_needed += 4;
+    }
 
     FillLidilHeader (NULL, eLDLStartJob, mem_needed);
 
@@ -2779,6 +2981,11 @@ DRIVER_ERROR LDLEncap::StartJob ()
     else
     {
         WRITE32 ((UInt32) 0xbadfad);    // for deterministic testing, des
+    }
+
+    if (pPrinterXBow->m_iLdlVersion == 2)
+    {
+        WRITE32 (0);    // Shingle Mask option
     }
 
     // add in sync frame.
@@ -3086,7 +3293,7 @@ DRIVER_ERROR LDLEncap::EndPage ()
 		m_iVertPosn = (int) (-fTopOverSpray * DEVUNITS_XBOW);
     }
 
-    if (m_iYResolution != 300)
+    if (/*m_iYResolution != 300*/m_cPrintQuality != QUALITY_DRAFT)
         m_iRasterCount = (m_sSwathHeight - m_sSwathHeight / 4) * m_iNumColors;
 
     m_bStartPageNotSent = TRUE;

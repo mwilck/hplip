@@ -600,7 +600,7 @@ mordor:
 /* Get device id string. Assume binary length value at begining of string has been removed. */
 int hplip_GetID(int hd, char *buf, int bufSize)
 {
-   char message[512];  
+   char message[1024+512];
    int len=0;  
    MsgAttributes ma;
  
@@ -623,7 +623,7 @@ int hplip_GetID(int hd, char *buf, int bufSize)
    hplip_ParseMsg(buf, len, &ma);
    if (ma.result == R_AOK)
    {
-      len = ma.length;
+      len = ma.length < bufSize ? ma.length : bufSize-1;
       memcpy(buf, ma.data, len);
       buf[len] = 0;       /* zero terminate */
    }

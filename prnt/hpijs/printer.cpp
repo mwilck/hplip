@@ -1056,6 +1056,7 @@ PrintMode::PrintMode
 
     cmap.ulMap1 = map1;
     cmap.ulMap2 = map2;
+    cmap.ulMap3 = NULL;
 
     BaseResX = BaseResY = TextRes = 300;
     MixedRes= FALSE;

@@ -177,7 +177,7 @@ int hpijs_set_cb (void *set_cb_data, IjsServerCtx *ctx, IjsJobId job_id,
    char *tail;
    int status = 0;
    char svalue[IJS_MAX_PARAM+1];   
-   float w, h;
+   float w, h, dx, dy;
 
    /* Sanity check input value. */
    if (value_size > IJS_MAX_PARAM)
@@ -256,8 +256,12 @@ int hpijs_set_cb (void *set_cb_data, IjsServerCtx *ctx, IjsJobId job_id,
       }
       else
       {
+
+         dx = w > pSS->PaperWidth ? w - pSS->PaperWidth : pSS->PaperWidth - w;
+         dy = h > pSS->PaperHeight ? h - pSS->PaperHeight :  pSS->PaperHeight - h;
+
          /* Middle of print Job, ignore paper size if same. */
-         if (!(w == pSS->PaperWidth && h == pSS->PaperHeight))
+         if ((dx > 0.03) || (dy > 0.03))
          {
             pSS->FirstRaster = 1;  /* force new Job */
             pSS->PaperWidth = w;   /* set new paper size */
@@ -272,19 +276,19 @@ int hpijs_set_cb (void *set_cb_data, IjsServerCtx *ctx, IjsJobId job_id,
    }
    else if (!strcmp (key, "Quality:Quality"))
    {
-      pSS->Quality = strtol(svalue, &tail, 10);
+      pSS->Quality = (QUALITY_MODE) strtol(svalue, &tail, 10);
    }
    else if (!strcmp (key, "Quality:MediaType"))
    {
-      pSS->MediaType = strtol(svalue, &tail, 10);
+      pSS->MediaType = (MEDIATYPE) strtol(svalue, &tail, 10);
    }
    else if (!strcmp (key, "Quality:ColorMode"))
    {
-      pSS->ColorMode = strtol(svalue, &tail, 10);
+      pSS->ColorMode = (COLORMODE) strtol(svalue, &tail, 10);
    }
    else if (!strcmp (key, "Quality:PenSet"))
    {
-      pSS->PenSet = strtol(svalue, &tail, 10);
+      pSS->PenSet = (PEN_TYPE) strtol(svalue, &tail, 10);
    }
    else if (!strcmp (key, "Quality:FullBleed"))
    {

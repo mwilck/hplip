@@ -86,6 +86,11 @@ BYTE* GetHT6x6_4_970()
     return (BYTE*)HT600x6004level970_open;
 }
 
+BYTE *GetHT12x12x1_4100_Photo_Best ()
+{
+    return (BYTE *) HT1200x1200x1PhotoBest_open;
+}
+
 // functions to identify versions of system
 BOOL ProprietaryImaging()
 {

@@ -150,19 +150,27 @@ class Logger(object):
         finally:
             self._lock.release()
 
-    def debug(self, message):
+    def debug(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
-            self.log("%s%s [DEBUG]: %s%s" % ('\x1b[34;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
-            syslog.syslog(syslog.LOG_DEBUG, "%s [DEBUG] %s" % (self.module, message))
-
+            if fmt:
+                self.log("%s%s [DEBUG]: %s%s" % ('\x1b[34;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+                syslog.syslog(syslog.LOG_DEBUG, "%s [DEBUG] %s" % (self.module, message))
+            else:
+                self.log("%s [DEBUG]: %s" % (self.module, message), Logger.LOG_LEVEL_DEBUG)
+                syslog.syslog(syslog.LOG_DEBUG, "%s [DEBUG] %s" % (self.module, message))
+            
     dbg = debug
     
-    def debug_block(self, title, block):
+    def debug_block(self, title, block, fmt=True):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
-            self.log("%s%s [DEBUG]: %s:%s" % ('\x1b[34;01m', self.module, title, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
-            self.log("%s%s%s" % ('\x1b[34;01m', block, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+            if fmt:
+                self.log("%s%s [DEBUG]: %s:%s" % ('\x1b[34;01m', self.module, title, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+                self.log("%s%s%s" % ('\x1b[34;01m', block, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+            else:
+                self.log("%s [DEBUG]: :%s" % (self.module, title), Logger.LOG_LEVEL_DEBUG)
+                self.log(block, Logger.LOG_LEVEL_DEBUG)
 
-    def info(self, message):
+    def info(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_INFO:
             if self.module:
                 self.log("%s %s" % (self.module, message), Logger.LOG_LEVEL_INFO)
@@ -171,21 +179,33 @@ class Logger(object):
 
     information = info
 
-    def warn(self, message):
+    def warn(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_WARN:
-            self.log("%s%s [WARNING]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
+            if fmt:
+                self.log("%s%s [WARNING]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
+            else:
+                self.log("%s [WARNING]: %s" % (self.module, message), Logger.LOG_LEVEL_WARN)
+            
             syslog.syslog(syslog.LOG_WARNING, "%s [WARN] %s" % (self.module, message))
 
     warning = warn
 
-    def error(self, message):
+    def error(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_ERROR:
-            self.log("%s%s [ERROR]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_ERROR)
+            if fmt:
+                self.log("%s%s [ERROR]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_ERROR)
+            else:
+                self.log("%s [ERROR]: %s" % (self.module, message), Logger.LOG_LEVEL_ERROR)
+            
             syslog.syslog(syslog.LOG_ALERT, "%s [ERROR] %s" % (self.module, message))
 
-    def fatal(self, message):
+    def fatal(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_FATAL:
-            self.log("%s%s [FATAL]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+            if fmt:
+                self.log("%s%s [FATAL]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+            else:
+                self.log("%s [FATAL]: %s" % (self.module, message), Logger.LOG_LEVEL_DEBUG)
+            
             syslog.syslog(syslog.LOG_CRIT, "%s [FATAL] %s" % (self.module, message))
 
     def exception(self):

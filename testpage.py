@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '4.0'
+__version__ = '4.1'
 __title__ = 'Testpage Print Utility'
 __doc__ = "Print a tespage to a printer. Prints a summary of device information and shows the printer's margins."
 
@@ -43,7 +43,8 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_PRINTER,
          utils.USAGE_SPACE,
          utils.USAGE_OPTIONS,
-         utils.USAGE_BUS1, utils.USAGE_BUS2,         
+         utils.USAGE_BUS1, utils.USAGE_BUS2,
+         ("Don't wait for printout to complete:", "-x", "option", True),
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
          utils.USAGE_SPACE,
@@ -60,7 +61,7 @@ def usage(typ='text'):
     
  
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:g',
+    opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:gx',
                                ['printer=', 'device=', 'help', 'help-rest', 
                                 'help-man', 'logging=', 'bus='])
 except getopt.GetoptError:
@@ -70,6 +71,7 @@ printer_name = None
 device_uri = None
 bus = 'cups'
 log_level = logger.DEFAULT_LOG_LEVEL
+wait_for_printout = True
 
 if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
@@ -102,6 +104,9 @@ for o, a in opts:
             
     elif o == '-g':
         log.set_level('debug')
+        
+    elif o == '-x':
+        wait_for_printout = False
         
 
 if device_uri and printer_name:
@@ -212,38 +217,40 @@ try:
             else:
                 log.error("An error occured (code=%d)." % e.opt)
         else:
-            log.info("Test page has been sent to printer. Waiting for printout to complete...")
-            
-            time.sleep(5)
-            i = 0
-
-            while True:
+            if wait_for_printout:
+                log.info("Test page has been sent to printer. Waiting for printout to complete...")
+                
                 time.sleep(5)
-                
-                try:
-                    d.queryDevice(quick=True)
-                except Error, e:
-                    log.error("An error has occured.")
-                
-                if d.error_state == ERROR_STATE_CLEAR:
-                    break
-                
-                elif d.error_state == ERROR_STATE_ERROR:
-                    log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
-                    break
+                i = 0
+    
+                while True:
+                    time.sleep(5)
                     
-                elif d.error_state == ERROR_STATE_WARNING:
-                    log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
-                
-                else: # ERROR_STATE_BUSY
-                    update_spinner()
+                    try:
+                        d.queryDevice(quick=True)
+                    except Error, e:
+                        log.error("An error has occured.")
                     
-                i += 1
-                
-                if i > 24:  # 2min
-                    break
+                    if d.error_state == ERROR_STATE_CLEAR:
+                        break
+                    
+                    elif d.error_state == ERROR_STATE_ERROR:
+                        log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
+                        break
+                        
+                    elif d.error_state == ERROR_STATE_WARNING:
+                        log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
+                    
+                    else: # ERROR_STATE_BUSY
+                        update_spinner()
+                        
+                    i += 1
+                    
+                    if i > 24:  # 2min
+                        break
+            else:
+                log.info("Test page has been sent to printer.")
 
-        #sys.exit(0)
     else:
         log.error("Device is busy or in an error state. Please check device and try again.")
         sys.exit(1)

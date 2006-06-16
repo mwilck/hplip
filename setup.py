@@ -471,13 +471,10 @@ if setup_print:
             user_input = raw_input(utils.bold("\nWould you like to specify the path to the correct PPD file to use (y=yes, n=no*, q=quit) ?"))
             user_input = user_input.strip().lower()
             
-            if user_input == 'q':
+            if not user_input or user_input in ('q', 'n'):
                 log.info("OK, done.")
                 sys.exit(0)
             
-            if not user_input or user_input == 'n':
-                break
-                
             if user_input == 'y':
                 enter_ppd = True
                 break

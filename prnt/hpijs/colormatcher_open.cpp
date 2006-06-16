@@ -33,6 +33,16 @@
 #include "colormatch.h"
 
 #include "colormatcher_open.h"
+#define INTERPOLATE_5_BITS(a, b, d)     a + ( ( ( (long)b - (long)a ) * d) >> 5)
+#define INTERPOLATE_4_BITS(a, b, d)     a + ( ( ( (long)b - (long)a ) * d) >> 4)
+
+// Spatial Interpolation
+#define INTERPOLATE_CUBE(r,g,b, cube, DOCALC) \
+    DOCALC( (DOCALC( (DOCALC( cube[0], cube[4], (r))), \
+                    (DOCALC( cube[2], cube[6], (r))), (g))), \
+            (DOCALC( (DOCALC( cube[1], cube[5], (r))), \
+                    (DOCALC( cube[3], cube[7], (r))), (g))), \
+            (b))
 
 APDK_BEGIN_NAMESPACE
 
@@ -49,7 +59,7 @@ ColorMatcher_Open::~ColorMatcher_Open()
 { }
 
 
-#define DOCALC(a, b, d)     a + ( ( ( (long)b - (long)a ) * d) >> 5)
+//#define DOCALC(a, b, d)     a + ( ( ( (long)b - (long)a ) * d) >> 5)
 
 /*
 BYTE DOCALC(BYTE a, BYTE b, BYTE d)
@@ -74,137 +84,101 @@ BYTE NewCalc(BYTE color[8], BYTE diff_red, BYTE diff_green, BYTE diff_blue)
 
 void ColorMatcher_Open::Interpolate
 (
-    const uint32_t *start,
-    const unsigned long i,
+    const uint32_t *map,
     BYTE r,
     BYTE g,
     BYTE b,
     BYTE *blackout,
     BYTE *cyanout,
     BYTE *magentaout,
-    BYTE *yellowout,
-    HPBool firstPixelInRow
+    BYTE *yellowout
 )
 {
-    static BYTE prev_red = 255, prev_green = 255, prev_blue = 255;
-    static BYTE bcyan, bmagenta, byellow, bblack;
-
-    if(firstPixelInRow || ( (prev_red != r) || (prev_green != g) || (prev_blue != b) ))
-    {
-        // update cache info
-        prev_red = r;
-        prev_green = g;
-        prev_blue = b;
+    static int cube_location[]  = {0, 1,  9, 10,  81,  82,  90,  91 };
+    const uint32_t *start;
 
 #ifdef  _WIN32_WCE
-        long    cyan[8], magenta[8],yellow[8],black[8];
+    long    cyan[8], magenta[8],yellow[8],black[8];
 #else
-        BYTE    cyan[8], magenta[8],yellow[8],black[8];
+    BYTE    cyan[8], magenta[8],yellow[8],black[8];
+#endif
+    start = (const uint32_t *)
+        (((r & 0xE0) << 1) + ((r & 0xE0) >> 1) + (r >> 5) +
+        ((g & 0xE0) >> 2) + (g >> 5) + (b >> 5) + map);
+
+    uint32_t    cValue;
+    for (int j = 0; j < 8; j++)
+    {
+        cValue = *(start + cube_location[j]);
+        cyan[j]    = GetCyanValue (cValue);
+        magenta[j] = GetMagentaValue (cValue);
+        yellow[j]  = GetYellowValue (cValue);
+        black[j]   = GetBlackValue (cValue);
+    }
+
+    ////////////////this is the 8 bit 9cube operation /////////////
+    BYTE diff_red   = r & 0x1f;
+    BYTE diff_green = g & 0x1f;
+    BYTE diff_blue  = b & 0x1f;
+
+    *cyanout    = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, cyan, INTERPOLATE_5_BITS );
+    *magentaout = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, magenta, INTERPOLATE_5_BITS );
+    *yellowout  = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, yellow, INTERPOLATE_5_BITS );
+    *blackout   = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, black, INTERPOLATE_5_BITS );
+}
+
+#ifdef APDK_DJ3320
+
+void ColorMatcher_Open::Interpolate
+(
+    const unsigned char *map,
+    BYTE r,
+    BYTE g,
+    BYTE b,
+    BYTE *blackout,
+    BYTE *cyanout,
+    BYTE *magentaout,
+    BYTE *yellowout
+)
+{
+#ifdef  _WIN32_WCE
+    long    cyan[8], magenta[8],yellow[8],black[8];
+#else
+    BYTE    cyan[8], magenta[8],yellow[8],black[8];
 #endif
 
-        uint32_t cValue = (*start);
-        cyan[0]=GetCyanValue(cValue);
-        magenta[0] = GetMagentaValue(cValue);
-        yellow[0] = GetYellowValue(cValue);
-        black[0] = GetBlackValue(cValue);
+//  static int cube_location[]  = {0, 1, 17, 18, 289, 290, 306, 307};
+    static int cube_location[]  = {0, 4, 68, 72, 1156, 1160, 1224, 1228};
+    const   BYTE    *start;
 
-        cValue = *(start+1);
-        cyan[1]=GetCyanValue(cValue);
-        magenta[1] = GetMagentaValue(cValue);
-        yellow[1] = GetYellowValue(cValue);
-        black[1] = GetBlackValue(cValue);
+    BYTE *node_ptr;
 
-        cValue = *(start+9);
-        cyan[2]=GetCyanValue(cValue);
-        magenta[2] = GetMagentaValue(cValue);
-        yellow[2] = GetYellowValue(cValue);
-        black[2] = GetBlackValue(cValue);
+    start = (const unsigned char *)
+        ((((r & 0xF0) << 4) + ((r & 0xF0) << 1) + (r >> 4) +
+        ((g & 0xF0)) + (g >> 4) + (b >> 4)) * 4 + map);
 
-        cValue = *(start+10);
-        cyan[3]=GetCyanValue(cValue);
-        magenta[3] = GetMagentaValue(cValue);
-        yellow[3] = GetYellowValue(cValue);
-        black[3] = GetBlackValue(cValue);
-
-        cValue = *(start+81);
-        cyan[4]=GetCyanValue(cValue);
-        magenta[4] = GetMagentaValue(cValue);
-        yellow[4] = GetYellowValue(cValue);
-        black[4] = GetBlackValue(cValue);
-
-        cValue = *(start+82);
-        cyan[5]=GetCyanValue(cValue);
-        magenta[5] = GetMagentaValue(cValue);
-        yellow[5] = GetYellowValue(cValue);
-        black[5] = GetBlackValue(cValue);
-
-        cValue = *(start+90);
-        cyan[6]=GetCyanValue(cValue);
-        magenta[6] = GetMagentaValue(cValue);
-        yellow[6] = GetYellowValue(cValue);
-        black[6] = GetBlackValue(cValue);
-
-        cValue = *(start+91);
-        cyan[7]=GetCyanValue(cValue);
-        magenta[7] = GetMagentaValue(cValue);
-        yellow[7] = GetYellowValue(cValue);
-        black[7] = GetBlackValue(cValue);
-
-        ////////////////this is the 8 bit 9cube operation /////////////
-        BYTE diff_red = r & 0x1f;
-        BYTE diff_green = g & 0x1f;
-        BYTE diff_blue = b & 0x1f;
-
-        bcyan   =   DOCALC( (DOCALC( (DOCALC( cyan[0], cyan[4], diff_red)), (DOCALC( cyan[2], cyan[6], diff_red)), diff_green)),
-            (DOCALC( (DOCALC( cyan[1], cyan[5], diff_red)), (DOCALC( cyan[3], cyan[7], diff_red)), diff_green)),
-            diff_blue);
-        bmagenta =  DOCALC( (DOCALC( (DOCALC( magenta[0], magenta[4], diff_red)), (DOCALC( magenta[2], magenta[6], diff_red)), diff_green)),
-            (DOCALC( (DOCALC( magenta[1], magenta[5], diff_red)), (DOCALC( magenta[3], magenta[7], diff_red)), diff_green)),
-            diff_blue);
-        byellow =   DOCALC( (DOCALC( (DOCALC( yellow[0], yellow[4], diff_red)), (DOCALC( yellow[2], yellow[6], diff_red)), diff_green)),
-            (DOCALC( (DOCALC( yellow[1], yellow[5], diff_red)), (DOCALC( yellow[3], yellow[7], diff_red)), diff_green)),
-            diff_blue);
-        bblack  =   DOCALC( (DOCALC( (DOCALC( black[0], black[4], diff_red)), (DOCALC( black[2], black[6], diff_red)), diff_green)),
-            (DOCALC( (DOCALC( black[1], black[5], diff_red)), (DOCALC( black[3], black[7], diff_red)), diff_green)),
-            diff_blue);
-/*
-        BYTE xcyan, xmagenta, xyellow, xblack;
-
-        xcyan = NewCalc(cyan, diff_red, diff_green, diff_blue);
-
-        xmagenta = NewCalc(magenta, diff_red, diff_green, diff_blue);
-
-        xyellow = NewCalc(yellow, diff_red, diff_green, diff_blue);
-
-        xblack = NewCalc(black, diff_red, diff_green, diff_blue);
-
-        ASSERT(bcyan == xcyan);
-        ASSERT(bmagenta == xmagenta);
-        ASSERT(byellow == xyellow);
-        ASSERT(bblack == xblack);
-*/
-    }
-
-    if(cyanout)
+    // use (start) to determine the surrounding cube values
+    for (int j = 0; j < 8; ++j )
     {
-        *(cyanout + i)    = bcyan;
+        node_ptr = (BYTE *) (start + cube_location[j]);
+        black[j]   = *node_ptr++;
+        cyan[j]    = *node_ptr++;
+        magenta[j] = *node_ptr++;
+        yellow[j]  = *node_ptr;
     }
 
-    if(magentaout)
-    {
-        *(magentaout + i) = bmagenta;
-    }
 
-    if(yellowout)
-    {
-        *(yellowout + i)  = byellow;
-    }
+    // interpolate using the 4 LSBs
+    BYTE diff_red   = r & 0x0f;
+    BYTE diff_green = g & 0x0f;
+    BYTE diff_blue  = b & 0x0f;
 
-    if(blackout)
-    {
-        *(blackout + i)   = bblack;
-    }
-
+    *cyanout    = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, cyan, INTERPOLATE_4_BITS );
+    *magentaout = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, magenta, INTERPOLATE_4_BITS );
+    *yellowout  = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, yellow, INTERPOLATE_4_BITS );
+    *blackout   = INTERPOLATE_CUBE(diff_red,diff_green,diff_blue, black, INTERPOLATE_4_BITS );
 }
+
+#endif
 
 APDK_END_NAMESPACE

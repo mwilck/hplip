@@ -35,6 +35,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "global_types.h"
+
 APDK_USING_NAMESPACE
 
 class UXServices:public SystemServices
@@ -123,10 +125,10 @@ public:
   const float *Margin;
   int Model;      /* selected device: -1=no, 1=yes */
   int OutputPath;   /* open file descriptor */
-  int Quality;       /* 0=normal, 1=draft, 2=best */
-  int MediaType;     /* 0=plain, 1=premium, 2=photo */
-  int ColorMode;     /* 0=grey_k, 1=grey_cmy, 2=color */
-  int PenSet;        /* 0=black_pen, 1=color_pen, 2=both_pens, 3=mdl_pen, 4=mdl_both */
+  QUALITY_MODE Quality;
+  MEDIATYPE MediaType;
+  COLORMODE ColorMode;
+  PEN_TYPE PenSet;
   int MediaPosition;
   float PaperWidth;    /* physical width in inches */
   float PaperHeight;   /* physical height in inches */

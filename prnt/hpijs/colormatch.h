@@ -82,12 +82,23 @@ protected:
     void ColorMatch( unsigned long width, const uint32_t *map, unsigned char *rgb,
         unsigned char *kplane, unsigned char *cplane, unsigned char *mplane,
         unsigned char *yplane );
-
     // open/proprietary differ in this routine
-    virtual void Interpolate(const uint32_t *start,const unsigned long i,
+    virtual void Interpolate(const uint32_t *map,
         unsigned char r,unsigned char g,unsigned char b,
         unsigned char *blackout, unsigned char *cyanout,
-        unsigned char *magentaout, unsigned char *yellowout, HPBool)=0;
+        unsigned char *magentaout, unsigned char *yellowout)=0;
+
+#ifdef APDK_DJ3320
+    void ColorMatch( unsigned long width, const unsigned char *map, unsigned char *rgb,
+        unsigned char *kplane, unsigned char *cplane, unsigned char *mplane,
+        unsigned char *yplane );
+    // open/proprietary differ in this routine
+    virtual void Interpolate(const unsigned char *map,
+        unsigned char r,unsigned char g,unsigned char b,
+        unsigned char *blackout, unsigned char *cyanout,
+        unsigned char *magentaout, unsigned char *yellowout)=0;
+#endif
+
 
     inline unsigned char GetYellowValue(uint32_t cmyk)
     { return( ((unsigned char)((cmyk)>>24) & 0xFF) ); }

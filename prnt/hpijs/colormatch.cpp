@@ -46,7 +46,7 @@ ColorMatcher::ColorMatcher
     cmap(cm)
 {
     constructor_error = NO_ERROR;
-    ASSERT(cmap.ulMap1 != NULL);
+    ASSERT(cmap.ulMap1 != NULL && cmap.ulMap3 != NULL);
     StartPlane = K;       // most common case
 
     if (ColorPlaneCount == 3)     // CMY pen
@@ -184,25 +184,85 @@ void ColorMatcher::ColorMatch
     unsigned char *yplane
 )
 {
-    HPBool  first = HPTRUE;
+    static      uint32_t    prev_red = 255, prev_green = 255, prev_blue = 255;
+    static      BYTE        bcyan, bmagenta, byellow, bblack;
+
+    uint32_t    r;
+    uint32_t    g;
+    uint32_t    b;
 
     for (unsigned long i = 0; i < width; i++)
     {
-        uint32_t r = *rgb++;
-        uint32_t g = *rgb++;
-        uint32_t b = *rgb++;
+        r = *rgb++;
+        g = *rgb++;
+        b = *rgb++;
 
-        const uint32_t *start;
-        start = (const uint32_t *)
-            (((r & 0xE0) << 1) + ((r & 0xE0) >> 1) + (r >> 5) +
-            ((g & 0xE0) >> 2) + (g >> 5) + (b >> 5) + map);
+        if(i == 0 || ( (prev_red != r) || (prev_green != g) || (prev_blue != b) ))
+        {
+            prev_red =   r;
+            prev_green = g;
+            prev_blue =  b;
 
-        Interpolate(start, i, (BYTE)r, (BYTE)g,(BYTE)b, kplane, cplane, mplane, yplane, first);
-        first = HPFALSE;
+            Interpolate(map, (BYTE)r, (BYTE)g,(BYTE)b, &bblack, &bcyan, &bmagenta, &byellow);
+        }
+        if (kplane)
+            *(kplane + i) = bblack;
+        if (cplane)
+            *(cplane + i) = bcyan;
+        if (mplane)
+            *(mplane + i) = bmagenta;
+        if (yplane)
+            *(yplane + i) = byellow;
+
     }
 
 } //ColorMatch
 
+#ifdef APDK_DJ3320
+void ColorMatcher::ColorMatch
+(
+    unsigned long width,
+    const unsigned char *map,
+    unsigned char *rgb,
+    unsigned char *kplane,
+    unsigned char *cplane,
+    unsigned char *mplane,
+    unsigned char *yplane
+)
+{
+    static      BYTE        prev_red = 255, prev_green = 255, prev_blue = 255;
+    static      BYTE        bcyan, bmagenta, byellow, bblack;
+
+    BYTE    r;
+    BYTE    g;
+    BYTE    b;
+
+    for (unsigned long i = 0; i < width; i++)
+    {
+        r = *rgb++;
+        g = *rgb++;
+        b = *rgb++;
+        if(i == 0 || ( (prev_red != r) || (prev_green != g) || (prev_blue != b) ))
+        {
+            prev_red =   r;
+            prev_green = g;
+            prev_blue =  b;
+
+            Interpolate(map, (BYTE)r, (BYTE)g,(BYTE)b, &bblack, &bcyan, &bmagenta, &byellow);
+        }
+        if (kplane)
+            *(kplane + i) = bblack;
+        if (cplane)
+            *(cplane + i) = bcyan;
+        if (mplane)
+            *(mplane + i) = bmagenta;
+        if (yplane)
+            *(yplane + i) = byellow;
+
+    }
+
+} //ColorMatch
+#endif
 
 uint32_t Packed(unsigned int k,unsigned int c,unsigned int m,unsigned int y)
 {
@@ -219,6 +279,7 @@ uint32_t Packed(unsigned int k,unsigned int c,unsigned int m,unsigned int y)
 
 DRIVER_ERROR ColorMatcher::MakeGrayMap(const uint32_t *colormap, uint32_t* graymap)
 {
+    unsigned long   ul_MapPtr;
     for (unsigned int r = 0; r < 9; r++)
     {
         unsigned long ul_RedMapPtr = r * 9 * 9;
@@ -228,7 +289,7 @@ DRIVER_ERROR ColorMatcher::MakeGrayMap(const uint32_t *colormap, uint32_t* graym
             for (unsigned int b = 0; b < 9; b++)
             {
                 unsigned long mapptr = b + (g * 9) + (r * 9 * 9);       // get address in map
-                unsigned long ul_MapPtr = b + ul_GreenMapPtr + ul_RedMapPtr;
+                ul_MapPtr = b + ul_GreenMapPtr + ul_RedMapPtr;
                 ASSERT(mapptr == ul_MapPtr);
                 // put r,g,b in monitor range
                 unsigned int oldR = r * 255 >> 3;
@@ -244,7 +305,7 @@ DRIVER_ERROR ColorMatcher::MakeGrayMap(const uint32_t *colormap, uint32_t* graym
                           ((gray & 0xE0) >>2) + (gray>>5) + (gray>>5) + colormap);
 
                  BYTE k,c,m,y;
-                 Interpolate(start, 0, gray, gray, gray, &k, &c, &m, &y, TRUE);
+                 Interpolate(start, gray, gray, gray, &k, &c, &m, &y);
 
                 // second interpolate if Clight/Mlight
 
@@ -289,17 +350,31 @@ BOOL ColorMatcher::Process(RASTERDATA* pbyInputKRGBRaster)
 			buff4 = buff3 + InputWidth;
 		}
 
-		// colormatching -- can only handle 4 planes at a time
-		ColorMatch( InputWidth, // ASSUMES ALL INPUTWIDTHS EQUAL
-			cmap.ulMap1,
-			pbyInputKRGBRaster->rasterdata[COLORTYPE_COLOR],
-			buff1,
-			buff2,
-			buff3,
-			buff4
-		);
+        if (cmap.ulMap3)
+        {
+		    ColorMatch( InputWidth, // ASSUMES ALL INPUTWIDTHS EQUAL
+			    cmap.ulMap3,
+			    pbyInputKRGBRaster->rasterdata[COLORTYPE_COLOR],
+			    buff1,
+			    buff2,
+			    buff3,
+			    buff4
+		    );
+        }
+        if (cmap.ulMap1)
+        {
+		    // colormatching -- can only handle 4 planes at a time
+		    ColorMatch( InputWidth, // ASSUMES ALL INPUTWIDTHS EQUAL
+			    cmap.ulMap1,
+			    pbyInputKRGBRaster->rasterdata[COLORTYPE_COLOR],
+			    buff1,
+			    buff2,
+			    buff3,
+			    buff4
+		    );
+        }
 
-		if (EndPlane > Y)
+		if (EndPlane > Y && cmap.ulMap2)
 		{
 			BYTE* buff5 = buff4 + InputWidth;
 			BYTE* buff6 = buff5 + InputWidth;

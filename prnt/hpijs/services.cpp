@@ -46,6 +46,12 @@
 
 int UXServices::InitDuplexBuffer()
 {
+    /* Free buffer if new page size in middle of print job. */
+    if (RastersOnPage)
+       delete [] RastersOnPage;
+    if (KRastersOnPage)
+       delete [] KRastersOnPage;
+
     /* Calculate duplex page buffer */
     CurrentRaster = ph.height - 1;  /* Height = physical page in pixels */
     RastersOnPage = (BYTE **) new BYTE[(ph.height) * sizeof (BYTE *)];
@@ -270,12 +276,13 @@ UXServices::UXServices():SystemServices()
        }
    }
 
-   Quality = 0;     /* normal */
-   MediaType = 0;   /* plain */
-   ColorMode = 2;   /* color */
+   Quality = QUALITY_NORMAL;
+   MediaType = MEDIA_PLAIN;
+   ColorMode = COLOR;
    PenSet = DUMMY_PEN;
    
    RastersOnPage = 0;
+   KRastersOnPage = 0;
    pPC = NULL;
    pJob = NULL;
    Duplex = 0;
@@ -294,6 +301,8 @@ UXServices::~UXServices()
 {
    if (RastersOnPage)
       delete [] RastersOnPage;
+   if (KRastersOnPage)
+      delete [] KRastersOnPage;
    if (hpFD >= 0)
       hplip_CloseHP(hpFD);  
    hplip_Exit(); 

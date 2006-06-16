@@ -1,0 +1,363 @@
+;
+; SANE Backend specification file
+;
+
+:backend "hpaio"                        ; name of backend
+:version ""                           ; version of backend
+:url "http://hpinkjet.sourceforge.net/" ; backend's web page
+:comment "This backend isn't included in SANE because it is included in the HPLIP software."
+
+:devicetype :scanner                    ; start of a list of devices....
+:mfg "Hewlett-Packard"                  ; name a manufacturer
+:url "http://www.hp.com/united-states/consumer/gateway/printing_multifunction.html"
+:model "HP Color LaserJet 2800"
+:status :good
+
+:model "HP Color LaserJet 2820"
+:status :good
+
+:model "HP Color LaserJet 2830"
+:status :good
+
+:model "HP Color LaserJet 2840"
+:status :good
+
+:model "Deskjet F300 series"
+:status :good
+
+:model "HP LaserJet 1100"
+:status :good
+
+:model "HP LaserJet 1100a"
+:status :good
+
+:model "HP LaserJet 1100xi"
+:status :good
+
+:model "HP LaserJet 1220"
+:status :good
+
+:model "HP LaserJet 1220se"
+:status :good
+
+:model "hp LaserJet 3015"
+:status :good
+
+:model "hp LaserJet 3020"
+:status :good
+
+:model "hp LaserJet 3030"
+:status :good
+
+:model "HP LaserJet 3050"
+:status :good
+
+:model "HP LaserJet 3052"
+:status :good
+
+:model "HP LaserJet 3055"
+:status :good
+
+:model "HP LaserJet 3200"
+:status :good
+
+:model "HP LaserJet 3200M"
+:status :good
+
+:model "HP LaserJet 3200se"
+:status :good
+
+:model "HP LaserJet 3300 3310 3320"
+:status :good
+
+:model "HP LaserJet 3330"
+:status :good
+
+:model "hp LaserJet 3380"
+:status :good
+
+:model "HP LaserJet 3390"
+:status :good
+
+:model "HP LaserJet 3392"
+:status :good
+
+:model "HP LaserJet 4100 MFP"
+:status :good
+
+:model "officejet 4100 series"
+:status :good
+
+:model "officejet 4105 series"
+:status :good
+
+:model "officejet 4110 series"
+:status :good
+
+:model "officejet 4115 series"
+:status :good
+
+:model "officejet 4200 series"
+:status :good
+
+:model "officejet 4255"
+:status :good
+
+:model "Officejet 4300 series"
+:status :good
+
+:model "officejet 5100 series"
+:status :good
+
+:model "OfficeJet 5105"
+:status :good
+
+:model "OfficeJet 5110"
+:status :good
+
+:model "officejet 5500 series"
+:status :good
+
+:model "Officejet 5600 series"
+:status :good
+
+:model "OfficeJet 6100 Series"
+:status :good
+
+:model "OfficeJet 6150 Series"
+:status :good
+
+:model "Officejet 6200 series"
+:status :good
+
+:model "Officejet 6300 series"
+:status :good
+
+:model "officejet 7100 series"
+:status :good
+
+:model "Officejet 7200 series"
+:status :good
+
+:model "Officejet 7300 series"
+:status :good
+
+:model "Officejet 7400 series"
+:status :good
+
+:model "Officejet 9100 series"
+:status :good
+
+:model "officejet d series"
+:status :good
+
+:model "OfficeJet G55"
+:status :good
+
+:model "OfficeJet G55xi"
+:status :good
+
+:model "OfficeJet G85"
+:status :good
+
+:model "OfficeJet G85xi"
+:status :good
+
+:model "OfficeJet G95"
+:status :good
+
+:model "OfficeJet K60"
+:status :good
+
+:model "OfficeJet K60xi"
+:status :good
+
+:model "OfficeJet K80"
+:status :good
+
+:model "OfficeJet K80xi"
+:status :good
+
+:model "OFFICEJET PRO 1150C"
+:status :good
+
+:model "OFFICEJET PRO 1170C SERIES"
+:status :good
+
+:model "OFFICEJET R40"
+:status :good
+
+:model "OFFICEJET R40xi"
+:status :good
+
+:model "OFFICEJET R45"
+:status :good
+
+:model "OFFICEJET R60"
+:status :good
+
+:model "OFFICEJET R65"
+:status :good
+
+:model "OFFICEJET R80"
+:status :good
+
+:model "OFFICEJET R80xi"
+:status :good
+
+:model "OfficeJet Series 500"
+:status :good
+
+:model "OfficeJet Series 520"
+:status :good
+
+:model "OfficeJet Series 570"
+:status :good
+
+:model "OfficeJet Series 580"
+:status :good
+
+:model "OfficeJet Series 590"
+:status :good
+
+:model "OfficeJet Series 600"
+:status :good
+
+:model "OfficeJet Series 610"
+:status :good
+
+:model "OfficeJet Series 630"
+:status :good
+
+:model "OfficeJet Series 700"
+:status :good
+
+:model "OfficeJet Series 710"
+:status :good
+
+:model "OfficeJet Series 720"
+:status :good
+
+:model "OfficeJet Series 725"
+:status :good
+
+:model "OfficeJet T Series"
+:status :good
+
+:model "OfficeJet V30"
+:status :good
+
+:model "OfficeJet V40"
+:status :good
+
+:model "OfficeJet V40xi"
+:status :good
+
+:model "OfficeJet V45"
+:status :good
+
+:model "psc 1100 series"
+:status :good
+
+:model "psc 1200 series"
+:status :good
+
+:model "psc 1300 series"
+:status :good
+
+:model "psc 1310 series"
+:status :good
+
+:model "PSC 1400 series"
+:status :good
+
+:model "PSC 1500 series"
+:status :good
+
+:model "PSC 1510 series"
+:status :good
+
+:model "PSC 1600 series"
+:status :good
+
+:model "PSC 2100 Series"
+:status :good
+
+:model "PSC 2150 Series"
+:status :good
+
+:model "PSC 2170 Series"
+:status :good
+
+:model "PSC 2200 Series"
+:status :good
+
+:model "PSC 2210 series"
+:status :good
+
+:model "psc 2300 series"
+:status :good
+
+:model "PSC 2350 series"
+:status :good
+
+:model "psc 2400 series"
+:status :good
+
+:model "psc 2500 series"
+:status :good
+
+:model "PSC 500"
+:status :good
+
+:model "PSC 720"
+:status :good
+
+:model "PSC 750"
+:status :good
+
+:model "PSC 750xi"
+:status :good
+
+:model "PSC 760"
+:status :good
+
+:model "PSC 900 Series"
+:status :good
+
+:model "PSC 950"
+:status :good
+
+:model "PSC 950vr"
+:status :good
+
+:model "PSC 950xi"
+:status :good
+
+:model "Photosmart 2570 series"
+:status :good
+
+:model "Photosmart 2600 series"
+:status :good
+
+:model "Photosmart 2700 series"
+:status :good
+
+:model "Photosmart 3100 series"
+:status :good
+
+:model "Photosmart 3200 series"
+:status :good
+
+:model "Photosmart 3300 series"
+:status :good
+
+:model "Photosmart C3100 series"
+:status :good
+
+:model "Photosmart C4100 series"
+:status :good
+
+:model "Printer Scanner Copier 300"
+:status :good
+

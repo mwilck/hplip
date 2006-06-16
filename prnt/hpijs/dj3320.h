@@ -82,6 +82,9 @@ public:
     
 
     LDLEncap    *pLDLEncap;
+    int         m_iBytesPerSwing;
+    int         m_iLdlVersion;
+    int         m_iColorPenResolution;
 
 protected:
     DISPLAY_STATUS m_dsCurrentStatus;

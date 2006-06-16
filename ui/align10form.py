@@ -24,39 +24,14 @@ import os.path
 from qt import *
 from align10form_base import Align10Form_Base
 
+# Also supports align-type==11
 class Align10Form(Align10Form_Base):
-    def __init__(self, pattern, parent = None, name = None, modal = 0, fl = 0):
+    def __init__(self, pattern, align_type=ALIGN_TYPE_LBOW, parent = None, name = None, modal = 0, fl = 0):
         Align10Form_Base.__init__(self,parent,name,modal,fl)
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir, 'align10.png')))
-        if pattern == 1:
-            self.controls = {'A' : (True, 23),
-                             'B' : (True, 9),
-                             'C' : (True, 9),
-                             'D' : (False, 0),
-                             'E' : (False, 0),
-                             'F' : (False, 0),
-                             'G' : (False, 0),
-                             'H' : (False, 0),}
-        elif pattern == 2:
-            self.controls = {'A' : (True, 23),
-                             'B' : (True, 17),
-                             'C' : (True, 23),
-                             'D' : (True, 23),
-                             'E' : (True, 9),
-                             'F' : (True, 9),
-                             'G' : (True, 9),
-                             'H' : (True, 9),}
         
-        elif pattern == 3:
-            self.controls = {'A' : (True, 23),
-                             'B' : (True, 9),
-                             'C' : (True, 23),
-                             'D' : (True, 23),
-                             'E' : (True, 9),
-                             'F' : (True, 9),
-                             'G' : (True, 9),
-                             'H' : (True, 9),}
-
+        self.controls = maint.align10and11Controls(pattern, align_type)
+        
         for line in self.controls:
             if not self.controls[line][0]:
                 eval('self.comboBox%s.setEnabled(False)' % line)

@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '1.1'
+__version__ = '2.0'
 __title__ = 'CUPS Fax Backend (hpfax:)'
 __doc__ = "CUPS backend for PC send fax. Generally this backend is run by CUPS, not directly by a user. To send a fax as a user, run hp-sendfax"
 
@@ -30,6 +30,8 @@ import ConfigParser
 import os.path, os
 import socket
 import syslog
+import time
+import re
 
 config_file = '/etc/hp/hplip.conf'
 home_dir = ''
@@ -41,14 +43,14 @@ if os.path.exists(config_file):
     try:
         home_dir = config.get('dirs', 'home')
     except:
-        syslog.syslog(syslog.LOG_CRIT, "hpfax: Error setting home directory: home= under [dirs] not found.")
+        syslog.syslog(syslog.LOG_CRIT, "hpfax: ERROR: Error setting home directory: home= under [dirs] not found.")
         sys.exit(1)
 else:
-    syslog.syslog(syslog.LOG_CRIT, "hpfax: Error setting home directory: /etc/hp/hplip.conf not found.")
+    syslog.syslog(syslog.LOG_CRIT, "hpfax: ERROR: Error setting home directory: /etc/hp/hplip.conf not found.")
     sys.exit(1)
 
 if not home_dir or not os.path.exists(home_dir):
-    syslog.syslog(syslog.LOG_CRIT, "hpfax: Error setting home directory: home directory %s not found." % home_dir)
+    syslog.syslog(syslog.LOG_CRIT, "hpfax: ERROR: Error setting home directory: home directory %s not found." % home_dir)
     sys.exit(1)
 
 sys.path.insert( 0, home_dir )
@@ -59,7 +61,7 @@ try:
     from base import device, utils, msg
     from base.service import sendEvent
 except ImportError:
-    syslog.syslog(syslog.LOG_CRIT, "Error importing HPLIP modules.")
+    syslog.syslog(syslog.LOG_CRIT, "hpfax: ERROR: Error importing HPLIP modules.")
     sys.exit(1)
 
 
@@ -103,18 +105,49 @@ for o, a in opts:
 log.set_module("hpfax")
 
 if len( args ) == 0:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        devices = device.probeDevices(sock=None, bus='usb,par', timeout=5,
-                                      ttl=4, filter='fax', format='cups')
-    except Error:
-        log.stderr("ERROR: Unable to contact HPLIP I/O (hpssd).")
+        sock.connect((prop.hpssd_host, prop.hpssd_port))
+    except socket.error:
+        log.stderr("hpfax: ERROR: Unable to contact HPLIP I/O (hpssd).")
         sys.exit(1)
 
-    if len(devices):
-        for d in devices:
-            print d.replace('hp:/', 'hpfax:/')
-    else:
-        print 'direct hpfax:/no_device_found "Unknown" "hpfax no_device_found"'
+    fields, data, result_code = \
+        msg.xmitMessage(sock,
+                         "ProbeDevicesFiltered",
+                         None,
+                         {
+                           'bus' : 'usb,par',
+                           'timeout' : 5,
+                           'ttl' : 4,
+                           'filter' : 'fax',
+                          }
+                       )
+
+    sock.close()
+
+    if result_code > ERROR_SUCCESS:
+        print 'direct hpfax:/no_device_found "HPLIP Fax" "no_device_found" ""'
+        sys.exit(0)
+
+    direct_pat = re.compile(r'(.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
+    
+    for d in data.splitlines():
+        m = direct_pat.match(d)
+        
+        uri = m.group(1) or ''
+        uri = uri.replace('hp:/', 'hpfax:/')
+        mdl = m.group(2) or ''
+        devid = m.group(4) or ''
+        
+        try:
+            back_end, is_hp, bus, model, serial, dev_file, host, port = \
+                device.parseDeviceURI(uri)
+        except Error:
+            continue
+        
+        print 'direct %s "HPLIP Fax" "%s HPLIP Fax" "%s"' % (uri, mdl, devid)
+        
         
     sys.exit(0)
 
@@ -124,7 +157,7 @@ else:
         device_uri = os.environ['DEVICE_URI']
         printer_name = os.environ['PRINTER']
     except KeyError:
-        log.stderr("ERROR: Improper environment: Must be run by CUPS.")
+        log.stderr("hpfax: ERROR: Improper environment: Must be run by CUPS.")
         sys.exit(1)
         
     log.debug(args)
@@ -132,7 +165,7 @@ else:
     try:
         job_id, username, title, copies, options = args[0:5]
     except IndexError:
-        log.stderr("ERROR: Invalid command line: Invalid arguments.")
+        log.stderr("hpfax: ERROR: Invalid command line: Invalid arguments.")
         sys.exit(1)
         
     try:
@@ -140,50 +173,63 @@ else:
     except IndexError:
         input_fd = 0
         
-    #log.error("INFO: URI=%s, Printer=%s, Job ID=%s, User=%s, Title=%s, Copies=%s, Options=%s" % \
-    #    (device_uri, printer_name, job_id, username, title, copies, options))
-
     pdb = pwd.getpwnam(username)
     home_folder, uid, gid = pdb[5], pdb[2], pdb[3]
-    
-    #log.error("INFO: User home=%s, Uid=%d, Gid=%d" % (home_folder, uid, gid))
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((prop.hpssd_host, prop.hpssd_port))
     except socket.error:
-        log.error("ERROR: Unable to contact HPLIP I/O (hpssd).")
+        log.stderr("hpfax: ERROR: Unable to contact HPLIP I/O (hpssd).")
         sys.exit(1)
 
-    try:
-        fields, data, result_code = \
-            msg.xmitMessage(sock, "HPFaxBegin", 
-                                 None,
-                                 {"username": username,
-                                  "job-id": job_id,
-                                  "device-uri": device_uri,
-                                  "printer": printer_name,
-                                  "title": title,
-                                 })
-                           
-    except Error:
-        log.stderr("ERROR: Unable to send event to HPLIP I/O (hpssd).")
-        sys.exit(1) 
-   
-    if result_code == ERROR_GUI_NOT_AVAILABLE:
-        # New behavior in 0.9.11
-        log.stderr("ERROR: You must run hp-sendfax first. Run hp-sendfax now and then restart this queue to continue.")
+    fax_data = os.read(input_fd, prop.max_message_len)
+
+    if not len(fax_data):
+        log.stderr("hpfax: ERROR: No data!")
         
-        sendEvent(sock, EVENT_ERROR_FAX_MUST_RUN_SENDFAX_FIRST, 'event',
+        sendEvent(sock, EVENT_ERROR_NO_DATA_AVAILABLE, 'error',
                   job_id, username, device_uri)
         
+        sock.close()
         sys.exit(1)
+        
+
+    sendEvent(sock, EVENT_START_FAX_PRINT_JOB, 'event',
+              job_id, username, device_uri)
+    
+    while True:
+        try:
+            fields, data, result_code = \
+                msg.xmitMessage(sock, "HPFaxBegin", 
+                                     None,
+                                     {"username": username,
+                                      "job-id": job_id,
+                                      "device-uri": device_uri,
+                                      "printer": printer_name,
+                                      "title": title,
+                                     })
+                               
+        except Error:
+            log.stderr("hpfax: ERROR: Unable to send event to HPLIP I/O (hpssd).")
+            sys.exit(1) 
+       
+        if result_code == ERROR_GUI_NOT_AVAILABLE:
+            # New behavior in 1.6.6 (30sec retry)
+            log.stderr("hpfax: ERROR: You must run hp-sendfax first. Run hp-sendfax now to continue. Fax will resume within 30 seconds.")
+            
+            sendEvent(sock, EVENT_ERROR_FAX_MUST_RUN_SENDFAX_FIRST, 'event',
+                      job_id, username, device_uri)
+            
+        else: # ERROR_SUCCESS
+            break
+        
+        time.sleep(30)
+    
 
     bytes_read = 0
     while True:
-        data = os.read(input_fd, prop.max_message_len)
-        
-        if not data:
+        if not len(fax_data):
             fields, data, result_code = \
                 msg.xmitMessage(sock, "HPFaxEnd", 
                                      None,
@@ -199,20 +245,21 @@ else:
             break
                                    
             
-        bytes_read += len(data) 
+        bytes_read += len(fax_data) 
         
         fields, data, result_code = \
             msg.xmitMessage(sock, "HPFaxData", 
-                                 data,
+                                 fax_data,
                                  {"username": username,
                                   "job-id": job_id,
                                  })
 
+        fax_data = os.read(input_fd, prop.max_message_len)
+    
     os.close(input_fd)
     
-    if not bytes_read:
-        log.error("No data!")
-        sys.exit(1)
+    sendEvent(sock, EVENT_END_FAX_PRINT_JOB, 'event',
+              job_id, username, device_uri)
     
     sock.close()
     sys.exit(0)

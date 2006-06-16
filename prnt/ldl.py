@@ -85,17 +85,41 @@ COMMAND_SET_HUE_COMPENSATION_OPERATION = 16
 COMMAND_SET_HUE_COMPENSATION_PEN_COLOR = 0
 COMMAND_SET_HUE_COMPENSATION_PEN_PHOTO = 1
 
-# Print internal page
+# Print internal page 0.3.8 and 0.4.3
 COMMAND_PRINT_INTERNAL_PAGE = 12
 COMMAND_PRINT_INTERNAL_PAGE_OPERATION = 17
+
+# 0.5.4 Report Page 
+COMMAND_REPORT_PAGE = 12
+COMMAND_REPORT_PAGE_OPERATION = 21
+COMMAND_REPORT_PAGE_PEN_CALIBRATION = 81
+COMMAND_REPORT_PAGE_PEN_CALIBRATION_VERIFY = 82
+
+# 0.5.4 Set Pen Alignment 3
+COMMAND_SET_PEN_ALIGNMENT_3 = 12
+COMMAND_SET_PEN_ALIGNMENT_3_OPERATION = 23
+COMMAND_SET_PEN_ALIGNMENT_3_K = 0x01
+COMMAND_SET_PEN_ALIGNMENT_3_C = 0x02
+COMMAND_SET_PEN_ALIGNMENT_3_M = 0x04
+COMMAND_SET_PEN_ALIGNMENT_3_Y = 0x08
+COMMAND_SET_PEN_ALIGNMENT_3_COLOR = 0x0e
+COMMAND_SET_PEN_ALIGNMENT_3_c = 0x10
+COMMAND_SET_PEN_ALIGNMENT_3_m = 0x20
+COMMAND_SET_PEN_ALIGNMENT_3_k = 0x40
+COMMAND_SET_PEN_ALIGNMENT_3_PHOTO = 0x70
 
 # Printer queries
 COMMAND_QUERY = 5
 QUERY_PRINTER_ALIGNMENT = 3 # 0.3.8
 QUERY_PEN_ALIGNMENT = 15 # 0.4.3
 
+# 0.5.4 Dynamic counters
+COMMAND_DYNAMIC_COUNTERS = 12
+COMMAND_DYNAMIC_COUNTERS_OPERATION = 5
+
 
 def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
+    p = ''
 
     if packet_type == PACKET_TYPE_DISABLE_PACING:
         p = '$\x00\x10\x00\x01\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff$'
@@ -119,9 +143,6 @@ def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
 
     elif packet_type == PACKET_TYPE_SYNC_COMPLETE:
         p = '$\x00\x10\x00\x08\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff$'
-        #fmt = CMD_HEADER_FMT + 'BBBBBB'
-        #p = struct.pack( fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_SYNC_COMPLETE, 0, 0, 0,
-        #                 PACKET_PAD, PACKET_PAD, PACKET_PAD, PACKET_PAD, PACKET_PAD, PACKET_FRAME )
 
     elif packet_type == PACKET_TYPE_RESET_LIDIL:
         p = '$\x00\x10\x00\x06\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff$'
@@ -130,7 +151,7 @@ def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
 
         if command == COMMAND_HANDLE_PEN:   
             fmt = CMD_HEADER_FMT + "BBBBBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_HANDLE_PEN, 
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
                              0, 0, operation, PACKET_PAD, PACKET_PAD,  PACKET_PAD, PACKET_PAD, PACKET_FRAME)
 
         elif command == COMMAND_SET_PRINTER_ALIGNMENT and operation == COMMAND_SET_PRINTER_ALIGNMENT_OPERATION: # 0.3.8   
@@ -138,28 +159,34 @@ def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
             b = (0, 0, other['k_bidi'], other['c_vert'], other['c_hort'], other['c_bidi'],
                         other['c_vert'], other['c_hort'], other['c_bidi'], other['c_vert'],
                         other['c_hort'], other['c_bidi'], PACKET_FRAME)
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_SET_PRINTER_ALIGNMENT, 
-                             0, 0, COMMAND_SET_PRINTER_ALIGNMENT_OPERATION, 0x0f, *b)
+
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
+                             0, 0, operation, 0x0f, *b)
 
         elif command == COMMAND_SET_PEN_ALIGNMENT and operation == COMMAND_SET_PEN_ALIGNMENT_OPERATION: # 0.4.3
             fmt = CMD_HEADER_FMT + "BBBbBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_SET_PEN_ALIGNMENT, 
-                             0, 0, COMMAND_SET_PEN_ALIGNMENT_OPERATION, other['pen'], other['item'], other['value'], 
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
+                             0, 0, operation, other['pen'], other['item'], other['value'], 
                              PACKET_PAD, PACKET_FRAME)
+
+        elif command == COMMAND_REPORT_PAGE and operation == COMMAND_REPORT_PAGE_OPERATION: # 0.5.4
+            fmt = CMD_HEADER_FMT + "BHBBB"
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command,
+                            0, 0, operation, other['report'], PACKET_PAD, PACKET_PAD, PACKET_FRAME)
 
         elif command == COMMAND_ZCA and operation == COMMAND_ZCA_OPERATION:    
             fmt = CMD_HEADER_FMT + "BBhBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_ZCA, 
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
                              0, 0, operation, 0, other['zca'], PACKET_PAD, PACKET_FRAME)
 
         elif command == COMMAND_SET_PENS_ALIGNED and operation == COMMAND_SET_PENS_ALIGNED_OPERATION:
             fmt = CMD_HEADER_FMT + "BHBBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_SET_PENS_ALIGNED, 
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
                              0, 0, operation, other['colors'], PACKET_PAD, PACKET_PAD, PACKET_FRAME)
 
         elif command == COMMAND_SET_HUE_COMPENSATION and operation == COMMAND_SET_HUE_COMPENSATION_OPERATION:
             fmt = CMD_HEADER_FMT + "BBbBBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_SET_HUE_COMPENSATION, 
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
                              0, 0, operation, other['which'], other['value'], PACKET_PAD, 
                              PACKET_PAD, PACKET_FRAME)
 
@@ -168,16 +195,28 @@ def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
             p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_QUERY, 
                              0, 0, 0, operation, 0, PACKET_PAD, PACKET_FRAME)
 
-        elif command == COMMAND_PRINT_INTERNAL_PAGE: 
+        elif command == COMMAND_PRINT_INTERNAL_PAGE and operation == COMMAND_PRINT_INTERNAL_PAGE_OPERATION: 
             fmt = CMD_HEADER_FMT + "BBBBBB"
-            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, COMMAND_PRINT_INTERNAL_PAGE, 
-                             0, 0, COMMAND_PRINT_INTERNAL_PAGE_OPERATION, PACKET_PAD, PACKET_PAD,  
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command, 
+                             0, 0, operation, PACKET_PAD, PACKET_PAD,  
                              PACKET_PAD, PACKET_PAD, PACKET_FRAME)
-        else:
-            p = ''
 
-    else:
-        p = ''
+        elif command == COMMAND_SET_PEN_ALIGNMENT_3 and operation == COMMAND_SET_PEN_ALIGNMENT_3_OPERATION: # 0.5.4
+            selections = other['selections']
+            num_selections = len(selections)
+            selections.append(PACKET_FRAME)
+            fmt = CMD_HEADER_FMT + "BIB" + "B"*(num_selections+1)
+
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command,
+                            0, 0, operation, other['active_colors'], 
+                            num_selections, *selections)
+                            
+        elif command == COMMAND_DYNAMIC_COUNTERS and operation == COMMAND_DYNAMIC_COUNTERS_OPERATION: # 0.5.4
+            fmt = CMD_HEADER_FMT + "BIB"
+            
+            p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command,
+                            0, 0, operation, other['counter'], PACKET_FRAME)
+            
 
     assert len(p) >= 16
 
@@ -306,7 +345,6 @@ def buildColorHuePacket(value): # 0.4.3
                             other={'which' : COMMAND_SET_HUE_COMPENSATION_PEN_COLOR,
                                     'value' :  value})
 
-
 def buildSetPensAlignedPacket():
     return buildLIDILPacket(PACKET_TYPE_COMMAND, COMMAND_SET_PENS_ALIGNED, 
                               COMMAND_SET_PENS_ALIGNED_OPERATION,
@@ -318,8 +356,24 @@ def buildSetPensAlignedPacket():
                                                  COMMAND_SET_PENS_ALIGNED_k | 
                                                  COMMAND_SET_PENS_ALIGNED_K})
 
+def buildReportPagePacket(report): # 0.5.4
+    return buildLIDILPacket(PACKET_TYPE_COMMAND, COMMAND_REPORT_PAGE,
+                            COMMAND_REPORT_PAGE_OPERATION,
+                            other={'report': report})
+
+def buildSetPenAlignment3Packet(active_colors, selections): # 0.5.4
+    return buildLIDILPacket(PACKET_TYPE_COMMAND, COMMAND_SET_PEN_ALIGNMENT_3, 
+                            COMMAND_SET_PEN_ALIGNMENT_3_OPERATION,
+                            other={'active_colors': active_colors,
+                                   'selections': selections,})
+                                   
+def buildDynamicCountersPacket(counter): # 0.5.4
+    return buildLIDILPacket(PACKET_TYPE_COMMAND, COMMAND_DYNAMIC_COUNTERS,
+                            COMMAND_DYNAMIC_COUNTERS_OPERATION,
+                            other={'counter': counter,})
 
 if __name__ == "__main__":
+
     pass    
 
 

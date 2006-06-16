@@ -44,11 +44,15 @@ public:
 
 protected:
 
-    void Interpolate(const uint32_t *start,const unsigned long i,
+    void Interpolate(const uint32_t *map,
         unsigned char r,unsigned char g,unsigned char b,
         unsigned char *blackout, unsigned char *cyanout,
-        unsigned char *magentaout, unsigned char *yellowout, HPBool);
+        unsigned char *magentaout, unsigned char *yellowout);
 
+    void Interpolate(const unsigned char *map,
+        unsigned char r,unsigned char g,unsigned char b,
+        unsigned char *blackout, unsigned char *cyanout,
+        unsigned char *magentaout, unsigned char *yellowout);
 
 
 }; //ColorMatcher_Open

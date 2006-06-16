@@ -36,7 +36,7 @@ from qt import *
 # Main form
 from devmgr4_base import DevMgr4_base
 
-# Alignment forms
+# Alignment and ColorCal forms
 from alignform import AlignForm
 from aligntype6form1 import AlignType6Form1
 from aligntype6form2 import AlignType6Form2
@@ -45,7 +45,7 @@ from colorcalform import ColorCalForm # Type 1 color cal
 from coloradjform import ColorAdjForm  # Type 5 and 6 color adj
 from colorcalform2 import ColorCalForm2 # Type 2 color cal
 from colorcal4form import ColorCal4Form # Type 4 color cal
-from align10form import Align10Form 
+from align10form import Align10Form # Type 10 and 11 alignment
 
 # Misc forms
 from loadpaperform import LoadPaperForm
@@ -57,7 +57,6 @@ from cleaningform2 import CleaningForm2
 from waitform import WaitForm
 from faxsettingsform import FaxSettingsForm
 from informationform import InformationForm
-from supportform import SupportForm
 
 # all in minutes
 MIN_AUTO_REFRESH_RATE = 1
@@ -221,6 +220,7 @@ class ScrollSuppliesView(QScrollView):
 
 
     def createBarGraph(self, percent, agent_type, w=100, h=18):
+        #log.info("createBarGraph()")
         fw = w/100*percent
         px = QPixmap(w, h)
         pp = QPainter(px)
@@ -521,7 +521,7 @@ class devmgr4(DevMgr4_base):
             self.auto_refresh_rate = int(user_cfg.refresh.rate)
         except ValueError:    
             self.auto_refresh_rate = DEF_AUTO_REFRESH_RATE
-            
+
         try:
             self.auto_refresh_type = int(user_cfg.refresh.type)
         except ValueError:
@@ -589,7 +589,7 @@ class devmgr4(DevMgr4_base):
         if self.auto_refresh:
             log.debug("Refresh timer...")
             self.CleanupChildren()
-            
+
             if self.auto_refresh_type == 0:
                 self.UpdateDevice()
             else:
@@ -606,11 +606,12 @@ class devmgr4(DevMgr4_base):
 
 
     def RescanDevices(self):
-        self.deviceRefreshAll.setEnabled(False)
-        self.deviceRescanAction.setEnabled(False)
-        self.DeviceListRefresh()
-        self.deviceRescanAction.setEnabled(True)
-        self.deviceRefreshAll.setEnabled(True)
+        if not self.rescanning:
+            self.deviceRefreshAll.setEnabled(False)
+            #self.deviceRescanAction.setEnabled(False)
+            self.DeviceListRefresh()
+            #self.deviceRescanAction.setEnabled(True)
+            self.deviceRefreshAll.setEnabled(True)
 
 
     def Cleanup(self):
@@ -666,61 +667,64 @@ class devmgr4(DevMgr4_base):
 
 
     def UpdateDevice(self, check_state=True):
-        log.debug(utils.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
-        self.setCaption("%s - HP Device Manager" % self.cur_device.model_ui)
-        if not self.rescanning:
-            self.statusBar().message(self.cur_device_uri)
-
-        if self.cur_device.supported and check_state and not self.rescanning:
-            QApplication.setOverrideCursor(QApplication.waitCursor)
-            result_code = ERROR_DEVICE_NOT_FOUND
-
-            try:
+        if self.cur_device is not None:
+            log.debug(utils.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
+            self.setCaption(self.__tr("%1 - HP Device Manager").arg(self.cur_device.model_ui))
+    
+            if not self.rescanning:
+                self.statusBar().message(self.cur_device_uri)
+    
+            if self.cur_device.supported and check_state and not self.rescanning:
+                QApplication.setOverrideCursor(QApplication.waitCursor)
+    
                 try:
-                    self.cur_device.open()
-                except Error, e:
-                    log.warn(e.msg)
-
-                if self.cur_device.device_state == DEVICE_STATE_NOT_FOUND:
-                    self.cur_device.error_state = ERROR_STATE_ERROR
-                else:
                     try:
-                        self.cur_device.queryDevice()
+                        self.cur_device.open()
                     except Error, e:
-                        log.error("Query device error (%s)." % e.msg)
+                        log.warn(e.msg)
+    
+                    if self.cur_device.device_state == DEVICE_STATE_NOT_FOUND:
                         self.cur_device.error_state = ERROR_STATE_ERROR
+                    else:
+                        try:
+                            self.cur_device.queryDevice()
+                        except Error, e:
+                            log.error("Query device error (%s)." % e.msg)
+                            self.cur_device.error_state = ERROR_STATE_ERROR
+    
+                finally:
+                    self.cur_device.close()
+                    QApplication.restoreOverrideCursor()
+    
+                log.debug("Device state = %d" % self.cur_device.device_state)
+                log.debug("Status code = %d" % self.cur_device.status_code)
+                log.debug("Error state = %d" % self.cur_device.error_state)
+    
+                icon = self.CreatePixmap()
+                self.DeviceList.currentItem().setPixmap(icon)
+    
+            if not self.rescanning: 
+                self.UpdateHistory()
+                self.UpdateTabs()
 
-            finally:
-                self.cur_device.close()
-                QApplication.restoreOverrideCursor()
 
-            log.debug("Device state = %d" % self.cur_device.device_state)
-            log.debug("Status code = %d" % self.cur_device.status_code)
-            log.debug("Error state = %d" % self.cur_device.error_state)
+    def CreatePixmap(self, dev=None):
+        if dev is None:
+            dev = self.cur_device
 
-            icon = self.CreatePixmap()
-            self.DeviceList.currentItem().setPixmap(icon)
-
-        if not self.rescanning: 
-            self.UpdateHistory()
-            self.UpdateTabs()
-
-
-    def CreatePixmap(self):
-        d = self.cur_device
         try:
-            pix = QPixmap(os.path.join(prop.image_dir, d.icon))
+            pix = QPixmap(os.path.join(prop.image_dir, dev.icon))
         except AttributeError:
             pix = QPixmap(os.path.join(prop.image_dir, 'default_printer.png'))
 
-        error_state = d.error_state
+        error_state = dev.error_state
         icon = QPixmap(pix.width(), pix.height())
         p = QPainter(icon)
         p.eraseRect(0, 0, icon.width(), icon.height())
         p.drawPixmap(0, 0, pix)
 
         try:
-            tech_type = d.tech_type
+            tech_type = dev.tech_type
         except AttributeError:
             tech_type = TECH_TYPE_NONE
 
@@ -740,118 +744,212 @@ class devmgr4(DevMgr4_base):
 
     def DeviceListRefresh(self):
         log.debug("Rescanning device list...")
-        QApplication.setOverrideCursor(QApplication.waitCursor)
-        if not self.rescanning:
-            self.rescanning = True
-            self.DeviceList.clear()
-            self.devices.clear()
-            self.supported_devices = device.getSupportedCUPSDevices()
-            log.debug(self.supported_devices)
-            self.num_devices = len(self.supported_devices)
-            self.devices.clear()
-            self.device_num = 0
 
-            if self.num_devices > 0:
+        if not self.rescanning:
+            self.setCaption(self.__tr("Refreshing Device List - HP Device Manager"))
+            self.statusBar().message(self.__tr("Refreshing device list..."))
+            
+            self.rescanning = True
+            total_changes = 0
+            total_steps = 0
+            
+            self.cups_devices = device.getSupportedCUPSDevices()
+
+            if not len(self.cups_devices):
+                self.deviceRescanAction.setEnabled(False)
+                self.rescanning = False
+                self.statusBar().message(self.__tr("Press F6 to refresh."))
+                dlg = NoDevicesForm(self, "", True)
+                dlg.show()
+                return
+
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+            
+            # TODO: Use Set() when 2.3+ is ubiquitous
+            
+            for d in self.cups_devices: # adds
+                if d not in self.devices:
+                    total_steps += 1
+                    total_changes += 1
+
+            updates = []
+            for d in self.devices: # removes
+                if d not in self.cups_devices:
+                    total_steps += 1
+                    total_changes += 1
+                else:
+                    # Don't update current device as it will be updated at end
+                    if self.cur_device is not None and self.cur_device_uri != d:
+                        updates.append(d) # updates
+                        total_steps += 1
+                        
+            #print updates
+
+            log.debug("total changes = %d" % total_changes)
+
+            step_num = 0
+
+            if total_steps:
                 self.pb = QProgressBar(self.statusBar(), 'ProgressBar')
-                self.pb.setTotalSteps(self.num_devices)
+                self.pb.setTotalSteps(total_changes + total_steps)
                 self.statusBar().addWidget(self.pb)
                 self.pb.show()
 
-                self.scan_timer = QTimer(self, "ScanTimer")
-                self.connect(self.scan_timer, SIGNAL('timeout()'),
-                              self.ContinueDeviceListRefresh)
+            if total_changes:
+                #self.DeviceList.setUpdatesEnabled(False)
+                
+                # Item addition (device added to CUPS)
+                for d in self.cups_devices: 
+                    if d not in self.devices:
+                        qApp.processEvents()
+                        log.debug("adding: %s" % d)
 
-                self.__NextDevice = self.__GetNextDevice()
-                self.scan_timer.start(0)
-            else:
-                dlg = NoDevicesForm(self)
-                dlg.exec_loop()
-                self.close()
+                        self.pb.setProgress(step_num)
+                        step_num += 1
+                        qApp.processEvents()
 
-    def __GetNextDevice(self):
-        for d in self.supported_devices:
-            yield d, self.supported_devices[d]
+                        log.debug(utils.bold("Refresh: %s %s %s" % \
+                            ("*"*20, d, "*"*20)))
 
-
-    def ContinueDeviceListRefresh(self):
-        try:
-            self.cur_device_uri, cups_printer_list = \
-                self.__NextDevice.next()
-        except StopIteration:
-
-            self.scan_timer.stop()
-            self.disconnect(self.scan_timer, SIGNAL('timeout()'),
-                             self.ContinueDeviceListRefresh)
-
-            self.scan_timer = None
-            del self.scan_timer
-
-            self.pb.hide()
-            self.statusBar().removeWidget(self.pb)
-
-            self.DeviceList.adjustItems()
-            self.DeviceList.updateGeometry()
-            self.DeviceList.setCurrentItem(self.DeviceList.firstItem())
-            self.rescanning = False
-
-            QApplication.restoreOverrideCursor()
-
-            if self.num_devices:
-                self.UpdateDevice()
-
-            else: # == 0:
-                self.deviceRescanAction.setEnabled(False)
-                dlg = NoDevicesForm(self, "", True)
-                dlg.show()
-
-        else:
-            self.pb.setProgress(self.device_num)
-            self.device_num += 1
-
-            log.debug(utils.bold("Refresh: %s %s %s" % \
-                ("*"*20, self.cur_device_uri, "*"*20)))
-
-            try:
-                self.cur_device = device.Device(self.cur_device_uri,
+                        try:
+                            dev = device.Device(d,
                                                 hpiod_sock=self.hpiod_sock,
                                                 hpssd_sock=self.hpssd_sock,
                                                 callback=self.callback)
-            except Error:
-                log.error("Unexpected error in Device class.")
-                log.exception()
-                return
+                        except Error:
+                            log.error("Unexpected error in Device class.")
+                            log.exception()
+                            return
 
-            result_code = ERROR_DEVICE_NOT_FOUND
+                        try:
+                            try:
+                                dev.open()
+                            except Error, e:
+                                log.warn(e.msg)
 
-            try:
+                            if dev.device_state == DEVICE_STATE_NOT_FOUND:
+                                dev.error_state = ERROR_STATE_ERROR
+                            else:
+                                dev.queryDevice(quick=True) #, no_fwd=True)
+                                
+                        finally:
+                            dev.close()
+
+                        self.CheckForDeviceSettingsUI(dev)
+
+                        icon = self.CreatePixmap(dev)
+                        
+                        IconViewItem(self.DeviceList, dev.model_ui,
+                                     icon, d)
+
+                        self.devices[d] = dev
+
+
+                # Item removal (device removed from CUPS)
+                for d in self.devices.keys():
+                    if d not in self.cups_devices:
+                        qApp.processEvents()
+                        item = self.DeviceList.firstItem()
+                        log.debug("removing: %s" % d)
+                        
+                        self.pb.setProgress(step_num)
+                        step_num += 1
+                        qApp.processEvents()
+
+                        while item is not None:
+                            if item.device_uri == d:
+                                self.DeviceList.takeItem(item)
+                                del self.devices[d]
+                                break
+
+                            item = item.nextItem()
+
+
+
+            # Item updates
+            for d in updates:
+                log.debug("updating: %s" % d)
+                qApp.processEvents()
+                dev = self.devices[d]
+
+                self.pb.setProgress(step_num)
+                step_num += 1
+                qApp.processEvents()
+
+                prev_error_state = dev.error_state
+                
                 try:
-                    self.cur_device.open()
-                    self.cur_device.error_state = ERROR_STATE_CLEAR
-                except Error, e:
-                    log.warn(e.msg)
+                    try:
+                        dev.open()
+                    except Error, e:
+                        log.warn(e.msg)
 
-                if self.cur_device.device_state == DEVICE_STATE_NOT_FOUND:
-                    self.cur_device.error_state = ERROR_STATE_ERROR
+                    if dev.device_state == DEVICE_STATE_NOT_FOUND:
+                        dev.error_state = ERROR_STATE_ERROR
+                    else:
+                        dev.queryDevice(quick=True) #, no_fwd=True)
+                
+                finally:
+                    dev.close()
 
-            finally:
-                self.cur_device.close()
+                if dev.error_state != prev_error_state:
+                    item = self.DeviceList.firstItem()
 
-            self.CheckForDeviceSettingsUI()
+                    while item is not None:
+                        if item.device_uri == d:
+                            item.setPixmap(self.CreatePixmap(dev))
+                            break
 
-            icon = self.CreatePixmap()
-            i = IconViewItem(self.DeviceList, self.cur_device.model_ui,
-                              icon, self.cur_device_uri)
+                        item = item.nextItem()
 
-            self.devices[self.cur_device_uri] = self.cur_device
+            if self.pb is not None:
+                self.pb.hide()
+                self.statusBar().removeWidget(self.pb)
+                self.pb = None
+            
+            # Select current item
+            if self.cur_device is not None:                    
+                item = self.DeviceList.firstItem()
+                
+                while item is not None:
+                    qApp.processEvents()
+                    if item.device_uri == self.cur_device_uri:
+                        self.DeviceList.setCurrentItem(item)
+                        #self.DeviceList.setSelected(item, True)
+                        break
 
-            self.DeviceList.setCurrentItem(i)
+                    item = item.nextItem()
+
+                else:
+                    self.cur_device = None
+                    self.cur_device_uri = ''
+
+            if self.cur_device is None:
+                self.cur_device_uri = self.DeviceList.firstItem().device_uri
+                self.cur_device = self.devices[self.cur_device_uri]
+                self.DeviceList.setCurrentItem(self.DeviceList.firstItem())
+                #self.DeviceList.setSelected(self.DeviceList.firstItem(), True)
+
+            #self.DeviceList.setUpdatesEnabled(True)
+
+            self.DeviceList.adjustItems()
+            self.DeviceList.updateGeometry()
+
+            # Update current device
+            self.rescanning = False
+            
+            self.UpdateDevice()
+            self.deviceRescanAction.setEnabled(True)
+
+            QApplication.restoreOverrideCursor()
+
 
     def callback(self):
         pass
 
-    def CheckForDeviceSettingsUI(self):
-        self.cur_device.device_settings_ui = None
-        name = '.'.join(['plugins', self.cur_device.model])
+    def CheckForDeviceSettingsUI(self, dev):
+        dev.device_settings_ui = None
+        name = '.'.join(['plugins', dev.model])
         log.debug("Attempting to load plugin: %s" % name)
         try:
             mod = __import__(name, globals(), locals(), [])
@@ -863,7 +961,7 @@ class devmgr4(DevMgr4_base):
             for c in components[1:]:
                 mod = getattr(mod, c)
             log.debug("Loaded: %s" % repr(mod))
-            self.cur_device.device_settings_ui = mod.settingsUI
+            dev.device_settings_ui = mod.settingsUI
 
 
     def ActivateDevice(self, device_uri):
@@ -876,7 +974,7 @@ class devmgr4(DevMgr4_base):
             if d.device_uri == device_uri:
                 found = True
                 self.DeviceList.setSelected(d, True)
-                self.Tabs.setCurrentPage(0)
+                #self.Tabs.setCurrentPage(0)
                 break
 
             d = d.nextItem()
@@ -926,6 +1024,7 @@ class devmgr4(DevMgr4_base):
 
 
     def UpdatePanelTab(self):
+        #log.info("UpdatePanelTab()")
         dq = self.cur_device.dq
 
         if dq.get('panel', 0) == 1:
@@ -963,7 +1062,8 @@ class devmgr4(DevMgr4_base):
             self.ScanButton.setEnabled(self.cur_device.scan_type)
             self.PCardButton.setEnabled(self.cur_device.pcard_type)
             self.SendFaxButton.setEnabled(self.cur_device.fax_type)
-            self.MakeCopiesButton.setEnabled(self.cur_device.copy_type)
+            #self.MakeCopiesButton.setEnabled(self.cur_device.copy_type == COPY_TYPE_DEVICE)
+            self.MakeCopiesButton.setEnabled(False)
         else:
             self.PrintButton.setEnabled(False)
             self.ScanButton.setEnabled(False)
@@ -1060,7 +1160,7 @@ class devmgr4(DevMgr4_base):
                     break
                 else:
                     agent_kind = int(self.cur_device.dq['agent%d-kind' % a])
-                    agent_health = int(self.cur_device.dq['agent%d-health' % a])
+                    #agent_health = int(self.cur_device.dq['agent%d-health' % a])
                     agent_level = int(self.cur_device.dq['agent%d-level' % a])
                     agent_sku = str(self.cur_device.dq['agent%d-sku' % a])
                     agent_desc = self.cur_device.dq['agent%d-desc' % a]
@@ -1157,10 +1257,10 @@ class devmgr4(DevMgr4_base):
                     self.__tr("Open in Browser..."), 
                     self.OpenEmbeddedBrowserButton_clicked)
 
-        self.ToolList.addItem("support",  self.__tr("<b>View Support Information</b>"), 
+        self.ToolList.addItem("support",  self.__tr("<b>View Documentation</b>"), 
             QPixmap(os.path.join(prop.image_dir, 'icon_support2.png')), 
-            self.__tr("View available support resources."), 
-            self.__tr("View Support..."), 
+            self.__tr("View documentation installed on your system."), 
+            self.__tr("View Documentation..."), 
             self.viewSupport) 
 
 
@@ -1174,7 +1274,10 @@ class devmgr4(DevMgr4_base):
         InformationForm(self.cur_device, self).exec_loop()
 
     def viewSupport(self):
-        SupportForm(self).exec_loop()
+        f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
+        log.debug(f)
+        utils.openURL(f)
+
 
     def pqDiag(self):
         d = self.cur_device
@@ -1223,19 +1326,14 @@ class devmgr4(DevMgr4_base):
             QApplication.restoreOverrideCursor()
 
 
-
     def ConfigurePrintSettings_clicked(self):
         utils.openURL("http://localhost:631/printers")
 
     def viewInformation(self):
         InformationForm(self.cur_device, self).exec_loop()
 
-    def viewSupport(self):
-        SupportForm(self).exec_loop()
-
     def pqDiag(self):
         d = self.cur_device
-        ok = False;
         pq_diag = d.pq_diag_type
 
         try:
@@ -1259,7 +1357,6 @@ class devmgr4(DevMgr4_base):
 
     def linefeedCalibration(self):
         d = self.cur_device
-        ok = False;
         linefeed_type = d.linefeed_cal_type
 
         try:
@@ -1288,7 +1385,7 @@ class devmgr4(DevMgr4_base):
                  (event_code, event_type,  error_string_short, retry_timeout, job_id, device_uri))
 
 
-        if self.ActivateDevice(device_uri):
+        if not self.rescanning and self.ActivateDevice(device_uri):
             self.cur_device.status_code = event_code
             self.UpdateDevice(False)
             self.Tabs.setCurrentPage(1)
@@ -1342,7 +1439,7 @@ class devmgr4(DevMgr4_base):
 
             self.SetAlerts()
             self.SaveConfig()
-            
+
 
     def SetAlerts(self):
         service.setAlerts(self.hpssd_sock,
@@ -1423,6 +1520,8 @@ class devmgr4(DevMgr4_base):
     def PhotoPenRequiredUI2(self):
         self.WarningUI(self.__tr("<p><b>Both the photo (regular photo or photo blue) and color cartridges must be inserted into the printer to perform color calibration.</b><p>If you are planning on printing with the photo or photo blue cartridge, please insert it and try again."))
 
+    def NotPhotoOnlyRequired(self): # Type 11
+        self.WarningUI(self.__tr("<p><b>Cannot align with only the photo cartridge installed.</b><p>Please install other cartridges and try again."))
 
     def AioUI1(self):
         dlg = AlignType6Form1(self)
@@ -1432,14 +1531,13 @@ class devmgr4(DevMgr4_base):
     def AioUI2(self):
         AlignType6Form2(self).exec_loop()
 
-    def Align10UI(self, pattern):
-        dlg = Align10Form(pattern, self)
+    def Align10and11UI(self, pattern, align_type):
+        dlg = Align10Form(pattern, align_type, self)
         dlg.exec_loop()
         return dlg.getValues()
 
     def AlignPensButton_clicked(self):
         d = self.cur_device
-        ok = False;
         align_type = d.align_type
 
         log.debug(utils.bold("Align: %s %s (type=%d) %s" % ("*"*20, self.cur_device_uri, align_type, "*"*20)))
@@ -1452,28 +1550,32 @@ class devmgr4(DevMgr4_base):
                 QApplication.restoreOverrideCursor()
 
                 if align_type == ALIGN_TYPE_AUTO:
-                    ok = maint.AlignType1(d, self.LoadPaperUI)
+                    maint.AlignType1(d, self.LoadPaperUI)
 
                 elif align_type == ALIGN_TYPE_8XX:
-                    ok = maint.AlignType2(d, self.LoadPaperUI, self.AlignmentNumberUI,
-                                           self.BothPensRequiredUI)
+                    maint.AlignType2(d, self.LoadPaperUI, self.AlignmentNumberUI,
+                                     self.BothPensRequiredUI)
 
                 elif align_type in (ALIGN_TYPE_9XX,ALIGN_TYPE_9XX_NO_EDGE_ALIGN):
-                    ok = maint.AlignType3(d, self.LoadPaperUI, self.AlignmentNumberUI,
-                                           self.PaperEdgeUI, align_type)
+                     maint.AlignType3(d, self.LoadPaperUI, self.AlignmentNumberUI,
+                                      self.PaperEdgeUI, align_type)
 
                 elif align_type in (ALIGN_TYPE_LIDIL_0_3_8, ALIGN_TYPE_LIDIL_0_4_3, ALIGN_TYPE_LIDIL_VIP):
-                    ok = maint.AlignxBow(d, align_type, self.LoadPaperUI, self.AlignmentNumberUI,
-                                          self.PaperEdgeUI, self.InvalidPenUI, self.ColorAdjUI)
+                    maint.AlignxBow(d, align_type, self.LoadPaperUI, self.AlignmentNumberUI,
+                                    self.PaperEdgeUI, self.InvalidPenUI, self.ColorAdjUI)
 
                 elif align_type == ALIGN_TYPE_LIDIL_AIO:
-                    ok = maint.AlignType6(d, self.AioUI1, self.AioUI2, self.LoadPaperUI)
+                    maint.AlignType6(d, self.AioUI1, self.AioUI2, self.LoadPaperUI)
 
                 elif align_type == ALIGN_TYPE_DESKJET_450:
-                    ok = maint.AlignType8(d, self.LoadPaperUI, self.AlignmentNumberUI)
+                    maint.AlignType8(d, self.LoadPaperUI, self.AlignmentNumberUI)
 
                 elif align_type == ALIGN_TYPE_LBOW:
-                    ok = maint.AlignType10(d, self.LoadPaperUI, self.Align10UI) 
+                    maint.AlignType10(d, self.LoadPaperUI, self.Align10and11UI) 
+
+                elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
+                    maint.AlignType11(d, self.LoadPaperUI, self.Align10and11UI, self.NotPhotoOnlyRequired) 
+
             else:
                 self.CheckDeviceUI()
 
@@ -1504,20 +1606,16 @@ class devmgr4(DevMgr4_base):
         else:
             return False, 0
 
-
     def ColorCalUI4(self):
         dlg = ColorCal4Form(self)
         if dlg.exec_loop() == QDialog.Accepted:
-            #print dlg.values
             return True, dlg.values
         else:
             return False, None
 
-
     def ColorCalibrationButton_clicked(self):
         d = self.cur_device
         color_cal_type = d.color_cal_type
-        ok = False
         log.debug(utils.bold("Color-cal: %s %s (type=%d) %s" % ("*"*20, self.cur_device_uri, color_cal_type, "*"*20)))
 
         try:
@@ -1528,23 +1626,23 @@ class devmgr4(DevMgr4_base):
                 QApplication.restoreOverrideCursor()
 
                 if color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
-                    ok = maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
+                     maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
                                          self.PhotoPenRequiredUI)
 
                 elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
-                    ok = maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
-                                                 self.InvalidPenUI)
+                    maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
+                                        self.InvalidPenUI)
 
                 elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
-                    ok = maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
-                                                 self.PhotoPenRequiredUI2)
+                    maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
+                                        self.PhotoPenRequiredUI2)
 
                 elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
-                    ok = maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
-                                              self.WaitUI)
+                    maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
+                                        self.WaitUI)
 
                 elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
-                    ok = maint.colorCalType5(d, self.LoadPaperUI)
+                    maint.colorCalType5(d, self.LoadPaperUI)
 
             else:
                 self.CheckDeviceUI()
@@ -1573,7 +1671,7 @@ class devmgr4(DevMgr4_base):
             if d.isIdleAndNoError():
                 QApplication.restoreOverrideCursor()
                 d.close()
-                
+
                 if self.LoadPaperUI():
                     d.printTestPage(printer_name)
 
@@ -1681,8 +1779,10 @@ class devmgr4(DevMgr4_base):
         self.RunCommand(self.cmd_fax)
 
     def MakeCopiesButton_clicked(self):
-        #self.RunCommand( self.cmd_copy )
-        self.FailureUI(self.__tr("<p><b>Sorry, the make copies feature is currently not implemented.</b>"))
+        if self.cur_device.copy_type == COPY_TYPE_DEVICE:
+            self.RunCommand(self.cmd_copy)
+        else:
+            self.FailureUI(self.__tr("<p><b>Sorry, the make copies feature is currently not implemented for this device type.</b>"))
 
 
     def ConfigureFeaturesButton_clicked(self):
@@ -1759,12 +1859,12 @@ class devmgr4(DevMgr4_base):
 
     def addressBookButton_clicked(self):
         self.RunCommand(self.cmd_fab)
-        
+
     def helpContents(self):
         f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
         log.debug(f)
         utils.openURL(f)
-        
+
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

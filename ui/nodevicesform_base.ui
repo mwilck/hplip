@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>HP Device Manager - No Installed HP Devices</string>
+        <string>HP Device Manager - No Installed HP Devices Found</string>
     </property>
     <grid>
         <property name="name">
@@ -43,7 +43,7 @@
                 <cstring>textLabel7</cstring>
             </property>
             <property name="text">
-                <string>&lt;b&gt;No installed HP devices found.&lt;/b&gt; To install a device, use the &lt;u&gt;CUPS web interface&lt;/u&gt; (http://localhost:631) or the &lt;u&gt;printer installation utility&lt;/u&gt; that came with your operating system.
+                <string>&lt;b&gt;No Installed HP Devices Found.&lt;/b&gt;&lt;p&gt;To install a device, use &lt;b&gt;hp-setup&lt;/b&gt; (in a shell/terminal), the &lt;b&gt;CUPS web interface&lt;/b&gt; (open a browser to: http://localhost:631 or press the button below), or the &lt;b&gt;printer installation utility&lt;/b&gt; that came with your operating system.
 After setting up a printer, you must press &lt;tt&gt;F6&lt;/tt&gt; or chose &lt;tt&gt;Device | Refresh All&lt;/tt&gt; for the printer to appear in the HP Device Manager.&lt;p&gt;
 &lt;i&gt;Note: Only devices installed with the hp: CUPS backend will appear in the HP Device Manager.&lt;/i&gt;&lt;p&gt;</string>
             </property>
@@ -100,9 +100,6 @@ After setting up a printer, you must press &lt;tt&gt;F6&lt;/tt&gt; or chose &lt;
         <slot>ExitButton_clicked()</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">nodevicesform_base.ui.h</include>
-</includes>
 <slots>
     <slot>CUPSButton_clicked()</slot>
     <slot>ExitButton_clicked()</slot>

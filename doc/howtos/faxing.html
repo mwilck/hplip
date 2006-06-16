@@ -58,10 +58,9 @@
                 <menu compact="compact">
                     <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
                     <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
@@ -90,7 +89,7 @@ $ hp-toolbox
 <p><strong>2.</strong> Faxes are sent by &quot;attaching&quot; the documents in the hp-sendfax interface into a fax job, and then by sending the fax job. The files that are to be sent in a fax job are listed in the fax interface in the list that appears on the &quot;Items&quot; tab. There are three ways to attach documents into the fax interface:</p>
 <ol class="loweralpha simple">
 <li>By directly adding selected files into the hp-sendfax list by invoking &quot;Add to List&quot; in the &quot;File&quot; area of the &quot;Items&quot; tab. The types of files that may be added this way is listed by clicking on the &quot;Show Types...&quot; button.</li>
-<li>By printing through the appropriate CUPS printer that is associated with the fax device. The appropriate printer to print with is shown at the bottom of the &quot;Items&quot; tab (under &quot;Application Document&quot;) and on the &quot;Device&quot; tab under &quot;Name&quot;. This is the required method to add files that do not appear on the &quot;Show Types&quot; list.</li>
+<li>By printing through the appropriate CUPS printer that is associated with the fax device. The appropriate printer to print with is shown at the bottom of the &quot;Items&quot; tab (under &quot;Application Document&quot;) and on the &quot;Device&quot; tab under &quot;Name&quot;. This is the required method to add files that do not appear on the &quot;Show Types&quot; list. (Note: hp-sendfax must already be running before printing the files.)</li>
 <li>By adding a pre-formatted coverpage. Currently, there is only 1 coverpage design. A coverpage allows for the &quot;Regarding&quot;/&quot;Re&quot; field and a comment field of up to 2000 characters. You may only add 1 coverpage to a fax job and it will automatically be placed into the first position in the file list so that it will be sent first. Each fax recipient will receive a dynamically generated coverpage with the appropriate information on it.</li>
 </ol>
 <p><strong>3.</strong> If you attempt to send a fax (by printing to the CUPS printer) when the hp-sendfax interface is not running, the following things will happen:</p>
@@ -120,7 +119,7 @@ $ hp-toolbox
 
 
         <hr size="1"/>
-        <small>Last update: Fri Apr 14 13:05:23 2006</small>
+        <small>Last update: Mon Jun 12 13:52:59 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -135,7 +134,7 @@ $ hp-toolbox
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

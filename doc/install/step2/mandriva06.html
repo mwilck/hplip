@@ -58,10 +58,9 @@
                 <menu compact="compact">
                     <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../../license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../../about.html" title="About">About HPLIP</a></li>
                     <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
@@ -96,23 +95,25 @@ $ su
 <p>Configure your system using the steps provided by the Easy URPMI website. Make sure to configure the Source contrib and the Source main repositories. You may wish to configure the other source repositories, follow the directions on the Easy URPMI website.</p>
 <ol class="arabic simple" start="8">
 <li>Follow this step to install the necessary packages:</li>
-<li>Enter this command: (if GCC compiler is not already installed)</li>
+<li>You will now need to deactivate the Mandrica CD's from the Software Media Manager</li>
 </ol>
 <pre class="literal-block">
-# urpmi gcc-c++
+Click &quot;K-Menu&quot; &gt; System &gt; Configuration &gt; Packaging &gt; Software Media Manager
 </pre>
 <ol class="arabic simple" start="10">
-<li>Enter this command:</li>
+<li>Remove the check marks next to the Mandriva CD's in the &quot;Enabled?&quot; column.</li>
+<li>Now you can enter this command:</li>
 </ol>
 <pre class="literal-block">
-# urpmi cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane libusb-dev
+# urpmi gcc-c++ cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane
 </pre>
-<p><a class="reference" href="/install/step3/index.html">Proceed to step 3.</a></p>
+<p>The appropriate packages should be downloaded and installed. Once completed you can;</p>
+<p><a class="reference" href="../step3/index.html">Proceed to step 3.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Tue Mar 28 11:43:27 2006</small>
+        <small>Last update: Mon Jun 12 13:52:59 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -127,7 +128,7 @@ $ su
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

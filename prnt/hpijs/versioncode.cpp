@@ -44,7 +44,7 @@ extern char DeveloperString[32];
 @{
 */
 
-const char VersionStringID[21] = "04.01.00A_11-15-2005";   //!< Version information
+const char VersionStringID[21] = "04.02.00A_05-05-2006";   //!< Version information
 
 char result[500];
 

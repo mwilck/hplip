@@ -51,6 +51,9 @@
 #endif
 #include "list.h"
 #include "usbext.h"
+#ifdef __FreeBSD__
+#include <dev/usb/usb.h>
+#endif
 
 //#define HPIOD_DEBUG
 

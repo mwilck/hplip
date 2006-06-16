@@ -109,6 +109,25 @@ int Device::Read(int fd, void *buf, int size, int usec)
    return -2;
 }
 
+#elif defined(__FreeBSD__)
+
+/* 
+ * Anish Mistry amistry@am-productions.biz is working on libusb extensions for FreeBSD. His current implementation does not handle device exceptions (ie: paperout).
+ * Once this issue is resolved we will be glade to add his code to the project.
+ */
+
+int Device::Write(int fd, const void *buf, int size)
+{
+   syslog(LOG_ERR, "error Write: unimplemented (freebsd) %s %s %d\n", URI, __FILE__, __LINE__);
+   return -1;
+}
+
+int Device::Read(int fd, void *buf, int size, int usec)
+{
+   syslog(LOG_ERR, "error Read: unimplemented (freebsd) %s %s %d\n", URI, __FILE__, __LINE__);
+   return -2;
+}
+
 #else
 
 /*
@@ -476,10 +495,19 @@ int Device::GetInterface(int dclass, int subclass, int protocol, int *config, in
 
    for (i=0; i<dev->descriptor.bNumConfigurations; i++)
    {
+      if (dev->config == NULL)
+         goto bugout; 
+
       for (j=0; j<dev->config[i].bNumInterfaces; j++)
       {
+         if (dev->config[i].interface == NULL)
+            goto bugout; 
+
          for (k=0; k<dev->config[i].interface[j].num_altsetting; k++)
          {
+            if (dev->config[i].interface[j].altsetting == NULL)
+               goto bugout; 
+
             pi = &dev->config[i].interface[j].altsetting[k];
             if (pi->bInterfaceClass == dclass && pi->bInterfaceSubClass == subclass && pi->bInterfaceProtocol == protocol)
             {
@@ -491,6 +519,8 @@ int Device::GetInterface(int dclass, int subclass, int protocol, int *config, in
          }
       }
    }
+
+bugout:
    return 1;    /* no interface found */
 }
 
@@ -500,13 +530,20 @@ int Device::GetOutEP(struct usb_device *dev, int config, int interface, int alts
    struct usb_interface_descriptor *pi;
    int i;
 
+   if (dev->config == NULL || dev->config[config].interface == NULL || dev->config[config].interface[interface].altsetting == NULL)
+      goto bugout;
+
    pi = &dev->config[config].interface[interface].altsetting[altset];
    for (i=0; i<pi->bNumEndpoints; i++)
    {
+      if (pi->endpoint == NULL)
+         goto bugout;   
       if (pi->endpoint[i].bmAttributes == type && !(pi->endpoint[i].bEndpointAddress & USB_ENDPOINT_DIR_MASK))
          return pi->endpoint[i].bEndpointAddress;
    }
-   return -1;
+
+bugout:
+   return -1; /* no endpoint found */
 }
 
 /* Get in endpoint for specified interface descriptor. */
@@ -515,13 +552,20 @@ int Device::GetInEP(struct usb_device *dev, int config, int interface, int altse
    struct usb_interface_descriptor *pi;
    int i;
 
+   if (dev->config == NULL || dev->config[config].interface == NULL || dev->config[config].interface[interface].altsetting == NULL)
+      goto bugout;
+
    pi = &dev->config[config].interface[interface].altsetting[altset];
    for (i=0; i<pi->bNumEndpoints; i++)
    {
+      if (pi->endpoint == NULL)
+         goto bugout;   
       if (pi->endpoint[i].bmAttributes == type && (pi->endpoint[i].bEndpointAddress & USB_ENDPOINT_DIR_MASK))
          return pi->endpoint[i].bEndpointAddress;
    }
-   return -1;
+
+bugout:
+   return -1;  /* no endpoint found */
 }
 
 int Device::ClaimInterface(int fd, int config, int interface, int altset)
@@ -583,7 +627,7 @@ int Device::ReleaseInterface(int fd)
 
    if (FD[fd].urb_write_active)
    {
-#if defined(__APPLE__) && defined(__MACH__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 #else
       usb_reap_urb_ex(FD[fd].pHD, &FD[fd].urb_write);
 #endif
@@ -1146,7 +1190,7 @@ Channel *Device::NewChannel(unsigned char sockid, char *sn)
    {
       if (pChannel[i] == NULL)
       {
-	 if (sockid == EWS_CHANNEL)
+         if (sockid == EWS_CHANNEL)
             pC = new CompChannel(this);
          else if (mode == RAW_MODE)
             pC = new RawChannel(this);  /* constructor sets ClientCnt=1 */

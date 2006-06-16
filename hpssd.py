@@ -90,6 +90,7 @@ devices = {} # { 'device_uri' : ServerDevice, ... }
 model_cache = {} # { 'model_name'(lower) : {mq}, ...}
 
 inter_pat = re.compile(r"""%(.*)%""", re.IGNORECASE)
+direct_pat = re.compile(r'direct (.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
 
 def QueryString(id, typ=0):
     id = str(id)
@@ -609,8 +610,9 @@ class hpssd_handler(dispatcher):
             'modelquery'           : self.handle_modelquery, # By model (backwards compatibility)
             'queryhistory'         : self.handle_queryhistory,
             'querystring'          : self.handle_querystring,
-            'setvalue'             : self.handle_setvalue,
-            'getvalue'             : self.handle_getvalue,
+            'setvalue'             : self.handle_setvalue, # device cache
+            'getvalue'             : self.handle_getvalue, # device cache
+            'injectvalue'          : self.handle_injectvalue, # model query data (debugging use)
 
             # Event Messages (no reply message)
             'event'                : self.handle_event,
@@ -722,8 +724,10 @@ class hpssd_handler(dispatcher):
         key = self.fields.get('key', '')
         value = self.fields.get('value', '')
         result_code = self.__checkdevice(device_uri)
+        
         if result_code == ERROR_SUCCESS:    
             devices[device_uri].cache[key] = value
+        
         self.out_buffer = buildResultMessage('SetValueResult', None, ERROR_SUCCESS)
         
     def handle_queryhistory(self):
@@ -771,6 +775,31 @@ class hpssd_handler(dispatcher):
 
         self.out_buffer = buildResultMessage('ModelQueryResult', None, result_code, mq)
 
+    def handle_injectvalue(self): # Tweak MQ values at runtime
+        device_uri = self.fields.get('device-uri', '').replace('hpfax:', 'hp:')
+        model = self.fields.get('model', '')
+        result_code = ERROR_INTERNAL
+        
+        if not model and device_uri:
+            try:
+                back_end, is_hp, bus, model, \
+                    serial, dev_file, host, port = \
+                    device.parseDeviceURI(device_uri)
+            except Error:
+                result_code = e.opt
+        
+        if model:
+            key = self.fields.get('key', '')
+            value = self.fields.get('value', '')
+            
+            if key and value: 
+                if QueryModel(model):
+                    if model in model_cache:
+                        model_cache[model][key] = value
+                        result_code = ERROR_SUCCESS
+                
+        self.out_buffer = buildResultMessage('InjectValueResult', None, result_code)
+        
 
     # TODO: Need to load alerts at start-up
     def handle_setalerts(self):
@@ -868,14 +897,14 @@ class hpssd_handler(dispatcher):
         device_uri = self.fields.get('device-uri', '').replace('hp:', 'hpfax:')
         title = self.fields.get('title', '')
         
-        log.debug("Creating data store for %s:%d" % (username, job_id))
-        fax_file[(username, job_id)] = cStringIO.StringIO()
-        
         # Send an early warning to the hp-sendfax UI so that
         # the response time to something happening is as short as possible
         result_code = ERROR_GUI_NOT_AVAILABLE
+        
         for handler in socket_map:
             handler_obj = socket_map[handler]        
+            
+            log.debug("sendevents=%s, type=%s, username=%s" % (handler_obj.send_events, handler_obj.typ, handler_obj.username))
             
             if handler_obj.send_events and \
                 handler_obj.typ == 'fax' and \
@@ -896,7 +925,15 @@ class hpssd_handler(dispatcher):
                 
                 loopback_trigger.pull_trigger()        
                 result_code = ERROR_SUCCESS
+
+                # Only create a data store if a UI was found
+                log.debug("Creating data store for %s:%d" % (username, job_id))
+                fax_file[(username, job_id)] = cStringIO.StringIO()
+                
+                break
         
+        # hpfax: will repeatedly send HPFaxBegin messages until it gets a 
+        # ERROR_SUCCESS result code. (every 30sec)
         self.out_buffer = buildResultMessage('HPFaxBeginResult', None, result_code)
         
         
@@ -1160,9 +1197,10 @@ class hpssd_handler(dispatcher):
                                                 break
 
                                     if include:
-                                        ret_devices[device_uri] = (model, hn)
+                                        ret_devices[device_uri] = (model, model, hn)
 
             elif bus in ('usb', 'par'):
+                log.debug(bus)
                 try:
                     prop.hpiod_port = int(file(os.path.join(prop.run_dir, 'hpiod.port'), 'r').read())
                 except:
@@ -1175,40 +1213,40 @@ class hpssd_handler(dispatcher):
                 fields, data, result_code = \
                     xmitMessage(hpiod_sock, "ProbeDevices", None, {'bus' : bus,})
                 
-                log.debug("Closing connection.")
                 hpiod_sock.close()
 
-                if result_code != ERROR_SUCCESS:
-                    detected_devices = []
-                else:
-                    detected_devices = [x.split(' ')[1] for x in data.splitlines()]
-
-                for d in detected_devices:
-                    try:
-                        back_end, is_hp, bus, model, serial, dev_file, host, port = \
-                            device.parseDeviceURI(d)
-                    except Error:
-                        continue
-
-                    if is_hp:
-
-                        device_filter = self.fields.get('filter', 'none')
-                        include = True
+                if result_code == ERROR_SUCCESS:
+                    for x in data.splitlines():
+                        m = direct_pat.match(x)
                         
-                        if device_filter not in ('none', 'print'):
-                            try:
-                                fields = QueryModel(model)
-                            except Error:
-                                continue
-
-                            for f in device_filter.split(','):
-                                filter_type = int(fields.get('%s-type' % f.lower().strip(), 0))
-                                if filter_type == 0:
-                                    include = False
-                                    break
-
-                        if include:
-                            ret_devices[d] = (model, '')
+                        uri = m.group(1) or ''
+                        mdl = m.group(2) or ''
+                        devid = m.group(4) or ''
+                        
+                        try:
+                            back_end, is_hp, bus, model, serial, dev_file, host, port = \
+                                device.parseDeviceURI(uri)
+                        except Error:
+                            continue
+                        
+                        if mdl and uri and is_hp:
+                            device_filter = self.fields.get('filter', 'none')
+                            include = True
+                            
+                            if device_filter not in ('none', 'print'):
+                                try:
+                                    fields = QueryModel(model)
+                                except Error:
+                                    continue
+    
+                                for f in device_filter.split(','):
+                                    filter_type = int(fields.get('%s-type' % f.lower().strip(), 0))
+                                    if filter_type == 0:
+                                        include = False
+                                        break
+    
+                            if include:
+                                ret_devices[uri] = (mdl, model, devid) # model w/ _'s, mdl w/o
 
             elif bus == 'cups':
                 cups_printers = cups.getPrinters()
@@ -1244,20 +1282,18 @@ class hpssd_handler(dispatcher):
                                     break
 
                         if include:
-                            ret_devices[device_uri] = (model, '')
+                            ret_devices[device_uri] = (model, model, '')
 
 
-        for d in ret_devices:
+        for uri in ret_devices:
             num_devices += 1
-
-            if format == 'default':
-                payload = ''.join([payload, d, ',', ret_devices[d][0], '\n'])
-            else:
-                if ret_devices[d][1] != '':
-                    payload = ''.join([payload, 'direct ', d, ' "HP ', ret_devices[d][0], '" "', ret_devices[d][1], '"\n'])
-                else:
-                    payload = ''.join([payload, 'direct ', d, ' "HP ', ret_devices[d][0], '" "', d, '"\n'])
-
+            mdl, model, devid_or_hn = ret_devices[uri]
+            
+            if format == 'cups':
+                payload = ''.join([payload, uri, ' ', utils.dquote(mdl), ' ', utils.dquote(model), ' ',utils.dquote(devid_or_hn), '\n'])
+            else: # default
+                payload = ''.join([payload, uri, ',', mdl, '\n'])
+            
 
         self.out_buffer = buildResultMessage('ProbeDevicesFilteredResult', payload,
                                              result_code, {'num-devices' : num_devices})

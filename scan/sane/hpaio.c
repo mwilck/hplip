@@ -2823,9 +2823,9 @@ abort:
     {
         if( hpaio )
         {
-            if( hpaio->saneDevice.vendor )
+            if( hpaio->saneDevice.name )
             {
-                free( ( void * ) hpaio->saneDevice.vendor );
+                free( ( void * ) hpaio->saneDevice.name );
             }
             if( hpaio->saneDevice.model )
             {
@@ -3281,8 +3281,9 @@ needMoreData:
                                 
                 if( rService & MFPDTF_RESULT_ERROR_MASK )
                 {
-                    retcode = SANE_STATUS_IO_ERROR;
-                    goto abort;
+		  //                    retcode = SANE_STATUS_IO_ERROR;
+		  //                    goto abort;
+                   hpaio->endOfData = 1;     /* display any data (ie: OJ F380 1200dpi non-compressed can timeout after last scan). */
                 }
 
                 if( rService & MFPDTF_RESULT_IMAGE_DATA_PENDING )

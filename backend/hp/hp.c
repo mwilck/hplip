@@ -307,13 +307,8 @@ bugout:
 int DevDiscovery()
 {
    char message[LINE_SIZE*64];
-   char uri[LINE_SIZE];
-   char model[LINE_SIZE];
-   char description[LINE_SIZE];
-   char id[1024];
-   char *tail;
-   int i, len=0, cnt=0, hd=-1;  
-   MsgAttributes ma, ma2;
+   int len=0, cnt=0;  
+   MsgAttributes ma;
  
    len = sprintf(message, "msg=ProbeDevices\n");
  
@@ -336,21 +331,7 @@ int DevDiscovery()
    if (ma.result == R_AOK && ma.length)
    {
       cnt = ma.ndevice;
-
-      /* Add deviceID for CUPS 1.2, if available. */
-      tail = (char *)ma.data;
-      for (i=0; i<cnt; i++)
-      {
-         id[0] = 0;
-         GetUriLine(tail, uri, model, description, &tail);
-         hplip_ModelQuery(uri, &ma2);   /* get DeviceOpen parameters */
-         if ((hd = hplip_OpenHP(uri, &ma2)) >= 0)
-         {
-            hplip_GetID(hd, id, sizeof(id));
-            hplip_CloseHP(hd);   
-         }
-         fprintf(stdout, "direct %s %s %s \"%s\"\n", uri, model, description, id);
-      }
+      fprintf(stdout, "%s", ma.data);
    }
 
    if (cnt == 0)

@@ -52,6 +52,10 @@ else:
     from coverpageform import CoverpageForm
     coverpages_enabled = True
 
+# Used to store MIME types for files
+# added directly in interface.
+job_types = {} # { job_id : "mime_type", ...}
+
 
 class FileListViewItem(QListViewItem):
     def __init__(self, parent, title, mime_type_desc, path, str_pages):
@@ -738,7 +742,8 @@ class FaxSendJobForm(FaxSendJobForm_base):
                                       "job-id": job_id,
                                      })
 
-            if data and result_code == ERROR_SUCCESS:
+            log.debug(repr(data)), len(data)
+            if len(data) and result_code == ERROR_SUCCESS:
                 fd.write(data)
                 bytes_read += len(data)
 
@@ -766,7 +771,11 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         log.debug("Transfered %d bytes" % bytes_read)
 
-        self.file_list.append((fax_file, "application/hplip-fax", "HP Fax", title, total_pages))
+        #self.file_list.append((fax_file, "application/hplip-fax", "HP Fax", title, total_pages))
+        mime_type = job_types.get(job_id, "application/hplip-fax")
+        mime_type_desc = self.MIME_TYPES_DESC.get(mime_type, ('Unknown', 'n/a'))[0]
+        log.debug("%s (%s)" % (mime_type, mime_type_desc))
+        self.file_list.append((fax_file, mime_type, mime_type_desc, title, total_pages))
 
         self.UpdateFileList()
         self.document_num += 1
@@ -838,6 +847,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
                 
                 if printer_state == cups.IPP_PRINTER_STATE_IDLE:
                     sent_job_id = cups.printFile(self.current_printer, path, os.path.basename(path))
+                    job_types[sent_job_id] = mime_type # save for later
                     log.debug("Job ID=%d" % sent_job_id)  
 
                     QApplication.setOverrideCursor(QApplication.waitCursor)

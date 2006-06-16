@@ -58,10 +58,9 @@
                 <menu compact="compact">
                     <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../../license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="../../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../../about.html" title="About">About HPLIP</a></li>
                     <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
@@ -73,7 +72,7 @@
         <td align="left" valign="top" class="content">
         <div class="document" id="installation-step-3-download-and-install-hplip-software">
 <h1 class="title">Installation - Step 3 - Download and install HPLIP software</h1>
-<p>If you already have the latest HP printing software installed, then proceed to <a class="reference" href="/install/step4/index.html">Step 4: Add the Printer</a>.</p>
+<p>If you already have the latest HP printing software installed, then proceed to <a class="reference" href="../step4/index.html">Step 4: Add the Printer</a>.</p>
 <p>If the HP printing software is not included with your Linux distribution, or you want to ensure that you have the latest version of the software, follow these steps to download and install the HP printing software.</p>
 <p><em>Warning: If you are upgrading HPLIP and HPLIP is already preinstalled with your distribution, or you if you installed HPLIP using an RPM, DEB, or other package, please uninstall the previous version using the method specific for your distribution.  If you do not do this, you may have package conflict issues or functionality problems.</em></p>
 <ol class="arabic simple">
@@ -107,8 +106,12 @@ $ cd [folder name]
 <pre class="literal-block">
 $ ./configure --prefix=/usr
 </pre>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">Special step required for 64-bit systems.</p>
+</div>
 <ol class="arabic simple" start="8">
-<li><strong>IMPORTANT!</strong> For <strong>64-bit</strong> Systems only enter this command:</li>
+<li>For <strong>64-bit</strong> Systems enter this command:</li>
 </ol>
 <pre class="literal-block">
 # ./configure --prefix=/usr --libdir=/usr/lib64
@@ -131,50 +134,47 @@ $ su
 <li>Press Enter.</li>
 <li>Enter the root password.</li>
 </ol>
-<p><em>Warning: The root password gives you administrative privileges on the system.</em></p>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The root password gives you administrative privileges on the system.</p>
+</div>
 <ol class="arabic simple" start="13">
 <li>Press Enter.</li>
-<li>Enter this command (except on Ubuntu - skip to step 15):</li>
+<li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
 # make install
 </pre>
-<ol class="arabic simple" start="15">
-<li>For Ubuntu only, Enter this command:</li>
-</ol>
+<p>For Ubuntu, Enter this command:</p>
 <pre class="literal-block">
 # sudo make install
 </pre>
-<ol class="arabic simple" start="16">
-<li>Enter this command (except on Ubuntu - skip to step 17):</li>
+<ol class="arabic simple" start="15">
+<li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
 # /etc/init.d/hplip restart
 </pre>
-<ol class="arabic simple" start="17">
-<li>For Ubuntu only, enter this command:</li>
-</ol>
+<p>For Ubuntu, enter this command:</p>
 <pre class="literal-block">
 # sudo /etc/init.d/hplip restart
 </pre>
-<ol class="arabic simple" start="18">
-<li>Enter this command (except on Ubuntu - skip to step 19):</li>
+<ol class="arabic simple" start="16">
+<li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
 # /etc/init.d/cups restart
 </pre>
-<ol class="arabic simple" start="19">
-<li>For Ubuntu, enter this command:</li>
-</ol>
+<p>For Ubuntu, enter this command:</p>
 <pre class="literal-block">
 # sudo /etc/init.d/cupsys restart
 </pre>
-<p><a class="reference" href="/install/step4/index.html">Proceed to step 4.</a></p>
+<p><a class="reference" href="../step4/index.html">Proceed to step 4.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Fri Mar  3 16:45:41 2006</small>
+        <small>Last update: Tue Jun 13 14:41:35 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -189,7 +189,7 @@ $ su
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

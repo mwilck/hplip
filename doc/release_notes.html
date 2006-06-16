@@ -58,10 +58,9 @@
                 <menu compact="compact">
                     <li><a href="tech_docs/index.html" title="">Technical Documentation</a></li> 
                     <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="license.html" title="Software License">Software License</a></li> 
-                    <li><a href="http://www.hp.com/" title="HP is a technology solutions provider to consumers, businesses and institutions globally.">www.hp.com</a></li> 
-                    <li><a href="http://www.linuxprinting.org/" title="Resources to help with printing under free operating systems like GNU/Linux">www.linuxprinting.org</a></li> 
-                    <li><a href="http://www.cups.org/" title="Common UNIX Printing System">www.cups.org</a></li> 
+                    <li><a href="license.html" title="Software License">Software License</a></li>
+                    <li><a a href="other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="about.html" title="About">About HPLIP</a></li>
                     <li><a href="contacts.html" title="Contacts">Contacts</a></li>
                 </menu>
             </td>
@@ -74,6 +73,82 @@
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.6.6 - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>HPLIP has reached 1.0 status. With this release we start using a new date encoded revision number.</li>
+</ol>
+<pre class="literal-block">
+x.y.m
+  x = major release number
+  y = year (ie: 6=2006)
+  m = month (ie: 6=June)
+</pre>
+<ol class="arabic simple" start="2">
+<li>Fixed broken links in HTML documentation (reported by Johannes Meixner).</li>
+<li>Added DOT4Init retry in hpiod. This fixed a intermittent scanning problem with PS C3100.</li>
+<li>Changed libsane-hpaio to display any received scan data after I/O timeout instead of aborting.</li>
+<li>Fixed the File Types that can be directly added to the fax job could not be displayed accurately on Send Fax dialog.</li>
+<li>Added 30sec retry and timeout to hpfax.</li>
+<li>Added CUPS 1.2 compatible output to hpfax.</li>
+<li>Added a core dump option to the hplip.sh script &quot;/etc/init.d/hplip debug&quot;.</li>
+<li>Removed DeviceOpen from hp backend. This fixes two problems 1) usblp will no longer be removed for device discovery 2) device
+discovery will no longer cause Inkjets to power-up.</li>
+<li>Changed hp backend device discovery verbage in order to work better with CUPS 1.2 (Mandriva request).</li>
+<li>Fixed status-types for 2006-09 devices (5 --&gt; 2).</li>
+<li>Fixed panel display for older OfficeJets that have VSTATUS.</li>
+<li>Fixed no printers installed, run toolbox, install printer, toolbox produces error.</li>
+<li>Updated hpfax to &quot;No devices found&quot; text and behavior.</li>
+<li>Removed extraneous syslog message during parallel port ProbeDevice (Debian request).</li>
+<li>Rewrite of toolbox refresh code. Should fix long running issue.</li>
+<li>Fixed HP-Toolbox no activity after an hour causes toolbox to disconnect from all printers.</li>
+<li>Fixed the Job ID for fax job should be displayed in Status tab of toolbox while starting fax send.</li>
+<li>Added FreeBSD conditionals to hpiod.</li>
+<li>Modified XML schema - status-type broken out into status-type, status-battery-check, and status-dynamic-counters.</li>
+<li>Modified all XML files to comply with new schema and switched status-types as appropriate.</li>
+<li>Made hplip_GetID more bullet proof in hplip_api.c.</li>
+<li>Fixed invalid memory free in libsane-hpaio. Only occurred in the sane_hpaio_open abort path.</li>
+<li>Changed 1284.4/MLC credit reply timeout from 2 to 4 seconds in hpiod. This fixed a problem with 1200dpi uncompressed scanning (ie: PS2575).</li>
+<li>Removed support dialog (should have been removed in 0.9.11, was missed).</li>
+<li>Changed Tools and Support pane to include &quot;View Documentation&quot; rather than &quot;View Support&quot; - opens online docs in browser like Help | Contents...</li>
+<li>Added sane hpaio.desc file to documentation.</li>
+<li>Changed library check in hp-check from 'libsnmp' to 'libnetsnmp' (issue reported on mailing list).</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.6.6 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Starting with this release HPIJS will be using the same date encoded revision number as HPLIP. See item one above for details.</li>
+<li>Fixed an auto duplex problem in HPIJS (issue reported by Red Hat).</li>
+<li>Fixed gcc 4.1 compiler issues with HPIJS glue code (issue reported by Debian).</li>
+<li>Added support for the following new printer(s).</li>
+</ol>
+<pre class="literal-block">
+Deskjet D4100 series (DJ4100)
+Deskjet D2300 series (DJ3600)
+Deskjet D1360 series (DJ3320)
+Photosmart A430 series (DJGenericVIP)
+Photosmart A510 series (DJGenericVIP)
+Photosmart A710 series (PSP470)
+Photosmart A610 series (PSP470)
+Photosmart C4100 series (DJGenericVIP)
+Photosmart C3100 series (DJGenericVIP)
+Photosmart D7300 series (DJGenericVIP)
+</pre>
+<ol class="arabic" start="5">
+<li><p class="first">Updated the Ghostscript KRGB patch. The gdevijs-krgb-1.3-gs8.54.patch revisited the KRGB buffer overflow issue with out-of-band data
+in fill_rectangle and copy_mono. Changed the fill_rectangle and copy_mono to an inner loop buffer check instead of a outer
+loop x/y extent check.</p>
+<p>As requested by Ralph Giles, added K 1-bit and 8-bit support for KRGB, but only 1-bit is implemented for now.</p>
+</li>
+</ol>
+<pre class="literal-block">
+KRGB definition:
+ 1. K=1-bit or 8-bit black plane, RGB=24 bit color raster.
+ 2. K-plane will only contain objects that are black text and black line drawings.
+ 3. RGB raster will not contain K-plane objects.
+ 4. K resolution and RGB resolution will be equal.
+ 5. K-plane will be byte aligned.
+ 6. K-plane 1-bit definition; 1=black, 0=nothing (ColorSpace=KRGB).
+ 7. K-plane 8-bit definition; 255=black, 0=nothing (ColorSpace=KxRGB).
+</pre>
 <p><strong>HPLIP 0.9.11 - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>Changed hp-sendfax behavior. Hp-sendfax must be run before print jobs can be printed to a fax queue.</li>
@@ -1061,7 +1136,7 @@ The old interface used the following Ghostscript commands.</p>
 
 
         <hr size="1"/>
-        <small>Last update: Tue May  9 10:10:19 2006</small>
+        <small>Last update: Thu Jun 15 13:49:06 2006</small>
 
         <!-- FOOTER -->
     </table>
@@ -1076,7 +1151,7 @@ The old interface used the following Ghostscript commands.</p>
             <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
         </tr>
         <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="images/sflogo.png"/></a></td>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="images/sflogo.png" border="0"></a></td>
         </tr>
     
     </table>

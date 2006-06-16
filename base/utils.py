@@ -615,6 +615,13 @@ def deviceDefaultFunctions():
         cmd_pcard = 'python %HOME%/unload.py -d %DEVICE_URI%'
 
     # Copy
+    path = which('hp-makecopies')
+
+    if len(path):
+        cmd_copy = 'hp-makecopies -d %DEVICE_URI%'
+
+    else:
+        cmd_copy = 'python %HOME%/makecopies.py -d %DEVICE_URI%'
 
     # Fax
     path = which('hp-sendfax')
@@ -913,7 +920,7 @@ class ModelParser:
                 log.error("Duplicate model in XML: %s" % self.cur_model)
                 raise Error(ERROR_INTERNAL)
 
-            print self.cur_model
+            #print self.cur_model
             self.models[self.cur_model] = self.model
 
             self.model = None
@@ -960,10 +967,13 @@ def all(S,f=lambda x:x):
     return True
 
 def openURL(url):
-    browsers = ['firefox', 'mozilla', 'konqueror', 'galeon', 'skipstone']
+    browsers = ['firefox', 'mozilla', 'konqueror', 'galeon', 'skipstone'] # in preferred order
+    browser_opt = {'firefox': '-new-window', 'mozilla' : '', 'konqueror': '', 'galeon': '-w', 'skipstone': ''}
+    
     for b in browsers:
+        print b
         if which(b):
-            cmd = "%s %s &" % (b, url)
+            cmd = "%s %s %s &" % (b, browser_opt[b], url)
             log.debug(cmd)
             os.system(cmd)
             break
@@ -1086,7 +1096,7 @@ USAGE_ARGS = ("[PRINTER|DEVICE-URI] (See Notes)", "", "heading", False)
 USAGE_DEVICE = ("To specify a device-URI:", "-d<device-uri> or --device=<device-uri>", "option", False)
 USAGE_PRINTER = ("To specify a CUPS printer:", "-p<printer> or --printer=<printer>", "option", False)
 USAGE_BUS1 = ("Bus to probe (if device not specified):", "-b<bus> or --bus=<bus>", "option", False)
-USAGE_BUS2 = ("", "<bus>: cups\*, usb*, net, bt, fw, par\* (\*default) (Note: bt and fw not supported in this release", 'option', False)
+USAGE_BUS2 = ("", "<bus>: cups\*, usb*, net, bt, fw, par\* (\*defaults) (Note: bt and fw not supported in this release.)", 'option', False)
 USAGE_HELP = ("This help information:", "-h or --help", "option", True)
 USAGE_SPACE = ("", "", "space", False)
 USAGE_EXAMPLES = ("Examples:", "", "heading", False)
@@ -1272,3 +1282,7 @@ encoding: utf8
                 log.info(text1)
                 
         log.info("")
+        
+        
+def dquote(s):
+    return ''.join(['"', s, '"'])

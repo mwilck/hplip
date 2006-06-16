@@ -35,6 +35,35 @@
 
 APDK_BEGIN_NAMESPACE
 
+//PSPFastNormalMode
+/*
+******************************************************************************/
+class PSPFastNormalMode : public PrintMode
+{
+public:
+    PSPFastNormalMode ();
+}; //PSPFastNormalMode
+/******************************************************************************/
+
+PSPFastNormalMode::PSPFastNormalMode () : PrintMode (NULL)
+{
+
+    BaseResX = BaseResY = TextRes = ResolutionX[0] = ResolutionY[0] = 600;
+
+#if defined(APDK_VIP_COLORFILTERING)
+    Config.bErnie = TRUE;
+#endif
+
+    Config.bColorImage = FALSE;
+
+    medium = mediaAuto;
+    theQuality = qualityDraft;
+	pmQuality   = QUALITY_DRAFT;
+    pmMediaType = MEDIA_PHOTO;
+    CompatiblePens[0] = COLOR_PEN;
+    bFontCapable = FALSE;
+} //PSP100Mode
+
 //PSP470
 //!
 /*!
@@ -45,6 +74,8 @@ class PSP470 : public PSP100
 public:
     PSP470 (SystemServices* pSS, BOOL proto = FALSE) : PSP100 (pSS, proto)
     {
+        pMode[ModeCount] = new PSPFastNormalMode ();
+        ModeCount++;
     }
 
     PAPER_SIZE    MandatoryPaperSize ()
@@ -78,6 +109,7 @@ public:
     PSP470Proxy() : PrinterProxy(
         "PS470",                // family name
         "Photosmart 470\0"
+        "Photosmart 475\0"
     ) {m_iPrinterType = ePSP470;}
     inline Printer* CreatePrinter(SystemServices* pSS) const { return new PSP470(pSS); }
 	inline PRINTER_TYPE GetPrinterType() const { return ePSP470;}
