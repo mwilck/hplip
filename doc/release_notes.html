@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -73,6 +75,42 @@
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.6.6a - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Added a check to hp-sendfax, hp-makecopies and hp-unload to disallow GUI mode if X is not available.</li>
+<li>Changed the hpfax: retry to 10sec (from 30sec).</li>
+<li>Changed device URI pattern matching in device.py for BEH compatability (reported by Till).</li>
+<li>Removed some extraneous debugging output in hp-setup.</li>
+<li>Added 1284 Device ID string to HPFax PPD file for autodetection PPD matching.</li>
+<li>Fixed gcc 4.1 warnings in APDK (Debian request).</li>
+<li>Changed &quot;hp&quot; device discovery strings to display more device info.</li>
+<li>Added makecopies UI files to tarball.</li>
+<li>Adjusted XML files to enable makecopies for PML based MFPs (primarily LaserJets).</li>
+<li>Combined hp-unload and hp-photo and added a new non-interactive mode.</li>
+<li>Removed hp-photo from Makefile.am.</li>
+<li>Changed makecopies.py command line params to more closely match unload.py.</li>
+<li>Changed sendfax.py command line params to more closely match unload.py.</li>
+<li>Fixed an issue with dynamic counter parsing with the new xstrip() functions.</li>
+<li>Changed the fields that probedevicesfiltered returns to include the desc field for CUPS 1.2.</li>
+<li>Changed the format of the hpfax: 1.2 autodection string.</li>
+<li>Fixed an issue that caused the sendfax.html doc page to not be created if ReportLab not installed on build machine.</li>
+<li>Added configure option &quot;--disable-fax-build&quot;.</li>
+<li>Fixed issue (The file could not be added to the Items List while adding a file through toolbox.).</li>
+<li>Removed subproc.py from Makefile.am (no longer being used).</li>
+<li>Created replacement functions for strip([chars]) and lstrip([chars]) for Python 2.2 compatibility (for RH 8.0).</li>
+<li>Fixed defect (Unable to setup several printers of same model).</li>
+<li>Fixed defect (Add meta-tags to website template to force browsers to reload pages) (Thanks to John Sturgeon).</li>
+<li>Fixed defect (The printer still appears in the device list while deleting the printer from CUPS.).</li>
+<li>hp-toolbox will now auto refresh all devices (F6) when hp-setup adds a new CUPS printer queue.</li>
+<li>Added some clarifying text to the supported_devices index page (e.g., Photosmart added to AiO list).</li>
+<li>Made some improvements to the PPD file matching algorithm in hp-setup.</li>
+<li>Add blue pen for PS8700.</li>
+<li>Fixed defect in hpfax: reported by Johannes Meixner on 2006-6-19 on hplip-devel mailing list.</li>
+<li>Fixed defect (Reformat logging strings) (request by Henrique de Moraes Holeschuh).</li>
+<li>Changed code to use lp (instead of lpr) to remove a dependency on BSD printing support (patch by Henrique de Moraes Holeschuh).</li>
+<li>Fixed bug in hpfax: backend that occured during device autodetection (reported by Till/Henrique).</li>
+<li>Fixed hpfax: autodection string format for CUPS 1.2 (reported by Till).</li>
+</ol>
 <p><strong>HPLIP 1.6.6 - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>HPLIP has reached 1.0 status. With this release we start using a new date encoded revision number.</li>
@@ -94,7 +132,6 @@ x.y.m
 <li>Removed DeviceOpen from hp backend. This fixes two problems 1) usblp will no longer be removed for device discovery 2) device
 discovery will no longer cause Inkjets to power-up.</li>
 <li>Changed hp backend device discovery verbage in order to work better with CUPS 1.2 (Mandriva request).</li>
-<li>Fixed status-types for 2006-09 devices (5 --&gt; 2).</li>
 <li>Fixed panel display for older OfficeJets that have VSTATUS.</li>
 <li>Fixed no printers installed, run toolbox, install printer, toolbox produces error.</li>
 <li>Updated hpfax to &quot;No devices found&quot; text and behavior.</li>
@@ -1136,7 +1173,7 @@ The old interface used the following Ghostscript commands.</p>
 
 
         <hr size="1"/>
-        <small>Last update: Thu Jun 15 13:49:06 2006</small>
+        <small>Last update: Tue Jun 27 15:00:41 2006</small>
 
         <!-- FOOTER -->
     </table>

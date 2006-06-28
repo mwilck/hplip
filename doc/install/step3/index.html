@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -82,14 +84,14 @@
 <li>Enter this command to navigate to the folder that contains the HPLIP tar file that you downloaded in step 1:</li>
 </ol>
 <pre class="literal-block">
-$ cd [file path]
+cd [file path]
 </pre>
-<p>(for example: $ cd /home/user/documents)</p>
+<p>(for example: cd /home/user/documents)</p>
 <ol class="arabic simple" start="5">
 <li>Enter this command to extract the driver files from the HPLIP tar file:</li>
 </ol>
 <pre class="literal-block">
-$ tar xvfz [HPLIP filename.tar.gz]
+tar xvfz [HPLIP filename.tar.gz]
 </pre>
 <p>(for example: $ tar xvfz hplip-0.9.tar.gz)</p>
 <p>The files are extracted to a directory named for the HPLIP version (for example, &quot;hplip-0.9&quot;).</p>
@@ -97,14 +99,14 @@ $ tar xvfz [HPLIP filename.tar.gz]
 <li>Enter this command to navigate to the directory containing the HPLIP files:</li>
 </ol>
 <pre class="literal-block">
-$ cd [folder name]
+cd [folder name]
 </pre>
 <p>(Example: # cd hplip-0.8)</p>
 <ol class="arabic simple" start="7">
 <li>Enter this command (for 32-bit only - for 64-bit, skip this step and do step 8):</li>
 </ol>
 <pre class="literal-block">
-$ ./configure --prefix=/usr
+./configure --prefix=/usr
 </pre>
 <div class="important">
 <p class="first admonition-title">Important</p>
@@ -114,21 +116,21 @@ $ ./configure --prefix=/usr
 <li>For <strong>64-bit</strong> Systems enter this command:</li>
 </ol>
 <pre class="literal-block">
-# ./configure --prefix=/usr --libdir=/usr/lib64
+./configure --prefix=/usr --libdir=/usr/lib64
 </pre>
 <ol class="arabic simple" start="9">
 <li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
-$ make
+make
 </pre>
 <ol class="arabic simple" start="10">
 <li>Follow these steps to log in as the super user:</li>
 </ol>
-<p><em>If you are using Ubuntu skip this step.</em></p>
+<p><em>If you are using Ubuntu go to Step 14.</em></p>
 <p>Enter this command:</p>
 <pre class="literal-block">
-$ su
+su
 </pre>
 <ol class="arabic simple" start="11">
 <li>Press Enter.</li>
@@ -143,38 +145,38 @@ $ su
 <li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
-# make install
+make install
 </pre>
 <p>For Ubuntu, Enter this command:</p>
 <pre class="literal-block">
-# sudo make install
+sudo make install
 </pre>
 <ol class="arabic simple" start="15">
 <li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
-# /etc/init.d/hplip restart
+/etc/init.d/hplip restart
 </pre>
 <p>For Ubuntu, enter this command:</p>
 <pre class="literal-block">
-# sudo /etc/init.d/hplip restart
+sudo /etc/init.d/hplip restart
 </pre>
 <ol class="arabic simple" start="16">
 <li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
-# /etc/init.d/cups restart
+/etc/init.d/cups restart
 </pre>
 <p>For Ubuntu, enter this command:</p>
 <pre class="literal-block">
-# sudo /etc/init.d/cupsys restart
+sudo /etc/init.d/cupsys restart
 </pre>
 <p><a class="reference" href="../step4/index.html">Proceed to step 4.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Tue Jun 13 14:41:35 2006</small>
+        <small>Last update: Tue Jun 27 15:01:19 2006</small>
 
         <!-- FOOTER -->
     </table>

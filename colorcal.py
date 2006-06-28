@@ -205,6 +205,9 @@ def colorCal4():
     
     return ok, values
 
+    
+    
+log.set_module("hp-colorcal")
 
 try:
     opts, args = getopt.getopt(sys.argv[1:],

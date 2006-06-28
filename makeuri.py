@@ -78,6 +78,10 @@ def usage(typ='text'):
 
 
 
+    
+    
+log.set_module('hp-makeuri')
+
 try:
     opts, args = getopt.getopt(sys.argv[1:], 
                                 'hl:csfp:g', 

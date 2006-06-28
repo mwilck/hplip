@@ -491,6 +491,7 @@ DRIVER_ERROR HeaderLJJetReady::MapPCLMediaTypeToString (MEDIATYPE eM)
         default:
             //** unsupported media type; return error code
             assert (0);
+			err = SYSTEM_ERROR;
             break;// to be verified..
     }
 

@@ -22,9 +22,9 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '2.1'
+__version__ = '3.1'
 __title__ = 'PC Sendfax Utility'
-__doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers. The utility can be invoked directly, or by printing to the appropriate fax CUPS printer." 
+__doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers." 
 
 # Std Lib
 import sys, socket, os, os.path, getopt, signal, atexit
@@ -37,25 +37,18 @@ import base.utils as utils
 import base.async_qt as async
 from base import service, device
 
-app = None
-sendfax = None
-client = None
-
-# PyQt
-if not utils.checkPyQtImport():
-    sys.exit(0)
-
-from qt import *
-
-# UI Forms
-from ui.faxsendjobform import FaxSendJobForm
+log.set_module('hp-sendfax')
 
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: hp-sendfax [PRINTER|DEVICE-URI] [OPTIONS] [FILES]", "", "summary", True),
+         ("Usage: hp-sendfax [PRINTER|DEVICE-URI] [OPTIONS] [MODE] [FILES]", "", "summary", True),
          utils.USAGE_ARGS,
          utils.USAGE_DEVICE,
          utils.USAGE_PRINTER,
+         utils.USAGE_SPACE,
+         ("[MODE]", "", "header", False),
+         ("Enter graphical UI mode:", "-u or --gui (Default)", "option", False),
+         ("Run in non-interactive mode (batch mode):", "-n or --non-interactive", "option", False),
          utils.USAGE_SPACE,
          utils.USAGE_OPTIONS,
          utils.USAGE_BUS1, utils.USAGE_BUS2,         
@@ -223,68 +216,90 @@ class fax_client(async.dispatcher):
 
 
 
-def main(args):
-    prop.prog = sys.argv[0]
+
+prop.prog = sys.argv[0]
+
+device_uri = None
+printer_name = None
+username = prop.username
+mode = GUI_MODE
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:],'l:hz:d:p:b:gun', 
+        ['device=', 'printer=', 'level=', 
+         'help', 'help-rest', 
+         'help-man', 'logfile=', 'bus=',
+         'gui', 'non-interactive'])
+
+except getopt.GetoptError, e:
+    log.error(e)
+    sys.exit(1)
     
-    device_uri = None
-    printer_name = None
-    username = prop.username
 
-    try:
-        opts, args = getopt.getopt(sys.argv[1:],'l:hz:d:p:b:g', 
-            ['device=', 'printer=', 'level=', 
-             'help', 'help-rest', 
-             'help-man', 'logfile=', 'bus='])
+if os.getenv("HPLIP_DEBUG"):
+    log.set_level('debug')
 
-    except getopt.GetoptError, e:
-        log.error(e)
-        sys.exit(1)
-        
-
-    if os.getenv("HPLIP_DEBUG"):
-        log.set_level('debug')
-
-    for o, a in opts:
-        if o in ('-l', '--logging'):
-            log_level = a.lower().strip()
-            if not log.set_level(log_level):
-                usage()
-                
-        elif o == '-g':
-            log.set_level('debug')
-                
-        elif o in ('-z', '--logfile'):
-            log.set_logfile(a)
-            log.set_where(log.LOG_TO_CONSOLE_AND_FILE)
-
-        elif o in ('-h', '--help'):
+for o, a in opts:
+    if o in ('-l', '--logging'):
+        log_level = a.lower().strip()
+        if not log.set_level(log_level):
             usage()
             
-        elif o == '--help-rest':
-            usage('rest')
+    elif o == '-g':
+        log.set_level('debug')
             
-        elif o == '--help-man':
-            usage('man')
-            
-        elif o in ('-d', '--device'):
-            device_uri = a
+    elif o in ('-z', '--logfile'):
+        log.set_logfile(a)
+        log.set_where(log.LOG_TO_CONSOLE_AND_FILE)
 
-        elif o in ('-p', '--printer'):
-            printer_name = a
-            
-        elif o in ('-b', '--bus'):
-            bus = a.lower().strip()
-            if not device.validateBusList(bus):
-                usage()
-            
-            
-    utils.log_title(__title__, __version__)
+    elif o in ('-h', '--help'):
+        usage()
+        
+    elif o == '--help-rest':
+        usage('rest')
+        
+    elif o == '--help-man':
+        usage('man')
+        
+    elif o in ('-d', '--device'):
+        device_uri = a
+
+    elif o in ('-p', '--printer'):
+        printer_name = a
+        
+    elif o in ('-b', '--bus'):
+        bus = a.lower().strip()
+        if not device.validateBusList(bus):
+            usage()
+
+    elif o in ('-n', '--non-interactive'):
+        mode = NON_INTERACTIVE_MODE
+        
+    elif o in ('-u', '--gui'):
+        mode = GUI_MODE
+        
+        
+utils.log_title(__title__, __version__)
+
+# Security: Do *not* create files that other users can muck around with
+os.umask (0077)
+
+if mode == GUI_MODE:
+    if not os.getenv('DISPLAY'):
+        mode = NON_INTERACTIVE_MODE
+    elif not utils.checkPyQtImport():
+        mode = NON_INTERACTIVE_MODE
+
+if mode == GUI_MODE:
+    app = None
+    sendfax = None
+    client = None
     
-    # Security: Do *not* create files that other users can muck around with
-    os.umask (0077)
-    log.set_module('sendfax')
+    from qt import *
+    
+    # UI Forms
+    from ui.faxsendjobform import FaxSendJobForm
 
-    global client
     try:
         client = fax_client(username)
     except Error:
@@ -295,27 +310,25 @@ def main(args):
         sys.exit(1)
         
     # create the main application object
-    global app
     app = QApplication(sys.argv)
-
-    global sendfax
+    
     sendfax = FaxSendJobForm(client.socket,
                              device_uri,  
                              printer_name, 
                              args) 
                              
     app.setMainWidget(sendfax)
-
+    
     pid = os.getpid()
     log.debug('pid=%d' % pid)
-
+    
     sendfax.show()
     
     signal.signal(signal.SIGPIPE, signal.SIG_IGN)
-
+    
     user_config = os.path.expanduser('~/.hplip.conf')
     loc = utils.loadTranslators(app, user_config)
-
+    
     try:
         log.debug("Starting GUI loop...")
         app.exec_loop()
@@ -323,8 +336,10 @@ def main(args):
         pass
     except:
         log.exception()
+        
+else: # NON_INTERACTIVE_MODE
+    log.error("Sorry, -n not implemented yet.")
+    
 
-    return 0
+sys.exit(0)
 
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))

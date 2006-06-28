@@ -323,7 +323,7 @@ string_table = {
                       '%try_again%'),
                       
 '5052' :            (lambda : _('To send a fax you must run hp-sendfax first.'),
-                      'Run hp-sendfax now to continue. Fax will resume within 30 seconds.'),
+                      'Run hp-sendfax now to continue. Fax will resume within 10 seconds.'),
                       
 '6000' :            (lambda : _('Photocard unload started.'),
                       ''),
@@ -339,7 +339,7 @@ string_table = {
 
 '6004' :            (lambda : _('Photocard unloaded successfully.'),
                       ''),
-
+                      
 'unknown_error' :   (lambda : _('Unknown error.'),
                       ''),
 

@@ -629,10 +629,11 @@ class devmgr4(DevMgr4_base):
 
 
     def DeviceList_currentChanged(self,a0):
-        self.cur_device_uri = self.DeviceList.currentItem().device_uri
-        self.cur_device = self.devices[self.cur_device_uri]
-
-        self.UpdateDevice()
+        if self.cur_device is not None:
+            self.cur_device_uri = self.DeviceList.currentItem().device_uri
+            self.cur_device = self.devices[self.cur_device_uri]
+    
+            self.UpdateDevice()
 
 
     def DeviceList_rightButtonClicked(self, item, pos):
@@ -651,7 +652,7 @@ class devmgr4(DevMgr4_base):
                 if self.cur_device.fax_type:
                     popup.insertItem(self.__tr("Send Fax..."), self.SendFaxButton_clicked)
 
-                if self.cur_device.copy_type:
+                if self.cur_device.copy_type == COPY_TYPE_DEVICE:
                     popup.insertItem(self.__tr("Make Copies..."), self.MakeCopiesButton_clicked)
 
                 popup.insertSeparator()
@@ -666,7 +667,7 @@ class devmgr4(DevMgr4_base):
         popup.popup(pos)
 
 
-    def UpdateDevice(self, check_state=True):
+    def UpdateDevice(self, check_state=True, reread_cups_printers=False):
         if self.cur_device is not None:
             log.debug(utils.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
             self.setCaption(self.__tr("%1 - HP Device Manager").arg(self.cur_device.model_ui))
@@ -687,7 +688,7 @@ class devmgr4(DevMgr4_base):
                         self.cur_device.error_state = ERROR_STATE_ERROR
                     else:
                         try:
-                            self.cur_device.queryDevice()
+                            self.cur_device.queryDevice(quick=False, no_fwd=False, reread_cups_printers=reread_cups_printers)
                         except Error, e:
                             log.error("Query device error (%s)." % e.msg)
                             self.cur_device.error_state = ERROR_STATE_ERROR
@@ -755,14 +756,6 @@ class devmgr4(DevMgr4_base):
             
             self.cups_devices = device.getSupportedCUPSDevices()
 
-            if not len(self.cups_devices):
-                self.deviceRescanAction.setEnabled(False)
-                self.rescanning = False
-                self.statusBar().message(self.__tr("Press F6 to refresh."))
-                dlg = NoDevicesForm(self, "", True)
-                dlg.show()
-                return
-
             QApplication.setOverrideCursor(QApplication.waitCursor)
             
             # TODO: Use Set() when 2.3+ is ubiquitous
@@ -788,12 +781,13 @@ class devmgr4(DevMgr4_base):
             log.debug("total changes = %d" % total_changes)
 
             step_num = 0
-
+            pb = None
+            
             if total_steps:
-                self.pb = QProgressBar(self.statusBar(), 'ProgressBar')
-                self.pb.setTotalSteps(total_changes + total_steps)
-                self.statusBar().addWidget(self.pb)
-                self.pb.show()
+                pb = QProgressBar(self.statusBar(), 'ProgressBar')
+                pb.setTotalSteps(total_changes + total_steps)
+                self.statusBar().addWidget(pb)
+                pb.show()
 
             if total_changes:
                 #self.DeviceList.setUpdatesEnabled(False)
@@ -804,7 +798,7 @@ class devmgr4(DevMgr4_base):
                         qApp.processEvents()
                         log.debug("adding: %s" % d)
 
-                        self.pb.setProgress(step_num)
+                        pb.setProgress(step_num)
                         step_num += 1
                         qApp.processEvents()
 
@@ -852,7 +846,7 @@ class devmgr4(DevMgr4_base):
                         item = self.DeviceList.firstItem()
                         log.debug("removing: %s" % d)
                         
-                        self.pb.setProgress(step_num)
+                        pb.setProgress(step_num)
                         step_num += 1
                         qApp.processEvents()
 
@@ -872,7 +866,7 @@ class devmgr4(DevMgr4_base):
                 qApp.processEvents()
                 dev = self.devices[d]
 
-                self.pb.setProgress(step_num)
+                pb.setProgress(step_num)
                 step_num += 1
                 qApp.processEvents()
 
@@ -902,10 +896,21 @@ class devmgr4(DevMgr4_base):
 
                         item = item.nextItem()
 
-            if self.pb is not None:
-                self.pb.hide()
-                self.statusBar().removeWidget(self.pb)
-                self.pb = None
+            if pb is not None:
+                pb.hide()
+                self.statusBar().removeWidget(pb)
+                pb = None
+            
+            if not len(self.cups_devices):
+                QApplication.restoreOverrideCursor()
+                self.cur_device = None
+                self.deviceRescanAction.setEnabled(False)
+                self.rescanning = False
+                self.UpdateTabs()
+                self.statusBar().message(self.__tr("Press F6 to refresh."))
+                dlg = NoDevicesForm(self, "", True)
+                dlg.show()
+                return
             
             # Select current item
             if self.cur_device is not None:                    
@@ -982,11 +987,22 @@ class devmgr4(DevMgr4_base):
         return found
 
 
+    def UpdateTabs(self):
+        self.UpdateFunctionsTab()
+        self.UpdateStatusTab()
+        self.UpdateSuppliesTab()
+        self.UpdateMaintTab()
+        self.UpdatePrintJobsTab()
+        self.UpdatePanelTab()
+
+
     def UpdatePrintJobsTab(self):
         self.PrintJobList.clear()
         num_jobs = 0
 
-        if self.cur_device.supported:
+        if self.cur_device is not None and \
+            self.cur_device.supported:
+            
             jobs = cups.getJobs()
 
             for j in jobs:
@@ -1013,47 +1029,40 @@ class devmgr4(DevMgr4_base):
         if item is not None:
             self.cur_device.cancelJob(item.job_id)
 
-
-    def UpdateTabs(self):
-        self.UpdateFunctionsTab()
-        self.UpdateStatusTab()
-        self.UpdateSuppliesTab()
-        self.UpdateMaintTab()
-        self.UpdatePrintJobsTab()
-        self.UpdatePanelTab()
-
-
     def UpdatePanelTab(self):
-        #log.info("UpdatePanelTab()")
-        dq = self.cur_device.dq
-
-        if dq.get('panel', 0) == 1:
-            line1 = dq.get('panel-line1', '')
-            line2 = dq.get('panel-line2', '')
+        if self.cur_device is not None:
+            dq = self.cur_device.dq
+            
+            if dq.get('panel', 0) == 1:
+                line1 = dq.get('panel-line1', '')
+                line2 = dq.get('panel-line2', '')
+            else:
+                line1 = self.__tr("Front panel display")
+                line2 = self.__tr("not available.")
+    
+            pm = QPixmap(self.blank_lcd)
+    
+            p = QPainter()
+            p.begin(pm)
+            p.setPen(QColor(0, 0, 0))
+            p.setFont(self.font())
+    
+            x, y_line1, y_line2 = 10, 17, 33
+    
+            # TODO: Scroll long lines
+            p.drawText(x, y_line1, line1)
+            p.drawText(x, y_line2, line2)
+            p.end()
+    
+            self.Panel.setPixmap(pm)
+        
         else:
-            line1 = self.__tr("Front panel display")
-            line2 = self.__tr("not available.")
+            self.Panel.setPixmap(QPixmap(self.blank_lcd))
 
-        pm = QPixmap(self.blank_lcd)
-
-        p = QPainter()
-        p.begin(pm)
-        p.setPen(QColor(0, 0, 0))
-        p.setFont(self.font())
-
-        x, y_line1, y_line2 = 10, 17, 33
-
-        # TODO: Scroll long lines
-        p.drawText(x, y_line1, line1)
-        p.drawText(x, y_line2, line2)
-        p.end()
-
-        self.Panel.setPixmap(pm)
-
-
+            
     def UpdateFunctionsTab(self):
-        self.ToggleFunctionButtons(self.cur_device.device_state in \
-            (DEVICE_STATE_FOUND, DEVICE_STATE_JUST_FOUND))
+        self.ToggleFunctionButtons(self.cur_device is not None and \
+            self.cur_device.device_state in (DEVICE_STATE_FOUND, DEVICE_STATE_JUST_FOUND))
 
 
     def ToggleFunctionButtons(self, toggle):
@@ -1062,8 +1071,8 @@ class devmgr4(DevMgr4_base):
             self.ScanButton.setEnabled(self.cur_device.scan_type)
             self.PCardButton.setEnabled(self.cur_device.pcard_type)
             self.SendFaxButton.setEnabled(self.cur_device.fax_type)
-            #self.MakeCopiesButton.setEnabled(self.cur_device.copy_type == COPY_TYPE_DEVICE)
-            self.MakeCopiesButton.setEnabled(False)
+            self.MakeCopiesButton.setEnabled(self.cur_device.copy_type == COPY_TYPE_DEVICE)
+            #self.MakeCopiesButton.setEnabled(False)
         else:
             self.PrintButton.setEnabled(False)
             self.ScanButton.setEnabled(False)
@@ -1093,62 +1102,68 @@ class devmgr4(DevMgr4_base):
     def UpdateStatusTab(self):
         self.StatusHistoryList.clear()
         d = self.cur_device
-
-        for x in d.hist:
-            job_id, code = x[9], x[11]
-
-            if job_id == 0:
-                i = QListViewItem(self.StatusHistoryList, '',
+        
+        if d is not None:
+            for x in d.hist:
+                job_id, code = x[9], x[11]
+    
+                if job_id == 0:
+                    i = QListViewItem(self.StatusHistoryList, '',
+                                       time.strftime("%x", x[:9]),
+                                       time.strftime("%H:%M:%S", x[:9]),
+                                       '', '', str(code), x[12])
+    
+                else:
+                    i = QListViewItem(self.StatusHistoryList, '',
                                    time.strftime("%x", x[:9]),
                                    time.strftime("%H:%M:%S", x[:9]),
-                                   '', '', str(code), x[12])
-
-            else:
-                i = QListViewItem(self.StatusHistoryList, '',
-                               time.strftime("%x", x[:9]),
-                               time.strftime("%H:%M:%S", x[:9]),
-                               x[10], str(job_id), str(code), x[12])
-
-            error_state = STATUS_TO_ERROR_STATE_MAP.get(code, ERROR_STATE_CLEAR)
-
-            try:
-                tech_type = d.tech_type
-            except AttributeError:
-                tech_type = TECH_TYPE_NONE
-
-            if error_state != ERROR_STATE_CLEAR:
-                if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
-                    status_pix = self.STATUS_HISTORY_ICONS[error_state][0] # ink
-                else:
-                    status_pix = self.STATUS_HISTORY_ICONS[error_state][1] # laser
-
-                if status_pix is not None:
-                    i.setPixmap(0, status_pix)
-
-        if d.last_event is not None:
-            self.StatusText.setText(d.last_event[12])
-            self.StatusText2.setText(d.last_event[13])
-
-            error_state = STATUS_TO_ERROR_STATE_MAP.get(d.last_event[11], ERROR_STATE_CLEAR)
-
-            if error_state != ERROR_STATE_CLEAR:
-                if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
-                    status_icon = self.STATUS_ICONS[error_state][0] # ink
-                else:
-                    status_icon = self.STATUS_ICONS[error_state][1] # laser
-
-                if status_icon is not None:
-                    self.StatusIcon.setPixmap(status_icon)
+                                   x[10], str(job_id), str(code), x[12])
+    
+                error_state = STATUS_TO_ERROR_STATE_MAP.get(code, ERROR_STATE_CLEAR)
+    
+                try:
+                    tech_type = d.tech_type
+                except AttributeError:
+                    tech_type = TECH_TYPE_NONE
+    
+                if error_state != ERROR_STATE_CLEAR:
+                    if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
+                        status_pix = self.STATUS_HISTORY_ICONS[error_state][0] # ink
+                    else:
+                        status_pix = self.STATUS_HISTORY_ICONS[error_state][1] # laser
+    
+                    if status_pix is not None:
+                        i.setPixmap(0, status_pix)
+    
+            if d.last_event is not None:
+                self.StatusText.setText(d.last_event[12])
+                self.StatusText2.setText(d.last_event[13])
+    
+                error_state = STATUS_TO_ERROR_STATE_MAP.get(d.last_event[11], ERROR_STATE_CLEAR)
+    
+                if error_state != ERROR_STATE_CLEAR:
+                    if tech_type in (TECH_TYPE_COLOR_INK, TECH_TYPE_MONO_INK):
+                        status_icon = self.STATUS_ICONS[error_state][0] # ink
+                    else:
+                        status_icon = self.STATUS_ICONS[error_state][1] # laser
+    
+                    if status_icon is not None:
+                        self.StatusIcon.setPixmap(status_icon)
+                    else:
+                        self.StatusIcon.clear()
                 else:
                     self.StatusIcon.clear()
-            else:
-                self.StatusIcon.clear()
+        else:
+            self.StatusIcon.clear()
+            self.StatusText.setText('')
+            self.StatusText2.setText('')
 
 
     def UpdateSuppliesTab(self):
         self.SuppliesList.clear()
 
-        if self.cur_device.supported and \
+        if self.cur_device is not None and \
+            self.cur_device.supported and \
             self.cur_device.status_type != STATUS_TYPE_NONE:
 
             a = 1
@@ -1176,7 +1191,8 @@ class devmgr4(DevMgr4_base):
     def UpdateMaintTab(self):
         self.ToolList.clear()
 
-        if self.cur_device.supported and \
+        if self.cur_device is not None and \
+            self.cur_device.supported and \
             self.cur_device.device_state in (DEVICE_STATE_FOUND, DEVICE_STATE_JUST_FOUND):
 
             self.ToolList.addItem( "cups", self.__tr("<b>Configure Print Settings</b>"), 
@@ -1384,11 +1400,19 @@ class devmgr4(DevMgr4_base):
         log.debug("Event: code=%d type=%s string=%s timeout=%d id=%d uri=%s" %
                  (event_code, event_type,  error_string_short, retry_timeout, job_id, device_uri))
 
+        if not self.rescanning:
+            if event_code == EVENT_CUPS_QUEUES_CHANGED:
+                self.RescanDevices()
+                device_uri = device_uri.replace('hpfax:', 'hp:').replace('hpaio:', 'hp:')
 
-        if not self.rescanning and self.ActivateDevice(device_uri):
-            self.cur_device.status_code = event_code
-            self.UpdateDevice(False)
-            self.Tabs.setCurrentPage(1)
+                if self.ActivateDevice(device_uri):
+                    self.UpdateDevice(True, True)
+                    print self.cur_device.dq
+            
+            elif self.ActivateDevice(device_uri):
+                self.cur_device.status_code = event_code
+                self.UpdateDevice(False)
+                self.Tabs.setCurrentPage(1)
 
 
     def settingsConfigure_activated(self, tab_to_show=0):

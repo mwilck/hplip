@@ -490,7 +490,7 @@
                             <cstring>textLabel1_2</cstring>
                         </property>
                         <property name="text">
-                            <string>Print Command</string>
+                            <string>Print Command:</string>
                         </property>
                     </widget>
                     <widget class="QLayoutWidget" row="3" column="0" rowspan="1" colspan="2">
@@ -513,7 +513,7 @@
                             <cstring>textLabel1_2_2</cstring>
                         </property>
                         <property name="text">
-                            <string>Scan Command</string>
+                            <string>Scan Command:</string>
                         </property>
                     </widget>
                     <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="2">
@@ -536,7 +536,7 @@
                             <cstring>textLabel1_2_3_3</cstring>
                         </property>
                         <property name="text">
-                            <string>Access Photo Cards Command</string>
+                            <string>Access Photo Cards Command:</string>
                         </property>
                     </widget>
                     <widget class="QLayoutWidget" row="7" column="0" rowspan="1" colspan="2">
@@ -562,7 +562,7 @@
                             <bool>true</bool>
                         </property>
                         <property name="text">
-                            <string>Send Fax Command</string>
+                            <string>Send Fax Command:</string>
                         </property>
                     </widget>
                     <widget class="QLayoutWidget" row="9" column="0" rowspan="1" colspan="2">
@@ -588,10 +588,10 @@
                             <cstring>textLabel1_2_3_2</cstring>
                         </property>
                         <property name="enabled">
-                            <bool>false</bool>
+                            <bool>true</bool>
                         </property>
                         <property name="text">
-                            <string>Make Copies Command</string>
+                            <string>Make Copies Command:</string>
                         </property>
                     </widget>
                     <widget class="QLayoutWidget" row="11" column="0" rowspan="1" colspan="2">
@@ -607,7 +607,7 @@
                                     <cstring>MakeCopiesCommand</cstring>
                                 </property>
                                 <property name="enabled">
-                                    <bool>false</bool>
+                                    <bool>true</bool>
                                 </property>
                             </widget>
                         </hbox>
@@ -762,9 +762,6 @@
     <tabstop>MakeCopiesCommand</tabstop>
     <tabstop>DefaultsButton</tabstop>
 </tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">settingsdialog_base.ui.h</include>
-</includes>
 <slots>
     <slot>PrintCmdChangeButton_clicked()</slot>
     <slot>ScanCmdChangeButton_clicked()</slot>

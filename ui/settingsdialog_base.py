@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'settingsdialog_base.ui'
 #
-# Created: Fri May 5 14:31:10 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Thu Jun 15 14:00:36 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -248,14 +248,14 @@ class SettingsDialog_base(QDialog):
         FunctionCommandsLayout.addMultiCellLayout(layout11_2,9,9,0,1)
 
         self.textLabel1_2_3_2 = QLabel(self.FunctionCommands,"textLabel1_2_3_2")
-        self.textLabel1_2_3_2.setEnabled(0)
+        self.textLabel1_2_3_2.setEnabled(1)
 
         FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2_3_2,10,10,0,1)
 
         layout12_2 = QHBoxLayout(None,0,6,"layout12_2")
 
         self.MakeCopiesCommand = QLineEdit(self.FunctionCommands,"MakeCopiesCommand")
-        self.MakeCopiesCommand.setEnabled(0)
+        self.MakeCopiesCommand.setEnabled(1)
         layout12_2.addWidget(self.MakeCopiesCommand)
 
         FunctionCommandsLayout.addMultiCellLayout(layout12_2,11,11,0,1)
@@ -329,11 +329,11 @@ class SettingsDialog_base(QDialog):
         self.textLabel3.setText(self.__tr("<i>Note: This should generally be your email address.</i>"))
         self.TabWidget.changeTab(self.EmailAlerts,self.__tr("Email Alerts"))
         self.textLabel3_2_2_2.setText(self.__tr("<b>Configure what commands to run for device functions</b>"))
-        self.textLabel1_2.setText(self.__tr("Print Command"))
-        self.textLabel1_2_2.setText(self.__tr("Scan Command"))
-        self.textLabel1_2_3_3.setText(self.__tr("Access Photo Cards Command"))
-        self.textLabel1_2_3.setText(self.__tr("Send Fax Command"))
-        self.textLabel1_2_3_2.setText(self.__tr("Make Copies Command"))
+        self.textLabel1_2.setText(self.__tr("Print Command:"))
+        self.textLabel1_2_2.setText(self.__tr("Scan Command:"))
+        self.textLabel1_2_3_3.setText(self.__tr("Access Photo Cards Command:"))
+        self.textLabel1_2_3.setText(self.__tr("Send Fax Command:"))
+        self.textLabel1_2_3_2.setText(self.__tr("Make Copies Command:"))
         self.DefaultsButton.setText(self.__tr("Set Defaults"))
         self.TabWidget.changeTab(self.FunctionCommands,self.__tr("Function Commands"))
 

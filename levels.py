@@ -105,6 +105,11 @@ def logBarGraph(agent_level, agent_type, size=DEFAULT_BAR_GRAPH_SIZE, use_colors
     log.info(("-"*size)+color)
 
 
+    
+    
+log.set_module('hp-levels')
+
+    
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:s:ca:g',
         ['printer=', 'device=', 'help', 'help-rest', 'help-man', 

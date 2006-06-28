@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '2.0'
+__version__ = '2.1'
 __title__ = 'Printer/Fax Setup Utility'
 __doc__ = "Installs HPLIP printers and faxes in the CUPS spooler. Tries to automatically determine the correct PPD file to use. Allows the printing of a testpage. Performs basic fax parameter setup."
 
@@ -32,7 +32,7 @@ import readline, gzip
 
 # Local
 from base.g import *
-from base import device, utils, msg
+from base import device, utils, msg, service
 from prnt import cups
 
 number_pat = re.compile(r""".*?(\d+)""", re.IGNORECASE)
@@ -85,6 +85,10 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-setup', __version__)
     sys.exit(0)
 
+    
+    
+    
+log.set_module('hp-setup')
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:n:d:hl:b:t:f:axg',
@@ -244,7 +248,7 @@ ppds = []
 for f in utils.walkFiles(sys_cfg.dirs.ppd, pattern="HP*ppd*", abs_paths=True):
     ppds.append(f)
 
-default_model = model.replace('series', '').replace('Series', '').strip('_')
+default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
 stripped_model = default_model.replace('HP-', '').replace('HP_', '').lower()
 
 # ******************************* PRINT QUEUE SETUP
@@ -254,7 +258,8 @@ if setup_print:
     log.debug(installed_print_devices)
     
     if not auto and print_uri in installed_print_devices:
-        log.warning("A print queue already exists for this device.")
+        log.warning("One or more print queues already exist for this device: %s." % ', '.join(installed_print_devices[print_uri]))
+
         while True:
             user_input = raw_input(utils.bold("\nWould you like to install another print queue for this device? (y=yes, n=no*, q=quit) ?" ))
             user_input = user_input.lower().strip()
@@ -280,33 +285,51 @@ if setup_print:
     
     if auto:
         printer_name = default_model
-    else:
+        
+    printer_default_model = default_model
+            
+    # Check for duplicate names
+    if device_uri in installed_print_devices and \
+        printer_default_model in installed_print_devices[device_uri]:
+            i = 2
+            while True:
+                t = printer_default_model + "_%d" % i
+                if t not in installed_print_devices[device_uri]:
+                    printer_default_model += "_%d" % i
+                    break
+                i += 1
+        
+    if not auto:
         if printer_name is None:
             while True:
-                printer_name = raw_input(utils.bold("\nPlease enter a name for this print queue (m=use model name:'%s'*, q=quit) ?" % default_model))
+                printer_name = raw_input(utils.bold("\nPlease enter a name for this print queue (m=use model name:'%s'*, q=quit) ?" % printer_default_model))
                 
                 if printer_name.lower().strip() == 'q':
                     log.info("OK, done.")
                     sys.exit(0)
                     
                 if not printer_name or printer_name.lower().strip() == 'm':
-                    printer_name = default_model
+                    printer_name = printer_default_model
                     
                 name_ok = True
                 
                 if print_uri in installed_print_devices:
                     for d in installed_print_devices[print_uri]:
+                        #print d, printer_name
                         if printer_name in d:
                             log.error("A print queue with that name already exists. Please enter a different name.")
                             name_ok = False
+                            break
                 
                 # TODO: Validate chars in name
                 
                 if name_ok:
                     break
-    
+    else:
+        printer_name = printer_default_model
     
     log.info("Using queue name: %s" % printer_name)
+    log.debug("1st stage edit distance match")
     
     mins = []
     eds = {}
@@ -332,6 +355,8 @@ if setup_print:
     x = len(mins) 
 
     if x > 1: # try pattern matching the model number 
+        log.debug("2nd stage matching with model number")
+        log.debug(mins)
         try:
             model_number = number_pat.match(stripped_model).group(1)
             model_number = int(model_number)
@@ -340,8 +365,11 @@ if setup_print:
         except ValueError:
             pass
         else:
+            log.debug("model_number=%d" % model_number)
+            matches = []
             for x in range(3): # 1, 10, 100
                 factor = 10**x
+                log.debug("Factor = %d" % factor)
                 adj_model_number = int(model_number/factor)*factor
                 number_matching, match = 0, ''
                 
@@ -349,19 +377,27 @@ if setup_print:
                     try:
                         mins_model_number = number_pat.match(os.path.basename(m)).group(1)
                         mins_model_number = int(mins_model_number)
+                        log.debug("mins_model_number= %d" % mins_model_number)
                     except AttributeError:
                         continue
                     except ValueError:
                         continue
                 
                     mins_adj_model_number = int(mins_model_number/factor)*factor
+                    log.debug("mins_adj_model_number=%d" % mins_adj_model_number)
+                    log.debug("adj_model_number=%d" % adj_model_number)
                     
                     if mins_adj_model_number == adj_model_number: 
+                        log.debug("match")
                         number_matching += 1
-                        match = m
+                        matches.append(m)
+                        log.debug(matches)
                         
-                if number_matching == 1:
-                    mins, x = [match], 1
+                    log.debug("***")
+                        
+                if len(matches):
+                    mins = matches[:]
+                    x = len(mins)
                     break
 
     enter_ppd = False
@@ -576,6 +612,9 @@ if setup_print:
         
         log.error("Printer queue setup failed. Please restart CUPS and try again.")
         sys.exit(1)
+    else:
+        service.sendEvent(hpssd_sock, EVENT_CUPS_QUEUES_CHANGED, device_uri=print_uri)
+        
     
 # ******************************* TEST PAGE    
     
@@ -700,19 +739,33 @@ if setup_fax:
 if setup_fax:
     #log.info(utils.bold("\nSetting up fax queue..."))
 
-    if auto:
+    if auto: # or fax_name is None:
         fax_name = default_model + '_fax'
-    else:
+        
+    fax_default_model = default_model + '_fax'
+    
+    # Check for duplicate names
+    if fax_uri in installed_fax_devices and \
+        fax_default_model in installed_fax_devices[fax_uri]:
+            i = 2
+            while True:
+                t = fax_default_model + "_%d" % i
+                if t not in installed_fax_devices[fax_uri]:
+                    fax_default_model += "_%d" % i
+                    break
+                i += 1
+        
+    if not auto:
         if fax_name is None:
             while True:
-                fax_name = raw_input(utils.bold("\nPlease enter a name for this fax queue (m=use model name:'%s'*, q=quit) ?" % (default_model+'_fax')))
+                fax_name = raw_input(utils.bold("\nPlease enter a name for this fax queue (m=use model name:'%s'*, q=quit) ?" % fax_default_model))
                 
                 if fax_name.lower().strip() == 'q':
                     log.info("OK, done.")
                     sys.exit(0)
                 
                 if not fax_name or fax_name.lower().strip() == 'm':
-                    fax_name = default_model + '_fax'
+                    fax_name = fax_default_model
                     
                 name_ok = True
                 
@@ -721,11 +774,15 @@ if setup_fax:
                         if fax_name in d:
                             log.error("A fax queue with that name already exists. Please enter a different name.")
                             name_ok = False
+                            break
                         
                 # TODO: Validate chars in name
                 
                 if name_ok:
                     break
+                    
+    else:
+        fax_name = fax_default_model
 
     log.info("Using queue name: %s" % fax_name)
 
@@ -783,6 +840,8 @@ if setup_fax:
         
         log.error("Fax queue setup failed. Please restart CUPS and try again.")
         sys.exit(1)
+    else:
+        service.sendEvent(hpssd_sock, EVENT_CUPS_QUEUES_CHANGED, device_uri=fax_uri)
     
 
 # ******************************* FAX HEADER SETUP

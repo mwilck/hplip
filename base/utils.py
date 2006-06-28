@@ -1286,3 +1286,23 @@ encoding: utf8
         
 def dquote(s):
     return ''.join(['"', s, '"'])
+    
+# Python 2.2 compatibility functions (strip() family with char argument)
+def xlstrip(s, chars=' '):
+    for c, i in zip(s, range(len(s))):
+        if c not in chars:
+            break
+    
+    return s[i:]
+            
+def xrstrip(s, chars=' '):
+    return xreverse(xlstrip(xreverse(s), chars))
+
+def xreverse(s):
+    l = list(s)
+    l.reverse()
+    return ''.join(l)
+
+def xstrip(s, chars=' '):
+    return xreverse(xlstrip(xreverse(xlstrip(s, chars)), chars))
+

@@ -5,7 +5,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [1.6.6], [1.6.6.9], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [1.6.6a], [1.6.6a.4], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -71,6 +71,16 @@ else
    AC_MSG_RESULT(no)
 fi
 
+AC_MSG_CHECKING([for fax build])
+AC_ARG_ENABLE(fax_build,
+  [  --enable-fax-build    enable fax build (default=yes)],
+  fax_build=$enableval, fax_build=yes)
+if test "$fax_build" = "yes"; then
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
+fi
+
 CUPSSEARCHPATH="/usr/share /usr/local/share /usr/lib /usr/local/lib /usr/libexec /usr/lib64 /opt"
 
 AC_MSG_CHECKING("for cups ppd path")
@@ -132,11 +142,14 @@ if test "$network_build" = "yes"; then
    LIBS="-lnetsnmp $LIBS"
 fi
 
-ac_configure_args="$ac_configure_args --enable-hplip-build"
+if test "$fax_build" = "yes"; then
+   ac_configure_args="$ac_configure_args --enable-hplip-build"
+fi
 
 AC_SUBST(rpm_install)
 AC_SUBST(network_build)
 AC_SUBST(pp_build)
+AC_SUBST(fax_build)
 AC_SUBST(CUPS_BACKEND_PATH)
 AC_SUBST(CUPS_PPD_PATH)
 AC_SUBST(ICON_PATH)

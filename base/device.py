@@ -30,11 +30,12 @@ import threading
 import urllib
 import StringIO
 import httplib
+import commands
 
 # Local
 from g import *
 from codes import *
-import msg, utils, status, pml, slp, service
+import msg, utils, status, pml, service
 from prnt import pcl, ldl, cups
 
 DEFAULT_PROBE_BUS = 'usb,par,cups'
@@ -42,7 +43,7 @@ VALID_BUSES = ('par', 'net', 'cups', 'usb', 'bt', 'fw')
 DEFAULT_FILTER = 'none'
 VALID_FILTERS = ('none', 'print', 'scan', 'fax', 'pcard', 'copy')
 
-pat_deviceuri = re.compile(r"""(.*?):/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*)|ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^&]*))(?:&port=(\d))?""", re.IGNORECASE)
+pat_deviceuri = re.compile(r"""(.*):/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*)|ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^&]*))(?:&port=(\d))?""", re.IGNORECASE)
 http_pat_url = re.compile(r"""/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*))&loc=(\S*)""", re.IGNORECASE)
 
 # Pattern to check for ; at end of CTR fields
@@ -343,9 +344,10 @@ def parseDeviceID(device_id):
 def parseDynamicCounter(ctr_field, convert_to_int=True):
     counter, value = ctr_field.split(' ')
     try:
-        counter = int(counter.lstrip('0') or '0')
+        counter = int(utils.xlstrip(str(counter), '0') or '0')
+        
         if convert_to_int:
-            value = int(value.lstrip('0') or '0')
+            value = int(utils.xlstrip(str(value), '0') or '0')
     except ValueError:
         if convert_to_int:
             counter, value = 0, 0
@@ -489,7 +491,7 @@ def normalizeModelUIName(model):
     return ' '.join(y)
 
 def normalizeModelName(model):
-    return model.replace(' ', '_').replace('__', '_').replace('~','').replace('/', '_').strip('_')
+    return utils.xstrip(model.replace(' ', '_').replace('__', '_').replace('~','').replace('/', '_'), '_')
 
 
 def isLocal(bus):
@@ -992,7 +994,7 @@ class Device(object):
         return r_value, r_value_str, rg, rr
         
         
-    def queryDevice(self, quick=False, no_fwd=False):
+    def queryDevice(self, quick=False, no_fwd=False, reread_cups_printers=False):
         if not self.supported:
             self.dq = {}
             return
@@ -1138,7 +1140,28 @@ class Device(object):
                                 'rg' : rg,
                                 'rr' : rr,
                               })
-                    
+            
+            if not quick and reread_cups_printers:
+                log.debug("Re-reading CUPS printer queue information.")
+                printers = cups.getPrinters()
+                for p in printers:
+                    if self.device_uri == p.device_uri:
+                        print p.name
+                        self.cups_printers.append(p.name)
+                        self.state = p.state # ?
+        
+                        if self.io_state == IO_STATE_NON_HP:
+                            self.model = p.makemodel.split(',')[0]
+                            
+                self.dq.update({'cups-printer' : ','.join(self.cups_printers)})
+
+        
+                try:
+                    self.first_cups_printer = self.cups_printers[0]
+                except IndexError:
+                    self.first_cups_printer = ''
+            
+            
             if not quick:
                 # Make sure there is some valid agent data for this r_value
                 # If not, fall back to r_value == 0
@@ -1634,23 +1657,25 @@ class Device(object):
                 self.writePrint(file(file_name, 'r').read())
 
         else:
-            raw_str = ''
-            rem_str = ''
-
+            lp_opt = ''
+            
             if raw:
-                raw_str = '-l'
-
-            if remove:
-                rem_str = '-r'
+                lp_opt = '-oraw'
 
             if is_gzip:
-                c = 'gunzip -c %s | lpr %s %s -P%s' % (file_name, raw_str, rem_str, printer_name)
+                c = 'gunzip -c %s | lp -c -d%s %s' % (file_name, printer_name, lp_opt)
             else:
-                c = 'lpr -P%s %s %s %s' % (printer_name, raw_str, rem_str, file_name)
+                c = 'lp -c -d%s %s %s' % (printer_name, lp_opt, file_name)
 
             log.debug(c)
-            os.system(c)
+            exit_code = os.system(c)
 
+            if exit_code != 0:
+                log.error("Print command failed with exit code %d!" % exit_code)
+            
+            if remove:
+                os.remove(file_name)
+            
 
     def printTestPage(self, printer_name=None):
         return self.printParsedGzipPostscript(os.path.join( prop.home_dir, 'data',

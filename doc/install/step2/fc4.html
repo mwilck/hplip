@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -74,47 +76,39 @@
 <h1 class="title">Installation - Step 2 - Fedora Core 4/5</h1>
 <ol class="arabic simple">
 <li>Open a console/terminal window.</li>
-<li>Follow these steps to log in as the super user</li>
-<li>Enter this command:</li>
+<li>Login as super user (root), enter this command:</li>
+</ol>
+<p><em>Warning</em>: The root password gives you administrative privileges on the system.</p>
+<pre class="literal-block">
+su
+</pre>
+<ol class="arabic simple" start="3">
+<li>Press Enter.</li>
+<li>Enter the root password.</li>
+<li>Press Enter.</li>
+<li>Configure Fedora Core 4/5 using YUM, enter this command:</li>
 </ol>
 <pre class="literal-block">
-$ su
+yum install gcc-c++ cups-devel python-devel PyQt net-snmp-devel libjpeg-devel libusb-devel
 </pre>
-<ol class="arabic" start="4">
-<li><p class="first">Press Enter.</p>
-</li>
-<li><dl class="first docutils">
-<dt>Enter the root password.</dt>
-<dd><p class="first last">Warning: The root password gives you administrative privileges on the system.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">Press Enter.</p>
-</li>
-<li><p class="first">Configure Fedora Core 4/5 using YUM;</p>
-</li>
-<li><p class="first">Enter this command:</p>
-</li>
-</ol>
-<pre class="literal-block">
-# yum install gcc-c++ cups-devel python-devel PyQt net-snmp-devel libjpeg-devel libusb-devel
-</pre>
-<ol class="arabic simple" start="9">
+<ol class="arabic simple" start="7">
 <li>Fedora Core 3 systems may also need to enter this command:</li>
 </ol>
 <pre class="literal-block">
-# yum install sip
+yum install sip
 </pre>
-<ol class="arabic simple" start="10">
-<li>For Fedora Core 4/5, you must disable SELinux protection. Click the Desktop Menu item &gt; System Settings &gt; Security Level &gt; then the SELinux Tab Remove the check mark next to the setting &quot;&quot;Enforcing Current:&quot;.</li>
-</ol>
-<p><em>Note: There may be a Fedora Core 4/5 RPM available from Redhat that makes adjusting this security level unnecessary.</em></p>
+<p><em>Note</em>: For Fedora Core 4/5, you must <em>disable</em> SELinux protection. Click;</p>
+<pre class="literal-block">
+Desktop Menu item &gt; System Settings &gt; Security Level &gt; SELinux
+</pre>
+<p>Remove the check mark next to the setting &quot;&quot;Enforcing Current&quot;.</p>
+<p><em>Note</em>: There may be a Fedora Core 4/5 RPM available from Redhat that makes adjusting this security level unnecessary.</p>
 <p><a class="reference" href="../step3/index.html">Proceed to step 3.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Mon Jun 12 13:52:59 2006</small>
+        <small>Last update: Tue Jun 27 15:01:19 2006</small>
 
         <!-- FOOTER -->
     </table>

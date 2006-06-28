@@ -65,8 +65,8 @@ dist_hplip_DATA = $(doc_DATA) hplip.conf
 dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh
 
 cmddir = $(hplipdir)
-dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py photo.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py
+dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
+    sendfax.py setup.py makecopies.py
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
@@ -89,7 +89,11 @@ basedir = $(hplipdir)/base
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  base/async.py \
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
-    base/imagesize.py base/subproc.py
+    base/imagesize.py
+
+# makecopies
+copierdir = $(hplipdir)/copier
+dist_copier_SCRIPTS = copier/copier.py copier/__init__.py
 
 # fax
 faxdir = $(hplipdir)/fax
@@ -185,7 +189,8 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/faxaddrbookform.py ui/faxaddrbookeditform_base.py ui/align10form.py ui/align10form_base.py \
     ui/informationform_base.py ui/informationform.py  \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
-    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py
+    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py \
+    ui/makecopiesform_base.py ui/makecopiesform.py
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -194,7 +199,7 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
     ui/align10form_base.ui ui/informationform_base.ui  \
     plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
-    ui/faxallowabletypesdlg_base.ui
+    ui/faxallowabletypesdlg_base.ui ui/makecopiesform_base.ui
 
 # ui plugins
 pluginsdir = $(hplipdir)/plugins
@@ -303,6 +308,11 @@ install-data-hook: test-destdir install-pcardext install-cupsext
 	else \
 	   echo -e "pp-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
+	if [ "$(fax_build)" = "yes" ]; then \
+	   echo -e "fax-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	else \
+	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	fi
 	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
 
 #
@@ -333,13 +343,15 @@ install-data-hook: test-destdir install-pcardext install-cupsext
 	fi
 #
 #       Install fax support. Let hpijs symlink hpppddir to cupsppddir.
-	mv $(DESTDIR)$(hpfaxdir)/hpfax.py $(DESTDIR)$(hpfaxdir)/hpfax 
-	if [ "$(rpm_install)" = "no" ]; then \
-	   $(mkinstalldirs) $(DESTDIR)$(cupsdir); \
-	   $(INSTALL_SCRIPT) $(DESTDIR)$(hpfaxdir)/hpfax $(DESTDIR)$(cupsdir); \
-	   $(mkinstalldirs) $(DESTDIR)$(hpppddir)/fax; \
-	   $(INSTALL_DATA) $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd $(DESTDIR)$(hpppddir)/fax; \
-	   gzip -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd; \
+	if [ "$(fax_build)" = "yes" ]; then \
+	   mv $(DESTDIR)$(hpfaxdir)/hpfax.py $(DESTDIR)$(hpfaxdir)/hpfax; \
+	   if [ "$(rpm_install)" = "no" ]; then \
+	      $(mkinstalldirs) $(DESTDIR)$(cupsdir); \
+	      $(INSTALL_SCRIPT) $(DESTDIR)$(hpfaxdir)/hpfax $(DESTDIR)$(cupsdir); \
+	      $(mkinstalldirs) $(DESTDIR)$(hpppddir)/fax; \
+	      $(INSTALL_DATA) $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd $(DESTDIR)$(hpppddir)/fax; \
+	      gzip -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd; \
+	   fi \
 	fi
 
 uninstall-hook:

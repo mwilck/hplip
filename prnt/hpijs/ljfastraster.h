@@ -136,7 +136,7 @@ private:
 	long                m_lCurrBlockHeight;
     long                m_lPrinterRasterRow;		// Current printer raster row.
 
-	unsigned long       m_compressedsize;
+	uint32_t	        m_compressedsize;
 	BOOL                m_bCompressed;
 	float               m_fRatio;
     HPUInt8             *pbySeedRow;

@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -74,46 +76,43 @@
 <h1 class="title">Installation - Step 2 - Mandrake/Mandriva</h1>
 <ol class="arabic simple">
 <li>Open a console/terminal window.</li>
-<li>Follow these steps to log in as the super user;</li>
-<li>Enter this command:</li>
+<li>Login as the super user (root), enter this command:</li>
 </ol>
+<p><em>Warning</em>: The root password gives you administrative privileges on the system.</p>
 <blockquote>
 <pre class="literal-block">
-$ su
+su
 </pre>
 </blockquote>
-<ol class="arabic simple" start="4">
+<ol class="arabic simple" start="3">
 <li>Press Enter.</li>
 <li>Enter the root password.</li>
-</ol>
-<p><em>Warning: The root password gives you administrative privileges on the system.</em></p>
-<ol class="arabic simple" start="6">
 <li>Press Enter.</li>
 <li>Follow these steps to download the appropriate urpmi packages:</li>
 </ol>
 <p>In your browser goto the Easy URPMI repository configuration tool for Mandriva web site:  <a class="reference" href="http://easyurpmi.zarb.org">http://easyurpmi.zarb.org</a></p>
-<p>Configure your system using the steps provided by the Easy URPMI website. Make sure to configure the Source contrib and the Source main repositories. You may wish to configure the other source repositories, follow the directions on the Easy URPMI website.</p>
-<ol class="arabic simple" start="8">
+<p>Configure your system using the steps provided by the Easy URPMI website. Make sure to configure the Source contrib and the Source main repositories.</p>
+<ol class="arabic simple" start="7">
 <li>Follow this step to install the necessary packages:</li>
 <li>You will now need to deactivate the Mandrica CD's from the Software Media Manager</li>
 </ol>
 <pre class="literal-block">
 Click &quot;K-Menu&quot; &gt; System &gt; Configuration &gt; Packaging &gt; Software Media Manager
 </pre>
-<ol class="arabic simple" start="10">
-<li>Remove the check marks next to the Mandriva CD's in the &quot;Enabled?&quot; column.</li>
-<li>Now you can enter this command:</li>
+<ol class="arabic simple" start="9">
+<li><em>Remove</em> the check marks next to the Mandriva CD's in the &quot;Enabled?&quot; column.</li>
+<li>Now enter this command:</li>
 </ol>
 <pre class="literal-block">
-# urpmi gcc-c++ cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane
+urpmi gcc-c++ cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane
 </pre>
-<p>The appropriate packages should be downloaded and installed. Once completed you can;</p>
+<p>The appropriate packages should be downloaded and installed.</p>
 <p><a class="reference" href="../step3/index.html">Proceed to step 3.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Mon Jun 12 13:52:59 2006</small>
+        <small>Last update: Tue Jun 27 15:01:19 2006</small>
 
         <!-- FOOTER -->
     </table>

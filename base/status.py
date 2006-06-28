@@ -384,14 +384,29 @@ MARKER_SUPPLES_TYPE_TO_AGENT_KIND_MAP = {
 
 
 def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
-    dev.openPML()
-    result_code, on_off_line = dev.getPML( pml.OID_ON_OFF_LINE, pml.INT_SIZE_BYTE )
-    result_code, sleep_mode = dev.getPML( pml.OID_SLEEP_MODE, pml.INT_SIZE_BYTE )
-    result_code, printer_status = dev.getPML( pml.OID_PRINTER_STATUS, pml.INT_SIZE_BYTE )
-    result_code, device_status = dev.getPML( pml.OID_DEVICE_STATUS, pml.INT_SIZE_BYTE )
-    result_code, cover_status = dev.getPML( pml.OID_COVER_STATUS, pml.INT_SIZE_BYTE )
-    result_code,  value = dev.getPML( pml.OID_DETECTED_ERROR_STATE )
-    
+    try:
+        dev.openPML()
+        result_code, on_off_line = dev.getPML( pml.OID_ON_OFF_LINE, pml.INT_SIZE_BYTE )
+        result_code, sleep_mode = dev.getPML( pml.OID_SLEEP_MODE, pml.INT_SIZE_BYTE )
+        result_code, printer_status = dev.getPML( pml.OID_PRINTER_STATUS, pml.INT_SIZE_BYTE )
+        result_code, device_status = dev.getPML( pml.OID_DEVICE_STATUS, pml.INT_SIZE_BYTE )
+        result_code, cover_status = dev.getPML( pml.OID_COVER_STATUS, pml.INT_SIZE_BYTE )
+        result_code,  value = dev.getPML( pml.OID_DETECTED_ERROR_STATE )
+    except Error:
+       dev.closePML()
+       
+       return {'revision' :    STATUS_REV_UNKNOWN,
+                 'agents' :      [],
+                 'top-door' :    0,
+                 'status-code' : STATUS_UNKNOWN,
+                 'supply-door' : 0,
+                 'duplexer' :    1,
+                 'photo-tray' :  0,
+                 'in-tray1' :    0,
+                 'in-tray2' :    0,
+                 'media-path' :  0,
+               }        
+        
     try:
         detected_error_state = struct.unpack( 'B', value[0])[0]
     except IndexError:

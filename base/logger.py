@@ -20,7 +20,7 @@
 #
 
 # Std Lib
-import sys, thread, syslog, traceback, string
+import sys, thread, syslog, traceback, string, os
 
 
 
@@ -71,6 +71,7 @@ class Logger(object):
         self._log_datetime = log_datetime
         self._lock = thread.allocate_lock()
         self.module = module
+        self.pid = os.getpid()
 
     def set_level(self, level):
         if isinstance(level,str):
@@ -145,68 +146,64 @@ class Logger(object):
     def stderr(self, message):
         try:
             self._lock.acquire()
-            sys.stderr.write(message)
-            sys.stderr.write('\n')
+            sys.stderr.write("%s: %s\n" % (self.module, message))
         finally:
             self._lock.release()
 
     def debug(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
             if fmt:
-                self.log("%s%s [DEBUG]: %s%s" % ('\x1b[34;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
-                syslog.syslog(syslog.LOG_DEBUG, "%s [DEBUG] %s" % (self.module, message))
+                self.log("%s%s[%d]: debug: %s%s" % ('\x1b[34;01m', self.module, self.pid, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
             else:
-                self.log("%s [DEBUG]: %s" % (self.module, message), Logger.LOG_LEVEL_DEBUG)
-                syslog.syslog(syslog.LOG_DEBUG, "%s [DEBUG] %s" % (self.module, message))
+                self.log("%s[%d]: debug: %s" % (self.module, self.pid, message), Logger.LOG_LEVEL_DEBUG)
+            
+            syslog.syslog(syslog.LOG_DEBUG, "%s[%d]: debug: %s" % (self.module, self.pid, message))
             
     dbg = debug
     
-    def debug_block(self, title, block, fmt=True):
+    def debug_block(self, title, block, fmt=False):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
             if fmt:
-                self.log("%s%s [DEBUG]: %s:%s" % ('\x1b[34;01m', self.module, title, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+                self.log("%s%s[%d]: debug: %s:%s" % ('\x1b[34;01m', self.module,  self.pid, title, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
                 self.log("%s%s%s" % ('\x1b[34;01m', block, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
             else:
-                self.log("%s [DEBUG]: :%s" % (self.module, title), Logger.LOG_LEVEL_DEBUG)
+                self.log("%s[%d]: debug: :%s" % (self.module, self.pid, title), Logger.LOG_LEVEL_DEBUG)
                 self.log(block, Logger.LOG_LEVEL_DEBUG)
 
     def info(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_INFO:
-            if self.module:
-                self.log("%s %s" % (self.module, message), Logger.LOG_LEVEL_INFO)
-            else:
-                self.log(message, Logger.LOG_LEVEL_INFO)
+            self.log(message, Logger.LOG_LEVEL_INFO)
 
     information = info
 
     def warn(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_WARN:
             if fmt:
-                self.log("%s%s [WARNING]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
+                self.log("%swarning: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
             else:
-                self.log("%s [WARNING]: %s" % (self.module, message), Logger.LOG_LEVEL_WARN)
+                self.log("warning: %s" % message, Logger.LOG_LEVEL_WARN)
             
-            syslog.syslog(syslog.LOG_WARNING, "%s [WARN] %s" % (self.module, message))
+            syslog.syslog(syslog.LOG_WARNING, "%s[%d]: warning: %s" % (self.module, self.pid, message))
 
     warning = warn
 
     def error(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_ERROR:
             if fmt:
-                self.log("%s%s [ERROR]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_ERROR)
+                self.log("%serror: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_ERROR)
             else:
-                self.log("%s [ERROR]: %s" % (self.module, message), Logger.LOG_LEVEL_ERROR)
+                self.log("error: %s" % message, Logger.LOG_LEVEL_ERROR)
             
-            syslog.syslog(syslog.LOG_ALERT, "%s [ERROR] %s" % (self.module, message))
+            syslog.syslog(syslog.LOG_ALERT, "%s[%d] error: %s" % (self.module, self.pid, message))
 
     def fatal(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_FATAL:
             if fmt:
-                self.log("%s%s [FATAL]: %s%s" % ('\x1b[31;01m', self.module, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+                self.log("%sfatal error: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
             else:
-                self.log("%s [FATAL]: %s" % (self.module, message), Logger.LOG_LEVEL_DEBUG)
+                self.log("fatal error: %s" % message, Logger.LOG_LEVEL_DEBUG)
             
-            syslog.syslog(syslog.LOG_CRIT, "%s [FATAL] %s" % (self.module, message))
+            syslog.syslog(syslog.LOG_ALERT, "%s[%d]: fatal: %s" % (self.module, self.pid, message))
 
     def exception(self):
         typ, value, tb = sys.exc_info()

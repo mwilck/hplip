@@ -46,6 +46,8 @@ client = None
 toolbox  = None
 hpiod_sock = None
 
+log.set_module('hp-toolbox')
+
 # PyQt
 if not utils.checkPyQtImport():
     log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
@@ -281,8 +283,6 @@ def main(args):
         log.error("Unable to connect to HPLIP I/O (hpiod).")
         return 1
         
-    log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
-    log.set_module('toolbox')
     log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
 
     # create the main application object

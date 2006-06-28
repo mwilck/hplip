@@ -51,18 +51,19 @@ cups_PROGRAMS = hp$(EXEEXT)
 sbin_PROGRAMS = hpiod$(EXEEXT)
 noinst_PROGRAMS = ptest$(EXEEXT)
 DIST_COMMON = $(am__configure_deps) $(dist_base_SCRIPTS) \
-	$(dist_cmd_SCRIPTS) $(dist_fax_SCRIPTS) $(dist_faxppd_DATA) \
-	$(dist_hpfax_SCRIPTS) $(dist_hplip_DATA) $(dist_hplip_SCRIPTS) \
-	$(dist_images_DATA) $(dist_ldl_DATA) $(dist_noinst_DATA) \
-	$(dist_noinst_SCRIPTS) $(dist_pcard_SCRIPTS) $(dist_pcl_DATA) \
-	$(dist_plugins_SCRIPTS) $(dist_prnt_SCRIPTS) $(dist_ps_DATA) \
-	$(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS) $(dist_www0_DATA) \
-	$(dist_www1_DATA) $(dist_www21_DATA) $(dist_www22_DATA) \
-	$(dist_www23_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
-	$(dist_www243_DATA) $(dist_www24_DATA) $(dist_www2_DATA) \
-	$(dist_www3_DATA) $(dist_www4_DATA) $(dist_www5_DATA) \
-	$(dist_www61_DATA) $(dist_www6_DATA) $(dist_www7_DATA) \
-	$(dist_xml_DATA) $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(dist_cmd_SCRIPTS) $(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
+	$(dist_faxppd_DATA) $(dist_hpfax_SCRIPTS) $(dist_hplip_DATA) \
+	$(dist_hplip_SCRIPTS) $(dist_images_DATA) $(dist_ldl_DATA) \
+	$(dist_noinst_DATA) $(dist_noinst_SCRIPTS) \
+	$(dist_pcard_SCRIPTS) $(dist_pcl_DATA) $(dist_plugins_SCRIPTS) \
+	$(dist_prnt_SCRIPTS) $(dist_ps_DATA) $(dist_scan_SCRIPTS) \
+	$(dist_ui_SCRIPTS) $(dist_www0_DATA) $(dist_www1_DATA) \
+	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
+	$(dist_www241_DATA) $(dist_www242_DATA) $(dist_www243_DATA) \
+	$(dist_www24_DATA) $(dist_www2_DATA) $(dist_www3_DATA) \
+	$(dist_www4_DATA) $(dist_www5_DATA) $(dist_www61_DATA) \
+	$(dist_www6_DATA) $(dist_www7_DATA) $(dist_xml_DATA) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/configure COPYING config.guess config.sub \
 	depcomp install-sh ltmain.sh missing
 subdir = .
@@ -82,23 +83,23 @@ am__vpath_adj = case $$p in \
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" \
 	"$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" \
-	"$(DESTDIR)$(cmddir)" "$(DESTDIR)$(faxdir)" \
-	"$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" \
-	"$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" \
-	"$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" \
-	"$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" \
-	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" \
-	"$(DESTDIR)$(ldldir)" "$(DESTDIR)$(pcldir)" \
-	"$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" \
-	"$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" \
-	"$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" \
-	"$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" \
-	"$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" \
-	"$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" \
-	"$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" \
-	"$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" \
-	"$(DESTDIR)$(www7dir)" "$(DESTDIR)$(xmldir)" \
-	"$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" \
+	"$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" \
+	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" \
+	"$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" \
+	"$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" \
+	"$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(hplipdir)" \
+	"$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" \
+	"$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" \
+	"$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" \
+	"$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" \
+	"$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" \
+	"$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" \
+	"$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" \
+	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
+	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
+	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
+	"$(DESTDIR)$(xmldir)" "$(DESTDIR)$(docdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libhpip_la_LIBADD =
@@ -133,6 +134,7 @@ ptest_OBJECTS = $(am_ptest_OBJECTS)
 ptest_DEPENDENCIES = libhplip-api.la
 dist_baseSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_cmdSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+dist_copierSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_faxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hpfaxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hplipSCRIPT_INSTALL = $(INSTALL_SCRIPT)
@@ -141,7 +143,8 @@ dist_pluginsSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_prntSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_scanSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_uiSCRIPT_INSTALL = $(INSTALL_SCRIPT)
-SCRIPTS = $(dist_base_SCRIPTS) $(dist_cmd_SCRIPTS) $(dist_fax_SCRIPTS) \
+SCRIPTS = $(dist_base_SCRIPTS) $(dist_cmd_SCRIPTS) \
+	$(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
 	$(dist_hpfax_SCRIPTS) $(dist_hplip_SCRIPTS) \
 	$(dist_noinst_SCRIPTS) $(dist_pcard_SCRIPTS) \
 	$(dist_plugins_SCRIPTS) $(dist_prnt_SCRIPTS) \
@@ -313,6 +316,7 @@ build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
 exec_prefix = @exec_prefix@
+fax_build = @fax_build@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -396,8 +400,8 @@ dist_www7_DATA = $(wwwsrc)/troubleshooting/*
 dist_hplip_DATA = $(doc_DATA) hplip.conf
 dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh
 cmddir = $(hplipdir)
-dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py photo.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py
+dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
+    sendfax.py setup.py makecopies.py
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
@@ -414,8 +418,12 @@ basedir = $(hplipdir)/base
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  base/async.py \
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
-    base/imagesize.py base/subproc.py
+    base/imagesize.py
 
+
+# makecopies
+copierdir = $(hplipdir)/copier
+dist_copier_SCRIPTS = copier/copier.py copier/__init__.py
 
 # fax
 faxdir = $(hplipdir)/fax
@@ -513,7 +521,8 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/faxaddrbookform.py ui/faxaddrbookeditform_base.py ui/align10form.py ui/align10form_base.py \
     ui/informationform_base.py ui/informationform.py  \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
-    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py
+    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py \
+    ui/makecopiesform_base.py ui/makecopiesform.py
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -522,7 +531,7 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
     ui/align10form_base.ui ui/informationform_base.ui  \
     plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
-    ui/faxallowabletypesdlg_base.ui
+    ui/faxallowabletypesdlg_base.ui ui/makecopiesform_base.ui
 
 
 # ui plugins
@@ -718,6 +727,25 @@ uninstall-dist_cmdSCRIPTS:
 	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
 	  echo " rm -f '$(DESTDIR)$(cmddir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(cmddir)/$$f"; \
+	done
+install-dist_copierSCRIPTS: $(dist_copier_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(copierdir)" || $(mkdir_p) "$(DESTDIR)$(copierdir)"
+	@list='$(dist_copier_SCRIPTS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f $$d$$p; then \
+	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	    echo " $(dist_copierSCRIPT_INSTALL) '$$d$$p' '$(DESTDIR)$(copierdir)/$$f'"; \
+	    $(dist_copierSCRIPT_INSTALL) "$$d$$p" "$(DESTDIR)$(copierdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-dist_copierSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_copier_SCRIPTS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	  echo " rm -f '$(DESTDIR)$(copierdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(copierdir)/$$f"; \
 	done
 install-dist_faxSCRIPTS: $(dist_fax_SCRIPTS)
 	@$(NORMAL_INSTALL)
@@ -2020,7 +2048,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/data/xml $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
+	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/copier $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/data/xml $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -2167,7 +2195,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(xmldir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(xmldir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -2218,22 +2246,23 @@ info: info-recursive
 info-am:
 
 install-data-am: install-cupsPROGRAMS install-dist_baseSCRIPTS \
-	install-dist_cmdSCRIPTS install-dist_faxSCRIPTS \
-	install-dist_faxppdDATA install-dist_hpfaxSCRIPTS \
-	install-dist_hplipDATA install-dist_hplipSCRIPTS \
-	install-dist_imagesDATA install-dist_ldlDATA \
-	install-dist_pcardSCRIPTS install-dist_pclDATA \
-	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
-	install-dist_psDATA install-dist_scanSCRIPTS \
-	install-dist_uiSCRIPTS install-dist_www0DATA \
-	install-dist_www1DATA install-dist_www21DATA \
-	install-dist_www22DATA install-dist_www23DATA \
-	install-dist_www241DATA install-dist_www242DATA \
-	install-dist_www243DATA install-dist_www24DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-dist_xmlDATA install-docDATA
+	install-dist_cmdSCRIPTS install-dist_copierSCRIPTS \
+	install-dist_faxSCRIPTS install-dist_faxppdDATA \
+	install-dist_hpfaxSCRIPTS install-dist_hplipDATA \
+	install-dist_hplipSCRIPTS install-dist_imagesDATA \
+	install-dist_ldlDATA install-dist_pcardSCRIPTS \
+	install-dist_pclDATA install-dist_pluginsSCRIPTS \
+	install-dist_prntSCRIPTS install-dist_psDATA \
+	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
+	install-dist_www0DATA install-dist_www1DATA \
+	install-dist_www21DATA install-dist_www22DATA \
+	install-dist_www23DATA install-dist_www241DATA \
+	install-dist_www242DATA install-dist_www243DATA \
+	install-dist_www24DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA \
+	install-dist_xmlDATA install-docDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -2268,24 +2297,24 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
-	uninstall-dist_cmdSCRIPTS uninstall-dist_faxSCRIPTS \
-	uninstall-dist_faxppdDATA uninstall-dist_hpfaxSCRIPTS \
-	uninstall-dist_hplipDATA uninstall-dist_hplipSCRIPTS \
-	uninstall-dist_imagesDATA uninstall-dist_ldlDATA \
-	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
-	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
-	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
-	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
-	uninstall-dist_www1DATA uninstall-dist_www21DATA \
-	uninstall-dist_www22DATA uninstall-dist_www23DATA \
-	uninstall-dist_www241DATA uninstall-dist_www242DATA \
-	uninstall-dist_www243DATA uninstall-dist_www24DATA \
-	uninstall-dist_www2DATA uninstall-dist_www3DATA \
-	uninstall-dist_www4DATA uninstall-dist_www5DATA \
-	uninstall-dist_www61DATA uninstall-dist_www6DATA \
-	uninstall-dist_www7DATA uninstall-dist_xmlDATA \
-	uninstall-docDATA uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-sbinPROGRAMS
+	uninstall-dist_cmdSCRIPTS uninstall-dist_copierSCRIPTS \
+	uninstall-dist_faxSCRIPTS uninstall-dist_faxppdDATA \
+	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
+	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
+	uninstall-dist_ldlDATA uninstall-dist_pcardSCRIPTS \
+	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
+	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
+	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
+	uninstall-dist_xmlDATA uninstall-docDATA uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-sbinPROGRAMS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
@@ -2302,49 +2331,50 @@ uninstall-info: uninstall-info-recursive
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-cupsPROGRAMS install-data \
 	install-data-am install-data-hook install-dist_baseSCRIPTS \
-	install-dist_cmdSCRIPTS install-dist_faxSCRIPTS \
-	install-dist_faxppdDATA install-dist_hpfaxSCRIPTS \
-	install-dist_hplipDATA install-dist_hplipSCRIPTS \
-	install-dist_imagesDATA install-dist_ldlDATA \
-	install-dist_pcardSCRIPTS install-dist_pclDATA \
-	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
-	install-dist_psDATA install-dist_scanSCRIPTS \
-	install-dist_uiSCRIPTS install-dist_www0DATA \
-	install-dist_www1DATA install-dist_www21DATA \
-	install-dist_www22DATA install-dist_www23DATA \
-	install-dist_www241DATA install-dist_www242DATA \
-	install-dist_www243DATA install-dist_www24DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-dist_xmlDATA install-docDATA \
-	install-exec install-exec-am install-exec-hook install-info \
-	install-info-am install-libLTLIBRARIES install-man \
-	install-sbinPROGRAMS install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
+	install-dist_cmdSCRIPTS install-dist_copierSCRIPTS \
+	install-dist_faxSCRIPTS install-dist_faxppdDATA \
+	install-dist_hpfaxSCRIPTS install-dist_hplipDATA \
+	install-dist_hplipSCRIPTS install-dist_imagesDATA \
+	install-dist_ldlDATA install-dist_pcardSCRIPTS \
+	install-dist_pclDATA install-dist_pluginsSCRIPTS \
+	install-dist_prntSCRIPTS install-dist_psDATA \
+	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
+	install-dist_www0DATA install-dist_www1DATA \
+	install-dist_www21DATA install-dist_www22DATA \
+	install-dist_www23DATA install-dist_www241DATA \
+	install-dist_www242DATA install-dist_www243DATA \
+	install-dist_www24DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA \
+	install-dist_xmlDATA install-docDATA install-exec \
+	install-exec-am install-exec-hook install-info install-info-am \
+	install-libLTLIBRARIES install-man install-sbinPROGRAMS \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
 	uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
-	uninstall-dist_cmdSCRIPTS uninstall-dist_faxSCRIPTS \
-	uninstall-dist_faxppdDATA uninstall-dist_hpfaxSCRIPTS \
-	uninstall-dist_hplipDATA uninstall-dist_hplipSCRIPTS \
-	uninstall-dist_imagesDATA uninstall-dist_ldlDATA \
-	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
-	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
-	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
-	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
-	uninstall-dist_www1DATA uninstall-dist_www21DATA \
-	uninstall-dist_www22DATA uninstall-dist_www23DATA \
-	uninstall-dist_www241DATA uninstall-dist_www242DATA \
-	uninstall-dist_www243DATA uninstall-dist_www24DATA \
-	uninstall-dist_www2DATA uninstall-dist_www3DATA \
-	uninstall-dist_www4DATA uninstall-dist_www5DATA \
-	uninstall-dist_www61DATA uninstall-dist_www6DATA \
-	uninstall-dist_www7DATA uninstall-dist_xmlDATA \
-	uninstall-docDATA uninstall-hook uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-sbinPROGRAMS
+	uninstall-dist_cmdSCRIPTS uninstall-dist_copierSCRIPTS \
+	uninstall-dist_faxSCRIPTS uninstall-dist_faxppdDATA \
+	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
+	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
+	uninstall-dist_ldlDATA uninstall-dist_pcardSCRIPTS \
+	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
+	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
+	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
+	uninstall-dist_xmlDATA uninstall-docDATA uninstall-hook \
+	uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-sbinPROGRAMS
 
 
 build-pcardext: 
@@ -2449,6 +2479,11 @@ install-data-hook: test-destdir install-pcardext install-cupsext
 	else \
 	   echo -e "pp-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
+	if [ "$(fax_build)" = "yes" ]; then \
+	   echo -e "fax-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	else \
+	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	fi
 	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
 
 #
@@ -2479,13 +2514,15 @@ install-data-hook: test-destdir install-pcardext install-cupsext
 	fi
 #
 #       Install fax support. Let hpijs symlink hpppddir to cupsppddir.
-	mv $(DESTDIR)$(hpfaxdir)/hpfax.py $(DESTDIR)$(hpfaxdir)/hpfax 
-	if [ "$(rpm_install)" = "no" ]; then \
-	   $(mkinstalldirs) $(DESTDIR)$(cupsdir); \
-	   $(INSTALL_SCRIPT) $(DESTDIR)$(hpfaxdir)/hpfax $(DESTDIR)$(cupsdir); \
-	   $(mkinstalldirs) $(DESTDIR)$(hpppddir)/fax; \
-	   $(INSTALL_DATA) $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd $(DESTDIR)$(hpppddir)/fax; \
-	   gzip -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd; \
+	if [ "$(fax_build)" = "yes" ]; then \
+	   mv $(DESTDIR)$(hpfaxdir)/hpfax.py $(DESTDIR)$(hpfaxdir)/hpfax; \
+	   if [ "$(rpm_install)" = "no" ]; then \
+	      $(mkinstalldirs) $(DESTDIR)$(cupsdir); \
+	      $(INSTALL_SCRIPT) $(DESTDIR)$(hpfaxdir)/hpfax $(DESTDIR)$(cupsdir); \
+	      $(mkinstalldirs) $(DESTDIR)$(hpppddir)/fax; \
+	      $(INSTALL_DATA) $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd $(DESTDIR)$(hpppddir)/fax; \
+	      gzip -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd; \
+	   fi \
 	fi
 
 uninstall-hook:

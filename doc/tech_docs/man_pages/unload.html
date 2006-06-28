@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -71,13 +73,13 @@
 
         <td align="left" valign="top" class="content">
         <div class="document">
-<p>Access inserted photo cards on supported HPLIP printers. This provides an alternative for older devices that do not support USB mass storage or for access to photo cards over a network. (GUI version)</p>
-<p><strong>Usage: hp-unload [PRINTER|DEVICE-URI] [OPTIONS]</strong></p>
+<p>Access inserted photo cards on supported HPLIP printers. This provides an alternative for older devices that do not support USB mass storage or for access to photo cards over a network.</p>
+<p><strong>Usage: hp-unload [PRINTER|DEVICE-URI] [MODE] [OPTIONS]</strong></p>
 <p><strong>[PRINTER|DEVICE-URI] (See Notes)</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col width="32%" />
+<col width="68%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><em>To specify a device-URI:</em></td>
@@ -88,13 +90,34 @@
 </tr>
 </tbody>
 </table>
+<p><strong>[MODE]</strong></p>
+<table border="1" class="borderless docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><em>Enter interactive mode (ftp-like interface):</em></td>
+<td>-i or --interactive</td>
+</tr>
+<tr><td><em>Enter graphical UI mode:</em></td>
+<td>-u or --gui (Default)</td>
+</tr>
+<tr><td><em>Run in non-interactive mode (batch mode):</em></td>
+<td>-n or --non-interactive</td>
+</tr>
+</tbody>
+</table>
 <p><strong>[OPTIONS]</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col width="32%" />
+<col width="68%" />
 </colgroup>
 <tbody valign="top">
+<tr><td><em>Output directory:</em></td>
+<td>-o&lt;dir&gt; or --output=&lt;dir&gt; (Defaults to current directory)(Only used for non-GUI modes)</td>
+</tr>
 <tr><td><em>Bus to probe (if device not specified):</em></td>
 <td>-b&lt;bus&gt; or --bus=&lt;bus&gt;</td>
 </tr>
@@ -118,8 +141,8 @@
 <p><strong>Notes:</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col width="32%" />
+<col width="68%" />
 </colgroup>
 <tbody valign="top">
 <tr><td colspan="2"><ol class="first last arabic simple">
@@ -132,17 +155,10 @@
 </ol>
 </td>
 </tr>
-</tbody>
-</table>
-<p><strong>See Also:</strong></p>
-<table border="1" class="borderless docutils">
-<colgroup>
-<col width="29%" />
-<col width="71%" />
-</colgroup>
-<tbody valign="top">
-<tr><td><a class="reference" href="photo.html">hp-photo</a></td>
-<td>&nbsp;</td>
+<tr><td colspan="2"><ol class="first last arabic simple" start="3">
+<li>Use 'help' command at the pcard:&gt; prompt for command help (Interactive mode (-i) only).</li>
+</ol>
+</td>
 </tr>
 </tbody>
 </table>
@@ -150,7 +166,7 @@
 
 
         <hr size="1"/>
-        <small>Last update: Thu Jun 15 13:58:59 2006</small>
+        <small>Last update: Tue Jun 27 16:38:30 2006</small>
 
         <!-- FOOTER -->
     </table>

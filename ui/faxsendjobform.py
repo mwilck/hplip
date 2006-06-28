@@ -42,11 +42,10 @@ from waitform import WaitForm
 from faxsettingsform import FaxSettingsForm
 from faxallowabletypesdlg import FaxAllowableTypesDlg
 
-coverpages_enabled = False
 try:
     import reportlab
 except ImportError:
-    log.error("Coverpages disabled. Reportlab not installed.")
+    coverpages_enabled = False
 else:
     from fax import coverpages
     from coverpageform import CoverpageForm
@@ -149,7 +148,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             "image/x-sgi-rgb" : (self.__tr("SGI RGB"), '.rgb'),
             "image/x-xbitmap" : (self.__tr("X11 Bitmap (XBM)"), '.xbm'),
             "image/x-xpixmap" : (self.__tr("X11 Pixmap (XPM)"), '.xpm'),
-            "image/x-sun-raster" : (self.__tr("Sun Raster Format"), '.ras'),
+            "image/x-sun-raster" : (self.__tr("Sucoverpages_enabledn Raster Format"), '.ras'),
             "application/hplip-fax" : (self.__tr("HP Fax"), '.g3'),
             "application/hplip-fax-coverpage" : (self.__tr("HP Fax Coverpage"), 'n/a'),
         }
@@ -206,6 +205,9 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         self.cmd_fab = user_cfg.commands.fab or cmd_fab
         log.debug("FAB command: %s" % self.cmd_fab)
+        
+        if not coverpages_enabled:
+            log.warn("Coverpages disabled. Reportlab not installed.")
 
         QTimer.singleShot(0, self.InitialUpdate)
 

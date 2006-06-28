@@ -59,6 +59,10 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-testpage', __version__)
     sys.exit(0)
     
+
+    
+    
+log.set_module('hp-testpage')
  
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:gx',

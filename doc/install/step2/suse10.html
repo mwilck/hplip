@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
        <meta name="author" content="" />
        <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
  </head>
 
  <body>
@@ -74,50 +76,50 @@
 <h1 class="title">Installation - Step 2 - SUSE</h1>
 <ol class="arabic simple">
 <li>Open a console/terminal window.</li>
-<li>Follow these steps to log in as the super user:</li>
-<li>Enter this command:</li>
+<li>Login as the super user (root), enter this command:</li>
 </ol>
+<p><em>Warning</em>: The root password gives you administrative privileges on the system.</p>
 <pre class="literal-block">
-$ su
+su
 </pre>
-<ol class="arabic simple" start="4">
+<ol class="arabic simple" start="3">
 <li>Press Enter.</li>
 <li>Enter the root password.</li>
-</ol>
-<p><em>Warning: The root password gives you administrative privileges on the system.</em></p>
-<ol class="arabic simple" start="6">
 <li>Press Enter.</li>
 </ol>
 <p>The next steps will configure SuSE to use internet media sources to download the required files.</p>
-<ol class="arabic simple" start="7">
+<ol class="arabic simple" start="6">
 <li>Enter this command:  (This may take several minutes to complete.)</li>
 </ol>
 <pre class="literal-block">
-# installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/
+installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/
 </pre>
-<ol class="arabic simple" start="8">
+<ol class="arabic simple" start="7">
 <li>Enter this command:</li>
 </ol>
 <pre class="literal-block">
-# installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/
+installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/
+</pre>
+<ol class="arabic simple" start="8">
+<li>Remove the CD as an install source, click:</li>
+</ol>
+<pre class="literal-block">
+K Menu &gt; &quot;System&quot; &gt; Control Center (YaST) &gt; Installation Source
 </pre>
 <ol class="arabic simple" start="9">
-<li>Remove the CD as an install source--first click &quot;K Menu&quot;</li>
-<li>Then select &quot;System&quot;</li>
-<li>Select &quot;Control Center (YaST)&quot;, and then &quot;Installation Source&quot;</li>
-<li>Select (or highlight) &quot;SUSE LINUX Version 10.0 cd:///;devices=/dev/hdc&quot; and finally click &quot;Enable/Disable&quot;</li>
+<li>Select (or highlight) &quot;SUSE LINUX Version 10.0 cd:///;devices=/dev/hdc&quot; and finally click <em>&quot;Enable/Disable&quot;</em></li>
 <li>Make sure the CD is disabled, then click &quot;Finish&quot;.  Close YaST.</li>
 <li>Enter this command to install the required HPLIP dependencies:</li>
 </ol>
 <pre class="literal-block">
-# yast --install cups-devel python-devel python-xml kdebindings3-python net-snmp-devel openssl libjpeg-devel libusb-devel gcc-c++
+yast --install cups-devel python-devel python-xml kdebindings3-python net-snmp-devel openssl libjpeg-devel libusb-devel gcc-c++
 </pre>
-<p><a class="reference" href="../step3/index.html">proceed to step 3.</a></p>
+<p><a class="reference" href="../step3/index.html">Proceed to step 3.</a></p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Mon Jun 12 13:52:59 2006</small>
+        <small>Last update: Tue Jun 27 15:01:19 2006</small>
 
         <!-- FOOTER -->
     </table>

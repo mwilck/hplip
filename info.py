@@ -59,7 +59,9 @@ def usage(typ='text'):
     sys.exit(0)
 
          
+log.set_module('hp-info')
 
+    
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:ig',
         ['printer=', 'device=', 'help', 'help-rest', 'help-man', 

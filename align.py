@@ -182,6 +182,8 @@ try:
 except getopt.GetoptError:
     usage()
 
+log.set_module("hp-align")
+
 printer_name = None
 device_uri = None
 bus = device.DEFAULT_PROBE_BUS

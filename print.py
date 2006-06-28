@@ -22,7 +22,7 @@
 
 __version__ = '2.0'
 __title__ = 'Print Utility'
-__doc__ = "A simple front end to 'lpr'. Provides a print UI from the Device Manager if kprinter, gtklp, or xpp are not installed."
+__doc__ = "A simple front end to 'lp'. Provides a print UI from the Device Manager if kprinter, gtklp, or xpp are not installed."
 
 # Std Lib
 import sys, os, getopt, re, socket
@@ -33,6 +33,8 @@ from base.msg import *
 from base import utils, device
 import base.async_qt as async
 from prnt import cups
+
+log.set_module('hp-print')
 
 # PyQt
 if not utils.checkPyQtImport():
@@ -247,8 +249,6 @@ def main(args):
     os.umask (0077)
     
     utils.log_title(__title__, __version__)
-
-    log.set_module('hp-print')
 
     global client
     try:

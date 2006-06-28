@@ -509,9 +509,9 @@ int System::UsbDiscovery(char *lst, int *cnt)
                 * This will allow us to do discovery and not disable other CUPS backend(s) who use /dev/usb/lpx instead of libusb.
                 */
                if (strncasecmp(rmodel, "hp ", 3) == 0)
-                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, &rmodel[3], &rmodel[3], rmodel, rmodel, rserial);
+                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s USB %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, &rmodel[3], &rmodel[3], serial, rmodel, rmodel, rserial);
                else
-                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, rmodel, rmodel, rmodel, rmodel, rserial);
+                  size += sprintf(lst+size, "direct %s \"HP %s\" \"HP %s USB %s HPLIP\" \"MFG:HP;MDL:%s;CLS:PRINTER;DES:%s;SN:%s;\"\n", sz, rmodel, rmodel, serial, rmodel, rmodel, rserial);
 
                *cnt+=1;
             }
@@ -556,9 +556,9 @@ int System::ParDiscovery(char *lst, int *cnt)
             snprintf(dev, sizeof(dev), "hp:/par/%s?device=/dev/parport%d", model, i);
 
             if (strncasecmp(rmodel, "hp ", 3) == 0)
-               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s HPLIP\" \"%s\"\n", dev, &rmodel[3], &rmodel[3], id);
+               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s LPT parport%d HPLIP\" \"%s\"\n", dev, &rmodel[3], &rmodel[3], i, id);
             else
-               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s HPLIP\" \"%s\"\n", dev, rmodel, rmodel, id);
+               size += sprintf(lst+size,"direct %s \"HP %s\" \"HP %s LPT parport%d HPLIP\" \"%s\"\n", dev, rmodel, rmodel, i, id);
             *cnt+=1;
          }
       }

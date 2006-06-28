@@ -788,14 +788,16 @@ class hpssd_handler(dispatcher):
             except Error:
                 result_code = e.opt
         
+        log.debug(model)
+        
         if model:
             key = self.fields.get('key', '')
             value = self.fields.get('value', '')
             
             if key and value: 
                 if QueryModel(model):
-                    if model in model_cache:
-                        model_cache[model][key] = value
+                    if model.lower() in model_cache:
+                        model_cache[model.lower()][key] = value
                         result_code = ERROR_SUCCESS
                 
         self.out_buffer = buildResultMessage('InjectValueResult', None, result_code)
@@ -1221,6 +1223,7 @@ class hpssd_handler(dispatcher):
                         
                         uri = m.group(1) or ''
                         mdl = m.group(2) or ''
+                        desc = m.group(3) or ''
                         devid = m.group(4) or ''
                         
                         try:
@@ -1246,7 +1249,7 @@ class hpssd_handler(dispatcher):
                                         break
     
                             if include:
-                                ret_devices[uri] = (mdl, model, devid) # model w/ _'s, mdl w/o
+                                ret_devices[uri] = (mdl, desc, devid) # model w/ _'s, mdl w/o
 
             elif bus == 'cups':
                 cups_printers = cups.getPrinters()
@@ -1385,6 +1388,8 @@ def usage(typ='text'):
 
 
 def main(args):
+    log.set_module('hpssd')
+
     prop.prog = sys.argv[0]
     prop.daemonize = True
 
@@ -1441,7 +1446,6 @@ def main(args):
     if prop.daemonize:
         utils.daemonize()
 
-    log.set_module('hpssd')
 
     # configure the various data stores
     gettext.install('hplip')

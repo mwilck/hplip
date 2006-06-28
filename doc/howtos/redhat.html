@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+ <head>
+  <title>HPLIP Red Hat 8/9 How-To</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
+  <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
+  <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
+       <meta name="author" content="" />
+       <meta name="email" content="" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
+ </head>
+
+ <body>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td align="left" valign="top">
+                <a href="../index.html"><img src="../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
+                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
+            </td>
+        </tr>
+    </table>
+
+    <table  border="0" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <tr>
+        <!-- LEFT SIDE NAVIGATION -->
+            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
+                <div class="menuheader">About</div> 
+                <menu compact="compact">
+                    <li><a href="../features.html" title="">Features</a></li> 
+                    <li><a href="../screenshots.html" title="">Screenshots</a></li> 
+                    <li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
+                </menu>
+
+                <div class="menuheader">Setup and Installation</div> 
+                <menu compact="compact">
+                    <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+                    <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+                </menu>
+
+                <div class="menuheader">Usage and Support</div> 
+                <menu compact="compact">
+                    <li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+                    <li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+                    <li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+                    <li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
+                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
+                </menu>
+
+                <div class="menuheader">Resources</div>
+                <menu compact="compact">
+                    <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
+                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+                    <li><a href="../license.html" title="Software License">Software License</a></li>
+                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
+                    <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
+                </menu>
+            </td>
+
+        <!-- CONTENT -->
+
+        <a href="../index.html">Home</a> > <a href="index.html">How-Tos</a> > Red Hat 8/9
+
+        <td align="left" valign="top" class="content">
+        <div class="document" id="red-hat-8-9-how-to">
+<h1 class="title">Red Hat 8/9 How-To</h1>
+<p><em>Note</em>: This process has been tested with Red Hat 8 and Red Hat 9. May work with other version of Red Hat (Enterprise, etc)</p>
+<ol class="arabic simple">
+<li>Install RH8/RH9 Workstation to get gcc development tools. Or use the RH8/RH9
+Package Manager to install the Development Tools.</li>
+</ol>
+<pre class="literal-block">
+*Gnome Menu
+        *System Settings
+                *Packages
+</pre>
+<ol class="arabic simple" start="2">
+<li>Goto the &quot;Development&quot; section, Click &quot;Details&quot; next to &quot;Development Tools.
+Ensure the following packages are installed:</li>
+</ol>
+<pre class="literal-block">
+automake14
+automake15
+cvs
+diffstat
+dmalloc
+doxygen
+gcc-g77
+gcc-gnat
+gcc-java
+indent
+ltrace
+memprof
+patchutils
+rcs
+splint
+</pre>
+<ol class="arabic simple" start="3">
+<li>Use the RH8 Package Manager and install CUPS under Printing Support.</li>
+</ol>
+<pre class="literal-block">
+*Gnome Menu
+        *System Settings
+                *Packages
+</pre>
+<ol class="arabic simple" start="4">
+<li>Go to the &quot;System&quot; section, click &quot;Details&quot; next to Printing Support.
+Ensure the following package is installed:</li>
+</ol>
+<pre class="literal-block">
+Cups
+</pre>
+<ol class="arabic simple" start="5">
+<li>Start the cupsd daemon:</li>
+</ol>
+<pre class="literal-block">
+su
+/etc/init.d/cups start
+</pre>
+<ol class="arabic simple" start="6">
+<li>Install cups-devel. RPM is on RH8 CD #2</li>
+</ol>
+<pre class="literal-block">
+cd /mnt/cdrom/RedHat/RPMS
+</pre>
+<p><em>Note</em>: cd-rom may mount in a different directory.  Should be something similiar however.</p>
+<pre class="literal-block">
+rpm -ivh cups-devel-1.1.15-10.i386.rpm
+</pre>
+<ol class="arabic simple" start="7">
+<li>Install sane-backends-devel. RPM is on RH8 CD #2.</li>
+</ol>
+<pre class="literal-block">
+cd /mnt/cdrom/RedHat/RPMS
+rpm -ivh sane-backends-devel-1.0.8-5.i386.rpm
+</pre>
+<ol class="arabic simple" start="8">
+<li>Update libusb from 0.1.6 to 0.1.8.</li>
+</ol>
+<pre class="literal-block">
+wget http://hplip.sf.net/libusb-0.1.8.tar.gz
+tar xzvf libusb-0.1.8.tar.gz
+cd libusb-0.1.8
+./configure --prefix=/usr
+make
+su
+make install
+rm /usr/lib/libusb.so
+ln -s /usr/lib/libusb-0.1.4.4.0 /usr/lib/libusb.so
+exit
+</pre>
+<ol class="arabic simple" start="9">
+<li>Update xsane from 0.84 to 0.96 (actually 0.92 or higher will work).</li>
+</ol>
+<pre class="literal-block">
+wget http://hplip.sf.net/xsane-0.96.tar.gz
+tar xzvf xsane-0.96.tar.gz
+cd xsane-0.96
+./configure --prefix=/usr
+make
+su
+make install
+exit
+</pre>
+<ol class="arabic simple" start="10">
+<li>Build hplip with no network and no fax support. Use hplip-1.6.6a or
+newer.</li>
+</ol>
+<pre class="literal-block">
+tar xvfz hplip-1.6.6a.0.tar.gz
+cd hplip-1.6.6a.0
+./configure --prefix=/usr --disable-network-build --disable-fax-build
+make
+su
+</pre>
+<p><em>Note</em>: do not exit root until after step 11.</p>
+<pre class="literal-block">
+make install
+</pre>
+<ol class="arabic simple" start="11">
+<li>Start HPLIP daemons.</li>
+</ol>
+<pre class="literal-block">
+/etc/init.d/hplip start
+</pre>
+<ol class="arabic simple" start="12">
+<li>Libusb replaces the &quot;printer&quot; kernel module, so we must blacklist
+the &quot;printer&quot; kernel module so it will not be loaded during USB hotplug
+events. This also means only libusb printer drivers will work when the
+&quot;printer&quot; kernel module is removed.</li>
+</ol>
+<ol class="loweralpha simple">
+<li>Add &quot;alias printer off&quot; line to /etc/modules.conf.</li>
+</ol>
+<pre class="literal-block">
+Run from terminal:
+su
+gedit /etc/modules.conf
+Add to the bottom of the file:
+&quot;alias printer off&quot;
+Save, Exit
+</pre>
+<ol class="loweralpha simple" start="2">
+<li>Add &quot;printer&quot; line to /etc/hotplug/blacklist.</li>
+</ol>
+<pre class="literal-block">
+Run from terminal:
+su
+gedit /etc/hotplug/blacklist
+Add to the bottom of the file:
+&quot;printer&quot;
+Save, Exit
+</pre>
+<ol class="loweralpha simple" start="3">
+<li>Run:</li>
+</ol>
+<pre class="literal-block">
+su
+/sbin/rmmod printer
+</pre>
+<ol class="arabic simple" start="13">
+<li>Restart cupsd so that it will see new the USB printer.</li>
+</ol>
+<pre class="literal-block">
+/etc/init.d/cups restart
+exit
+</pre>
+<ol class="arabic simple" start="14">
+<li>To continue proceed to <a class="reference" href="../install/step4/index.html">Step 4</a>.</li>
+</ol>
+</div>
+
+
+        <hr size="1"/>
+        <small>Last update: Tue Jun 27 16:35:59 2006</small>
+
+        <!-- FOOTER -->
+    </table>
+    <table border="0" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="3"><hr noshade="noshade" size="1"/></td>
+        </tr>
+        <!-- <tr><td colspan="3" class="footer"></td> -->
+        <tr>
+            <td class="footer"><a href="../legal.html">Legal Notices</a></td>
+            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
+            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
+        </tr>
+    
+    </table>
+</body>
+
+</html>

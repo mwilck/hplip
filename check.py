@@ -74,6 +74,7 @@ def checklib(output, lib):
         log.error("Not found.")
         return False
 
+log.set_module("hp-check")
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'hl:g', 
@@ -114,7 +115,7 @@ log.info(utils.bold("Basic system info..."))
 status, output = run('uname -a')
 log.info("--> %s" % output)
 
-log.info(utils.bold("\nCurrently/previously installed version..."))
+log.info(utils.bold("\nCurrently installed version..."))
 v = sys_cfg.hplip.version
 if v:
     log.info("--> %s" % v )

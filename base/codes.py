@@ -276,6 +276,8 @@ EVENT_FAX_RENDER_DISTANT_EARLY_WARNING = 8003
 EVENT_FAX_MAX = 8999
 # end
 
+EVENT_CUPS_QUEUES_CHANGED = 9000 # sent by hp-setup if queues added (or removed)
+
 # end of events
 
 

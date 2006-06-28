@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '1.1'
+__version__ = '2.0'
 __title__ = "Fax Address Book"
 __doc__ = "A simple fax address book for HPLIP."
 
@@ -29,17 +29,8 @@ from base import utils
 
 import getopt
 
-# PyQt
-if not utils.checkPyQtImport():
-    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
-    sys.exit(1)
+log.set_module("hp-fab")
 
-from qt import *
-
-from ui.faxaddrbookform import FaxAddrBookForm
-
-app = None
-addrbook = None
 
 def additional_copyright():
     log.info("Includes code from KirbyBase 1.8.1")
@@ -48,7 +39,12 @@ def additional_copyright():
     log.info("")
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: hp-fab [OPTIONS]", "", "summary", True),
+         ("Usage: hp-fab [MODE] [OPTIONS]", "", "summary", True),
+         ("[MODE]", "", "header", False),
+         ("Enter interactive mode:", "-i or --interactive", "option", False),
+         ("Enter graphical UI mode:", "-u or --gui (Default)", "option", False),
+         #("Run in non-interactive mode (batch mode):", "-n or --non-interactive", "option", False),
+         utils.USAGE_SPACE,
          utils.USAGE_OPTIONS,
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
@@ -66,58 +62,73 @@ def usage(typ='text'):
 
     
 
+mode = GUI_MODE
 
-def main(args):
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], 'l:hg', 
-            ['level=', 'help', 'help-rest', 'help-man'])
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'l:hgi', 
+        ['level=', 'help', 'help-rest', 'help-man',
+         'gui', 'interactive'])
 
-    except getopt.GetoptError:
-        usage()
+except getopt.GetoptError:
+    usage()
 
-    if os.getenv("HPLIP_DEBUG"):
-        log.set_level('debug')
-        
-    for o, a in opts:
-
-        if o in ('-l', '--logging'):
-            log_level = a.lower().strip()
-            if not log.set_level(log_level):
-                usage()
-                
-        elif o == '-g':
-            log.set_level('debug')
-
-        elif o in ('-h', '--help'):
+if os.getenv("HPLIP_DEBUG"):
+    log.set_level('debug')
+    
+for o, a in opts:
+    if o in ('-l', '--logging'):
+        log_level = a.lower().strip()
+        if not log.set_level(log_level):
             usage()
             
-        elif o == '--help-rest':
-            usage('rest')
-            
-        elif o == '--help-man':
-            usage('man')
-            
+    elif o == '-g':
+        log.set_level('debug')
 
-    utils.log_title(__title__, __version__)
-    additional_copyright()
+    elif o in ('-h', '--help'):
+        usage()
+        
+    elif o == '--help-rest':
+        usage('rest')
+        
+    elif o == '--help-man':
+        usage('man')
+        
+    elif o in ('-i', '--interactive'):
+        mode = INTERACTIVE_MODE
+        
+    elif o in ('-u', '--gui'):
+        mode = GUI_MODE
+        
+
+utils.log_title(__title__, __version__)
+additional_copyright()
+
+# Security: Do *not* create files that other users can muck around with
+os.umask (0077)
+
+if mode == GUI_MODE:
+    if not os.getenv('DISPLAY'):
+        mode = NON_INTERACTIVE_MODE
+    elif not utils.checkPyQtImport():
+        mode = NON_INTERACTIVE_MODE
+
+if mode == GUI_MODE:
+    from qt import *
+    from ui.faxaddrbookform import FaxAddrBookForm
     
-    log.set_module('fab')
-
-    # Security: Do *not* create files that other users can muck around with
-    os.umask (0077)
-
+    app = None
+    addrbook = None
+    
     # create the main application object
-    global app
     app = QApplication(sys.argv)
-
-    global addrbook
+    
     addrbook = FaxAddrBookForm()
     addrbook.show()
     app.setMainWidget(addrbook)
-
+    
     user_config = os.path.expanduser('~/.hplip.conf')
     loc = utils.loadTranslators(app, user_config)
-
+    
     try:
         log.debug("Starting GUI loop...")
         app.exec_loop()
@@ -125,8 +136,8 @@ def main(args):
         pass
     except:
         log.exception()
+    
+    sys.exit(0)
 
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+else: # INTERACTIVE_MODE
+    log.error("Sorry, -i not implemented yet.")

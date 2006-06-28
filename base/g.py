@@ -271,3 +271,10 @@ except NameError:
     True = (1==1)
     False = not True
     
+# GUI/Console modes
+INTERACTIVE_MODE = 0
+GUI_MODE = 1
+NON_INTERACTIVE_MODE = 2
+
+
+

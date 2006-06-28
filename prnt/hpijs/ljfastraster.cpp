@@ -1210,12 +1210,12 @@ BOOL ModeDeltaPlus::Process
 			{
 				err = (((LJFastRaster*)thePrinter)->phLJFastRaster)->StartPage();
 				((LJFastRaster*)thePrinter)->m_bStartPageNotSent = FALSE;
-                m_lPrinterRasterRow = 0;
+						m_lPrinterRasterRow = 0;
 			}
 
 			m_compressedsize = 2 * inputsize * INDY_STRIP_HEIGHT;
             BOOL bRet = Compress (compressBuf, 
-                                  (uint32_t *) &m_compressedsize,
+                                  &m_compressedsize,
                                   pbyInputImageBuffer,
                                   inputsize,
                                   m_lCurrCDRasterRow,

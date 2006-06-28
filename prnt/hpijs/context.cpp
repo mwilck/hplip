@@ -1882,6 +1882,7 @@ DRIVER_ERROR PrintContext::SetCompGrayMode
         return SYSTEM_ERROR;
     }
     cm.ulMap2 = NULL;
+	cm.ulMap3 = NULL;
 
     PEN_TYPE pen = thePrinter->ActualPens();
     unsigned int numinks;

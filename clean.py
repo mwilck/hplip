@@ -65,6 +65,7 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-clean', __version__)
     sys.exit(0)
 
+log.set_module("hp-clean")
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:v:g',
