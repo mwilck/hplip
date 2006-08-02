@@ -125,7 +125,7 @@ def colorCal4():
     values = [0, 0, 0, 0]
     ok = True
     while True:
-        x = raw_input(utils.bold('Enter the letter (A-N) and number (1-14) for the gray plot (eg, "C5") or "q" to quit: '))
+        x = raw_input(utils.bold("""Enter the letter ('A' thru 'N') and number (1 thru 14) for the gray plot (eg, "C5") or "q" to quit: """))
         
         if x.lower().strip() == 'q':
             ok = False
@@ -152,11 +152,11 @@ def colorCal4():
         try:
             number = int(x[1:])
         except ValueError:
-            log.error("You must enter a letter followed by a number 1 thru 14.")
+            log.error("You must enter a letter 'A' thru 'N' followed by a number 1 thru 14.")
             continue
             
-        if 0 < number < 15:
-            log.error("You must enter a letter followed by a number 1 thru 14.")
+        if number < 0 or number > 14:
+            log.error("You must enter a letter 'A' thru 'N' followed by a number 1 thru 14.")
             continue
             
         values[0] = ord(str(letter).upper()) - ord('A')
@@ -165,7 +165,7 @@ def colorCal4():
     
     if ok:
         while True:
-            x = raw_input(utils.bold('Enter the letter (P-V) and number (1-7) for the color plot (eg, "R3") or "q" to quit: '))
+            x = raw_input(utils.bold("""Enter the letter ('P' thru 'V') and number (1 thru 7) for the color plot (eg, "R3") or "q" to quit: """))
             
             if x.lower().strip() == 'q':
                 ok = False
@@ -192,11 +192,11 @@ def colorCal4():
             try:
                 number = int(x[1:])
             except ValueError:
-                log.error("You must enter a letter followed by a number 1 thru 7.")
+                log.error("You must enter a letter 'P' thru 'V' followed by a number 1 thru 7.")
                 continue
                 
-            if 0 < number < 8:
-                log.error("You must enter a letter followed by a number 1 thru 7.")
+            if number < 0 or number > 7:
+                log.error("You must enter a letter 'P' thru 'V' followed by a number 1 thru 7.")
                 continue
                 
             values[2] = ord(str(letter).upper()) - ord('P')

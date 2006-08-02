@@ -34,9 +34,9 @@
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:    "application/vnd.cups-postscript 0 foomatic-rip"
-*ModelName:     "HPLIP Fax"
-*ShortNickName: "HPLIP Fax"
-*NickName:      "HPLIP Fax"
+*ModelName:     "HP Fax"
+*ShortNickName: "HP Fax"
+*NickName:      "HP Fax"
 *PSVersion:	"(2017.000) 0"
 *LanguageLevel:	"3"
 *ColorDevice:	True
@@ -47,7 +47,7 @@
 *VariablePaperSize: True
 *TTRasterizer:	Type42
 *HWMargins: 18 36 18 18
-*1284DeviceID: "MFG:HP;MDL:HP Fax;DES:HP Fax;"
+*1284DeviceID: "MFG:HP;MDL:Fax;DES:HP Fax;"
 *FoomaticIDs: HPLIPFax hpijs
 *FoomaticRIPCommandLine: "gs -q -dBATCH -dPARANOIDSAFER -dQUIET -dNOPAUSE &&
 -sDEVICE=ijs -sIjsServer=hpijs %A%B%D -dIjsUseOutputFD%Z -sOutputFile=- -"

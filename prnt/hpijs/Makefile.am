@@ -7,7 +7,11 @@ APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug
 
-FOOMATICLABEL=foomatic-3_0-branch
+#FOOMATICLABEL=foomatic-3_0-branch
+FOOMATICLABEL=
+
+#BZRSERVER=http://bzr.linuxprinting.org/devel
+BZRSERVER=http://dsufflnx/bzr
 
 if FOOMATIC_INSTALL
 foomatichook = install-foomatic
@@ -54,7 +58,7 @@ apdk_SOURCES = models.cpp breaks_open.cpp \
 	dj4100_cmap.cpp ldlencap.h ljcolor.cpp ljcolor.h pscript.h \
 	printerproxy.cpp printerfactory.cpp printerproxy.h printerfactory.h \
 	ljjetready.cpp ljjetready.h jdatadbf.c jccolor.c ljfastraster.cpp ljfastraster.h \
-	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h psb9100.h
+	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h
 hpijs_SOURCES = $(apdk_SOURCES) hpijs.cpp ijs_server.c ijs.c hpijsfax.cpp services.cpp \
     hpijs.h ijs.h ijs_server.h services.h ijs_client.h hpiom.c hpiom.h \
 	hplip_api.c hplip_api.h
@@ -162,45 +166,10 @@ get-ppd:
 	rm -rf foomatic-filters
 	rm -rf foomatic-db
 	rm -rf foomatic-db-hpijs
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db-hpijs
-	cd foomatic-db-hpijs; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-filters; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-db-engine; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	./hpijs-ppd
-	cp foomatic-filters/foomatic-rip ./
-	cp foomatic-db/db/source/PPD/HP/all_in_one/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	sed -e 's/DefaultInputSlot: Default/DefaultInputSlot: Upper/' < ppd/HP-PhotoSmart_8700-hpijs.ppd > ppd/ppd.tmp
-	rm ppd/HP-PhotoSmart_8700-hpijs.ppd
-	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
-
-get-ppd-tip:
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db-hpijs
+	bzr branch $(BZRSERVER)/foomatic-db-engine
+	bzr branch $(BZRSERVER)/foomatic-filters 
+	bzr branch $(BZRSERVER)/foomatic-db
+	bzr branch $(BZRSERVER)/foomatic-db-hpijs
 	cd foomatic-db-hpijs; \
 	./make_configure; \
 	./configure; \
@@ -232,10 +201,10 @@ get-ppd-shadow:
 	rm -rf foomatic-filters
 	rm -rf foomatic-db
 	rm -rf foomatic-db-hpijs
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db-hpijs
+	bzr branch $(BZRSERVER)/foomatic-db-engine
+	bzr branch $(BZRSERVER)/foomatic-filters
+	bzr branch $(BZRSERVER)/foomatic-db
+	bzr branch $(BZRSERVER)/foomatic-db-hpijs
 	-cp -f foomatic/foomatic-db/*.xml foomatic-db/db/source/printer/
 	-cp -f foomatic/foomatic-db-hpijs/hpijs-generator.in foomatic-db-hpijs/data-generators/hpijs/
 	-cp -f foomatic/foomatic-db-hpijs/hpijs-printermap foomatic-db-hpijs/data-generators/hpijs/
@@ -257,83 +226,6 @@ get-ppd-shadow:
 	cp foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
 	cp foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
-	-cp -f foomatic/foomatic-db/db/source/PPD/HP/all_in_one/*.ppd ppd/
-	-cp -f foomatic/foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
-	-cp -f foomatic/foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
-	-cp -f foomatic/foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	sed -e 's/DefaultInputSlot: Default/DefaultInputSlot: Upper/' < ppd/HP-PhotoSmart_8700-hpijs.ppd > ppd/ppd.tmp
-	rm ppd/HP-PhotoSmart_8700-hpijs.ppd
-	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
-
-get-ppd-user:
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db-hpijs
-	cd foomatic-db-hpijs; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-filters; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-db-engine; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	./hpijs-ppd
-	cp foomatic-filters/foomatic-rip ./
-	cp foomatic-db/db/source/PPD/HP/all_in_one/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
-	cp foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	sed -e 's/DefaultInputSlot: Default/DefaultInputSlot: Upper/' < ppd/HP-PhotoSmart_8700-hpijs.ppd > ppd/ppd.tmp
-	rm ppd/HP-PhotoSmart_8700-hpijs.ppd
-	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
-
-get-ppd-user-shadow:
-	rm -rf foomatic-db-engine
-	rm -rf foomatic-filters
-	rm -rf foomatic-db
-	rm -rf foomatic-db-hpijs
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db-hpijs
-	-cp -f foomatic/foomatic-db/*.xml foomatic-db/db/source/printer/
-	-cp -f foomatic/foomatic-db-hpijs/hpijs-generator.in foomatic-db-hpijs/data-generators/hpijs/
-	-cp -f foomatic/foomatic-db-hpijs/hpijs-printermap foomatic-db-hpijs/data-generators/hpijs/
-	cd foomatic-db-hpijs; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-filters; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	cd foomatic-db-engine; \
-	./make_configure; \
-	./configure; \
-	make inplace
-	./hpijs-ppd
-	cp foomatic-filters/foomatic-rip ./
-	cp -f foomatic-db/db/source/PPD/HP/all_in_one/*.ppd ppd/
-	cp -f foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
-	cp -f foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
-	cp -f foomatic-db/db/source/PPD/HP/mono_laser/*.ppd ppd/
 	-cp -f foomatic/foomatic-db/db/source/PPD/HP/all_in_one/*.ppd ppd/
 	-cp -f foomatic/foomatic-db/db/source/PPD/HP/business_inkjet/*.ppd ppd/
 	-cp -f foomatic/foomatic-db/db/source/PPD/HP/color_laser/*.ppd ppd/
@@ -347,16 +239,10 @@ get-ppd-user-shadow:
 	mv ppd/ppd.tmp ppd/HP-PhotoSmart_8700-hpijs.ppd
 
 get-foomatic:
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db
-	cvs -z3 -d:pserver:anonymous@cvs.linuxprinting.org:/usr/local/cvs co foomatic-db-hpijs
-
-get-foomatic-user:
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-db-engine
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co -r $(FOOMATICLABEL) foomatic-filters
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db
-	CVS_RSH=ssh cvs -z3 -d:ext:$(USER)@cvs.linuxprinting.org:/var/lib/cvs co foomatic-db-hpijs
+	bzr branch $(BZRSERVER)/foomatic-db-engine
+	bzr branch $(BZRSERVER)/foomatic-filters
+	bzr branch $(BZRSERVER)/foomatic-db
+	bzr branch $(BZRSERVER)/foomatic-db-hpijs
 
 test-ppd:
 	cd foomatic-db-hpijs; \

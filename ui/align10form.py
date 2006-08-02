@@ -20,6 +20,7 @@
 #
 
 from base.g import *
+from base import maint
 import os.path
 from qt import *
 from align10form_base import Align10Form_Base

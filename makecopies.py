@@ -223,6 +223,7 @@ contrast = None
 quality = None
 fit_to_page = None
 mode = GUI_MODE
+mode_specified = False
 
 if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
@@ -255,30 +256,30 @@ for o, a in opts:
         try:
             num_copies = int(a)
         except ValueError:
-            log.warning("Invalid number of copies. Set to 1.")
+            log.warning("Invalid number of copies. Set to default of 1.")
             num_copies = 1
             
         if num_copies < 1: 
-            log.warning("Invalid number of copies. Set to 1.")
+            log.warning("Invalid number of copies. Set to minimum of 1.")
             num_copies = 1
             
         elif num_copies > 99: 
-            log.warning("Invalid number of copies. Set to 99.")
+            log.warning("Invalid number of copies. Set to maximum of 99.")
             num_copies = 99
             
     elif o in ('-c', '--contrast'):
         try:
             contrast = int(a)
         except ValueError:
-            log.warning("Invalid contrast setting. Set to 0.")
+            log.warning("Invalid contrast setting. Set to default of 0.")
             contrast = 0
             
         if contrast < -5: 
-            log.warning("Invalid contrast setting. Set to -5.")
+            log.warning("Invalid contrast setting. Set to minimum of -5.")
             contrast = -5
             
         elif contrast > 5: 
-            log.warning("Invalid contrast setting. Set to +5.")
+            log.warning("Invalid contrast setting. Set to maximum of +5.")
             contrast = 5
             
         contrast *= 25
@@ -288,44 +289,60 @@ for o, a in opts:
         
         if a == 'fast':
             quality = pml.COPIER_QUALITY_FAST
+        
         elif a.startswith('norm'):
             quality = pml.COPIER_QUALITY_NORMAL
+        
         elif a.startswith('pres'):
             quality = pml.COPIER_QUALITY_PRESENTATION
+        
         elif a.startswith('draf'):
             quality = pml.COPIER_QUALITY_DRAFT
+        
         elif a == 'best':
             quality = pml.COPIER_QUALITY_BEST
+        
         else:
-            log.warning("Invalid quality. Set to 'normal'.")
+            log.warning("Invalid quality. Set to default of 'normal'.")
             
     elif o in ('-r', '--reduction', '--enlargement'):
         reduction_spec = True
         try:
-            reduction = int(a)
+            reduction = int(a.replace('%', ''))
         except ValueError:
-            log.warning("Invalid reduction %. Set to 100%.")
+            log.warning("Invalid reduction %. Set to default of 100%.")
+            reduction = 100
             
         if reduction < 25:
-            log.warning("Invalid reduction %. Set to 25%.")
+            log.warning("Invalid reduction %. Set to minimum of 25%.")
             reduction = 25
             
         elif reduction > 400:
-            log.warning("Invalid reduction %. Set to 400%.")
+            log.warning("Invalid reduction %. Set to maximum of 400%.")
             reduction = 400
             
     elif o in ('-f', '--fittopage', '--fit'):
         fit_to_page = pml.COPIER_FIT_TO_PAGE_ENABLED
             
     elif o in ('-n', '--non-interactive'):
+        if mode_specified:
+            log.error("You may only specify a single mode as a parameter (-n or -u).")
+            sys.exit(1)
+        
         mode = NON_INTERACTIVE_MODE
+        mode_specified = True
         
     elif o in ('-u', '--gui'):
+        if mode_specified:
+            log.error("You may only specify a single mode as a parameter (-n or -u).")
+            sys.exit(1)
+
         mode = GUI_MODE
+        mode_specified = True
     
             
 if fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED and reduction_spec:
-    log.warning("Fit to page specfied: reduction/enlargement ignored.")
+    log.warning("Fit to page specfied: Reduction/enlargement parameter ignored.")
 
 
 utils.log_title(__title__, __version__)
@@ -336,6 +353,7 @@ os.umask (0077)
 if mode == GUI_MODE:
     if not os.getenv('DISPLAY'):
         mode = NON_INTERACTIVE_MODE
+    
     elif not utils.checkPyQtImport():
         mode = NON_INTERACTIVE_MODE
 
@@ -398,23 +416,30 @@ else: # NON_INTERACTIVE_MODE
         log.error("Sorry, make copies functionality is not implemented for this device type.")
         sys.exit(1)
         
-    if num_copies is None:
-        result_code, num_copies = dev.getPML(pml.OID_COPIER_NUM_COPIES)
+    try:
+        dev.open()
         
-    if contrast is None:
-        result_code, contrast = dev.getPML(pml.OID_COPIER_CONTRAST)
+        if num_copies is None:
+            result_code, num_copies = dev.getPML(pml.OID_COPIER_NUM_COPIES)
+            
+        if contrast is None:
+            result_code, contrast = dev.getPML(pml.OID_COPIER_CONTRAST)
+            
+        if reduction is None:
+            result_code, reduction = dev.getPML(pml.OID_COPIER_REDUCTION)
         
-    if reduction is None:
-        result_code, reduction = dev.getPML(pml.OID_COPIER_REDUCTION)
+        if quality is None:
+            result_code, quality = dev.getPML(pml.OID_COPIER_QUALITY)
+        
+        if fit_to_page is None:
+            result_code, fit_to_page = dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
+        
+        result_code, max_reduction = dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
+        result_code, max_enlargement = dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
     
-    if quality is None:
-        result_code, quality = dev.getPML(pml.OID_COPIER_QUALITY)
-    
-    if fit_to_page is None:
-        result_code, fit_to_page = dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
-    
-    result_code, max_reduction = dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
-    result_code, max_enlargement = dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
+    except Error, e:
+        log.error(e.msg)
+        sys.exit(1)
     
     #print num_copies, contrast, reduction, quality, fit_to_page, max_reduction, max_enlargement
     log.debug("num_copies = %d" % num_copies)

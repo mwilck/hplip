@@ -217,7 +217,7 @@ build-cupsext:
 install-pcardext:
 	cd pcard/pcardext; \
 	if [ "$(DESTDIR)" = "" ]; then \
-	   $(PYTHON) setup.py install; \
+	   $(PYTHON) setup.py install --prefix=$(prefix); \
 	else \
 	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
 	fi
@@ -225,7 +225,7 @@ install-pcardext:
 install-cupsext:
 	cd prnt/cupsext; \
 	if [ "$(DESTDIR)" = "" ]; then \
-	   $(PYTHON) setup.py install; \
+	   $(PYTHON) setup.py install --prefix=$(prefix); \
 	else \
 	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
 	fi

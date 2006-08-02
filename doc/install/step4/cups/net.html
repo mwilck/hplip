@@ -77,11 +77,11 @@
 <ol class="arabic simple">
 <li>Connect the printer to the network.</li>
 </ol>
-<p><em>Note: See your printer documentation for specific instructions on connecting the USB, Parallel or Network cable to your printer and computer.</em></p>
+<p><em>Note</em>: See your printer documentation for specific instructions on connecting the USB, Parallel or Network cable to your printer and computer.</p>
 <ol class="arabic simple" start="2">
 <li>Using the Printer Setup Menus on your printer, print the &quot;Network Configuration&quot; page.  This page will have the IP address of the printer, which is essential to complete the printer setup.</li>
 </ol>
-<p><em>Note: See your printer documentation for specific instructions on printing the network configuration page.</em></p>
+<p><em>Note</em>: See your printer documentation for specific instructions on printing the network configuration page.</p>
 <ol class="arabic simple" start="3">
 <li>Open a console/terminal window.</li>
 <li>Enter this command to search for the printer URI: (Example: &quot;hp-makeuri 192.168.1.100&quot;)</li>
@@ -89,7 +89,9 @@
 <pre class="literal-block">
 hp-makeuri &lt;printer.IP.address.from.step.2&gt;
 </pre>
-<p>5 Copy the CUPS URI created for the printer. (Example: &quot;hp:/net/HP_Business_Inkjet_1200?ip=192.168.1.100&quot;)</p>
+<ol class="arabic simple" start="5">
+<li>Copy the CUPS URI created for the printer. (Example: &quot;hp:/net/HP_Business_Inkjet_1200?ip=192.168.1.100&quot;)</li>
+</ol>
 <p><em>Hint: Use the right-click menu to copy and paste text.</em></p>
 <ol class="arabic simple" start="6">
 <li>Open a web browser, and then enter the following address in the Address box: <a class="reference" href="http://localhost:631">http://localhost:631</a></li>
@@ -97,14 +99,12 @@ hp-makeuri &lt;printer.IP.address.from.step.2&gt;
 </ol>
 <div align="center" class="align-center"><img src="../../../images/cups_opening.png" alt="CUPS"/></div><ol class="arabic simple" start="8">
 <li>Enter the root username and password. (when prompted)</li>
+<li>Enter a name for your HP printer in the Name box.</li>
 </ol>
-<p>9.. Enter a name for your HP printer in the Name box.</p>
 <p><em>Note: The name you enter must not contain spaces.</em></p>
 <ol class="arabic simple" start="10">
 <li>(Optional) Enter a description of the location of the printer in the Location box. (Example: 3rd Floor Office)</li>
-</ol>
-<p>11.. (Optional) Enter a description of the printer in the Description box. (Example: HPLJ3380)</p>
-<ol class="arabic simple" start="12">
+<li>(Optional) Enter a description of the printer in the Description box. (Example: HPLJ3380)</li>
 <li>Click Continue.</li>
 <li>From the Device drop-down list, click Appsocket/JetDirect, and then click Continue.</li>
 </ol>
@@ -117,7 +117,7 @@ hp-makeuri &lt;printer.IP.address.from.step.2&gt;
 <div align="center" class="align-center"><img src="../../../images/cups_model_list.png" alt="CUPS"/></div><ol class="arabic simple" start="16">
 <li>In the Model list, click the printer model that most closely matches your printer, and then click Continue.</li>
 </ol>
-<div align="center" class="align-center"><img src="../../../images/cups_printer_model.png" alt="CUPS"/></div><p><em>Note: To configure your printer for using Fax, follow these steps, otherwise go to Step 28.</em></p>
+<div align="center" class="align-center"><img src="../../../images/cups_printer_model.png" alt="CUPS"/></div><p><em>Note</em>: To configure your printer for using Fax, follow these steps, otherwise go to Step 28.</p>
 <ol class="arabic simple" start="17">
 <li>Once the printer is added using the above steps, go back to step 6.</li>
 <li>At step 9, enter a name for your Fax device.  Example: &quot;photosmart_3310_fax&quot;</li>
@@ -131,7 +131,7 @@ hp-makeuri &lt;printer.IP.address.from.step.2&gt;
 <pre class="literal-block">
 hp-toolbox
 </pre>
-<p><em>Note: If setting up fax continue else go to step 30.</em></p>
+<p><em>Note</em> If setting up fax continue else go to step 30.</p>
 <ol class="arabic simple" start="24">
 <li>Select your printer.</li>
 <li>Click the &quot;Tools &amp; Settings&quot; tab.</li>
@@ -143,12 +143,11 @@ hp-toolbox
 <div align="center" class="align-center"><img src="../../../images/hplip_device_manager.png" alt="HPLIP"/></div><ol class="arabic simple" start="30">
 <li>Click the Tools &amp; Settings tab, and then click Print Test Page.</li>
 </ol>
-<p>Having trouble? Check the Installation/Troubleshooting Help section for assistance!</p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Tue Jun 27 15:01:19 2006</small>
+        <small>Last update: Wed Jun 28 15:56:40 2006</small>
 
         <!-- FOOTER -->
     </table>

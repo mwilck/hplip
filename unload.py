@@ -596,6 +596,9 @@ class Console(cmd.Cmd):
     def do_info(self, args):
         """Synonym for the exif command."""
         self.do_exif(args)
+        
+    def do_about(self, args):
+        utils.log_title(__title__, __version__)
 
 
 def status_callback(src, trg, size):
@@ -620,6 +623,7 @@ device_uri = None
 bus = device.DEFAULT_PROBE_BUS
 log_level = logger.DEFAULT_LOG_LEVEL
 mode = GUI_MODE
+mode_specified = False
 output_dir = os.getcwd()
 
 if os.getenv("HPLIP_DEBUG"):
@@ -655,13 +659,28 @@ for o, a in opts:
         log.set_level('debug')
         
     elif o in ('-i', '--interactive'):
+        if mode_specified:
+            log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
+            sys.exit(1)
+
         mode = INTERACTIVE_MODE
+        mode_specified = True
         
     elif o in ('-u', '--gui'):
+        if mode_specified:
+            log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
+            sys.exit(1)
+        
         mode = GUI_MODE
+        mode_specified = True
         
     elif o in ('-n', '--non-interactive'):
+        if mode_specified:
+            log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
+            sys.exit(1)
+        
         mode = NON_INTERACTIVE_MODE
+        mode_specified = True
         
     elif o in ('-o', '--output'):
         output_dir = a

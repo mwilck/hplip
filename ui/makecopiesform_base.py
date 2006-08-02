@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/makecopiesform_base.ui'
+# Form implementation generated from reading ui file 'makecopiesform_base.ui'
 #
-# Created: Thu Jun 15 10:57:54 2006
+# Created: Wed Jun 28 09:12:14 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -109,6 +109,7 @@ class MakeCopiesForm_base(QDialog):
         self.contrastSlider = QSlider(self.groupBox2,"contrastSlider")
         self.contrastSlider.setMinValue(-5)
         self.contrastSlider.setMaxValue(5)
+        self.contrastSlider.setPageStep(1)
         self.contrastSlider.setOrientation(QSlider.Horizontal)
 
         groupBox2Layout.addMultiCellWidget(self.contrastSlider,1,1,0,2)
@@ -243,6 +244,7 @@ class MakeCopiesForm_base(QDialog):
         self.connect(self.reductionSlider,SIGNAL("valueChanged(int)"),self.reductionSlider_valueChanged)
         self.connect(self.contrastSlider,SIGNAL("valueChanged(int)"),self.contrastSlider_valueChanged)
         self.connect(self.fitToPageCheckBox,SIGNAL("clicked()"),self.fitToPageCheckBox_clicked)
+        self.connect(self.numberCopiesSpinBox,SIGNAL("valueChanged(int)"),self.numberCopiesSpinBox_valueChanged)
 
 
     def languageChange(self):
@@ -293,6 +295,9 @@ class MakeCopiesForm_base(QDialog):
 
     def fitToPageCheckBox_clicked(self):
         print "MakeCopiesForm_base.fitToPageCheckBox_clicked(): Not implemented yet"
+
+    def numberCopiesSpinBox_valueChanged(self,a0):
+        print "MakeCopiesForm_base.numberCopiesSpinBox_valueChanged(int): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("MakeCopiesForm_base",s,c)

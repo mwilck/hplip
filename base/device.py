@@ -754,7 +754,8 @@ class Device(object):
     def __openChannel(self, service_name):
         self.open()
 
-        if not self.mq['io-mode'] == IO_MODE_UNI:
+        #if not self.mq['io-mode'] == IO_MODE_UNI:
+        if 1:
             service_name = service_name.upper()
 
             if service_name not in self.channels:

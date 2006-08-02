@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.4'
+__version__ = '2.5'
 __title__ = 'CUPS Fax Backend (hpfax:)'
 __doc__ = "CUPS backend for PC send fax. Generally this backend is run by CUPS, not directly by a user. To send a fax as a user, run hp-sendfax."
 
@@ -134,7 +134,7 @@ if len( args ) == 0:
     sock.close()
 
     if not fields.get('num-devices', 0) or result_code > ERROR_SUCCESS:
-        print 'direct hpfax:/no_device_found "HPLIP Fax" "no_device_found" ""' 
+        print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
         sys.exit(0)
 
     direct_pat = re.compile(r'(.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
@@ -158,11 +158,11 @@ if len( args ) == 0:
         except Error:
             continue
         
-        print 'direct %s "HPLIP Fax" "%s Fax" "MFG:HP;MDL:HP Fax;DES:HP Fax;"' % (uri, desc)
+        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % (uri, desc)
         good_devices += 1
         
     if not good_devices:
-        print 'direct hpfax:/no_device_found "HPLIP Fax" "no_device_found" ""' 
+        print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
 
     sys.exit(0)
 

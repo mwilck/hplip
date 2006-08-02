@@ -321,6 +321,9 @@
                                 <property name="maxValue">
                                     <number>5</number>
                                 </property>
+                                <property name="pageStep">
+                                    <number>1</number>
+                                </property>
                                 <property name="orientation">
                                     <enum>Horizontal</enum>
                                 </property>
@@ -726,6 +729,12 @@
         <receiver>MakeCopiesForm_base</receiver>
         <slot>fitToPageCheckBox_clicked()</slot>
     </connection>
+    <connection>
+        <sender>numberCopiesSpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>MakeCopiesForm_base</receiver>
+        <slot>numberCopiesSpinBox_valueChanged(int)</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in implementation">makecopiesform_base.ui.h</include>
@@ -736,6 +745,7 @@
     <slot>reductionSlider_valueChanged( int )</slot>
     <slot>contrastSlider_valueChanged( int )</slot>
     <slot>fitToPageCheckBox_clicked()</slot>
+    <slot>numberCopiesSpinBox_valueChanged( int )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

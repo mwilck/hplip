@@ -33,7 +33,7 @@ from base import device, utils, status, pml, msg
 # Event queue values (UI ==> Copy thread)
 COPY_CANCELED = 1
 
-# Update queue values (Send thread ==> UI)
+# Update queue values (Copy thread ==> UI)
 STATUS_IDLE = 0
 STATUS_SETTING_UP = 1
 STATUS_WARMING_UP = 2
@@ -109,7 +109,7 @@ class PMLCopyThread(threading.Thread):
         
         state = STATE_SET_TOKEN
         
-        while state != STATE_DONE: # ------------------------- Copier Send Thread
+        while state != STATE_DONE: # ------------------------- Copier Thread
             if self.check_for_cancel():
                 state = STATE_ABORTED
             

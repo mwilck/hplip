@@ -208,7 +208,7 @@ if not device_uri:
     except Error:
         log.error("Error occured during interactive mode. Exiting.")
         sys.exit(1)
-
+        
 # ******************************* QUERY MODEL AND COLLECT PPDS
 
 log.info(utils.bold("\nSetting up device: %s\n" % device_uri))
@@ -243,13 +243,13 @@ if not mq.get('fax-type', 0) and setup_fax:
     setup_fax = False
     
 log.debug("Searching for PPDs in: %s" % sys_cfg.dirs.ppd)
-ppds = []    
+ppds = []
 
-for f in utils.walkFiles(sys_cfg.dirs.ppd, pattern="HP*ppd*", abs_paths=True):
+for f in utils.walkFiles(sys_cfg.dirs.ppd, pattern="HP*ppd*;hp*ppd*", abs_paths=True):
     ppds.append(f)
-
+    
 default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
-stripped_model = default_model.replace('HP-', '').replace('HP_', '').lower()
+stripped_model = default_model.lower().replace('hp-', '').replace('hp_', '')
 
 # ******************************* PRINT QUEUE SETUP
 
@@ -336,8 +336,8 @@ if setup_print:
     min_edit_distance = sys.maxint
     
     for f in ppds:
-        t = os.path.basename(f).replace('HP-', '').replace('-hpijs', '').\
-            replace('.gz', '').replace('.ppd', '').replace('HP_', '').lower()
+        t = os.path.basename(f).lower().replace('hp-', '').replace('-hpijs', '').\
+            replace('.gz', '').replace('.ppd', '').replace('hp_', '').replace('_series', '').lower()
             
         
         eds[f] = utils.levenshtein_distance(stripped_model, t)
@@ -616,87 +616,6 @@ if setup_print:
         service.sendEvent(hpssd_sock, EVENT_CUPS_QUEUES_CHANGED, device_uri=print_uri)
         
     
-# ******************************* TEST PAGE    
-    
-    print_test_page = False
-    
-    if auto:
-        if testpage_in_auto_mode:
-            print_test_page = True
-    else:
-        while True:
-            user_input = raw_input(utils.bold("\nWould you like to print a test page (y=yes*, n=no, q=quit) ?"))
-            user_input = user_input.strip().lower()
-            
-            if not user_input:
-                user_input = 'y'
-            
-            if user_input == 'q':
-                log.info("OK, done.")
-                sys.exit(0)
-            
-            print_test_page = (user_input == 'y')
-            
-            if user_input in ('y', 'n', 'q'):
-                break
-            
-            log.error("Please enter 'y' or 'n'")
-            
-    if print_test_page:
-        if not auto:
-            user_input = raw_input(utils.bold("\nLoad plain paper into printer and press 'enter' ?"))
-    
-        d = device.Device(print_uri)
-        
-        try:
-            try:
-                d.open()
-            except Error:
-                log.error("Unable to print to printer. Please check device and try again.")
-            else:
-                if d.isIdleAndNoError():
-                    #d.close()
-                    log.info( "Printing test page..." )
-                    d.printTestPage()
-                
-                    log.info("Test page has been sent to printer. Waiting for printout to complete...")
-                    
-                    time.sleep(5)
-                    i = 0
-
-                    while True:
-                        time.sleep(5)
-                        
-                        try:
-                            d.queryDevice(quick=True)
-                        except Error, e:
-                            log.error("An error has occured.")
-                        
-                        if d.error_state == ERROR_STATE_CLEAR:
-                            break
-                        
-                        elif d.error_state == ERROR_STATE_ERROR:
-                            log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
-                            break
-                            
-                        elif d.error_state == ERROR_STATE_WARNING:
-                            log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
-                        
-                        else: # ERROR_STATE_BUSY
-                            update_spinner()
-                            
-                        i += 1
-                        
-                        if i > 24:  # 2min
-                            break
-
-                
-                else:
-                    log.error("Unable to print to printer. Please check device and try again.")
-                
-        finally:
-            d.close()
-    
     
 # ******************************* FAX QUEUE SETUP
 
@@ -957,6 +876,91 @@ if setup_fax:
             
             finally:
                 d.close()
+                
+    
+# ******************************* TEST PAGE
+    
+if setup_print:
+    print_test_page = False
+    
+    if auto:
+        if testpage_in_auto_mode:
+            print_test_page = True
+    else:
+        while True:
+            user_input = raw_input(utils.bold("\nWould you like to print a test page (y=yes*, n=no, q=quit) ?"))
+            user_input = user_input.strip().lower()
+            
+            if not user_input:
+                user_input = 'y'
+            
+            if user_input == 'q':
+                log.info("OK, done.")
+                sys.exit(0)
+            
+            print_test_page = (user_input == 'y')
+            
+            if user_input in ('y', 'n', 'q'):
+                break
+            
+            log.error("Please enter 'y' or 'n'")
+            
+    if print_test_page:
+        if not auto:
+            user_input = raw_input(utils.bold("\nLoad plain paper into printer and press 'enter' ?"))
+    
+        d = device.Device(print_uri)
+        
+        try:
+            try:
+                d.open()
+            except Error:
+                log.error("Unable to print to printer. Please check device and try again.")
+            else:
+                if d.isIdleAndNoError():
+                    #d.close()
+                    log.info( "Printing test page..." )
+                    d.printTestPage()
+                
+                    log.info("Test page has been sent to printer. Waiting for printout to complete...")
+                    
+                    time.sleep(5)
+                    i = 0
+
+                    while True:
+                        time.sleep(5)
+                        
+                        try:
+                            d.queryDevice(quick=True)
+                        except Error, e:
+                            log.error("An error has occured.")
+                        
+                        if d.error_state == ERROR_STATE_CLEAR:
+                            break
+                        
+                        elif d.error_state == ERROR_STATE_ERROR:
+                            log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
+                            break
+                            
+                        elif d.error_state == ERROR_STATE_WARNING:
+                            log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
+                        
+                        else: # ERROR_STATE_BUSY
+                            update_spinner()
+                            
+                        i += 1
+                        
+                        if i > 24:  # 2min
+                            break
+                
+                else:
+                    log.error("Unable to print to printer. Please check device and try again.")
+                
+        finally:
+            d.close()
+    
+    
+    
     
 log.info("\nDone.")
 sys.exit(0)

@@ -75,6 +75,41 @@
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.6.7 - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Changed from dynamic IP ports to static IANA IP ports for hpiod (2208) and hpssd (2207).</li>
+<li>Changed the &quot;start&quot; return value in hplip startup script.</li>
+<li>Fixed defect (The valid letter and number for gray plot could not be entered while executing hp-colorcal in terminal.)</li>
+<li>Fixed defect (The fax job could not be sent in non-interactive mode.)</li>
+<li>Completed enhancement (Move test page to last function with hp-setup.)</li>
+<li>Fixed defect ([OfficeJet 9100] hp-setup not selecting correct ppd file). Also fixed defect that will make more devices match their PPDs.</li>
+<li>Fixed defect ([HP-CHECK] traceback on QT check.)</li>
+<li>Removed Uni-di check code from device.Device.__openChannel().</li>
+<li>Added the combined device list to the website.</li>
+<li>Added --prefix to &quot;$(PYTHON) setup.py install --prefix=$(prefix)&quot; command in Makefile.am.</li>
+<li>Fixed a problem that caused the fax wrong configuration error to appear in error.</li>
+<li>Adjusted HPIJS Makefile.am to use new BZR system at linuxprinting.org based on Till's instructions.</li>
+<li>Adjusted makefile targets for PPDs in dist.py, build.py, and nightly.py.</li>
+<li>Fixed defect (The dependencies &quot;libnetsnmp&quot;, &quot;libjpeg&quot;, &quot;libusb&quot;, &quot;libcrypto&quot; and &quot;libpthread&quot; could not be checked while execting hp-check on Fedora Core 5.)</li>
+<li>Fixed defect (The interactive and GUI mode for hp-fab can be entered while executing hp-fab with parameter i and u.)</li>
+<li>Fixed defect ((DeskJet 5540) traceback during align click from toolbox.)</li>
+<li>Added non-interactive mode (-n) to hp-sendfax.</li>
+<li>Added interactive mode (-i) to hp-fab.</li>
+<li>Fixed defect (The reduction was set to 25% automatically while setting the Reduction/enlargement override 25-400%.)</li>
+<li>Added some additional error checking in hp-makecopies.</li>
+<li>Fixed defect (Only one copy could be done while setting the Number of Copies more than 1.)</li>
+<li>Fixed the contrast slider in makecopies UI.</li>
+<li>Removed some extraneous debugging output in hp-makecopies.</li>
+<li>Fixed defect (CUPS 1.2 does not auto-associate the PPD file to the fax URI) reported by Till.</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.6.7 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Added support for the following new printer(s).</li>
+</ol>
+<pre class="literal-block">
+Photosmart D6100 series (DJGenericVIP)
+Photosmart D7100 series (DJGenericVIP)
+</pre>
 <p><strong>HPLIP 1.6.6a - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>Added a check to hp-sendfax, hp-makecopies and hp-unload to disallow GUI mode if X is not available.</li>
@@ -1173,7 +1208,7 @@ The old interface used the following Ghostscript commands.</p>
 
 
         <hr size="1"/>
-        <small>Last update: Tue Jun 27 15:00:41 2006</small>
+        <small>Last update: Mon Jul 24 13:44:04 2006</small>
 
         <!-- FOOTER -->
     </table>

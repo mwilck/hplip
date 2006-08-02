@@ -77,15 +77,15 @@
 <ol class="arabic simple">
 <li>Connect your HP printer to your computer using USB or Parallel.</li>
 </ol>
-<p><em>Note: See your printer documentation for specific instructions on connecting the USB, Parallel or Network cable to your printer and computer.</em></p>
+<p><em>Note</em>: See your printer documentation for specific instructions on connecting the USB, Parallel or Network cable to your printer and computer.</p>
 <ol class="arabic simple" start="2">
 <li>Open a console/terminal window.</li>
-<li>Enter this command to login as super user; (Ubuntu users skip this step)</li>
+<li>Enter this command to login as super user; (Ubuntu users go to step 5)</li>
 </ol>
+<p><em>Warning</em>: The root password gives you administrative privileges on the system.</p>
 <pre class="literal-block">
 su
 </pre>
-<p><em>Warning: The root password gives you administrative privileges on the system.</em></p>
 <ol class="arabic simple" start="4">
 <li>Enter this command to restart the Common UNIX Printing system (CUPS)</li>
 </ol>
@@ -104,8 +104,10 @@ sudo /etc/init.d/cups restart
 </pre>
 <ol class="arabic simple" start="6">
 <li>Open a web browser, and then enter the following address in the address box:  <a class="reference" href="http://localhost:631">http://localhost:631</a></li>
-<li>Click Printers -&gt; Add Printer</li>
 </ol>
+<pre class="literal-block">
+Click Printers -&gt; Add Printer
+</pre>
 <div align="center" class="align-left"><img src="../../../images/cups_opening.png" alt="CUPS"/></div><ol class="arabic simple" start="8">
 <li>Enter the root username and password. (when prompted)</li>
 <li>Enter a name for your HP printer in the Name box.</li>
@@ -117,18 +119,21 @@ sudo /etc/init.d/cups restart
 <li>Click Continue.</li>
 <li>From the Device drop-down list select the printer to be installed.</li>
 </ol>
-<p><em>Note: You MUST make a selection from the drop down that appears such as &quot;hp:/usb/hp_deskjet_5600?serial=MY31R1K02179&quot;.</em></p>
+<p><em>Note</em>: You <em>MUST</em> make a selection from the drop down that appears such as &quot;hp:/usb/hp_deskjet_5600?serial=MY31R1K02179&quot;.</p>
 <pre class="literal-block">
 hp:/usb/[printer name, serial number]
 </pre>
 <div align="center" class="align-left"><img src="../../../images/cups_device_list.png" alt="CUPS"/></div><ol class="arabic simple" start="14">
 <li>Click Continue.</li>
-<li>In the Make list, click HP -&gt; Continue.</li>
+<li>In the Make list;</li>
 </ol>
+<pre class="literal-block">
+Click HP -&gt; Continue.
+</pre>
 <div align="center" class="align-left"><img src="../../../images/cups_model_list.png" alt="CUPS"/></div><ol class="arabic simple" start="16">
 <li>In the Model list, click the printer model that most closely matches your printer, and then click Continue.</li>
 </ol>
-<div align="center" class="align-left"><img src="../../../images/cups_printer_model.png" alt="CUPS"/></div><p><em>Note: To configure your printer for using Fax, follow these steps, otherwise goto Step 27.</em></p>
+<div align="center" class="align-left"><img src="../../../images/cups_printer_model.png" alt="CUPS"/></div><p><em>Note</em>: To configure your printer for using Fax, follow these steps, otherwise goto Step 27.</p>
 <ol class="arabic simple" start="17">
 <li>Once the printer is added using the above steps, go back to step 7.</li>
 <li>At step 9, enter a name for your Fax device.  Example: &quot;photosmart_3310_fax&quot;</li>
@@ -138,16 +143,16 @@ hp:/usb/[printer name, serial number]
 Example: &quot;hpfax:/usb/psc_2500_series?serial=XXXXXXXXX (HP psc_2500_series)
 </pre>
 <ol class="arabic simple" start="20">
-<li>At step 15, select HP</li>
+<li>At step 15, select HP.</li>
 <li>At step 16, scroll to the very bottom and select &quot;HPLIP Fax (en)&quot;</li>
 <li>Complete the setup process.</li>
 <li>Open the hp-toolbox. (Open a terminal/console window and enter)</li>
 </ol>
-<p><em>Note: You can also open the HP Device Manager by using the GNOME or KDE menu system.</em></p>
+<p><em>Note</em>: You can also open the HP Device Manager by using the GNOME or KDE menu system.</p>
 <pre class="literal-block">
 hp-toolbox
 </pre>
-<p><em>Note: If setting up fax continue else go to step 30.</em></p>
+<p><em>Note</em>: If setting up fax continue else go to step 30.</p>
 <ol class="arabic simple" start="24">
 <li>Select your printer.</li>
 <li>Click the &quot;Tools &amp; Settings&quot; tab.</li>
@@ -159,12 +164,11 @@ hp-toolbox
 <div align="center" class="align-left"><img src="../../../images/hplip_device_manager.png" alt="HPLIP"/></div><ol class="arabic simple" start="30">
 <li>Click the Tools &amp; Settings tab, and then click Print Test Page.</li>
 </ol>
-<p>Having trouble? Check the Installation/Troubleshooting Help section for assistance!</p>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Tue Jun 27 15:01:19 2006</small>
+        <small>Last update: Wed Jun 28 15:56:40 2006</small>
 
         <!-- FOOTER -->
     </table>

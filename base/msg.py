@@ -207,3 +207,66 @@ def xmitMessage(sock, msg_type, payload=None,
             
     return fields, data, result_code
 
+
+    
+           
+def recvMessage(sock, timeout=prop.read_timeout):
+    fields, data, result_code = {}, '', ERROR_INTERNAL
+    
+    read_tries = 0
+    read_flag = True
+    
+    while read_flag:
+        remaining = ''
+        read_tries += 1
+        
+        if read_tries > 3:
+            break
+        
+        r, w, e = select.select([sock], [], [], timeout)
+    
+        if r == []:
+            raise Error(ERROR_INTERNAL)
+    
+        m = sock.recv(prop.max_message_read)
+        
+        if m == '':
+            continue
+
+        log.debug("(xmit) Reading data on channel (%d)" % sock.fileno())
+                
+        while True:
+            log.debug(repr(m))
+            fields, data, remaining = parseMessage(m)
+            
+            try:
+                result_code = fields['result-code']
+            except KeyError:
+                result_code = ERROR_INTERNAL
+            else:
+                del fields['result-code']
+            
+            try:
+                result_msg_type = fields['msg'].lower().strip()
+            except KeyError:
+                result_msg_type = ''
+            else:
+                del fields['msg']
+                
+            # Found the msg we were looking for or error
+            #if result_msg_type == ''.join([msg_type, 'result']) or \
+            if result_msg_type == 'messageerror': 
+                read_flag = False # exit read loop
+                break
+            else:
+                log.debug("Ignored out of sequence message")
+                
+            if remaining: # more messages to look at in this read
+                log.debug("Remaining message")
+                m = remaining # parse remainder
+            else:
+                # keep reading until we find the result msg...
+                break    
+    
+    return fields, data, result_code
+    

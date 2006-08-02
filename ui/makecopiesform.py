@@ -220,7 +220,7 @@ class MakeCopiesForm(MakeCopiesForm_base):
             result_code, self.max_reduction = self.dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
             result_code, self.max_enlargement = self.dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
             
-            print self.num_copies, self.contrast, self.reduction, self.quality, self.fit_to_page, self.max_reduction, self.max_enlargement
+            #print self.num_copies, self.contrast, self.reduction, self.quality, self.fit_to_page, self.max_reduction, self.max_enlargement
             
             # contrast
             self.contrastTextLabel.setText("%d" % (self.contrast/25))
@@ -602,6 +602,8 @@ class MakeCopiesForm(MakeCopiesForm_base):
             self.reductionTextLabel.setText("%d%%" % self.reduction)
             self.reductionSlider.setEnabled(True)
 
+    def numberCopiesSpinBox_valueChanged(self,a0):
+        self.num_copies = a0
 
 
     def __tr(self,s,c = None):

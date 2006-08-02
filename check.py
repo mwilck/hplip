@@ -149,6 +149,7 @@ except ImportError:
 else:
     log.info("--> OK")
 
+pyqt = False
 # PyQt
 log.info("Checking for PyQt...")
 try:
@@ -157,63 +158,65 @@ except ImportError:
     log.error("PyQt not installed.")
 else:
     log.info("--> OK")
+    pyqt = True
 
-# check version of Qt
-log.info("Checking Qt version...")
-
-qtMajor = int(qVersion().split('.')[0])
-log.debug("qVersion() = %s" % qVersion())
-log.info("--> Version %s installed." % qVersion())
-
-if qtMajor < MINIMUM_QT_MAJOR_VER: 
-    log.error("Incorrect version of Qt installed. Ver. 3.0 or greater required.")
-else:
-    log.info("--> OK")
-
-log.info("Checking SIP version...")
-
-try:
-    import pyqtconfig
-except ImportError:
-    log.error("Unable to import pyqtconfig. PyQt may not be properly installed.")
-else:
-    c = pyqtconfig.Configuration()
-    log.info("--> Version %s installed" % c.sip_version_str)
-    log.info("--> OK")
-
-log.info("Checking PyQt version...")
-
-#check version of PyQt
-try:
-    pyqtVersion = PYQT_VERSION_STR
-    log.debug("PYQT_VERSION_STR = %s" % pyqtVersion)
-except:
-    pyqtVersion = PYQT_VERSION
-    log.debug("PYQT_VERSION = %s" % pyqtVersion)
-
-while pyqtVersion.count('.') < 2:
-    pyqtVersion += '.0'
-
-(maj_ver, min_ver, pat_ver) = pyqtVersion.split('.')
-
-if pyqtVersion.find('snapshot') >= 0:
-    log.warning("A non-stable snapshot version of PyQt is installed.")
-else:    
-    try:
-        maj_ver = int(maj_ver)
-        min_ver = int(min_ver)
-        pat_ver = int(pat_ver)
-    except ValueError:
-        maj_ver, min_ver, pat_ver = 0, 0, 0
-    else:
-        log.info("--> Version %d.%d.%d installed." % (maj_ver, min_ver, pat_ver))
-        
-    if maj_ver < MINIMUM_PYQT_MAJOR_VER or \
-        (maj_ver == MINIMUM_PYQT_MAJOR_VER and min_ver < MINIMUM_PYQT_MINOR_VER):
-        log.error("HPLIP may not function properly with the version of PyQt that is installed (%d.%d.%d)." % (maj_ver, min_ver, pat_ver))
-        log.error("Incorrect version of PyQt installed. Ver. %d.%d or greater required." % (MINIMUM_PYQT_MAJOR_VER, MINIMUM_PYQT_MINOR_VER))
+if pyqt:
+    # check version of Qt
+    log.info("Checking Qt version...")
+    
+    qtMajor = int(qVersion().split('.')[0])
+    log.debug("qVersion() = %s" % qVersion())
+    log.info("--> Version %s installed." % qVersion())
+    
+    if qtMajor < MINIMUM_QT_MAJOR_VER: 
+        log.error("Incorrect version of Qt installed. Ver. 3.0 or greater required.")
     else:
         log.info("--> OK")
+    
+    log.info("Checking SIP version...")
+    
+    try:
+        import pyqtconfig
+    except ImportError:
+        log.error("Unable to import pyqtconfig. PyQt may not be properly installed.")
+    else:
+        c = pyqtconfig.Configuration()
+        log.info("--> Version %s installed" % c.sip_version_str)
+        log.info("--> OK")
+    
+    log.info("Checking PyQt version...")
+    
+    #check version of PyQt
+    try:
+        pyqtVersion = PYQT_VERSION_STR
+        log.debug("PYQT_VERSION_STR = %s" % pyqtVersion)
+    except:
+        pyqtVersion = PYQT_VERSION
+        log.debug("PYQT_VERSION = %s" % pyqtVersion)
+    
+    while pyqtVersion.count('.') < 2:
+        pyqtVersion += '.0'
+    
+    (maj_ver, min_ver, pat_ver) = pyqtVersion.split('.')
+    
+    if pyqtVersion.find('snapshot') >= 0:
+        log.warning("A non-stable snapshot version of PyQt is installed.")
+    else:    
+        try:
+            maj_ver = int(maj_ver)
+            min_ver = int(min_ver)
+            pat_ver = int(pat_ver)
+        except ValueError:
+            maj_ver, min_ver, pat_ver = 0, 0, 0
+        else:
+            log.info("--> Version %d.%d.%d installed." % (maj_ver, min_ver, pat_ver))
+            
+        if maj_ver < MINIMUM_PYQT_MAJOR_VER or \
+            (maj_ver == MINIMUM_PYQT_MAJOR_VER and min_ver < MINIMUM_PYQT_MINOR_VER):
+            log.error("HPLIP may not function properly with the version of PyQt that is installed (%d.%d.%d)." % (maj_ver, min_ver, pat_ver))
+            log.error("Incorrect version of PyQt installed. Ver. %d.%d or greater required." % (MINIMUM_PYQT_MAJOR_VER, MINIMUM_PYQT_MINOR_VER))
+        else:
+            log.info("--> OK")
 
 log.info(utils.bold("\nChecking for library dependencies..."))
 ldconfig = utils.which('ldconfig')
@@ -244,21 +247,21 @@ else:
     log.info("--> %s" % output.splitlines()[0])
     log.info("--> OK")
 
-log.info("Checking automake...")
-status, output = run('automake --version')
-if status != 0:
-    log.error("Not found!")
-else:
-    log.info("--> %s" % output.splitlines()[0])
-    log.info("--> OK")
-    
-log.info("Checking autoconf...")
-status, output = run('autoconf --version')
-if status != 0:
-    log.error("Not found!")
-else:
-    log.info("--> %s" % output.splitlines()[0])
-    log.info("--> OK")
+##log.info("Checking automake...")
+##status, output = run('automake --version')
+##if status != 0:
+##    log.error("Not found!")
+##else:
+##    log.info("--> %s" % output.splitlines()[0])
+##    log.info("--> OK")
+##    
+##log.info("Checking autoconf...")
+##status, output = run('autoconf --version')
+##if status != 0:
+##    log.error("Not found!")
+##else:
+##    log.info("--> %s" % output.splitlines()[0])
+##    log.info("--> OK")
 
 log.info("Checking make...")
 status, output = run('make --version')

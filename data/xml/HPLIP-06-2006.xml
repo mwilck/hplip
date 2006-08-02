@@ -281,7 +281,7 @@ using model_editor version 7.0.
     <icon>Deskjet_5400_series.png</icon>
     <support type="2"/>
     <case-model>
-        <model1>Photosmart 3100 series</model1>
+        <model1>Photosmart C3100 series</model1>
     </case-model>
     <io support="2" mode="1" control="0" mfp-mode="3" scan-port="0"/>
     <align type="1"/>
@@ -335,7 +335,7 @@ using model_editor version 7.0.
     <icon>Deskjet_5400_series.png</icon>
     <support type="2"/>
     <case-model>
-        <model1>Photosmart 4100 series</model1>
+        <model1>Photosmart C4100 series</model1>
     </case-model>
     <io support="2" mode="1" control="0" mfp-mode="3" scan-port="0"/>
     <align type="1"/>

@@ -624,7 +624,8 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *End
 *CloseUI: *InputSlot
 
-*%The following are here for the Mac OS X Manual Duplex plugin*HPManualDuplexSupport: True
+*%The following are here for the Mac OS X Manual Duplex plugin
+*HPManualDuplexSupport: True
 
 *% ================================================
 *% Manual Duplex

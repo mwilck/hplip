@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'HP-Deskjet_F300-hpijs.ppd'
+*% You may save this file as 'HP-DeskJet_F300-hpijs.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -35,9 +35,9 @@
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "HP Deskjet F300"
-*ShortNickName: "HP Deskjet F300 hpijs"
-*NickName:      "HP Deskjet F300 Foomatic/hpijs (recommended)"
+*ModelName:     "HP DeskJet F300"
+*ShortNickName: "HP DeskJet F300 hpijs"
+*NickName:      "HP DeskJet F300 Foomatic/hpijs (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -74,7 +74,7 @@ EVICEHEIGHTPOINTS=0"
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: HP-Deskjet_F300 hpijs
+*FoomaticIDs: HP-DeskJet_F300 hpijs
 *FoomaticRIPCommandLine: "gs -q -dBATCH -dPARANOIDSAFER -dQUIET -dNOPA&&
 USE -sDEVICE=ijs -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
 le=- -"

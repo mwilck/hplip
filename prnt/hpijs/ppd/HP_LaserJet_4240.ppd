@@ -633,7 +633,84 @@ save
 
 *% Don't allow Manual Duplex on Stapler
 
-*%Staple Options Constraints*%=============================================================*UIConstraints: *HPOption_MBM_Mixed Standard *HPStaplerOptions 1Angled*UIConstraints: *HPOption_MBM_Mixed Standard *HPStaplerOptions 1Angled*UIConstraints: *HPOption_MBM_Mixed MBMStacker *HPStaplerOptions 1Angled*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed Standard*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed Standard*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed MBMStacker*UIConstraints: *HPStaplerOptions 1Angled *PageSize Executive*UIConstraints: *HPStaplerOptions 1Angled *PageRegion Executive*UIConstraints: *HPStaplerOptions 1Angled *PageSize A5*UIConstraints: *HPStaplerOptions 1Angled *PageRegion A5*UIConstraints: *HPStaplerOptions 1Angled *PageSize B5*UIConstraints: *HPStaplerOptions 1Angled *PageRegion B5*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h935*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h935*UIConstraints: *HPStaplerOptions 1Angled *PageSize DoublePostcard*UIConstraints: *HPStaplerOptions 1Angled *PageRegion DoublePostcard*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h935*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h935*UIConstraints: *HPStaplerOptions 1Angled *PageSize w558h774*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w558h774*UIConstraints: *HPStaplerOptions 1Angled *PageSize Env10*UIConstraints: *HPStaplerOptions 1Angled *PageRegion Env10*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvMonarch*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvMonarch*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvDL*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvDL*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvC5*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvC5*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvISOB5*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvISOB5*UIConstraints: *HPStaplerOptions 1Angled *PageSize HalfLetter*UIConstraints: *HPStaplerOptions 1Angled *PageRegion HalfLetter*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h936*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h936*UIConstraints: *HPStaplerOptions 1Angled *MediaType Envelope*UIConstraints: *HPStaplerOptions 1Angled *MediaType Transparency*UIConstraints: *HPStaplerOptions 1Angled *MediaType Labels*UIConstraints: *HPStaplerOptions 1Angled *MediaType Card_Stock*UIConstraints: *PageSize Executive *HPStaplerOptions 1Angled*UIConstraints: *PageRegion Executive *HPStaplerOptions 1Angled*UIConstraints: *PageSize A5 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion A5 *HPStaplerOptions 1Angled*UIConstraints: *PageSize B5 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion B5 *HPStaplerOptions 1Angled*UIConstraints: *PageSize w612h935 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion w612h935 *HPStaplerOptions 1Angled*UIConstraints: *PageSize DoublePostcard *HPStaplerOptions 1Angled*UIConstraints: *PageRegion DoublePostcard *HPStaplerOptions 1Angled*UIConstraints: *PageSize w558h774 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion w558h774 *HPStaplerOptions 1Angled*UIConstraints: *PageSize w612h935 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion w612h935 *HPStaplerOptions 1Angled*UIConstraints: *PageSize Env10 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion Env10 *HPStaplerOptions 1Angled*UIConstraints: *PageSize EnvMonarch *HPStaplerOptions 1Angled*UIConstraints: *PageRegion EnvMonarch *HPStaplerOptions 1Angled*UIConstraints: *PageSize EnvDL *HPStaplerOptions 1Angled*UIConstraints: *PageRegion EnvDL *HPStaplerOptions 1Angled*UIConstraints: *PageSize EnvC5 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion EnvC5 *HPStaplerOptions 1Angled*UIConstraints: *PageSize EnvISOB5 *HPStaplerOptions 1Angled*UIConstraints: *PageRegion EnvISOB5 *HPStaplerOptions 1Angled*UIConstraints: *PageSize HalfLetter *HPStaplerOptions 1Angled *UIConstraints: *PageRegion HalfLetter *HPStaplerOptions 1Angled *UIConstraints: *PageSize w612h936 *HPStaplerOptions 1Angled *UIConstraints: *PageRegion w612h936 *HPStaplerOptions 1Angled *UIConstraints: *MediaType Envelope *HPStaplerOptions 1Angled*UIConstraints: *MediaType Transparency *HPStaplerOptions 1Angled *UIConstraints: *MediaType Labels *HPStaplerOptions 1Angled *UIConstraints: *MediaType Card_Stock *HPStaplerOptions 1Angled *%=============================================================
+*%Staple Options Constraints
+*%=============================================================
+*UIConstraints: *HPOption_MBM_Mixed Standard *HPStaplerOptions 1Angled
+*UIConstraints: *HPOption_MBM_Mixed Standard *HPStaplerOptions 1Angled
+*UIConstraints: *HPOption_MBM_Mixed MBMStacker *HPStaplerOptions 1Angled
+*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed Standard
+*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed Standard
+*UIConstraints: *HPStaplerOptions 1Angled *HPOption_MBM_Mixed MBMStacker
+
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize Executive
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion Executive
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize A5
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion A5
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize B5
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion B5
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h935
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h935
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize DoublePostcard
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion DoublePostcard
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h935
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h935
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize w558h774
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w558h774
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize Env10
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion Env10
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvMonarch
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvMonarch
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvDL
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvDL
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvC5
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvC5
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize EnvISOB5
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion EnvISOB5
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize HalfLetter
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion HalfLetter
+*UIConstraints: *HPStaplerOptions 1Angled *PageSize w612h936
+*UIConstraints: *HPStaplerOptions 1Angled *PageRegion w612h936
+
+*UIConstraints: *HPStaplerOptions 1Angled *MediaType Envelope
+*UIConstraints: *HPStaplerOptions 1Angled *MediaType Transparency
+*UIConstraints: *HPStaplerOptions 1Angled *MediaType Labels
+*UIConstraints: *HPStaplerOptions 1Angled *MediaType Card_Stock
+
+*UIConstraints: *PageSize Executive *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion Executive *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize A5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion A5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize B5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion B5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize w612h935 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion w612h935 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize DoublePostcard *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion DoublePostcard *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize w558h774 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion w558h774 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize w612h935 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion w612h935 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize Env10 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion Env10 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize EnvMonarch *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion EnvMonarch *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize EnvDL *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion EnvDL *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize EnvC5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion EnvC5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize EnvISOB5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageRegion EnvISOB5 *HPStaplerOptions 1Angled
+*UIConstraints: *PageSize HalfLetter *HPStaplerOptions 1Angled 
+*UIConstraints: *PageRegion HalfLetter *HPStaplerOptions 1Angled 
+*UIConstraints: *PageSize w612h936 *HPStaplerOptions 1Angled 
+*UIConstraints: *PageRegion w612h936 *HPStaplerOptions 1Angled 
+
+*UIConstraints: *MediaType Envelope *HPStaplerOptions 1Angled
+*UIConstraints: *MediaType Transparency *HPStaplerOptions 1Angled 
+*UIConstraints: *MediaType Labels *HPStaplerOptions 1Angled 
+*UIConstraints: *MediaType Card_Stock *HPStaplerOptions 1Angled 
+
+*%=============================================================
 
 *%=============================================================
 

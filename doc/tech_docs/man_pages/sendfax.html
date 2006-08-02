@@ -78,8 +78,8 @@
 <p><strong>[PRINTER|DEVICE-URI] (See Notes)</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><em>To specify a device-URI:</em></td>
@@ -93,8 +93,8 @@
 <p><strong>[MODE]</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><em>Enter graphical UI mode:</em></td>
@@ -108,10 +108,19 @@
 <p><strong>[OPTIONS]</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
+<tr><td><em>Specify the fax number(s):</em></td>
+<td>-f&lt;number(s)&gt; or --faxnum=&lt;number(s)&gt; (-n only)</td>
+</tr>
+<tr><td><em>Specify the recipient(s):</em></td>
+<td>-r&lt;recipient(s)&gt; or --recipient=&lt;recipient(s)&gt; (-n only)</td>
+</tr>
+<tr><td><em>Specify the groups(s):</em></td>
+<td>-g&lt;group(s)&gt; or --group=&lt;group(s)&gt; (-n only)</td>
+</tr>
 <tr><td><em>Bus to probe (if device not specified):</em></td>
 <td>-b&lt;bus&gt; or --bus=&lt;bus&gt;</td>
 </tr>
@@ -125,7 +134,7 @@
 <td>&lt;level&gt;: none, info*, error, warn, debug (*default)</td>
 </tr>
 <tr><td><em>Run in debug mode:</em></td>
-<td>-g (same as option: -ldebug)</td>
+<td>--gg (same as option: -ldebug)</td>
 </tr>
 <tr><td><em>This help information:</em></td>
 <td>-h or --help</td>
@@ -135,8 +144,8 @@
 <p><strong>[FILES]</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><em>An optional list of files to add to the fax job.</em></td>
@@ -147,8 +156,8 @@
 <p><strong>Notes:</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
 <tr><td colspan="2"><ol class="first last arabic simple">
@@ -161,13 +170,23 @@
 </ol>
 </td>
 </tr>
+<tr><td colspan="2"><ol class="first last arabic simple" start="3">
+<li>Coversheets are not supported in non-interactive mode (-n)</li>
+</ol>
+</td>
+</tr>
+<tr><td colspan="2"><ol class="first last arabic simple" start="4">
+<li>Fax numbers and/or recipients should be listed in comma separated lists (-n only).</li>
+</ol>
+</td>
+</tr>
 </tbody>
 </table>
 <p><strong>See Also:</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><a class="reference" href="fab.html">hp-fab</a></td>
@@ -179,7 +198,7 @@
 
 
         <hr size="1"/>
-        <small>Last update: Tue Jun 27 16:38:29 2006</small>
+        <small>Last update: Tue Aug  1 13:42:01 2006</small>
 
         <!-- FOOTER -->
     </table>

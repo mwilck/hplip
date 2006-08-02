@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'HP-LaserJet_3030-hpijs.ppd'
+*% You may save this file as 'HP-PhotoSmart_D7100-hpijs.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -29,15 +29,15 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(HP LaserJet 3030)"
+*Product:	"(Photosmart D7100 series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "HP LaserJet 3030"
-*ShortNickName: "HP LaserJet 3030 hpijs"
-*NickName:      "HP LaserJet 3030 Foomatic/hpijs"
+*ModelName:     "HP PhotoSmart D7100"
+*ShortNickName: "HP PhotoSmart D7100 hpijs"
+*NickName:      "HP PhotoSmart D7100 Foomatic/hpijs (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -46,18 +46,18 @@
 *PSVersion:	"(3010.000) 705"
 *PSVersion:	"(3010.000) 800"
 *LanguageLevel:	"3"
-*ColorDevice:	False
-*DefaultColorSpace: Gray
+*ColorDevice:	True
+*DefaultColorSpace: RGB
 *FileSystem:	False
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 3030;CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;DES:Hewlett-Packard LaserJet 3030;"
-*DefaultResolution: 600dpi
+*1284DeviceID: "MFG:hp;MDL:Photosmart D7100 series;CMD:MLC,PCL,PML,DW-PCL,DYN,DESKJET,CLS;DES:HP Photosmart D7100;"
+*DefaultResolution: 1200dpi
 
 
 
-*HWMargins: 18 14.40 18 14.4
+*HWMargins: 18 36 18 9
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -74,15 +74,16 @@ EVICEHEIGHTPOINTS=0"
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: HP-LaserJet_3030 hpijs
+*FoomaticIDs: HP-PhotoSmart_D7100 hpijs
 *FoomaticRIPCommandLine: "gs -q -dBATCH -dPARANOIDSAFER -dQUIET -dNOPA&&
 USE -sDEVICE=ijs -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
 le=- -"
 *End
 
 *FoomaticRIPOption Model: enum CmdLine A 100
-*FoomaticRIPOptionSetting Model=HP-LaserJet_3030: " -sDeviceManufactur&&
-er=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;HP LaserJet&quot;"
+*FoomaticRIPOptionSetting Model=HP-PhotoSmart_D7100: " -sDeviceManufac&&
+turer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;deskjet 5600&quo&&
+t;"
 *End
 
 *OpenGroup: General/General
@@ -91,14 +92,30 @@ er=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;HP LaserJet&quot;"
 *FoomaticRIPOption PrintoutMode: enum Composite B
 *OrderDependency: 10 AnySetup *PrintoutMode
 *DefaultPrintoutMode: Normal
-*PrintoutMode Draft/Draft (Economy): "%% FoomaticRIPOptionSetting: PrintoutMode=Draft"
-*FoomaticRIPOptionSetting PrintoutMode=Draft: "Quality=300DraftGraysca&&
-leK"
+*PrintoutMode Draft/Draft (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Draft"
+*FoomaticRIPOptionSetting PrintoutMode=Draft: "Quality=300FastDraftCol&&
+orCMYK"
 *End
-*PrintoutMode Normal/Normal: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal"
-*FoomaticRIPOptionSetting PrintoutMode=Normal: "Quality=300GrayscaleK"
-*PrintoutMode High/High Quality: "%% FoomaticRIPOptionSetting: PrintoutMode=High"
-*FoomaticRIPOptionSetting PrintoutMode=High: "Quality=600GrayscaleK"
+*PrintoutMode Draft.Gray/Draft Grayscale (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Draft.Gray"
+*FoomaticRIPOptionSetting PrintoutMode=Draft.Gray: "Quality=300FastDra&&
+ftGrayscaleCMYK"
+*End
+*PrintoutMode Normal/Normal (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Normal"
+*FoomaticRIPOptionSetting PrintoutMode=Normal: "Quality=300ColorCMYK"
+*PrintoutMode Normal.Gray/Normal Grayscale (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Normal.Gray"
+*FoomaticRIPOptionSetting PrintoutMode=Normal.Gray: "Quality=300Graysc&&
+aleCMYK"
+*End
+*PrintoutMode High/High Quality (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=High"
+*FoomaticRIPOptionSetting PrintoutMode=High: "Quality=600ColorCMYK"
+*PrintoutMode High.Gray/High Quality Grayscale (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=High.Gray"
+*FoomaticRIPOptionSetting PrintoutMode=High.Gray: "Quality=600Grayscal&&
+eCMYK"
+*End
+*PrintoutMode Photo/Photo (on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=Photo"
+*FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=1200PhotoCMYKFu&&
+llBleed"
+*End
 *CloseUI: *PrintoutMode
 
 *OpenUI *InputSlot/Media Source: PickOne
@@ -145,6 +162,10 @@ DEVICEHEIGHTPOINTS=432"
 *FoomaticRIPOptionSetting PageSize=Photo5x7: " -dDEVICEWIDTHPOINTS=360&&
  -dDEVICEHEIGHTPOINTS=504"
 *End
+*PageSize PhotoTearOff/Photo with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=PhotoTearOff"
+*FoomaticRIPOptionSetting PageSize=PhotoTearOff: " -dDEVICEWIDTHPOINTS&&
+=288 -dDEVICEHEIGHTPOINTS=432"
+*End
 *PageSize 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *FoomaticRIPOptionSetting PageSize=3x5: " -dDEVICEWIDTHPOINTS=216 -dDE&&
 VICEHEIGHTPOINTS=360"
@@ -160,6 +181,10 @@ ICEHEIGHTPOINTS=595"
 *PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *FoomaticRIPOptionSetting PageSize=A6: " -dDEVICEWIDTHPOINTS=297 -dDEV&&
 ICEHEIGHTPOINTS=420"
+*End
+*PageSize A6TearOff/A6 with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=A6TearOff"
+*FoomaticRIPOptionSetting PageSize=A6TearOff: " -dDEVICEWIDTHPOINTS=29&&
+7 -dDEVICEHEIGHTPOINTS=420"
 *End
 *PageSize B5JIS/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5JIS"
 *FoomaticRIPOptionSetting PageSize=B5JIS: " -dDEVICEWIDTHPOINTS=516 -d&&
@@ -226,10 +251,12 @@ dDEVICEHEIGHTPOINTS=567"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *PageRegion Photo/Photo/4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
 *PageRegion Photo5x7/Photo/5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
+*PageRegion PhotoTearOff/Photo with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=PhotoTearOff"
 *PageRegion 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *PageRegion 5x8/5x8 inch index card: "%% FoomaticRIPOptionSetting: PageSize=5x8"
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
+*PageRegion A6TearOff/A6 with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=A6TearOff"
 *PageRegion B5JIS/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5JIS"
 *PageRegion Env10/Envelope #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageRegion EnvC5/Envelope C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
@@ -247,38 +274,42 @@ dDEVICEHEIGHTPOINTS=567"
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter: "18 14.40 594 777.60"
-*ImageableArea A4/A4: "18 14.40 577 827.60"
-*ImageableArea Photo/Photo/4x6 inch index card: "18 14.40 270 417.60"
-*ImageableArea Photo5x7/Photo/5x7 inch index card: "18 14.40 342 489.60"
-*ImageableArea 3x5/3x5 inch index card: "18 14.40 198 345.60"
-*ImageableArea 5x8/5x8 inch index card: "18 14.40 342 561.60"
-*ImageableArea A5/A5: "18 14.40 402 580.60"
-*ImageableArea A6/A6: "18 14.40 279 405.60"
-*ImageableArea B5JIS/B5 (JIS): "18 14.40 498 714.60"
-*ImageableArea Env10/Envelope #10: "18 14.40 279 669.60"
-*ImageableArea EnvC5/Envelope C5: "18 14.40 441 634.60"
-*ImageableArea EnvC6/Envelope C6: "18 14.40 305 444.60"
-*ImageableArea EnvDL/Envelope DL: "18 14.40 294 609.60"
-*ImageableArea EnvISOB5/Envelope B5: "18 14.40 481 694.60"
-*ImageableArea EnvMonarch/Envelope Monarch: "18 14.40 261 525.60"
-*ImageableArea Executive/Executive: "18 14.40 504 741.60"
-*ImageableArea FLSA/American Foolscap: "18 14.40 594 921.60"
-*ImageableArea Hagaki/Hagaki: "18 14.40 265 405.60"
-*ImageableArea Legal/Legal: "18 14.40 594 993.60"
-*ImageableArea Oufuku/Oufuku-Hagaki: "18 14.40 402 552.60"
-*ImageableArea w558h774/16K: "18 14.40 540 759.60"
-*ImageableArea w612h935/Executive (JIS): "18 14.40 594 920.60"
+*ImageableArea Letter/Letter: "18 36 594 783"
+*ImageableArea A4/A4: "9.72 36 585.28 833"
+*ImageableArea Photo/Photo/4x6 inch index card: "0 36 288 432"
+*ImageableArea Photo5x7/Photo/5x7 inch index card: "0 36 360 504"
+*ImageableArea PhotoTearOff/Photo with tear-off tab: "0 0 288 432"
+*ImageableArea 3x5/3x5 inch index card: "0 36 216 360"
+*ImageableArea 5x8/5x8 inch index card: "0 36 360 576"
+*ImageableArea A5/A5: "9 36 411 586"
+*ImageableArea A6/A6: "0 36 297 420"
+*ImageableArea A6TearOff/A6 with tear-off tab: "0 0 297 420"
+*ImageableArea B5JIS/B5 (JIS): "18 36 498 720"
+*ImageableArea Env10/Envelope #10: "0 36 297 684"
+*ImageableArea EnvC5/Envelope C5: "18 36 441 640"
+*ImageableArea EnvC6/Envelope C6: "0 36 323 459"
+*ImageableArea EnvDL/Envelope DL: "0 36 312 624"
+*ImageableArea EnvISOB5/Envelope B5: "18 36 481 700"
+*ImageableArea EnvMonarch/Envelope Monarch: "0 36 279 540"
+*ImageableArea Executive/Executive: "18 36 504 747"
+*ImageableArea FLSA/American Foolscap: "18 36 594 927"
+*ImageableArea Hagaki/Hagaki: "0 36 283 420"
+*ImageableArea Legal/Legal: "18 36 594 999"
+*ImageableArea Oufuku/Oufuku-Hagaki: "0 36 420 567"
+*ImageableArea w558h774/16K: "18 36 540 765"
+*ImageableArea w612h935/Executive (JIS): "18 36 594 926"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
 *PaperDimension Photo/Photo/4x6 inch index card: "288 432"
 *PaperDimension Photo5x7/Photo/5x7 inch index card: "360 504"
+*PaperDimension PhotoTearOff/Photo with tear-off tab: "288 432"
 *PaperDimension 3x5/3x5 inch index card: "216 360"
 *PaperDimension 5x8/5x8 inch index card: "360 576"
 *PaperDimension A5/A5: "420 595"
 *PaperDimension A6/A6: "297 420"
+*PaperDimension A6TearOff/A6 with tear-off tab: "297 420"
 *PaperDimension B5JIS/B5 (JIS): "516 729"
 *PaperDimension Env10/Envelope #10: "297 684"
 *PaperDimension EnvC5/Envelope C5: "459 649"
@@ -319,20 +350,65 @@ e=true"
 *OrderDependency: 100 AnySetup *Quality
 *DefaultQuality: FromPrintoutMode
 *Quality FromPrintoutMode/Controlled by 'Printout Mode': "%% FoomaticRIPOptionSetting: Quality=@PrintoutMode"
-*Quality 300DraftGrayscaleK/300 dpi, Draft, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=300DraftGrayscaleK"
-*FoomaticRIPOptionSetting Quality=300DraftGrayscaleK: " -r300 -sIjsPar&&
-ams=Quality:Quality=1,Quality:ColorMode=0,Quality:MediaType=0,Quality:&&
-PenSet=0"
+*Quality 300ColorCMYK/300 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300ColorCMYK"
+*FoomaticRIPOptionSetting Quality=300ColorCMYK: " -r300 -sIjsParams=Qu&&
+ality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet&&
+=2"
 *End
-*Quality 300GrayscaleK/300 dpi, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=300GrayscaleK"
-*FoomaticRIPOptionSetting Quality=300GrayscaleK: " -r300 -sIjsParams=Q&&
-uality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:PenSe&&
-t=0"
+*Quality 300ColorCMYKFullBleed/300 dpi, Color, Full Bleed, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300ColorCMYKFullBleed"
+*FoomaticRIPOptionSetting Quality=300ColorCMYKFullBleed: " -r300 -sIjs&&
+Params=Quality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quali&&
+ty:PenSet=2,Quality:FullBleed=1"
 *End
-*Quality 600GrayscaleK/600 dpi, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
-*FoomaticRIPOptionSetting Quality=600GrayscaleK: " -r600 -sIjsParams=Q&&
-uality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:PenSe&&
-t=0"
+*Quality 300DraftColorCMYK/300 dpi, Draft, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300DraftColorCMYK"
+*FoomaticRIPOptionSetting Quality=300DraftColorCMYK: " -r300 -sIjsPara&&
+ms=Quality:Quality=1,Quality:ColorMode=2,Quality:MediaType=0,Quality:P&&
+enSet=2"
+*End
+*Quality 300DraftGrayscaleCMYK/300 dpi, Draft, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300DraftGrayscaleCMYK"
+*FoomaticRIPOptionSetting Quality=300DraftGrayscaleCMYK: " -r300 -sIjs&&
+Params=Quality:Quality=1,Quality:ColorMode=0,Quality:MediaType=0,Quali&&
+ty:PenSet=2"
+*End
+*Quality 300FastDraftColorCMYK/300 dpi, FastDraft, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300FastDraftColorCMYK"
+*FoomaticRIPOptionSetting Quality=300FastDraftColorCMYK: " -r300 -sIjs&&
+Params=Quality:Quality=4,Quality:ColorMode=2,Quality:MediaType=0,Quali&&
+ty:PenSet=2"
+*End
+*Quality 300FastDraftGrayscaleCMYK/300 dpi, FastDraft, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300FastDraftGrayscaleCMYK"
+*FoomaticRIPOptionSetting Quality=300FastDraftGrayscaleCMYK: " -r300 -&&
+sIjsParams=Quality:Quality=4,Quality:ColorMode=0,Quality:MediaType=0,Q&&
+uality:PenSet=2"
+*End
+*Quality 300GrayscaleCMYK/300 dpi, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300GrayscaleCMYK"
+*FoomaticRIPOptionSetting Quality=300GrayscaleCMYK: " -r300 -sIjsParam&&
+s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
+nSet=2"
+*End
+*Quality 600ColorCMYK/600 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMYK"
+*FoomaticRIPOptionSetting Quality=600ColorCMYK: " -r600 -sIjsParams=Qu&&
+ality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet&&
+=2"
+*End
+*Quality 600ColorCMYKFullBleed/600 dpi, Color, Full Bleed, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMYKFullBleed"
+*FoomaticRIPOptionSetting Quality=600ColorCMYKFullBleed: " -r600 -sIjs&&
+Params=Quality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quali&&
+ty:PenSet=2,Quality:FullBleed=1"
+*End
+*Quality 600GrayscaleCMYK/600 dpi, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600GrayscaleCMYK"
+*FoomaticRIPOptionSetting Quality=600GrayscaleCMYK: " -r600 -sIjsParam&&
+s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
+nSet=2"
+*End
+*Quality 1200PhotoCMYK/1200 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=1200PhotoCMYK"
+*FoomaticRIPOptionSetting Quality=1200PhotoCMYK: " -r1200 -sIjsParams=&&
+Quality:Quality=3,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenS&&
+et=2"
+*End
+*Quality 1200PhotoCMYKFullBleed/1200 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=1200PhotoCMYKFullBleed"
+*FoomaticRIPOptionSetting Quality=1200PhotoCMYKFullBleed: " -r1200 -sI&&
+jsParams=Quality:Quality=3,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
+lity:PenSet=2,Quality:FullBleed=1"
 *End
 *CloseUI: *Quality
 

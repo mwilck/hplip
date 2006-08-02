@@ -1175,8 +1175,9 @@ def whatis(data):
     if ord(c) > 128:
       return 'data'
   # its ASCII, now do text tests
-  if data.find('def ', 0, 8192) > -1:
-    return 'application/x-python'
+  if data.find('!/usr/bin/env python', 0, 256) > -1 or \
+    data.find('def ', 0, 8192) > -1:
+      return 'application/x-python'
 
   return "text/plain"
 

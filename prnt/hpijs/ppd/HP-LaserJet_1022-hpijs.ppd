@@ -37,7 +37,7 @@
 *%pprRIP:        foomatic-rip other
 *ModelName:     "HP LaserJet 1022"
 *ShortNickName: "HP LaserJet 1022 hpijs"
-*NickName:      "HP LaserJet 1022 Foomatic/hpijs (recommended)"
+*NickName:      "HP LaserJet 1022 Foomatic/hpijs"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1022;CMD:PCL5e;DES:HP LaserJet 1022;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1022;CMD:ACL;DES:HP LaserJet 1022;"
 *DefaultResolution: 600dpi
 
 

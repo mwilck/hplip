@@ -435,7 +435,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
         ppd_file = cups.getPPD(self.current_printer)
 
         if ppd_file is not None and os.path.exists(ppd_file):
-            if file(ppd_file, 'r').read().find('HPLIP Fax') == -1:
+            if file(ppd_file, 'r').read().find('HP Fax') == -1:
                 self.FailureUI(self.__tr("<b>Fax configuration error.</b><p>The CUPS fax queue for '%1' is incorrectly configured.<p>Please make sure that the CUPS fax queue is configured with the 'HPLIP Fax' Model/Driver.").arg(self.current_printer))
                 return
 
@@ -696,7 +696,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             self.UpdateSelectionEdit()
 
         else: # Printer status...
-            if device_uri == self.dev.device_uri:
+            if self.dev is not None and device_uri == self.dev.device_uri:
                 log.debug("Device status update event received for %s." % device_uri)
                 self.StateText.setText(error_string_short) 
 

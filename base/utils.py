@@ -534,7 +534,7 @@ except AttributeError:
 def log_title(program_name, version):
     log.info("")
     log.info(bold("HP Linux Imaging and Printing System (ver. %s)" % prop.version))
-    log.info(bold("%s ver. %s" % (program_name,version)))
+    log.info(bold("%s ver. %s" % (program_name, version)))
     log.info("")
     log.info("Copyright (c) 2003-6 Hewlett-Packard Development Company, LP")
     log.info("This software comes with ABSOLUTELY NO WARRANTY.")
@@ -543,8 +543,14 @@ def log_title(program_name, version):
     log.info("")
 
 
-def which(command):
+def which(command, return_full_path=False):
     path = os.getenv('PATH').split(':')
+
+    # Add these paths for Fedora
+    path.append('/sbin')
+    path.append('/usr/sbin')
+    path.append('/usr/local/sbin')
+
     found_path = ''
     for p in path:
         try:
@@ -556,7 +562,13 @@ def which(command):
                 found_path = p
                 break
 
-    return found_path
+    if return_full_path:
+        if found_path:
+            return os.path.join(found_path, command)
+        else:
+            return ''
+    else:
+        return found_path
 
 
 def deviceDefaultFunctions():
@@ -1180,7 +1192,7 @@ def format_text(text_list, typ='text', title='', crumb='', version=''):
         for line in text_list:
             text1, text2, format, trailing_space = line
 
-            if format in ('option', 'example'):
+            if format in ('option', 'example', 'note'):
                 colwidth1 = max(len(text1), colwidth1)
                 colwidth2 = max(len(text2), colwidth2)
             
@@ -1289,6 +1301,7 @@ def dquote(s):
     
 # Python 2.2 compatibility functions (strip() family with char argument)
 def xlstrip(s, chars=' '):
+    i = 0
     for c, i in zip(s, range(len(s))):
         if c not in chars:
             break
@@ -1305,4 +1318,27 @@ def xreverse(s):
 
 def xstrip(s, chars=' '):
     return xreverse(xlstrip(xreverse(xlstrip(s, chars)), chars))
+
+    
+
+def getBitness():
+    try:
+        import platform
+    except ImportError:
+        return struct.calcsize("P") << 3
+    else:
+        return int(platform.architecture()[0][:-3])
+
+        
+BIG_ENDIAN = 0
+LITTLE_ENDIAN = 1
+
+def getEndian():
+    if struct.pack("@I", 0x01020304)[0] == '\x01':
+        return BIG_ENDIAN
+    else:
+        return LITTLE_ENDIAN
+        
+        
+
 
