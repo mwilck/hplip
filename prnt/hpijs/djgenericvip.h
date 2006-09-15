@@ -90,6 +90,12 @@ public:
     VIPAutoPQMode ();
 }; // VIPAutoPQMode
 
+class VIPCDDVDMode : public PrintMode
+{
+public:
+    VIPCDDVDMode ();
+}; // VIPCDDVDMode
+
 #if defined(APDK_DJGENERICVIP) && defined (APDK_DJ9xxVIP)
 //! DJGenericVIPProxy
 /*!
@@ -136,6 +142,8 @@ public:
 		"Photosmart 380\0"
 		"Photosmart 330\0"
         "Photosmart 420\0"
+        "Photosmart A430\0"
+        "Photosmart A510\0"
 #ifdef APDK_MLC_PRINTER
 		"PSC 1500\0"
 		"PSC 1600\0"
@@ -156,6 +164,18 @@ public:
         "Photosmart 3200\0"
         "Photosmart 3300\0"
 #endif
+        "Photosmart A310\0"
+        "Photosmart C3100\0"
+        "Photosmart C4100\0"
+        "Photosmart C5100\0"
+        "Photosmart C6100\0"
+        "Photosmart C7100\0"
+        "Photosmart Pro B8300\0"
+        "Photosmart D5060\0"
+        "Photosmart D5100\0"
+        "Photosmart D6100\0"
+        "Photosmart D7100\0"
+        "Photosmart D7300\0"
     ) {m_iPrinterType = eDJGenericVIP;}
     inline Printer* CreatePrinter(SystemServices* pSS) const { return new DJGenericVIP(pSS); }
 	inline PRINTER_TYPE GetPrinterType() const { return eDJGenericVIP;}

@@ -126,6 +126,7 @@ void Header::SetMediaSource(MediaSource msource)
 		case sourceTrayAuto: DBG1("AutoTray\n"); break;
 		case sourceDuplexerNHagakiFeed: DBG1("HagakiTray\n"); break;
         case sourceBanner: DBG1("Bannerpaper\n"); break;
+        case sourceTrayCDDVD: DBG1("CD/DVD Tray\n"); break;
         default: DBG1("<out of range, using> Tray1\n"); break;
     }
 #endif
@@ -133,12 +134,14 @@ void Header::SetMediaSource(MediaSource msource)
     ASSERT( (msource==sourceTray1) || (msource==sourceManual) ||
 		    (msource==sourceTray2) || (msource==sourceDuplexerNHagakiFeed) ||
             (msource==sourceManualEnv) || (msource==sourceTrayAuto) ||
-            (msource == sourceOptionalEnv) || (msource == sourceBanner));
+            (msource == sourceOptionalEnv) || (msource == sourceBanner) ||
+            (msource == sourceTrayCDDVD));
 
     if( (msource!=sourceTray1) && (msource!=sourceManual) &&
 		    (msource!=sourceTray2) && (msource!=sourceDuplexerNHagakiFeed) &&
             (msource!=sourceManualEnv) && (msource!=sourceTrayAuto) &&
-            (msource != sourceOptionalEnv) && (msource != sourceBanner))
+            (msource != sourceOptionalEnv) && (msource != sourceBanner) &&
+            (msource != sourceTrayCDDVD))
         msource=sourceTray1;
 
 	if (thePrinter != NULL)

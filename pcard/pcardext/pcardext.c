@@ -20,12 +20,21 @@ pcardext - Python extension for HP photocard services
 Requires:
 Python 2.2+
 
+Author: Don Welch
+
 \*****************************************************************************/
 
 #include <Python.h>
 #include <structmember.h>
 #include "../fat.h"
 
+
+/* Ref: PEP 353 (Python 2.5) */
+#if PY_VERSION_HEX < 0x02050000
+typedef int Py_ssize_t;
+#define PY_SSIZE_T_MAX INT_MAX
+#define PY_SSIZE_T_MIN INT_MIN
+#endif
 
 int verbose=0;
 
@@ -46,7 +55,7 @@ int ReadSector(int sector, int nsector, void *buf, int size)
         
         if( result )
         {
-            int len = 0;
+            Py_ssize_t len = 0;
             PyString_AsStringAndSize( result, &result_str, &len );
             
             if( len < nsector*FAT_HARDSECT )
@@ -111,7 +120,7 @@ PyObject * pcardext_df( PyObject * self, PyObject * args )
 PyObject * pcardext_ls( PyObject * self, PyObject * args ) 
 {
     PyObject * file_list;
-    file_list = PyList_New(0);
+    file_list = PyList_New((Py_ssize_t)0);
     FILE_ATTRIBUTES fa;
 
     FatDirBegin( &fa );
@@ -184,7 +193,7 @@ PyObject * pcardext_read( PyObject * self, PyObject * args )
 {
     char * name;
     int offset = 0;
-    int len = 0;
+    Py_ssize_t len = 0;
     void * buffer;
     
     if( !PyArg_ParseTuple( args, "sii", &name, &offset, &len ) )

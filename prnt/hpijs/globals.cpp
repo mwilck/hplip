@@ -92,7 +92,9 @@ MediaSize PaperToMediaSize(PAPER_SIZE psize)
 	case ENVELOPE_JPN3:  return size3JPNEnv;     break;
 	case ENVELOPE_JPN4:  return size4JPNEnv;     break;
 #endif
-    case PHOTO_5x7:      return size5x7;        break;
+    case PHOTO_5x7:     return size5x7;         break;
+    case CDDVD_80:      return sizeCDDVD80;     break;
+    case CDDVD_120:     return sizeCDDVD120;    break;
     default:            return sizeUSLetter;    break;
     }
 }
@@ -125,6 +127,9 @@ PAPER_SIZE MediaSizeToPaper(MediaSize msize)
 	case size3JPNEnv:   return ENVELOPE_JPN3;     break;
 	case size4JPNEnv:   return ENVELOPE_JPN4;     break;
 #endif
+    case size5x7:       return PHOTO_5x7;        break;
+    case sizeCDDVD80:   return CDDVD_80;         break;
+    case sizeCDDVD120:  return CDDVD_120;        break;
     default:            return UNSUPPORTED_SIZE; break;
     }
 }

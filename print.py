@@ -36,14 +36,6 @@ from prnt import cups
 
 log.set_module('hp-print')
 
-# PyQt
-if not utils.checkPyQtImport():
-    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
-    sys.exit(1)
-
-from qt import *
-from ui.printerform import PrinterForm
-
 app = None
 printdlg = None
 client = None
@@ -204,81 +196,83 @@ class print_client(async.dispatcher):
         self.send(out_buffer)
 
 
-def main(args):
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:g',
-                                   ['printer=', 'device=', 'help', 
-                                    'help-rest', 'help-man', 'logging='])
-    except getopt.GetoptError:
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:g',
+                               ['printer=', 'device=', 'help', 
+                                'help-rest', 'help-man', 'logging='])
+except getopt.GetoptError:
+    usage()
+
+printer_name = None
+device_uri = None
+log_level = logger.DEFAULT_LOG_LEVEL
+bus = 'cups'
+
+if os.getenv("HPLIP_DEBUG"):
+    log.set_level('debug')
+
+for o, a in opts:
+    if o in ('-h', '--help'):
         usage()
 
-    printer_name = None
-    device_uri = None
-    log_level = logger.DEFAULT_LOG_LEVEL
-    bus = 'cups'
+    elif o == '--help-rest':
+        usage('rest')
+        
+    elif o == '--help-man':
+        usage('man')
 
-    if os.getenv("HPLIP_DEBUG"):
-        log.set_level('debug')
-    
-    for o, a in opts:
-        if o in ('-h', '--help'):
+    elif o in ('-p', '-P', '--printer'):
+        printer_name = a
+
+    elif o in ('-d', '--device'):
+        device_uri = a
+
+    elif o in ('-l', '--logging'):
+        log_level = a.lower().strip()
+        if not log.set_level(log_level):
             usage()
-
-        elif o == '--help-rest':
-            usage('rest')
             
-        elif o == '--help-man':
-            usage('man')
-
-        elif o in ('-p', '-P', '--printer'):
-            printer_name = a
-
-        elif o in ('-d', '--device'):
-            device_uri = a
-
-        elif o in ('-l', '--logging'):
-            log_level = a.lower().strip()
-            if not log.set_level(log_level):
-                usage()
-                
-        elif o == '-g':
-            log.set_level('debug')
+    elif o == '-g':
+        log.set_level('debug')
 
 
-    # Security: Do *not* create files that other users can muck around with
-    os.umask (0077)
-    
-    utils.log_title(__title__, __version__)
+# Security: Do *not* create files that other users can muck around with
+os.umask (0077)
 
-    global client
-    try:
-        client = print_client()
-    except Error:
-        log.error("Unable to create client object.")
-        sys.exit(0)
+utils.log_title(__title__, __version__)
 
-    # create the main application object
-    global app
-    app = QApplication(sys.argv)
+# PyQt
+if not utils.checkPyQtImport():
+    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
+    sys.exit(1)
 
-    global printdlg
-    printdlg = PrinterForm(client.socket, bus, device_uri, printer_name, args)
-    printdlg.show()
-    app.setMainWidget(printdlg)
+from qt import *
+from ui.printerform import PrinterForm
 
-    user_config = os.path.expanduser('~/.hplip.conf')
-    loc = utils.loadTranslators(app, user_config)
+try:
+    client = print_client()
+except Error:
+    log.error("Unable to create client object.")
+    sys.exit(0)
 
-    try:
-        log.debug("Starting GUI loop...")
-        app.exec_loop()
-    except KeyboardInterrupt:
-        pass
-    except:
-        log.exception()
-    
-    return 0
+# create the main application object
+app = QApplication(sys.argv)
 
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+printdlg = PrinterForm(client.socket, bus, device_uri, printer_name, args)
+printdlg.show()
+app.setMainWidget(printdlg)
+
+user_config = os.path.expanduser('~/.hplip.conf')
+loc = utils.loadTranslators(app, user_config)
+
+try:
+    log.debug("Starting GUI loop...")
+    app.exec_loop()
+except KeyboardInterrupt:
+    pass
+except:
+    log.exception()
+
+sys.exit(0)
+
 

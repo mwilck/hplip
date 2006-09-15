@@ -5,7 +5,7 @@
 
  <head>
   <title>HPLIP How-Tos - Printing</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
   <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
   <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
@@ -43,7 +43,8 @@
                 <menu compact="compact">
                     <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
                     <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
+                    <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
                     <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
                 </menu>
 
@@ -69,7 +70,12 @@
 
         <!-- CONTENT -->
 
-        <a href="../index.html">Home</a> > <a href="index.html">How-Tos</a> > Printing
+        <a href="../index.html">Home</a>
+&gt;
+<a href="index.html">How-Tos</a>
+&gt;
+Printing
+
 
         <td align="left" valign="top" class="content">
         <div class="document" id="printing-how-tos">
@@ -78,6 +84,7 @@
 <p><a class="reference" href="#lpr">Fullbleed Printing Method Number 2: Using lpr</a></p>
 <p><a class="reference" href="#troubleshooting">Fullbleed Troubleshooting</a></p>
 <p><a class="reference" href="#gimp">Printing from The GIMP</a></p>
+<p><a class="reference" href="#cddvd">Printing on CDs and DVDs Using the Photosmart D5100</a></p>
 <div class="section">
 <h1><a id="id1" name="id1"><span id="kview"></span>Fullbleed Printing Method Number 1: Using KView or Gwenview</a></h1>
 <div align="center" class="figure">
@@ -211,11 +218,29 @@ lpr -Pprinter_name filename.ps
 <li>Click &quot;Print&quot; on the print dialog.</li>
 </ol>
 </div>
+<div class="section">
+<h1><a id="id5" name="id5"><span id="cddvd"></span>Printing on CDs and DVDs Using the Photosmart D5100</a></h1>
+<p>You can print directly special printable CD and DVD media from your Photosmart D5100. This printer allows you to print on either 3in. (80mm) &quot;Mini&quot; or 5in. (120mm) media.</p>
+<p>To print on one of these media, you must configure the printer as follows:</p>
+<ol class="arabic simple">
+<li>Select the appropriate page size (CD/DVD 80mm or CD/DVD 120mm)</li>
+<li>Select CD or DVD as the Printout Mode</li>
+<li>Select CD/DVD Tray as the Media Source</li>
+</ol>
+<p>You must then format the image to print to fit on this media, the printable area is 5in. x 5in. or 3.3in. x 3.3in. respectively for the 5in. and 3in. media. The non-printable area around the inside hole can be 0.8in. or 1.6in. diameter for the 5in. media and 1.7in. diameter for the 3in. media. You can use any label making application that supports CD labels to do this.</p>
+<p>We have provided label templates that can be used with &quot;glabels&quot;:</p>
+<ol class="arabic simple">
+<li><a class="reference" href="../hplip_1in_hole.template">5in. CD/DVD with a 1in. hole</a></li>
+<li><a class="reference" href="../hplip_15in_hole.template">5in. CD/DVD with a 1.5in. hole</a></li>
+<li><a class="reference" href="../hplip_3in.template">3in &quot;Mini&quot; CD/DVD</a></li>
+</ol>
+<p>Finally, when you are ready to print, flip the CD tray down, place the printable CD in the CD caddy and insert the CD caddy in the CD tray.</p>
+</div>
 </div>
 
 
         <hr size="1"/>
-        <small>Last update: Mon Jun 12 14:23:19 2006</small>
+        <small>Last update: Fri Sep 15 14:43:05 2006; HPLIP Version: 1.6.9</small>
 
         <!-- FOOTER -->
     </table>

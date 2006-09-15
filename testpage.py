@@ -239,10 +239,12 @@ try:
                         break
                     
                     elif d.error_state == ERROR_STATE_ERROR:
+                        cleanup_spinner()
                         log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
                         break
                         
                     elif d.error_state == ERROR_STATE_WARNING:
+                        cleanup_spinner()
                         log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
                     
                     else: # ERROR_STATE_BUSY
@@ -252,6 +254,9 @@ try:
                     
                     if i > 24:  # 2min
                         break
+                        
+                cleanup_spinner()
+                
             else:
                 log.info("Test page has been sent to printer.")
 
@@ -264,8 +269,8 @@ finally:
     d.close()
     
     log.info("")
-    log.info(utils.red("If an error occured, or the test page failed to print, refer to the HPLIP website"))
-    log.info(utils.red("at: http://hplip.sourceforge.net for troubleshooting and support."))
+    log.notice("If an error occured, or the test page failed to print, refer to the HPLIP website")
+    log.notice("at: http://hplip.sourceforge.net for troubleshooting and support.")
     log.info("")
 
 log.info("Done.")

@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '2.1'
+__version__ = '2.2'
 __title__ = 'Photo Card Access Utility'
 __doc__ = "Access inserted photo cards on supported HPLIP printers. This provides an alternative for older devices that do not support USB mass storage or for access to photo cards over a network."
 
@@ -687,6 +687,9 @@ for o, a in opts:
 
 
 utils.log_title(__title__, __version__)
+
+# Security: Do *not* create files that other users can muck around with
+os.umask (0077)
 
 if mode == GUI_MODE:
     if not os.getenv('DISPLAY'):

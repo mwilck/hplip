@@ -448,11 +448,20 @@ int Device::WritePhoenixSetup(int fd)
    hd = FD[fd].pHD;
 
    len = usb_control_msg(hd, 
+             USB_ENDPOINT_OUT | USB_TYPE_CLASS | USB_RECIP_OTHER, /* bmRequestType */
+             0x02,        /* bRequest */
+             0,        /* wValue */
+             0, /* wIndex */
+             NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
+
+#if 0
+   len = usb_control_msg(hd, 
              USB_ENDPOINT_IN | USB_TYPE_CLASS | USB_RECIP_OTHER, /* bmRequestType */
              0x02,        /* bRequest */
              0,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
+#endif
 
    if (len < 0)
    {

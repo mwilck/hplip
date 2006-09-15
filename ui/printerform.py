@@ -383,13 +383,24 @@ class PrinterForm(PrinterForm_base):
             
             alt_nup = (nup > 1 and t == 'application/postscript' and utils.which('psnup'))
                 
-            if alt_nup:
-                cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lp -c -d', self.current_printer])
+            if utils.which('lpr'):
+                if alt_nup:
+                    cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lpr -P', self.current_printer])
+                else:
+                    cmd = ' '.join(['lpr -P', self.current_printer])
+                
+                if copies > 1:
+                    cmd = ' '.join([cmd, '-#%d' % copies])
+                
             else:
-                cmd = ' '.join(['lp -c -d', self.current_printer])
+                if alt_nup:
+                    cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lp -c -d', self.current_printer])
+                else:
+                    cmd = ' '.join(['lp -c -d', self.current_printer])
+                
+                if copies > 1:
+                    cmd = ' '.join([cmd, '-n%d' % copies])
 
-            if copies > 1:
-                cmd = ' '.join([cmd, '-n%d' % copies])
 
             if not all_pages and len(page_range) > 0:
                 cmd = ' '.join([cmd, '-o page-ranges=%s' % page_range])

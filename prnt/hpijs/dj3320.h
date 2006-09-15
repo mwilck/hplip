@@ -174,6 +174,7 @@ public:
 		"Deskjet 3920\0"
 		"Deskjet 3940\0"
 		"Deskjet 3900\0"
+        "Deskjet D1360\0"
 #ifdef APDK_MLC_PRINTER
 		"psc 1100\0"
 		"psc 1200\0"
@@ -181,6 +182,7 @@ public:
 		"officejet 4105\0"
 		"officejet 4200\0"
 #endif
+        "Officejet 43\0"
         "officejet 4115\0"
         "officejet 5500\0"
         "psc 11\0"

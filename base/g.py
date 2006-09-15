@@ -95,16 +95,20 @@ class Config(dict):
         except (IOError,OSError):
             return
         
-        f = file(filename, 'r')
-        self.config_obj.readfp(f)
-        f.close()
+        try:
+            f = file(filename, 'r')
+        except IOError:
+            pass
+        else:
+            self.config_obj.readfp(f)
+            f.close()
 
-        for s in self.config_obj.sections():
-            opts = []
-            for o in self.config_obj.options(s):
-                opts.append((o, self.config_obj.get(s, o)))
-
-            self.__setitem__(s, ConfigSection(s, self.config_obj, filename, opts))
+            for s in self.config_obj.sections():
+                opts = []
+                for o in self.config_obj.options(s):
+                    opts.append((o, self.config_obj.get(s, o)))
+    
+                self.__setitem__(s, ConfigSection(s, self.config_obj, filename, opts))
         
     def __getattr__(self, sect):
         if sect not in self.keys():
@@ -190,13 +194,19 @@ prop.models_file = os.path.join(prop.home_dir, 'data', 'xml', 'models.xml')
 # Spinner, ala Gentoo Portage
 spinner = "\|/-\|/-"
 #spinner = "oOo.oOo."
+#spinner = "0123456789"
 spinpos = 0
 
 def update_spinner():
     global spinner, spinpos
-    if sys.stdout.isatty():
+    if log.get_level() != log.LOG_LEVEL_DEBUG and sys.stdout.isatty():
         sys.stdout.write("\b" + spinner[spinpos])
         spinpos=(spinpos + 1) % 8
+        sys.stdout.flush()
+        
+def cleanup_spinner():
+    if log.get_level() != log.LOG_LEVEL_DEBUG and sys.stdout.isatty():
+        sys.stdout.write("\b ")
         sys.stdout.flush()
 
 

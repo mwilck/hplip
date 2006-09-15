@@ -31,6 +31,7 @@ import re
 
 # Local
 from g import *
+import utils
 
 
 prod_pat = re.compile(r"""\(\s*x-hp-prod_id\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
@@ -44,36 +45,39 @@ hn_pat =   re.compile(r"""\(\s*x-hp-hn\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
         
         
 
-def detectNetworkDevices(mcast_addr='224.0.1.60', mcast_port=427, ttl=4, timeout=5, xid=None, qappobj = None):
+def detectNetworkDevices(ttl=4, timeout=10): #, xid=None, qappobj = None):
+    mcast_addr, mcast_port ='224.0.1.60', 427
     found_devices = {}
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     
-    try:
-        addr = socket.gethostname()
-        intf = socket.gethostbyname(addr)
-    except socket.error:
-        x=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        x.connect(('1.2.3.4',56))
-        intf = x.getsockname()[0]
-        x.close()
+    x = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    x.connect(('1.2.3.4', 56))
+    intf = x.getsockname()[0]
+    x.close()
 
     s.setblocking(0)
-    ttl = struct.pack('b', ttl) 
+    ttl = struct.pack('B', ttl) 
     
+    try:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+    except (AttributeError, socket.error):
+        pass
+        
     try:
         s.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_TTL, ttl)
         s.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_IF, socket.inet_aton(intf) + socket.inet_aton('0.0.0.0'))
-    except:
-        log.error("Unable to setup multicast socket for SLP.")
+        s.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP ,1)
+    except Exception, e:
+        log.error("Unable to setup multicast socket for SLP: %s" % e)
         return {}
         
-    packet = ''.join(['\x01\x06\x00,\x00\x00en\x00\x03', 
-                        struct.pack('!H', xid or random.randint(1, 65535)),
-                        '\x00\x00\x00\x18service:x-hpnp-discover:\x00\x00\x00\x00'])
+    packet = ''.join(['\x01\x06\x00\x2c\x00\x00\x65\x6e\x00\x03', 
+        struct.pack('!H', random.randint(1, 65535)), '\x00\x00\x00\x18service:x-hpnp-discover:\x00\x00\x00\x00'])
     
     try:
-        s.sendto(packet, (mcast_addr, mcast_port))
+        s.sendto(packet, 0, (mcast_addr, mcast_port))
     except socket.error, e:
         log.error("Unable to send broadcast SLP packet: %s" % e)
        
@@ -81,20 +85,16 @@ def detectNetworkDevices(mcast_addr='224.0.1.60', mcast_port=427, ttl=4, timeout
     
 
     while time_left > 0:
-        
-        if qappobj is not None:
-            qappobj.processEvents(0)
-        
         start_time = time.time()
-        r, w, e = select.select([s], [], [], time_left)
+        r, w, e = select.select([s], [], [s], time_left)
         time_left -= (time.time() - start_time)
+        if not r: continue
         
-        if qappobj is not None:
-            qappobj.processEvents(0)
+        data, addr = s.recvfrom(2048)
+        update_spinner() 
         
-        if r == []: continue
+        update_spinner()
         
-        data, addr = s.recvfrom(1024) 
         ver, func, length, flags, dialect, lang_code, char_encode, recv_xid, status_code, attr_length = \
             struct.unpack("!BBHBBHHHHH", data[:16])
             
@@ -169,7 +169,16 @@ def detectNetworkDevices(mcast_addr='224.0.1.60', mcast_port=427, ttl=4, timeout
 
         y['status_code'] = status_code
         found_devices[addr[0]] = y
+        
+        log.debug("Found device: %s" % y)
 
         
     return found_devices
-    
+
+#import pprint    
+#d = detectNetworkDevices()
+
+#pprint.pprint(d)
+
+#print "\nFound %d printers." % len(d)
+

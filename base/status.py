@@ -194,11 +194,19 @@ def parseSStatus(s, z=''):
             log.error("Pen data size error")
 
         if len(z1) > 0:
-            pen['dvc'] = long(z1s[d+1:d+5], 16)
-            pen['virgin'] = bool(z1[d+5] & 0x8L)
-            pen['hp-ink'] = bool(z1[d+5] & 0x4L)
-            pen['known'] = bool(z1[d+5] & 0x2L)
-            pen['ack'] = bool(z1[d+5] & 0x1L)
+            # TODO: Determine cause of IndexError for C6100 (defect #1111)
+            try:
+                pen['dvc'] = long(z1s[d+1:d+5], 16)
+                pen['virgin'] = bool(z1[d+5] & 0x8L)
+                pen['hp-ink'] = bool(z1[d+5] & 0x4L)
+                pen['known'] = bool(z1[d+5] & 0x2L)
+                pen['ack'] = bool(z1[d+5] & 0x1L)
+            except IndexError:
+                pen['dvc'] = 0
+                pen['virgin'] = 0
+                pen['hp-ink'] = 0
+                pen['known'] = 0
+                pen['ack'] = 0
 
         index += 1
         pens.append(pen)
@@ -691,7 +699,7 @@ def BatteryCheck(dev, status_block):
         try:
             dev.openPML()
         except Error:
-            log.error("PML channel open failed.")
+            log.debug("PML channel open failed. Trying dynamic counters...")
             try_dynamic_counters = True
         else:
             result, battery_level = dev.getPML(pml.OID_BATTERY_LEVEL)
@@ -830,6 +838,7 @@ def getFaxStatus(dev):
     
     
 TYPE6_STATUS_CODE_MAP = {
+     0    : STATUS_PRINTER_IDLE, #</DevStatusUnknown>
     -19928: STATUS_PRINTER_IDLE,
     -18995: STATUS_PRINTER_CANCELING,
     -17974: STATUS_PRINTER_WARMING_UP,
@@ -948,7 +957,7 @@ TYPE6_STATUS_CODE_MAP = {
     -13841: STATUS_PRINTER_BUSY, #</DevStatusNoFaxDetected>
     -13848: STATUS_PRINTER_BUSY, #</DevStatusFaxMemoryFullReceive>
     -13849: STATUS_PRINTER_BUSY, #</DevStatusFaxReceiveError>
-    0: STATUS_UNKNOWN, #</DevStatusUnknown>
+    
 }    
 
 def StatusType6(dev): #  LaserJet Status (XML)
@@ -965,16 +974,26 @@ def StatusType6(dev): #  LaserJet Status (XML)
     ssp = {}
     
     if info_device_status:
-        device_status = utils.XMLToDictParser().parseXML(info_device_status)
-        log.debug_block("info_device_status", info_device_status)
-        log.debug(device_status)
+        try:
+            device_status = utils.XMLToDictParser().parseXML(info_device_status)
+            log.debug_block("info_device_status", info_device_status)
+            log.debug(device_status)
+        except xml.parsers.expat.ExpatError:
+            device_status = {}
 
     if info_ssp:
-        ssp = utils.XMLToDictParser().parseXML(info_ssp)
-        log.debug_block("info_spp", info_ssp)
-        log.debug(ssp)
+        try:
+            ssp = utils.XMLToDictParser().parseXML(info_ssp)
+            log.debug_block("info_spp", info_ssp)
+            log.debug(ssp)
+        except xml.parsers.expat.ExpatError:
+            ssp = {}
     
     status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
+    
+    if not status_code:
+        status_code = ssp.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
+    
     black_supply_level = device_status.get('devicestatuspage-suppliesstatus-blacksupply-percentremaining', 0)
     black_supply_low = ssp.get('suppliesstatuspage-blacksupply-lowreached', 0)
     agents = []

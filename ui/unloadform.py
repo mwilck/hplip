@@ -373,7 +373,7 @@ class UnloadForm(UnloadForm_base):
 
     def UnloadDirectoryBrowseButton_clicked(self):
         old_dir = self.unload_dir
-        self.unload_dir = str(QFileDialog.getExistingDirectory(self.unload_dir, self))
+        self.unload_dir = unicode(QFileDialog.getExistingDirectory(self.unload_dir, self))
 
         if not len(self.unload_dir):
             return
@@ -386,7 +386,7 @@ class UnloadForm(UnloadForm_base):
 
     def UnloadButton_clicked(self):
         was_cancelled = False
-        self.unload_dir = str(self.UnloadDirectoryEdit.text())
+        self.unload_dir = unicode(self.UnloadDirectoryEdit.text())
         dir_error = False
 
         try:

@@ -1,7 +1,7 @@
 /*****************************************************************************\
-  ljjr.cpp : Implimentation for the LJJetReady class
+  ljjetready.cpp : Implimentation for the LJJetReady class
 
-  Copyright (c) 1996 - 2001, Hewlett-Packard Co.
+  Copyright (c) 1996 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,16 @@
 #include "ljjetready.h"
 #include "printerproxy.h"
 #include "resources.h"
+
+#ifdef HAVE_LIBDL
+#include <dlfcn.h>
+#endif
+
+int (*HPLJJRCompress) (BYTE       *pbOutBuffer, 
+                       uint32_t   *outlen, 
+                       BYTE       *inmem, 
+                       const uint32_t iLogicalImageWidth,
+                       const uint32_t iLogicalImageHeight);
 
 APDK_BEGIN_NAMESPACE
 
@@ -128,12 +138,31 @@ LJJetReady::LJJetReady (SystemServices* pSS, int numfonts, BOOL proto)
 
 	m_bStartPageNotSent = TRUE;
 
+    HPLJJRCompress = NULL;
+
+#ifdef HAVE_LIBDL
+    m_hHPLibHandle = dlopen ("libhpprop.so", RTLD_LAZY);
+    if (m_hHPLibHandle)
+    {
+        dlerror ();
+        *(void **) (&HPLJJRCompress) = dlsym (m_hHPLibHandle, "HPJetReadyCompress");
+    }
+#endif
+
     DBG1("LJJetReady created\n");
 }
 
 LJJetReady::~LJJetReady ()
 {
     DISPLAY_STATUS  eDispStatus;
+
+#ifdef HAVE_LIBDL
+    if (m_hHPLibHandle)
+    {
+        dlclose (m_hHPLibHandle);
+    }
+#endif
+
     if (IOMode.bStatus && m_bJobStarted)
     {
         for (int i = 0; i < 5; i++)
@@ -232,7 +261,9 @@ DRIVER_ERROR HeaderLJJetReady::StartSend ()
     }
 	
     //Send the Number of copies command
-    err = thePrinter->Send ((const BYTE*)ccpPJLSetCopyCount,sizeof(ccpPJLSetCopyCount));
+//    err = thePrinter->Send ((const BYTE*)ccpPJLSetCopyCount,sizeof(ccpPJLSetCopyCount));
+    sprintf (szScratchStr, "@PJL SET COPIES=%d\015\012", thePrintContext->GetCopyCount ());
+    err = thePrinter->Send ((const BYTE *) szScratchStr, strlen (szScratchStr));
     ERRCHECK;
 
     // Send the Duplex command
@@ -566,6 +597,14 @@ DRIVER_ERROR LJJetReady::Encapsulate (const RASTERDATA* InputRaster, BOOL bLastP
 
 	// For color JPEG, you need to skip the header information of 623 bytes
 
+    int iJpegHeaderSize = 623;
+#ifdef HAVB_LIBDL
+    if (HPLJJRCompress)
+    {
+        iJpegHeaderSize = 0;
+    }
+#endif
+
 	if (bGrey_K)
     {
 		ulVUDataLength = InputRaster->rastersize[COLORTYPE_COLOR];
@@ -573,8 +612,8 @@ DRIVER_ERROR LJJetReady::Encapsulate (const RASTERDATA* InputRaster, BOOL bLastP
     }
 	else
 	{
-		ulVUDataLength = InputRaster->rastersize[COLORTYPE_COLOR] - 623;
-        pDataPtr = (BYTE *) InputRaster->rasterdata[COLORTYPE_COLOR] + 623;
+		ulVUDataLength = InputRaster->rastersize[COLORTYPE_COLOR]    - iJpegHeaderSize;
+        pDataPtr = (BYTE *) InputRaster->rasterdata[COLORTYPE_COLOR] + iJpegHeaderSize;
 	}
 
 
@@ -616,6 +655,12 @@ DRIVER_ERROR LJJetReady::Encapsulate (const RASTERDATA* InputRaster, BOOL bLastP
     res[5] = 0x92;
     res[6] = 0x46;
     res[7] = 0x21;
+#ifdef HAVE_LIBDL
+    if (HPLJJRCompress)
+    {
+        res[7] = 0x11;
+    }
+#endif
     res[8] = 0x90;
 
     ulVUDataLength -= 6;
@@ -644,6 +689,21 @@ Header* LJJetReady::SelectHeader (PrintContext *pc)
 
     thePrintContext = pc;
     phLJJetReady = new HeaderLJJetReady (this, pc);
+#ifdef HAVE_LIBDL
+    if (HPLJJRCompress)
+    {
+        COLORMODE       eC = COLOR;
+        MEDIATYPE       eM;
+        QUALITY_MODE    eQ;
+        BOOL            bD;
+        if ((pc->GetPrintModeSettings (eQ, eM, eC, bD)) == NO_ERROR && (eC == GREY_K))
+        {
+            dlclose (m_hHPLibHandle);
+            m_hHPLibHandle = NULL;
+            HPLJJRCompress = NULL;
+        }
+    }
+#endif
 	return phLJJetReady;
 }
 
@@ -1010,6 +1070,24 @@ BOOL  ModeJPEG::Compress( HPLJBITMAP *pSrcBitmap,
                         ) 
 
 {
+
+#ifdef HAVE_LIBDL
+    if (HPLJJRCompress)
+    {
+        int     iRet;
+        memcpy (pTrgBitmap, pSrcBitmap, sizeof (HPLJBITMAP));
+        pTrgBitmap->pvBits = new BYTE[pSrcBitmap->bitmapInfo.bmiHeader.biWidth * pSrcBitmap->bitmapInfo.bmiHeader.biHeight * 3];
+        if (pTrgBitmap->pvBits == NULL)
+        {
+            return FALSE;
+        }
+        iRet = HPLJJRCompress (pTrgBitmap->pvBits, (uint32_t *) &pTrgBitmap->cjBits, pSrcBitmap->pvBits,
+                               pSrcBitmap->bitmapInfo.bmiHeader.biWidth, pSrcBitmap->bitmapInfo.bmiHeader.biHeight);
+        if (iRet < 0)
+            return FALSE;
+        return TRUE;
+    }
+#endif // HAVE_LIBDL
 
 #ifdef JPEG_FILE_OUTPUT
 	static int ifilecount = 0;
@@ -1432,6 +1510,13 @@ BOOL ModeJPEG::Process
 				//  0x92       - VU data length
 				//  0x46       - vendor unique  
 				BYTE JrDataLengthSeq[] = {0xC2,0x38,0x03,0x00,0x00,0xF8,0x92,0x46};
+#ifdef HAVE_LIBDL
+                if (HPLJJRCompress)
+                {
+                    JrDataLengthSeq[1] = 0;
+                    JrDataLengthSeq[2] = 0;
+                }
+#endif
 				err = thePrinter->Send ((const BYTE *)JrDataLengthSeq, sizeof(JrDataLengthSeq));
 				ERRCHECK;
 
@@ -1440,158 +1525,161 @@ BOOL ModeJPEG::Process
 								 &qTableInfo,
 								 FALSE	// We are only worried about the qTables not about the colorspace.
 							    );
+                if (!HPLJJRCompress)
+                {
 
-				//VWritePrinter("\x00\x80\x00\x03\x00\x00", 0x6);
-				BYTE JrQTSeq[] = {0x00,0x80,0x00,0x03,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrQTSeq, sizeof(JrQTSeq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x80\x00\x03\x00\x00", 0x6);
+				    BYTE JrQTSeq[] = {0x00,0x80,0x00,0x03,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrQTSeq, sizeof(JrQTSeq));
+				    ERRCHECK;
 
 #ifdef APDK_LITTLE_ENDIAN
-				//VWritePrinter((VOID*) pQTableInfo->qtable0, sizeof(DWORD) * QTABLE_SIZE);
-				err = thePrinter->Send ((const BYTE *)qTableInfo.qtable0, sizeof(DWORD) * QTABLE_SIZE);
-				ERRCHECK;
+				    //VWritePrinter((VOID*) pQTableInfo->qtable0, sizeof(DWORD) * QTABLE_SIZE);
+				    err = thePrinter->Send ((const BYTE *)qTableInfo.qtable0, sizeof(DWORD) * QTABLE_SIZE);
+				    ERRCHECK;
 
 
-				//VWritePrinter((VOID*) pQTableInfo->qtable1, sizeof(DWORD) * QTABLE_SIZE);
-				err = thePrinter->Send ((const BYTE *)qTableInfo.qtable1, sizeof(DWORD) * QTABLE_SIZE);
-				ERRCHECK;
+				    //VWritePrinter((VOID*) pQTableInfo->qtable1, sizeof(DWORD) * QTABLE_SIZE);
+				    err = thePrinter->Send ((const BYTE *)qTableInfo.qtable1, sizeof(DWORD) * QTABLE_SIZE);
+				    ERRCHECK;
 
-				//VWritePrinter((VOID*) pQTableInfo->qtable2, sizeof(DWORD) * QTABLE_SIZE);
-				err = thePrinter->Send ((const BYTE *)qTableInfo.qtable2, sizeof(DWORD) * QTABLE_SIZE);
-				ERRCHECK;
+				    //VWritePrinter((VOID*) pQTableInfo->qtable2, sizeof(DWORD) * QTABLE_SIZE);
+				    err = thePrinter->Send ((const BYTE *)qTableInfo.qtable2, sizeof(DWORD) * QTABLE_SIZE);
+				    ERRCHECK;
 #else
-                BYTE    szStr[sizeof (DWORD) * QTABLE_SIZE * 3];
-                BYTE    *p;
-                p = szStr;
-                for (int i = 0; i < QTABLE_SIZE; i++)
-                {
-                    *p++ = qTableInfo.qtable0[i] & 0xFF;
-                    *p++ = (qTableInfo.qtable0[i] >> 8) & 0xFF;
-                    *p++ = (qTableInfo.qtable0[i] >> 16) & 0xFF;
-                    *p++ = (qTableInfo.qtable0[i] >> 24) & 0xFF;
-                }
-                for (int i = 0; i < QTABLE_SIZE; i++)
-                {
-                    *p++ = qTableInfo.qtable1[i] & 0xFF;
-                    *p++ = (qTableInfo.qtable1[i] >> 8) & 0xFF;
-                    *p++ = (qTableInfo.qtable1[i] >> 16) & 0xFF;
-                    *p++ = (qTableInfo.qtable1[i] >> 24) & 0xFF;
-                }
-                for (int i = 0; i < QTABLE_SIZE; i++)
-                {
-                    *p++ = qTableInfo.qtable2[i] & 0xFF;
-                    *p++ = (qTableInfo.qtable2[i] >> 8) & 0xFF;
-                    *p++ = (qTableInfo.qtable2[i] >> 16) & 0xFF;
-                    *p++ = (qTableInfo.qtable2[i] >> 24) & 0xFF;
-                }
-                err = thePrinter->Send ((const BYTE *) szStr, 3 * sizeof (DWORD) * QTABLE_SIZE);
-                ERRCHECK;
+                    BYTE    szStr[sizeof (DWORD) * QTABLE_SIZE * 3];
+                    BYTE    *p;
+                    p = szStr;
+                    for (int i = 0; i < QTABLE_SIZE; i++)
+                    {
+                        *p++ = qTableInfo.qtable0[i] & 0xFF;
+                        *p++ = (qTableInfo.qtable0[i] >> 8) & 0xFF;
+                        *p++ = (qTableInfo.qtable0[i] >> 16) & 0xFF;
+                        *p++ = (qTableInfo.qtable0[i] >> 24) & 0xFF;
+                    }
+                    for (int i = 0; i < QTABLE_SIZE; i++)
+                    {
+                        *p++ = qTableInfo.qtable1[i] & 0xFF;
+                        *p++ = (qTableInfo.qtable1[i] >> 8) & 0xFF;
+                        *p++ = (qTableInfo.qtable1[i] >> 16) & 0xFF;
+                        *p++ = (qTableInfo.qtable1[i] >> 24) & 0xFF;
+                    }
+                    for (int i = 0; i < QTABLE_SIZE; i++)
+                    {
+                        *p++ = qTableInfo.qtable2[i] & 0xFF;
+                        *p++ = (qTableInfo.qtable2[i] >> 8) & 0xFF;
+                        *p++ = (qTableInfo.qtable2[i] >> 16) & 0xFF;
+                        *p++ = (qTableInfo.qtable2[i] >> 24) & 0xFF;
+                    }
+                    err = thePrinter->Send ((const BYTE *) szStr, 3 * sizeof (DWORD) * QTABLE_SIZE);
+                    ERRCHECK;
 
 #endif
-				// Start of JPEG Control
-				// 0x8001 JPEG Control register
-				// size - unsigned 32 bit number 0x0000_002C
-				// 11 32 bit words total = 44 bytes
-				// Control  one
-				// Color 0x6614_E001
-				// Mono  0x0000_E005
-				//
-				//VWritePrinter("\x01\x80\x2C\x00\x00\x00", 0x6);
-				BYTE JrCRSeq[] = {0x01,0x80,0x2C,0x00,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCRSeq, sizeof(JrCRSeq));
-				ERRCHECK;
+				    // Start of JPEG Control
+				    // 0x8001 JPEG Control register
+				    // size - unsigned 32 bit number 0x0000_002C
+				    // 11 32 bit words total = 44 bytes
+				    // Control  one
+				    // Color 0x6614_E001
+				    // Mono  0x0000_E005
+				    //
+				    //VWritePrinter("\x01\x80\x2C\x00\x00\x00", 0x6);
+				    BYTE JrCRSeq[] = {0x01,0x80,0x2C,0x00,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCRSeq, sizeof(JrCRSeq));
+				    ERRCHECK;
 
-				if (bGrayScaleSet)
-				{
-					//VWritePrinter("\x05\xE0\x00\x00", 0x4);
-					BYTE JrCR1GSeq[] = {0x05,0xE0,0x00,0x00};
-					err = thePrinter->Send ((const BYTE *)JrCR1GSeq, sizeof(JrCR1GSeq));
-					ERRCHECK;
-				}
-				else
-				{
-					//VWritePrinter("\x01\xE0\x14\x66", 0x4);
-					BYTE JrCR1CSeq[] = {0x01,0xE0,0x14,0x66};
-					err = thePrinter->Send ((const BYTE *)JrCR1CSeq, sizeof(JrCR1CSeq));
-					ERRCHECK;
-				}
+				    if (bGrayScaleSet)
+				    {
+					    //VWritePrinter("\x05\xE0\x00\x00", 0x4);
+					    BYTE JrCR1GSeq[] = {0x05,0xE0,0x00,0x00};
+					    err = thePrinter->Send ((const BYTE *)JrCR1GSeq, sizeof(JrCR1GSeq));
+					    ERRCHECK;
+				    }
+				    else
+				    {
+					    //VWritePrinter("\x01\xE0\x14\x66", 0x4);
+					    BYTE JrCR1CSeq[] = {0x01,0xE0,0x14,0x66};
+					    err = thePrinter->Send ((const BYTE *)JrCR1CSeq, sizeof(JrCR1CSeq));
+					    ERRCHECK;
+				    }
         
-				//
-				// Control three
-				// Color 0x0000_0001
-				// Mono  0x0000_0000
-				// bit 0 = convert rgb data
-				// bit 1: 0 = 13 bit precision 
-				//        1 = 14 bit precision
-				//
-				if (bGrayScaleSet)
-				{
-					//VWritePrinter("\x00\x00\x00\x00", 0x4);
-					BYTE JrCR3GSeq[] = {0x00,0x00,0x00,0x00};
+				    //
+				    // Control three
+				    // Color 0x0000_0001
+				    // Mono  0x0000_0000
+				    // bit 0 = convert rgb data
+				    // bit 1: 0 = 13 bit precision 
+				    //        1 = 14 bit precision
+				    //
+				    if (bGrayScaleSet)
+				    {
+					    //VWritePrinter("\x00\x00\x00\x00", 0x4);
+					    BYTE JrCR3GSeq[] = {0x00,0x00,0x00,0x00};
 
-					err = thePrinter->Send ((const BYTE *)JrCR3GSeq, sizeof(JrCR3GSeq));
-					ERRCHECK;
-				}
-				else
-				{
-					//VWritePrinter("\x01\x00\x00\x00", 0x4);
-					BYTE JrCR3CSeq[] = {0x01,0x00,0x00,0x00};
-					err = thePrinter->Send ((const BYTE *)JrCR3CSeq, sizeof(JrCR3CSeq));
-					ERRCHECK;
-				}
+					    err = thePrinter->Send ((const BYTE *)JrCR3GSeq, sizeof(JrCR3GSeq));
+					    ERRCHECK;
+				    }
+				    else
+				    {
+					    //VWritePrinter("\x01\x00\x00\x00", 0x4);
+					    BYTE JrCR3CSeq[] = {0x01,0x00,0x00,0x00};
+					    err = thePrinter->Send ((const BYTE *)JrCR3CSeq, sizeof(JrCR3CSeq));
+					    ERRCHECK;
+				    }
         
-				//
-				// CSC matrix
-				// 11  12  13  2.0   0.0    0.0
-				// 21  22  23  2.0  -2.0    0.0
-				// 31  32  33  2.0   0.0   -2.0
+				    //
+				    // CSC matrix
+				    // 11  12  13  2.0   0.0    0.0
+				    // 21  22  23  2.0  -2.0    0.0
+				    // 31  32  33  2.0   0.0   -2.0
 
-				// Decompression matrix
-				//VWritePrinter("\x00\x20\x00\x00", 0x4);
-				BYTE JrCSC1Seq[] = {0x00,0x20,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC1Seq, sizeof(JrCSC1Seq));
-				ERRCHECK;
+				    // Decompression matrix
+				    //VWritePrinter("\x00\x20\x00\x00", 0x4);
+				    BYTE JrCSC1Seq[] = {0x00,0x20,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC1Seq, sizeof(JrCSC1Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x00\x00\x00", 0x4);
-				BYTE JrCSC2Seq[] = {0x00,0x00,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC2Seq, sizeof(JrCSC2Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x00\x00\x00", 0x4);
+				    BYTE JrCSC2Seq[] = {0x00,0x00,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC2Seq, sizeof(JrCSC2Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x00\x00\x00", 0x4);
-				BYTE JrCSC3Seq[] = {0x00,0x00,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC3Seq, sizeof(JrCSC3Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x00\x00\x00", 0x4);
+				    BYTE JrCSC3Seq[] = {0x00,0x00,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC3Seq, sizeof(JrCSC3Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x20\x00\x00", 0x4);
-				BYTE JrCSC4Seq[] = {0x00,0x20,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC4Seq, sizeof(JrCSC4Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x20\x00\x00", 0x4);
+				    BYTE JrCSC4Seq[] = {0x00,0x20,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC4Seq, sizeof(JrCSC4Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\xE0\x00\x00", 0x4);
-				BYTE JrCSC5Seq[] = {0x00,0xE0,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC5Seq, sizeof(JrCSC5Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\xE0\x00\x00", 0x4);
+				    BYTE JrCSC5Seq[] = {0x00,0xE0,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC5Seq, sizeof(JrCSC5Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x00\x00\x00", 0x4);
-				BYTE JrCSC6Seq[] = {0x00,0x00,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC6Seq, sizeof(JrCSC6Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x00\x00\x00", 0x4);
+				    BYTE JrCSC6Seq[] = {0x00,0x00,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC6Seq, sizeof(JrCSC6Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x20\x00\x00", 0x4);
-				BYTE JrCSC7Seq[] = {0x00,0x20,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC7Seq, sizeof(JrCSC7Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x20\x00\x00", 0x4);
+				    BYTE JrCSC7Seq[] = {0x00,0x20,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC7Seq, sizeof(JrCSC7Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\x00\x00\x00", 0x4);
-				BYTE JrCSC8Seq[] = {0x00,0x00,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC8Seq, sizeof(JrCSC8Seq));
-				ERRCHECK;
+				    //VWritePrinter("\x00\x00\x00\x00", 0x4);
+				    BYTE JrCSC8Seq[] = {0x00,0x00,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC8Seq, sizeof(JrCSC8Seq));
+				    ERRCHECK;
 
-				//VWritePrinter("\x00\xE0\x00\x00", 0x4);
-				BYTE JrCSC9Seq[] = {0x00,0xE0,0x00,0x00};
-				err = thePrinter->Send ((const BYTE *)JrCSC9Seq, sizeof(JrCSC9Seq));
-				ERRCHECK;
-			}
+				    //VWritePrinter("\x00\xE0\x00\x00", 0x4);
+				    BYTE JrCSC9Seq[] = {0x00,0xE0,0x00,0x00};
+				    err = thePrinter->Send ((const BYTE *)JrCSC9Seq, sizeof(JrCSC9Seq));
+				    ERRCHECK;
+                } // if (!HPLJJRCompress)
+            }     // if (....bStartPageNotSent)
 
 
 			BYTE         *pbTemp;

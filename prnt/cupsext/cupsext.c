@@ -78,6 +78,12 @@ Don Welch
 #include <cups/cups.h>
 #include <cups/language.h>
 
+/* Ref: PEP 353 (Python 2.5) */
+#if PY_VERSION_HEX < 0x02050000
+typedef int Py_ssize_t;
+#define PY_SSIZE_T_MAX INT_MAX
+#define PY_SSIZE_T_MIN INT_MIN
+#endif
 
 /*
  * 'validate_name()' - Make sure the printer name only contains valid chars.
@@ -300,13 +306,13 @@ PyObject * getPrinters( PyObject * self, PyObject * args )
         goto abort;
     }
 
-    int max_count = 0;
+    Py_ssize_t max_count = 0;
 
-    for ( attr = ippFindAttribute(response, "printer-name", IPP_TAG_NAME),
+    for (attr = ippFindAttribute(response, "printer-name", IPP_TAG_NAME),
             max_count = 0;
         attr != NULL;
         attr = ippFindNextAttribute(response, "printer-name", IPP_TAG_NAME),
-            max_count ++);
+            max_count++);
 
 
     printer_list = PyList_New( max_count );
@@ -412,7 +418,7 @@ abort:
     if (http != NULL)
         httpClose(http);
 
-    printer_list = PyList_New( 0 );
+    printer_list = PyList_New( (Py_ssize_t)0 );
     return printer_list;
 }
 
@@ -839,7 +845,7 @@ PyObject * cancelJob( PyObject * self, PyObject * args ) // cancelJob( dest, job
 PyObject * getJobs( PyObject * self, PyObject * args )
 {
     cups_job_t * jobs;
-    int i;
+    Py_ssize_t i;
     int num_jobs;
     PyObject * job_list;
     int my_job;
@@ -847,7 +853,7 @@ PyObject * getJobs( PyObject * self, PyObject * args )
 
     if ( !PyArg_ParseTuple( args, "ii", &my_job, &completed ) )
     {
-        return PyList_New( 0 );
+        return PyList_New( (Py_ssize_t)0 );
     }
 
     num_jobs = cupsGetJobs( &jobs, NULL, my_job, completed );
@@ -873,15 +879,19 @@ PyObject * getJobs( PyObject * self, PyObject * args )
     }
     else
     {
-        job_list = PyList_New( 0 );
+        job_list = PyList_New( (Py_ssize_t)0 );
     }
     return job_list;
 }
 
 PyObject *  getVersion( PyObject * self, PyObject * args )
 {
-    //return Py_BuildValue( "iii", CUPS_VERSION_MAJOR, CUPS_VERSION_MINOR, CUPS_VERSION_PATCH );
     return Py_BuildValue( "f", CUPS_VERSION );
+}
+
+PyObject *  getVersionTuple( PyObject * self, PyObject * args )
+{
+    return Py_BuildValue( "(iii)", CUPS_VERSION_MAJOR, CUPS_VERSION_MINOR, CUPS_VERSION_PATCH );
 }
 
 ppd_file_t * ppd_file = NULL;
@@ -1076,10 +1086,10 @@ static PyMethodDef cupsext_methods[] =
     { "getPPDOption",(PyCFunction)getPPDOption,METH_VARARGS },
     { "getPPDPageSize", (PyCFunction)getPPDPageSize, METH_VARARGS },
     { "getVersion",  (PyCFunction)getVersion,  METH_VARARGS },
+    { "getVersionTuple",  (PyCFunction)getVersionTuple,  METH_VARARGS },
     { "cancelJob",   (PyCFunction)cancelJob,   METH_VARARGS },
     { "getJobs",     (PyCFunction)getJobs,     METH_VARARGS },
     { "getServer",   (PyCFunction)getServer,   METH_VARARGS },
-    //{ "newOptions",   (PyCFunction)newOptions,   METH_VARARGS },
     { "addOption",   (PyCFunction)addOption,   METH_VARARGS },
     { "resetOptions",   (PyCFunction)resetOptions,   METH_VARARGS },
     { "printFileWithOptions",   (PyCFunction)printFileWithOptions,   METH_VARARGS },

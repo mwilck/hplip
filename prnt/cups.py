@@ -24,7 +24,14 @@ import os, os.path, gzip, re, time, urllib, tempfile, glob
 
 # Local
 from base.g import *
-import cupsext
+
+# Handle case where cups.py (via device.py) is loaded 
+# and cupsext doesn't exist yet. This happens in the 
+# installer...
+try:
+    import cupsext
+except ImportError:
+    pass
 
 # PPD parsing patterns
 mfg_pat = re.compile(r'\*\s*Manufacturer:\s*\".*?(.*?)\"', re.IGNORECASE)
@@ -151,6 +158,9 @@ def getAllJobs(my_job=0):
 
 def getVersion():
     return cupsext.getVersion()
+    
+def getVersionTuple():
+    return cupsext.getVersionTuple()
 
 def getServer():
     return cupsext.getServer()

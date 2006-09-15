@@ -130,6 +130,10 @@ ICEHEIGHTPOINTS=420"
 *FoomaticRIPOptionSetting PageSize=A6TearOff: " -dDEVICEWIDTHPOINTS=29&&
 7 -dDEVICEHEIGHTPOINTS=420"
 *End
+*PageSize CDDVD80/CD/DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
+*FoomaticRIPOptionSetting PageSize=CDDVD80: " -dDEVICEWIDTHPOINTS=237 &&
+-dDEVICEHEIGHTPOINTS=237"
+*End
 *PageSize Hagaki/Hagaki: "%% FoomaticRIPOptionSetting: PageSize=Hagaki"
 *FoomaticRIPOptionSetting PageSize=Hagaki: " -dDEVICEWIDTHPOINTS=283 -&&
 dDEVICEHEIGHTPOINTS=420"
@@ -144,6 +148,7 @@ dDEVICEHEIGHTPOINTS=420"
 *PageRegion 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageRegion A6TearOff/A6 with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=A6TearOff"
+*PageRegion CDDVD80/CD/DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
 *PageRegion Hagaki/Hagaki: "%% FoomaticRIPOptionSetting: PageSize=Hagaki"
 *CloseUI: *PageRegion
 
@@ -153,6 +158,7 @@ dDEVICEHEIGHTPOINTS=420"
 *ImageableArea 3x5/3x5 inch index card: "0 36 216 360"
 *ImageableArea A6/A6: "0 36 297 420"
 *ImageableArea A6TearOff/A6 with tear-off tab: "0 0 297 420"
+*ImageableArea CDDVD80/CD/DVD 80 mm: "0 36 237 237"
 *ImageableArea Hagaki/Hagaki: "0 36 283 420"
 
 *DefaultPaperDimension: PhotoTearOff
@@ -161,6 +167,7 @@ dDEVICEHEIGHTPOINTS=420"
 *PaperDimension 3x5/3x5 inch index card: "216 360"
 *PaperDimension A6/A6: "297 420"
 *PaperDimension A6TearOff/A6 with tear-off tab: "297 420"
+*PaperDimension CDDVD80/CD/DVD 80 mm: "237 237"
 *PaperDimension Hagaki/Hagaki: "283 420"
 
 *CloseGroup: General

@@ -61,6 +61,7 @@ try:
     from base.codes import *
     from base import device, utils, msg
     from base.service import sendEvent
+    from prnt import cups
 except ImportError:
     syslog.syslog(syslog.LOG_CRIT, "hpfax[%d]: error: Error importing HPLIP modules." % pid)
     sys.exit(1)
@@ -134,7 +135,11 @@ if len( args ) == 0:
     sock.close()
 
     if not fields.get('num-devices', 0) or result_code > ERROR_SUCCESS:
-        print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
+        cups_ver_major, cups_ver_minor, cups_ver_patch = cups.getVersionTuple()
+        
+        if cups_ver_major == 1 and cups_ver_minor < 2:
+            print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
+            
         sys.exit(0)
 
     direct_pat = re.compile(r'(.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
@@ -273,8 +278,8 @@ else:
     
     os.close(input_fd)
     
-    sendEvent(sock, EVENT_END_FAX_PRINT_JOB, 'event',
-              job_id, username, device_uri)
+    #sendEvent(sock, EVENT_END_FAX_PRINT_JOB, 'event',
+    #          job_id, username, device_uri)
     
     sock.close()
     sys.exit(0)

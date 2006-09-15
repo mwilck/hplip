@@ -662,7 +662,10 @@ class hpssd_handler(dispatcher):
                 log.error("Unhandled exception during processing:")
                 log.exception()
 
-            self.handle_write()
+            try:
+                self.handle_write()
+            except socket.error, why:
+                log.error("Socket error: %s" % why)
             
             if not remaining_msg:
                 break
@@ -964,8 +967,12 @@ class hpssd_handler(dispatcher):
         
         fax_file[(username, job_id)].seek(0)
         
+        #print username, job_id, printer_name, device_uri, title, job_size
+        
         for handler in socket_map:
             handler_obj = socket_map[handler]        
+            
+            #print handler_obj.send_events, handler_obj.typ, handler_obj.username
             
             if handler_obj.send_events and \
                 handler_obj.typ == 'fax' and \
@@ -1157,7 +1164,7 @@ class hpssd_handler(dispatcher):
                 timeout = int(self.fields.get('timeout', 5))
 
                 try:
-                    detected_devices = slp.detectNetworkDevices('224.0.1.60', 427, ttl, timeout)
+                    detected_devices = slp.detectNetworkDevices(ttl, timeout)
                 except Error:
                     log.error("An error occured during network probe.")
                 else:

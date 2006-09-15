@@ -45,7 +45,7 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_OPTIONS,
          utils.USAGE_BUS1, utils.USAGE_BUS2,
         ("Bar graph size:", "-s<size> or --size=<size> (default=%d)", "option", False),
-        ("Use colored bar graphs:", "-c or --color (default=False)", "option", False),
+        ("Use colored bar graphs:", "-c or --color (default is colorized)", "option", False),
         ("Bar graph character:", "-a<char> or --char=<char> (default is '/')", "option", False),
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
@@ -122,8 +122,8 @@ printer_name = None
 device_uri = None
 log_level = logger.DEFAULT_LOG_LEVEL
 bus = device.DEFAULT_PROBE_BUS
-size=100
-color=False
+size = 100
+color = True
 bar_char = '/'
 
 if os.getenv("HPLIP_DEBUG"):
@@ -223,43 +223,50 @@ if d.mq['status-type'] != STATUS_TYPE_NONE:
 
     log.info("")
 
+    sorted_supplies = []
     a = 1
     while True:
-
         try:
-            agent_type = d.dq['agent%d-type' % a]
+            agent_type = int(d.dq['agent%d-type' % a])
+            agent_kind = int(d.dq['agent%d-kind' % a])
         except KeyError:
             break
         else:
-            agent_kind = d.dq['agent%d-kind' % a]
-            agent_health = d.dq['agent%d-health' % a]
-            agent_level = d.dq['agent%d-level' % a]
-            agent_sku = str(d.dq['agent%d-sku' % a])
-            agent_desc = d.dq['agent%d-desc' % a]
-            agent_health_desc = d.dq['agent%d-health-desc' % a]
-
-            if agent_health == AGENT_HEALTH_OK and \
-                agent_kind in (AGENT_KIND_SUPPLY,
-                                AGENT_KIND_HEAD_AND_SUPPLY,
-                                AGENT_KIND_TONER_CARTRIDGE,
-                                AGENT_KIND_MAINT_KIT,
-                                AGENT_KIND_ADF_KIT,
-                                AGENT_KIND_INT_BATTERY,
-                                AGENT_KIND_DRUM_KIT,):
-
-                log.info(utils.bold(agent_desc))
-                log.info("Part No.: %s" % agent_sku)
-                log.info("Health: %s" % agent_health_desc)
-                logBarGraph(agent_level, agent_type, size, color, bar_char)
-                log.info("")
-
-            else:
-                log.info(utils.bold(agent_desc))
-                log.info("Part No.: %s" % agent_sku)
-                log.info("Health: %s" % agent_health_desc)
-                log.info("")
-
+            sorted_supplies.append((a, agent_kind, agent_type))
+            
         a += 1
+        
+    sorted_supplies.sort(lambda x, y: cmp(x[2], y[2]) or cmp(x[1], y[1]))
+
+    for x in sorted_supplies:
+        a, agent_kind, agent_type = x
+        agent_health = d.dq['agent%d-health' % a]
+        agent_level = d.dq['agent%d-level' % a]
+        agent_sku = str(d.dq['agent%d-sku' % a])
+        agent_desc = d.dq['agent%d-desc' % a]
+        agent_health_desc = d.dq['agent%d-health-desc' % a]
+
+        if agent_health == AGENT_HEALTH_OK and \
+            agent_kind in (AGENT_KIND_SUPPLY,
+                            AGENT_KIND_HEAD_AND_SUPPLY,
+                            AGENT_KIND_TONER_CARTRIDGE,
+                            AGENT_KIND_MAINT_KIT,
+                            AGENT_KIND_ADF_KIT,
+                            AGENT_KIND_INT_BATTERY,
+                            AGENT_KIND_DRUM_KIT,):
+
+            log.info(utils.bold(agent_desc))
+            log.info("Part No.: %s" % agent_sku)
+            log.info("Health: %s" % agent_health_desc)
+            logBarGraph(agent_level, agent_type, size, color, bar_char)
+            log.info("")
+
+        else:
+            log.info(utils.bold(agent_desc))
+            log.info("Part No.: %s" % agent_sku)
+            log.info("Health: %s" % agent_health_desc)
+            log.info("")
+
 
 else:
     log.error("Status not supported for selected device.")

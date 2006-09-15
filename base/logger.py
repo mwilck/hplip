@@ -179,13 +179,24 @@ class Logger(object):
     def warn(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_WARN:
             if fmt:
-                self.log("%swarning: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
+                self.log("%swarning: %s%s" % ('\x1b[35;06m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
             else:
                 self.log("warning: %s" % message, Logger.LOG_LEVEL_WARN)
             
             syslog.syslog(syslog.LOG_WARNING, "%s[%d]: warning: %s" % (self.module, self.pid, message))
 
     warning = warn
+
+    def note(self, message, fmt=True):
+        if self._level <= Logger.LOG_LEVEL_WARN:
+            if fmt:
+                self.log("%snote: %s%s" % ('\x1b[32;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
+            else:
+                self.log("note: %s" % message, Logger.LOG_LEVEL_WARN)
+            
+            syslog.syslog(syslog.LOG_WARNING, "%s[%d]: note: %s" % (self.module, self.pid, message))
+
+    notice = note
 
     def error(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_ERROR:

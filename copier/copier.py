@@ -55,11 +55,12 @@ class PMLCopyDevice(device.Device):
     def copy(self, num_copies=1, contrast=0, reduction=100,
              quality=pml.COPIER_QUALITY_NORMAL, 
              fit_to_page=pml.COPIER_FIT_TO_PAGE_ENABLED,
+             scan_style=SCAN_STYLE_FLATBED,
              update_queue=None, event_queue=None): 
         
         if not self.isCopyActive():
             self.copy_thread = PMLCopyThread(self, num_copies, contrast, reduction, quality, 
-                                             fit_to_page, update_queue, event_queue)
+                                             fit_to_page, scan_style, update_queue, event_queue)
             self.copy_thread.start()
             return True
         else:
@@ -81,7 +82,8 @@ class PMLCopyDevice(device.Device):
         
 class PMLCopyThread(threading.Thread):
     def __init__(self, dev, num_copies, contrast, reduction, quality, 
-                 fit_to_page, update_queue=None, event_queue=None):
+                 fit_to_page, scan_style, 
+                 update_queue=None, event_queue=None):
 
         threading.Thread.__init__(self)
         self.dev = dev
@@ -90,6 +92,7 @@ class PMLCopyThread(threading.Thread):
         self.reduction = reduction
         self.quality = quality
         self.fit_to_page = fit_to_page
+        self.scan_style = scan_style
         self.event_queue = event_queue
         self.update_queue = update_queue
         self.prev_update = ''
@@ -142,7 +145,7 @@ class PMLCopyThread(threading.Thread):
                     result_code, token = self.dev.getPML(pml.OID_COPIER_TOKEN)
                 except Error:
                     log.debug("Unable to acquire copy token (1).")
-                    state = STATE_SETUP
+                    state = STATE_SETUP_STATE
                 else:
                     if result_code > pml.ERROR_MAX_OK:
                         state = STATE_SETUP_STATE
@@ -196,7 +199,8 @@ class PMLCopyThread(threading.Thread):
                 self.dev.setPML(pml.OID_COPIER_JOB_QUALITY, self.quality)
                 
                 # fit_to_page
-                self.dev.setPML(pml.OID_COPIER_JOB_FIT_TO_PAGE, self.fit_to_page)
+                if self.scan_style == SCAN_STYLE_FLATBED:
+                    self.dev.setPML(pml.OID_COPIER_JOB_FIT_TO_PAGE, self.fit_to_page)
                 
                 log.debug("num_copies = %d" % self.num_copies)
                 log.debug("contrast= %d" % self.contrast)

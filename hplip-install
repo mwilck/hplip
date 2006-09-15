@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# su/sudo wrapper for HPLIP installer
+python ./install.py -i $*
+
+
+
+
+
+

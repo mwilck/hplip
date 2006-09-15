@@ -148,6 +148,12 @@
 :model "Officejet 9100 series"
 :status :good
 
+:model "OFFICEJET PRO 1150C"
+:status :good
+
+:model "OFFICEJET PRO 1170C SERIES"
+:status :good
+
 :model "officejet d series"
 :status :good
 
@@ -176,12 +182,6 @@
 :status :good
 
 :model "OfficeJet K80xi"
-:status :good
-
-:model "OFFICEJET PRO 1150C"
-:status :good
-
-:model "OFFICEJET PRO 1170C SERIES"
 :status :good
 
 :model "OFFICEJET R40"
@@ -356,6 +356,15 @@
 :status :good
 
 :model "Photosmart C4100 series"
+:status :good
+
+:model "Photosmart C5100 series"
+:status :good
+
+:model "Photosmart C6100 series"
+:status :good
+
+:model "Photosmart C7100 series"
 :status :good
 
 :model "Printer Scanner Copier 300"

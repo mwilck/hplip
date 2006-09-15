@@ -20,7 +20,7 @@
 # Authors: Don Welch, Smith Kennedy
 #
 
-__version__ = '4.2'
+__version__ = '4.3'
 __title__ = 'Device URI Creation Utility'
 __doc__ = "Creates device URIs for local and network connected printers for use with CUPS."
 
@@ -89,7 +89,7 @@ try:
                                   'logging=',
                                   'cups',
                                   'sane',
-                                  'fax=',
+                                  'fax',
                                   'port=',
                                 ] 
                               ) 

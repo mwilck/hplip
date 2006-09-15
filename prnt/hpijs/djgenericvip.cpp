@@ -71,6 +71,7 @@ DJGenericVIP::DJGenericVIP (SystemServices* pSS, BOOL proto)
     pMode[ModeCount++] = new VIPGrayFastDraftMode ();    // Grayscale Fast Draft
     pMode[ModeCount++] = new VIPAutoPQMode ();           // Printer selects PrintMode
     pMode[ModeCount++] = new VIPFastPhotoMode ();        // Fast Photo
+    pMode[ModeCount++] = new VIPCDDVDMode ();            // CD/DVD PrintMode
 
     for (int i = 0; i < (int) ModeCount; i++)
     {
@@ -154,6 +155,28 @@ VIPAutoPQMode::VIPAutoPQMode () : PrintMode (NULL)
     theQuality = qualityAuto;
     pmQuality  = QUALITY_AUTO;
 } // VIPAutoPQMode
+
+VIPCDDVDMode::VIPCDDVDMode () : PrintMode (NULL)
+{
+    BaseResX =
+    BaseResY = 600;
+    ResolutionX[0] = 600;
+    ResolutionY[0] = 600;
+    bFontCapable = FALSE;
+#ifdef APDK_AUTODUPLEX
+    bDuplexCapable = FALSE;
+#endif
+#if defined(APDK_VIP_COLORFILTERING)
+    Config.bErnie = TRUE;
+#endif
+
+    Config.bColorImage = FALSE;
+
+    medium      = mediaCDDVD;
+    theQuality  = qualityPresentation;
+    pmQuality   = QUALITY_BEST;
+    pmMediaType = MEDIA_CDDVD;
+}
 
 BOOL DJGenericVIP::UseGUIMode (PrintMode* pPrintMode)
 {
@@ -337,6 +360,15 @@ BOOL DJGenericVIP::GetMargins (PAPER_SIZE ps, float *fMargins)
 {
     float           xo, yo, xl, yt;
     FullbleedType   fbType = fullbleedNotSupported;
+
+    if (ps == CDDVD_120 || ps == CDDVD_80)
+    {
+        fMargins[0] = (float) 0.06;
+        fMargins[1] = (float) 0.06;
+        fMargins[2] = (float) 0.06;
+        fMargins[3] = (float) 0.06;
+        return TRUE;
+    }
 
     fMargins[0] = (float) 0.125;
     fMargins[1] = (float) 0.125;

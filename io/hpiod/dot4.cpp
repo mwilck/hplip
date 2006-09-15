@@ -88,6 +88,13 @@ int Dot4Channel::Dot4ExecReverseCmd(int fd, unsigned char *buf)
       {
          /* Got a valid data packet handle it. This can happen when ReadData timeouts and p2hcredit=1. */
          pC = (Dot4Channel *)pDev->pChannel[i];
+
+         if (pC->GetP2HCredit() <= 0)
+         {
+            syslog(LOG_ERR, "invalid data packet credit=%d: %s %d\n", pC->GetP2HCredit(), __FILE__, __LINE__);
+            return 0;
+         }
+
          size = ntohs(pCmd->h.length) - sizeof(DOT4Header);
          if (size > (MAX_RECEIVER_DATA - pC->rcnt))
          {
@@ -459,7 +466,7 @@ bugout:
 /* Read data from peripheral. */
 int Dot4Channel::Dot4ReverseData(int fd, int sockid, unsigned char *buf, int length, int timeout)
 {
-   int len, size, total;
+   int len, size, total, i;
    DOT4Header *pPk;
 
    pPk = (DOT4Header *)buf;
@@ -515,6 +522,43 @@ int Dot4Channel::Dot4ReverseData(int fd, int sockid, unsigned char *buf, int len
                total=len;
             }
             Dot4ExecReverseCmd(fd, buf);
+            continue;   /* try again for data packet */
+         }
+         else if ((pPk->psid == pPk->ssid) && ((i = Dot4Socket2Channel(pPk->psid)) >= 0))
+         {
+            /* Got a valid data packet for another channel handle it. This can happen when ReadData timeouts and p2hcredit=1. */
+            Dot4Channel *pC = (Dot4Channel *)pDev->pChannel[i];
+            unsigned char *pBuf;
+
+            if (pC->GetP2HCredit() <= 0)
+            {
+               syslog(LOG_ERR, "invalid data packet credit=%d: %s %d\n", pC->GetP2HCredit(), __FILE__, __LINE__);
+               goto bugout;
+            }
+
+            if (size > (MAX_RECEIVER_DATA - pC->rcnt))
+            {
+               syslog(LOG_ERR, "invalid data packet size=%d: %s %d\n", size, __FILE__, __LINE__);
+               goto bugout;
+            }
+            
+            total = 0;
+            pBuf = &pC->rbuf[pC->rcnt];
+            while (size > 0)
+            {
+               if ((len = pDev->Read(fd, pBuf+total, size)) < 0)
+               {
+                  syslog(LOG_ERR, "unable to read Dot4ReverseData: %m %s %d\n", __FILE__, __LINE__);
+                  goto bugout;
+               }
+               size-=len;
+               total+=len;
+            }
+
+            pC->rcnt += total;
+            if (pPk->credit)
+               pC->SetH2PCredit(pC->GetH2PCredit() + pPk->credit);  /* note, piggy back credit is 1 byte wide */ 
+            pC->SetP2HCredit(pC->GetP2HCredit()-1); /* one data packet was read, decrement credit count */
             continue;   /* try again for data packet */
          }
          else
@@ -758,7 +802,7 @@ int Dot4Channel::Open(char *sendBuf, int *result)
             }
          }
 
-         if (fd == FD_7_1_3 && pDev->GetChannelMode() == DOT4_PHOENIX_MODE && strcasecmp(GetService(), "hp-message") == 0)
+         if (pDev->GetChannelMode() == DOT4_PHOENIX_MODE)
             pDev->WritePhoenixSetup(fd);
 
          int len;
@@ -768,6 +812,11 @@ int Dot4Channel::Open(char *sendBuf, int *result)
          /* Drain any reverse data. */
          for (i=0,len=1; len > 0 && i < sizeof(buf); i++)
             len = pDev->Read(fd, buf+i, 1, 0);    /* no blocking */
+
+#ifdef HPIOD_DEBUG
+         if (i > 1)
+            syslog(LOG_INFO, "drained %d bytes: %s %d\n", i-1, __FILE__, __LINE__);
+#endif
 
          /* DOT4 initialize */
          if (Dot4Init(fd) != 0)
@@ -782,6 +831,16 @@ int Dot4Channel::Open(char *sendBuf, int *result)
 
       if (Dot4OpenChannel(pDev->GetOpenFD()) != 0)
          goto bugout;
+
+      if (pDev->GetChannelMode() == DOT4_PHOENIX_MODE)
+      {
+         /* Issue credit to peripheral. */ 
+         if (Dot4Credit(pDev->GetOpenFD(), 2) != 0)
+         {
+            syslog(LOG_ERR, "invalid Dot4Credit to peripheral: %s %d\n", __FILE__, __LINE__);
+            goto bugout;
+         }     
+      }
 
    } /* if (ClientCnt==1) */
 
@@ -865,22 +924,23 @@ int Dot4Channel::WriteData(unsigned char *data, int length, char *sendBuf, int *
    {
       len = (size > dlen) ? dlen : size;
 
-      /* Check for Phoenix chipset hack (ie: clj2840, lj3055). */
-      if (GetH2PCredit() == 0 && pDev->GetChannelMode() == DOT4_PHOENIX_MODE && strcasecmp(GetService(), "hp-message") == 0)
+      if (GetH2PCredit() == 0 && pDev->GetChannelMode() == DOT4_PHOENIX_MODE)
       {
-         /* For PML channel only, issue credit to peripheral followed by credit request to peripheral. */ 
-         if (GetP2HCredit() == 0)
-         {
-            if (Dot4Credit(pDev->GetOpenFD(), 1) != 0)
-            {
-               syslog(LOG_ERR, "invalid Dot4Credit to peripheral: %s %d\n", __FILE__, __LINE__);
-               goto bugout;
-            }     
-	 }
+         /* Issue credit request to peripheral. */ 
          if (Dot4CreditRequest(pDev->GetOpenFD(), 1) != 0) 
          {
             syslog(LOG_ERR, "invalid Dot4CreditRequest from peripheral: %s %d\n", __FILE__, __LINE__);
             goto bugout;
+         }
+         if (GetH2PCredit() == 0)
+         {
+            if (cnt++ > (EXCEPTION_TIMEOUT/1000000))
+            {
+               syslog(LOG_ERR, "invalid Dot4CreditRequest from peripheral: %s %d\n", __FILE__, __LINE__);
+               goto bugout;
+            }
+            sleep(1);
+            continue;    /* Got a valid Dot4CreditRequest but no credit from peripheral, try again. */ 
          }
       }
 
@@ -892,16 +952,8 @@ int Dot4Channel::WriteData(unsigned char *data, int length, char *sendBuf, int *
             if (ret == 0)
                continue;  /* Got a reverse command, but no Dot4Credit, try again. */ 
 
-	    //            syslog(LOG_ERR, "no credit from peripheral, trying credit request: %s %d\n", __FILE__, __LINE__);
-	    //            if (Dot4CreditRequest(pDev->GetOpenFD(), 1) != 0)
-	    //            {
-               syslog(LOG_ERR, "invalid Dot4Credit from peripheral: %s %d\n", __FILE__, __LINE__);
-               goto bugout;
-	       //            }
-	       //            if (cnt++ == 0)
-	       //               continue; /* credit requested, try again. */
-	       //            else
-	       //               goto bugout;
+            syslog(LOG_ERR, "invalid Dot4Credit from peripheral: %s %d\n", __FILE__, __LINE__);
+            goto bugout;
          }
       }
 

@@ -226,7 +226,8 @@ def recvMessage(sock, timeout=prop.read_timeout):
         r, w, e = select.select([sock], [], [], timeout)
     
         if r == []:
-            raise Error(ERROR_INTERNAL)
+            #raise Error(ERROR_INTERNAL)
+            continue
     
         m = sock.recv(prop.max_message_read)
         
@@ -236,6 +237,7 @@ def recvMessage(sock, timeout=prop.read_timeout):
         log.debug("(xmit) Reading data on channel (%d)" % sock.fileno())
                 
         while True:
+            print "parse"
             log.debug(repr(m))
             fields, data, remaining = parseMessage(m)
             
@@ -258,8 +260,8 @@ def recvMessage(sock, timeout=prop.read_timeout):
             if result_msg_type == 'messageerror': 
                 read_flag = False # exit read loop
                 break
-            else:
-                log.debug("Ignored out of sequence message")
+            #else:
+            #    log.debug("Ignored out of sequence message")
                 
             if remaining: # more messages to look at in this read
                 log.debug("Remaining message")

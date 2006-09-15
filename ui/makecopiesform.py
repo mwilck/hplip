@@ -67,17 +67,18 @@ class MakeCopiesForm(MakeCopiesForm_base):
         
         pix = QPixmap(os.path.join(prop.image_dir, 'status_refresh.png'))
         self.refreshToolButton.setPixmap(pix)
+        
         if self.device_uri and self.printer_name:
             log.error("You may not specify both a printer (-p) and a device (-d).")
             self.FailureUI(self.__tr("<p><b>You may not specify both a printer (-p) and a device (-d)."))
             self.device_uri, self.printer_name = None, None
             self.init_failed = True
-
+        
         self.cups_printers = cups.getPrinters()
         log.debug(self.cups_printers)
 
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(self.sock, bus=bus, filter='scan')
+            t = device.probeDevices(self.sock, bus=bus, filter='copy')
             probed_devices = []
             
             for d in t:
@@ -108,14 +109,15 @@ class MakeCopiesForm(MakeCopiesForm_base):
 
 
             else:
-                x = []
-                for z in self.cups_printers:
-                    if z.device_uri in probed_devices:
-                        x.append(z)
+                #x = []
+                #for z in self.cups_printers:
+                #    if z.device_uri in probed_devices:
+                #        x.append(z)
                 
-                from chooseprinterdlg import ChoosePrinterDlg
+                from choosedevicedlg import ChooseDeviceDlg
                 #dlg = ChoosePrinterDlg(self.cups_printers, ['hp'])
-                dlg = ChoosePrinterDlg(x, ['hp'])
+                #dlg = ChoosePrinterDlg(x, ['hp'])
+                dlg = ChooseDeviceDlg(devices) #, ['hp'])
                 
                 if dlg.exec_loop() == QDialog.Accepted:
                     self.device_uri = dlg.device_uri
@@ -150,6 +152,12 @@ class MakeCopiesForm(MakeCopiesForm_base):
             self.close()
             return
             
+        self.scan_style = self.dev.mq.get('scan-style', SCAN_STYLE_FLATBED)
+        log.debug(self.scan_style)
+        
+        if self.scan_style == SCAN_STYLE_SCROLLFED:
+            self.fitToPageCheckBox.setEnabled(False)
+            self.fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
         
         self.device_uri = self.dev.device_uri
 
@@ -214,7 +222,7 @@ class MakeCopiesForm(MakeCopiesForm_base):
             if self.quality is None:
                 result_code, self.quality = self.dev.getPML(pml.OID_COPIER_QUALITY)
             
-            if self.fit_to_page is None:
+            if self.scan_style == SCAN_STYLE_FLATBED and self.fit_to_page is None:
                 result_code, self.fit_to_page = self.dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
             
             result_code, self.max_reduction = self.dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
@@ -233,14 +241,15 @@ class MakeCopiesForm(MakeCopiesForm_base):
             self.reductionSlider.setTickmarks(QSlider.Below)
             self.reductionSlider.setTickInterval(10)
             
-            if self.fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED:
-                self.fitToPageCheckBox.setChecked(True)
-                self.reductionTextLabel.setText("")
-                self.reductionSlider.setEnabled(False)
-            else:
-                self.fitToPageCheckBox.setChecked(False)
-                self.reductionTextLabel.setText("%d%%" % self.reduction)
-                self.reductionSlider.setEnabled(True)
+            if self.scan_style == SCAN_STYLE_FLATBED:
+                if self.fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED:
+                    self.fitToPageCheckBox.setChecked(True)
+                    self.reductionTextLabel.setText("")
+                    self.reductionSlider.setEnabled(False)
+                else:
+                    self.fitToPageCheckBox.setChecked(False)
+                    self.reductionTextLabel.setText("%d%%" % self.reduction)
+                    self.reductionSlider.setEnabled(True)
                 
             # num_copies
             self.numberCopiesSpinBox.setValue(self.num_copies)
@@ -291,8 +300,8 @@ class MakeCopiesForm(MakeCopiesForm_base):
                 break
         
         
-    def callback(self, x, y):
-        utils.update_spinner()
+    #def callback(self, x, y):
+    #    update_spinner()
     
     def copy_canceled(self):
         self.event_queue.put(copier.COPY_CANCELED)
@@ -346,9 +355,9 @@ class MakeCopiesForm(MakeCopiesForm_base):
         self.copy_timer.start(1000) # 1 sec UI updates
 
         self.dev.copy(self.num_copies, self.contrast, self.reduction,
-             self.quality, self.fit_to_page, 
-             self.update_queue, self.event_queue)
-        
+                      self.quality, self.fit_to_page, self.scan_style,
+                      self.update_queue, self.event_queue)
+                
         
         
         

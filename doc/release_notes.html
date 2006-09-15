@@ -5,7 +5,7 @@
 
  <head>
   <title>HPLIP</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- <link rel="stylesheet" href="styles/style.css" type="text/css" /> -->
   <link rel="stylesheet" href="styles/rest.css" type="text/css" /> 
   <link rel="stylesheet" href="styles/default.css" type="text/css" /> 
@@ -43,7 +43,8 @@
                 <menu compact="compact">
                     <li><a href="system_requirements.html" title="System Requirements">System Requirements</a></li> 
                     <li><a href="supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li> 
+                    <li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
+                    <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
                     <li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
                 </menu>
 
@@ -69,12 +70,126 @@
 
         <!-- CONTENT -->
 
-        <a href="index.html">Home</a> > Release Notes
+        <a href="index.html">Home</a>
+&gt;
+Release Notes
+
 
         <td align="left" valign="top" class="content">
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.6.9 - This release has the following changes.</strong></p>
+<p><strong>This HPLIP package includes HPIJS 2.6.9 which has the following changes.</strong></p>
+<ol class="arabic">
+<li><p class="first">Add new command hplip-install.</p>
+</li>
+<li><p class="first">Fixed defect (Printer supplies listed in &quot;random&quot; order).</p>
+</li>
+<li><p class="first">Fixed random supply order in hp-levels.</p>
+</li>
+<li><p class="first">Fixed defect (Don't report hpfax:/no_devices_found in CUPS 1.2).</p>
+</li>
+<li><p class="first">Fixed network printer detection (SLP).</p>
+</li>
+<li><p class="first">Added hp-probe back into tarball.</p>
+</li>
+<li><p class="first">Added hp-probe into create_docs.</p>
+</li>
+<li><p class="first">Upgraded hp-probe to new doc and logging stds.</p>
+</li>
+<li><p class="first">Upgraded hp-check to use same dependency checks as hplip-install.</p>
+</li>
+<li><p class="first">Modified create_docs/index.txt so that the num. of models is dynamically put onto the website home page.</p>
+</li>
+<li><p class="first">Modified create_docs so that the supported distro/versions is dynamically put onto the download page.</p>
+</li>
+<li><p class="first">Modified create_docs so that the download links are dynamically put onto the download page.</p>
+</li>
+<li><p class="first">Fixed defect (The HP Fax URI could not be showed if executing hp-makeuri with parameter &quot;--fax&quot; in the terminal).</p>
+</li>
+<li><p class="first">Added HPILP version to templates and dist.py.</p>
+</li>
+<li><p class="first">Fixed defect (The &quot;Add to List&quot; button for Coverpage would be grayed out after sent a fax job including Coverpage on Mandriva 2006 32bit OS with Northstar V).</p>
+</li>
+<li><p class="first">Fixed defect (An unexpected error occurred when add a FAB entry using the space as the fist character of the entry name).</p>
+</li>
+<li><p class="first">Made some misc. input validation improvements to hp-fab -i.</p>
+</li>
+<li><p class="first">Changed print code so that it can use lpr or lp depending on what is installed (lpr=default).</p>
+</li>
+<li><p class="first">Fixed defect (hp-unload only works with ASCII char's).</p>
+</li>
+<li><p class="first">Fixed defect (hp-unload gives incorrect permissions bits). hp-unload will save files with permissions of 0600.</p>
+</li>
+<li><p class="first">Fixed a laserjet scanning problem in hpiod.</p>
+</li>
+<li><p class="first">Changed the 1284.4/MLC setup command for CLJ2840/LJ3050/LJ3055.</p>
+</li>
+<li><p class="first">Cleaned up PML errors occuring on DJ 4xx when doing dynamic counters.</p>
+</li>
+<li><p class="first">Fixed status-dynamic-counters value for DJ 460.</p>
+</li>
+<li><p class="first">Fixed defect (Toolbox cannot be launched successfully after setup Northstar V with Network connection on Simplified Chinese Red Flag 5 OS).</p>
+</li>
+<li><p class="first">Added code to cleanup spinner from text UIs.</p>
+</li>
+<li><p class="first">Re-fixed defect (The fax job could not be sent while sending fax in non-interactive mode (reproduce 7 out of 10 times)).</p>
+</li>
+<li><p class="first">Removed rpm-build option from HPLIP configure. Rpm-build is no longer needed.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Added two new HPLIP configure options.</dt>
+<dd><ol class="first last arabic simple">
+<li>scan-build - enable/disable xsane backend build</li>
+<li>gui-build - enable/disable GUI commands</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Added exit status to HPLIP and HPIJS configure.</p>
+</li>
+<li><p class="first">Added python-devel check to configure.</p>
+</li>
+<li><p class="first">Added pthread-devel check to configure.</p>
+</li>
+<li><p class="first">Added ppdev-devel check to configure.</p>
+</li>
+<li><p class="first">Fixed defect (The fax job could not be sent while sending fax in non-interactive mode (reproduce 7 out of 10 times)).</p>
+</li>
+<li><p class="first">Fixed defect (The value of Notes for an FAB entry cannot be displayed correctly while the entry was added completely in interactive mode).</p>
+</li>
+<li><p class="first">Fixed defect (An error occurs while executing hp-sendfax in non-interactive mode with the device disconnected).</p>
+</li>
+<li><p class="first">Fixed defect (The .g3 file could not be added to the Items List and not be sent).</p>
+</li>
+<li><p class="first">Fixed defect (The fax job could not be sent in non-interactive mode).</p>
+</li>
+<li><p class="first">Create bindir if not already created in &quot;make install&quot;.</p>
+</li>
+<li><p class="first">Added scan-style and fit-to-page fix to hp-makecopies (fixes defects and issue on mailing-list).</p>
+</li>
+<li><p class="first">Added scaling=100 to hp-sendfax.</p>
+</li>
+<li><p class="first">Changed PyQt version mismatch to warning.</p>
+</li>
+<li><p class="first">Moved Qt import in hp-toolbox and hp-print to after command line processing.</p>
+</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.6.9 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Added support CD/DVD label printing (ie: PS D5100).</li>
+<li>Added support for the following new printer(s).</li>
+</ol>
+<pre class="literal-block">
+PhotoSmart A310 series (DJGenericVIP)
+PhotoSmart C5100 series (DJGenericVIP)
+PhotoSmart C6100 series (DJGenericVIP)
+PhotoSmart C7100 series (DJGenericVIP)
+PhotoSmart D5100 series (DJGenericVIP)
+PhotoSmart D5060 series (DJGenericVIP)
+PhotoSmart Pro B8300 series (DJGenericVIP)
+</pre>
 <p><strong>HPLIP 1.6.7 - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>Changed from dynamic IP ports to static IANA IP ports for hpiod (2208) and hpssd (2207).</li>
@@ -1208,7 +1323,7 @@ The old interface used the following Ghostscript commands.</p>
 
 
         <hr size="1"/>
-        <small>Last update: Mon Jul 24 13:44:04 2006</small>
+        <small>Last update: Fri Sep  1 12:44:10 2006; HPLIP Version: 1.6.9</small>
 
         <!-- FOOTER -->
     </table>

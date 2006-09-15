@@ -550,6 +550,13 @@ int main(int argc, char *argv[], char *evenp[])
 
       if (pSS->FirstRaster)
       {
+          char  *pEnv = getenv ("COPY_COUNT");
+          if (pEnv)
+          {
+              i = atoi (pEnv);
+              pSS->pPC->SetCopyCount (i);
+          }
+
          pSS->FirstRaster = 0;
 
          width = (int)(pSS->ph.xres * pSS->pPC->PrintableWidth() + 0.5);

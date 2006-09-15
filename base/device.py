@@ -112,7 +112,7 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
             cups_uri = fields.get( 'device-uri', '' )
             found = True
 
-    else: # serial
+    elif hpssd_sock is not None: # serial
         log.debug("Trying serial number")
         devices = probeDevices(hpssd_sock, bus="usb,par")
 
@@ -154,7 +154,7 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
                 cups_uri = d
                 break
 
-    if found:
+    if found and hpssd_sock is not None:
         fields, data, result_code = \
             msg.xmitMessage(hpssd_sock, 'QueryModel', None, 
             {'device-uri' : cups_uri,})
@@ -164,6 +164,9 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
 
         if fields.get('fax-type', 0):
             fax_uri = cups_uri.replace("hp:", "hpfax:")
+            
+    else:
+        scan_uri, fax_uri = '', ''
 
     return cups_uri, sane_uri, fax_uri
 
@@ -218,13 +221,13 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=[
             log.info(formatter.compose((str(y), devices[y][0], ', '.join(devices[y][1]))))
 
         while 1:
-            user_input = raw_input(utils.bold("\nEnter number 0...%d for device (q=quit) ?" % (x-1)))
+            user_input = raw_input(utils.bold("\nEnter number 0...%d for device (q=quit) ?" % (x-1))).strip()
 
-            if user_input == '':
+            if not user_input:
                 log.warn("Invalid input - enter a numeric value or 'q' to quit.")
                 continue
 
-            if user_input.strip()[0] in ('q', 'Q'):
+            if user_input.lower() == 'q':
                 return
 
             try:
@@ -474,6 +477,7 @@ MODEL_UI_REPLACEMENTS = {'laserjet'   : 'LaserJet',
                           'printer'    : 'Printer',
                           'mfp'        : 'MFP',
                           'mopier'     : 'Mopier',
+                          'pro'        : 'Pro',
                         }
 
 
@@ -1069,6 +1073,7 @@ class Device(object):
                 log.error("Unimplemented status type: %d" % status_type)
                 
             if battery_check:
+                log.debug("Battery check...")
                 status.BatteryCheck(self, status_block)
 
             if status_block:
@@ -1089,6 +1094,8 @@ class Device(object):
                 self.mq.get('fax-type', FAX_TYPE_NONE) and \
                 status_code == STATUS_PRINTER_IDLE:
 
+                log.debug("Fax activity check...")
+                
                 tx_active, rx_active = status.getFaxStatus(self)
 
                 if tx_active:
@@ -1121,6 +1128,7 @@ class Device(object):
                     self.panel_check = bool(self.mq.get('panel-check-type', 0))
 
                 if self.panel_check and status_type in (STATUS_TYPE_LJ, STATUS_TYPE_S, STATUS_TYPE_VSTATUS):
+                    log.debug("Panel check...")
                     try:
                         self.panel_check, line1, line2 = status.PanelCheck(self)
                     finally:
@@ -1658,25 +1666,42 @@ class Device(object):
                 self.writePrint(file(file_name, 'r').read())
 
         else:
-            lp_opt = ''
-            
-            if raw:
-                lp_opt = '-oraw'
+            if not utils.which('lpr'):
+                lp_opt = ''
+                
+                if raw:
+                    lp_opt = '-oraw'
+    
+                if is_gzip:
+                    c = 'gunzip -c %s | lp -c -d%s %s' % (file_name, printer_name, lp_opt)
+                else:
+                    c = 'lp -c -d%s %s %s' % (printer_name, lp_opt, file_name)
+                    
+                log.debug(c)
+                exit_code = os.system(c)
+    
+                if exit_code != 0:
+                    log.error("Print command failed with exit code %d!" % exit_code)
+                
+                if remove:
+                    os.remove(file_name)
 
-            if is_gzip:
-                c = 'gunzip -c %s | lp -c -d%s %s' % (file_name, printer_name, lp_opt)
             else:
-                c = 'lp -c -d%s %s %s' % (printer_name, lp_opt, file_name)
+                raw_str, rem_str = '', ''
+                if raw: raw_str = '-l'
+                if remove: rem_str = '-r'
+                
+                if is_gzip:
+                    c = 'gunzip -c %s | lpr %s %s -P%s' % (file_name, raw_str, rem_str, printer_name)
+                else:
+                    c = 'lpr -P%s %s %s %s' % (printer_name, raw_str, rem_str, file_name)
 
-            log.debug(c)
-            exit_code = os.system(c)
-
-            if exit_code != 0:
-                log.error("Print command failed with exit code %d!" % exit_code)
-            
-            if remove:
-                os.remove(file_name)
-            
+                log.debug(c)
+                exit_code = os.system(c)
+    
+                if exit_code != 0:
+                    log.error("Print command failed with exit code %d!" % exit_code)
+                
 
     def printTestPage(self, printer_name=None):
         return self.printParsedGzipPostscript(os.path.join( prop.home_dir, 'data',

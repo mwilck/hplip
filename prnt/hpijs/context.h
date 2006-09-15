@@ -246,6 +246,15 @@ public:
 
     void    ResetIOMode (BOOL bDevID, BOOL bStatus);
 
+    int     GetCopyCount ()
+    {
+        return m_iCopyCount;
+    }
+    void    SetCopyCount (int iNumCopies)
+    {
+        m_iCopyCount = iNumCopies;
+    }
+
 private:
 
     SystemServices* pSS;
@@ -328,6 +337,8 @@ private:
     void Capture_dPrintContext();
 
 #endif
+
+    int m_iCopyCount;
 
 }; //PrintContext
 

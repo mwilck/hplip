@@ -364,7 +364,7 @@ Header* DJ9xxVIP::SelectHeader(PrintContext* pc)
 HeaderDJ990::HeaderDJ990(Printer* p,PrintContext* pc)
     : Header(p,pc)
 {
-    SetMediaSource(pc->GetMediaSource());
+    SetMediaSource (pc->GetMediaSource());
 }
 
 
@@ -467,6 +467,17 @@ DRIVER_ERROR HeaderDJ990::Send()
 {
     DRIVER_ERROR err;
 //    PRINTMODE_VALUES    *pPMV;
+    COLORMODE       eColorMode = COLOR;
+    MEDIATYPE       eMediaType;
+    QUALITY_MODE    eQualityMode;
+    BOOL            bDeviceText;
+
+    thePrintContext->GetPrintModeSettings (eQualityMode, eMediaType, eColorMode, bDeviceText);
+    if (eMediaType == MEDIA_CDDVD)
+    {
+        thePrintContext->SetMediaSource (sourceTrayCDDVD);
+        SetMediaSource (sourceTrayCDDVD);
+    }
 
     StartSend();
 
@@ -483,11 +494,6 @@ DRIVER_ERROR HeaderDJ990::Send()
     err = ConfigureRasterData();
     ERRCHECK;
 
-    COLORMODE       eColorMode = COLOR;
-    MEDIATYPE       eMediaType;
-    QUALITY_MODE    eQualityMode;
-    BOOL            bDeviceText;
-
     if (thePrintMode->dyeCount == 1)    // grayscale
     {
         err=thePrinter->Send((const BYTE*)GrayscaleSeq, sizeof(GrayscaleSeq) );
@@ -495,7 +501,6 @@ DRIVER_ERROR HeaderDJ990::Send()
     }
     else
     {
-        thePrintContext->GetPrintModeSettings (eQualityMode, eMediaType, eColorMode, bDeviceText);
         if (eColorMode == GREY_CMY)
         {
             char    pStr[12];
@@ -637,6 +642,12 @@ DRIVER_ERROR HeaderDJ990::StartSend()
         CAPy = thePrintContext->GUITopMargin();
     }
 
+    if ((thePrintContext->GetMediaSource()) == sourceTrayCDDVD)
+    {
+        err = thePrinter->Send ((const BYTE *) "\033*o5W\x0D\x03\x00\x04\x0C", 10);
+        ERRCHECK;
+    }
+
     return err;
 } //StartSend
 
@@ -645,6 +656,12 @@ void HeaderDJ990::SetMediaSource(MediaSource msource)
 // Sets value of PCL::mediasource and associated counter msrccount
 {
     msrccount=EscAmplCopy((BYTE*)mediasource,msource,'H');
+    if (msource == sourceTrayCDDVD)
+    {
+        SetMediaType (mediaCDDVD);
+        SetQuality (qualityPresentation);
+        return;
+    }
     if (msource == sourceTray2 || msource > sourceTrayAuto)
     {
         SetMediaType (mediaPlain);
@@ -1610,6 +1627,7 @@ This function compresses a single row per call.
 		if (seeded)
 		{
 			thePrinter->Send(ResetSeedrow, sizeof(ResetSeedrow));
+            memset(SeedRow,0xFF,inputsize);
 			seeded = FALSE;
 		}
 		return TRUE;

@@ -105,6 +105,10 @@ protected:
     int         m_iYResolution;
     Compressor  *m_pCompressor;
     PrintContext    *thePrintContext;
+#ifdef HAVE_LIBDL
+    void    *m_hHPLibHandle;
+#endif
+
 }; // LJJetReady
 
 class LJJetReadyNormalMode : public PrintMode

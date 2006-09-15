@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/dwelch/linux-imaging-and-printing/src/ui/cleaningform_base.ui'
+# Form implementation generated from reading ui file 'cleaningform_base.ui'
 #
-# Created: Fri Apr 1 14:51:32 2005
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Tue Sep 5 14:21:27 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
 
-import sys
 from qt import *
 
 
@@ -38,6 +37,7 @@ class CleaningForm_base(QDialog):
         CleaningForm_baseLayout.addMultiCell(spacer2,3,3,0,1)
 
         self.Continue = QPushButton(self,"Continue")
+        self.Continue.setEnabled(0)
 
         CleaningForm_baseLayout.addWidget(self.Continue,3,2)
 
@@ -56,25 +56,17 @@ class CleaningForm_base(QDialog):
         self.resize(QSize(562,186).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
-        self.connect(self.Continue,SIGNAL("clicked()"),self.reject)
-        self.connect(self.Finish,SIGNAL("clicked()"),self.accept)
+        self.connect(self.Finish,SIGNAL("clicked()"),self.reject)
+        self.connect(self.Continue,SIGNAL("clicked()"),self.accept)
 
 
     def languageChange(self):
-        self.setCaption(self.__tr("HP Device Manager - Cleaning"))
+        self.setCaption(self.__tr("HP Device Manager - Please Wait - Cleaning"))
         self.Finish.setText(self.__tr("Finish"))
         self.Continue.setText(self.__tr("Cleaning Level %s"))
         self.CleaningText.setText(self.__tr("Please wait while the test page is printed. Check this page to see if the problem was fixed. If the test page looks fine click <b>Finish </b>to quit the cleaning procedure. Otherwise, click <b>Cleaning Level %s</b> to continue with cleaning."))
-        self.CleaningTitle.setText(self.__tr("<b>Cleaning Level %s Performed</b>"))
+        self.CleaningTitle.setText(self.__tr("<b>Please Wait - Cleaning Level %s Being Performed</b>"))
 
 
     def __tr(self,s,c = None):
         return qApp.translate("CleaningForm_base",s,c)
-
-if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = CleaningForm_base()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()

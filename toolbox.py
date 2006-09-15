@@ -36,27 +36,36 @@ import atexit
 
 # Local
 from base.g import *
-import base.async_qt as async
+
 import base.utils as utils
 from base.msg import *
 from base import service
+
+log.set_module('hp-toolbox')
+
+# UI Forms and PyQt
+
+pyqt_ok = True
+try:
+    import base.async_qt as async
+except ImportError:
+    pyqt_ok = False
+    
+if pyqt_ok:
+    pyqt_ok = utils.checkPyQtImport()
+    
+if not pyqt_ok:
+    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
+    sys.exit(1)
+    
+from qt import *
+from ui.devmgr4 import devmgr4
+
 
 app = None
 client = None
 toolbox  = None
 hpiod_sock = None
-
-log.set_module('hp-toolbox')
-
-# PyQt
-if not utils.checkPyQtImport():
-    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
-    sys.exit(0)
-
-from qt import *
-
-# UI Forms
-from ui.devmgr4 import devmgr4
 
 
 USAGE = [(__doc__, "", "name", True),
@@ -236,92 +245,96 @@ def handleEXIT():
         pass
 
 
-def main(args):
-    prop.prog = sys.argv[0]
+prop.prog = sys.argv[0]
 
-    try:
-        opts, args = getopt.getopt(args, 'l:hg', 
-            ['level=', 'help', 'help-rest', 'help-man'])
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'l:hg', 
+        ['level=', 'help', 'help-rest', 'help-man'])
 
-    except getopt.GetoptError:
-        usage()
+except getopt.GetoptError:
+    usage()
 
-    if os.getenv("HPLIP_DEBUG"):
-        log.set_level('debug')
-        
-        
-    for o, a in opts:
-        if o in ('-l', '--logging'):
-            log_level = a.lower().strip()
-            if not log.set_level(log_level):
-                usage()
-                
-        elif o == '-g':
-            log.set_level('debug')
-
-        elif o in ('-h', '--help'):
+if os.getenv("HPLIP_DEBUG"):
+    log.set_level('debug')
+    
+    
+for o, a in opts:
+    if o in ('-l', '--logging'):
+        log_level = a.lower().strip()
+        if not log.set_level(log_level):
             usage()
             
-        elif o == '--help-rest':
-            usage('rest')
+    elif o == '-g':
+        log.set_level('debug')
+
+    elif o in ('-h', '--help'):
+        usage()
         
-        elif o == '--help-man':
-            usage('man')
-            
-    utils.log_title(__title__, __version__)
-
-    # Security: Do *not* create files that other users can muck around with
-    os.umask (0077)
-
-    global client
-    try:
-        client = tbx_client()
-    except Error:
-        log.error("Unable to create client object.")
-        sys.exit(1)
-    except socket.error:
-        log.error("Unable to connect to HPLIP I/O (hpiod).")
-        return 1
+    elif o == '--help-rest':
+        usage('rest')
+    
+    elif o == '--help-man':
+        usage('man')
         
-    log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
+        
+utils.log_title(__title__, __version__)
 
-    # create the main application object
-    global app
-    app = QApplication(sys.argv)
+# Security: Do *not* create files that other users can muck around with
+os.umask (0077)
 
-    global hpiod_sock
-    hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-    except socket.error:
-        log.error("Unable to connect to HPLIP I/O (hpiod).")
-        return 1
+# PyQt
+#if not utils.checkPyQtImport():
+#    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
+#    sys.exit(1)
+
+##from qt import *
+##
+### UI Forms
+##from ui.devmgr4 import devmgr4
+
+try:
+    client = tbx_client()
+except Error:
+    log.error("Unable to create client object.")
+    sys.exit(1)
+except socket.error:
+    log.error("Unable to connect to HPLIP I/O (hpiod).")
+    sys.exit(1)
     
-    log.debug("Connected to hpiod on %s:%d" % (prop.hpiod_host, prop.hpiod_port))
-    
-    global toolbox
-    toolbox = devmgr4(hpiod_sock, client.socket, toolboxCleanup)
-    app.setMainWidget(toolbox)
+log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
 
-    toolbox.show()
+# create the main application object
+app = QApplication(sys.argv)
 
-    atexit.register(handleEXIT)
-    signal.signal(signal.SIGPIPE, signal.SIG_IGN)
+hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
+except socket.error:
+    log.error("Unable to connect to HPLIP I/O (hpiod).")
+    sys.exit(1)
 
-    user_config = os.path.expanduser('~/.hplip.conf')
-    loc = utils.loadTranslators(app, user_config)
+log.debug("Connected to hpiod on %s:%d" % (prop.hpiod_host, prop.hpiod_port))
 
-    try:
-        log.debug("Starting GUI loop...")
-        app.exec_loop()
-    except KeyboardInterrupt:
-        pass
-    except:
-        log.exception()
+toolbox = devmgr4(hpiod_sock, client.socket, toolboxCleanup)
+app.setMainWidget(toolbox)
 
-    handleEXIT()
+toolbox.show()
 
-    return 0
+atexit.register(handleEXIT)
+signal.signal(signal.SIGPIPE, signal.SIG_IGN)
 
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+user_config = os.path.expanduser('~/.hplip.conf')
+loc = utils.loadTranslators(app, user_config)
+
+try:
+    log.debug("Starting GUI loop...")
+    app.exec_loop()
+except KeyboardInterrupt:
+    pass
+except:
+    log.exception()
+
+handleEXIT()
+
+sys.exit(0)
+

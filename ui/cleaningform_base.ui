@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>HP Device Manager - Cleaning</string>
+        <string>HP Device Manager - Please Wait - Cleaning</string>
     </property>
     <property name="sizeGripEnabled">
         <bool>true</bool>
@@ -79,6 +79,9 @@
             <property name="name">
                 <cstring>Continue</cstring>
             </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
             <property name="text">
                 <string>Cleaning Level %s</string>
             </property>
@@ -113,20 +116,20 @@
                 <cstring>CleaningTitle</cstring>
             </property>
             <property name="text">
-                <string>&lt;b&gt;Cleaning Level %s Performed&lt;/b&gt;</string>
+                <string>&lt;b&gt;Please Wait - Cleaning Level %s Being Performed&lt;/b&gt;</string>
             </property>
         </widget>
     </grid>
 </widget>
 <connections>
     <connection>
-        <sender>Continue</sender>
+        <sender>Finish</sender>
         <signal>clicked()</signal>
         <receiver>CleaningForm_base</receiver>
         <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>Finish</sender>
+        <sender>Continue</sender>
         <signal>clicked()</signal>
         <receiver>CleaningForm_base</receiver>
         <slot>accept()</slot>

@@ -26,8 +26,9 @@ from base.g import *
 import os.path
 
 class CleaningForm(CleaningForm_base):
-    def __init__(self, parent, cleaning_level, name = None, modal = 0, fl = 0):
+    def __init__(self, parent, dev, cleaning_level, name = None, modal = 0, fl = 0):
         CleaningForm_base.__init__(self,parent,name,modal,fl)
+        self.dev = dev
 
         text = str(self.CleaningText.text())
         self.CleaningText.setText(text % str(cleaning_level + 1))
@@ -39,4 +40,14 @@ class CleaningForm(CleaningForm_base):
         self.CleaningTitle.setText(text % str(cleaning_level))
 
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir, 'clean.png')))
+        
+        self.check_timer = QTimer(self, "CheckTimer")
+        self.connect(self.check_timer, SIGNAL('timeout()'), self.CheckTimerTimeout)
+
+        self.check_timer.start(3000)
+        
+    def CheckTimerTimeout(self):
+        if self.dev.isIdleAndNoError():
+            self.Continue.setEnabled(True)
+            self.check_timer.stop()
     

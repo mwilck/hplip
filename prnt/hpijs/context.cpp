@@ -188,7 +188,15 @@ const PrintContext::PaperSizeMetrics PrintContext::PSM[MAX_PAPER_SIZE] =
 #endif
     // PHOTO_5x7 = 5in x 7in = 127 mm x 177.8 mm
     {
-        (float) 5.0, (float) 7.0, (float) 4.75, (float) 6.375
+        (float) 5.0, (float) 7.0, (float) 4.75, (float) 6.375, (float) 0.125
+    },
+    // CDDVD_80 = 80 mm (3 inch) CD/DVD
+    {
+        (float) 3.3, (float) 3.3, (float) 3.3, (float) 3.3, (float) 0.0
+    },
+    // CDDVD_120 = 120 mm (5 inch) CD/DVD
+    {
+        (float) 5.0, (float) 5.0, (float) 5.0, (float) 5.0, (float) 0.0
     }
 
 }; //PSM
@@ -256,6 +264,8 @@ PrintContext::PrintContext
     m_mtReqMediaType = eMedia;  // for use by Header - Malibu defect
 
     m_MediaSource = sourceTrayAuto;
+
+    m_iCopyCount = 1;
 
     if (!pSS->IOMode.bDevID)     // SystemServices couldn't establish good DevID
     {

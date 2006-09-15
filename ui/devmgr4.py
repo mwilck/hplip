@@ -632,7 +632,7 @@ class devmgr4(DevMgr4_base):
         if self.cur_device is not None:
             self.cur_device_uri = self.DeviceList.currentItem().device_uri
             self.cur_device = self.devices[self.cur_device_uri]
-    
+            #self.cur_device.sorted_supplies = []
             self.UpdateDevice()
 
 
@@ -1166,26 +1166,36 @@ class devmgr4(DevMgr4_base):
             self.cur_device.supported and \
             self.cur_device.status_type != STATUS_TYPE_NONE:
 
-            a = 1
-            while True:
+            try:
+                self.cur_device.sorted_supplies
+            except AttributeError:                
+                self.cur_device.sorted_supplies = []
+            
+            if not self.cur_device.sorted_supplies:
+                a = 1
+                while True:
+                    try:
+                        agent_type = int(self.cur_device.dq['agent%d-type' % a])
+                        agent_kind = int(self.cur_device.dq['agent%d-kind' % a])
+                    except KeyError:
+                        break
+                    else:
+                        self.cur_device.sorted_supplies.append((a, agent_kind, agent_type))
+                        
+                    a += 1
+                    
+                self.cur_device.sorted_supplies.sort(lambda x, y: cmp(x[2], y[2]) or cmp(x[1], y[1]))
+            
+            for x in self.cur_device.sorted_supplies:
+                a, agent_kind, agent_type = x
+                agent_level = int(self.cur_device.dq['agent%d-level' % a])
+                agent_sku = str(self.cur_device.dq['agent%d-sku' % a])
+                agent_desc = self.cur_device.dq['agent%d-desc' % a]
+                agent_health_desc = self.cur_device.dq['agent%d-health-desc' % a]
 
-                try:
-                    agent_type = int(self.cur_device.dq['agent%d-type' % a])
-                except KeyError:
-                    break
-                else:
-                    agent_kind = int(self.cur_device.dq['agent%d-kind' % a])
-                    #agent_health = int(self.cur_device.dq['agent%d-health' % a])
-                    agent_level = int(self.cur_device.dq['agent%d-level' % a])
-                    agent_sku = str(self.cur_device.dq['agent%d-sku' % a])
-                    agent_desc = self.cur_device.dq['agent%d-desc' % a]
-                    agent_health_desc = self.cur_device.dq['agent%d-health-desc' % a]
-
-                    self.SuppliesList.addItem("agent %d" % a, "<b>"+agent_desc+"</b>",
-                                              agent_sku, agent_health_desc, 
-                                              agent_kind, agent_type, agent_level) 
-
-                a += 1
+                self.SuppliesList.addItem("agent %d" % a, "<b>"+agent_desc+"</b>",
+                                          agent_sku, agent_health_desc, 
+                                          agent_kind, agent_type, agent_level) 
 
 
     def UpdateMaintTab(self):
@@ -1715,12 +1725,12 @@ class devmgr4(DevMgr4_base):
 
 
     def CleanUI1(self):
-        return CleaningForm(self, 1).exec_loop() == QDialog.Accepted
+        return CleaningForm(self, self.cur_device, 1).exec_loop() == QDialog.Accepted
 
 
     def CleanUI2(self):
-        return CleaningForm(self, 2).exec_loop() == QDialog.Accepted
-
+        return CleaningForm(self, self.cur_device, 2).exec_loop() == QDialog.Accepted
+            
 
     def CleanUI3(self):
         CleaningForm2(self).exec_loop()

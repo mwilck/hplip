@@ -83,6 +83,13 @@ int MlcChannel::MlcExecReverseCmd(int fd, unsigned char *buf)
       {
          /* Got a valid data packet handle it. This can happen when ReadData timeouts and p2hcredit=1. */
          pC = (MlcChannel *)pDev->pChannel[i];
+
+         if (pC->GetP2HCredit() <= 0)
+         {
+            syslog(LOG_ERR, "invalid data packet credit=%d: %s %d\n", pC->GetP2HCredit(), __FILE__, __LINE__);
+            return 0;
+         }
+
          size = ntohs(pCmd->h.length) - sizeof(MLCHeader);
          if (size > (MAX_RECEIVER_DATA - pC->rcnt))
          {
@@ -467,7 +474,7 @@ bugout:
 /* Read data from peripheral. */
 int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int length, int timeout)
 {
-   int len, size, total;
+   int len, size, total, i;
    MLCHeader *pPk;
 
    pPk = (MLCHeader *)buf;
@@ -502,7 +509,7 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
 
       if (size > length)
       {
-         syslog(LOG_ERR, "invalid MlcReverseData size: size=%d, buf=%d\n", size, length);
+         syslog(LOG_ERR, "invalid MlcReverseData size: size=%d, buf=%d %s %d\n", size, length, __FILE__, __LINE__);
          goto bugout;
       } 
 
@@ -516,7 +523,7 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
             {
                if ((len = pDev->Read(fd, buf+total, size)) < 0)
                {
-                  syslog(LOG_ERR, "unable to read MlcReverseData command: %m\n");
+                  syslog(LOG_ERR, "unable to read MlcReverseData command: %m %s %d\n", __FILE__, __LINE__);
                   goto bugout;
                }
                size-=len;
@@ -525,10 +532,48 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
             MlcExecReverseCmd(fd, buf);
             continue;   /* try again for data packet */
          }
+         else if ((pPk->hsid == pPk->psid) && ((i = MlcSocket2Channel(pPk->hsid)) >= 0))
+         {
+            /* Got a valid data packet for another channel handle it. This can happen when ReadData timeouts and p2hcredit=1. */
+            MlcChannel *pC = (MlcChannel *)pDev->pChannel[i];
+            unsigned char *pBuf;
+
+            if (pC->GetP2HCredit() <= 0)
+            {
+               syslog(LOG_ERR, "invalid data packet credit=%d: %s %d\n", pC->GetP2HCredit(), __FILE__, __LINE__);
+               goto bugout;
+            }
+
+            if (size > (MAX_RECEIVER_DATA - pC->rcnt))
+            {
+               syslog(LOG_ERR, "invalid data packet size=%d: %s %d\n", size, __FILE__, __LINE__);
+               goto bugout;
+            }
+            
+            total = 0;
+            pBuf = &pC->rbuf[pC->rcnt];
+            while (size > 0)
+            {
+               if ((len = pDev->Read(fd, pBuf+total, size)) < 0)
+               {
+                  syslog(LOG_ERR, "unable to read MlcReverseData: %m %s %d\n", __FILE__, __LINE__);
+                  goto bugout;
+               }
+               size-=len;
+               total+=len;
+            }
+
+            pC->rcnt += total;
+            if (pPk->credit)
+               pC->SetH2PCredit(pC->GetH2PCredit() + pPk->credit);  /* note, piggy back credit is 1 byte wide */ 
+            pC->SetP2HCredit(pC->GetP2HCredit()-1); /* one data packet was read, decrement credit count */
+            continue;   /* try again for data packet */
+         }
          else
          {
             MLCCmd *pCmd = (MLCCmd *)buf;
-            syslog(LOG_ERR, "invalid MlcReverseData state: unexpected packet hsid=%x, psid=%x, cmd=%x\n", pPk->hsid, pPk->psid, pCmd->cmd);
+            syslog(LOG_ERR, "invalid MlcReverseData state: exp hsid=%x, act hsid=%x, psid=%x, length=%d, credit=%d, status=%x, cmd=%x %s %d\n", sockid, 
+                                                pPk->hsid, pPk->psid, ntohs(pPk->length), pPk->credit, pPk->status, pCmd->cmd, __FILE__, __LINE__);
             goto bugout;
          }
       }
@@ -545,7 +590,7 @@ int MlcChannel::MlcReverseData(int fd, int sockid, unsigned char *buf, int lengt
       {
          if ((len = pDev->Read(fd, buf+total, size)) < 0)
          {
-            syslog(LOG_ERR, "unable to read MlcReverseData: %m\n");
+            syslog(LOG_ERR, "unable to read MlcReverseData: %m %s %d\n", __FILE__, __LINE__);
             goto bugout;
          }
          size-=len;

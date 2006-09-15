@@ -129,7 +129,8 @@ enum MediaType
     mediaSpecial = 2,
     mediaGlossy = 3,
     mediaTransparency = 4,
-    mediaHighresPhoto = 5       // used by vip printers for 2400 mode
+    mediaHighresPhoto = 5,       // used by vip printers for 2400 mode
+    mediaCDDVD = 7
 };
 
 
@@ -158,7 +159,9 @@ enum MediaSize
     sizeFLSA = 10,
     sizeExecutive = 1,
     sizeCustom = 101,
-    size5x7 = 122
+    size5x7 = 122,
+    sizeCDDVD80 = 98,
+    sizeCDDVD120 = 99
 };
 
 //! \internal For use in connection with PCL media-source command.  Values are PCL codes.
@@ -173,6 +176,7 @@ enum MediaSource
 	sourceDuplexerNHagakiFeed = 5,
     sourceOptionalEnv = 6,
     sourceTrayAuto = 7,
+    sourceTrayCDDVD = 14,
     sourceTrayMax = 50
 };
 
@@ -282,6 +286,8 @@ typedef enum              // typedef'ed for C interface
 #endif
 
     PHOTO_5x7,
+    CDDVD_80,
+    CDDVD_120,
     MAX_PAPER_SIZE                  //!< Only for array size and loops
 } PAPER_SIZE;
 
@@ -370,6 +376,9 @@ typedef enum               // typedef'ed for C interface
     MEDIA_PLAIN,            //!< Plain paper
     MEDIA_PREMIUM,          //!< Premium paper - for use with 6xx series
     MEDIA_PHOTO,            //!< Photo paper - for use with photo quality printers
+    MEDIA_TRANSPARENCY,
+    MEDIA_HIGHRES_PHOTO,
+    MEDIA_CDDVD = 7,
     MAX_MEDIATYPE
 } MEDIATYPE;
 

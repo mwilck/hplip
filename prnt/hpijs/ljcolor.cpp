@@ -376,6 +376,11 @@ DRIVER_ERROR HeaderLJColor::StartSend ()
 
     err = thePrinter->Send ((const BYTE *) "\033&l0O", 5);
 
+    // Number of copies
+    sprintf (res, "\033&l%dX", thePrintContext->GetCopyCount ());
+    err = thePrinter->Send ((const BYTE *) res, strlen (res));
+    ERRCHECK;
+
     return err;
 }
 

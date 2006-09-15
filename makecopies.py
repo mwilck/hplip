@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '1.2'
+__version__ = '1.3'
 __title__ = "Make Copies Utility"
 __doc__ = "A GUI front end for making copies on all-in-ones and MFP devices."
 
@@ -203,12 +203,12 @@ def usage(typ='text'):
 
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:gm:c:q:r:fun',
+    opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:gm:c:q:r:funb:',
                                ['printer=', 'device=', 'help', 'logging=',
                                 'num=', 'copies=', 'contrast=', 'quality='
                                 'reduction=', 'enlargement=', 'fittopage', 
                                 'fit', 'gui', 'help-rest', 'help-man',
-                                'non-interactive'])
+                                'non-interactive', 'bus='])
 except getopt.GetoptError:
     usage()
 
@@ -339,6 +339,12 @@ for o, a in opts:
 
         mode = GUI_MODE
         mode_specified = True
+        
+    elif o in ('-b', '--bus'):
+        bus = a.lower().strip()
+        if not device.validateBusList(bus):
+            usage()
+        
     
             
 if fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED and reduction_spec:
@@ -394,7 +400,7 @@ if mode == GUI_MODE:
 else: # NON_INTERACTIVE_MODE
     if not device_uri and not printer_name:
         try:
-            device_uri = device.getInteractiveDeviceURI(bus='cups')
+            device_uri = device.getInteractiveDeviceURI(bus)
             if device_uri is None:
                 sys.exit(1)
         except Error:
@@ -441,7 +447,12 @@ else: # NON_INTERACTIVE_MODE
         log.error(e.msg)
         sys.exit(1)
     
-    #print num_copies, contrast, reduction, quality, fit_to_page, max_reduction, max_enlargement
+    scan_style = dev.mq.get('scan-style', SCAN_STYLE_FLATBED)
+    log.debug(scan_style)
+    
+    if scan_style == SCAN_STYLE_SCROLLFED:
+        fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
+    
     log.debug("num_copies = %d" % num_copies)
     log.debug("contrast= %d" % contrast)
     log.debug("reduction = %d" % reduction)
@@ -449,14 +460,15 @@ else: # NON_INTERACTIVE_MODE
     log.debug("fit_to_page = %d" % fit_to_page)
     log.debug("max_reduction = %d" % max_reduction)
     log.debug("max_enlargement = %d" % max_enlargement)
+    log.debug("scan_style = %d" % scan_style)
     
     update_queue = Queue.Queue()
     event_queue = Queue.Queue()
     
     dev.copy(num_copies, contrast, reduction,
-             quality, fit_to_page, 
+             quality, fit_to_page, scan_style,
              update_queue, event_queue)
-    
+         
     try:
         cont = True
         while cont:

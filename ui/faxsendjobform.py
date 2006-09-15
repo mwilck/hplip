@@ -24,7 +24,7 @@ import glob, Queue, socket, struct
 
 # Local
 from base.g import *
-from base import utils, device, magic, pml, service, msg
+from base import utils, device, pml, service, msg, magic
 
 try:
     from fax import fax
@@ -205,7 +205,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         self.cmd_fab = user_cfg.commands.fab or cmd_fab
         log.debug("FAB command: %s" % self.cmd_fab)
-        
+
         if not coverpages_enabled:
             log.warn("Coverpages disabled. Reportlab not installed.")
 
@@ -564,6 +564,15 @@ class FaxSendJobForm(FaxSendJobForm_base):
                     self.SuccessUI()
                     service.sendEvent(self.sock, EVENT_END_FAX_JOB, device_uri=self.device_uri)
 
+                    self.fileListView.clear()
+                    del self.file_list[:]
+                    self.UpdateFileList()
+                    self.CheckSendButtons()
+                    
+                    self.addCoverpagePushButton.setEnabled(coverpages_enabled)
+                    self.editCoverpagePushButton.setEnabled(False)
+                    
+
 
     # ************************************** File and event handling
     def delFileButton_clicked(self):
@@ -704,11 +713,11 @@ class FaxSendJobForm(FaxSendJobForm_base):
         x = {}
         for a in self.allowable_mime_types:
             x[a] = self.MIME_TYPES_DESC.get(a, ('Unknown', 'n/a'))
-            
+
         log.debug(x)
         dlg = FaxAllowableTypesDlg(x, self)
         dlg.exec_loop()
-    
+
     # ************************************** Event handling
     # Event handler for adding files from a external print job (not during fax send thread)
     def addFileFromJob(self, event, title, username, job_id=0, job_size=0):
@@ -734,10 +743,10 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         if self.waitdlg is not None:
             self.waitdlg.setMessage(self.__tr("Receiving fax data..."))
-        
+
         while True:
             qApp.processEvents()
-            
+
             fields, data, result_code = \
                 msg.xmitMessage(sock, "FaxGetData", None,
                                      {"username": username,
@@ -750,12 +759,12 @@ class FaxSendJobForm(FaxSendJobForm_base):
                 bytes_read += len(data)
 
                 if not header_read and len(data) >= fax.FILE_HEADER_SIZE:
-                    magic, version, total_pages, hort_dpi, vert_dpi, page_size, \
+                    mg, version, total_pages, hort_dpi, vert_dpi, page_size, \
                         resolution, encoding, reserved1, reserved2 = \
                         struct.unpack(">8sBIHHBBBII", data[:fax.FILE_HEADER_SIZE])
 
                     log.debug("Magic=%s Ver=%d Pages=%d hDPI=%d vDPI=%d Size=%d Res=%d Enc=%d" %
-                              (magic, version, total_pages, hort_dpi, vert_dpi, page_size, resolution, encoding))
+                              (mg, version, total_pages, hort_dpi, vert_dpi, page_size, resolution, encoding))
 
                     header_read = True
 
@@ -765,7 +774,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
         fd.close()
         sock.close()
         QApplication.restoreOverrideCursor()
-        
+
         if self.waitdlg is not None:
             self.waitdlg.hide()
             self.waitdlg.close()
@@ -801,6 +810,12 @@ class FaxSendJobForm(FaxSendJobForm_base):
         self.fileEdit.setText("")
         self.CheckSendButtons()
 
+    def decode_fax_header(self, header):
+        try:
+            return struct.unpack(">8sBIHHBBBII", header)
+        except struct.error:
+            return -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+
 
     def processFile(self, path, title): # Process an arbitrary file ("Add file...")
         path = os.path.realpath(path)
@@ -810,60 +825,80 @@ class FaxSendJobForm(FaxSendJobForm_base):
             log.debug(mime_type)
             mime_type_desc = mime_type
 
-            try:
+            log.debug(mime_type)
+
+            if mime_type == 'application/hplip-fax':
                 mime_type_desc = self.MIME_TYPES_DESC[mime_type][0]
-            except KeyError:
-                self.WarningUI(self.__tr("<b>You are trying to add a file that cannot be directly faxed with this utility.</b><p>To print this file, use the print command in the application that created it."))
-                return
-            else:
-                log.debug("Adding file: title='%s' file=%s mime_type=%s mime_desc=%s)" % (title, path, mime_type, mime_type_desc))
 
 
-                all_pages = True 
-                page_range = ''
-                page_set = 0
-                nup = 1
+                fax_file_fd = file(path, 'r')
+                header = fax_file_fd.read(fax.FILE_HEADER_SIZE)
 
-                cups.resetOptions()
+                mg, version, pages, hort_dpi, vert_dpi, page_size, \
+                    resolution, encoding, reserved1, reserved2 = self.decode_fax_header(header)
 
-                if mime_type in ["application/x-cshell",
-                                 "application/x-perl",
-                                 "application/x-python",
-                                 "application/x-shell",
-                                 "text/plain",]:
-
-                    cups.addOption('prettyprint')
-
-                if nup > 1:
-                    cups.addOption('number-up=%d' % nup)
-
-                self.cups_printers = cups.getPrinters()
-                #log.debug(self.cups_printers)
-                
-                printer_state = cups.IPP_PRINTER_STATE_STOPPED
-                for p in self.cups_printers:
-                    if p.name == self.current_printer:
-                        printer_state = p.state
-                        
-                log.debug("Printer state = %d" % printer_state)
-                
-                if printer_state == cups.IPP_PRINTER_STATE_IDLE:
-                    sent_job_id = cups.printFile(self.current_printer, path, os.path.basename(path))
-                    job_types[sent_job_id] = mime_type # save for later
-                    log.debug("Job ID=%d" % sent_job_id)  
-
-                    QApplication.setOverrideCursor(QApplication.waitCursor)
-
-                    self.waitdlg = WaitForm(0, self.__tr("Processing fax file..."), None, self, modal=1)
-                    self.waitdlg.show()
-                  
-                else:
-                    self.FailureUI(self.__tr("<b>Printer '%1' is in a stopped or error state.</b><p>Check the printer queue in CUPS and try again.").arg(self.current_printer))
-                    cups.resetOptions()
+                if mg != 'hplip_g3':
+                    log.error("Invalid file header. Bad magic.")
+                    self.WarningUI(self.__tr("<b>Invalid HPLIP Fax file.</b><p>Bad magic!"))
                     return
-                    
-                cups.resetOptions()
-                QApplication.restoreOverrideCursor()
+
+                self.addFile(path, title, mime_type, mime_type_desc, pages)
+            else:
+
+                try:
+                    mime_type_desc = self.MIME_TYPES_DESC[mime_type][0]
+                except KeyError:
+                    self.WarningUI(self.__tr("<b>You are trying to add a file that cannot be directly faxed with this utility.</b><p>To print this file, use the print command in the application that created it."))
+                    return
+                else:
+                    log.debug("Adding file: title='%s' file=%s mime_type=%s mime_desc=%s)" % (title, path, mime_type, mime_type_desc))
+
+                    all_pages = True 
+                    page_range = ''
+                    page_set = 0
+                    nup = 1
+
+                    cups.resetOptions()
+
+                    if mime_type in ["application/x-cshell",
+                                     "application/x-perl",
+                                     "application/x-python",
+                                     "application/x-shell",
+                                     "text/plain",]:
+
+                        cups.addOption('prettyprint')
+
+                    if nup > 1:
+                        cups.addOption('number-up=%d' % nup)
+
+                    cups.addOption('scaling=100')
+
+                    self.cups_printers = cups.getPrinters()
+
+                    printer_state = cups.IPP_PRINTER_STATE_STOPPED
+                    for p in self.cups_printers:
+                        if p.name == self.current_printer:
+                            printer_state = p.state
+
+                    log.debug("Printer state = %d" % printer_state)
+
+                    if printer_state == cups.IPP_PRINTER_STATE_IDLE:
+                        sent_job_id = cups.printFile(self.current_printer, path, os.path.basename(path))
+                        job_types[sent_job_id] = mime_type # save for later
+                        log.debug("Job ID=%d" % sent_job_id)  
+
+                        QApplication.setOverrideCursor(QApplication.waitCursor)
+
+                        self.waitdlg = WaitForm(0, self.__tr("Processing fax file..."), None, self, modal=1)
+                        self.waitdlg.show()
+
+                    else:
+                        self.FailureUI(self.__tr("<b>Printer '%1' is in a stopped or error state.</b><p>Check the printer queue in CUPS and try again.").arg(self.current_printer))
+                        cups.resetOptions()
+                        return
+
+                    cups.resetOptions()
+                    QApplication.restoreOverrideCursor()
 
         else:
             self.FailureUI(self.__tr("<b>Unable to add file '%1' to file list.</b><p>Check the file name and try again.".arg(path)))
@@ -931,7 +966,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             self.CheckSendButtons()
 
             self.addCoverpagePushButton.setEnabled(False)
-            self.editCoverpagePushButton.setEnabled(coverpages_enabled)
+            self.editCoverpagePushButton.setEnabled(True)
 
     def editCoverpagePushButton_clicked(self):
         self.showCoverPageDlg()

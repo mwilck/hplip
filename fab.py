@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.0'
+__version__ = '2.2'
 __title__ = "Fax Address Book"
 __doc__ = "A simple fax address book for HPLIP."
 
@@ -83,7 +83,7 @@ class Console(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.intro  = "Type 'help' for a list of commands. Type 'exit' or 'quit' to quit."
         self.db =  fax.FaxAddressBook() # kirbybase instance
-        self.prompt = utils.bold("fab > ")
+        self.prompt = utils.bold("hp-fab > ")
 
     ## Command definitions ##
     def do_hist(self, args):
@@ -155,11 +155,11 @@ class Console(cmd.Cmd):
         if not args:
             while True:
                 if alt_text:
-                    nickname = raw_input(utils.bold("Enter the entry name (nickname) to add (<enter>=done*, c=cancel) ? "))
+                    nickname = raw_input(utils.bold("Enter the entry name (nickname) to add (<enter>=done*, c=cancel) ? ")).strip()
                 else:
-                    nickname = raw_input(utils.bold("Enter the entry name (nickname) (c=cancel) ? "))
+                    nickname = raw_input(utils.bold("Enter the entry name (nickname) (c=cancel) ? ")).strip()
                 
-                if nickname.lower().strip() == 'c':
+                if nickname.lower() == 'c':
                     print utils.red("Canceled")
                     return ''
                     
@@ -205,12 +205,12 @@ class Console(cmd.Cmd):
         if not args:
             while True:
                 if alt_text:
-                    groupname = raw_input(utils.bold("Enter the group name to join (<enter>=done*, c=cancel) ? "))
+                    groupname = raw_input(utils.bold("Enter the group name to join (<enter>=done*, c=cancel) ? ")).strip()
                 else:
-                    groupname = raw_input(utils.bold("Enter the group name (c=cancel) ? "))
+                    groupname = raw_input(utils.bold("Enter the group name (c=cancel) ? ")).strip()
                 
                 
-                if groupname.lower().strip() == 'c':
+                if groupname.lower() == 'c':
                     print utils.red("Canceled")
                     return ''
                     
@@ -344,9 +344,9 @@ class Console(cmd.Cmd):
         print utils.bold("\nEdit/modify entry information for %s:\n" % abe.name)
         
         save_title = abe.title
-        title = raw_input(utils.bold("Title (<enter>='%s', c=cancel)? " % save_title))
+        title = raw_input(utils.bold("Title (<enter>='%s', c=cancel)? " % save_title)).strip()
         
-        if title.strip().lower() == 'c':
+        if title.lower() == 'c':
             print utils.red("Canceled")
             return
             
@@ -354,9 +354,9 @@ class Console(cmd.Cmd):
             title = save_title
         
         save_firstname = abe.firstname
-        firstname = raw_input(utils.bold("First name (<enter>='%s', c=cancel)? " % save_firstname))
+        firstname = raw_input(utils.bold("First name (<enter>='%s', c=cancel)? " % save_firstname)).strip()
         
-        if firstname.strip().lower() == 'c':
+        if firstname.lower() == 'c':
             print utils.red("Canceled")
             return
         
@@ -364,9 +364,9 @@ class Console(cmd.Cmd):
             firstname = save_firstname
         
         save_lastname = abe.lastname
-        lastname = raw_input(utils.bold("Last name (<enter>='%s', c=cancel)? " % save_lastname))
+        lastname = raw_input(utils.bold("Last name (<enter>='%s', c=cancel)? " % save_lastname)).strip()
         
-        if lastname.strip().lower() == 'c':
+        if lastname.lower() == 'c':
             print utils.red("Canceled")
             return
             
@@ -375,9 +375,9 @@ class Console(cmd.Cmd):
         
         save_faxnum = abe.fax
         while True:
-            faxnum = raw_input(utils.bold("Fax Number (<enter>='%s', c=cancel)? " % save_faxnum))
+            faxnum = raw_input(utils.bold("Fax Number (<enter>='%s', c=cancel)? " % save_faxnum)).strip()
             
-            if faxnum.strip().lower() == 'c':
+            if faxnum.lower() == 'c':
                 print utils.red("Canceled")
                 return
                 
@@ -399,9 +399,9 @@ class Console(cmd.Cmd):
             if ok: break
             
         save_notes = abe.notes
-        notes = raw_input(utils.bold("Notes (<enter>='%s', c=cancel)? " % save_notes))
+        notes = raw_input(utils.bold("Notes (<enter>='%s', c=cancel)? " % save_notes)).strip()
         
-        if notes.strip().lower() == 'c':
+        if notes.lower() == 'c':
             print utils.red("Canceled")
             return
 
@@ -413,9 +413,7 @@ class Console(cmd.Cmd):
         
         new_groups = []
         for g in abe.group_list:
-            user_input = raw_input(utils.bold("Stay in group '%s' (y=yes*, n=no (leave), c=cancel) ? " % g))
-            
-            user_input = user_input.lower().strip()
+            user_input = raw_input(utils.bold("Stay in group '%s' (y=yes*, n=no (leave), c=cancel) ? " % g)).strip().lower()
             
             if not user_input or user_input == 'y':
                 new_groups.append(g)
@@ -430,20 +428,18 @@ class Console(cmd.Cmd):
         while True:
             add_group = self.get_groupname('', fail_if_match=False, alt_text=True) 
             
-            if add_group.lower().strip() == 'c':
+            if add_group.lower() == 'c':
                 print utils.red("Canceled")
                 return
                 
-            if not add_group.lower().strip():
+            if not add_group.lower():
                 break
                 
             all_groups = self.db.AllGroups()
             
             if add_group not in all_groups:
                 log.warn("Group not found.")
-                user_input = raw_input(utils.bold("Is this a new group (y=yes*, n=no) ?"))
-                
-                user_input = user_input.lower().strip()
+                user_input = raw_input(utils.bold("Is this a new group (y=yes*, n=no) ?")).strip().lower()
                 
                 if user_input == 'n':
                     continue
@@ -479,9 +475,7 @@ class Console(cmd.Cmd):
         print "\nLeave or Remove Existing Entries in Group:\n"
         
         for e in old_entries:
-            user_input = raw_input(utils.bold("Leave entry '%s' in this group (y=yes*, n=no (remove), c=cancel) ? " % e))
-            
-            user_input = user_input.lower().strip()
+            user_input = raw_input(utils.bold("Leave entry '%s' in this group (y=yes*, n=no (remove), c=cancel) ? " % e)).lower().strip()
             
             if not user_input or user_input == 'y':
                 new_entries.append(e)
@@ -495,11 +489,11 @@ class Console(cmd.Cmd):
         while True:
             nickname = self.get_nickname('', fail_if_match=False, alt_text=True)
             
-            if nickname.lower().strip() == 'c':
+            if nickname.lower() == 'c':
                 print utils.red("Canceled")
                 return
                 
-            if not nickname.lower().strip():
+            if not nickname.lower():
                 break
                 
             new_entries.append(nickname)
@@ -522,28 +516,28 @@ class Console(cmd.Cmd):
         
         print utils.bold("\nEnter entry information for %s:\n" % nickname)
         
-        title = raw_input(utils.bold("Title (c=cancel)? "))
+        title = raw_input(utils.bold("Title (c=cancel)? ")).strip()
         
-        if title.strip().lower() == 'c':
+        if title.lower() == 'c':
             print utils.red("Canceled")
             return
         
-        firstname = raw_input(utils.bold("First name (c=cancel)? "))
+        firstname = raw_input(utils.bold("First name (c=cancel)? ")).strip()
         
-        if firstname.strip().lower() == 'c':
+        if firstname.lower() == 'c':
             print utils.red("Canceled")
             return
         
-        lastname = raw_input(utils.bold("Last name (c=cancel)? "))
+        lastname = raw_input(utils.bold("Last name (c=cancel)? ")).strip()
         
-        if lastname.strip().lower() == 'c':
+        if lastname.lower() == 'c':
             print utils.red("Canceled")
             return
         
         while True:
-            faxnum = raw_input(utils.bold("Fax Number (c=cancel)? "))
+            faxnum = raw_input(utils.bold("Fax Number (c=cancel)? ")).strip()
             
-            if faxnum.strip().lower() == 'c':
+            if faxnum.lower() == 'c':
                 print utils.red("Canceled")
                 return
                 
@@ -561,14 +555,18 @@ class Console(cmd.Cmd):
 
             if ok: break
             
-        notes = raw_input(utils.bold("Notes (c=cancel)? "))
+        notes = raw_input(utils.bold("Notes (c=cancel)? ")).strip()
         
+        if notes.strip().lower() == 'c':
+            print utils.red("Canceled")
+            return
+
         groups = []
         all_groups = self.db.AllGroups()
         while True:
-            add_group = raw_input(utils.bold("Member of group (<enter>=done*, c=cancel) ?" ))
+            add_group = raw_input(utils.bold("Member of group (<enter>=done*, c=cancel) ?" )).strip()
             
-            if add_group.lower().strip() == 'c':
+            if add_group.lower() == 'c':
                 print utils.red("Canceled")
                 return
 
@@ -577,23 +575,24 @@ class Console(cmd.Cmd):
             
             if add_group not in all_groups:
                 log.warn("Group not found.")
-                user_input = raw_input(utils.bold("Is this a new group (y=yes*, n=no) ?"))
                 
-                user_input = user_input.lower().strip()
+                while True:
+                    user_input = raw_input(utils.bold("Is this a new group (y=yes*, n=no) ?")).lower().strip()
+                    
+                    if user_input not in ['', 'n', 'y']:
+                        log.error("Please enter 'y', 'n' or press <enter> for 'yes'.")
+                        continue
+                    
+                    break
                 
                 if user_input == 'n':
                     continue
                     
             if add_group in groups:
-                log.error("error: Group already specified. Choose a different group name or press <enter> to continue.")
+                log.error("Group already specified. Choose a different group name or press <enter> to continue.")
                 continue
                 
             groups.append(add_group)
-
-            
-        if notes.strip().lower() == 'c':
-            print utils.red("Canceled")
-            return
         
         self.db.insert(fax.AddressBookEntry((-1, nickname, title, firstname, lastname, faxnum, ','.join(groups), notes)))
         self.do_show(nickname)
@@ -615,11 +614,11 @@ class Console(cmd.Cmd):
         while True:
             nickname = self.get_nickname('', fail_if_match=False, alt_text=True)
             
-            if nickname.lower().strip() == 'c':
+            if nickname.lower() == 'c':
                 print utils.red("Canceled")
                 return
                 
-            if not nickname.lower().strip():
+            if not nickname.lower():
                 break
                 
             entries.append(nickname)
@@ -696,7 +695,7 @@ class Console(cmd.Cmd):
             print formatter.compose(("Last Name:", abe.lastname))
             print formatter.compose(("Fax Number:", abe.fax))
             print formatter.compose(("Member of Group(s):", abe.groups))
-            print formatter.compose(("Notes:", abe.name))
+            print formatter.compose(("Notes:", abe.notes))
             print formatter.compose(("(recno):", str(abe.recno)))
             
         else:

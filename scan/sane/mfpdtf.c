@@ -582,7 +582,8 @@ int read_mfpdtf_block(int device, int channel, char *buf, int bufSize, int timeo
    }
 
    size = bsize - sizeof(MFPDTF_FIXED_HEADER);
-   if ((len = ReadChannelEx(device, channel, (unsigned char *)buf+sizeof(MFPDTF_FIXED_HEADER), size, 5)) != size)
+   //   if ((len = ReadChannelEx(device, channel, (unsigned char *)buf+sizeof(MFPDTF_FIXED_HEADER), size, 5)) != size)
+   if ((len = ReadChannelEx(device, channel, (unsigned char *)buf+sizeof(MFPDTF_FIXED_HEADER), size, 10)) != size)
    {
       bug("invalid read: exp=%d act=%d ReadMfpdtfBlock %s %d\n", size, len, __FILE__, __LINE__);
       bsize = -1;

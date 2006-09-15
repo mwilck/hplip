@@ -110,6 +110,8 @@ public:
         "PS470",                // family name
         "Photosmart 470\0"
         "Photosmart 475\0"
+        "Photosmart A610\0"
+        "Photosmart A710\0"
     ) {m_iPrinterType = ePSP470;}
     inline Printer* CreatePrinter(SystemServices* pSS) const { return new PSP470(pSS); }
 	inline PRINTER_TYPE GetPrinterType() const { return ePSP470;}

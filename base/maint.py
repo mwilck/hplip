@@ -959,14 +959,13 @@ def cleaning(dev, clean_type, level1, level2, level3,
 
         elif state == 1: # Do level 1
             level1(dev)
-            #wait_ui(CLEAN_SLEEP_TIMER)
             state = 2
 
         elif state == 2: # Load plain paper
-            state = 3
+            state = -1
             ok = loadpaper_ui()
-            if not ok:
-                state = -1
+            if ok:
+                state = 3
 
         elif state == 3: # Print test page
             state = 4
@@ -975,19 +974,18 @@ def cleaning(dev, clean_type, level1, level2, level3,
         elif state == 4: # Need level 2?
             state = -1
             ok = dlg1()
-            if not ok:
+            if ok:
                 state = 5
 
         elif state == 5: # Do level 2
             level2(dev)
-            #wait_ui(CLEAN_SLEEP_TIMER)
             state = 6
 
         elif state == 6: # Load plain paper
-            state = 7
+            state = -1
             ok = loadpaper_ui()
-            if not ok:
-                state = -1
+            if ok:
+                state = 7
 
         elif state == 7: # Print test page
             state = 8
@@ -996,19 +994,18 @@ def cleaning(dev, clean_type, level1, level2, level3,
         elif state == 8: # Need level 3?
             state = -1
             ok = dlg2()
-            if not ok:
+            if ok:
                 state = 9
 
         elif state == 9: # Do level 3
             level3(dev)
-            #wait_ui(CLEAN_SLEEP_TIMER*2)
             state = 10
 
         elif state == 10: # Load plain paper
-            state = 11
+            state = -1
             ok = loadpaper_ui()
-            if not ok:
-                state = -1
+            if ok:
+                state = 11
 
         elif state == 11: # Print test page
             state = 12
@@ -1270,8 +1267,8 @@ def colorCalType3Phase1(dev):
     dev.closePrint()
 
 def colorCalType3Phase2(dev, A, B):
-    photo_adj = colorcal.PHOTO_ALIGN_TABLE[A][B]
-    color_adj = colorcal.COLOR_ALIGN_TABLE[A][B]
+    photo_adj = colorcal.PHOTO_ALIGN_TABLE[A-1][B-1]
+    color_adj = colorcal.COLOR_ALIGN_TABLE[A-1][B-1]
     adj_value = (color_adj << 8L) + photo_adj
 
     dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_SELECTION, adj_value)
