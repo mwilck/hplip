@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '6.2'
+__version__ = '6.3'
 __title__ = 'HP Device Manager'
 __doc__ = "The HP Device Manager (aka Toolbox) for HPLIP supported devices. Provides status, tools, and supplies levels."
 
@@ -249,7 +249,7 @@ prop.prog = sys.argv[0]
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'l:hg', 
-        ['level=', 'help', 'help-rest', 'help-man'])
+        ['level=', 'help', 'help-rest', 'help-man', 'help-desc'])
 
 except getopt.GetoptError:
     usage()
@@ -275,6 +275,11 @@ for o, a in opts:
     
     elif o == '--help-man':
         usage('man')
+        
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
+        
         
         
 utils.log_title(__title__, __version__)

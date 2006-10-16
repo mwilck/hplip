@@ -39,10 +39,10 @@
 ******************************************************************************/
 class Channel
 {
-   unsigned char sockid;    /* socket id */
    char service[MAX_SERVICE_NAME];
 
 protected:
+   unsigned char sockid;    /* socket id */
    Device *pDev;
    int ClientCnt;           /* number of clients using this device */
    int Index;             /* Device::pChannel[index] of this object */

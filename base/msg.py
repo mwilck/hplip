@@ -237,7 +237,7 @@ def recvMessage(sock, timeout=prop.read_timeout):
         log.debug("(xmit) Reading data on channel (%d)" % sock.fileno())
                 
         while True:
-            print "parse"
+            #print "parse"
             log.debug(repr(m))
             fields, data, remaining = parseMessage(m)
             

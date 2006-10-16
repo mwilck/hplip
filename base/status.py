@@ -21,8 +21,9 @@
 
 from __future__ import division
 
-# StdLib
-import struct, xml.parsers.expat, cStringIO
+# Std Lib
+import struct, cStringIO 
+import xml.parsers.expat as expat
 
 # Local
 from g import *
@@ -978,7 +979,9 @@ def StatusType6(dev): #  LaserJet Status (XML)
             device_status = utils.XMLToDictParser().parseXML(info_device_status)
             log.debug_block("info_device_status", info_device_status)
             log.debug(device_status)
-        except xml.parsers.expat.ExpatError:
+        except expat.ExpatError:
+            print repr(e)
+            log.error("Device Status XML parse error")
             device_status = {}
 
     if info_ssp:
@@ -986,7 +989,8 @@ def StatusType6(dev): #  LaserJet Status (XML)
             ssp = utils.XMLToDictParser().parseXML(info_ssp)
             log.debug_block("info_spp", info_ssp)
             log.debug(ssp)
-        except xml.parsers.expat.ExpatError:
+        except expat.ExpatError:
+            log.error("SSP XML parse error")            
             ssp = {}
     
     status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)

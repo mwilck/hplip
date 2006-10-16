@@ -205,7 +205,10 @@ def check_sane():
     return check_lib('libsane')
 
 def check_xsane():
-    return check_tool('xsane --version', 0.9)
+    if os.getenv('DISPLAY'):
+        return check_tool('xsane --version', 0.9) # will fail if X not running...
+    else:
+        return bool(utils.which("xsane")) # ...so just see if it installed somewhere
 
 def check_scanimage():
     return check_tool('scanimage --version', 1.0)

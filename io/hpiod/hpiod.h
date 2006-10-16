@@ -190,9 +190,10 @@ enum CHANNEL_ID  /* MLC socket ids */
    CONFIG_UPLOAD_CHANNEL = 0xe,
    CONFIG_DOWNLOAD_CHANNEL = 0xf,
    MEMORY_CARD_CHANNEL = 0x11,
-   EWS_CHANNEL = 0x12          /* Embeded Web Server interface ff/1/1, any unused socket id */
+   EWS_CHANNEL = 0x12,          /* Embeded Web Server interface ff/1/1, any unused socket id */
+   SOAPSCAN_CHANNEL = 0x13,          /* Soap Scan interface ff/2/1, any unused socket id */
+   MAX_SOCKETID
 };
-#define MAX_SOCKETID EWS_CHANNEL+1  /* must be largest numeric socketid + 1 */
 
 void sysdump(void *data, int size);
 

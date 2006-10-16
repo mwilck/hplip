@@ -113,7 +113,7 @@ log.set_module('hp-levels')
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:s:ca:g',
         ['printer=', 'device=', 'help', 'help-rest', 'help-man', 
-         'logging=', 'size=', 'color', 'char='])
+         'help-desc', 'logging=', 'size=', 'color', 'char='])
          
 except getopt.GetoptError:
     usage()
@@ -138,6 +138,10 @@ for o, a in opts:
         
     elif o == '--help-man':
         usage('man')
+    
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
 
     elif o in ('-p', '--printer'):
         if a.startswith('*'):

@@ -382,6 +382,12 @@ class FaxDevice(device.Device):
 
     station_name = property(getStationName, setStationName, doc="OID_FAX_STATION_NAME")
 
+    def setDateAndTime(self):
+        t = time.localtime()
+        p = struct.pack("BBBBBBB", t[0]-2000, t[1], t[2], t[6]+1, t[3], t[4], t[5])
+        log.debug(repr(p))
+        return self.setPML(pml.OID_DATE_AND_TIME, p)
+    
     def uploadLog(self):
         if not self.isUloadLogActive():
             self.upload_log_thread = UploadLogThread(self)
@@ -631,20 +637,6 @@ class FaxSendThread(threading.Thread):
                     else:
                         self.rendered_file_list.append((fax_file_name, "application/hplip-fax", "HP Fax", fax_file_title))
                         log.debug("Processing pre-rendered file: %s (%d pages)" % (fax_file_name, fax_file_pages))
-
-
-##                    else:
-##                        log.debug("Processing file: %s" % fax_file_name)
-##                        # render each file
-##                        f, canceled = self.render_file(fax_file_name, fax_file_title, fax_file_type)
-##
-##                        if canceled:
-##                            state = STATE_ABORTED
-##                        elif not f:
-##                            state = STATE_ERROR # Timeout
-##                        else:
-##                            log.debug("Rendered file into %s" % f)
-##                            self.rendered_file_list.append((f, "application/hplip-fax", "HP Fax", fax_file_title))
 
                     if self.check_for_cancel():
                         state = STATE_ABORTED
@@ -1057,7 +1049,9 @@ class FaxSendThread(threading.Thread):
 
                         try:
                             self.dev.setPML(pml.OID_DEV_DOWNLOAD_TIMEOUT, pml.DEFAULT_DOWNLOAD_TIMEOUT)
-                            self.dev.setPML(pml.OID_FAXJOB_TX_TYPE, pml.FAXJOB_TX_TYPE_HOST_ONLY) 
+                            self.dev.setPML(pml.OID_FAXJOB_TX_TYPE, pml.FAXJOB_TX_TYPE_HOST_ONLY)
+                            log.debug("Setting date and time on device.")                            
+                            self.dev.setDateAndTime() 
                         except Error, e:
                             log.error("PML/SNMP error (%s)" % e.msg)
                             fax_send_state = FAX_SEND_STATE_ERROR

@@ -33,8 +33,28 @@ class NoDevicesForm(NoDevicesForm_base):
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir, "warning.png")))
         
     def CUPSButton_clicked(self):
-        utils.openURL("http://localhost:631/printers")
         self.close()
+        utils.openURL("http://localhost:631/printers")
         
     def ExitButton_clicked(self):
         self.close()
+        
+    def setupPushButton_clicked(self):
+        self.close()
+        
+        if utils.which('kdesu'):
+            su_sudo = 'kdesu -- %s'
+        
+        elif utils.which('gksu'):
+            su_sudo = 'gksu "%s"'
+        
+        if utils.which('hp-setup'):
+            cmd = su_sudo % 'hp-setup -u'
+        else:
+            cmd = su_sudo % 'python ./setup.py -u'
+        
+        log.debug(cmd)
+        os.system(cmd)
+        
+        
+        

@@ -70,7 +70,62 @@ class JobListViewItem(QListViewItem):
         self.job_id = job_id
         self.printer = printer
 
+class QPixmapLabelButton(QPushButton):
+    def __init__(self, parent=None, pixmap=None, disabled_pixmap=None, name=''):
+        QPushButton.__init__(self, parent, name)
+        self.pixmap = pixmap
+        self.disabled_pixmap = disabled_pixmap
+        
+        self.pixmap_width, self.pixmap_height = self.pixmap.width(), self.pixmap.height()
+        
+        
+##        pp = QPainter(self.disabled_pixmap)
+##        pp.setBackgroundMode(Qt.OpaqueMode)
+##        pp.eraseRect(0, 0, self.pixmap_width, self.pixmap_height)
+##        #mask = self.pixmap.mask()
+##        #pp.drawPixmap(0, 0, mask)
+##        pp.end()
 
+        #self.setFixedHeight(self.pixmap_height)
+        
+    def drawButtonLabel(self, painter):
+        button_width, button_height = self.width(), self.height()
+        
+        adj = 0
+        if self.isDown():
+            adj = 1
+        
+        
+        if self.isEnabled():
+            painter.setPen(Qt.black)
+            weight = QFont.Bold
+        else:
+            painter.setPen(Qt.gray)
+            weight = QFont.Normal
+        
+        f = QFont() #"helvetica", 12, weight)
+        f.setWeight(weight)
+        painter.setFont(f)
+
+        text_rect = painter.boundingRect(0, 0, 1000, 1000, Qt.AlignLeft, self.text())
+        text_width, text_height = text_rect.right() - text_rect.left(), text_rect.bottom() - text_rect.top()
+        
+        button_width_center = button_width/2
+        button_height_center = button_height/2
+        combined_width_center = (self.pixmap_width + text_width + 10)/2
+        
+        
+        if self.isEnabled():
+            painter.drawPixmap(button_width_center - combined_width_center + adj, button_height_center - self.pixmap_height/2 + adj, self.pixmap)
+        else:
+            painter.drawPixmap(button_width_center - combined_width_center + adj, button_height_center - self.pixmap_height/2 + adj, self.disabled_pixmap)
+        
+        
+        painter.drawText(button_width_center - combined_width_center + self.pixmap_width + 10 + adj, 
+                         button_height_center - text_height/2 + adj, 1000, 1000, Qt.AlignLeft, self.text())
+                         
+        
+        
 
 class ScrollToolView(QScrollView):
     def __init__(self,parent = None,name = None,fl = 0):
@@ -220,7 +275,6 @@ class ScrollSuppliesView(QScrollView):
 
 
     def createBarGraph(self, percent, agent_type, w=100, h=18):
-        #log.info("createBarGraph()")
         fw = w/100*percent
         px = QPixmap(w, h)
         pp = QPainter(px)
@@ -438,8 +492,75 @@ class devmgr4(DevMgr4_base):
         self.cleanup = cleanup
         self.hpiod_sock = hpiod_sock
         self.hpssd_sock = hpssd_sock
+        
+        TabPageLayout = QGridLayout(self.TabPage,1,1,11,6) #,"TabPageLayout")
 
-        # Make some adjustments to the UI
+        self.ConfigureFeaturesButton = QPushButton(self.TabPage) #,"ConfigureFeaturesButton")
+        TabPageLayout.addWidget(self.ConfigureFeaturesButton,7,1)
+        
+        spacer1 = QSpacerItem(321,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        TabPageLayout.addItem(spacer1,7,0)
+        
+        spacer2 = QSpacerItem(20,80,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout.addItem(spacer2,6,1)
+
+        self.ScanButton = QPixmapLabelButton(self.TabPage, QPixmap(os.path.join(prop.image_dir, "scan_icon.png")), 
+            QPixmap(os.path.join(prop.image_dir, "scan_icon_disabled.png")))
+            
+        self.ScanButton.setMinimumSize(QSize(0,42))
+        self.ScanButton.setEnabled(0)
+
+        TabPageLayout.addMultiCellWidget(self.ScanButton,2,2,0,1)
+
+        self.PCardButton = QPixmapLabelButton(self.TabPage, QPixmap(os.path.join(prop.image_dir, "pcard_icon.png")), 
+            QPixmap(os.path.join(prop.image_dir, "pcard_icon_disabled.png")))
+            
+        self.PCardButton.setMinimumSize(QSize(0,42))        
+        self.PCardButton.setEnabled(0)
+
+        TabPageLayout.addMultiCellWidget(self.PCardButton,3,3,0,1)
+
+        self.SendFaxButton = QPixmapLabelButton(self.TabPage, QPixmap(os.path.join(prop.image_dir, "fax_icon.png")), 
+            QPixmap(os.path.join(prop.image_dir, "fax_icon_disabled.png")))
+            
+        self.SendFaxButton.setMinimumSize(QSize(0,42))
+        self.SendFaxButton.setEnabled(0)
+
+        TabPageLayout.addMultiCellWidget(self.SendFaxButton,4,4,0,1)
+
+        self.MakeCopiesButton = QPixmapLabelButton(self.TabPage, QPixmap(os.path.join(prop.image_dir, "makecopies_icon.png")), 
+            QPixmap(os.path.join(prop.image_dir, "makecopies_icon_disabled.png")) )
+        
+        self.MakeCopiesButton.setMinimumSize(QSize(0,42))
+        self.MakeCopiesButton.setEnabled(0)
+
+        TabPageLayout.addMultiCellWidget(self.MakeCopiesButton,5,5,0,1)
+        spacer3 = QSpacerItem(20,90,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout.addItem(spacer3, 0, 0)
+
+        self.PrintButton = QPixmapLabelButton(self.TabPage, QPixmap(os.path.join(prop.image_dir, "print_icon.png")), 
+            QPixmap(os.path.join(prop.image_dir, "print_icon_disabled.png")))
+            
+        self.PrintButton.setMinimumSize(QSize(0,42))
+        self.PrintButton.setEnabled(0)
+
+        TabPageLayout.addMultiCellWidget(self.PrintButton,1,1,0,1)
+
+
+        self.connect(self.PrintButton,SIGNAL("clicked()"),self.PrintButton_clicked)
+        self.connect(self.ScanButton,SIGNAL("clicked()"),self.ScanButton_clicked)
+        self.connect(self.PCardButton,SIGNAL("clicked()"),self.PCardButton_clicked)
+        self.connect(self.SendFaxButton,SIGNAL("clicked()"),self.SendFaxButton_clicked)
+        self.connect(self.MakeCopiesButton,SIGNAL("clicked()"),self.MakeCopiesButton_clicked)
+        self.connect(self.ConfigureFeaturesButton,SIGNAL("clicked()"),self.ConfigureFeaturesButton_clicked)
+        
+        self.ConfigureFeaturesButton.setText(self.__tr("Configure..."))
+        self.ScanButton.setText(self.__tr("Scan"))
+        self.PCardButton.setText(self.__tr("Photo Card"))
+        self.SendFaxButton.setText(self.__tr("Send Fax"))
+        self.MakeCopiesButton.setText(self.__tr("Make Copies"))
+        self.PrintButton.setText(self.__tr("Print"))
+        
         self.StatusHistoryList.setSorting(-1)
         self.PrintJobList.setSorting(1) # Sort on job ID column
         self.DeviceList.setAutoArrange(False)
@@ -608,9 +729,7 @@ class devmgr4(DevMgr4_base):
     def RescanDevices(self):
         if not self.rescanning:
             self.deviceRefreshAll.setEnabled(False)
-            #self.deviceRescanAction.setEnabled(False)
             self.DeviceListRefresh()
-            #self.deviceRescanAction.setEnabled(True)
             self.deviceRefreshAll.setEnabled(True)
 
 
@@ -905,6 +1024,7 @@ class devmgr4(DevMgr4_base):
                 QApplication.restoreOverrideCursor()
                 self.cur_device = None
                 self.deviceRescanAction.setEnabled(False)
+                self.deviceRemoveAction.setEnabled(False)
                 self.rescanning = False
                 self.UpdateTabs()
                 self.statusBar().message(self.__tr("Press F6 to refresh."))
@@ -945,6 +1065,7 @@ class devmgr4(DevMgr4_base):
             
             self.UpdateDevice()
             self.deviceRescanAction.setEnabled(True)
+            self.deviceRemoveAction.setEnabled(True)
 
             QApplication.restoreOverrideCursor()
 
@@ -1417,7 +1538,6 @@ class devmgr4(DevMgr4_base):
 
                 if self.ActivateDevice(device_uri):
                     self.UpdateDevice(True, True)
-                    print self.cur_device.dq
             
             elif self.ActivateDevice(device_uri):
                 self.cur_device.status_code = event_code
@@ -1898,7 +2018,45 @@ class devmgr4(DevMgr4_base):
         f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
         log.debug(f)
         utils.openURL(f)
+        
+    def deviceInstallAction_activated(self):
+        if utils.which('kdesu'):
+            su_sudo = 'kdesu -- %s'
+        
+        elif utils.which('gksu'):
+            su_sudo = 'gksu "%s"'
+        
+        if utils.which('hp-setup'):
+            cmd = su_sudo % 'hp-setup -u'
+        else:
+            cmd = su_sudo % 'python ./setup.py -u'
+        
+        log.debug(cmd)
+        os.system(cmd)
+        
+    def deviceRemoveAction_activated(self):
+        if self.cur_device is not None:
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+            print_uri = self.cur_device.device_uri
+            fax_uri = print_uri.replace('hp:', 'hpfax:')
+            
+            log.debug(print_uri)
+            log.debug(fax_uri)
+            
+            self.cups_devices = device.getSupportedCUPSDevices(['hp', 'hpfax'])
 
+            for d in self.cups_devices:
+                if d in (print_uri, fax_uri):
+                    for p in self.cups_devices[d]:
+                        log.debug("Removing %s" % p)
+                        cups.delPrinter(p)
+                        
+            self.cur_device = None
+            
+            QApplication.restoreOverrideCursor()
+            
+            self.RescanDevices()
+            
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

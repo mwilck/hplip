@@ -44,11 +44,26 @@ int CompChannel::Open(char *sendBuf, int *result)
    if (ClientCnt==1)
    {
       /* Get requested interface based on SocketID. */
-      fd = FD_ff_1_1;        /* currently only EWS is suppported */
-      iclass = 0xff;
-      isub = 1;
-      iproto = 1;
- 
+      switch (sockid)
+      {
+         case EWS_CHANNEL:
+            fd = FD_ff_1_1;   
+            iclass = 0xff;
+            isub = 1;
+            iproto = 1;
+            break;
+         case SOAPSCAN_CHANNEL:
+            fd = FD_ff_2_1;   
+            iclass = 0xff;
+            isub = 2;
+            iproto = 1;
+            break;
+         default:
+            syslog(LOG_ERR, "invalid channel: %d %s %s %d\n", sockid, pDev->GetURI(), __FILE__, __LINE__);
+            goto bugout;
+            break;
+      }
+
       /* Get interface descriptors and claim it. */
       if (pDev->GetInterface(iclass, isub, iproto, &config, &interface, &altset))
       {

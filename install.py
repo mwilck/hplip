@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '0.13'
+__version__ = '0.14'
 __title__ = 'HPLIP Installer (EXPERIMENTAL)'
 __doc__ = "Installer for HPLIP tarball."
 
@@ -35,7 +35,7 @@ from base.distros import *
 
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: hplip-install [MODE] [OPTIONS]", "", "summary", True),
+         ("Usage: sh ./hplip-install [MODE] [OPTIONS]", "", "summary", True),
          utils.USAGE_SPACE,
          ("[MODE]", "", "header", False),
          #("Enter graphical UI mode:", "-u or --gui (DISABLED)", "option", False),
@@ -331,7 +331,8 @@ auto = False
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'hl:guia', 
-        ['help', 'help-rest', 'help-man', 'logging=', 'gui', 'interactive', 'auto']) 
+        ['help', 'help-rest', 'help-man', 'help-desc',
+        'logging=', 'gui', 'interactive', 'auto']) 
 
 except getopt.GetoptError:
     usage()
@@ -349,6 +350,10 @@ for o, a in opts:
 
     elif o == '--help-man':
         usage('man')
+    
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
 
     elif o in ('-l', '--logging'):
         log_level = a.lower().strip()
@@ -377,6 +382,16 @@ log.set_where(log.LOG_TO_CONSOLE_AND_FILE)
 
 log.debug("Log file=%s" % log_file)
         
+
+version_description, version_public, version_internal = getHPLIPVersion()
+log.debug("HPLIP Description=%s Public version=%s Internal version = %s"  % 
+    (version_description, version_public, version_internal))
+
+hpijs_version_description, hpijs_version = getHPIJSVersion()
+log.debug("HPIJS Description=%s Version=%s"  % 
+    (hpijs_version_description, hpijs_version))
+        
+prop.version = version_public
 utils.log_title(__title__, __version__)    
 
 log.info("Initializing...")
@@ -439,14 +454,6 @@ for d in dependencies:
 log.debug("******")
 
 log.debug("Running package manager: %s" % check_pkg_mgr())
-
-version_description, version_public, version_internal = getHPLIPVersion()
-log.debug("HPLIP Description=%s Public version=%s Internal version = %s"  % 
-    (version_description, version_public, version_internal))
-
-hpijs_version_description, hpijs_version = getHPIJSVersion()
-log.debug("HPIJS Description=%s Version=%s"  % 
-    (hpijs_version_description, hpijs_version))
 
 bitness = utils.getBitness()
 log.debug("Bitness = %d" % bitness)
@@ -1235,72 +1242,73 @@ else: # INTERACTIVE_MODE
             if install_printer:
                 log.info("Please make sure your printer is connected and powered on at this time.")
 
-                io_choice = 'u'
-                io_choices = ['u']
-                io_list = '(u=USB*'
-
-                if selected_options['network']:
-                    io_list += ', n=network'
-                    io_choices.append('n')
-
-                if selected_options['parallel']:
-                    io_list += ', p=parallel'
-                    io_choices.append('p')
-
-                io_list += ', q=quit)'
-
-                if len(io_choices) > 1:
-                    io_choice = enter_choice("\nWhat I/O type will the newly installed printer use %s ? " % io_list, io_choices, 'u')
-
-                log.debug("IO choice = %s" % io_choice)
-
+                if os.getenv('DISPLAY') and selected_options['gui'] and utils.checkPyQtImport():
+                    x = "python ./setup.py -u"
+                    os.system(su_sudo() % x)
                 
-                auto_str = ''
-                if auto:
-                    auto_str = '--auto'
-                    
-                if io_choice == 'n':
-                    ip = ''
-                    #import socket
-
-                    ip_pat = re.compile(r"""\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""", re.IGNORECASE)
-
-                    while True:
-                        user_input = raw_input(utils.bold("\nEnter the IP address or hostname for the printer (q=quit) : ")).lower().strip()
-
-                        if user_input == 'q':
-                            sys.exit(0)
-
-                        if ip_pat.search(user_input) is not None:
-                            log.debug("IP match")
-                            ip = user_input
-                            break
-
-                        try:
-                            param = socket.gethostbyname(user_input)
-                        except socket.gaierror:
-                            log.debug("Gethostbyname() failed.")
-                        else:
-                            log.debug("gethostbyname() match")
-                            ip = user_input
-                            break
-
-                        log.error("Invalid or unknown IP address/hostname")
-
-                    if ip:
-                        x = "python ./setup.py %s %s" % (ip, auto_str)
-                        os.system(su_sudo() % x)
-
-                elif io_choice == 'p':
-                    x = "python ./setup.py -b par %s" % auto_str
-                    os.system(su_sudo() % x)
-
-                elif io_choice == 'u':
-                    x = "python ./setup.py -b usb %s" % auto_str
-                    os.system(su_sudo() % x)
-
                 else:
-                    pass
+                    io_choice = 'u'
+                    io_choices = ['u']
+                    io_list = '(u=USB*'
+    
+                    if selected_options['network']:
+                        io_list += ', n=network'
+                        io_choices.append('n')
+    
+                    if selected_options['parallel']:
+                        io_list += ', p=parallel'
+                        io_choices.append('p')
+    
+                    io_list += ', q=quit)'
+    
+                    if len(io_choices) > 1:
+                        io_choice = enter_choice("\nWhat I/O type will the newly installed printer use %s ? " % io_list, io_choices, 'u')
+    
+                    log.debug("IO choice = %s" % io_choice)
+    
+                    
+                    auto_str = ''
+                    if auto:
+                        auto_str = '--auto'
+                        
+                    if io_choice == 'n':
+                        ip = ''
+                        ip_pat = re.compile(r"""\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""", re.IGNORECASE)
+    
+                        while True:
+                            user_input = raw_input(utils.bold("\nEnter the IP address or hostname for the printer (q=quit) : ")).lower().strip()
+    
+                            if user_input == 'q':
+                                sys.exit(0)
+    
+                            if ip_pat.search(user_input) is not None:
+                                log.debug("IP match")
+                                ip = user_input
+                                break
+    
+                            try:
+                                param = socket.gethostbyname(user_input)
+                            except socket.gaierror:
+                                log.debug("Gethostbyname() failed.")
+                            else:
+                                log.debug("gethostbyname() match")
+                                ip = user_input
+                                break
+    
+                            log.error("Invalid or unknown IP address/hostname")
+    
+                        if ip:
+                            x = "python ./setup.py -i %s %s" % (ip, auto_str)
+                            os.system(su_sudo() % x)
+    
+                    elif io_choice == 'p':
+                        x = "python ./setup.py -i -b par %s" % auto_str
+                        os.system(su_sudo() % x)
+    
+                    elif io_choice == 'u':
+                        x = "python ./setup.py -i -b usb %s" % auto_str
+                        os.system(su_sudo() % x)
+    
 
         else: # hpijs only
             print

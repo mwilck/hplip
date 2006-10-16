@@ -21,9 +21,9 @@
 #
 
 
-__version__ = '2.1'
-__title__ = 'Printer Detection (Probe) Utility'
-__doc__ = "Detect USB, parallel, and network printers."
+__version__ = '2.2'
+__title__ = 'Printer Discovery Utility'
+__doc__ = "Discover USB, parallel, and network printers."
 
 
 # Std Lib
@@ -72,6 +72,7 @@ try:
     opts, args = getopt.getopt(sys.argv[1:],
                                 'hl:b:t:o:e:s:g',
                                 ['help', 'help-rest', 'help-man',
+                                  'help-desc',
                                   'logging=',
                                   'bus=',
                                   'event=',
@@ -91,7 +92,7 @@ format='cups'
 timeout=5
 ttl=4
 filter = 'none'
-search = None
+search = ''
 
 if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
@@ -107,6 +108,10 @@ for o, a in opts:
     elif o == '--help-man':
         usage('man')
         
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
+    
     elif o == '-g':
         log.set_level('debug')
 
@@ -174,6 +179,7 @@ fields, data, result_code = \
                             'ttl' : ttl,
                             'format' : 'cups',
                             'filter' : filter,
+                            'search': search,
 
                       }
                     )
@@ -185,29 +191,8 @@ pat = re.compile(r'(.*?)\s"(.*?)"\s"(.*?)"\s"(.*?)"', re.IGNORECASE)
 max_c1, max_c2, max_c3, max_c4 = 0, 0, 0, 0
 dd = data.splitlines()
 
-if len(dd) > 0:
-
-    if search is not None:
-        try:
-            search_pat = re.compile(search, re.IGNORECASE)
-        except:
-            log.error("Invalid search pattern. Search uses standard regular expressions. For more info, see: http://www.amk.ca/python/howto/regex/")
-            sys.exit(0)
-
-        ee = []
-        for d in dd:
-            match_obj = search_pat.search(d)
-            if match_obj is not None:
-                ee.append(d)
-
-        if len(ee) == 0:
-            log.warn("No devices found that match search criteria.")
-            sys.exit(0)
-    else:
-        ee = dd
-
-    
-    for d in ee:
+if dd:
+    for d in dd:
         x = pat.search(d)
         
         c1 = x.group(1) # uri
@@ -235,7 +220,7 @@ if len(dd) > 0:
                 
         log.info(formatter.compose(("Device URI", "Model", "Name")))
         log.info(formatter.compose(('-'*max_c1, '-'*max_c3, '-'*max_c4)))
-        for d in ee:
+        for d in dd:
             x = pat.search(d)
             uri = x.group(1)
             name = x.group(3)
@@ -252,13 +237,13 @@ if len(dd) > 0:
                 
         log.info(formatter.compose(("Device URI", "Model")))
         log.info(formatter.compose(('-'*max_c1, '-'*max_c2)))
-        for d in ee:
+        for d in dd:
             x = pat.search(d)
             uri = x.group(1)
             model = x.group(2)
             log.info(formatter.compose((uri, model)))
 
-    log.info("\nFound %d printer(s) on the '%s' bus.\n" % (len(ee), bus))
+    log.info("\nFound %d printer(s) on the '%s' bus.\n" % (len(dd), bus))
             
 else:
     log.warn("No devices found. If this isn't the result you are expecting,")

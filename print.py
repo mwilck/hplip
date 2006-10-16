@@ -199,7 +199,7 @@ class print_client(async.dispatcher):
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:g',
                                ['printer=', 'device=', 'help', 
-                                'help-rest', 'help-man', 'logging='])
+                                'help-rest', 'help-man', 'logging=', 'help-desc'])
 except getopt.GetoptError:
     usage()
 
@@ -221,6 +221,10 @@ for o, a in opts:
     elif o == '--help-man':
         usage('man')
 
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
+    
     elif o in ('-p', '-P', '--printer'):
         printer_name = a
 

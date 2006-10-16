@@ -147,13 +147,15 @@ class MakeCopiesForm(MakeCopiesForm_base):
                                         printer_name=self.printer_name, 
                                         hpssd_sock=self.sock)
 
-        if self.dev.copy_type != COPY_TYPE_DEVICE:
+        if self.dev.copy_type not in (COPY_TYPE_DEVICE, COPY_TYPE_AIO_DEVICE):
             self.FailureUI(self.__tr("<b>Sorry, make copies functionality is not implemented for this device type.</b>"))
             self.close()
             return
             
         self.scan_style = self.dev.mq.get('scan-style', SCAN_STYLE_FLATBED)
-        log.debug(self.scan_style)
+        self.copy_type = self.dev.mq.get('copy-type', COPY_TYPE_DEVICE)
+        
+        #log.debug(self.scan_style)
         
         if self.scan_style == SCAN_STYLE_SCROLLFED:
             self.fitToPageCheckBox.setEnabled(False)
@@ -224,11 +226,20 @@ class MakeCopiesForm(MakeCopiesForm_base):
             
             if self.scan_style == SCAN_STYLE_FLATBED and self.fit_to_page is None:
                 result_code, self.fit_to_page = self.dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
+                
+                if result_code != pml.ERROR_OK:
+                    self.fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
+                    self.fitToPageCheckBox.setEnabled(False)
+                
+            else:
+                self.fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
+                
+            if self.scan_style != SCAN_STYLE_FLATBED:
+                self.fitToPageCheckBox.setEnabled(False)
             
+                
             result_code, self.max_reduction = self.dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
             result_code, self.max_enlargement = self.dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
-            
-            #print self.num_copies, self.contrast, self.reduction, self.quality, self.fit_to_page, self.max_reduction, self.max_enlargement
             
             # contrast
             self.contrastTextLabel.setText("%d" % (self.contrast/25))
@@ -241,15 +252,14 @@ class MakeCopiesForm(MakeCopiesForm_base):
             self.reductionSlider.setTickmarks(QSlider.Below)
             self.reductionSlider.setTickInterval(10)
             
-            if self.scan_style == SCAN_STYLE_FLATBED:
-                if self.fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED:
-                    self.fitToPageCheckBox.setChecked(True)
-                    self.reductionTextLabel.setText("")
-                    self.reductionSlider.setEnabled(False)
-                else:
-                    self.fitToPageCheckBox.setChecked(False)
-                    self.reductionTextLabel.setText("%d%%" % self.reduction)
-                    self.reductionSlider.setEnabled(True)
+            if self.fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED:
+                self.fitToPageCheckBox.setChecked(True)
+                self.reductionTextLabel.setText("")
+                self.reductionSlider.setEnabled(False)
+            else:
+                self.fitToPageCheckBox.setChecked(False)
+                self.reductionTextLabel.setText("%d%%" % self.reduction)
+                self.reductionSlider.setEnabled(True)
                 
             # num_copies
             self.numberCopiesSpinBox.setValue(self.num_copies)
@@ -257,12 +267,16 @@ class MakeCopiesForm(MakeCopiesForm_base):
             # quality
             if self.quality == pml.COPIER_QUALITY_FAST:
                 self.qualityButtonGroup.setButton(0)
+            
             elif self.quality == pml.COPIER_QUALITY_DRAFT:
                 self.qualityButtonGroup.setButton(1)
+            
             elif self.quality == pml.COPIER_QUALITY_NORMAL:
                 self.qualityButtonGroup.setButton(2)
+            
             elif self.quality == pml.COPIER_QUALITY_PRESENTATION:
                 self.qualityButtonGroup.setButton(3)
+            
             elif self.quality == pml.COPIER_QUALITY_BEST:
                 self.qualityButtonGroup.setButton(4)
                 

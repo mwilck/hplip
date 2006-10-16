@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
@@ -76,14 +77,19 @@ def getDistro():
                     distro = distros[d]['index']
                     break
     
-    for n in name.split():
+    for n in name.split(): 
+        if '.' in n:
+            m = '.'.join(n.split('.')[:2])
+        else:
+            m = n
+        
         try:
-            distro_version = str(float(n))
+            distro_version = str(float(m))
         except ValueError:
             try:
-                distro_version = str(int(n))
+                distro_version = str(int(m))
             except ValueError:
-                distro_version = ''
+                distro_version = '0.0'
             else:
                 break
         else:
@@ -150,7 +156,7 @@ distros = \
         'index': 1,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
         'package_mgr_cmd' : 'sudo apt-get install --force-yes --yes $packages_to_install',
-        'pre_depend_cmd': 'dpkg --configure -a && sudo apt-get update',
+        'pre_depend_cmd': 'sudo dpkg --configure -a && sudo apt-get update',
         'post_depend_cmd': '',
         'hpoj_remove_cmd': 'sudo apt-get remove --force-yes --yes hpoj',
         'hplip_remove_cmd': 'sudo apt-get remove --force-yes --yes hplip hpijs',
@@ -176,6 +182,15 @@ distros = \
             },
             '6.06': {
                 'code_name': 'Dapper', 
+                'release_date': '6/2006', 
+                'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.  In addition disable the Ubuntu CD source. https://help.ubuntu.com/community/Repositories for more information.', 
+                'pre_depend_cmd': '', 
+                'post_depend_cmd': ''
+            },
+            '6.10': {
+                'code_name': 'Edgy', 
                 'release_date': '6/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -367,6 +382,14 @@ distros = \
                 'pre_depend_cmd': '', 
                 'post_depend_cmd': ''
             },
+	        '2007.0': {
+                'code_name': '2k7', 
+                'release_date': '2007', 
+                'supported': True, 
+                'dependency_cmds': {}, 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
+                'pre_depend_cmd': '', 
+                'post_depend_cmd': ''
+            },
         },
     },
     
@@ -424,6 +447,24 @@ distros = \
                 'code_name': 'Bordeaux', 
                 'release_date': '20/3/2006', 
                 'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': '', 
+                'pre_depend_cmd': '', 
+                'post_depend_cmd': ''
+            },
+            '5.92': {
+                'code_name': 'RC3', 
+                'release_date': '20/3/2006', 
+                'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': '', 
+                'pre_depend_cmd': '', 
+                'post_depend_cmd': ''
+            },
+            '6.0': {
+                'code_name': '', 
+                'release_date': '20/3/2006', 
+                'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
                 'pre_depend_cmd': '', 
@@ -967,10 +1008,12 @@ __set_ver_cmds('ubuntu', '5.04',
 
 __copy_cmds('ubuntu', '5.04', '5.1') # 5.10 = 5.04
 __copy_cmds('ubuntu', '5.1', '6.06') # 6.06 = 5.10
+__copy_cmds('ubuntu', '6.06', '6.10') # 6.06 = 6.10
 __update_ver_cmd('ubuntu', '5.04', 'gs', ('gs', ''))
 __update_ver_cmd('ubuntu', '5.04', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups-devel', ('libcupsys2-dev', ''))
+__update_ver_cmd('ubuntu', '6.10', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'pyqt', ('python2.4-qt3', ''))
 
@@ -1062,6 +1105,9 @@ __set_ver_cmds('mandriva', '10.0',
 __copy_cmds('mandriva', '10.0', '10.1') 
 __copy_cmds('mandriva', '10.1', '10.2')
 __copy_cmds('mandriva', '10.2', '2006.0')
+__copy_cmds('mandriva', '2006.0', '2007.0')
+__update_ver_cmd('mandriva', '2007.0', 'lsb', ('lsb-core-3.1-7mdv2007.0 lsb-release-2.0-4mdk', ''))
+__update_ver_cmd('mandriva', '2007.0', 'libpthread', ('glibc-i18ndata-2.4-4mdk glibc_lsb-2.3.6-1mdk', ''))
 
 ################### FEDORA (5) ###################
 __set_ver_cmds('fedora', '3.0',
@@ -1090,6 +1136,7 @@ __set_ver_cmds('fedora', '3.0',
 
 __copy_cmds('fedora', '3.0', '4.0') 
 __copy_cmds('fedora', '4.0', '5.0') 
+__copy_cmds('fedora', '5.0', '5.92') 
 __update_ver_cmd('fedora', '3.0', 'pyqt', ('sip PyQt',''))
 
 

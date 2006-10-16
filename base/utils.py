@@ -25,8 +25,9 @@ from __future__ import generators
 
 # Std Lib
 import sys, os, fnmatch, tempfile, socket, struct, select, time
-import fcntl, errno, stat, string, xml.parsers.expat, commands
+import fcntl, errno, stat, string, commands
 import cStringIO, re
+import xml.parsers.expat as expat
 
 # Local
 from g import *
@@ -965,13 +966,13 @@ class ModelParser:
             
         self.min_ver = "%s.%s.%s" % (major, year, month)
 
-        parser = xml.parsers.expat.ParserCreate()
+        parser = expat.ParserCreate()
         parser.StartElementHandler = self.startElement
         parser.EndElementHandler = self.endElement
         parser.CharacterDataHandler = self.charData
         try:
             parser.Parse(open(filename).read(), True)
-        except xml.parsers.expat.ExpatError, e:
+        except expat.ExpatError, e:
             log.error("XML file parse error: %s" % e)
             raise Error(ERROR_INTERNAL)
 
@@ -1000,7 +1001,7 @@ def openURL(url):
     browser_opt = {'firefox': '-new-window', 'mozilla' : '', 'konqueror': '', 'galeon': '-w', 'skipstone': ''}
     
     for b in browsers:
-        print b
+        #print b
         if which(b):
             cmd = "%s %s %s &" % (b, browser_opt[b], url)
             log.debug(cmd)
@@ -1028,27 +1029,27 @@ def list_move_down(l, m):
             l[i],l[i+1] = l[i+1],l[i] 
             
 
-def levenshtein_distance(a,b):
-    """
-    Calculates the Levenshtein distance between a and b.
-    Written by Magnus Lie Hetland.
-    """
-    n, m = len(a), len(b)
-    if n > m:
-        a,b = b,a
-        n,m = m,n
-        
-    current = range(n+1)
-    for i in range(1,m+1):
-        previous, current = current, [i]+[0]*m
-        for j in range(1,n+1):
-            add, delete = previous[j]+1, current[j-1]+1
-            change = previous[j-1]
-            if a[j-1] != b[i-1]:
-                change = change + 1
-            current[j] = min(add, delete, change)
-            
-    return current[n]
+##def levenshtein_distance(a,b):
+##    """
+##    Calculates the Levenshtein distance between a and b.
+##    Written by Magnus Lie Hetland.
+##    """
+##    n, m = len(a), len(b)
+##    if n > m:
+##        a,b = b,a
+##        n,m = m,n
+##        
+##    current = range(n+1)
+##    for i in range(1,m+1):
+##        previous, current = current, [i]+[0]*m
+##        for j in range(1,n+1):
+##            add, delete = previous[j]+1, current[j-1]+1
+##            change = previous[j-1]
+##            if a[j-1] != b[i-1]:
+##                change = change + 1
+##            current[j] = min(add, delete, change)
+##            
+##    return current[n]
             
             
 class XMLToDictParser:
@@ -1107,7 +1108,7 @@ class XMLToDictParser:
     
 
     def parseXML(self, text):
-        parser = xml.parsers.expat.ParserCreate()
+        parser = expat.ParserCreate()
         parser.StartElementHandler = self.startElement
         parser.EndElementHandler = self.endElement
         parser.CharacterDataHandler = self.charData
@@ -1224,6 +1225,10 @@ format: rest
 file-extension: html
 encoding: utf8
 /restindex\n""" % (title, crumb))
+        
+        log.info("%s: %s (ver. %s)" % (crumb, title, version))
+        log.info("="*80)
+        log.info("")
         
         links = []
         

@@ -66,7 +66,7 @@ dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh install.py hplip-install
 
 cmddir = $(hplipdir)
 dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py makecopies.py probe.py
+    sendfax.py setup.py makecopies.py probe.py timedate.py
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
@@ -193,7 +193,8 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/informationform_base.py ui/informationform.py  \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
     ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py \
-    ui/makecopiesform_base.py ui/makecopiesform.py
+    ui/makecopiesform_base.py ui/makecopiesform.py ui/setupform_base.py ui/setupform.py ui/setupmanualfind_base.py \
+    ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -202,7 +203,8 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
     ui/align10form_base.ui ui/informationform_base.ui  \
     plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
-    ui/faxallowabletypesdlg_base.ui ui/makecopiesform_base.ui
+    ui/faxallowabletypesdlg_base.ui ui/makecopiesform_base.ui ui/setupform_base.ui ui/setupmanualfind_base.ui \
+    ui/setupsettings_base.ui
 
 # ui plugins
 pluginsdir = $(hplipdir)/plugins

@@ -115,6 +115,9 @@
 :model "OfficeJet 5110"
 :status :good
 
+:model "OfficeJet 5110v"
+:status :good
+
 :model "officejet 5500 series"
 :status :good
 

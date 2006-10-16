@@ -750,7 +750,7 @@ mode_specified = False
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'l:hgiu', 
         ['level=', 'help', 'help-rest', 'help-man',
-         'gui', 'interactive'])
+         'help-desc', 'gui', 'interactive'])
 
 except getopt.GetoptError:
     usage()
@@ -775,6 +775,10 @@ for o, a in opts:
         
     elif o == '--help-man':
         usage('man')
+        
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
         
     elif o in ('-i', '--interactive'):
         if mode_specified:

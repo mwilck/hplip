@@ -34,7 +34,9 @@
 
 #if (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 #else
+#ifdef HAVE_LINUX_COMPILER_H 
 #include <linux/compiler.h>
+#endif
 #include <linux/usbdevice_fs.h>
 
 #ifdef __cplusplus

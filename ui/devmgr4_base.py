@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'devmgr4_base.ui'
+# Form implementation generated from reading ui file 'ui/devmgr4_base.ui'
 #
-# Created: Fri May 5 14:41:40 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Tue Oct 3 10:42:44 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -36,42 +36,6 @@ class DevMgr4_base(QMainWindow):
         self.Tabs = QTabWidget(self.splitter2,"Tabs")
 
         self.TabPage = QWidget(self.Tabs,"TabPage")
-        TabPageLayout = QGridLayout(self.TabPage,1,1,11,6,"TabPageLayout")
-
-        self.ConfigureFeaturesButton = QPushButton(self.TabPage,"ConfigureFeaturesButton")
-
-        TabPageLayout.addWidget(self.ConfigureFeaturesButton,7,1)
-        spacer11_2 = QSpacerItem(321,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        TabPageLayout.addItem(spacer11_2,7,0)
-        spacer10 = QSpacerItem(20,80,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        TabPageLayout.addItem(spacer10,6,1)
-
-        self.ScanButton = QPushButton(self.TabPage,"ScanButton")
-        self.ScanButton.setEnabled(0)
-
-        TabPageLayout.addMultiCellWidget(self.ScanButton,2,2,0,1)
-
-        self.PCardButton = QPushButton(self.TabPage,"PCardButton")
-        self.PCardButton.setEnabled(0)
-
-        TabPageLayout.addMultiCellWidget(self.PCardButton,3,3,0,1)
-
-        self.SendFaxButton = QPushButton(self.TabPage,"SendFaxButton")
-        self.SendFaxButton.setEnabled(0)
-
-        TabPageLayout.addMultiCellWidget(self.SendFaxButton,4,4,0,1)
-
-        self.MakeCopiesButton = QPushButton(self.TabPage,"MakeCopiesButton")
-        self.MakeCopiesButton.setEnabled(0)
-
-        TabPageLayout.addMultiCellWidget(self.MakeCopiesButton,5,5,0,1)
-        spacer12_2 = QSpacerItem(20,90,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        TabPageLayout.addItem(spacer12_2,0,0)
-
-        self.PrintButton = QPushButton(self.TabPage,"PrintButton")
-        self.PrintButton.setEnabled(0)
-
-        TabPageLayout.addMultiCellWidget(self.PrintButton,1,1,0,1)
         self.Tabs.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.StatusTab = QWidget(self.Tabs,"StatusTab")
@@ -142,7 +106,7 @@ class DevMgr4_base(QMainWindow):
         self.Tabs.insertTab(self.SuppliesTab,QString.fromLatin1(""))
 
         self.TabPage_2 = QWidget(self.Tabs,"TabPage_2")
-        TabPageLayout_2 = QGridLayout(self.TabPage_2,1,1,11,6,"TabPageLayout_2")
+        TabPageLayout = QGridLayout(self.TabPage_2,1,1,11,6,"TabPageLayout")
 
         self.PrintJobList = QListView(self.TabPage_2,"PrintJobList")
         self.PrintJobList.addColumn(self.__tr("Queue"))
@@ -152,18 +116,18 @@ class DevMgr4_base(QMainWindow):
         self.PrintJobList.addColumn(self.__tr("Title"))
         self.PrintJobList.setAllColumnsShowFocus(1)
 
-        TabPageLayout_2.addMultiCellWidget(self.PrintJobList,0,0,0,1)
+        TabPageLayout.addMultiCellWidget(self.PrintJobList,0,0,0,1)
 
         self.CancelPrintJobButton = QPushButton(self.TabPage_2,"CancelPrintJobButton")
         self.CancelPrintJobButton.setEnabled(0)
 
-        TabPageLayout_2.addWidget(self.CancelPrintJobButton,1,1)
+        TabPageLayout.addWidget(self.CancelPrintJobButton,1,1)
         spacer12_3 = QSpacerItem(471,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        TabPageLayout_2.addItem(spacer12_3,1,0)
+        TabPageLayout.addItem(spacer12_3,1,0)
         self.Tabs.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
         self.TabPage_3 = QWidget(self.Tabs,"TabPage_3")
-        TabPageLayout_3 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_3")
+        TabPageLayout_2 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_2")
 
         self.groupBox9_2 = QGroupBox(self.TabPage_3,"groupBox9_2")
         self.groupBox9_2.setColumnLayout(0,Qt.Vertical)
@@ -189,7 +153,7 @@ class DevMgr4_base(QMainWindow):
         spacer14_2 = QSpacerItem(151,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         groupBox9_2Layout.addItem(spacer14_2,1,0)
 
-        TabPageLayout_3.addWidget(self.groupBox9_2,0,0)
+        TabPageLayout_2.addWidget(self.groupBox9_2,0,0)
         self.Tabs.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
         DevMgr4_baseLayout.addWidget(self.splitter2,0,0)
@@ -210,6 +174,8 @@ class DevMgr4_base(QMainWindow):
         self.setupDevice = QAction(self,"setupDevice")
         self.setupDevice.setEnabled(0)
         self.viewSupportAction = QAction(self,"viewSupportAction")
+        self.deviceInstallAction = QAction(self,"deviceInstallAction")
+        self.deviceRemoveAction = QAction(self,"deviceRemoveAction")
 
 
 
@@ -223,6 +189,9 @@ class DevMgr4_base(QMainWindow):
         self.Device.insertSeparator()
         self.deviceRescanAction.addTo(self.Device)
         self.deviceRefreshAll.addTo(self.Device)
+        self.Device.insertSeparator()
+        self.deviceInstallAction.addTo(self.Device)
+        self.deviceRemoveAction.addTo(self.Device)
         self.Device.insertSeparator()
         self.deviceExitAction.addTo(self.Device)
         self.MenuBar.insertItem(QString(""),self.Device,2)
@@ -253,12 +222,6 @@ class DevMgr4_base(QMainWindow):
         self.connect(self.settingsEmailAlertsAction,SIGNAL("activated()"),self.settingsEmailAlertsAction_activated)
         self.connect(self.settingsConfigure,SIGNAL("activated()"),self.settingsConfigure_activated)
         self.connect(self.DeviceList,SIGNAL("currentChanged(QIconViewItem*)"),self.DeviceList_currentChanged)
-        self.connect(self.PrintButton,SIGNAL("clicked()"),self.PrintButton_clicked)
-        self.connect(self.ScanButton,SIGNAL("clicked()"),self.ScanButton_clicked)
-        self.connect(self.PCardButton,SIGNAL("clicked()"),self.PCardButton_clicked)
-        self.connect(self.SendFaxButton,SIGNAL("clicked()"),self.SendFaxButton_clicked)
-        self.connect(self.MakeCopiesButton,SIGNAL("clicked()"),self.MakeCopiesButton_clicked)
-        self.connect(self.ConfigureFeaturesButton,SIGNAL("clicked()"),self.ConfigureFeaturesButton_clicked)
         self.connect(self.deviceRefreshAll,SIGNAL("activated()"),self.deviceRefreshAll_activated)
         self.connect(self.DeviceList,SIGNAL("clicked(QIconViewItem*)"),self.DeviceList_clicked)
         self.connect(self.autoRefresh,SIGNAL("toggled(bool)"),self.autoRefresh_toggled)
@@ -268,16 +231,12 @@ class DevMgr4_base(QMainWindow):
         self.connect(self.DeviceList,SIGNAL("rightButtonClicked(QIconViewItem*,const QPoint&)"),self.DeviceList_rightButtonClicked)
         self.connect(self.setupDevice,SIGNAL("activated()"),self.setupDevice_activated)
         self.connect(self.viewSupportAction,SIGNAL("activated()"),self.viewSupportAction_activated)
+        self.connect(self.deviceInstallAction,SIGNAL("activated()"),self.deviceInstallAction_activated)
+        self.connect(self.deviceRemoveAction,SIGNAL("activated()"),self.deviceRemoveAction_activated)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager"))
-        self.ConfigureFeaturesButton.setText(self.__tr("Configure..."))
-        self.ScanButton.setText(self.__tr("Scan..."))
-        self.PCardButton.setText(self.__tr("Access Photo Cards..."))
-        self.SendFaxButton.setText(self.__tr("Send Fax..."))
-        self.MakeCopiesButton.setText(self.__tr("Make Copies..."))
-        self.PrintButton.setText(self.__tr("Print..."))
         self.Tabs.changeTab(self.TabPage,self.__tr("Functions"))
         self.StatusGroupBox.setTitle(self.__tr("Last"))
         self.StatusText.setText(QString.null)
@@ -337,6 +296,12 @@ class DevMgr4_base(QMainWindow):
         self.setupDevice.setToolTip(self.__tr("Device Settings (F3)"))
         self.setupDevice.setAccel(self.__tr("F3"))
         self.viewSupportAction.setText(self.__tr("Support..."))
+        self.deviceInstallAction.setText(self.__tr("Setup New Device..."))
+        self.deviceInstallAction.setMenuText(self.__tr("Setup New Device..."))
+        self.deviceInstallAction.setAccel(self.__tr("Ins"))
+        self.deviceRemoveAction.setText(self.__tr("Remove Device..."))
+        self.deviceRemoveAction.setMenuText(self.__tr("Remove Device..."))
+        self.deviceRemoveAction.setAccel(self.__tr("Del"))
         if self.MenuBar.findItem(2):
             self.MenuBar.findItem(2).setText(self.__tr("Device"))
         if self.MenuBar.findItem(3):
@@ -476,6 +441,15 @@ class DevMgr4_base(QMainWindow):
 
     def viewSupportAction_activated(self):
         print "DevMgr4_base.viewSupportAction_activated(): Not implemented yet"
+
+    def installDevice_activated(self):
+        print "DevMgr4_base.installDevice_activated(): Not implemented yet"
+
+    def deviceInstallAction_activated(self):
+        print "DevMgr4_base.deviceInstallAction_activated(): Not implemented yet"
+
+    def deviceRemoveAction_activated(self):
+        print "DevMgr4_base.deviceRemoveAction_activated(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4_base",s,c)

@@ -41,9 +41,10 @@
 
                 <div class="menuheader">Setup and Installation</div> 
                 <menu compact="compact">
+
+                    <li><a href="downloads.html" title="Downloads"><b>Download HPLIP</b></a></li>
                     <li><a href="system_requirements.html" title="System Requirements">System Requirements</a></li> 
                     <li><a href="supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
                     <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
                     <li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
                 </menu>
@@ -79,8 +80,66 @@ Release Notes
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.6.10 - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Fixed defect hp-print and hp-sendfax (An error occurs while executing hp-print with invalid device URI or the printer name in terminal).</li>
+<li>Removed batch scanning sane_cancel dependency. This fixes a problem with scanimage version 1.0.18 or higher.</li>
+<li>Added hplip-install and timedate to web man pages.</li>
+<li>Re-ordered commands in web man pages list.</li>
+<li>Fixed version in title of installer (shows tarball version, not installed version).</li>
+<li>Fixed defect (GUI Install - hp-setup - Does Not Finish).</li>
+<li>Added icons to toolbox function page buttons.</li>
+<li>Added make copies support for some inkjet AiO devices.</li>
+<li>Added hp-timedate utility.</li>
+<li>Added description to man pages index web page.</li>
+<li>Added titles to each web man page.</li>
+<li>Fixed an issue in the installer with distro version in the form x.y.z (want x.y only).</li>
+<li>Made linux/compiler.h conditional at configure time. Configure.h is no longer distributed with the kernel headers.</li>
+<li>Simplified some text in hp-setup -u.</li>
+<li>Fixed defect (The Timeout value for searching printer shouldn't be able to set as value larger than 45 secs in HP Device Manager).</li>
+<li>Hooked-up hp-setup -u at the end of hplip-install.</li>
+<li>Made GUI mode the default for hp-setup.</li>
+<li>Fixed defect (Error occurs while manually finding the network printers in HP Device Manager).</li>
+<li>Made the &quot;Find&quot; button on the Manual Find dialog the default button.</li>
+<li>Added &quot;Setup New Device...&quot; in Toolbox.</li>
+<li>Added &quot;Remove Device...&quot; in Toolbox.</li>
+<li>Reworked &quot;No Devices Found&quot; dialog.</li>
+<li>Fixed defect (Multi PPD files were found while installing the Photosmart D5160 through hp-setup).</li>
+<li>Fixed defect (hp-setup -u default window size needs to be a tad larger).</li>
+<li>Fixed defect (hp-setup -u par device detection problem).</li>
+<li>Fixed defect (The &quot;Location&quot; and &quot;Description&quot; for Fax Information also should be available while setup the device over hp-setup in GUI mode).</li>
+<li>Added additional fax name and printer name checking.</li>
+<li>Fixed defect (hp-setup -u process slightly confusing). Added some extra text.</li>
+<li>Fixed defect (hp-setup -u manually find usb device not manually working).</li>
+<li>Fixed defect (hp-setup -u Location/Desscription text field limits (needs)).</li>
+<li>Fixed defect (hp-setup -u help button does not function).</li>
+<li>Implemented enhancement 1169 (Synchronize date/time between PC and Officejet).</li>
+<li>Created timedate.py utility to set time and date from shell.</li>
+<li>Changed xsane dependency detection so that it will work if X is not running.</li>
+<li>Changes for setup.py -u.</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.6.10 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Added support for the following new printer(s).</li>
+</ol>
+<pre class="literal-block">
+LaserJet P2015 (LJMono/PS)
+LaserJet P2015d (LJMono/PS)
+LaserJet P2015n (LJMono/PS)
+LaserJet P2015dn (LJMono/PS)
+LaserJet P2015x (LJMono/PS)
+LaserJet M3035 MFP (LJMono/PS)
+LaserJet M5035 MFP (LJMono/PS)
+LaserJet M4345 mfp (LJMono/PS)
+LaserJet P3005 (LJMono/PS)
+LaserJet P3004 (LJMono/PS)
+Color LaserJet 2700 (PS)
+Color LaserJet 2700n (PS)
+Color LaserJet CM1015 (PS)
+Color LaserJet CM1017 (PS)
+</pre>
+<p>Note, current Color LaserJet CM1015/CM1017 support is limited to printing and status. Scanning will be supported in the future.</p>
 <p><strong>HPLIP 1.6.9 - This release has the following changes.</strong></p>
-<p><strong>This HPLIP package includes HPIJS 2.6.9 which has the following changes.</strong></p>
 <ol class="arabic">
 <li><p class="first">Add new command hplip-install.</p>
 </li>
@@ -110,7 +169,7 @@ Release Notes
 </li>
 <li><p class="first">Added HPILP version to templates and dist.py.</p>
 </li>
-<li><p class="first">Fixed defect (The &quot;Add to List&quot; button for Coverpage would be grayed out after sent a fax job including Coverpage on Mandriva 2006 32bit OS with Northstar V).</p>
+<li><p class="first">Fixed defect (The &quot;Add to List&quot; button for Coverpage would be grayed out after sent a fax job including Coverpage on Mandriva 2006 32bit OS).</p>
 </li>
 <li><p class="first">Fixed defect (An unexpected error occurred when add a FAB entry using the space as the fist character of the entry name).</p>
 </li>
@@ -1323,7 +1382,7 @@ The old interface used the following Ghostscript commands.</p>
 
 
         <hr size="1"/>
-        <small>Last update: Fri Sep  1 12:44:10 2006; HPLIP Version: 1.6.9</small>
+        <small>Last update: Wed Oct 11 14:40:05 2006; HPLIP Version: 1.6.10</small>
 
         <!-- FOOTER -->
     </table>

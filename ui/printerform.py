@@ -171,15 +171,20 @@ class PrinterForm(PrinterForm_base):
 
     def InitialUpdate(self):
         if self.init_failed:
-            #log.error("Init failed")
             self.close()
             return        
 
         self.printer_list = []
 
-        self.dev = device.Device(device_uri=self.device_uri, 
-                                 printer_name=self.printer_name, 
-                                 hpssd_sock=self.sock)
+        try:
+            self.dev = device.Device(device_uri=self.device_uri, 
+                                     printer_name=self.printer_name, 
+                                     hpssd_sock=self.sock)
+        except Error, e:
+            log.error("Invalid device URI or printer name.")
+            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
+            self.close()
+            return
 
         self.device_uri = self.dev.device_uri
 

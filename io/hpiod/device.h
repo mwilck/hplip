@@ -32,7 +32,7 @@ enum IO_MODE
    RAW_MODE,   /* bi-di */
    MLC_MODE,
    DOT4_MODE,
-   DOT4_PHOENIX_MODE,  /* (ie: clj2840, lj3055, clj4730mfp) */
+   DOT4_PHOENIX_MODE,  /* (ie: clj2550, clj2840, lj3050, lj3055, clj4730mfp) */
    DOT4_BRIDGE_MODE  /* (ie: clj2500) */
 };
 
@@ -53,6 +53,7 @@ enum FD_ID
    FD_7_1_2,         /* bi-di interface */
    FD_7_1_3,         /* 1284.4 interface */
    FD_ff_1_1,        /* HP EWS interface */
+   FD_ff_2_1,        /* HP Soap Scan interface */
    MAX_FD
 };
 

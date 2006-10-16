@@ -1155,7 +1155,7 @@ class Device(object):
                 printers = cups.getPrinters()
                 for p in printers:
                     if self.device_uri == p.device_uri:
-                        print p.name
+                        #print p.name
                         self.cups_printers.append(p.name)
                         self.state = p.state # ?
         

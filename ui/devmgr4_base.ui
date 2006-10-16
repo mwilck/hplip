@@ -65,125 +65,6 @@
                     <attribute name="title">
                         <string>Functions</string>
                     </attribute>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QPushButton" row="7" column="1">
-                            <property name="name">
-                                <cstring>ConfigureFeaturesButton</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Configure...</string>
-                            </property>
-                        </widget>
-                        <spacer row="7" column="0">
-                            <property name="name">
-                                <cstring>spacer11_2</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>321</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                        <spacer row="6" column="1">
-                            <property name="name">
-                                <cstring>spacer10</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Vertical</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>20</width>
-                                    <height>80</height>
-                                </size>
-                            </property>
-                        </spacer>
-                        <widget class="QPushButton" row="2" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>ScanButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Scan...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>PCardButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Access Photo Cards...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>SendFaxButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Send Fax...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>MakeCopiesButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Make Copies...</string>
-                            </property>
-                        </widget>
-                        <spacer row="0" column="0">
-                            <property name="name">
-                                <cstring>spacer12_2</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Vertical</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>20</width>
-                                    <height>90</height>
-                                </size>
-                            </property>
-                        </spacer>
-                        <widget class="QPushButton" row="1" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>PrintButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Print...</string>
-                            </property>
-                        </widget>
-                    </grid>
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
@@ -637,6 +518,9 @@
         <action name="deviceRescanAction"/>
         <action name="deviceRefreshAll"/>
         <separator/>
+        <action name="deviceInstallAction"/>
+        <action name="deviceRemoveAction"/>
+        <separator/>
         <action name="deviceExitAction"/>
     </item>
     <item text="Configure" name="Configure">
@@ -829,6 +713,34 @@
             <string>Support...</string>
         </property>
     </action>
+    <action>
+        <property name="name">
+            <cstring>deviceInstallAction</cstring>
+        </property>
+        <property name="text">
+            <string>Setup New Device...</string>
+        </property>
+        <property name="menuText">
+            <string>Setup New Device...</string>
+        </property>
+        <property name="accel">
+            <string>Ins</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>deviceRemoveAction</cstring>
+        </property>
+        <property name="text">
+            <string>Remove Device...</string>
+        </property>
+        <property name="menuText">
+            <string>Remove Device...</string>
+        </property>
+        <property name="accel">
+            <string>Del</string>
+        </property>
+    </action>
 </actions>
 <connections>
     <connection>
@@ -878,42 +790,6 @@
         <signal>currentChanged(QIconViewItem*)</signal>
         <receiver>DevMgr4_base</receiver>
         <slot>DeviceList_currentChanged(QIconViewItem*)</slot>
-    </connection>
-    <connection>
-        <sender>PrintButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>PrintButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>ScanButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>ScanButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>PCardButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>PCardButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>SendFaxButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>SendFaxButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>MakeCopiesButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>MakeCopiesButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>ConfigureFeaturesButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>ConfigureFeaturesButton_clicked()</slot>
     </connection>
     <connection>
         <sender>deviceRefreshAll</sender>
@@ -969,6 +845,18 @@
         <receiver>DevMgr4_base</receiver>
         <slot>viewSupportAction_activated()</slot>
     </connection>
+    <connection>
+        <sender>deviceInstallAction</sender>
+        <signal>activated()</signal>
+        <receiver>DevMgr4_base</receiver>
+        <slot>deviceInstallAction_activated()</slot>
+    </connection>
+    <connection>
+        <sender>deviceRemoveAction</sender>
+        <signal>activated()</signal>
+        <receiver>DevMgr4_base</receiver>
+        <slot>deviceRemoveAction_activated()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>fileNew()</slot>
@@ -1015,6 +903,9 @@
     <slot>faxSettingsButton_clicked()</slot>
     <slot>setupDevice_activated()</slot>
     <slot>viewSupportAction_activated()</slot>
+    <slot>installDevice_activated()</slot>
+    <slot>deviceInstallAction_activated()</slot>
+    <slot>deviceRemoveAction_activated()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

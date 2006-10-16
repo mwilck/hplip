@@ -59,15 +59,13 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-testpage', __version__)
     sys.exit(0)
     
-
-    
     
 log.set_module('hp-testpage')
  
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:gx',
                                ['printer=', 'device=', 'help', 'help-rest', 
-                                'help-man', 'logging=', 'bus='])
+                                'help-man', 'logging=', 'bus=', 'help-desc'])
 except getopt.GetoptError:
     usage()
 
@@ -89,6 +87,10 @@ for o, a in opts:
         
     elif o == '--help-man':
         usage('man')
+    
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
         
     elif o in ('-p', '--printer'):
         printer_name = a

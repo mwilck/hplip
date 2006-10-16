@@ -6,14 +6,14 @@
 # exit status:
 #   0 = ok
 #   1 = error
-#   2 = no libjpeg
-#   3 = no jpeg-devel
-#   4 = no libdl
+#   102 = no libjpeg
+#   103 = no jpeg-devel
+#   104 = no libdl
 #
 
 AC_PREREQ(2.59)
 #AC_INIT([HP Printer Driver], 2.1.10,, hpijs)
-AC_INIT([HP Printer Driver], 2.6.9,, hpijs)
+AC_INIT([HP Printer Driver], 2.6.10,, hpijs)
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_PROG_LIBTOOL
 AC_CONFIG_SRCDIR([hpijs.cpp])
@@ -26,13 +26,13 @@ AC_PROG_INSTALL
 
 # Check for libraries, sets -lhpip, -ljpeg, HAVE_HPIP and HAVE_JPEG.
 AC_CHECK_LIB([m], [main])
-AC_CHECK_LIB([jpeg], [jpeg_set_defaults],[AC_DEFINE(HAVE_LIBJPEG) LIBS="-ljpeg $LIBS"],[AC_MSG_ERROR(["cannot find libjpeg support"], 2)])
-AC_CHECK_LIB([dl], [dlopen],[AC_DEFINE(HAVE_LIBDL) LIBS="-ldl $LIBS"],[AC_MSG_ERROR(["cannot find libdl support"], 4)])
+AC_CHECK_LIB([jpeg], [jpeg_set_defaults],[AC_DEFINE(HAVE_LIBJPEG) LIBS="-ljpeg $LIBS"],[AC_MSG_ERROR(["cannot find libjpeg support"], 102)])
+AC_CHECK_LIB([dl], [dlopen],[AC_DEFINE(HAVE_LIBDL) LIBS="-ldl $LIBS"],[AC_MSG_ERROR(["cannot find libdl support"], 104)])
 
 # Check for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h malloc.h syslog.h unistd.h)
-AC_CHECK_HEADERS(jpeglib.h, ,[AC_MSG_ERROR([cannot find libjpeg-devel support], 3)])
+AC_CHECK_HEADERS(jpeglib.h, ,[AC_MSG_ERROR([cannot find libjpeg-devel support], 103)])
 
 # Check for typedefs, structures, and compiler characteristics.
 AC_C_CONST

@@ -65,7 +65,7 @@ log.set_module('hp-info')
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:ig',
         ['printer=', 'device=', 'help', 'help-rest', 'help-man', 
-         'logging=', 'id', 'bus='])
+         'help-desc', 'logging=', 'id', 'bus='])
          
 except getopt.GetoptError:
     usage()
@@ -88,6 +88,10 @@ for o, a in opts:
         
     elif o == '--help-man':
         usage('man')
+    
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
 
     elif o in ('-p', '--printer'):
         if a.startswith('*'):

@@ -187,6 +187,11 @@ int Device::Write(int fd, const void *buf, int size)
    FD[fd].urb_write_active = 0;
    len = FD[fd].urb_write.actual_length;
 
+#ifdef HPIOD_DEBUG
+   syslog(LOG_INFO, "Write len=%d size=%d\n", len, size);
+   sysdump((void *)buf, len < 32 ? len : 32);
+#endif
+
 bugout:
    return len;
 }
@@ -204,7 +209,10 @@ int Device::Read(int fd, void *buf, int size, int usec)
    }
 
    if (FD[fd].ucnt)
-      return CutBuf(fd, buf, size);
+   {
+      len = CutBuf(fd, buf, size);
+      goto okout;
+   }
 
    gettimeofday (&t1, NULL);     /* get start time */
 
@@ -261,6 +269,12 @@ int Device::Read(int fd, void *buf, int size, int usec)
       len = CutBuf(fd, buf, size);
       break;
    }
+
+okout:
+#ifdef HPIOD_DEBUG
+   syslog(LOG_INFO, "Read len=%d size=%d usec=%d\n", len, size, usec);
+   sysdump(buf, len < 32 ? len : 32);
+#endif
 
 bugout:
    return len;
@@ -620,7 +634,7 @@ int Device::ClaimInterface(int fd, int config, int interface, int altset)
    }
 
 #ifdef HPIOD_DEBUG
-   syslog(LOG_INFO, "claimed %s interface config=%d interface=%d altset=%d\n", fd == FD_7_1_2 ? "7/1/2" : fd == FD_7_1_3 ? "7/1/3" : "ff/1/1", config, interface, altset);
+   syslog(LOG_INFO, "claimed %s interface config=%d interface=%d altset=%d\n", fd == FD_7_1_2 ? "7/1/2" : fd == FD_7_1_3 ? "7/1/3" : fd == FD_ff_1_1 ? "ff/1/1" : "ff/2/1", config, interface, altset);
 #endif
 
    stat=0;
@@ -646,7 +660,7 @@ int Device::ReleaseInterface(int fd)
    FD[fd].pHD = NULL;
 
 #ifdef HPIOD_DEBUG
-   syslog(LOG_INFO, "released %s interface\n", fd == FD_7_1_2 ? "7/1/2" : fd == FD_7_1_3 ? "7/1/3" : "ff/1/1");
+   syslog(LOG_INFO, "released %s interface\n", fd == FD_7_1_2 ? "7/1/2" : fd == FD_7_1_3 ? "7/1/3" : fd == FD_ff_1_1 ? "ff/1/1" : "ff/2/1");
 #endif
 
    return 0;
@@ -1199,7 +1213,7 @@ Channel *Device::NewChannel(unsigned char sockid, char *sn)
    {
       if (pChannel[i] == NULL)
       {
-         if (sockid == EWS_CHANNEL)
+         if (sockid == EWS_CHANNEL || sockid == SOAPSCAN_CHANNEL)
             pC = new CompChannel(this);
          else if (mode == RAW_MODE)
             pC = new RawChannel(this);  /* constructor sets ClientCnt=1 */
@@ -1278,6 +1292,10 @@ int Device::ChannelOpen(char *sn, int *channel, char *sendBuf, int *result)
    else if (strncasecmp(sn, "hp-ews", 6) == 0)
    {
       sockid = EWS_CHANNEL;
+   }
+   else if (strncasecmp(sn, "hp-soap-scan", 12) == 0)
+   {
+      sockid = SOAPSCAN_CHANNEL;
    }
    else if (strncasecmp(sn, "echo", 4) == 0)
    {

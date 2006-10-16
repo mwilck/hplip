@@ -48,7 +48,7 @@
 
 __version__ = '7.5'
 __title__ = "Services and Status Daemon"
-__doc__ = "Provides various services to HPLIP client applications. Maintains persistant device status."
+__doc__ = "Provides various services to HPLIP client applications."
 
 
 # Std Lib
@@ -241,7 +241,7 @@ class ModelParser:
                         log.debug("Found")
                         return self.model
 
-        log.error("Not found")
+        #log.error("Not found")
         raise Error(ERROR_UNSUPPORTED_MODEL)
 
 
@@ -250,17 +250,17 @@ def QueryModel(model_name):
     model_name = device.normalizeModelName(model_name).lower()
     log.debug("Query model: %s" % model_name)
 
-    if model_name in model_cache and \
-        model_cache[model_name]:
-            log.debug("Found")
-            return model_cache[model_name]
+    if model_name in model_cache:
+        return model_cache[model_name]
 
-    mq = ModelParser().parseModels(model_name)
+    try:
+        mq = ModelParser().parseModels(model_name)
+    except Error:
+        mq = {}
     
-    if mq:
-        model_cache[model_name] = mq
+    model_cache[model_name] = mq
     
-    return mq or {}
+    return mq
     
 
 socket_map = {}
@@ -1155,6 +1155,14 @@ class hpssd_handler(dispatcher):
 
         buses = self.fields.get('bus', 'cups,usb,par').split(',')
         format = self.fields.get('format', 'default')
+        search = str(self.fields.get('search', ''))
+        
+        if search:
+            try:
+                search_pat = re.compile(search, re.IGNORECASE)
+            except:
+                log.error("Invalid search pattern. Search uses standard regular expressions. For more info, see: http://www.amk.ca/python/howto/regex/")
+                search = ''
 
         for b in buses:
             bus = b.lower().strip()
@@ -1187,21 +1195,27 @@ class hpssd_handler(dispatcher):
                                         device_uri = 'hp:/net/%s?ip=%s&port=%d' % (model, ip, (port+1))
 
                                     device_filter = self.fields.get('filter', 'none')
-
-                                    if device_filter in ('none', 'print'):
-                                        include = True
-                                    else:
-                                        include = True
-
-                                        try:
-
-                                            fields = QueryModel(model)
-                                        except Error:
-                                            continue
-
+                                    include = True
+                                    
+                                    try:
+                                        mq = QueryModel(model)
+                                    except Error:
+                                        mq = {}
+                                    
+                                    if not mq:
+                                        log.debug("Not found.")
+                                        include = False
+                                        
+                                    elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                                        log.debug("Not supported.")
+                                        include = False
+                                    
+                                    elif device_filter not in ('none', 'print'):
                                         for f in device_filter.split(','):
-                                            filter_type = int(fields.get('%s-type' % f.lower().strip(), 0))
+                                            filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                                            
                                             if filter_type == 0:
+                                                log.debug("Filtered out.")
                                                 include = False
                                                 break
 
@@ -1243,15 +1257,26 @@ class hpssd_handler(dispatcher):
                             device_filter = self.fields.get('filter', 'none')
                             include = True
                             
-                            if device_filter not in ('none', 'print'):
-                                try:
-                                    fields = QueryModel(model)
-                                except Error:
-                                    continue
-    
+                            try:
+                                mq = QueryModel(model)
+                            except Error:
+                                mq = {}
+                                
+                            if not mq:
+                                log.debug("Not found.")
+                                include = False
+                                
+                            elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                                log.debug("Not supported.")
+                                include = False
+
+                            elif device_filter not in ('none', 'print'):
+                                
                                 for f in device_filter.split(','):
-                                    filter_type = int(fields.get('%s-type' % f.lower().strip(), 0))
+                                    filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                                    
                                     if filter_type == 0:
+                                        log.debug("Filtered out.")
                                         include = False
                                         break
     
@@ -1279,15 +1304,26 @@ class hpssd_handler(dispatcher):
                             continue
                             
                         include = True
-                        if device_filter not in ('none', 'print'):
-                            try:
-                                fields = QueryModel(model)
-                            except Error:
-                                continue
-
+                        
+                        try:
+                            mq = QueryModel(model)
+                        except Error:
+                            mq = {}
+                            
+                        if not mq:
+                            include = False
+                            log.debug("Not found.")
+                            
+                        elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                            log.debug("Not supported.")
+                            include = False
+                        
+                        elif device_filter not in ('none', 'print'):
                             for f in device_filter.split(','):
-                                filter_type = int(fields.get('%s-type' % f.lower().strip(), 0))
+                                filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                                
                                 if filter_type == 0:
+                                    log.debug("Filtered out.")
                                     include = False
                                     break
 
@@ -1299,10 +1335,19 @@ class hpssd_handler(dispatcher):
             num_devices += 1
             mdl, model, devid_or_hn = ret_devices[uri]
             
-            if format == 'cups':
-                payload = ''.join([payload, uri, ' ', utils.dquote(mdl), ' ', utils.dquote(model), ' ',utils.dquote(devid_or_hn), '\n'])
-            else: # default
-                payload = ''.join([payload, uri, ',', mdl, '\n'])
+            include = True
+            if search:
+                match_obj = search_pat.search("%s %s %s %s" % (mdl, model, devid_or_hn, uri))
+                
+                if match_obj is None:
+                    log.debug("%s %s %s %s: Does not match search '%s'." % (mdl, model, devid_or_hn, uri, search))
+                    include = False
+                    
+            if include:
+                if format == 'cups':
+                    payload = ''.join([payload, uri, ' ', utils.dquote(mdl), ' ', utils.dquote(model), ' ',utils.dquote(devid_or_hn), '\n'])
+                else: # default
+                    payload = ''.join([payload, uri, ',', mdl, '\n'])
             
 
         self.out_buffer = buildResultMessage('ProbeDevicesFilteredResult', payload,
@@ -1402,7 +1447,7 @@ def main(args):
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'l:xhp:g', 
-            ['level=', 'help', 'help-man', 'help-rest', 'port='])
+            ['level=', 'help', 'help-man', 'help-rest', 'port=', 'help-desc'])
 
     except getopt.GetoptError:
         usage()
@@ -1431,6 +1476,10 @@ def main(args):
             
         elif o == '--help-man':
             usage('man')
+            
+        elif o == '--help-desc':
+            print __doc__,
+            sys.exit(0)
             
         elif o in ('-p', '--port'):
             try:

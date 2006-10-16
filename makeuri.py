@@ -76,8 +76,6 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-makeuri', __version__)
     sys.exit(0)
 
-
-
     
     
 log.set_module('hp-makeuri')
@@ -85,7 +83,7 @@ log.set_module('hp-makeuri')
 try:
     opts, args = getopt.getopt(sys.argv[1:], 
                                 'hl:csfp:g', 
-                                ['help', 'help-rest', 'help-man',
+                                ['help', 'help-rest', 'help-man', 'help-desc',
                                   'logging=',
                                   'cups',
                                   'sane',
@@ -116,6 +114,10 @@ for o, a in opts:
         
     elif o == '--help-man':
         usage('man')
+        
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
 
     elif o in ('-l', '--logging'):
         log_level = a.lower().strip()

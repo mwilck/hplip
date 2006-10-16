@@ -175,6 +175,7 @@ try:
                                   'help',
                                   'help-rest',
                                   'help-man',
+                                  'help-desc',
                                   'logging=',
                                   'bus='
                                 ]
@@ -202,6 +203,10 @@ for o, a in opts:
 
     elif o == '--help-man':
         usage('man')
+        
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
 
     elif o in ('-p', '--printer'):
         if a.startswith('*'):

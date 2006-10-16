@@ -220,13 +220,22 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         self.printer_list = []
 
-        self.dev = fax.FaxDevice(device_uri=self.device_uri, 
-                                 printer_name=self.printer_name)
+        try:
+            self.dev = fax.FaxDevice(device_uri=self.device_uri, 
+                                     printer_name=self.printer_name)
+        except Error, e:
+            log.error("Invalid device URI or printer name.")
+            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-sendfax and try again.")
+            self.close()
+            return
 
         self.device_uri = self.dev.device_uri
 
         log.debug("Device URI=%s" %self.device_uri)
         self.DeviceURIText.setText(self.device_uri)
+        
+        log.debug("Setting date and time on device.")
+        self.dev.setDateAndTime()
 
         for p in self.cups_printers:
             if p.device_uri == self.device_uri:

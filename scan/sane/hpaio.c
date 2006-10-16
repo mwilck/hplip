@@ -2837,6 +2837,7 @@ abort:
     return retcode;
 }
 
+/* Note, sane_cancel is called normally not just during IO abort situations. */
 extern void sane_hpaio_cancel( SANE_Handle handle )
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
@@ -2863,10 +2864,9 @@ extern void sane_hpaio_cancel( SANE_Handle handle )
         hpaio->hJob = 0;
     }
     
-    if( hpaioAdvanceDocument( hpaio ) != SANE_STATUS_GOOD )
-    {
-        hpaioConnEndScan( hpaio );
-    }
+    /* Do not close pml/scan channels if in batch mode. */ 
+    if (hpaio->currentBatchScan != SANE_TRUE && hpaio->cmd_channelid > 0)
+       hpaioConnEndScan(hpaio);
     
 } // sane_hpaio_cancel()
 
@@ -3362,6 +3362,7 @@ needMoreData:
         if( wResult & IP_DONE )
         {
             retcode = SANE_STATUS_EOF;
+            hpaioAdvanceDocument(hpaio);
             goto abort;
         }
         goto needMoreData;
@@ -3398,7 +3399,10 @@ extern void sane_hpaio_close(SANE_Handle handle)
        hpaioConnEndScan(hpaio);
     
     if (hpaio->deviceid > 0)
+    {
        hplip_CloseHP(hpaio->deviceid);
+       hpaio->deviceid = -1;
+    }
     
     /* free hpaio object?? (des) */
 }

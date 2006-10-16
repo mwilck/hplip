@@ -242,7 +242,7 @@ try:
          'help-man', 'logfile=', 'bus=',
          'gui', 'non-interactive'
          'faxnum=', 'recipients=',
-         'gg', 'groups'])
+         'gg', 'groups', 'help-desc'])
 
 except getopt.GetoptError, e:
     log.error(e)
@@ -274,6 +274,10 @@ for o, a in opts:
     elif o == '--help-man':
         usage('man')
         
+    elif o == '--help-desc':
+        print __doc__,
+        sys.exit(0)
+    
     elif o in ('-d', '--device'):
         device_uri = a
 
