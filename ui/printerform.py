@@ -126,7 +126,7 @@ class PrinterForm(PrinterForm_base):
         log.debug(self.cups_printers)
 
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(self.sock, bus=bus, filter='none')
+            t = device.probeDevices(None, bus=bus, filter='none')
             probed_devices = []
             
             for d in t:

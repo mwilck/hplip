@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '4.0'
+__version__ = '5.2'
 __title__ = 'Dependency/Version Check Utility'
 __doc__ = "Check the existence and versions of HPLIP dependencies."
 
@@ -33,7 +33,8 @@ import re
 
 # Local
 from base.g import *
-from base import utils, dcheck, distros
+from base import utils
+from installer import dcheck, distros
 
 
 USAGE = [(__doc__, "", "name", True),
@@ -72,7 +73,7 @@ dependencies = {
     'reportlab':        (False, "Reportlab - PDF library for Python", "HPLIP faxing will not have the coverpage feature.", dcheck.check_reportlab), 
     'python23':         (True,  "Python 2.3 or greater - Required for fax functionality", "HPLIP faxing feature will not function.", dcheck.check_python23),
 
-    'ppdev':            (True,  "ppdev - Parallel port support kernel module.", "Parallel port (LPT) connected printers will not work with HPLIP", dcheck.check_ppdev),
+    'ppdev':            (False,  "ppdev - Parallel port support kernel module.", "Parallel port (LPT) connected printers will not work with HPLIP", dcheck.check_ppdev),
 
     'pyqt':             (True,  "PyQt - Qt interface for Python", "HPLIP GUIs will not function.", dcheck.check_pyqt),
 
@@ -135,14 +136,14 @@ try:
     
     header("SYSTEM INFO")
     
-    log.info(utils.bold("Basic system info (uname -a):"))
+    log.info(utils.bold("Basic system information:"))
     status, output = utils.run('uname -a')
-    log.info("--> %s" % output.replace('\n', ''))
+    log.info("%s" % output.replace('\n', ''))
     
     log.info(utils.bold("\nDetected distro (/etc/issue):"))
     distro, distro_version = distros.getDistro()
     distro_name = distros.distros_index[distro]
-    log.info("--> %s %s" % (distro_name, distro_version))
+    log.info("%s %s" % (distro_name, distro_version))
     
     log.info(utils.bold("\nDetected distro (lsb_release):"))
     lsb_release = utils.which("lsb_release")
@@ -154,29 +155,30 @@ try:
         ver = ver.split(':')[1].strip()
         status, code = utils.run(cmd + " -c")
         code = code.split(':')[1].strip()
-        log.info("--> %s %s (%s)" % (vendor, ver, code))
+        log.info("%s %s (%s)" % (vendor, ver, code))
     else:
         log.error("lsb_release not found.")
         
-    log.info(utils.bold("\nCurrently installed version..."))
+    log.info(utils.bold("\nCurrently installed HPLIP version..."))
     v = sys_cfg.hplip.version
     home = sys_cfg.dirs.home
+    
     if v:
-        log.info("--> OK, HPLIP %s currently installed in '%s'." % (v, home))
+        log.info("HPLIP %s currently installed in '%s'." % (v, home))
         
         log.info(utils.bold("\nCurrent contents of '/etc/hp/hplip.conf' file:"))
         output = file('/etc/hp/hplip.conf', 'r').read()
         log.info(output)
         
     else:
-        log.info("--> OK, not found.")
+        log.info("Not found.")
     
     log.info(utils.bold("\nHPLIP running?"))
     hplip_present = dcheck.check_hplip_running()
     if hplip_present:
-        log.info("--> Yes, HPLIP is running (OK).")
+        log.info("Yes, HPLIP is running (OK).")
     else:
-        log.info("--> No, HPLIP is not running (OK).")
+        log.info("No, HPLIP is not running (OK).")
     
     log.info(utils.bold("\nHPOJ running?"))
     hplip_present = dcheck.check_hpoj()
@@ -184,7 +186,7 @@ try:
         log.error("Yes, HPOJ is running. HPLIP is not compatible with HPOJ. To run HPLIP, please remove HPOJ.")
         num_errors += 1
     else:
-        log.info("--> No, HPOJ is not running (OK).")
+        log.info("No, HPOJ is not running (OK).")
     
     
     log.info(utils.bold("\nChecking Python version..."))
@@ -196,33 +198,97 @@ try:
     
     if ver_maj == 2:
         if ver_min >= 1:
-            log.info("--> OK, version %d.%d.%d installed" % ver[:3])
+            log.info("OK, version %d.%d.%d installed" % ver[:3])
         else:
             log.error("Version %d.%d.%d installed. Please update to Python >= 2.1" % ver[:3])
             sys.exit(1)
+            
+            
+    log.info(utils.bold("\nChecking PyQt version..."))
     
+    # PyQt
+    try:
+        import qt
+    except ImportError:
+        num_errors += 1
+        log.error("Not found!")
+    else:
+        # check version of Qt
+        qtMajor = int(qt.qVersion().split('.')[0])
+    
+        if qtMajor < MINIMUM_QT_MAJOR_VER:
+            log.error("Incorrect version of Qt installed. Ver. 3.0.0 or greater required.")
+        else:
+            #check version of PyQt
+            try:
+                pyqtVersion = qt.PYQT_VERSION_STR
+            except:
+                pyqtVersion = qt.PYQT_VERSION
+        
+            while pyqtVersion.count('.') < 2:
+                pyqtVersion += '.0'
+        
+            (maj_ver, min_ver, pat_ver) = pyqtVersion.split('.')
+        
+            if pyqtVersion.find('snapshot') >= 0:
+                log.error("A non-stable snapshot version of PyQt is installed (%s)." % pyqtVersion)
+                num_errors += 1
+            else:
+                try:
+                    maj_ver = int(maj_ver)
+                    min_ver = int(min_ver)
+                    pat_ver = int(pat_ver)
+                except ValueError:
+                    maj_ver, min_ver, pat_ver = 0, 0, 0
+        
+                if maj_ver < MINIMUM_PYQT_MAJOR_VER or \
+                    (maj_ver == MINIMUM_PYQT_MAJOR_VER and min_ver < MINIMUM_PYQT_MINOR_VER):
+                    num_errors += 1
+                    log.error("HPLIP may not function properly with the version of PyQt that is installed (%d.%d.%d)." % (maj_ver, min_ver, pat_ver))
+                    log.error("Ver. %d.%d or greater required." % (MINIMUM_PYQT_MAJOR_VER, MINIMUM_PYQT_MINOR_VER))
+                else:
+                    log.info("OK, version %d.%d installed." % (maj_ver, min_ver))
+                    
+    
+    log.info(utils.bold("\nChecking SIP version..."))
+    
+    sip_ver = None
+    try:
+        import pyqtconfig
+    except ImportError:
+        pass
+    else:
+        sip_ver = pyqtconfig.Configuration().sip_version_str 
+        
+    if sip_ver is not None:
+        log.info("OK, Version %s installed" % sip_ver)
+    else:
+        num_errors += 1
+        log.error("SIP not installed or version not found.")
+    
+        
     header("DEPENDENCIES")
                 
     dcheck.update_ld_output()
-    print
+    log.info("")
     
     for d in dependencies:
         log.debug("***")
     
-        log.info(utils.bold("Checking for dependency '%s (%s)'..." % (d, dependencies[d][1])))
+        log.info(utils.bold("Checking for dependency %s..." % dependencies[d][1]))
     
         if dependencies[d][3]():
-            log.info("--> OK, found.")
+            log.info("OK, found.")
         else:
             num_errors += 1
             log.error("Not found!")
             
             if dependencies[d][0]:
-                log.error("This is a REQUIRED dependency.")
+                log.error("This is a REQUIRED dependency. Please make sure that this dependency is installed before installing or running HPLIP.")
             else:
-                log.info("This is an OPTIONAL dependency.")
+                log.info("This is an OPTIONAL dependency. Some HPLIP functionality may not function properly.")
         
-        print
+        log.info("")
     
     header("INSTALLED PRINTERS")
     
@@ -230,7 +296,7 @@ try:
     lpstat_pat = re.compile(r"""^device for (.*): (.*)""", re.IGNORECASE)
     
     status, output = utils.run('lpstat -v')
-    print
+    log.info("")
     
     cups_printers = []
     for p in output.splitlines():
@@ -248,9 +314,9 @@ try:
             try:
                 back_end, is_hp, bus, model, serial, dev_file, host, port = \
                     device.parseDeviceURI(p[1])
-    
             except Error:
-                is_hp = False
+                back_end, is_hp, bus, model, serial, dev_file, host, port = \
+                    '', False, '', '', '', '', '', 1
     
             if is_hp:
                 x = 'Yes'
@@ -279,22 +345,24 @@ try:
                 log.info("PPD Description: %s" % desc)
                 
                 status, output = utils.run('lpstat -p%s' % p[0])
-                log.info("\nPrinter status:")
-                log.info(output)
+                log.info("Printer status: %s" % output)
                 
                 if back_end == 'hpfax' and desc != 'HP Fax':
                     num_errors += 1
                     log.error("Incorrect PPD file for fax queue '%s'. Fax queue must use 'HP-Fax-hplip.ppd'." % p[0])
                     
-            print
-    
-        if non_hp:
-            log.note("Any CUPS queues that are not 'HPLIP Installed', must be installed")
-            log.note("with the 'hp:' or 'hpfax:' backends to have them work in HPLIP. Refer")
-            log.note("to the install instructions on http://hplip.sourceforge.net for more help.")
+                elif back_end == 'hp' and desc == 'HP Fax':
+                    num_errors += 1
+                    log.error("Incorrect PPD file for a print queue '%s'. Print queues must not use 'HP-Fax-hplip.ppd'." % p[0])
+                    
+                elif back_end not in ('hp', 'hpfax'):
+                    log.error("Printer is not HPLIP installed. Printers must use the hp: or hpfax: CUPS backend to function in HPLIP.")
+                    num_errors += 1
+                    
+            log.info("")
     
     else:
-        log.info("No queues found.")
+        log.warn("No queues found.")
         
     header("SANE CONFIGURATION")
     log.info(utils.bold("'hpaio' in /etc/sane.d/dll.conf'..."))
@@ -305,10 +373,10 @@ try:
             found = True
             
     if found:
-        log.info("--> OK, found. SANE backend 'hpaio' is not properly set up.")
+        log.info("OK, found. SANE backend 'hpaio' is properly set up.")
     else:
         num_errors += 1
-        log.error("Not found.")
+        log.error("Not found. SANE backend 'hpaio' not properly setup (needs to be added to /etc/sane.d/dll.conf).")
             
     
     log.info(utils.bold("\nChecking output of 'scanimage -L'..."))
@@ -325,25 +393,28 @@ try:
         import cupsext
     except ImportError:
         num_errors += 1
-        log.error("Not found!")
+        log.error("Not found! Please reinstall HPLIP and check for the proper installation of cupsext.")
     else:
-        log.info("--> OK, found.")
+        log.info("OK, found.")
     
     log.info(utils.bold("\nChecking 'pcardext' Photocard extension..."))
     try:
         import pcardext
     except ImportError:
         num_errors += 1
-        log.error("Not found!")
+        log.error("Not found! Please reinstall HPLIP and check for the proper installation of pcardext.")
     else:
-        log.info("--> OK, found.")
+        log.info("OK, found.")
         
-    print
+    log.info("")
     
     if num_errors:
-        log.info("\n%d errors were detected.")
+        log.info("\n%d errors were detected." % num_errors)
         log.info("Please refer to the installation instructions at:")
         log.info("http://hplip.sourceforge.net/install/index.html\n")
+        
+    else:
+        print utils.red("\nNo errors detected.")
 
 except KeyboardInterrupt:
-    print utils.red("Aborted")
+    log.warn("Aborted")

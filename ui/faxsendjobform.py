@@ -163,7 +163,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
         log.debug(self.cups_printers)
 
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(self.sock, bus=bus, filter='fax')
+            t = device.probeDevices(None, bus=bus, filter='fax')
             probed_devices = []
 
             for d in t:
@@ -295,6 +295,11 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         if self.dev.device_state == DEVICE_STATE_NOT_FOUND:
             self.FailureUI(self.__tr("<b>Unable to communicate with device:</b><p>%1").arg(self.device_uri))
+            
+        try:
+            self.StateText.setText(self.dev.status_desc)
+        except AttributeError:
+            pass            
 
 
     def UpdatePrinterInfo(self):

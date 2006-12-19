@@ -75,8 +75,6 @@ typedef struct
    int DirEntryNum;           /* number in current directory */
 } CURRENT_FILE_ATTRIBUTES;
 
-#pragma pack(1)
-
 typedef struct
 {
    char JumpInstruction[3];      /* offset = 0 */
@@ -101,7 +99,7 @@ typedef struct
    uint8_t SystemID[8];     /* 54 */
    uint8_t LoadInstructions[512-64];
    uint16_t EndSignature; /*=AA55h*/
-} FAT_BOOT_SECTOR;       /* 512 bytes total */
+} __attribute__((packed)) FAT_BOOT_SECTOR;       /* 512 bytes total */
 
 typedef struct
 {
@@ -112,9 +110,7 @@ typedef struct
    uint16_t Date; 
    uint16_t StartCluster;       
    uint32_t Size;      /* size of the file in bytes */ 
-} FAT_DIRECTORY;      /* 32 bytes total */
-
-#pragma pack()
+} __attribute__((packed)) FAT_DIRECTORY;      /* 32 bytes total */
 
 #define FAT_IS_DIR 0x10
 #define FAT_END_OF_DIR 0x2

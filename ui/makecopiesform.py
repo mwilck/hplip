@@ -78,7 +78,7 @@ class MakeCopiesForm(MakeCopiesForm_base):
         log.debug(self.cups_printers)
 
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(self.sock, bus=bus, filter='copy')
+            t = device.probeDevices(None, bus=bus, filter='copy')
             probed_devices = []
             
             for d in t:
@@ -147,8 +147,8 @@ class MakeCopiesForm(MakeCopiesForm_base):
                                         printer_name=self.printer_name, 
                                         hpssd_sock=self.sock)
 
-        if self.dev.copy_type not in (COPY_TYPE_DEVICE, COPY_TYPE_AIO_DEVICE):
-            self.FailureUI(self.__tr("<b>Sorry, make copies functionality is not implemented for this device type.</b>"))
+        if self.dev.copy_type == COPY_TYPE_NONE:
+            self.FailureUI(self.__tr("<b>Sorry, make copies functionality is not implemented for this device.</b>"))
             self.close()
             return
             

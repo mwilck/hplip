@@ -74,11 +74,6 @@ table.citation {
   padding-left: 0.5ex
 }
 
-pre.literal-block, pre.doctest-block {
-  border: thin black solid;
-  padding: 5px;
-}
-
 .image img { border-style : solid;
             border-width : 2px;
 }

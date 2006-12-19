@@ -1,7 +1,7 @@
 /*****************************************************************************\
   djgenericvip.h : Interface for the generic VIP printer class
 
-  Copyright (c) 2001 - 2002, Hewlett-Packard Co.
+  Copyright (c) 2001 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,9 @@ public:
     virtual BOOL HagakiFeedDuplexerPresent(BOOL bQueryPrinter);
 #endif
     virtual BOOL GetMargins (PAPER_SIZE ps, float *fMargins);
+#ifdef APDK_LINUX
+    virtual DRIVER_ERROR    SendPerPageHeader (BOOL bLastPage);
+#endif // APDK_LINUX
 
 private:
 	virtual void AdjustModeSettings (BOOL bDoFullBleed, MEDIATYPE ReqMedia,

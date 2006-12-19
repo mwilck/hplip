@@ -19,7 +19,7 @@
 # Author: Don Welch
 
 # Std Lib
-import sys, socket, re, gzip
+import sys, socket, re, gzip, time
 
 # Local
 from base.g import *
@@ -41,6 +41,17 @@ from setupsettings import SetupSettings
 from setupmanualfind import SetupManualFind
 
 nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
+
+def restart_cups():
+    if os.path.exists('/etc/init.d/cups'):
+        return '/etc/init.d/cups restart'
+
+    elif os.path.exists('/etc/init.d/cupsys'):
+        return '/etc/init.d/cupsys restart'
+
+    else:
+        return 'killall -HUP cupsd'
+
 
 class DeviceListViewItem(QListViewItem):
     def __init__(self, parent, device_uri, mq, c1='', c2='', c3='', c4=''):
@@ -97,8 +108,23 @@ class PhoneNumValidator(QValidator):
 
 
 class SetupForm(SetupForm_base):
-    def __init__(self, parent=None, name=None, modal=0, fl=0):
+    def __init__(self, bus, param, jd_port=1, parent=None, name=None, modal=0, fl=0):
         SetupForm_base.__init__(self, parent, name, modal, fl)
+
+        self.start_page = self.ConnectionPage
+        self.first_page = True
+
+        if bus is None:
+            self.bus = 'usb'
+        else:
+            self.bus = bus
+            self.start_page = self.ProbedDevicesPage
+
+        self.param = param
+        self.jd_port = jd_port
+
+        if self.param:
+            self.start_page = self.PPDPage
 
         icon = QPixmap(os.path.join(prop.image_dir, 'HPmenu.png'))
         self.setIcon(icon)
@@ -119,7 +145,6 @@ class SetupForm(SetupForm_base):
             raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
 
         self.connectionTypeButtonGroup.setButton(0)
-        self.bus = 'usb'
         self.device_uri = ''
         self.mq = {}
         self.prev_page = None
@@ -156,6 +181,11 @@ class SetupForm(SetupForm_base):
 
     def showPage(self, page):
         orig_page = page
+
+        if self.first_page:
+            page = self.start_page
+            self.first_page = False
+
         log.debug("%s %s %s" % ("*"*20, "showPage(%s)" % page.name(), "*"*20))
 
         try:
@@ -170,10 +200,16 @@ class SetupForm(SetupForm_base):
             devices_found = self.updateProbedDevicesPage()
 
         elif page is self.PPDPage: # ProbedDevicesPage --> PPDPage
-            self.updatePPDPage()
+            if self.param:
+                device_uri, sane_uri, fax_uri = device.makeURI(self.hpiod_sock, self.param, self.jd_port)
 
-            if len(self.ppd_list) == 0:
-                pass # TODO:
+                if device_uri:
+                    self.device_uri = device_uri
+                    back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(self.device_uri)
+                    self.bus = bus
+                    self.mq = device.queryModelByURI(self.device_uri)
+
+            self.updatePPDPage()
 
         elif page is self.PrinterNamePage:
             self.setDefaultPrinterName()
@@ -193,6 +229,7 @@ class SetupForm(SetupForm_base):
 
             else:
                 self.setup_fax = False
+                self.fax_name_ok = True
                 self.defaultFaxNamePushButton.setEnabled(False)
                 self.faxCheckBox.setEnabled(False)
                 self.faxNameLineEdit.setEnabled(False)
@@ -208,18 +245,22 @@ class SetupForm(SetupForm_base):
             self.lineEdit3.setText(self.desc)
             self.lineEdit4.setText(self.ppd_file)
 
+            log.debug("Restarting CUPS...")
+            status, output = utils.run(restart_cups())
+            log.debug("Restart CUPS returned: exit=%d output=%s" % (status, output))
+            
             self.setupPrinter()
 
             if self.setup_fax:
                 self.setupFax()
                 self.readwriteFaxInformation(False)
 
-                self.lineEdit5.setText(self.fax_name)
-                self.lineEdit6.setText(self.fax_number)
+                self.lineEdit5.setText(self.fax_number)
+                self.lineEdit6.setText(self.fax_name)
                 self.lineEdit7.setText(self.fax_name_company)
                 self.lineEdit8.setText(self.fax_location)
                 self.lineEdit9.setText(self.fax_desc)
-                
+
                 self.faxGroupBox.setEnabled(True)
 
             else:
@@ -322,20 +363,7 @@ class SetupForm(SetupForm_base):
         self.probedDevicesListView.addColumn(self.__tr("Device URI"))
 
         if devices is None:
-            fields, data, result_code = \
-                msg.xmitMessage(self.hpssd_sock,
-                                 "ProbeDevicesFiltered",
-                                  None,
-                                  {
-                                        'bus' : self.bus,
-                                        'timeout' : self.timeout,
-                                        'ttl' : self.ttl,
-                                        'format' : 'cups',
-                                        'filter' : self.filter,
-                                        'search': self.search,
-                                  })
-
-            devices = data.splitlines()
+            devices = device.probeDevices(self.hpiod_sock, self.bus, self.timeout, self.ttl, self.filter, self.search) # net_search='slp'
             self.probeHeadingTextLabel.setText(self.__tr("%1 device(s) found on the %1:").arg(len(devices)).arg(io_str))
 
         else:
@@ -353,24 +381,19 @@ class SetupForm(SetupForm_base):
         if devices:
             row = 0
             for d in devices:
-                x = self.probe_pat.search(d)
-                device_uri = x.group(1) # uri
-                model = x.group(2) # model
-                c3 = x.group(3) # ex. model
-                name = x.group(4) # name
-                back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(device_uri)
+                back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(d)
 
                 mq = {}
                 model_ui = device.normalizeModelUIName(model)
 
                 if self.bus == 'usb':
-                    i = DeviceListViewItem(self.probedDevicesListView, device_uri, mq, model_ui, serial, device_uri)
+                    i = DeviceListViewItem(self.probedDevicesListView, d, mq, model_ui, serial, d)
 
                 elif self.bus == 'net':
-                    i = DeviceListViewItem(self.probedDevicesListView, device_uri, mq, model_ui, host, name, device_uri)
+                    i = DeviceListViewItem(self.probedDevicesListView, d, mq, model_ui, host, devices[d][2], d)
 
                 elif self.bus == 'par':
-                    i = DeviceListViewItem(self.probedDevicesListView, device_uri, mq, model_ui, dev_file, device_uri)
+                    i = DeviceListViewItem(self.probedDevicesListView, d, mq, model_ui, dev_file, d)
 
                 row += 1
 
@@ -393,19 +416,8 @@ class SetupForm(SetupForm_base):
 
     def updateModelQuery(self, item):
         if not item.mq:
-            back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(self.device_uri)
-
-            mq, data, result_code = \
-                msg.xmitMessage(self.hpssd_sock,
-                                "ModelQuery",
-                                None,
-                                {
-                                    'model' : model,
-                                })
-
-            item.mq = mq
-            self.mq = mq
-
+            item.mq = device.queryModelByURI(self.device_uri)
+            self.mq = item.mq
         else:
             self.mq = item.mq
 
@@ -428,7 +440,7 @@ class SetupForm(SetupForm_base):
         if dlg.exec_loop() == QDialog.Accepted:
             QApplication.setOverrideCursor(QApplication.waitCursor)
 
-            cups_uri, sane_uri, fax_uri = device.makeuri(self.hpiod_sock, self.hpssd_sock, dlg.param)
+            cups_uri, sane_uri, fax_uri = device.makeURI(self.hpiod_sock, dlg.param)
 
             if cups_uri:
                 back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(cups_uri)
@@ -440,7 +452,7 @@ class SetupForm(SetupForm_base):
                         name = ''
 
                 QApplication.restoreOverrideCursor()
-                self.updateProbedDevicesPage(['%s "%s" "%s" "%s"' % (cups_uri, model, model, name)], dlg.param)
+                self.updateProbedDevicesPage({cups_uri: (model, model, name)}, dlg.param)
             else:
                 QApplication.restoreOverrideCursor()
                 self.updateProbedDevicesPage([], dlg.param)
@@ -451,18 +463,25 @@ class SetupForm(SetupForm_base):
 
     def updatePPDPage(self, ppds=None):
         QApplication.setOverrideCursor(QApplication.waitCursor)
-        back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(self.device_uri)
+        try:
+            back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(self.device_uri)
+        except Error:
+            self.FailureUI(self.__tr("<b>Device not found or invalid HPLIP device.</b><p>If you specified a USB ID, IP address, or other parameter, please re-check it and try again."))
+            self.close()
+            sys.exit()
+        
         log.debug("Searching for PPDs in: %s" % sys_cfg.dirs.ppd)
 
         if ppds is None or not ppds:
             ppds = []
 
             for f in utils.walkFiles(sys_cfg.dirs.ppd, pattern="HP*ppd*;hp*ppd*", abs_paths=True):
-                ppds.append(f)
+                if 'hp-fax' not in f.lower():
+                    ppds.append(f)
 
         default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
         stripped_model = default_model.lower().replace('hp-', '').replace('hp_', '')
-        
+
         self.ppd_list = cups.getPPDFile(stripped_model, ppds)
         log.debug(self.ppd_list)
         self.ppdListView.clear()
@@ -550,17 +569,18 @@ class SetupForm(SetupForm_base):
             self.printer_name in installed_print_devices[self.device_uri]):
                 self.setNextEnabled(self.PrinterNamePage, False)
                 self.printer_name_ok = False
-                
+
                 if not self.printer_name:
                     QToolTip.add(self.printerNameLineEdit, self.__tr('You must enter a name for the printer.'))
                 else:
                     QToolTip.add(self.printerNameLineEdit, self.__tr('A printer already exists with this name. Please choose a different name.'))
-                
+
                 self.printerNameLineEdit.setPaletteBackgroundColor(QColor(0xff, 0x99, 0x99))
 
         else:
             self.printerNameLineEdit.setPaletteBackgroundColor(self.bg)
             self.printer_name_ok = True
+
             if self.fax_name_ok:
                 self.setNextEnabled(self.PrinterNamePage, True)
 
@@ -581,7 +601,7 @@ class SetupForm(SetupForm_base):
 
     def faxDescriptionLineEdit_textChanged(self,a0):
         self.fax_desc = str(a0)
-    
+
     def defaultPrinterNamePushButton_clicked(self):
         self.setDefaultPrinterName()
         self.defaultPrinterNamePushButton.setEnabled(False)
@@ -624,17 +644,17 @@ class SetupForm(SetupForm_base):
             self.fax_name in installed_fax_devices[self.fax_uri]):
                 self.setNextEnabled(self.PrinterNamePage, False)
                 self.fax_name_ok = False
-                
+
                 if not self.fax_name:
                     QToolTip.add(self.faxNameLineEdit, self.__tr('You must enter a fax name.'))
                 else:
                     QToolTip.add(self.faxNameLineEdit, self.__tr('A fax already exists with this name. Please choose a different name.'))
-                
+
                 self.faxNameLineEdit.setPaletteBackgroundColor(QColor(0xff, 0x99, 0x99))
         else:
             self.fax_name_ok = True
             self.faxNameLineEdit.setPaletteBackgroundColor(self.bg)
-            
+
             if self.printer_name_ok:
                 self.setNextEnabled(self.PrinterNamePage, True)
 
@@ -672,44 +692,67 @@ class SetupForm(SetupForm_base):
 
             d = fax.FaxDevice(self.fax_uri)
 
-            try:
-                d.open()
-            except Error:
-                self.FailureUI(self.__tr("Unable to communicate with the device. Please check the device and try again."))
-            else:
+            while True:
                 try:
-                    tries = 0
-                    ok = True
-
-                    while True:
-                        tries += 1
-
-                        try:
-                            if read:
-                                self.fax_number = d.getPhoneNum()
-                                self.fax_name_company = d.getStationName()
+                    d.open()
+                except Error:
+                    error_text = self.__tr("Unable to communicate with the device. Please check the device and try again.")
+                    log.error(str(error_text))
+                    if QMessageBox.critical(self,
+                                           self.caption(),
+                                           error_text,
+                                           QMessageBox.Retry | QMessageBox.Default,
+                                           QMessageBox.Cancel | QMessageBox.Escape,
+                                           QMessageBox.NoButton) == QMessageBox.Cancel:
+                        break
+                    
+                else:
+                    try:
+                        tries = 0
+                        ok = True
+    
+                        while True:
+                            tries += 1
+    
+                            try:
+                                if read:
+                                    self.fax_number = d.getPhoneNum()
+                                    self.fax_name_company = d.getStationName()
+                                else:
+                                    d.setStationName(self.fax_name_company)
+                                    d.setPhoneNum(self.fax_number)
+    
+                            except Error:
+                                error_text = self.__tr("<b>Device I/O Error</b><p>Could not communicate with device. Device may be busy.")
+                                log.error(str(error_text))
+                                
+                                if QMessageBox.critical(self,
+                                                       self.caption(),
+                                                       error_text,
+                                                       QMessageBox.Retry | QMessageBox.Default,
+                                                       QMessageBox.Cancel | QMessageBox.Escape,
+                                                       QMessageBox.NoButton) == QMessageBox.Cancel:
+                                    break
+                                
+                                
+                                time.sleep(5)
+                                ok = False
+    
+                                if tries > 12:
+                                    break
+    
                             else:
-                                d.setStationName(self.fax_name_company)
-                                d.setPhoneNum(self.fax_number)
-                        
-                        except Error:
-                            self.FailureUI(self.__tr("<b>Device I/O Error</b><p>Could not communicate with device. Device may be busy."))
-                            time.sleep(5)
-                            ok = False
-
-                            if tries > 12:
+                                ok = True
                                 break
-
-                        else:
-                            ok = True
-                            break
-
-                finally:
-                    d.close()
-
-                if ok and read:
-                    self.faxNumberLineEdit.setText(self.fax_number)
-                    self.faxNameCoLineEdit.setText(self.fax_name_company)
+    
+                    finally:
+                        d.close()
+    
+                    if ok and read:
+                        self.faxNumberLineEdit.setText(self.fax_number)
+                        self.faxNameCoLineEdit.setText(self.fax_name_company)
+                    
+                    break
 
         finally:
             QApplication.restoreOverrideCursor()

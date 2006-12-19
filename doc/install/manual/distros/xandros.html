@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Configure Xandros</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
+
+<div id="banner">
+<div id="banner_graphics">
+		<div id="floatleft">
+		<img src="../../../images/hplogo2.png" alt="HP Logo" border="0" />
+		</div>
+		<div id="floatcenter">
+		<a href="../../../index.html">
+		<img src="../../../images/hpliplogo.png" alt="HP Logo" border="0" />
+		</a>
+		</div>
+		<div id="floatright">
+		<img src="../../../images/tuxlogo2.png" alt="Tux" border="0" />
+		</div>
+	</div>
+</div>
+<!-- end banner -->
+
+<div id="navbar">
+<table>
+	<tr>
+		<td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+	<menu compact="compact">
+		<li><a href="../../../index.html" title="">Home</a></li> 
+	</menu>
+
+<div class="menuheader">About</div>
+	<menu compact="compact">
+		<li><a href="../../../features.html" title="">Features</a></li> 
+		<li><a href="../../../screenshots.html" title="">Screenshots</a></li> 
+		<li><a href="../../../faqs.html" title="FAQs">FAQs</a></li> 
+		<li><a a href="../../../about.html" title="About">About HPLIP</a></li>
+	</menu>
+<div class="menuheader">Setup and Installation</div> 
+	<menu compact="compact">
+		<li><a href="../../../downloads.html" title="Downloads">Download HPLIP</a></li>
+		<li><a href="../../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+		<li><a href="../../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+		<li><a href="../../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+	</menu>
+<div class="menuheader">Usage and Support</div> 
+	<menu compact="compact">
+		<li><a href="../../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+		<li><a href="../../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+		<li><a href="../../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+		<li><a href="../../../release_notes.html" title="Release Notes">Release Notes</a></li>
+	</menu>
+<div class="menuheader">Resources</div>
+	<menu compact="compact">
+		<li><a href="../../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+		<li><a href="../../../license.html" title="Software License">Software License</a></li>
+		<li><a a href="../../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+		<li><a href="../../../contacts.html" title="Contacts">Contacts</a></li>
+	</menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="yellowsplit">
+<div id="content"><!-- start content -->
+        <a href="../../../index.html">Home</a>
+&gt;
+<a href="../../index.html">Installation</a>
+&gt;
+<a href="../index.html">Manual Install</a>
+&gt;
+<a href="index.html">Linux Distributions</a>
+&gt;
+Xandros
+
+<hr size="1"/>
+        <div class="document" id="xandros">
+<h1 class="title">Xandros</h1>
+<p><strong>Note</strong>: The following steps may effect the stability of your Xandros system.  You may want to refer to your Xandros documentation and/or other resources on the possible effects.</p>
+<p>You will need to add the debian repositories to the Xandros '/etc/apt/sources.list' file so that you can install the correct dependencies for HPLIP.</p>
+<p>Open the /etc/apt/sources.list file as root and add this section:</p>
+<div class="compound">
+<p># Standard Debian package sources
+deb <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib
+deb-src <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib
+deb <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free
+deb-src <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free</p>
+</div>
+<p>Then run:</p>
+<div class="compound">
+<p>su
+apt-get update</p>
+</div>
+<p>Finally run:</p>
+<div class="compound">
+<p>apt-get install libcupsys2 libcupsys2-dev build-essential python-dev python gs-esp libusb-dev lsb sane xsane sane-utils python-reportlab python-qt3 libsnmp5-dev openssl libjpeg62-dev</p>
+</div>
+<p>At the end of the HPLIP install process you will run hp-setup to configure your printer. Because of Xandros security configurations you may need to add your user to the '/etc/sudoers' file to run hp-setup.</p>
+<p>Add this to your /etc/sudoers file:</p>
+<div class="compound">
+<p>&lt;username&gt; ALL=(ALL) ALL</p>
+</div>
+<p>Where &lt;username&gt; is your Xandros user. (You can run 'whoami' to get your username.)</p>
+<p><a class="reference" href="../../../release_notes.html">View the current Release Notes</a> for additional information on this release.</p>
+<div class="section">
+<h1><a id="next" name="next">Next</a></h1>
+<p><a class="reference" href="../download.html">Download HPLIP</a></p>
+</div>
+</div>
+
+<hr size="1"/>
+<center><small>Page last updated: Fri Dec 15 17:35:30 2006; HPLIP Version: 1.6.12</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+</div><!-- end container -->
+<div id="footer"><!-- start footer -->
+		<hr size="1"/>
+		<a href="../../../legal.html">Legal Notices</a>
+		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
+		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
+</body>
+</html>

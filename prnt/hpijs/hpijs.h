@@ -34,14 +34,20 @@
 
 #define IJS_MAX_PARAM 256
 
+#ifdef HAVE_LIBHPIP
+#include "hplip_api.h"
+#include "hpiom.h"
+
+#else
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 extern int bug(const char *fmt, ...);
-
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // HAVE_LIBHPIP
 
 #endif        /* hpijs_INCLUDED */

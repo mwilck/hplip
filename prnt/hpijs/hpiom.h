@@ -32,8 +32,6 @@
 #ifndef hpiom_INCLUDED
 #define hpiom_INCLUDED
 
-#include "hplip_api.h"
-
 /*
  * LIDIL Definitions.
  */
@@ -75,8 +73,6 @@ enum eCOMMANDNUMBER{ eJobControl
                    , eCommandUnknown
                    };
 
-#pragma pack(1)
-
 typedef struct
 {
    unsigned char start_frame;
@@ -89,7 +85,7 @@ typedef struct
    unsigned char response_cmp;
    unsigned char pad[4];
    unsigned char end_frame;
-} LDLResponseHeader;
+} __attribute__((packed)) LDLResponseHeader;
 
 typedef struct
 {
@@ -99,7 +95,7 @@ typedef struct
    char c[3];     /* c=m=y */
    char m[3];
    char y[3];
-} LDLResponseAlign038;
+} __attribute__((packed)) LDLResponseAlign038;
 
 typedef struct
 {
@@ -107,34 +103,32 @@ typedef struct
   char vert;    /* vertical alignment offset */
   char horz;    /* horizontal alignment offset */
   char bi;      /* bi-directional offset */
-} LDLPen;
+} __attribute__((packed)) LDLPen;
 
 typedef struct
 {
    unsigned char nPens;   /* number of pens */
    LDLPen pen[3];
-} LDLGenAlign;
+} __attribute__((packed)) LDLGenAlign;
 
 typedef struct
 {
    LDLResponseHeader h;
    LDLGenAlign g;
-} LDLResponseAlign043;
+} __attribute__((packed)) LDLResponseAlign043;
 
 typedef struct
 {
    LDLResponseHeader h;
    uint32_t ldlversion;
    char firmversion[8];
-} LDLResponseVersion;
-   
-#pragma pack()
+} __attribute__((packed)) LDLResponseVersion;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern int ReadHPVertAlign(int hd);
+extern int ReadHPVertAlign(HplipSession *session, int hd);
 
 #ifdef __cplusplus
 }

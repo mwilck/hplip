@@ -1,84 +1,87 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>HPLIP Technical Documentation - Printer Driver</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<div id="banner">
+<div id="banner_graphics">
+		<div id="floatleft">
+		<img src="../images/hplogo2.png" alt="HP Logo" border="0" />
+		</div>
+		<div id="floatcenter">
+		<a href="../index.html">
+		<img src="../images/hpliplogo.png" alt="HP Logo" border="0" />
+		</a>
+		</div>
+		<div id="floatright">
+		<img src="../images/tuxlogo2.png" alt="Tux" border="0" />
+		</div>
+	</div>
+</div>
+<!-- end banner -->
 
- <head>
-  <title>HPLIP Technical Documentation - Printer Driver</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
-  <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
-  <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
-       <meta name="author" content="" />
-       <meta name="email" content="" />
-  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
- </head>
+<div id="navbar">
+<table>
+	<tr>
+		<td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+	<menu compact="compact">
+		<li><a href="../index.html" title="">Home</a></li> 
+	</menu>
 
- <body>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td align="left" valign="top">
-                <a href="../index.html"><img src="../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
-                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
-            </td>
-        </tr>
-    </table>
-
-    <table  border="0" width="100%" cellspacing="4">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <tr>
-        <!-- LEFT SIDE NAVIGATION -->
-            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
-                <div class="menuheader">About</div> 
-                <menu compact="compact">
-                    <li><a href="../features.html" title="">Features</a></li> 
-                    <li><a href="../screenshots.html" title="">Screenshots</a></li> 
-                    <li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
-                </menu>
-
-                <div class="menuheader">Setup and Installation</div> 
-                <menu compact="compact">
-
-                    <li><a href="../downloads.html" title="Downloads"><b>Download HPLIP</b></a></li>
-                    <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
-                    <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
-                    <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
-                </menu>
-
-                <div class="menuheader">Usage and Support</div> 
-                <menu compact="compact">
-                    <li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
-                    <li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
-                    <li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
-                    <li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
-                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
-                </menu>
-
-                <div class="menuheader">Resources</div>
-                <menu compact="compact">
-                    <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
-                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../license.html" title="Software License">Software License</a></li>
-                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
-                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
-                    <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
-                </menu>
-            </td>
-
-        <!-- CONTENT -->
-
+<div class="menuheader">About</div>
+	<menu compact="compact">
+		<li><a href="../features.html" title="">Features</a></li> 
+		<li><a href="../screenshots.html" title="">Screenshots</a></li> 
+		<li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
+		<li><a a href="../about.html" title="About">About HPLIP</a></li>
+	</menu>
+<div class="menuheader">Setup and Installation</div> 
+	<menu compact="compact">
+		<li><a href="../downloads.html" title="Downloads">Download HPLIP</a></li>
+		<li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+		<li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+		<li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+	</menu>
+<div class="menuheader">Usage and Support</div> 
+	<menu compact="compact">
+		<li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+		<li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+		<li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+		<li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
+	</menu>
+<div class="menuheader">Resources</div>
+	<menu compact="compact">
+		<li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
+		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+		<li><a href="../license.html" title="Software License">Software License</a></li>
+		<li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+		<li><a href="../contacts.html" title="Contacts">Contacts</a></li>
+	</menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="yellowsplit">
+<div id="content"><!-- start content -->
         <a href="../index.html">Home</a>
 &gt;
 <a href="index.html">Technical Documentation</a>
 &gt;
 Printer Driver
 
-
-        <td align="left" valign="top" class="content">
+<hr size="1"/>
         <div class="document" id="technical-documentation-printer-driver">
 <h1 class="title">Technical Documentation: Printer Driver</h1>
 <p>The Hewlett-Packard Inkjet Driver (HPIJS) is a add-on printer driver for GNU Ghostscript. This driver is open source software based on the Hewlett-Packard Appliance Printing Development Kit (APDK) at <a class="reference" href="http://www.hpdevelopersolutions.com">http://www.hpdevelopersolutions.com</a>. The driver supports HP Inkjet and Laserjet printers. The driver will take RGB rasters from Ghostscript and converts them to printer-ready-bits.</p>
@@ -94,37 +97,39 @@ More information on the IJS interface can be found at <a class="reference" href=
 <p>HPIJS provides no I/O. HPIJS emits standard file output. The output can be directed to a file or to the actual device via the parallel or USB port. This &quot;raw&quot; printing does not require bi-directional I/O. Some all-in-one devices do not support &quot;raw&quot; I/O and must use HPLIP for printing (ie: OfficeJet K80). In this case HPIJS output is sent to the &quot;hp&quot; CUPS backend, the backend opens an 1284.4/MLC print channel, then the data is passed to the actual device.</p>
 <p>HPIJS supports all the current HP printer models with different Ghostscript command line parameters. Different printer models are selected with the IEEE 1284 Manufacturer and Model strings. This information can come from the query of a printer over the parallel or usb port. Common printer models are divided into different device classes. Each device class share common printer attributes such as print modes and paper sizes. HPIJS will automatically map the printer model to a specific device class.</p>
 <p>The following Ghostscript commands are required when using HPIJS.</p>
-<pre class="literal-block">
--sDEVICE=ijs
+<div class="compound">
+<p>-sDEVICE=ijs
 -sIjsServer=hpijs
 -dIjsUseOutputFD
 -sDeviceManufacturer=x   (x equals: &quot;HEWLETT-PACKARD&quot;, &quot;HP&quot;, &quot;APOLLO&quot;)
--sDeviceModel=x          (x equals: &quot;DESKJET 990&quot;, &quot;DESKJET 670&quot;, etc...)
-</pre>
+-sDeviceModel=x          (x equals: &quot;DESKJET 990&quot;, &quot;DESKJET 670&quot;, etc...)</p>
+</div>
 <p>The following Ghostscript commands are optional when using HPIJS.</p>
-<pre class="literal-block">
--dDuplex=false -dTumble=false (none)
+<div class="compound">
+<p class="compound-first">-dDuplex=false -dTumble=false (none)
 -dDuplex=true  -dTumble=false (book)
--dDuplex=true  -dTumble=true  (tablet)
-
--sIjsParams=&quot;Quality:Quality=n,Quality:ColorMode=n,Quality:MediaType=n,
-             Quality:PenSet=n,Quality:FullBleed=n,PS:MediaPosition=n&quot;
-
-    Quality equals: 0=normal (default), 1=draft, 2=best, 3=hires, 4=fastdraft
-    ColorMode equals: 0=grey_k, 1=grey_cmy, 2=color (default)
-    MediaType equals: 0=plain (default), 1=premium, 2=photo
-    PenSet equals: 0=black_pen, 1=color_pen, 2=both_pens, 3=mdl_pen, 4=mdl_both
-    FullBleed equals: 0=no (default), 1=yes
-    MediaPosition equals: 1=upper_tray, 4=lower_tray, 7=autoselect (default)
-</pre>
+-dDuplex=true  -dTumble=true  (tablet)</p>
+<dl class="compound-last docutils">
+<dt>-sIjsParams=&quot;Quality:Quality=n,Quality:ColorMode=n,Quality:MediaType=n,</dt>
+<dd><blockquote class="first">
+Quality:PenSet=n,Quality:FullBleed=n,PS:MediaPosition=n&quot;</blockquote>
+<p class="last">Quality equals: 0=normal (default), 1=draft, 2=best, 3=hires, 4=fastdraft
+ColorMode equals: 0=grey_k, 1=grey_cmy, 2=color (default)
+MediaType equals: 0=plain (default), 1=premium, 2=photo
+PenSet equals: 0=black_pen, 1=color_pen, 2=both_pens, 3=mdl_pen, 4=mdl_both
+FullBleed equals: 0=no (default), 1=yes
+MediaPosition equals: 1=upper_tray, 4=lower_tray, 7=autoselect (default)</p>
+</dd>
+</dl>
+</div>
 <p>PenSet Definitions</p>
-<pre class="literal-block">
-black_pen: only black pen in the printer
+<div class="compound">
+<p>black_pen: only black pen in the printer
 color_pen: only color pen in the printer
 both_pens: black &amp; color pens in printer
 mdl_pen: photo pen in the printer
-mdl_both: color pen and photo pen in printer
-</pre>
+mdl_both: color pen and photo pen in printer</p>
+</div>
 <p><strong>Caveats</strong></p>
 <ol class="arabic simple">
 <li>Note, there are defaults for all optional commands. PenSet default is defined by each device class.</li>
@@ -135,27 +140,21 @@ mdl_both: color pen and photo pen in printer
 </ol>
 </div>
 
-
-        <hr size="1"/>
-        <small>Last update: Mon May  1 18:18:23 2006; HPLIP Version: 1.6.10</small>
-
-        <!-- FOOTER -->
-    </table>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <!-- <tr><td colspan="3" class="footer"></td> -->
-        <tr>
-            <td class="footer"><a href="../legal.html">Legal Notices</a></td>
-            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
-            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
-        </tr>
-        <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
-        </tr>
-    
-    </table>
+<hr size="1"/>
+<center><small>Page last updated: Tue Dec  5 14:27:43 2006; HPLIP Version: 1.6.12</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+</div><!-- end container -->
+<div id="footer"><!-- start footer -->
+		<hr size="1"/>
+		<a href="../legal.html">Legal Notices</a>
+		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
+		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
 </body>
-
 </html>

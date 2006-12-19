@@ -1,8 +1,230 @@
+#page {
+position: relative;
+width: 95%;
+\width: 95%;
+w\idth: 95%;
+margin-left: auto;
+margin-right: auto;
+margin-top: auto;
+margin-bottom: auto;
+height: ;
+/* border: solid 1px black;*/
+padding: 0px;
+}
+
+#container {
+position: relative;
+background-color: rgb(239,244,244);
+border: solid 1px orange;
+margin: 0px;
+padding: 0px;
+}
+
+/* ******************* divs ******************* */
+
+#content {
+position: relative; 
+width: 700px;
+padding: 0px;
+font-size: 12pt;
+border: solid 0px red;
+white-space: pre-line;
+}
+
+#yellowsplit {
+position: relative; 
+border-left: solid 0px orange;
+border-top: solid 0px orange;
+/* margin-left: 195px; */
+}
+
+#navbar {
+border: solid 0px red;
+}
+
+#sidebar-a {
+float: left;
+height: ;
+/* margin-top: 10px; */
+margin-left: 10px;
+margin-right: 10px;
+margin-bottom: 0px;
+padding-right: 5px;
+padding-left: 0px;
+padding-top: 0px;
+padding-bottom: 0px;
+background-color: #99CCFF;
+}
+
+#footer {
+padding: 0px;
+margin-top: 0px;
+margin-bottom: 5px;
+margin-left: 0px;
+margin-right: 0px;
+text-align: center;
+vertical-align: middle;
+font-size: 12pt;
+}
+
+/* ******************* banner graphics ******************* */
+#banner {
+position: relative;
+background: url("../images/topbar.png") repeat-x;
+height: 100%;
+border: solid 0px red;
+}
+
+#banner_graphics {
+height: 80px;
+border: solid 0px blue;
+top: 0px;
+
+}
+
+#floatleft { 
+position: relative;
+float: left;
+top: 19px;
+left: 10px;
+}
+
+#floatcenter {
+position: relative;
+float: none;
+top: 23px;
+text-align: center;
+}
+
+#floatright {
+position: relative;
+float: right;
+top: -25px;
+right: 10px;
+
+}
+
+/* ******************* header title ******************* */
+
+.header_title_text { 
+position: absolute; 
+left: 1px; 
+top: 1px; 
+color: rgb(26,77,143);
+font-size: 18pt;
+}
+
+.header_title_text1 { 
+position: absolute; 
+left: -1px; 
+top: -1px; 
+color: #fff;
+font-size: 18pt;
+} 
+
+#header_title a:link {
+text-decoration: none;
+background-color: none;
+}
+
+#header_title a:visited {
+text-decoration: none;
+background-color: none;
+}
+
+#header_title a:active {
+text-decoration: none;
+background-color: none;
+}
+
+#header_title a:hover {
+text-decoration: none;
+background-color: transparent;
+border: solid 0px black;
+}
+
+
+/* ******************* sidebar buttons areas ******************* */
+
+#sidebar-a ul {
+margin: 0px;
+padding: 0px;
+list-style-type: none;
+}
+
+#sidebar-a a {
+display: block;
+padding: 1px;
+}
+
+#sidebar-a a:link, #sidebar-a-list a:visited {
+color: #000;
+text-decoration: none;
+}
+
+#sidebar-a a:hover {
+background-color: rgb(26,77,143);
+color: #fff;
+}
+
+#sidebar-a li {
+list-style: none;
+width: ;
+margin: 0px;
+}
+
+menu {
+margin-left: 0em;
+margin-right: 0px;
+margin-top: 0px;
+margin-bottom: 0px;
+padding-right: 0px;
+padding-left: .5em;
+white-space: nowrap;
+color: black;
+}
+
+.menuheader {
+font-weight: bold;
+font-size: 12pt;
+}
+
+a:link {
+text-decoration: none;
+}
+
+a:hover {
+background-color: #EAC117;
+text-decoration: none;
+}
+
+a:visited {
+color: blue;
+text-decoration: none;
+}
+
+#reference a:link {
+text-decoration: none;
+color: #fff;
+}
+
+#reference a:visted {
+text-decoration: none;
+color: #fff;
+}
+
+#reference a:hover {
+text-decoration: none;
+color: #fff;
+}
+
+/* ****************************  end buttons **************************** */
+
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
-:Date: $Date: 2006/03/02 17:41:43 $
-:Version: $Revision: 1.1 $
+:Date: $Date: 2006/12/18 19:55:46 $
+:Version: $Revision: 1.10 $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -10,7 +232,14 @@ Default cascading style sheet for the HTML output of Docutils.
 
 /* "! important" is used here to override other ``margin-top`` and
    ``margin-bottom`` styles that are later in the stylesheet or 
-   more specific.  See http://www.w3.org/TR/CSS1#the-cascade */
+   more specific.  See http://www.w3.org/TR/CSS1#the-cascade
+
+Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+
 .first {
   margin-top: 0 ! important }
 
@@ -30,10 +259,6 @@ blockquote.epigraph {
 dl.docutils dd {
   margin-bottom: 0.5em }
 
-/* Uncomment (and remove this text!) to get bold-faced definition list terms
-dl.docutils dt {
-  font-weight: bold }
-*/
 
 div.abstract {
   margin: 2em 5em }
@@ -166,6 +391,23 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
+
+p {
+font-size: 12pt;
+}
+
+a {
+font-size: 12pt;
+}
+
+h1 {
+font-size: 12pt;
+}
+
+li {
+font-size: 12pt;
+}
+
 p.attribution {
   text-align: right ;
   margin-left: 50% }
@@ -211,7 +453,18 @@ pre.line-block {
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
-  background-color: #eeeeee }
+  background-color: #eeeeee;
+  border: thin black solid;
+  padding: 2px;
+}
+
+div.compound {
+  margin-left: 2em ;
+  margin-right: 2em ;
+  background-color: #eeeeee;
+  border: thin black solid;
+  padding: 2px;
+}
 
 span.classifier {
   font-family: sans-serif ;
@@ -227,16 +480,20 @@ span.interpreted {
 span.option {
   white-space: nowrap }
 
- /* 
-span.pre {
-  white-space: pre }
-*/
 span.problematic {
   color: red }
 
 span.section-subtitle {
   /* font-size relative to parent (h1..h6 element) */
-  font-size: 80% }
+  font-size: 80% 
+}
+
+table {
+font-size: smaller;
+background-color: rgb(239,244,244);
+}
+
+
 
 table.citation {
   border-left: solid thin gray }
@@ -272,17 +529,6 @@ tt.docutils {
 
 ul.auto-toc {
   list-style-type: none }
-
-menu {
-    margin-left: 1em;
-    padding-left: 1em;
-    white-space: nowrap;
-    color: black;
-}
-
-.menuheader {
-    font-weight: bold;
-}
 
 .navleft {
     padding-right: 5px;
@@ -342,4 +588,112 @@ h4 {
     white-space: pre;
 }
 
+/*
+:Authors: Ian Bicking, Michael Foord
+:Contact: fuzzyman@voidspace.org.uk
+:Date: 2005/08/26 
+:Version: 0.2.0
+:Copyright: This stylesheet has been placed in the public domain.
 
+rest.css - used for rest2web documents
+Content rendered by docutils as part of a website
+http://www.voidspace.org.uk/python/rest2web/
+
+Stylesheet for Docutils.
+Based on ``blue_box.css`` by Ian Bicking
+and ``default.css`` revision 3442
+*/
+
+em, i {
+  /* Typically serif fonts have much nicer italics */
+  font-family: Times New Roman, Times, serif;
+}
+
+a.target {
+  color: blue;
+}
+
+a.toc-backref {
+  text-decoration: none;
+  color: black;
+}
+
+a.toc-backref:hover {
+  background: none ! important
+}
+
+div.attention, div.caution, div.danger, div.error, div.hint,
+div.important, div.note, div.tip, div.warning {
+  background-color: #cccccc;
+  padding: 3px;
+  width: 80%;
+}
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title  {
+  text-align: center;
+  background-color: #999999;
+  display: block;
+  margin: 0;
+}
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: #cc0000;
+  font-family: sans-serif;
+  text-align: center;
+  background-color: #999999;
+  display: block;
+  margin: 0;
+}
+
+h3 a.toc-backref, h4 a.toc-backref, h5 a.toc-backref, 
+h6 a.toc-backref { 
+  color: #000000;
+}
+
+table.footnote {
+  padding-left: 0.5ex;
+}
+
+table.citation {
+  padding-left: 0.5ex
+}
+
+.image img { border-style : solid;
+            border-width : 2px;
+}
+
+h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
+  font-size: 100%;
+}
+
+code, tt {
+  color: #000066;
+}
+
+span.pre {
+  white-space: normal }
+/*
+When set to 'pre' it breaks my page layout on IE
+*/
+
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+/* ************************************************************ */
+
+td {
+background-color: rgb(239,244,244);
+}
+
+tr {
+background-color: rgb(239,244,244);
+}

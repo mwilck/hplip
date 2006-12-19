@@ -50,20 +50,21 @@ sbin_PROGRAMS = hpiod$(EXEEXT)
 noinst_PROGRAMS = ptest$(EXEEXT)
 DIST_COMMON = $(am__configure_deps) $(dist_base_SCRIPTS) \
 	$(dist_cmd_SCRIPTS) $(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
-	$(dist_faxppd_DATA) $(dist_hpfax_SCRIPTS) $(dist_hplip_DATA) \
-	$(dist_hplip_SCRIPTS) $(dist_images_DATA) $(dist_ldl_DATA) \
+	$(dist_faxppd_DATA) $(dist_firm_DATA) $(dist_hpfax_SCRIPTS) \
+	$(dist_hplip_DATA) $(dist_hplip_SCRIPTS) $(dist_images_DATA) \
+	$(dist_installer_SCRIPTS) $(dist_ldl_DATA) $(dist_models_DATA) \
 	$(dist_noinst_DATA) $(dist_noinst_SCRIPTS) \
 	$(dist_pcard_SCRIPTS) $(dist_pcl_DATA) $(dist_plugins_SCRIPTS) \
 	$(dist_prnt_SCRIPTS) $(dist_ps_DATA) $(dist_scan_SCRIPTS) \
 	$(dist_ui_SCRIPTS) $(dist_www0_DATA) $(dist_www1_DATA) \
 	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
 	$(dist_www241_DATA) $(dist_www242_DATA) $(dist_www243_DATA) \
-	$(dist_www24_DATA) $(dist_www2_DATA) $(dist_www3_DATA) \
-	$(dist_www4_DATA) $(dist_www5_DATA) $(dist_www61_DATA) \
-	$(dist_www6_DATA) $(dist_www7_DATA) $(dist_xml_DATA) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/configure COPYING config.guess config.sub \
-	depcomp install-sh ltmain.sh missing
+	$(dist_www24_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
+	$(dist_www2_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
+	$(dist_www5_DATA) $(dist_www61_DATA) $(dist_www6_DATA) \
+	$(dist_www7_DATA) $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(top_srcdir)/configure COPYING compile config.guess \
+	config.sub depcomp install-sh ltmain.sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
@@ -83,21 +84,23 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" \
 	"$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" \
 	"$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" \
 	"$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" \
-	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" \
-	"$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" \
-	"$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" \
-	"$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(hplipdir)" \
+	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installerdir)" \
+	"$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" \
+	"$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" \
+	"$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" \
+	"$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" \
 	"$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" \
-	"$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" \
-	"$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" \
-	"$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" \
-	"$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" \
-	"$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" \
-	"$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" \
-	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
-	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
-	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
-	"$(DESTDIR)$(xmldir)" "$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" \
+	"$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" \
+	"$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" \
+	"$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" \
+	"$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" \
+	"$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" \
+	"$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" \
+	"$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www3dir)" \
+	"$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" \
+	"$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" \
+	"$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libhpip_la_LIBADD =
@@ -111,7 +114,7 @@ libhpip_la_OBJECTS = $(am_libhpip_la_OBJECTS)
 @SCAN_BUILD_FALSE@am_libhpip_la_rpath = -rpath $(libdir)
 @SCAN_BUILD_TRUE@am_libhpip_la_rpath = -rpath $(libdir)
 libhplip_api_la_LIBADD =
-am_libhplip_api_la_OBJECTS = hplip_api.lo
+am_libhplip_api_la_OBJECTS = hplip_api.lo model.lo
 libhplip_api_la_OBJECTS = $(am_libhplip_api_la_OBJECTS)
 @SCAN_BUILD_TRUE@libsane_hpaio_la_DEPENDENCIES = libhpip.la \
 @SCAN_BUILD_TRUE@	libhplip-api.la
@@ -119,9 +122,18 @@ am__libsane_hpaio_la_SOURCES_DIST = scan/sane/hpaio.c \
 	scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c \
 	scan/sane/io.c scan/sane/hpaio.h scan/sane/pml.h \
 	scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h \
-	scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h
-@SCAN_BUILD_TRUE@am_libsane_hpaio_la_OBJECTS = hpaio.lo mfpdtf.lo \
-@SCAN_BUILD_TRUE@	pml.lo scl.lo io.lo
+	scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
+	scan/sane/common.c scan/sane/common.h scan/sane/soap.h \
+	scan/sane/sanei_debug.h scan/sane/sanei.h \
+	scan/sane/soap_stub.c
+@SCAN_BUILD_TRUE@am_libsane_hpaio_la_OBJECTS =  \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-hpaio.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-mfpdtf.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-pml.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-scl.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-io.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-common.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-soap_stub.lo
 libsane_hpaio_la_OBJECTS = $(am_libsane_hpaio_la_OBJECTS)
 @SCAN_BUILD_TRUE@am_libsane_hpaio_la_rpath = -rpath $(libdir)
 cupsPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -146,6 +158,7 @@ dist_copierSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_faxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hpfaxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hplipSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+dist_installerSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_pcardSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_pluginsSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_prntSCRIPT_INSTALL = $(INSTALL_SCRIPT)
@@ -154,9 +167,9 @@ dist_uiSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 SCRIPTS = $(dist_base_SCRIPTS) $(dist_cmd_SCRIPTS) \
 	$(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
 	$(dist_hpfax_SCRIPTS) $(dist_hplip_SCRIPTS) \
-	$(dist_noinst_SCRIPTS) $(dist_pcard_SCRIPTS) \
-	$(dist_plugins_SCRIPTS) $(dist_prnt_SCRIPTS) \
-	$(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS)
+	$(dist_installer_SCRIPTS) $(dist_noinst_SCRIPTS) \
+	$(dist_pcard_SCRIPTS) $(dist_plugins_SCRIPTS) \
+	$(dist_prnt_SCRIPTS) $(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -189,9 +202,11 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	pdf-recursive ps-recursive uninstall-info-recursive \
 	uninstall-recursive
 dist_faxppdDATA_INSTALL = $(INSTALL_DATA)
+dist_firmDATA_INSTALL = $(INSTALL_DATA)
 dist_hplipDATA_INSTALL = $(INSTALL_DATA)
 dist_imagesDATA_INSTALL = $(INSTALL_DATA)
 dist_ldlDATA_INSTALL = $(INSTALL_DATA)
+dist_modelsDATA_INSTALL = $(INSTALL_DATA)
 dist_pclDATA_INSTALL = $(INSTALL_DATA)
 dist_psDATA_INSTALL = $(INSTALL_DATA)
 dist_www0DATA_INSTALL = $(INSTALL_DATA)
@@ -204,22 +219,24 @@ dist_www24DATA_INSTALL = $(INSTALL_DATA)
 dist_www241DATA_INSTALL = $(INSTALL_DATA)
 dist_www242DATA_INSTALL = $(INSTALL_DATA)
 dist_www243DATA_INSTALL = $(INSTALL_DATA)
+dist_www251DATA_INSTALL = $(INSTALL_DATA)
+dist_www252DATA_INSTALL = $(INSTALL_DATA)
 dist_www3DATA_INSTALL = $(INSTALL_DATA)
 dist_www4DATA_INSTALL = $(INSTALL_DATA)
 dist_www5DATA_INSTALL = $(INSTALL_DATA)
 dist_www6DATA_INSTALL = $(INSTALL_DATA)
 dist_www61DATA_INSTALL = $(INSTALL_DATA)
 dist_www7DATA_INSTALL = $(INSTALL_DATA)
-dist_xmlDATA_INSTALL = $(INSTALL_DATA)
 docDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(dist_faxppd_DATA) $(dist_hplip_DATA) $(dist_images_DATA) \
-	$(dist_ldl_DATA) $(dist_noinst_DATA) $(dist_pcl_DATA) \
-	$(dist_ps_DATA) $(dist_www0_DATA) $(dist_www1_DATA) \
-	$(dist_www2_DATA) $(dist_www21_DATA) $(dist_www22_DATA) \
-	$(dist_www23_DATA) $(dist_www24_DATA) $(dist_www241_DATA) \
-	$(dist_www242_DATA) $(dist_www243_DATA) $(dist_www3_DATA) \
-	$(dist_www4_DATA) $(dist_www5_DATA) $(dist_www6_DATA) \
-	$(dist_www61_DATA) $(dist_www7_DATA) $(dist_xml_DATA) \
+DATA = $(dist_faxppd_DATA) $(dist_firm_DATA) $(dist_hplip_DATA) \
+	$(dist_images_DATA) $(dist_ldl_DATA) $(dist_models_DATA) \
+	$(dist_noinst_DATA) $(dist_pcl_DATA) $(dist_ps_DATA) \
+	$(dist_www0_DATA) $(dist_www1_DATA) $(dist_www2_DATA) \
+	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
+	$(dist_www24_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
+	$(dist_www243_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
+	$(dist_www3_DATA) $(dist_www4_DATA) $(dist_www5_DATA) \
+	$(dist_www6_DATA) $(dist_www61_DATA) $(dist_www7_DATA) \
 	$(doc_DATA) $(noinst_DATA)
 ETAGS = etags
 CTAGS = ctags
@@ -357,7 +374,7 @@ subdirs = @subdirs@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 SUBDIRS = . prnt/hpijs
-INCLUDES = -Iprnt/hpijs -Iip
+INCLUDES = -Iip -Iapi
 hplipdir = $(datadir)/hplip
 rundir = /var/run
 docdir = $(datadir)/doc/$(distdir)
@@ -396,6 +413,10 @@ www242dir = $(docdir)/install/step4/setup
 dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
 www243dir = $(docdir)/install/step4/suse
 dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+www251dir = $(docdir)/install/manual
+dist_www251_DATA = $(wwwsrc)/install/manual/*
+www252dir = $(docdir)/install/manual/distros
+dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
 www3dir = $(docdir)/styles
 dist_www3_DATA = $(wwwsrc)/styles/*
 www4dir = $(docdir)/images
@@ -412,7 +433,7 @@ dist_hplip_DATA = $(doc_DATA) hplip.conf
 dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh install.py hplip-install
 cmddir = $(hplipdir)
 dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py makecopies.py probe.py timedate.py
+    sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
@@ -421,7 +442,7 @@ hp_SOURCES = backend/hp/hp.c
 hp_LDADD = libhplip-api.la
 hpiod_SOURCES = io/hpiod/hpiod.cpp io/hpiod/channel.cpp io/hpiod/device.cpp io/hpiod/mlc.cpp io/hpiod/system.cpp io/hpiod/jddevice.cpp io/hpiod/jetdirect.cpp \
     io/hpiod/udevice.cpp io/hpiod/uppdevice.cpp io/hpiod/ppdevice.cpp io/hpiod/pp.cpp io/hpiod/channel.h io/hpiod/device.h io/hpiod/hpiod.h io/hpiod/mlc.h \
-    io/hpiod/system.h io/hpiod/dot4.cpp io/hpiod/ppdot4.cpp io/hpiod/dot4.h io/hpiod/list.h io/hpiod/usbext.c io/hpiod/usbext.h io/hpiod/comp.cpp
+    io/hpiod/system.h io/hpiod/dot4.cpp io/hpiod/ppdot4.cpp io/hpiod/dot4.h io/hpiod/usbext.c io/hpiod/usbext.h io/hpiod/comp.cpp
 
 
 # base
@@ -429,8 +450,12 @@ basedir = $(hplipdir)/base
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  base/async.py \
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
-    base/imagesize.py base/distros.py base/dcheck.py
+    base/imagesize.py base/pexpect.py base/models.py base/mdns.py
 
+
+# installer
+installerdir = $(hplipdir)/installer
+dist_installer_SCRIPTS = installer/__init__.py installer/core.py installer/text_install.py installer/dcheck.py installer/distros.py
 
 # makecopies
 copierdir = $(hplipdir)/copier
@@ -447,14 +472,15 @@ ptest_SOURCES = pcard/ptest.c pcard/ptest.h pcard/fat.c pcard/fat.h
 ptest_LDADD = libhplip-api.la
 
 # data
-xmldir = $(hplipdir)/data/xml
+modelsdir = $(hplipdir)/data/models
 imagesdir = $(hplipdir)/data/images
 pcldir = $(hplipdir)/data/pcl
 ldldir = $(hplipdir)/data/ldl
 psdir = $(hplipdir)/data/ps
+firmdir = $(hplipdir)/data/firmware
 icondir = $(hplipdir)/data
 dist_ps_DATA = data/ps/testpage.ps.gz data/ps/clean_page.pdf.gz
-dist_xml_DATA = data/xml/*.xml
+dist_models_DATA = data/models/models.dat
 dist_images_DATA = data/images/*
 dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/align2_8xx.pcl.gz data/pcl/align3_8xx.pcl.gz data/pcl/align4_8xx.pcl.gz \
     data/pcl/align5_8xx.pcl.gz data/pcl/align2_9xx.pcl.gz data/pcl/align3_9xx.pcl.gz data/pcl/align4_450.pcl.gz data/pcl/align6_450.pcl.gz \
@@ -464,6 +490,7 @@ dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/a
 dist_ldl_DATA = data/ldl/cb2pcal.ldl.gz data/ldl/cb2pcal_done.ldl.gz data/ldl/cbbcal.ldl.gz data/ldl/cbccal.ldl.gz data/ldl/cbccal_done.ldl.gz data/ldl/cbcpcal.ldl.gz \
     data/ldl/cbpcal.ldl.gz
 
+dist_firm_DATA = data/firmware/HP_LaserJet_1018.fw.gz data/firmware/HP_LaserJet_1020.fw.gz
 
 # pcard 
 pcarddir = $(hplipdir)/pcard
@@ -489,30 +516,35 @@ dist_scan_SCRIPTS = scan/__init__.py
 libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
     ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
     ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
-    ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h
+    ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h 
 
 libhpip_la_LDFLAGS = -version-info 0:1:0
 
-# sane backend
-@SCAN_BUILD_TRUE@BASENAME = sane-hpaio
+# hpaio sane backend
 @SCAN_BUILD_TRUE@MAJORVER = 1
 @SCAN_BUILD_TRUE@MINORVER = 0
 @SCAN_BUILD_TRUE@AGEVER = 0
+@SCAN_BUILD_TRUE@BASENAME = sane-hpaio
 @SCAN_BUILD_TRUE@SONOVER = lib$(BASENAME).so
 @SCAN_BUILD_TRUE@SOSHORT = $(SONOVER).$(MAJORVER)
 @SCAN_BUILD_TRUE@SOLONG = $(SOSHORT).$(MINORVER).$(AGEVER)
 @SCAN_BUILD_TRUE@sanedir = $(libdir)/sane
 #lib_LTLIBRARIES = libsane-hpaio.la
-@SCAN_BUILD_TRUE@libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h \
-@SCAN_BUILD_TRUE@      scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h
+@SCAN_BUILD_TRUE@libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
+@SCAN_BUILD_TRUE@      scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
+@SCAN_BUILD_TRUE@      scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/sanei_debug.h scan/sane/sanei.h \
+@SCAN_BUILD_TRUE@      scan/sane/soap_stub.c 
 
+#      scan/sane/soap.c scan/sane/webScanC.c scan/sane/webScanClient.c scan/sane/stdsoap2.c \
+#      scan/sane/dime.c scan/sane/dime.h scan/sane/webScanStub.h scan/sane/webScanH.h scan/sane/stdsoap2.h scan/sane/webScan.nsmap
 @SCAN_BUILD_TRUE@libsane_hpaio_la_LDFLAGS = -version-info $(MAJORVER):$(MINORVER):$(AGEVER) 
 # The following is a interlibrary dependency that must be compiled first.
 @SCAN_BUILD_TRUE@libsane_hpaio_la_LIBADD = libhpip.la libhplip-api.la
+@SCAN_BUILD_TRUE@libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
 
 # api library
 noinst_LTLIBRARIES = libhplip-api.la
-libhplip_api_la_SOURCES = prnt/hpijs/hplip_api.c prnt/hpijs/hplip_api.h
+libhplip_api_la_SOURCES = api/hplip_api.c api/hplip_api.h api/model.c api/list.h
 
 # ui
 uidir = $(hplipdir)/ui
@@ -815,6 +847,25 @@ uninstall-dist_hplipSCRIPTS:
 	  echo " rm -f '$(DESTDIR)$(hplipdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(hplipdir)/$$f"; \
 	done
+install-dist_installerSCRIPTS: $(dist_installer_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(installerdir)" || $(mkdir_p) "$(DESTDIR)$(installerdir)"
+	@list='$(dist_installer_SCRIPTS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f $$d$$p; then \
+	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	    echo " $(dist_installerSCRIPT_INSTALL) '$$d$$p' '$(DESTDIR)$(installerdir)/$$f'"; \
+	    $(dist_installerSCRIPT_INSTALL) "$$d$$p" "$(DESTDIR)$(installerdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-dist_installerSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_installer_SCRIPTS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	  echo " rm -f '$(DESTDIR)$(installerdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(installerdir)/$$f"; \
+	done
 install-dist_pcardSCRIPTS: $(dist_pcard_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(pcarddir)" || $(mkdir_p) "$(DESTDIR)$(pcarddir)"
@@ -923,21 +974,24 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dot4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hpaio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hpiod.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hplip_api.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ipmain.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jddevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jetdirect.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mfpdtf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-common.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-hpaio.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-io.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-mfpdtf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-pml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-scl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-soap_stub.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mlc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/model.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ppdevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ppdot4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ptest.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/system.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/udevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uppdevice.Po@am__quote@
@@ -1203,47 +1257,68 @@ xyxtract.lo: ip/xyxtract.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o xyxtract.lo `test -f 'ip/xyxtract.c' || echo '$(srcdir)/'`ip/xyxtract.c
 
-hplip_api.lo: prnt/hpijs/hplip_api.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT hplip_api.lo -MD -MP -MF "$(DEPDIR)/hplip_api.Tpo" -c -o hplip_api.lo `test -f 'prnt/hpijs/hplip_api.c' || echo '$(srcdir)/'`prnt/hpijs/hplip_api.c; \
+hplip_api.lo: api/hplip_api.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT hplip_api.lo -MD -MP -MF "$(DEPDIR)/hplip_api.Tpo" -c -o hplip_api.lo `test -f 'api/hplip_api.c' || echo '$(srcdir)/'`api/hplip_api.c; \
 @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/hplip_api.Tpo" "$(DEPDIR)/hplip_api.Plo"; else rm -f "$(DEPDIR)/hplip_api.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='prnt/hpijs/hplip_api.c' object='hplip_api.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='api/hplip_api.c' object='hplip_api.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o hplip_api.lo `test -f 'prnt/hpijs/hplip_api.c' || echo '$(srcdir)/'`prnt/hpijs/hplip_api.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o hplip_api.lo `test -f 'api/hplip_api.c' || echo '$(srcdir)/'`api/hplip_api.c
 
-hpaio.lo: scan/sane/hpaio.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT hpaio.lo -MD -MP -MF "$(DEPDIR)/hpaio.Tpo" -c -o hpaio.lo `test -f 'scan/sane/hpaio.c' || echo '$(srcdir)/'`scan/sane/hpaio.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/hpaio.Tpo" "$(DEPDIR)/hpaio.Plo"; else rm -f "$(DEPDIR)/hpaio.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/hpaio.c' object='hpaio.lo' libtool=yes @AMDEPBACKSLASH@
+model.lo: api/model.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT model.lo -MD -MP -MF "$(DEPDIR)/model.Tpo" -c -o model.lo `test -f 'api/model.c' || echo '$(srcdir)/'`api/model.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/model.Tpo" "$(DEPDIR)/model.Plo"; else rm -f "$(DEPDIR)/model.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='api/model.c' object='model.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o hpaio.lo `test -f 'scan/sane/hpaio.c' || echo '$(srcdir)/'`scan/sane/hpaio.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o model.lo `test -f 'api/model.c' || echo '$(srcdir)/'`api/model.c
 
-mfpdtf.lo: scan/sane/mfpdtf.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT mfpdtf.lo -MD -MP -MF "$(DEPDIR)/mfpdtf.Tpo" -c -o mfpdtf.lo `test -f 'scan/sane/mfpdtf.c' || echo '$(srcdir)/'`scan/sane/mfpdtf.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/mfpdtf.Tpo" "$(DEPDIR)/mfpdtf.Plo"; else rm -f "$(DEPDIR)/mfpdtf.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/mfpdtf.c' object='mfpdtf.lo' libtool=yes @AMDEPBACKSLASH@
+libsane_hpaio_la-hpaio.lo: scan/sane/hpaio.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-hpaio.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-hpaio.Tpo" -c -o libsane_hpaio_la-hpaio.lo `test -f 'scan/sane/hpaio.c' || echo '$(srcdir)/'`scan/sane/hpaio.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-hpaio.Tpo" "$(DEPDIR)/libsane_hpaio_la-hpaio.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-hpaio.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/hpaio.c' object='libsane_hpaio_la-hpaio.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o mfpdtf.lo `test -f 'scan/sane/mfpdtf.c' || echo '$(srcdir)/'`scan/sane/mfpdtf.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-hpaio.lo `test -f 'scan/sane/hpaio.c' || echo '$(srcdir)/'`scan/sane/hpaio.c
 
-pml.lo: scan/sane/pml.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT pml.lo -MD -MP -MF "$(DEPDIR)/pml.Tpo" -c -o pml.lo `test -f 'scan/sane/pml.c' || echo '$(srcdir)/'`scan/sane/pml.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/pml.Tpo" "$(DEPDIR)/pml.Plo"; else rm -f "$(DEPDIR)/pml.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/pml.c' object='pml.lo' libtool=yes @AMDEPBACKSLASH@
+libsane_hpaio_la-mfpdtf.lo: scan/sane/mfpdtf.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-mfpdtf.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-mfpdtf.Tpo" -c -o libsane_hpaio_la-mfpdtf.lo `test -f 'scan/sane/mfpdtf.c' || echo '$(srcdir)/'`scan/sane/mfpdtf.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-mfpdtf.Tpo" "$(DEPDIR)/libsane_hpaio_la-mfpdtf.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-mfpdtf.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/mfpdtf.c' object='libsane_hpaio_la-mfpdtf.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o pml.lo `test -f 'scan/sane/pml.c' || echo '$(srcdir)/'`scan/sane/pml.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-mfpdtf.lo `test -f 'scan/sane/mfpdtf.c' || echo '$(srcdir)/'`scan/sane/mfpdtf.c
 
-scl.lo: scan/sane/scl.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT scl.lo -MD -MP -MF "$(DEPDIR)/scl.Tpo" -c -o scl.lo `test -f 'scan/sane/scl.c' || echo '$(srcdir)/'`scan/sane/scl.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/scl.Tpo" "$(DEPDIR)/scl.Plo"; else rm -f "$(DEPDIR)/scl.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/scl.c' object='scl.lo' libtool=yes @AMDEPBACKSLASH@
+libsane_hpaio_la-pml.lo: scan/sane/pml.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-pml.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-pml.Tpo" -c -o libsane_hpaio_la-pml.lo `test -f 'scan/sane/pml.c' || echo '$(srcdir)/'`scan/sane/pml.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-pml.Tpo" "$(DEPDIR)/libsane_hpaio_la-pml.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-pml.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/pml.c' object='libsane_hpaio_la-pml.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o scl.lo `test -f 'scan/sane/scl.c' || echo '$(srcdir)/'`scan/sane/scl.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-pml.lo `test -f 'scan/sane/pml.c' || echo '$(srcdir)/'`scan/sane/pml.c
 
-io.lo: scan/sane/io.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT io.lo -MD -MP -MF "$(DEPDIR)/io.Tpo" -c -o io.lo `test -f 'scan/sane/io.c' || echo '$(srcdir)/'`scan/sane/io.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/io.Tpo" "$(DEPDIR)/io.Plo"; else rm -f "$(DEPDIR)/io.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/io.c' object='io.lo' libtool=yes @AMDEPBACKSLASH@
+libsane_hpaio_la-scl.lo: scan/sane/scl.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-scl.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-scl.Tpo" -c -o libsane_hpaio_la-scl.lo `test -f 'scan/sane/scl.c' || echo '$(srcdir)/'`scan/sane/scl.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-scl.Tpo" "$(DEPDIR)/libsane_hpaio_la-scl.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-scl.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/scl.c' object='libsane_hpaio_la-scl.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o io.lo `test -f 'scan/sane/io.c' || echo '$(srcdir)/'`scan/sane/io.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-scl.lo `test -f 'scan/sane/scl.c' || echo '$(srcdir)/'`scan/sane/scl.c
+
+libsane_hpaio_la-io.lo: scan/sane/io.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-io.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-io.Tpo" -c -o libsane_hpaio_la-io.lo `test -f 'scan/sane/io.c' || echo '$(srcdir)/'`scan/sane/io.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-io.Tpo" "$(DEPDIR)/libsane_hpaio_la-io.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-io.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/io.c' object='libsane_hpaio_la-io.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-io.lo `test -f 'scan/sane/io.c' || echo '$(srcdir)/'`scan/sane/io.c
+
+libsane_hpaio_la-common.lo: scan/sane/common.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-common.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-common.Tpo" -c -o libsane_hpaio_la-common.lo `test -f 'scan/sane/common.c' || echo '$(srcdir)/'`scan/sane/common.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-common.Tpo" "$(DEPDIR)/libsane_hpaio_la-common.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-common.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/common.c' object='libsane_hpaio_la-common.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-common.lo `test -f 'scan/sane/common.c' || echo '$(srcdir)/'`scan/sane/common.c
+
+libsane_hpaio_la-soap_stub.lo: scan/sane/soap_stub.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-soap_stub.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-soap_stub.Tpo" -c -o libsane_hpaio_la-soap_stub.lo `test -f 'scan/sane/soap_stub.c' || echo '$(srcdir)/'`scan/sane/soap_stub.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-soap_stub.Tpo" "$(DEPDIR)/libsane_hpaio_la-soap_stub.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-soap_stub.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/soap_stub.c' object='libsane_hpaio_la-soap_stub.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-soap_stub.lo `test -f 'scan/sane/soap_stub.c' || echo '$(srcdir)/'`scan/sane/soap_stub.c
 
 hp.o: backend/hp/hp.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT hp.o -MD -MP -MF "$(DEPDIR)/hp.Tpo" -c -o hp.o `test -f 'backend/hp/hp.c' || echo '$(srcdir)/'`backend/hp/hp.c; \
@@ -1544,6 +1619,23 @@ uninstall-dist_faxppdDATA:
 	  echo " rm -f '$(DESTDIR)$(faxppddir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(faxppddir)/$$f"; \
 	done
+install-dist_firmDATA: $(dist_firm_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(firmdir)" || $(mkdir_p) "$(DESTDIR)$(firmdir)"
+	@list='$(dist_firm_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_firmDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(firmdir)/$$f'"; \
+	  $(dist_firmDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(firmdir)/$$f"; \
+	done
+
+uninstall-dist_firmDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_firm_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(firmdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(firmdir)/$$f"; \
+	done
 install-dist_hplipDATA: $(dist_hplip_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(hplipdir)" || $(mkdir_p) "$(DESTDIR)$(hplipdir)"
@@ -1594,6 +1686,23 @@ uninstall-dist_ldlDATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(ldldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(ldldir)/$$f"; \
+	done
+install-dist_modelsDATA: $(dist_models_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(modelsdir)" || $(mkdir_p) "$(DESTDIR)$(modelsdir)"
+	@list='$(dist_models_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_modelsDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(modelsdir)/$$f'"; \
+	  $(dist_modelsDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(modelsdir)/$$f"; \
+	done
+
+uninstall-dist_modelsDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_models_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(modelsdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(modelsdir)/$$f"; \
 	done
 install-dist_pclDATA: $(dist_pcl_DATA)
 	@$(NORMAL_INSTALL)
@@ -1799,6 +1908,40 @@ uninstall-dist_www243DATA:
 	  echo " rm -f '$(DESTDIR)$(www243dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(www243dir)/$$f"; \
 	done
+install-dist_www251DATA: $(dist_www251_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www251dir)" || $(mkdir_p) "$(DESTDIR)$(www251dir)"
+	@list='$(dist_www251_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www251DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www251dir)/$$f'"; \
+	  $(dist_www251DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www251dir)/$$f"; \
+	done
+
+uninstall-dist_www251DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www251_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www251dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www251dir)/$$f"; \
+	done
+install-dist_www252DATA: $(dist_www252_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www252dir)" || $(mkdir_p) "$(DESTDIR)$(www252dir)"
+	@list='$(dist_www252_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www252DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www252dir)/$$f'"; \
+	  $(dist_www252DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www252dir)/$$f"; \
+	done
+
+uninstall-dist_www252DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www252_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www252dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www252dir)/$$f"; \
+	done
 install-dist_www3DATA: $(dist_www3_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(www3dir)" || $(mkdir_p) "$(DESTDIR)$(www3dir)"
@@ -1900,23 +2043,6 @@ uninstall-dist_www7DATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(www7dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(www7dir)/$$f"; \
-	done
-install-dist_xmlDATA: $(dist_xml_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(xmldir)" || $(mkdir_p) "$(DESTDIR)$(xmldir)"
-	@list='$(dist_xml_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(dist_xmlDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xmldir)/$$f'"; \
-	  $(dist_xmlDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xmldir)/$$f"; \
-	done
-
-uninstall-dist_xmlDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_xml_DATA)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(xmldir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(xmldir)/$$f"; \
 	done
 install-docDATA: $(doc_DATA)
 	@$(NORMAL_INSTALL)
@@ -2071,7 +2197,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/copier $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/data/xml $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
+	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/manual $(distdir)/$(wwwsrc)/install/manual/distros $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/copier $(distdir)/data/firmware $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/models $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/installer $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -2218,7 +2344,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(xmldir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installerdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -2271,21 +2397,23 @@ info-am:
 install-data-am: install-cupsPROGRAMS install-dist_baseSCRIPTS \
 	install-dist_cmdSCRIPTS install-dist_copierSCRIPTS \
 	install-dist_faxSCRIPTS install-dist_faxppdDATA \
-	install-dist_hpfaxSCRIPTS install-dist_hplipDATA \
-	install-dist_hplipSCRIPTS install-dist_imagesDATA \
-	install-dist_ldlDATA install-dist_pcardSCRIPTS \
-	install-dist_pclDATA install-dist_pluginsSCRIPTS \
-	install-dist_prntSCRIPTS install-dist_psDATA \
-	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
-	install-dist_www0DATA install-dist_www1DATA \
-	install-dist_www21DATA install-dist_www22DATA \
-	install-dist_www23DATA install-dist_www241DATA \
-	install-dist_www242DATA install-dist_www243DATA \
-	install-dist_www24DATA install-dist_www2DATA \
-	install-dist_www3DATA install-dist_www4DATA \
-	install-dist_www5DATA install-dist_www61DATA \
-	install-dist_www6DATA install-dist_www7DATA \
-	install-dist_xmlDATA install-docDATA
+	install-dist_firmDATA install-dist_hpfaxSCRIPTS \
+	install-dist_hplipDATA install-dist_hplipSCRIPTS \
+	install-dist_imagesDATA install-dist_installerSCRIPTS \
+	install-dist_ldlDATA install-dist_modelsDATA \
+	install-dist_pcardSCRIPTS install-dist_pclDATA \
+	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
+	install-dist_psDATA install-dist_scanSCRIPTS \
+	install-dist_uiSCRIPTS install-dist_www0DATA \
+	install-dist_www1DATA install-dist_www21DATA \
+	install-dist_www22DATA install-dist_www23DATA \
+	install-dist_www241DATA install-dist_www242DATA \
+	install-dist_www243DATA install-dist_www24DATA \
+	install-dist_www251DATA install-dist_www252DATA \
+	install-dist_www2DATA install-dist_www3DATA \
+	install-dist_www4DATA install-dist_www5DATA \
+	install-dist_www61DATA install-dist_www6DATA \
+	install-dist_www7DATA install-docDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -2322,21 +2450,23 @@ ps-am:
 uninstall-am: uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
 	uninstall-dist_cmdSCRIPTS uninstall-dist_copierSCRIPTS \
 	uninstall-dist_faxSCRIPTS uninstall-dist_faxppdDATA \
-	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
-	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
-	uninstall-dist_ldlDATA uninstall-dist_pcardSCRIPTS \
-	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
-	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
-	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
-	uninstall-dist_www0DATA uninstall-dist_www1DATA \
-	uninstall-dist_www21DATA uninstall-dist_www22DATA \
-	uninstall-dist_www23DATA uninstall-dist_www241DATA \
-	uninstall-dist_www242DATA uninstall-dist_www243DATA \
-	uninstall-dist_www24DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-dist_xmlDATA uninstall-docDATA uninstall-info-am \
+	uninstall-dist_firmDATA uninstall-dist_hpfaxSCRIPTS \
+	uninstall-dist_hplipDATA uninstall-dist_hplipSCRIPTS \
+	uninstall-dist_imagesDATA uninstall-dist_installerSCRIPTS \
+	uninstall-dist_ldlDATA uninstall-dist_modelsDATA \
+	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
+	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
+	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
+	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
+	uninstall-dist_www1DATA uninstall-dist_www21DATA \
+	uninstall-dist_www22DATA uninstall-dist_www23DATA \
+	uninstall-dist_www241DATA uninstall-dist_www242DATA \
+	uninstall-dist_www243DATA uninstall-dist_www24DATA \
+	uninstall-dist_www251DATA uninstall-dist_www252DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-sbinPROGRAMS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
@@ -2356,21 +2486,23 @@ uninstall-info: uninstall-info-recursive
 	install-data-am install-data-hook install-dist_baseSCRIPTS \
 	install-dist_cmdSCRIPTS install-dist_copierSCRIPTS \
 	install-dist_faxSCRIPTS install-dist_faxppdDATA \
-	install-dist_hpfaxSCRIPTS install-dist_hplipDATA \
-	install-dist_hplipSCRIPTS install-dist_imagesDATA \
-	install-dist_ldlDATA install-dist_pcardSCRIPTS \
-	install-dist_pclDATA install-dist_pluginsSCRIPTS \
-	install-dist_prntSCRIPTS install-dist_psDATA \
-	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
-	install-dist_www0DATA install-dist_www1DATA \
-	install-dist_www21DATA install-dist_www22DATA \
-	install-dist_www23DATA install-dist_www241DATA \
-	install-dist_www242DATA install-dist_www243DATA \
-	install-dist_www24DATA install-dist_www2DATA \
-	install-dist_www3DATA install-dist_www4DATA \
-	install-dist_www5DATA install-dist_www61DATA \
-	install-dist_www6DATA install-dist_www7DATA \
-	install-dist_xmlDATA install-docDATA install-exec \
+	install-dist_firmDATA install-dist_hpfaxSCRIPTS \
+	install-dist_hplipDATA install-dist_hplipSCRIPTS \
+	install-dist_imagesDATA install-dist_installerSCRIPTS \
+	install-dist_ldlDATA install-dist_modelsDATA \
+	install-dist_pcardSCRIPTS install-dist_pclDATA \
+	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
+	install-dist_psDATA install-dist_scanSCRIPTS \
+	install-dist_uiSCRIPTS install-dist_www0DATA \
+	install-dist_www1DATA install-dist_www21DATA \
+	install-dist_www22DATA install-dist_www23DATA \
+	install-dist_www241DATA install-dist_www242DATA \
+	install-dist_www243DATA install-dist_www24DATA \
+	install-dist_www251DATA install-dist_www252DATA \
+	install-dist_www2DATA install-dist_www3DATA \
+	install-dist_www4DATA install-dist_www5DATA \
+	install-dist_www61DATA install-dist_www6DATA \
+	install-dist_www7DATA install-docDATA install-exec \
 	install-exec-am install-exec-hook install-info install-info-am \
 	install-libLTLIBRARIES install-man install-sbinPROGRAMS \
 	install-strip installcheck installcheck-am installdirs \
@@ -2381,21 +2513,23 @@ uninstall-info: uninstall-info-recursive
 	uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
 	uninstall-dist_cmdSCRIPTS uninstall-dist_copierSCRIPTS \
 	uninstall-dist_faxSCRIPTS uninstall-dist_faxppdDATA \
-	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
-	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
-	uninstall-dist_ldlDATA uninstall-dist_pcardSCRIPTS \
-	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
-	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
-	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
-	uninstall-dist_www0DATA uninstall-dist_www1DATA \
-	uninstall-dist_www21DATA uninstall-dist_www22DATA \
-	uninstall-dist_www23DATA uninstall-dist_www241DATA \
-	uninstall-dist_www242DATA uninstall-dist_www243DATA \
-	uninstall-dist_www24DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-dist_xmlDATA uninstall-docDATA uninstall-hook \
+	uninstall-dist_firmDATA uninstall-dist_hpfaxSCRIPTS \
+	uninstall-dist_hplipDATA uninstall-dist_hplipSCRIPTS \
+	uninstall-dist_imagesDATA uninstall-dist_installerSCRIPTS \
+	uninstall-dist_ldlDATA uninstall-dist_modelsDATA \
+	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
+	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
+	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
+	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
+	uninstall-dist_www1DATA uninstall-dist_www21DATA \
+	uninstall-dist_www22DATA uninstall-dist_www23DATA \
+	uninstall-dist_www241DATA uninstall-dist_www242DATA \
+	uninstall-dist_www243DATA uninstall-dist_www24DATA \
+	uninstall-dist_www251DATA uninstall-dist_www252DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-hook \
 	uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-sbinPROGRAMS
 
@@ -2517,7 +2651,8 @@ install-data-hook: install-pcardext install-cupsext
 	else \
 	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
-	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
+	echo -e "installinitd=$(INSTALLINITD)\nchkconfig=$(CHKCONFIG)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
+	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 #
 #       Install hpiod.conf. 
 	$(mkinstalldirs) $(DESTDIR)/etc/hp
@@ -2536,7 +2671,7 @@ install-data-hook: install-pcardext install-cupsext
 	if [ "$(DESTDIR)" = "" ]; then \
 	   if [ "$(INSTALLINITD)" != "" ]; then \
 	      $(INSTALLINITD) $(PACKAGE); \
-	   else \
+	   elif [ "$(CHKCONFIG)" != "" ]; then  \
 	      $(CHKCONFIG) $(PACKAGE) reset; \
 	   fi \
 	fi
@@ -2553,7 +2688,8 @@ install-data-hook: install-pcardext install-cupsext
 #
 #       For internal testing.
 	if [ "$(SHADOW)" != "" ]; then \
-	   cp -f data/xml/unreleased/*.xml $(DESTDIR)$(hplipdir)/data/xml/; \
+           $(mkinstalldirs) $(DESTDIR)$(modelsdir)/unreleased; \
+	   $(INSTALL_DATA) $(srcdir)/data/models/unreleased.dat $(DESTDIR)$(modelsdir)/unreleased; \
 	fi
 
 uninstall-hook:
@@ -2579,7 +2715,7 @@ uninstall-hook:
 
 dist-hook:
 	if [ "$(SHADOW)" != "" ]; then \
-	   cp -f data/xml/unreleased/*.xml $(distdir)/data/xml/; \
+	   cp -f data/models/unreleased/unreleased.dat $(distdir)/data/models/; \
 	fi
 
 .PHONY: build-pcardext build-cupsext install-pcardext install-cupsext

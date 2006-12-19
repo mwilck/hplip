@@ -301,8 +301,8 @@ int Device::WriteECPChannel(int fd, int value)
    len = usb_control_msg(hd, 
              USB_ENDPOINT_IN | USB_TYPE_VENDOR | USB_RECIP_INTERFACE, /* bmRequestType */
              USB_REQ_GET_STATUS,        /* bRequest */
-             htole16(value),        /* wValue */
-             htole16(interface), /* wIndex */
+             value,        /* wValue */
+             interface, /* wIndex */
              &byte, 1, LIBUSB_CONTROL_REQ_TIMEOUT);
 
    if (len != 1)
@@ -355,28 +355,28 @@ int Device::BridgeChipUp(int fd)
       len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x0758),        /* wValue */
+             0x0758,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
       /* Turn off RLE in auto ECP mode. */
       len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x0a1d),        /* wValue */
+             0x0a1d,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
       /* Place 725 chip in auto ECP mode. */
       len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x0759),        /* wValue */
+             0x0759,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
       /* Force negotiation. */
       len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x0817),        /* wValue */
+             0x0817,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
       /* Read register values. */
@@ -396,7 +396,7 @@ int Device::BridgeChipUp(int fd)
    len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x05ce),        /* wValue */
+             0x05ce,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
    Write(fd, &nullByte, 1);
@@ -405,7 +405,7 @@ int Device::BridgeChipUp(int fd)
    len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x05cd),        /* wValue */
+             0x05cd,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
 
@@ -432,7 +432,7 @@ int Device::BridgeChipDown(int fd)
    len = usb_control_msg(hd, 
              USB_ENDPOINT_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, /* bmRequestType */
              0x04,        /* bRequest */
-             htole16(0x080f),        /* wValue */
+             0x080f,        /* wValue */
              0, /* wIndex */
              NULL, 0, LIBUSB_CONTROL_REQ_TIMEOUT);
    if (len < 0)
@@ -762,8 +762,8 @@ int Device::DeviceID(char *buffer, int size)
    rlen = usb_control_msg(hd, 
              USB_ENDPOINT_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE, /* bmRequestType */
              USB_REQ_GET_STATUS,        /* bRequest */
-             htole16(0),        /* wValue */
-             htole16(interface), /* wIndex */
+             0,        /* wValue */
+             interface, /* wIndex */
              buffer, maxSize, LIBUSB_CONTROL_REQ_TIMEOUT);
 
    if (rlen < 0)
@@ -809,8 +809,8 @@ int Device::DeviceStatus(unsigned int *status)
    len = usb_control_msg(hd, 
              USB_ENDPOINT_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE, /* bmRequestType */
              USB_REQ_CLEAR_FEATURE,        /* bRequest */
-             htole16(0),        /* wValue */
-             htole16(interface), /* wIndex */
+             0,        /* wValue */
+             interface, /* wIndex */
              &byte, 1, LIBUSB_CONTROL_REQ_TIMEOUT);
 
    if (len < 0)

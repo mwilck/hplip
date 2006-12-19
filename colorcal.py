@@ -69,6 +69,9 @@ def usage(typ='text'):
 def enterNumber(text, minimum, maximum):
     while True:
         x = raw_input(utils.bold(text))
+        if x and x[0].lower() == 'q':
+            sys.exit(0)
+            
         try:
             x = int(x)
         except ValueError:
@@ -80,22 +83,31 @@ def enterNumber(text, minimum, maximum):
         break
 
     return True, x
+    
+def enterNumberOptions(number, minimum, maximum):
+    while True:
+        try:
+            number = int(number)
+        except ValueError:
+            log.error("You must enter a numeric value.")
+            continue
+        if number < minimum or number > maximum:
+            log.error("You must enter a number between %d and %d." % (minimum, maximum))
+            continue
+        break
+
+    return True, number
+    
 
 def enterAlignmentNumber(letter, hortvert, colors, minimum, maximum):
-    return enterNumber("Enter the best aligned value for line %s (%d-%d): " % (letter, minimum, maximum),
-                        minimum,
-                        maximum)
+    return enterNumber("Enter the best aligned value for line %s (%d-%d or q=quit): " % (letter, minimum, maximum), minimum, maximum)
 
 def enterPaperEdge(maximum):
-    return enterNumber("Enter numbered arrow that is best aligned with the paper edge (1-%d): " % maximum,
-                        1,
-                        maximum)
+    return enterNumber("Enter numbered arrow that is best aligned with the paper edge (1-%d or q=quit): " % maximum, 1, maximum)
 
 def colorAdj(line, maximum):
-    return enterNumber("Enter the numbered box on line %s that is best color matched to the background color (1-%d): " % (line, maximum),
-                        1,
-                        maximum)
-
+    return enterNumber("Enter the numbered box on line %s that is best color matched to the background color (1-%d or q=quit): " % (line, maximum), 1, maximum)
+    
 def colorCal():
     return enterNumber("""Enter the numbered image labeled "1" thru "7" that is best color matched to the image labeled "X""", 1, 7)
 
@@ -103,8 +115,8 @@ def colorCal2():
     return enterNumber("""Select the number between 1 and 81 of the numbered patch that best matches the background.""", 1, 81)
 
 def loadPlainPaper():
-    x = raw_input(utils.bold("An alignment page will be printed.\nPlease load plain paper into the printer. Press <Enter> to contine or 'q' to quit."))
-    if len(x) > 0 and x[0].lower() == 'q':
+    x = raw_input(utils.bold("An alignment page will be printed.\nPlease load plain paper into the printer. Press <Enter> to contine or 'q' to quit: "))
+    if x and x[0].lower() == 'q':
         return False
     return True
 
@@ -316,13 +328,13 @@ try:
             log.error("Color calibration not supported or required by device.")
             sys.exit(1)
         
-        elif color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
+        elif color_cal_type == COLOR_CAL_TYPE_DESKJET_450: #1
             maint.colorCalType1(d, loadPlainPaper, colorCal, photoPenRequired)
         
-        elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
+        elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK: #2
             maint.colorCalType2(d, loadPlainPaper, colorCal2, invalidPen)
         
-        elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
+        elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO: #2
             maint.colorCalType3(d, loadPlainPaper, colorAdj, photoPenRequired2)
         
         elif color_cal_type == COLOR_CAL_TYPE_CONNERY: # 4

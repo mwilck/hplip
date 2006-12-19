@@ -13,10 +13,12 @@
 #   6 = no python-devel
 #   7 = no pthread-devel
 #   8 = no ppdev-devel
+#   9 = no libcups
+#   10 = no libm
 #
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [1.6.10], [1.6.10.11], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [1.6.12], [1.6.12.15], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -41,6 +43,8 @@ AC_CHECK_LIB([pthread], [pthread_create])
 AC_CHECK_LIB([crypto], [CRYPTO_free])
 AC_CHECK_LIB([netsnmp], [snmp_timeout], [libsnmp=yes], [libsnmp=no])
 AC_CHECK_LIB([usb], [usb_init],, [AC_MSG_ERROR([cannot find libusb support], 2)])
+AC_CHECK_LIB([cups], [cupsDoFileRequest],, [AC_MSG_ERROR([cannot find libcups support], 9)])
+AC_CHECK_LIB([m], [pow],, [AC_MSG_ERROR([cannot find libm math support], 10)])
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -169,6 +173,10 @@ if test "$network_build" = "yes"; then
    fi
    AC_DEFINE(HAVE_LIBSNMP) 
    LIBS="-lnetsnmp $LIBS"
+fi
+
+if test "$CHKCONFIG" = "" -a "$INSTALLINITD" = ""; then
+   AC_MSG_WARN([*** no chkconfig or install_initd, hplip startup script will not be installed ***]) 
 fi
 
 if test "$fax_build" = "yes"; then

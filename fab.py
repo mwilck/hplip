@@ -390,7 +390,7 @@ class Console(cmd.Cmd):
 
             ok = True
             for c in faxnum:
-                if c not in '0123456789-(+) ':
+                if c not in '0123456789-(+) *#':
                     print utils.red("error: Invalid characters in fax number. Fax number may only contain '0123456789-(+) '")
                     ok = False
                     break
@@ -547,8 +547,8 @@ class Console(cmd.Cmd):
 
             ok = True
             for c in faxnum:
-                if c not in '0123456789-(+) ':
-                    print utils.red("error: Invalid characters in fax number. Fax number may only contain '0123456789-(+) '")
+                if c not in '0123456789-(+) *#':
+                    print utils.red("error: Invalid characters in fax number. Fax number may only contain '0123456789-(+) *#'")
                     ok = False
                     break
                     

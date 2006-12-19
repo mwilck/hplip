@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '4.2'
+__version__ = '4.4'
 __title__ = 'PC Sendfax Utility'
 __doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers." 
 
@@ -34,11 +34,9 @@ import ConfigParser, pwd, socket, time
 from base.g import *
 from base.msg import *
 import base.utils as utils
-import base.async_qt as async
 from base import service, device
 
 log.set_module('hp-sendfax')
-
 
 USAGE = [(__doc__, "", "name", True),
          ("Usage: hp-sendfax [PRINTER|DEVICE-URI] [OPTIONS] [MODE] [FILES]", "", "summary", True),
@@ -79,150 +77,6 @@ def usage(typ='text'):
 
 
 
-class fax_client(async.dispatcher):
-
-    def __init__(self, username):
-        async.dispatcher.__init__(self)
-        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect((prop.hpssd_host, prop.hpssd_port)) 
-        self.in_buffer = ""
-        self.out_buffer = ""
-        self.fields = {}
-        self.data = ''
-        self.error_dialog = None
-        self.signal_exit = False
-
-        # handlers for all the messages we expect to receive
-        self.handlers = {
-                        'eventgui'         : self.handle_eventgui,
-                        'unknown'          : self.handle_unknown,
-                        'exitguievent'     : self.handle_exitguievent,
-                        }
-
-        self.register_gui(username)
-
-    def handle_read(self):
-        log.debug("Reading data on channel (%d)" % self._fileno)
-
-        self.in_buffer = self.recv(prop.max_message_len)
-        log.debug(repr(self.in_buffer))
-
-        if self.in_buffer == '':
-            return False
-
-        remaining_msg = self.in_buffer
-
-        while True:
-            try:
-                self.fields, self.data, remaining_msg = parseMessage(remaining_msg)
-            except Error, e:
-                #log.debug(repr(self.in_buffer))
-                log.warn("Message parsing error: %s (%d)" % (e.opt, e.msg))
-                self.out_buffer = self.handle_unknown()
-                log.debug(self.out_buffer)
-                return True
-
-            msg_type = self.fields.get('msg', 'unknown')
-            log.debug("%s %s %s" % ("*"*40, msg_type, "*"*40))
-            log.debug(repr(self.in_buffer))
-
-            try:
-                self.out_buffer = self.handlers.get(msg_type, self.handle_unknown)()
-            except Error:
-                log.error("Unhandled exception during processing")
-
-            if len(self.out_buffer): # data is ready for send
-                self.sock_write_notifier.setEnabled(True)
-
-            if not remaining_msg:
-                break
-
-        return True
-
-    def handle_write(self):
-        if not len(self.out_buffer):
-            return
-
-        log.debug("Sending data on channel (%d)" % self._fileno)
-        log.debug(repr(self.out_buffer))
-        
-        try:
-            sent = self.send(self.out_buffer)
-        except:
-            log.error("send() failed.")
-
-        self.out_buffer = self.out_buffer[sent:]
-        
-
-    def writable(self):
-        return not ((len(self.out_buffer) == 0)
-                     and self.connected)
-
-    def handle_exitguievent(self):
-        self.signal_exit = True
-        if self.signal_exit:
-            if sendfax is not None:
-                sendfax.close()
-            qApp.quit()
-
-        return ''
-
-    #def handle_faxgetdataresult(self):
-    #    pass
-    
-    # EVENT (GUI)
-    def handle_eventgui(self):
-        if sendfax is not None:
-            try:
-                job_id = self.fields.get('job-id', 0)
-                event_code = self.fields.get('event-code', 0)
-                event_type = self.fields.get('event-type', 'event')
-                retry_timeout = self.fields.get('retry-timeout', 0)
-                
-                lines = self.data.splitlines()
-                try:
-                    error_string_short, error_string_long = lines[0], lines[1]
-                except IndexError:
-                    error_string_short, error_string_long = '', ''
-                
-                device_uri = self.fields.get('device-uri', '')
-                printer_name = self.fields.get('printer', '')
-                title = self.fields.get('title', '')
-                job_size = self.fields.get('job-size', 0)
-    
-                log.debug("Event: %d '%s'" % (event_code, event_type))
-    
-                sendfax.EventUI(event_code, event_type, error_string_short,
-                                error_string_long, retry_timeout, job_id,
-                                device_uri, printer_name, title, job_size)
-    
-            except:
-                log.exception()
-    
-        return ''
-
-    def handle_unknown(self):
-        return ''
-
-    def handle_messageerror(self):
-        return ''
-
-    def handle_close(self):
-        log.debug("closing channel (%d)" % self._fileno)
-        self.connected = False
-        async.dispatcher.close(self)
-
-    def register_gui(self, username):
-        out_buffer = buildMessage("RegisterGUIEvent", None, 
-                                  {'type': 'fax', 
-                                   'username': username})
-        self.send(out_buffer)
-
-
-
-
-
-
 prop.prog = sys.argv[0]
 
 device_uri = None
@@ -240,7 +94,7 @@ try:
         ['device=', 'printer=', 'level=', 
          'help', 'help-rest', 
          'help-man', 'logfile=', 'bus=',
-         'gui', 'non-interactive'
+         'gui', 'non-interactive',
          'faxnum=', 'recipients=',
          'gg', 'groups', 'help-desc'])
 
@@ -333,10 +187,143 @@ if mode == GUI_MODE:
     client = None
     
     from qt import *
+    import base.async_qt as async
     
     # UI Forms
     from ui.faxsendjobform import FaxSendJobForm
 
+    class fax_client(async.dispatcher):
+    
+        def __init__(self, username):
+            async.dispatcher.__init__(self)
+            self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.connect((prop.hpssd_host, prop.hpssd_port)) 
+            self.in_buffer = ""
+            self.out_buffer = ""
+            self.fields = {}
+            self.data = ''
+            self.error_dialog = None
+            self.signal_exit = False
+    
+            # handlers for all the messages we expect to receive
+            self.handlers = {
+                            'eventgui'         : self.handle_eventgui,
+                            'unknown'          : self.handle_unknown,
+                            'exitguievent'     : self.handle_exitguievent,
+                            }
+    
+            self.register_gui(username)
+    
+        def handle_read(self):
+            log.debug("Reading data on channel (%d)" % self._fileno)
+    
+            self.in_buffer = self.recv(prop.max_message_len)
+            log.debug(repr(self.in_buffer))
+    
+            if self.in_buffer == '':
+                return False
+    
+            remaining_msg = self.in_buffer
+    
+            while True:
+                try:
+                    self.fields, self.data, remaining_msg = parseMessage(remaining_msg)
+                except Error, e:
+                    #log.debug(repr(self.in_buffer))
+                    log.warn("Message parsing error: %s (%d)" % (e.opt, e.msg))
+                    self.out_buffer = self.handle_unknown()
+                    log.debug(self.out_buffer)
+                    return True
+    
+                msg_type = self.fields.get('msg', 'unknown')
+                log.debug("%s %s %s" % ("*"*40, msg_type, "*"*40))
+                log.debug(repr(self.in_buffer))
+    
+                try:
+                    self.out_buffer = self.handlers.get(msg_type, self.handle_unknown)()
+                except Error:
+                    log.error("Unhandled exception during processing")
+    
+                if len(self.out_buffer): # data is ready for send
+                    self.sock_write_notifier.setEnabled(True)
+    
+                if not remaining_msg:
+                    break
+    
+            return True
+    
+        def handle_write(self):
+            if not len(self.out_buffer):
+                return
+    
+            log.debug("Sending data on channel (%d)" % self._fileno)
+            log.debug(repr(self.out_buffer))
+            
+            try:
+                sent = self.send(self.out_buffer)
+            except:
+                log.error("send() failed.")
+    
+            self.out_buffer = self.out_buffer[sent:]
+            
+    
+        def writable(self):
+            return not ((len(self.out_buffer) == 0)
+                         and self.connected)
+    
+        def handle_exitguievent(self):
+            self.signal_exit = True
+            if self.signal_exit:
+                if sendfax is not None:
+                    sendfax.close()
+                qApp.quit()
+    
+            return ''
+    
+        # EVENT (GUI)
+        def handle_eventgui(self):
+            if sendfax is not None:
+                try:
+                    job_id = self.fields.get('job-id', 0)
+                    event_code = self.fields.get('event-code', 0)
+                    event_type = self.fields.get('event-type', 'event')
+                    retry_timeout = self.fields.get('retry-timeout', 0)
+                    error_string_short = device.queryString(event_code, 0)
+                    error_string_long = device.queryString(event_code, 1)
+                    device_uri = self.fields.get('device-uri', '')
+                    printer_name = self.fields.get('printer', '')
+                    title = self.fields.get('title', '')
+                    job_size = self.fields.get('job-size', 0)
+        
+                    log.debug("Event: %d '%s'" % (event_code, event_type))
+        
+                    sendfax.EventUI(event_code, event_type, error_string_short,
+                                    error_string_long, retry_timeout, job_id,
+                                    device_uri, printer_name, title, job_size)
+        
+                except:
+                    log.exception()
+        
+            return ''
+    
+        def handle_unknown(self):
+            return ''
+    
+        def handle_messageerror(self):
+            return ''
+    
+        def handle_close(self):
+            log.debug("closing channel (%d)" % self._fileno)
+            self.connected = False
+            async.dispatcher.close(self)
+    
+        def register_gui(self, username):
+            out_buffer = buildMessage("RegisterGUIEvent", None, 
+                                      {'type': 'fax', 
+                                       'username': username})
+            self.send(out_buffer)
+
+    
     try:
         client = fax_client(username)
     except Error:
@@ -397,8 +384,8 @@ else: # NON_INTERACTIVE_MODE
     
     for f in faxnum_list:
         for c in f:
-            if c not in '0123456789-(+) ':
-                log.error("Invalid character in fax number '%s'. Only the characters '0123456789-(+) ' are valid." % f)
+            if c not in '0123456789-(+) *#':
+                log.error("Invalid character in fax number '%s'. Only the characters '0123456789-(+) *#' are valid." % f)
                 sys.exit(1)
     
     log.debug("Group list = %s" % group_list)
@@ -425,7 +412,6 @@ else: # NON_INTERACTIVE_MODE
             
             print
             sys.exit(1)
-    
 
     for p in recipient_list:
         a = fax.AddressBookEntry(db.select(['name'], [p])[0])
@@ -446,7 +432,6 @@ else: # NON_INTERACTIVE_MODE
     allowable_mime_types = cups.getAllowableMIMETypes()
     allowable_mime_types.append("application/hplip-fax")
     allowable_mime_types.append("application/x-python")
-    
     
     for f in args:
         path = os.path.realpath(f)
@@ -543,7 +528,6 @@ else: # NON_INTERACTIVE_MODE
             print printers[x]
             printer_name = printers[x][0]
         
-    
     if not device_uri and not printer_name:
         cups_printers = cups.getPrinters()
         log.debug(cups_printers)
@@ -634,7 +618,6 @@ else: # NON_INTERACTIVE_MODE
     
     hpssd_sock.send(out_buffer)
                         
-    
     if not args:
         log.error("No files specfied to send. Please specify the file(s) to send on the command line.")
         usage()
@@ -685,8 +668,6 @@ else: # NON_INTERACTIVE_MODE
                 cups.addOption('number-up=%d' % nup)
     
             cups_printers = cups.getPrinters()
-            #log.debug(self.cups_printers)
-            
             printer_state = cups.IPP_PRINTER_STATE_STOPPED
             for p in cups_printers:
                 if p.name == printer_name:
@@ -728,8 +709,6 @@ else: # NON_INTERACTIVE_MODE
     
                     event_code = fields.get('event-code', 0)
                     job_id = fields.get('job-id', -1)
-                    
-                    #print job_id, event_code
                     
                     log.debug("Rec'd msg: event_code=%d job_id=%d" % (event_code, job_id))
                     
@@ -775,8 +754,6 @@ else: # NON_INTERACTIVE_MODE
                                       "job-id": sent_job_id,
                                      })
     
-                #log.debug(repr(data)), len(data)
-                
                 if len(data) and result_code == ERROR_SUCCESS:
                     fd.write(data)
                     bytes_read += len(data)
@@ -807,22 +784,16 @@ else: # NON_INTERACTIVE_MODE
         dev = fax.FaxDevice(device_uri=device_uri, 
                             printer_name=printer_name)
                         
-        #try:
-        if 1:
-            try:
-                dev.open()
-            except Error, e:
-                log.warn(e.msg)
+        try:
+            dev.open()
+        except Error, e:
+            log.warn(e.msg)
 
-            try:
-                dev.queryDevice(quick=True)
-            except Error, e:
-                log.error("Query device error (%s)." % e.msg)
-                dev.error_state = ERROR_STATE_ERROR
-
-        #finally:
-        
-        #dev.close()
+        try:
+            dev.queryDevice(quick=True)
+        except Error, e:
+            log.error("Query device error (%s)." % e.msg)
+            dev.error_state = ERROR_STATE_ERROR
 
         if dev.error_state in (ERROR_STATE_WARNING, ERROR_STATE_ERROR, ERROR_STATE_BUSY):
             log.error("Device is busy or in an error state (code=%d). Please wait for the device to become idle or clear the error and try again." % dev.error_state)
@@ -850,16 +821,12 @@ else: # NON_INTERACTIVE_MODE
         try:
             cont = True
             while cont:
-                #print "1"
                 while update_queue.qsize():
-                    #print "2"
                     try:
                         status, page_num, phone_num = update_queue.get(0)
                     except Queue.Empty:
                         break
         
-                    #print status, page_num, phone_num
-                    
                     if status == fax.STATUS_IDLE:
                         log.debug("Idle")
                         

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'printerform_base.ui'
+# Form implementation generated from reading ui file 'ui/printerform_base.ui'
 #
-# Created: Wed Jan 11 14:42:39 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Wed Oct 18 09:41:53 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,56 +21,109 @@ class PrinterForm_base(QDialog):
 
         PrinterForm_baseLayout = QGridLayout(self,1,1,11,6,"PrinterForm_baseLayout")
         spacer18 = QSpacerItem(430,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        PrinterForm_baseLayout.addItem(spacer18,3,0)
+        PrinterForm_baseLayout.addItem(spacer18,1,0)
 
         self.pushButton5 = QPushButton(self,"pushButton5")
 
-        PrinterForm_baseLayout.addWidget(self.pushButton5,3,1)
+        PrinterForm_baseLayout.addWidget(self.pushButton5,1,1)
 
         self.printPushButton = QPushButton(self,"printPushButton")
         self.printPushButton.setEnabled(0)
 
-        PrinterForm_baseLayout.addWidget(self.printPushButton,3,2)
+        PrinterForm_baseLayout.addWidget(self.printPushButton,1,2)
 
-        self.tabWidget3 = QTabWidget(self,"tabWidget3")
+        self.tabWidget4 = QTabWidget(self,"tabWidget4")
 
-        self.tab = QWidget(self.tabWidget3,"tab")
+        self.tab = QWidget(self.tabWidget4,"tab")
         tabLayout = QGridLayout(self.tab,1,1,11,6,"tabLayout")
 
-        self.groupBox5 = QGroupBox(self.tab,"groupBox5")
+        self.groupBox4 = QGroupBox(self.tab,"groupBox4")
+        self.groupBox4.setColumnLayout(0,Qt.Vertical)
+        self.groupBox4.layout().setSpacing(6)
+        self.groupBox4.layout().setMargin(11)
+        groupBox4Layout = QGridLayout(self.groupBox4.layout())
+        groupBox4Layout.setAlignment(Qt.AlignTop)
+
+        self.fileListView = QListView(self.groupBox4,"fileListView")
+        self.fileListView.addColumn(self.__tr("Name"))
+        self.fileListView.addColumn(self.__tr("Type"))
+        self.fileListView.addColumn(self.__tr("Path"))
+        self.fileListView.setAllColumnsShowFocus(1)
+
+        groupBox4Layout.addMultiCellWidget(self.fileListView,0,2,0,0)
+
+        self.addFileButton = QToolButton(self.groupBox4,"addFileButton")
+        self.addFileButton.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.addFileButton.sizePolicy().hasHeightForWidth()))
+        self.addFileButton.setMinimumSize(QSize(32,32))
+        self.addFileButton.setMaximumSize(QSize(32,32))
+
+        groupBox4Layout.addWidget(self.addFileButton,0,1)
+
+        self.delFileButton = QToolButton(self.groupBox4,"delFileButton")
+        self.delFileButton.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.delFileButton.sizePolicy().hasHeightForWidth()))
+        self.delFileButton.setMinimumSize(QSize(32,32))
+        self.delFileButton.setMaximumSize(QSize(32,32))
+
+        groupBox4Layout.addWidget(self.delFileButton,1,1)
+        spacer23 = QSpacerItem(20,61,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        groupBox4Layout.addItem(spacer23,2,1)
+
+        tabLayout.addWidget(self.groupBox4,0,0)
+        self.tabWidget4.insertTab(self.tab,QString.fromLatin1(""))
+
+        self.tab_2 = QWidget(self.tabWidget4,"tab_2")
+        tabLayout_2 = QGridLayout(self.tab_2,1,1,11,6,"tabLayout_2")
+
+        self.tabWidget3 = QTabWidget(self.tab_2,"tabWidget3")
+
+        self.tab_3 = QWidget(self.tabWidget3,"tab_3")
+        tabLayout_3 = QGridLayout(self.tab_3,1,1,11,6,"tabLayout_3")
+
+        self.groupBox9 = QGroupBox(self.tab_3,"groupBox9")
+        self.groupBox9.setColumnLayout(0,Qt.Vertical)
+        self.groupBox9.layout().setSpacing(6)
+        self.groupBox9.layout().setMargin(11)
+        groupBox9Layout = QGridLayout(self.groupBox9.layout())
+        groupBox9Layout.setAlignment(Qt.AlignTop)
+
+        self.reverseCheckBox = QCheckBox(self.groupBox9,"reverseCheckBox")
+
+        groupBox9Layout.addWidget(self.reverseCheckBox,1,0)
+
+        self.collateCheckBox = QCheckBox(self.groupBox9,"collateCheckBox")
+
+        groupBox9Layout.addWidget(self.collateCheckBox,0,0)
+
+        tabLayout_3.addWidget(self.groupBox9,1,0)
+        spacer16 = QSpacerItem(20,341,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        tabLayout_3.addItem(spacer16,2,0)
+
+        self.groupBox5 = QGroupBox(self.tab_3,"groupBox5")
         self.groupBox5.setColumnLayout(0,Qt.Vertical)
         self.groupBox5.layout().setSpacing(6)
         self.groupBox5.layout().setMargin(11)
         groupBox5Layout = QGridLayout(self.groupBox5.layout())
         groupBox5Layout.setAlignment(Qt.AlignTop)
 
-        layout4 = QHBoxLayout(None,0,6,"layout4")
-
         self.textLabel3 = QLabel(self.groupBox5,"textLabel3")
-        layout4.addWidget(self.textLabel3)
+
+        groupBox5Layout.addWidget(self.textLabel3,0,0)
 
         self.copiesSpinBox = QSpinBox(self.groupBox5,"copiesSpinBox")
         self.copiesSpinBox.setMaxValue(100)
         self.copiesSpinBox.setMinValue(1)
-        layout4.addWidget(self.copiesSpinBox)
 
-        groupBox5Layout.addLayout(layout4,0,0)
+        groupBox5Layout.addWidget(self.copiesSpinBox,0,1)
+        spacer17 = QSpacerItem(441,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        groupBox5Layout.addItem(spacer17,0,2)
 
-        self.collateCheckBox = QCheckBox(self.groupBox5,"collateCheckBox")
+        tabLayout_3.addWidget(self.groupBox5,0,0)
+        self.tabWidget3.insertTab(self.tab_3,QString.fromLatin1(""))
 
-        groupBox5Layout.addWidget(self.collateCheckBox,1,0)
+        self.tab_4 = QWidget(self.tabWidget3,"tab_4")
+        tabLayout_4 = QGridLayout(self.tab_4,1,1,11,6,"tabLayout_4")
 
-        self.reverseCheckBox = QCheckBox(self.groupBox5,"reverseCheckBox")
-
-        groupBox5Layout.addMultiCellWidget(self.reverseCheckBox,2,2,0,1)
-
-        tabLayout.addWidget(self.groupBox5,0,0)
-        self.tabWidget3.insertTab(self.tab,QString.fromLatin1(""))
-
-        self.tab_2 = QWidget(self.tabWidget3,"tab_2")
-        tabLayout_2 = QGridLayout(self.tab_2,1,1,11,6,"tabLayout_2")
-
-        self.pagesButtonGroup = QButtonGroup(self.tab_2,"pagesButtonGroup")
+        self.pagesButtonGroup = QButtonGroup(self.tab_4,"pagesButtonGroup")
         self.pagesButtonGroup.setColumnLayout(0,Qt.Vertical)
         self.pagesButtonGroup.layout().setSpacing(6)
         self.pagesButtonGroup.layout().setMargin(11)
@@ -84,72 +137,58 @@ class PrinterForm_base(QDialog):
 
         self.radioButton4 = QRadioButton(self.pagesButtonGroup,"radioButton4")
 
-        pagesButtonGroupLayout.addMultiCellWidget(self.radioButton4,1,1,0,1)
-
-        self.line2 = QFrame(self.pagesButtonGroup,"line2")
-        self.line2.setFrameShape(QFrame.HLine)
-        self.line2.setFrameShadow(QFrame.Sunken)
-        self.line2.setFrameShape(QFrame.HLine)
-
-        pagesButtonGroupLayout.addMultiCellWidget(self.line2,2,2,0,5)
-        spacer26 = QSpacerItem(230,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        pagesButtonGroupLayout.addMultiCell(spacer26,0,0,2,5)
-
-        self.pageSetComboBox = QComboBox(0,self.pagesButtonGroup,"pageSetComboBox")
-
-        pagesButtonGroupLayout.addMultiCellWidget(self.pageSetComboBox,4,4,4,5)
-
-        self.textLabel11 = QLabel(self.pagesButtonGroup,"textLabel11")
-
-        pagesButtonGroupLayout.addMultiCellWidget(self.textLabel11,3,4,0,0)
+        pagesButtonGroupLayout.addWidget(self.radioButton4,1,0)
 
         self.pageRangeEdit = QLineEdit(self.pagesButtonGroup,"pageRangeEdit")
         self.pageRangeEdit.setEnabled(0)
 
-        pagesButtonGroupLayout.addMultiCellWidget(self.pageRangeEdit,1,1,2,5)
+        pagesButtonGroupLayout.addWidget(self.pageRangeEdit,1,1)
 
-        self.textLabel12 = QLabel(self.pagesButtonGroup,"textLabel12")
+        tabLayout_4.addWidget(self.pagesButtonGroup,0,0)
 
-        pagesButtonGroupLayout.addMultiCellWidget(self.textLabel12,6,6,0,2)
-        spacer30 = QSpacerItem(31,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        pagesButtonGroupLayout.addMultiCell(spacer30,6,6,3,4)
+        self.groupBox7_2 = QGroupBox(self.tab_4,"groupBox7_2")
+        self.groupBox7_2.setColumnLayout(0,Qt.Vertical)
+        self.groupBox7_2.layout().setSpacing(6)
+        self.groupBox7_2.layout().setMargin(11)
+        groupBox7_2Layout = QGridLayout(self.groupBox7_2.layout())
+        groupBox7_2Layout.setAlignment(Qt.AlignTop)
+        spacer14 = QSpacerItem(291,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        groupBox7_2Layout.addItem(spacer14,0,2)
 
-        self.nUpComboBox = QComboBox(0,self.pagesButtonGroup,"nUpComboBox")
+        self.textLabel11 = QLabel(self.groupBox7_2,"textLabel11")
 
-        pagesButtonGroupLayout.addWidget(self.nUpComboBox,6,5)
+        groupBox7_2Layout.addWidget(self.textLabel11,0,0)
 
-        self.line2_2 = QFrame(self.pagesButtonGroup,"line2_2")
-        self.line2_2.setFrameShape(QFrame.HLine)
-        self.line2_2.setFrameShadow(QFrame.Sunken)
-        self.line2_2.setFrameShape(QFrame.HLine)
+        self.pageSetComboBox = QComboBox(0,self.groupBox7_2,"pageSetComboBox")
 
-        pagesButtonGroupLayout.addMultiCellWidget(self.line2_2,5,5,0,5)
-        spacer29 = QSpacerItem(140,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        pagesButtonGroupLayout.addMultiCell(spacer29,4,4,1,3)
+        groupBox7_2Layout.addWidget(self.pageSetComboBox,0,1)
 
-        tabLayout_2.addWidget(self.pagesButtonGroup,0,0)
-        self.tabWidget3.insertTab(self.tab_2,QString.fromLatin1(""))
+        tabLayout_4.addWidget(self.groupBox7_2,1,0)
+
+        self.groupBox8 = QGroupBox(self.tab_4,"groupBox8")
+        self.groupBox8.setColumnLayout(0,Qt.Vertical)
+        self.groupBox8.layout().setSpacing(6)
+        self.groupBox8.layout().setMargin(11)
+        groupBox8Layout = QGridLayout(self.groupBox8.layout())
+        groupBox8Layout.setAlignment(Qt.AlignTop)
+
+        self.textLabel12 = QLabel(self.groupBox8,"textLabel12")
+
+        groupBox8Layout.addWidget(self.textLabel12,0,0)
+
+        self.nUpComboBox = QComboBox(0,self.groupBox8,"nUpComboBox")
+
+        groupBox8Layout.addWidget(self.nUpComboBox,0,1)
+        spacer13 = QSpacerItem(241,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        groupBox8Layout.addItem(spacer13,0,2)
+
+        tabLayout_4.addWidget(self.groupBox8,2,0)
+        spacer15 = QSpacerItem(20,241,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        tabLayout_4.addItem(spacer15,3,0)
+        self.tabWidget3.insertTab(self.tab_4,QString.fromLatin1(""))
 
         self.TabPage = QWidget(self.tabWidget3,"TabPage")
         TabPageLayout = QGridLayout(self.TabPage,1,1,11,6,"TabPageLayout")
-
-        self.orientationButtonGroup = QButtonGroup(self.TabPage,"orientationButtonGroup")
-        self.orientationButtonGroup.setColumnLayout(0,Qt.Vertical)
-        self.orientationButtonGroup.layout().setSpacing(6)
-        self.orientationButtonGroup.layout().setMargin(11)
-        orientationButtonGroupLayout = QGridLayout(self.orientationButtonGroup.layout())
-        orientationButtonGroupLayout.setAlignment(Qt.AlignTop)
-
-        self.radioButton5 = QRadioButton(self.orientationButtonGroup,"radioButton5")
-        self.radioButton5.setChecked(1)
-
-        orientationButtonGroupLayout.addWidget(self.radioButton5,0,0)
-
-        self.radioButton6 = QRadioButton(self.orientationButtonGroup,"radioButton6")
-
-        orientationButtonGroupLayout.addWidget(self.radioButton6,1,0)
-
-        TabPageLayout.addWidget(self.orientationButtonGroup,0,0)
 
         self.buttonGroup4 = QButtonGroup(self.TabPage,"buttonGroup4")
         self.buttonGroup4.setColumnLayout(0,Qt.Vertical)
@@ -162,11 +201,46 @@ class PrinterForm_base(QDialog):
 
         buttonGroup4Layout.addWidget(self.mirrorCheckBox,0,0)
 
-        TabPageLayout.addWidget(self.buttonGroup4,0,1)
+        TabPageLayout.addWidget(self.buttonGroup4,1,0)
+
+        self.orientationButtonGroup = QButtonGroup(self.TabPage,"orientationButtonGroup")
+        self.orientationButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.orientationButtonGroup.layout().setSpacing(6)
+        self.orientationButtonGroup.layout().setMargin(11)
+        orientationButtonGroupLayout = QGridLayout(self.orientationButtonGroup.layout())
+        orientationButtonGroupLayout.setAlignment(Qt.AlignTop)
+
+        self.radioButton6 = QRadioButton(self.orientationButtonGroup,"radioButton6")
+
+        orientationButtonGroupLayout.addWidget(self.radioButton6,1,0)
+
+        self.radioButton5 = QRadioButton(self.orientationButtonGroup,"radioButton5")
+        self.radioButton5.setChecked(1)
+
+        orientationButtonGroupLayout.addWidget(self.radioButton5,0,0)
+
+        TabPageLayout.addWidget(self.orientationButtonGroup,0,0)
+        spacer18_2 = QSpacerItem(20,381,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout.addItem(spacer18_2,2,0)
         self.tabWidget3.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.TabPage_2 = QWidget(self.tabWidget3,"TabPage_2")
         TabPageLayout_2 = QGridLayout(self.TabPage_2,1,1,11,6,"TabPageLayout_2")
+
+        self.groupBox7 = QGroupBox(self.TabPage_2,"groupBox7")
+        self.groupBox7.setEnabled(0)
+        self.groupBox7.setColumnLayout(0,Qt.Vertical)
+        self.groupBox7.layout().setSpacing(6)
+        self.groupBox7.layout().setMargin(11)
+        groupBox7Layout = QGridLayout(self.groupBox7.layout())
+        groupBox7Layout.setAlignment(Qt.AlignTop)
+
+        self.manualDuplexCheckBox = QCheckBox(self.groupBox7,"manualDuplexCheckBox")
+        self.manualDuplexCheckBox.setEnabled(0)
+
+        groupBox7Layout.addWidget(self.manualDuplexCheckBox,0,0)
+
+        TabPageLayout_2.addWidget(self.groupBox7,1,0)
 
         self.duplexButtonGroup = QButtonGroup(self.TabPage_2,"duplexButtonGroup")
         self.duplexButtonGroup.setExclusive(1)
@@ -190,26 +264,17 @@ class PrinterForm_base(QDialog):
         duplexButtonGroupLayout.addWidget(self.radioButton9,2,0)
 
         TabPageLayout_2.addWidget(self.duplexButtonGroup,0,0)
-
-        self.groupBox7 = QGroupBox(self.TabPage_2,"groupBox7")
-        self.groupBox7.setEnabled(0)
-        self.groupBox7.setColumnLayout(0,Qt.Vertical)
-        self.groupBox7.layout().setSpacing(6)
-        self.groupBox7.layout().setMargin(11)
-        groupBox7Layout = QGridLayout(self.groupBox7.layout())
-        groupBox7Layout.setAlignment(Qt.AlignTop)
-
-        self.manualDuplexCheckBox = QCheckBox(self.groupBox7,"manualDuplexCheckBox")
-        self.manualDuplexCheckBox.setEnabled(0)
-
-        groupBox7Layout.addWidget(self.manualDuplexCheckBox,0,0)
-
-        TabPageLayout_2.addWidget(self.groupBox7,1,0)
+        spacer19 = QSpacerItem(21,351,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout_2.addItem(spacer19,2,0)
         self.tabWidget3.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
-        PrinterForm_baseLayout.addMultiCellWidget(self.tabWidget3,2,2,0,2)
+        tabLayout_2.addWidget(self.tabWidget3,0,0)
+        self.tabWidget4.insertTab(self.tab_2,QString.fromLatin1(""))
 
-        self.groupBox3 = QGroupBox(self,"groupBox3")
+        self.TabPage_3 = QWidget(self.tabWidget4,"TabPage_3")
+        TabPageLayout_3 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_3")
+
+        self.groupBox3 = QGroupBox(self.TabPage_3,"groupBox3")
         self.groupBox3.setColumnLayout(0,Qt.Vertical)
         self.groupBox3.layout().setSpacing(6)
         self.groupBox3.layout().setMargin(11)
@@ -284,44 +349,16 @@ class PrinterForm_base(QDialog):
 
         groupBox3Layout.addMultiCellLayout(layout6,7,7,1,2)
 
-        PrinterForm_baseLayout.addMultiCellWidget(self.groupBox3,0,0,0,2)
+        TabPageLayout_3.addWidget(self.groupBox3,0,0)
+        spacer20 = QSpacerItem(41,211,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout_3.addItem(spacer20,1,0)
+        self.tabWidget4.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
-        self.groupBox4 = QGroupBox(self,"groupBox4")
-        self.groupBox4.setColumnLayout(0,Qt.Vertical)
-        self.groupBox4.layout().setSpacing(6)
-        self.groupBox4.layout().setMargin(11)
-        groupBox4Layout = QGridLayout(self.groupBox4.layout())
-        groupBox4Layout.setAlignment(Qt.AlignTop)
-
-        self.fileListView = QListView(self.groupBox4,"fileListView")
-        self.fileListView.addColumn(self.__tr("Name"))
-        self.fileListView.addColumn(self.__tr("Type"))
-        self.fileListView.addColumn(self.__tr("Path"))
-        self.fileListView.setAllColumnsShowFocus(1)
-
-        groupBox4Layout.addMultiCellWidget(self.fileListView,0,2,0,0)
-
-        self.addFileButton = QToolButton(self.groupBox4,"addFileButton")
-        self.addFileButton.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.addFileButton.sizePolicy().hasHeightForWidth()))
-        self.addFileButton.setMinimumSize(QSize(32,32))
-        self.addFileButton.setMaximumSize(QSize(32,32))
-
-        groupBox4Layout.addWidget(self.addFileButton,0,1)
-
-        self.delFileButton = QToolButton(self.groupBox4,"delFileButton")
-        self.delFileButton.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.delFileButton.sizePolicy().hasHeightForWidth()))
-        self.delFileButton.setMinimumSize(QSize(32,32))
-        self.delFileButton.setMaximumSize(QSize(32,32))
-
-        groupBox4Layout.addWidget(self.delFileButton,1,1)
-        spacer23 = QSpacerItem(20,61,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        groupBox4Layout.addItem(spacer23,2,1)
-
-        PrinterForm_baseLayout.addMultiCellWidget(self.groupBox4,1,1,0,2)
+        PrinterForm_baseLayout.addMultiCellWidget(self.tabWidget4,0,0,0,2)
 
         self.languageChange()
 
-        self.resize(QSize(622,654).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(544,536).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.pushButton5,SIGNAL("clicked()"),self.reject)
@@ -342,42 +379,56 @@ class PrinterForm_base(QDialog):
         QToolTip.add(self.pushButton5,QString.null)
         self.printPushButton.setText(self.__tr("Print"))
         QToolTip.add(self.printPushButton,QString.null)
+        self.groupBox4.setTitle(self.__tr("File(s)"))
+        self.fileListView.header().setLabel(0,self.__tr("Name"))
+        self.fileListView.header().setLabel(1,self.__tr("Type"))
+        self.fileListView.header().setLabel(2,self.__tr("Path"))
+        QToolTip.add(self.fileListView,self.__tr("List of files to print"))
+        self.addFileButton.setText(QString.null)
+        self.addFileButton.setTextLabel(self.__tr("Add file to list"))
+        self.delFileButton.setText(QString.null)
+        self.delFileButton.setTextLabel(self.__tr("Remove file from list"))
+        self.tabWidget4.changeTab(self.tab,self.__tr("Files"))
+        self.groupBox9.setTitle(self.__tr("Print Order"))
+        self.reverseCheckBox.setText(self.__tr("Reverse print order"))
+        self.collateCheckBox.setText(self.__tr("Collate copies"))
         self.groupBox5.setTitle(self.__tr("Copies"))
         self.textLabel3.setText(self.__tr("Copies:"))
         QToolTip.add(self.copiesSpinBox,self.__tr("Number of copies"))
-        self.collateCheckBox.setText(self.__tr("Collate copies"))
-        self.reverseCheckBox.setText(self.__tr("Reverse print order"))
-        self.tabWidget3.changeTab(self.tab,self.__tr("Copies"))
+        self.tabWidget3.changeTab(self.tab_3,self.__tr("Copies"))
         self.pagesButtonGroup.setTitle(self.__tr("Pages"))
         self.radioButton3.setText(self.__tr("All pages"))
         self.radioButton4.setText(self.__tr("Page range:"))
+        QToolTip.add(self.pageRangeEdit,self.__tr("Enter pages or ranges of pages separated by commas (e.g., 1-2,4,6-7)"))
+        self.groupBox7_2.setTitle(self.__tr("Page Set"))
+        self.textLabel11.setText(self.__tr("Page set:"))
         self.pageSetComboBox.clear()
         self.pageSetComboBox.insertItem(self.__tr("All pages"))
         self.pageSetComboBox.insertItem(self.__tr("Even pages"))
         self.pageSetComboBox.insertItem(self.__tr("Odd pages"))
-        self.textLabel11.setText(self.__tr("Page set:"))
-        QToolTip.add(self.pageRangeEdit,self.__tr("Enter pages or ranges of pages separated by commas (e.g., 1-2,4,6-7)"))
-        self.textLabel12.setText(self.__tr("Pages per sheet (N-up):"))
+        self.groupBox8.setTitle(self.__tr("Pages Per Sheet"))
+        self.textLabel12.setText(self.__tr("Pages per Sheet (\"N-up\"):"))
         self.nUpComboBox.clear()
         self.nUpComboBox.insertItem(self.__tr("1"))
         self.nUpComboBox.insertItem(self.__tr("2"))
         self.nUpComboBox.insertItem(self.__tr("4"))
         self.nUpComboBox.insertItem(self.__tr("8"))
         self.nUpComboBox.insertItem(self.__tr("16"))
-        self.tabWidget3.changeTab(self.tab_2,self.__tr("Pages"))
-        self.orientationButtonGroup.setTitle(self.__tr("Orientation"))
-        self.radioButton5.setText(self.__tr("Portrait"))
-        self.radioButton6.setText(self.__tr("Landscape"))
+        self.tabWidget3.changeTab(self.tab_4,self.__tr("Pages"))
         self.buttonGroup4.setTitle(self.__tr("Mirror"))
         self.mirrorCheckBox.setText(self.__tr("Enable mirror printing"))
+        self.orientationButtonGroup.setTitle(self.__tr("Orientation"))
+        self.radioButton6.setText(self.__tr("Landscape"))
+        self.radioButton5.setText(self.__tr("Portrait"))
         self.tabWidget3.changeTab(self.TabPage,self.__tr("Orientation"))
+        self.groupBox7.setTitle(self.__tr("Manual Duplex"))
+        self.manualDuplexCheckBox.setText(self.__tr("Manual duplex"))
         self.duplexButtonGroup.setTitle(self.__tr("Automatic Duplex"))
         self.radioButton7.setText(self.__tr("Off"))
         self.radioButton8.setText(self.__tr("Long edge (standard)"))
         self.radioButton9.setText(self.__tr("Short edge (flip)"))
-        self.groupBox7.setTitle(self.__tr("Manual Duplex"))
-        self.manualDuplexCheckBox.setText(self.__tr("Manual duplex"))
         self.tabWidget3.changeTab(self.TabPage_2,self.__tr("Duplex"))
+        self.tabWidget4.changeTab(self.tab_2,self.__tr("Options"))
         self.groupBox3.setTitle(self.__tr("Printer"))
         self.textLabel4.setText(self.__tr("Location:"))
         self.textLabel5.setText(self.__tr("Comment:"))
@@ -391,15 +442,7 @@ class PrinterForm_base(QDialog):
         self.StateText.setText(QString.null)
         self.refreshToolButton.setText(QString.null)
         QToolTip.add(self.refreshToolButton,self.__tr("Refresh status"))
-        self.groupBox4.setTitle(self.__tr("File(s)"))
-        self.fileListView.header().setLabel(0,self.__tr("Name"))
-        self.fileListView.header().setLabel(1,self.__tr("Type"))
-        self.fileListView.header().setLabel(2,self.__tr("Path"))
-        QToolTip.add(self.fileListView,self.__tr("List of files to print"))
-        self.addFileButton.setText(QString.null)
-        self.addFileButton.setTextLabel(self.__tr("Add file to list"))
-        self.delFileButton.setText(QString.null)
-        self.delFileButton.setTextLabel(self.__tr("Remove file from list"))
+        self.tabWidget4.changeTab(self.TabPage_3,self.__tr("Printer"))
 
 
     def addFileButton_clicked(self):

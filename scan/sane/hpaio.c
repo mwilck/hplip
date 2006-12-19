@@ -2,7 +2,7 @@
 
   hpaio.c - HP SANE backend for multi-function peripherals (libsane-hpaio)
 
-  (c) 2001-2004 Copyright Hewlett-Packard Development Company, LP
+  (c) 2001-2006 Copyright Hewlett-Packard Development Company, LP
 
   Permission is hereby granted, free of charge, to any person obtaining a copy 
   of this software and associated documentation files (the "Software"), to deal 
@@ -21,17 +21,294 @@
   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  Current Author: Don Welch
-  Original Author: David Paschal 
+  Contributing Authors: David Paschal, Don Welch, David Suffield 
 
 \************************************************************************************/
 
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <stdio.h>
+#include <sys/time.h>
+#include <time.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <ctype.h>
+#include <cups/cups.h>
+#include "sane.h"
+#include "saneopts.h"
+#include "common.h"
+#include "io.h"
+#include "mfpdtf.h"
+#include "scl.h"
+#include "tables.h"
+#include "hpip.h"
+#include "hplip_api.h"
+#include "pml.h"
+#include "soap.h"
 #include "hpaio.h"
 
-static SANE_Device ** hpaioDeviceList = 0;
+#define DEBUG_DECLARE_ONLY
+#include "sanei_debug.h"
+
+/*
+ * Since this is a shared library the data area is shared between processes. This means all non-constant data must be malloced so
+ * each process will have separate global state. Otherwise the shared library is not re-entrant.
+ */
+
+static SANE_Device **DeviceList = NULL;
 
 static hpaioScanner_t FirstScanner = 0;
 static hpaioScanner_t LastScanner = 0;
+
+static int ResetDeviceList(SANE_Device ***pd)
+{
+   int i;
+
+   if (*pd)
+   {
+      for (i=0; (*pd)[i] && i<MAX_DEVICE; i++)
+      {
+         if ((*pd)[i]->name)
+            free((void *)(*pd)[i]->name);
+         if ((*pd)[i]->model)
+            free((void *)(*pd)[i]->model);
+         free((*pd)[i]);
+      }
+      free(*pd);
+      *pd = NULL;
+   }
+
+   return 0;
+}
+
+static int AddDeviceList(char *uri, char *model, SANE_Device ***pd)
+{
+   int i;
+
+   if (*pd == NULL)
+   {
+      /* Allocate array of pointers. */
+      *pd = malloc(sizeof(SANE_Device *) * MAX_DEVICE);
+      memset(*pd, 0, sizeof(SANE_Device *) * MAX_DEVICE);
+   }
+
+   /* Find empty slot in array of pointers. */
+   for (i=0; i<MAX_DEVICE; i++)
+   {
+      if ((*pd)[i] == NULL)
+      {
+         /* Allocate Sane_Device and members. */
+         (*pd)[i] = malloc(sizeof(SANE_Device));
+         (*pd)[i]->name = malloc(strlen(uri));
+         strcpy((char *)(*pd)[i]->name, uri+3);       /* remove "hp:" */
+         (*pd)[i]->model = strdup(model);
+         (*pd)[i]->vendor = "Hewlett-Packard";
+         (*pd)[i]->type = "all-in-one";
+         break;
+      }
+   }
+
+   return 0;
+}
+
+static int AddCupsList(char *uri, char ***printer)
+{
+   int i, stat=1;
+
+   /* Look for hp network URIs only. */
+   if (strncasecmp(uri, "hp:/net/", 8) !=0)
+      goto bugout;
+
+   if (*printer == NULL)
+   {
+      /* Allocate array of string pointers. */
+      *printer = malloc(sizeof(char *) * MAX_DEVICE);
+      memset(*printer, 0, sizeof(char *) * MAX_DEVICE);
+   }
+
+   /* Ignor duplicates (ie: printer queues using the same device). */
+   for (i=0; (*printer)[i] != NULL && i<MAX_DEVICE; i++)
+   {
+      if (strcmp((*printer)[i], uri) == 0)
+         goto bugout;
+   }
+
+   /* Find empty slot in array of pointers. */
+   for (i=0; i<MAX_DEVICE; i++)
+   {
+      if ((*printer)[i] == NULL)
+      {
+         (*printer)[i] = strdup(uri);
+         break;
+      }
+   }
+
+   stat = 0;
+
+bugout:
+
+   return stat;
+}
+
+/* Parse URI record from buf. Assumes one record per line. All returned strings are zero terminated. */
+static int GetUriLine(char *buf, char *uri, char **tail)
+{
+   int i=0, j;
+   int maxBuf = HPLIP_LINE_SIZE*64;
+
+   uri[0] = 0;
+   
+   if (strncasecmp(&buf[i], "direct ", 7) == 0)
+   {
+      i = 7;
+      j = 0;
+      for (; buf[i] == ' ' && i < maxBuf; i++);  /* eat white space before string */
+      while ((buf[i] != ' ') && (i < maxBuf) && (j < HPLIP_LINE_SIZE))
+         uri[j++] = buf[i++];
+      uri[j] = 0;
+
+      for (; buf[i] != '\n' && i < maxBuf; i++);  /* eat rest of line */
+   }
+   else
+   {
+      for (; buf[i] != '\n' && i < maxBuf; i++);  /* eat line */
+   }
+
+   i++;   /* bump past '\n' */
+
+   if (tail != NULL)
+      *tail = buf + i;  /* tail points to next line */
+
+   return i;
+}
+
+static int GetCupsPrinters(char ***printer)
+{
+   http_t *http=NULL;     /* HTTP object */
+   ipp_t *request=NULL;  /* IPP request object */
+   ipp_t *response=NULL; /* IPP response object */
+   ipp_attribute_t *attr;     /* Current IPP attribute */
+   int cnt=0;
+
+   /* Connect to the HTTP server */
+   if ((http = httpConnectEncrypt(cupsServer(), ippPort(), cupsEncryption())) == NULL)
+      goto bugout;
+
+   /* Assemble the IPP request */
+   request = ippNew();
+
+   request->request.op.operation_id = CUPS_GET_PRINTERS;
+   request->request.any.request_id  = 1;
+
+   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_CHARSET, "attributes-charset", NULL, "utf-8");
+   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_LANGUAGE, "attributes-natural-language", NULL, "en");
+   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "requested-attributes", NULL, "device-uri");
+
+   /* Send the request and get a response. */
+   if ((response = cupsDoRequest(http, request, "/")) == NULL)
+      goto bugout;
+
+   for (attr = response->attrs; attr != NULL; attr = attr->next)
+   {
+      /* Skip leading attributes until we hit a printer. */
+      while (attr != NULL && attr->group_tag != IPP_TAG_PRINTER)
+         attr = attr->next;
+
+      if (attr == NULL)
+         break;
+
+      while (attr != NULL && attr->group_tag == IPP_TAG_PRINTER)
+      {
+         if (strcmp(attr->name, "device-uri") == 0 && attr->value_tag == IPP_TAG_URI && AddCupsList(attr->values[0].string.text, printer) == 0)
+            cnt++;
+         attr = attr->next;
+      }
+
+      if (attr == NULL)
+         break;
+   }
+
+   ippDelete(response);
+
+ bugout:
+   return cnt;
+}
+
+static int DevDiscovery(int localOnly)
+{
+   char message[HPLIP_LINE_SIZE*64];
+   char uri[HPLIP_LINE_SIZE];
+   char model[HPLIP_LINE_SIZE];
+   char *tail;
+   int i, scan_type, len=0, cnt=0, total=0;  
+   HplipMsgAttributes ma, ma2;
+   char **cups_printer=NULL;     /* list of printers */
+ 
+   len = sprintf(message, "msg=ProbeDevices\n");
+ 
+   if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
+   {  
+      bug("unable to send ProbeDevices: %m %s %d\n", __FILE__, __LINE__);  
+      goto bugout;  
+   }  
+
+   if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
+   {  
+      bug("unable to receive ProbeDevicesResult: %m %s %d\n", __FILE__, __LINE__);  
+      goto bugout;
+   }  
+
+   message[len] = 0;
+
+   hplip_ParseMsg(message, len, &ma);
+
+   if (ma.result == R_AOK && ma.length)
+   {
+      cnt = ma.ndevice;
+
+      /* Look for scanning devices only. */
+      tail = (char *)ma.data;
+      for (i=0; i<cnt; i++)
+      {
+         scan_type = 0;
+         GetUriLine(tail, uri, &tail);
+         hplip_ModelQuery(uri, &ma2);
+         if (ma2.scantype > 0)
+         {
+            hplip_GetURIModel(uri, model, sizeof(model));
+            AddDeviceList(uri, model, &DeviceList);
+            total++;
+         }
+      }
+   }
+
+   if (!localOnly)
+   {
+      cnt = GetCupsPrinters(&cups_printer);
+      for (i=0; i<cnt; i++)
+      {
+         hplip_ModelQuery(cups_printer[i], &ma2);
+         if (ma2.scantype > 0)
+         {
+            hplip_GetURIModel(cups_printer[i], model, sizeof(model));
+            AddDeviceList(cups_printer[i], model, &DeviceList);
+            total++;
+         }
+         free(cups_printer[i]);
+      }
+      if (cups_printer)
+         free(cups_printer);
+   }
+
+bugout:
+   return total;
+}
 
 static void hpaioAddScanner( hpaioScanner_t scanner ) 
 {
@@ -84,10 +361,7 @@ SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio )
         }
         else if( retcode == SANE_STATUS_GOOD )
         {
-            DBG( 0,  "hpaio: hpaioScannerToSaneError: "
-                            "sclError=%d.\n",
-                            sclError );
-
+            bug("hpaio: hpaioScannerToSaneError: sclError=%d.\n", sclError);
             switch( sclError )
             {
                 case SCL_ERROR_UNRECOGNIZED_COMMAND:
@@ -137,16 +411,12 @@ SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio )
                                          &type,
                                          &pmlError ) == ERROR )
         {
-            DBG( 0,  "hpaio: hpaioScannerToSaneError: "
-                           "PmlGetIntegerValue failed, type=%d!\n",
-                           type );
+            bug("hpaio: hpaioScannerToSaneError: PmlGetIntegerValue failed, type=%d!\n", type);
             retcode = SANE_STATUS_IO_ERROR;
         }
         else
         {
-            DBG( 0,  "hpaio: hpaioScannerToSaneError: "
-                            "pmlError=%d.\n",
-                            pmlError );
+            bug("hpaio: hpaioScannerToSaneError: pmlError=%d.\n", pmlError);
 
             switch( pmlError )
             {
@@ -180,8 +450,6 @@ SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio )
         }
     }
 
-    DBG( 0,  "hpaio: hpaioScannerToSaneError returns %d.\n",
-                    retcode );
     return retcode;
 }
 
@@ -209,10 +477,6 @@ SANE_Status hpaioScannerToSaneStatus( hpaioScanner_t hpaio )
         }
         else if( retcode == SANE_STATUS_GOOD )
         {
-            DBG( 0,  "hpaio: hpaioScannerToSaneStatus: "
-                            "sclStatus=%d.\n",
-                            sclStatus );
-
             switch( sclStatus )
             {
                 case SCL_ADF_FEED_STATUS_OK:
@@ -239,8 +503,6 @@ SANE_Status hpaioScannerToSaneStatus( hpaioScanner_t hpaio )
             }
         }
 
-    DBG( 0,  "hpaio: hpaioScannerToSaneStatus returns %d.\n",
-                    retcode );
     return retcode;
 }
 
@@ -268,8 +530,6 @@ static SANE_Status hpaioResetScanner( hpaioScanner_t hpaio )
 //BREAKPOINT;
     
     SANE_Status retcode;
-
-    DBG( 0,  "\nhpaio: hpaioResetScanner()\n" ); 
 
     if( hpaio->scannerType == SCANNER_TYPE_SCL )
     {
@@ -337,7 +597,7 @@ static PmlObject_t hpaioPmlAllocateID( hpaioScanner_t hpaio, char * oid )
 
     if( !obj )
     {
-        DBG( 0, "hpaioPmlAllocateID: out of memory!\n" );
+        bug("hpaioPmlAllocateID: out of memory!\n");
     }
 
     PmlSetID( obj, oid );
@@ -364,8 +624,6 @@ static void hpaioPmlDeallocateObjects( hpaioScanner_t hpaio )
 
 static SANE_Status hpaioPmlAllocateObjects( hpaioScanner_t hpaio )
 {
-    DBG( 0,  "hpaio: hpaioPmlAllocateObjects()\n" ); 
-    
     if( hpaio->scannerType == SCANNER_TYPE_PML && !hpaio->pml.objScanToken )
     {
         int len;
@@ -401,8 +659,6 @@ static SANE_Status hpaioPmlAllocateObjects( hpaioScanner_t hpaio )
         {
             int i;
             hpaio->pml.lenScanToken = len;
-            DBG( 0,  "hpaio: lenScanToken=%d.\n",
-                            hpaio->pml.lenScanToken );
             for( i = 0; i < len; i++ )
             {
                 hpaio->pml.scanToken[i] = 0;
@@ -434,8 +690,6 @@ static SANE_Status hpaioPmlAllocateObjects( hpaioScanner_t hpaio )
 
 static int hpaioConnClose( hpaioScanner_t hpaio )
 {
-    DBG( 0,  "\nhpaio: hpaioConnClose()\n" ); 
-
     if( hpaio->pml.scanTokenIsSet )
     {
         PmlSetValue( hpaio->pml.objScanToken,
@@ -448,10 +702,10 @@ static int hpaioConnClose( hpaioScanner_t hpaio )
     }
 
     if (hpaio->cmd_channelid > 0)
-       hplip_CloseChannel( hpaio->deviceid, hpaio->cmd_channelid );
+       hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->cmd_channelid);
     hpaio->cmd_channelid = -1;
     if (hpaio->scan_channelid > 0)
-       hplip_CloseChannel( hpaio->deviceid, hpaio->scan_channelid );
+       hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->scan_channelid);
     hpaio->scan_channelid = -1;
 
     return 0;
@@ -461,12 +715,9 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
 {
     SANE_Status retcode;
 
-    DBG( 0, "\nhpaio: hpaioConnOpen()\n" );
-    DBG( 0, "hpaio: openFirst=%d\n", hpaio->pml.openFirst );
-    
     if (hpaio->scannerType==SCANNER_TYPE_SCL) 
     {
-       hpaio->scan_channelid = hplip_OpenChannel(hpaio->deviceid, "HP-SCAN");
+       hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN");
        if(hpaio->scan_channelid < 0)
        {
           retcode = SANE_STATUS_DEVICE_BUSY;
@@ -474,7 +725,7 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
        }
     }
 
-    hpaio->cmd_channelid = hplip_OpenChannel(hpaio->deviceid, "HP-MESSAGE");
+    hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE");
     if(hpaio->cmd_channelid < 0)
     {
        retcode = SANE_STATUS_IO_ERROR;
@@ -487,7 +738,6 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
 
         if( !hpaio->pml.openFirst )
         {
-            DBG( 0, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" );
         }
         else if( hpaio->pml.lenScanToken )
         {
@@ -508,8 +758,6 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
 
     retcode = hpaioResetScanner( hpaio );
     
-    DBG( 0, "retcode=%d\n", retcode );
-    
 abort:
     if( retcode != SANE_STATUS_GOOD )
     {
@@ -522,8 +770,6 @@ static SANE_Status hpaioConnPrepareScan( hpaioScanner_t hpaio )
 {
     SANE_Status retcode;
     int i;
-
-    DBG( 0,  "\nhpaio: hpaioConnPrepareScan()\n" );
 
     /* ADF may already have channel(s) open. */
     if (hpaio->cmd_channelid < 0)
@@ -576,8 +822,7 @@ static SANE_Status hpaioConnPrepareScan( hpaioScanner_t hpaio )
                 return SANE_STATUS_DEVICE_BUSY;
             }
             
-            DBG( 0, "hpaio: hpaioConnPrepareScan: "
-                    "Waiting for device lock.\n" );
+            DBG(8, "hpaioConnPrepareScan: Waiting for device lock %s %d\n", __FILE__, __LINE__);
                      
             if( ( ( unsigned ) ( tv2.tv_sec - tv1.tv_sec ) ) <= SCL_PREPARE_SCAN_DEVICE_LOCK_DELAY )
             {
@@ -592,8 +837,6 @@ static SANE_Status hpaioConnPrepareScan( hpaioScanner_t hpaio )
 
 static void hpaioConnEndScan( hpaioScanner_t hpaio )
 {
-    DBG( 0,  "\nhpaio: hpaioConnEndScan()\n" ); 
-
     hpaioResetScanner( hpaio );
     hpaioConnClose( hpaio );
     
@@ -602,9 +845,6 @@ static void hpaioConnEndScan( hpaioScanner_t hpaio )
 
 static SANE_Status hpaioSetDefaultValue( hpaioScanner_t hpaio, int option )
 {
-    DBG( 0,  "\nhpaio: hpaioSetDefaultValue(option=%d)\n",
-             option );
-
     switch( option )
     {
         case OPTION_SCAN_MODE:
@@ -741,23 +981,21 @@ static int hpaioUpdateDescriptors( hpaioScanner_t hpaio, int option )
     int initValues = ( option == OPTION_FIRST );
     int reload = 0;
 
-    DBG( 0,  "\nhpaio: hpaioUpdateDescriptors(option=%d)\n", option );
-
     /* OPTION_SCAN_MODE: */
     if( initValues )
     {
         StrListClear( hpaio->scanModeList );
         if( hpaio->supportsScanMode[SCAN_MODE_LINEART] )
         {
-            StrListAdd( hpaio->scanModeList, STR_SCAN_MODE_LINEART );
+            StrListAdd( hpaio->scanModeList, SANE_VALUE_SCAN_MODE_LINEART );
         }
         if( hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] )
         {
-            StrListAdd( hpaio->scanModeList, STR_SCAN_MODE_GRAYSCALE );
+            StrListAdd( hpaio->scanModeList, SANE_VALUE_SCAN_MODE_GRAY );
         }
         if( hpaio->supportsScanMode[SCAN_MODE_COLOR] )
         {
-            StrListAdd( hpaio->scanModeList, STR_SCAN_MODE_COLOR );
+            StrListAdd( hpaio->scanModeList, SANE_VALUE_SCAN_MODE_COLOR );
         }
         hpaioSetDefaultValue( hpaio, OPTION_SCAN_MODE );
         reload |= SANE_INFO_RELOAD_OPTIONS;
@@ -1053,7 +1291,7 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->option[OPTION_NUM_OPTIONS].cap = SANE_CAP_SOFT_DETECT;
     hpaio->option[OPTION_NUM_OPTIONS].constraint_type = SANE_CONSTRAINT_NONE;
 
-    hpaio->option[GROUP_SCAN_MODE].title = "Scan mode";
+    hpaio->option[GROUP_SCAN_MODE].title = SANE_TITLE_SCAN_MODE;
     hpaio->option[GROUP_SCAN_MODE].type = SANE_TYPE_GROUP;
 
     hpaio->option[OPTION_SCAN_MODE].name = SANE_NAME_SCAN_MODE;
@@ -1079,7 +1317,7 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->option[OPTION_SCAN_RESOLUTION].constraint.range = &hpaio->resolutionRange;
     hpaio->resolutionRange.quant = 0;
 
-    hpaio->option[GROUP_ADVANCED].title = "Advanced";
+    hpaio->option[GROUP_ADVANCED].title = STR_TITLE_ADVANCED;
     hpaio->option[GROUP_ADVANCED].type = SANE_TYPE_GROUP;
     hpaio->option[GROUP_ADVANCED].cap = SANE_CAP_ADVANCED;
 
@@ -1100,10 +1338,9 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->contrastRange.quant = 0;
     hpaio->defaultContrast = PML_CONTRAST_DEFAULT;
 
-    hpaio->option[OPTION_COMPRESSION].name = "compression";
-    hpaio->option[OPTION_COMPRESSION].title = "Compression";
-    hpaio->option[OPTION_COMPRESSION].desc = "Selects the scanner compression method for faster scans, "
-                                                             "possibly at the expense of image quality.";
+    hpaio->option[OPTION_COMPRESSION].name = STR_NAME_COMPRESSION;
+    hpaio->option[OPTION_COMPRESSION].title = STR_TITLE_COMPRESSION;
+    hpaio->option[OPTION_COMPRESSION].desc = STR_DESC_COMPRESSION;
     hpaio->option[OPTION_COMPRESSION].type = SANE_TYPE_STRING;
     hpaio->option[OPTION_COMPRESSION].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_COMPRESSION].size = LEN_STRING_OPTION_VALUE;
@@ -1113,11 +1350,9 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->option[OPTION_COMPRESSION].constraint_type = SANE_CONSTRAINT_STRING_LIST;
     hpaio->option[OPTION_COMPRESSION].constraint.string_list = hpaio->compressionList;
 
-    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].name = "jpeg-compression-factor";
-    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].title = "JPEG compression factor";
-    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].desc = "Sets the scanner JPEG compression factor.  "
-                                                                                     "Larger numbers mean better compression, and "
-                                                                                     "smaller numbers mean better image quality.";
+    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].name = STR_NAME_JPEG_QUALITY;
+    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].title = STR_TITLE_JPEG_QUALITY;
+    hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].desc = STR_DESC_JPEG_QUALITY;
     hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].type = SANE_TYPE_INT;
     hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_JPEG_COMPRESSION_FACTOR].size = sizeof( SANE_Int );
@@ -1131,13 +1366,9 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->jpegCompressionFactorRange.quant = 0;
     hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
 
-    hpaio->option[OPTION_BATCH_SCAN].name = "batch-scan";
-    hpaio->option[OPTION_BATCH_SCAN].title = "Batch scan";
-    hpaio->option[OPTION_BATCH_SCAN].desc = "Guarantees that a \"no documents\" condition will be "
-                                                           "returned after the last scanned page, to prevent "
-                                                           "endless flatbed scans after a batch scan.  "
-                                                           "For some models, option changes in the middle of a batch "
-                                                           "scan don't take effect until after the last page.";
+    hpaio->option[OPTION_BATCH_SCAN].name = STR_NAME_BATCH_SCAN;
+    hpaio->option[OPTION_BATCH_SCAN].title = STR_TITLE_BATCH_SCAN;
+    hpaio->option[OPTION_BATCH_SCAN].desc = STR_DESC_BATCH_SCAN;
     hpaio->option[OPTION_BATCH_SCAN].type = SANE_TYPE_BOOL;
     hpaio->option[OPTION_BATCH_SCAN].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_BATCH_SCAN].size = sizeof( SANE_Bool );
@@ -1146,13 +1377,9 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
                                            SANE_CAP_ADVANCED;
     hpaio->option[OPTION_BATCH_SCAN].constraint_type = SANE_CONSTRAINT_NONE;
 
-    hpaio->option[OPTION_ADF_MODE].name = "source";  // xsane expects this.
-    hpaio->option[OPTION_ADF_MODE].title = "Source";
-    hpaio->option[OPTION_ADF_MODE].desc = "Selects the desired scan source for models with both "
-                                                     "flatbed and automatic document feeder (ADF) capabilities.  "
-                                                     "The \"Auto\" setting means that the ADF will be used "
-                                                     "if it's loaded, and the flatbed (if present) will be "
-                                                     "used otherwise.";
+    hpaio->option[OPTION_ADF_MODE].name = SANE_NAME_SCAN_SOURCE;  // xsane expects this.
+    hpaio->option[OPTION_ADF_MODE].title = SANE_TITLE_SCAN_SOURCE;
+    hpaio->option[OPTION_ADF_MODE].desc = SANE_DESC_SCAN_SOURCE;
     hpaio->option[OPTION_ADF_MODE].type = SANE_TYPE_STRING;
     hpaio->option[OPTION_ADF_MODE].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_ADF_MODE].size = LEN_STRING_OPTION_VALUE;
@@ -1162,12 +1389,9 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->option[OPTION_ADF_MODE].constraint_type = SANE_CONSTRAINT_STRING_LIST;
     hpaio->option[OPTION_ADF_MODE].constraint.string_list = hpaio->adfModeList;
 
-    hpaio->option[OPTION_DUPLEX].name = "duplex";
-    hpaio->option[OPTION_DUPLEX].title = "Duplex";
-    hpaio->option[OPTION_DUPLEX].desc = "Enables scanning on both sides of the page for models "
-                                                   "with duplex-capable document feeders.  For pages printed "
-                                                   "in \"book\"-style duplex mode, one side will be scanned "
-                                                   "upside-down.  This feature is experimental.";
+    hpaio->option[OPTION_DUPLEX].name = STR_NAME_DUPLEX;
+    hpaio->option[OPTION_DUPLEX].title = STR_TITLE_DUPLEX;
+    hpaio->option[OPTION_DUPLEX].desc = STR_DESC_DUPLEX;
     hpaio->option[OPTION_DUPLEX].type = SANE_TYPE_BOOL;
     hpaio->option[OPTION_DUPLEX].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_DUPLEX].size = sizeof( SANE_Bool );
@@ -1176,15 +1400,13 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
                                        SANE_CAP_ADVANCED;
     hpaio->option[OPTION_DUPLEX].constraint_type = SANE_CONSTRAINT_NONE;
 
-    hpaio->option[GROUP_GEOMETRY].title = "Geometry";
+    hpaio->option[GROUP_GEOMETRY].title = STR_TITLE_GEOMETRY;
     hpaio->option[GROUP_GEOMETRY].type = SANE_TYPE_GROUP;
     hpaio->option[GROUP_GEOMETRY].cap = SANE_CAP_ADVANCED;
 
-    hpaio->option[OPTION_LENGTH_MEASUREMENT].name = "length-measurement";
-    hpaio->option[OPTION_LENGTH_MEASUREMENT].title = "Length measurement";
-    hpaio->option[OPTION_LENGTH_MEASUREMENT].desc = "Selects how the scanned image length is measured and "
-                                                                           "reported, which is impossible to know in advance for "
-                                                                           "scrollfed scans.";
+    hpaio->option[OPTION_LENGTH_MEASUREMENT].name = STR_NAME_LENGTH_MEASUREMENT;
+    hpaio->option[OPTION_LENGTH_MEASUREMENT].title = STR_TITLE_LENGTH_MEASUREMENT;
+    hpaio->option[OPTION_LENGTH_MEASUREMENT].desc = STR_DESC_LENGTH_MEASUREMENT;
     hpaio->option[OPTION_LENGTH_MEASUREMENT].type = SANE_TYPE_STRING;
     hpaio->option[OPTION_LENGTH_MEASUREMENT].unit = SANE_UNIT_NONE;
     hpaio->option[OPTION_LENGTH_MEASUREMENT].size = LEN_STRING_OPTION_VALUE;
@@ -1267,8 +1489,6 @@ int hpaioSclSendCommandCheckError( hpaioScanner_t hpaio, int cmd, int param )
 
 static SANE_Status hpaioProgramOptions( hpaioScanner_t hpaio )
 {
-    DBG( 0,  "\nhpaio: hpaioProgramOptions()\n" ); 
-
     hpaio->effectiveScanMode = hpaio->currentScanMode;
     hpaio->effectiveResolution = hpaio->currentResolution;
 
@@ -1362,9 +1582,9 @@ static SANE_Status hpaioProgramOptions( hpaioScanner_t hpaio )
                             SCL_CMD_DOWNLOAD_BINARY_DATA,
                             sizeof( hp11xxSeriesColorMap ) );
             
-            hplip_WriteHP( hpaio->deviceid, hpaio->scan_channelid,
-                          ( char * ) hp11xxSeriesColorMap,
-                          sizeof( hp11xxSeriesColorMap ) );
+            hplip_WriteHP(hplip_session, hpaio->deviceid, hpaio->scan_channelid,
+                          (char *)hp11xxSeriesColorMap,
+                          sizeof(hp11xxSeriesColorMap));
         }
 
         /* For OfficeJet R and PSC 500 series, set CCD resolution to 600
@@ -1386,16 +1606,10 @@ static SANE_Status hpaioAdvanceDocument( hpaioScanner_t hpaio )
     SANE_Status retcode;
     int documentLoaded = 0;
 
-    DBG( 0,  "\nhpaio: hpaioAdvanceDocument:\n"
-                    "beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, "
-                    "noDocsConditionPending=%d, "
-                    "currentPageNumber=%d, currentSideNumber=%d.\n",
-                    hpaio->beforeScan,
-                    hpaio->alreadyPreAdvancedDocument,
-                    hpaio->alreadyPostAdvancedDocument,
-                    hpaio->noDocsConditionPending,
-                    hpaio->currentPageNumber,
-                    hpaio->currentSideNumber );
+    DBG(8, "hpaioAdvanceDocument: beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, noDocsConditionPending=%d, "
+                    "currentPageNumber=%d, currentSideNumber=%d %s %d\n",
+                    hpaio->beforeScan, hpaio->alreadyPreAdvancedDocument, hpaio->alreadyPostAdvancedDocument, 
+                    hpaio->noDocsConditionPending, hpaio->currentPageNumber, hpaio->currentSideNumber, __FILE__, __LINE__);
 
     if( hpaio->beforeScan )
     {
@@ -1569,17 +1783,10 @@ static SANE_Status hpaioAdvanceDocument( hpaioScanner_t hpaio )
 
     retcode = SANE_STATUS_GOOD;
     abort:
-    DBG( 0,  "hpaio: hpaioAdvanceDocument returns %d:\n"
-                    "beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, "
-                    "noDocsConditionPending=%d, "
-                    "currentPageNumber=%d, currentSideNumber=%d.\n",
-                    retcode,
-                    hpaio->beforeScan,
-                    hpaio->alreadyPreAdvancedDocument,
-                    hpaio->alreadyPostAdvancedDocument,
-                    hpaio->noDocsConditionPending,
-                    hpaio->currentPageNumber,
-                    hpaio->currentSideNumber );
+    DBG(8, "hpaioAdvanceDocument returns %d: beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, noDocsConditionPending=%d, "
+                    "currentPageNumber=%d, currentSideNumber=%d %s %d\n",
+                    retcode, hpaio->beforeScan, hpaio->alreadyPreAdvancedDocument, hpaio->alreadyPostAdvancedDocument,
+                    hpaio->noDocsConditionPending, hpaio->currentPageNumber, hpaio->currentSideNumber, __FILE__, __LINE__);
 
     if( retcode != SANE_STATUS_GOOD )
     {
@@ -1593,123 +1800,794 @@ static SANE_Status hpaioAdvanceDocument( hpaioScanner_t hpaio )
 
 /******************************************************* SANE API *******************************************************/
 
-extern SANE_Status sane_hpaio_init( SANE_Int * pVersionCode,
-                                    SANE_Auth_Callback authorize )
+extern SANE_Status sane_hpaio_init(SANE_Int * pVersionCode, SANE_Auth_Callback authorize)
 {
-    //DBG_INIT();
-    DBG( 0, "\nsane_hpaio_init() *******************************************************************************************\n" );
-    
-    hplip_Init();
+    int stat;
 
-    //hpaioDeviceListReset();
-    //ResetDevices( hpaioDeviceList );
-    //InitDevices( hpaioDeviceList );
-    //hpaioDeviceList = InitDevices();
-    
+    DBG_INIT();
+    DBG(8, "sane_hpaio_init(): %s %d\n", __FILE__, __LINE__);
+
+    if (hplip_Init(&hplip_session))
+    {
+       stat = SANE_STATUS_DEVICE_BUSY;
+       goto bugout;
+    }
     if( pVersionCode )
     {
-        *pVersionCode = SANE_VERSION_CODE( 1, 0, 6 );
+       *pVersionCode = SANE_VERSION_CODE( 1, 0, 6 );
+    }
+    stat = SANE_STATUS_GOOD;
+
+bugout:
+    return stat;
+}  /* sane_hpaio_init() */
+
+extern void sane_hpaio_exit(void)
+{
+   DBG(8, "sane_hpaio_exit(): %s %d\n", __FILE__, __LINE__);
+   ResetDeviceList(&DeviceList);
+   hplip_Exit(hplip_session);
+}
+
+extern SANE_Status sane_hpaio_get_devices(const SANE_Device ***deviceList, SANE_Bool localOnly)
+{
+   DBG(8, "sane_hpaio_get_devices(local=%d): %s %d\n", localOnly, __FILE__, __LINE__);
+   ResetDeviceList(&DeviceList);
+   DevDiscovery(localOnly);
+   *deviceList = (const SANE_Device **)DeviceList;
+   return SANE_STATUS_GOOD;
+}
+
+extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * pHandle)
+{
+    SANE_Status retcode = SANE_STATUS_INVAL;
+    hpaioScanner_t hpaio = 0;
+    int r;
+    char deviceIDString[LEN_DEVICE_ID_STRING];
+    char model[256];
+    int forceJpegForGrayAndColor = 0;
+    int force300dpiForLineart = 0;
+    int force300dpiForGrayscale = 0;
+    int supportsMfpdtf = 1;
+    char devname[256];
+    HplipMsgAttributes ma;
+
+    /* Get device attributes and determine what backend to call. */
+    snprintf(devname, sizeof(devname)-1, "hp:%s", devicename);   /* prepend "hp:" */
+    hplip_ModelQuery(devname, &ma);
+    if (ma.scantype == 3)
+       return soap_open(devicename, pHandle);
+
+    DBG(8, "sane_hpaio_open(%s): %s %d\n", devicename, __FILE__, __LINE__);
+
+    hpaio = hpaioFindScanner( devicename );
+    
+    if( hpaio )
+    {
+        goto done;     /* reuse same device, why?? (des) */
+    }
+    
+    hpaio = malloc( sizeof( struct hpaioScanner_s ) );
+    
+    if( !hpaio )
+    {
+        retcode = SANE_STATUS_NO_MEM;
+        goto abort;
     }
 
-    return SANE_STATUS_GOOD;
-}
-
-extern SANE_Status sane_hpaio_get_devices( const SANE_Device *** ppDeviceList,
-                                           SANE_Bool localOnly )
-{
-    DBG( 0,  "\nhpaio: sane_hpaio_get_devices()\n" );
-
-    //__asm("int3");
-    ResetDevices( &hpaioDeviceList );
-    //hpaioDeviceList = NULL;
+    hpaioAddScanner( hpaio );
     
-    ProbeDevices( &hpaioDeviceList );
-
-    *ppDeviceList = ( const SANE_Device ** ) hpaioDeviceList;
-    return SANE_STATUS_GOOD;
-}
-
-extern SANE_Status sane_hpaio_get_parameters( SANE_Handle handle,
-                                              SANE_Parameters * pParams )
-{
-    DBG( 0,  "\nhpaio: sane_hpaio_get_parameters()\n" );
-    
-    hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
-    char * s = "";
-    if( !hpaio->hJob )
+    if( pHandle )
     {
-        *pParams = hpaio->prescanParameters;
-        s = "pre";
+        *pHandle = hpaio;
+    }
+    
+    memset( hpaio, 0, sizeof( struct hpaioScanner_s ) );
+    
+    hpaio->tag = "SCL-PML";
+
+    hpaio->deviceid = hplip_OpenHP(hplip_session, (char *)devname, &ma);
+    strncpy( hpaio->deviceuri, devname, sizeof(hpaio->deviceuri) );
+    
+    if( hpaio->deviceid == -1 )
+    {
+        retcode = SANE_STATUS_IO_ERROR;
+        goto abort;
+    }
+    
+    hpaio->scan_channelid = -1;
+    hpaio->cmd_channelid = -1;
+
+    /* Get the device ID string and initialize the SANE_Device structure. */
+    memset( deviceIDString, 0, LEN_DEVICE_ID_STRING );
+    
+    if(hplip_GetID(hplip_session, hpaio->deviceid, deviceIDString, sizeof(deviceIDString)) == 0)
+    {
+        retcode = SANE_STATUS_INVAL;
+        goto abort;
+    }
+    
+    DBG(6, "device ID string=<%s>: %s %d\n", deviceIDString, __FILE__, __LINE__);
+    
+    hpaio->saneDevice.name = strdup( devicename ); 
+    
+    hpaio->saneDevice.vendor = "Hewlett-Packard"; 
+    
+    hplip_GetModel(deviceIDString, model, sizeof(model));
+    
+    DBG(6, "Model = %s: %s %d\n", model, __FILE__, __LINE__);
+    
+    hpaio->saneDevice.model = strdup( model );
+    hpaio->saneDevice.type = "multi-function peripheral";
+
+    /* Initialize option descriptors. */
+    hpaioSetupOptions( hpaio ); 
+
+//BREAKPOINT;
+    
+    /* Guess the command language (SCL or PML) based on the model string. */
+    if( UNDEFINED_MODEL( hpaio ) )
+    {
+        hpaio->scannerType = SCANNER_TYPE_SCL;
+    }
+    else if( strcasestr( hpaio->saneDevice.model, "laserjet" ) )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        hpaio->pml.openFirst = 1;
+        
+        if( strcasecmp( hpaio->saneDevice.model, "HP_LaserJet_1100" ) == 0 )
+        {
+            hpaio->pml.dontResetBeforeNextNonBatchPage = 1;
+        }
+        else
+        {
+            hpaio->pml.startNextBatchPageEarly = 1;
+        }
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet" ) == 0 ||
+             strcasecmp( hpaio->saneDevice.model, "OfficeJet_LX" ) == 0 ||
+             strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_300" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        hpaio->preDenali = 1;
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_500" ) == 0 ||
+             strcasecmp( hpaio->saneDevice.model, "All-in-One_IJP-V100" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        hpaio->fromDenali = 1;
+        force300dpiForLineart = 1;
+        force300dpiForGrayscale = 1;
+        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
+        hpaio->defaultCompression[SCAN_MODE_GRAYSCALE] = COMPRESSION_JPEG;
+        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_600" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        hpaio->denali = 1;
+        forceJpegForGrayAndColor = 1;
+        force300dpiForLineart = 1;
+        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
+        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "Printer/Scanner/Copier_300" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        forceJpegForGrayAndColor = 1;
+        force300dpiForLineart = 1;
+        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
+        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_700" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        forceJpegForGrayAndColor = 1;
+        force300dpiForLineart = 1;
+        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
+        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
+    }
+    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_T_Series" ) == 0 )
+    {
+        hpaio->scannerType = SCANNER_TYPE_PML;
+        forceJpegForGrayAndColor = 1;
     }
     else
     {
-        *pParams = hpaio->scanParameters;
+        hpaio->scannerType = SCANNER_TYPE_SCL;
     }
-    DBG( 0,  "hpaio: sane_hpaio_get_parameters(%sscan): "
-                    "format=%d, last_frame=%d, lines=%d, depth=%d, "
-                    "pixels_per_line=%d, bytes_per_line=%d.\n",
-                    s,
-                    pParams->format,
-                    pParams->last_frame,
-                    pParams->lines,
-                    pParams->depth,
-                    pParams->pixels_per_line,
-                    pParams->bytes_per_line );
-    return SANE_STATUS_GOOD;
-}
 
-extern const SANE_Option_Descriptor * sane_hpaio_get_option_descriptor( SANE_Handle handle,
-                                                                        SANE_Int option )
+    DBG(6, "Scanner type=%s: %s %d\n", hpaio->scannerType==0 ? "SCL" : "PML", __FILE__, __LINE__);
+    
+    /* Open and reset scanner command channel.
+     * This also allocates the PML objects if necessary. */
+    
+//BREAKPOINT;
+    
+    retcode = hpaioConnOpen( hpaio );
+    
+    if( retcode != SANE_STATUS_GOOD )
+    {
+        goto abort;
+    }
+
+    /* Probing and setup for SCL scanners... */
+    if( hpaio->scannerType == SCANNER_TYPE_SCL )
+    {
+        /* Even though this isn't SCANNER_TYPE_PML, there are still a few
+         * interesting PML objects. */
+        
+        SclSendCommand( hpaio->deviceid, hpaio->scan_channelid, SCL_CMD_CLEAR_ERROR_STACK, 0 );
+        hpaio->scl.objSupportedFunctions = hpaioPmlAllocateID( hpaio, "1.3.6.1.4.1.11.2.3.9.4.2.1.1.2.67.0" );
+
+        /* Probe the SCL model. */
+        retcode = SclInquire( hpaio->deviceid, 
+                              hpaio->scan_channelid,
+                              SCL_CMD_INQUIRE_DEVICE_PARAMETER,
+                              SCL_INQ_HP_MODEL_11,
+                              0,
+                              hpaio->scl.compat1150,
+                              LEN_MODEL_RESPONSE );
+        
+        if( retcode == SANE_STATUS_GOOD )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_OFFICEJET;
+        }
+        else if( retcode != SANE_STATUS_UNSUPPORTED )
+        {
+            goto abort;
+        }
+        DBG(8, "scl.compat1150=<%s>: %s %d\n", hpaio->scl.compat1150, __FILE__, __LINE__);
+
+        retcode = SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                              SCL_CMD_INQUIRE_DEVICE_PARAMETER,
+                              SCL_INQ_HP_MODEL_12,
+                              0,
+                              hpaio->scl.compatPost1150,
+                              LEN_MODEL_RESPONSE );
+        
+        if( retcode == SANE_STATUS_GOOD )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_POST_1150;
+        }
+        else if( retcode != SANE_STATUS_UNSUPPORTED )
+        {
+            goto abort;
+        }
+        DBG(8, "scl.compatPost1150=<%s>: %s %d\n", hpaio->scl.compatPost1150, __FILE__, __LINE__);
+
+        if( !hpaio->scl.compat )
+        {
+            SET_DEFAULT_MODEL( hpaio, "(unknown scanner)" );
+        }
+        else if( hpaio->scl.compat == SCL_COMPAT_OFFICEJET )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_1150;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 1150)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5400A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_1170;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 1170)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5500A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_R_SERIES;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet R Series)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5600A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_G_SERIES;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet G Series)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5700A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_K_SERIES;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet K Series)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5800A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_D_SERIES;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet D Series)" );
+        }
+        else if( !strcmp( hpaio->scl.compatPost1150, "5900A" ) )
+        {
+            hpaio->scl.compat |= SCL_COMPAT_6100_SERIES;
+            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 6100 Series)" );
+        }
+        else
+        {
+            SET_DEFAULT_MODEL( hpaio, "(unknown OfficeJet)" );
+        }
+        DBG(8, "scl.compat=0x%4.4X: %s %d\n", hpaio->scl.compat, __FILE__, __LINE__);
+
+        /* Decide which position/extent unit to use.  "Device pixels" works
+         * better on most models, but the 1150 requires "decipoints." */
+        if( hpaio->scl.compat & ( SCL_COMPAT_1150 ) )
+        {
+            hpaio->scl.decipixelChar = SCL_CHAR_DECIPOINTS;
+            hpaio->decipixelsPerInch = DECIPOINTS_PER_INCH;
+        }
+        else
+        {
+            hpaio->scl.decipixelChar = SCL_CHAR_DEVPIXELS;
+            hpaio->decipixelsPerInch = DEVPIXELS_PER_INCH;
+            /* Check for non-default decipixelsPerInch definition. */
+            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                        SCL_CMD_INQUIRE_DEVICE_PARAMETER,
+                        SCL_INQ_DEVICE_PIXELS_PER_INCH,
+                        &hpaio->decipixelsPerInch,
+                        0,
+                        0 );
+        }
+        DBG(8, "decipixelChar='%c', decipixelsPerInch=%d: %s %d\n", hpaio->scl.decipixelChar, hpaio->decipixelsPerInch, __FILE__, __LINE__);
+
+        /* Is MFPDTF supported? */
+        if( hpaioSclSendCommandCheckError( hpaio,
+                                      SCL_CMD_SET_MFPDTF,
+                                      SCL_MFPDTF_ON ) != SANE_STATUS_GOOD )
+        {
+            DBG(8, "Doesn't support MFPDTF: %s %d\n", __FILE__, __LINE__);
+            supportsMfpdtf = 0;
+        }
+
+        /* All scan modes are supported with no compression. */
+        hpaio->supportsScanMode[SCAN_MODE_LINEART] = COMPRESSION_NONE;
+        hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] = COMPRESSION_NONE;
+        hpaio->supportsScanMode[SCAN_MODE_COLOR] = COMPRESSION_NONE;
+
+        if( supportsMfpdtf )
+        {
+            if( hpaioSclSendCommandCheckError( hpaio,
+                                          SCL_CMD_SET_COMPRESSION,
+                                          SCL_COMPRESSION_JPEG ) == SANE_STATUS_GOOD )
+            {
+                hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] |= COMPRESSION_JPEG;
+                hpaio->supportsScanMode[SCAN_MODE_COLOR] |= COMPRESSION_JPEG;
+            }
+        }
+
+        /* Determine the minimum and maximum resolution.
+                  * Probe for both X and Y, and pick largest min and smallest max.
+                 * For the 1150, set min to 50 to prevent scan head crashes (<42). */
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MINIMUM_VALUE,
+                    SCL_CMD_SET_X_RESOLUTION,
+                    &hpaio->scl.minXRes,
+                    0,
+                    0 );
+        
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MINIMUM_VALUE,
+                    SCL_CMD_SET_Y_RESOLUTION,
+                    &hpaio->scl.minYRes,
+                    0,
+                    0 );
+        
+        if( hpaio->scl.compat & SCL_COMPAT_1150 &&
+            hpaio->scl.minYRes < SCL_MIN_Y_RES_1150 )
+        {
+            hpaio->scl.minYRes = SCL_MIN_Y_RES_1150;
+        }
+        r = hpaio->scl.minXRes;
+        if( r < hpaio->scl.minYRes )
+        {
+            r = hpaio->scl.minYRes;
+        }
+        
+        hpaio->resolutionRange.min = r;
+        
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
+                    SCL_CMD_SET_X_RESOLUTION,
+                    &hpaio->scl.maxXRes,
+                    0,
+                    0 );
+        
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
+                    SCL_CMD_SET_Y_RESOLUTION,
+                    &hpaio->scl.maxYRes,
+                    0,
+                   0 );
+        
+        r = hpaio->scl.maxXRes;
+        
+        if( r > hpaio->scl.maxYRes )
+        {
+            r = hpaio->scl.maxYRes;
+        }
+        
+        if( hpaio->scl.compat & ( SCL_COMPAT_1150 | SCL_COMPAT_1170 ) && r > SCL_MAX_RES_1150_1170 )
+        {
+            r = SCL_MAX_RES_1150_1170;
+        }
+        hpaio->resolutionRange.max = r;
+
+        /* Determine ADF/duplex capabilities. */
+        {
+            int flatbedCapability = 1;
+            
+            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                        SCL_CMD_INQUIRE_MAXIMUM_VALUE,
+                        SCL_PSEUDO_FLATBED_Y_RESOLUTION,
+                        &flatbedCapability,
+                        0,
+                        0 );
+                        
+            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                        SCL_CMD_INQUIRE_DEVICE_PARAMETER,
+                        SCL_INQ_ADF_CAPABILITY,
+                        &hpaio->scl.adfCapability,
+                        0,
+                        0 );
+            
+            DBG(8, "ADF capability=%d: %s %d\n", hpaio->scl.adfCapability, __FILE__, __LINE__);
+            
+            if( !hpaio->scl.adfCapability )
+            {
+                hpaio->supportedAdfModes = ADF_MODE_FLATBED;
+            }
+            else if( hpaio->scl.compat & SCL_COMPAT_K_SERIES ||
+                     !flatbedCapability )
+            {
+                hpaio->supportedAdfModes = ADF_MODE_ADF;
+            }
+            else
+            {
+                int supportedFunctions;
+
+                hpaio->supportedAdfModes = ADF_MODE_AUTO |
+                                           ADF_MODE_FLATBED |
+                                           ADF_MODE_ADF;
+                if( hpaio->scl.compat & ( SCL_COMPAT_1170 |
+                                          SCL_COMPAT_R_SERIES |
+                                          SCL_COMPAT_G_SERIES ) )
+                {
+                    hpaio->scl.unloadAfterScan = 1;
+                }
+                if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, hpaio->scl.objSupportedFunctions ) != ERROR &&
+                    PmlGetIntegerValue( hpaio->scl.objSupportedFunctions,
+                                        0,
+                                        &supportedFunctions ) != ERROR &&
+                    supportedFunctions & PML_SUPPFUNC_DUPLEX )
+                {
+                    hpaio->supportsDuplex = 1;
+                }
+            }
+        }
+
+        /* Determine maximum X and Y extents. */
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
+                    SCL_CMD_SET_X_EXTENT,
+                    &hpaio->scl.maxXExtent,
+                    0,
+                    0 );
+        
+        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
+                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
+                    SCL_CMD_SET_Y_EXTENT,
+                    &hpaio->scl.maxYExtent,
+                    0,
+                    0 );
+        
+        DBG(8, "Maximum extents: x=%d, y=%d %s %d\n", hpaio->scl.maxXExtent, hpaio->scl.maxYExtent, __FILE__, __LINE__);
+        
+        hpaio->tlxRange.max = hpaio->brxRange.max = DECIPIXELS_TO_MILLIMETERS( hpaio->scl.maxXExtent );
+        hpaio->tlyRange.max = hpaio->bryRange.max = DECIPIXELS_TO_MILLIMETERS( hpaio->scl.maxYExtent );
+
+        /* Probing and setup for PML scanners... */
+    }
+    else /* if (hpaio->scannerType==SCANNER_TYPE_PML) */
+    {
+        int comps = 0;
+
+        hpaio->decipixelsPerInch = DECIPOINTS_PER_INCH;
+
+        /*ChannelSetSelectPollTimeout( hpaio->chan, &selectPollTimeout );
+                        
+                  ChannelSetSelectPollCallback( hpaio->chan,
+                                                                              hpaioPmlSelectCallback,
+                                                                              hpaio );*/
+
+        /* Determine supported scan modes and compression settings. */
+        if( hpaio->preDenali )
+        {
+            comps |= COMPRESSION_MMR;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objCompression,
+                            PML_TYPE_ENUMERATION,
+                            PML_COMPRESSION_NONE );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
+        {
+            comps |= COMPRESSION_NONE;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objCompression,
+                            PML_TYPE_ENUMERATION,
+                            PML_COMPRESSION_MH );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
+        {
+            comps |= COMPRESSION_MH;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objCompression,
+                            PML_TYPE_ENUMERATION,
+                            PML_COMPRESSION_MR );
+                            
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
+        {
+            comps |= COMPRESSION_MR;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objCompression,
+                            PML_TYPE_ENUMERATION,
+                            PML_COMPRESSION_MMR );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
+        {
+            comps |= COMPRESSION_MMR;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
+                            PML_TYPE_ENUMERATION,
+                            PML_DATA_TYPE_LINEART );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
+        {
+            hpaio->supportsScanMode[SCAN_MODE_LINEART] = comps;
+        }
+            comps &= COMPRESSION_NONE;
+        
+        if( forceJpegForGrayAndColor )
+        {
+            comps = 0;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objCompression,
+                            PML_TYPE_ENUMERATION,
+                            PML_COMPRESSION_JPEG );
+                            
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
+        {
+            comps |= COMPRESSION_JPEG;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
+                            PML_TYPE_ENUMERATION,
+                            PML_DATA_TYPE_GRAYSCALE );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
+        {
+            hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] = comps;
+        }
+        
+        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
+                            PML_TYPE_ENUMERATION,
+                            PML_DATA_TYPE_COLOR );
+        
+        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
+        {
+            hpaio->supportsScanMode[SCAN_MODE_COLOR] = comps;
+        }
+
+        /* Determine supported resolutions. */
+        NumListClear( hpaio->resolutionList );
+        NumListClear( hpaio->lineartResolutionList );
+        
+        if( hpaio->preDenali )
+        {
+            NumListAdd( hpaio->lineartResolutionList, 200 );
+            if( !strcmp( hpaio->saneDevice.model, "OfficeJet_Series_300" ) )
+            {
+                NumListAdd( hpaio->lineartResolutionList, 300 );
+            }
+            hpaio->option[OPTION_SCAN_RESOLUTION].constraint_type = SANE_CONSTRAINT_WORD_LIST;
+        }
+        else if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
+                                hpaio->pml.objResolutionRange ) == ERROR )
+        {
+pmlDefaultResRange:
+            /* TODO: What are the correct X and Y resolution ranges
+             * for the OfficeJet T series? */
+            hpaio->resolutionRange.min = 75;
+            hpaio->resolutionRange.max = 600;
+        }
+        else
+        {
+            char resList[PML_MAX_VALUE_LEN + 1];
+            int i, len, res, consumed;
+
+            PmlGetStringValue( hpaio->pml.objResolutionRange,
+                               0,
+                               resList,
+                               PML_MAX_VALUE_LEN );
+            
+            resList[PML_MAX_VALUE_LEN] = 0;
+            len = strlen( resList );
+
+            /* Parse "(100)x(100),(150)x(150),(200)x(200),(300)x(300)".
+                             * This isn't quite the right way to do it, but it'll do. */
+            for( i = 0; i < len; )
+            {
+                if( resList[i] < '0' || resList[i] > '9' )
+                {
+                    i++;
+                    continue;
+                }
+                if( sscanf( resList + i, "%d%n", &res, &consumed ) != 1 )
+                {
+                    break;
+                }
+                i += consumed;
+                if( !force300dpiForGrayscale || res >= 300 )
+                {
+                    NumListAdd( hpaio->resolutionList, res );
+                }
+                if( !force300dpiForLineart || res >= 300 )
+                {
+                    NumListAdd( hpaio->lineartResolutionList, res );
+                }
+            }
+
+            if( !NumListGetCount( hpaio->resolutionList ) )
+            {
+                goto pmlDefaultResRange;
+            }
+            hpaio->option[OPTION_SCAN_RESOLUTION].constraint_type = SANE_CONSTRAINT_WORD_LIST;
+        }
+
+        /* Determine contrast support. */
+        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
+                           hpaio->pml.objContrast ) != ERROR )
+        {
+            hpaio->option[OPTION_CONTRAST].cap &= ~SANE_CAP_INACTIVE;
+        }
+
+        /* Determine supported ADF modes. */
+        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
+                           hpaio->pml.objModularHardware ) != ERROR )
+        {
+            int modularHardware = 0;
+            hpaio->pml.flatbedCapability = 1;
+            if( PmlGetIntegerValue( hpaio->pml.objModularHardware,
+                                    0,
+                                    &modularHardware ) != ERROR &&
+                modularHardware & PML_MODHW_ADF )
+            {
+                goto adfAndAuto;
+            }
+            
+            hpaio->supportedAdfModes = ADF_MODE_FLATBED;
+        }
+        else
+        {
+adfAndAuto:
+            hpaio->supportedAdfModes = ADF_MODE_AUTO | ADF_MODE_ADF;
+        }
+            hpaio->supportsDuplex = 0;
+
+        hpaio->tlxRange.max = hpaio->brxRange.max = INCHES_TO_MILLIMETERS( PML_MAX_WIDTH_INCHES );
+        hpaio->tlyRange.max = hpaio->bryRange.max = INCHES_TO_MILLIMETERS( PML_MAX_HEIGHT_INCHES );
+
+    }  /* if( hpaio->scannerType == SCANNER_TYPE_SCL ) */
+
+    /* Allocate MFPDTF parser if supported. */
+    if( supportsMfpdtf )
+    {
+        hpaio->mfpdtf = MfpdtfAllocate( hpaio->deviceid, hpaio->scan_channelid );
+        MfpdtfSetChannel( hpaio->mfpdtf, hpaio->scan_channelid );
+        
+        if( hpaio->preDenali )
+        {
+            MfpdtfReadSetSimulateImageHeaders( hpaio->mfpdtf, 1 );
+        }
+    }
+
+done:
+    /* Finish setting up option descriptors. */
+    hpaioUpdateDescriptors( hpaio, OPTION_FIRST );
+
+    if( pHandle )
+    {
+        *pHandle = hpaio;
+    }
+    //ptalDeviceSetAppInfo( dev, hpaio );
+    retcode = SANE_STATUS_GOOD;
+
+abort:
+    if( hpaio )
+    {
+        hpaioConnClose( hpaio );
+    }
+    if( retcode != SANE_STATUS_GOOD )
+    {
+        if( hpaio )
+        {
+            if( hpaio->saneDevice.name )
+            {
+                free( ( void * ) hpaio->saneDevice.name );
+            }
+            if( hpaio->saneDevice.model )
+            {
+                free( ( void * ) hpaio->saneDevice.model );
+            }
+            free( hpaio );
+        }
+    }
+    return retcode;
+}   /* sane_hpaio_open() */
+
+extern void sane_hpaio_close(SANE_Handle handle)
+{
+    
+    hpaioScanner_t hpaio = (hpaioScanner_t) handle;
+
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_close(handle);
+
+    DBG(8, "sane_hpaio_close(): %s %d\n", __FILE__, __LINE__); 
+
+    hpaioPmlDeallocateObjects(hpaio);
+
+    /* ADF may leave channel(s) open. */  
+    if (hpaio->cmd_channelid > 0)
+       hpaioConnEndScan(hpaio);
+    
+    if (hpaio->deviceid > 0)
+    {
+       hplip_CloseHP(hplip_session, hpaio->deviceid);
+       hpaio->deviceid = -1;
+    }
+    
+    /* free hpaio object?? (des) */
+}  /* sane_hpaio_close() */
+
+extern const SANE_Option_Descriptor * sane_hpaio_get_option_descriptor(SANE_Handle handle, SANE_Int option)
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
-    DBG( 0,  "hpaio: sane_hpaio_get_option_descriptor(option=%d)\n",
-                    option );
+
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_get_option_descriptor(handle, option);
+
+    DBG(8, "sane_hpaio_get_option_descriptor(option=%s): %s %d\n", hpaio->option[option].name, __FILE__, __LINE__);
+
     if( option < 0 || option >= OPTION_LAST )
     {
         return 0;
     }
-    DBG( 0,  "hpaio: option=%d name=<%s>\n"
-                    "\ttype=%d unit=%d size=%d cap=0x%2.2X ctype=%d\n",
-                    option,
-                    hpaio->option[option].name,
-                    hpaio->option[option].type,
-                    hpaio->option[option].unit,
-                    hpaio->option[option].size,
-                    hpaio->option[option].cap,
-                    hpaio->option[option].constraint_type );
-    if( hpaio->option[option].constraint_type == SANE_CONSTRAINT_RANGE )
-    {
-        DBG( 0,  "\tmin=%d=0x%8.8X, max=%d=0x%8.8X, quant=%d\n",
-                        hpaio->option[option].constraint.range->min,
-                        hpaio->option[option].constraint.range->min,
-                        hpaio->option[option].constraint.range->max,
-                        hpaio->option[option].constraint.range->max,
-                        hpaio->option[option].constraint.range->quant );
-    }
 
     return &hpaio->option[option];
-}
+}  /* sane_hpaio_get_option_descriptor() */
 
-extern SANE_Status sane_hpaio_control_option( SANE_Handle handle,
-                                              SANE_Int option,
-                                              SANE_Action action,
-                                              void * pValue,
-                                              SANE_Int * pInfo )
+extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option, SANE_Action action, void * pValue, SANE_Int * pInfo )
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
     SANE_Int _info;
     SANE_Int * pIntValue = pValue;
     SANE_String pStrValue = pValue;
     SANE_Status retcode;
+    char sz[64];
+
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_control_option(handle, option, action, pValue, pInfo);
 
     if( !pInfo )
     {
         pInfo = &_info;
     }
-    DBG( 0,  "\nhpaio: sane_hpaio_control_option(option=%d,"
-                    "action=%d)\n",
-                    option,
-                    action );
 
     switch( action )
     {
@@ -1724,13 +2602,13 @@ extern SANE_Status sane_hpaio_control_option( SANE_Handle handle,
                     switch( hpaio->currentScanMode )
                     {
                         case SCAN_MODE_LINEART:
-                            strcpy( pStrValue, STR_SCAN_MODE_LINEART );
+                            strcpy( pStrValue, SANE_VALUE_SCAN_MODE_LINEART );
                             break;
                         case SCAN_MODE_GRAYSCALE:
-                            strcpy( pStrValue, STR_SCAN_MODE_GRAYSCALE );
+                            strcpy( pStrValue, SANE_VALUE_SCAN_MODE_GRAY );
                             break;
                         case SCAN_MODE_COLOR:
-                            strcpy( pStrValue, STR_SCAN_MODE_COLOR );
+                            strcpy( pStrValue, SANE_VALUE_SCAN_MODE_COLOR );
                             break;
                         default:
                             strcpy( pStrValue, STR_UNKNOWN );
@@ -1855,19 +2733,19 @@ extern SANE_Status sane_hpaio_control_option( SANE_Handle handle,
             switch( option )
             {
                 case OPTION_SCAN_MODE:
-                    if( !strcasecmp( pStrValue, STR_SCAN_MODE_LINEART ) &&
+                    if( !strcasecmp( pStrValue, SANE_VALUE_SCAN_MODE_LINEART ) &&
                         hpaio->supportsScanMode[SCAN_MODE_LINEART] )
                     {
                         hpaio->currentScanMode = SCAN_MODE_LINEART;
                         break;
                     }
-                    if( !strcasecmp( pStrValue, STR_SCAN_MODE_GRAYSCALE ) &&
+                    if( !strcasecmp( pStrValue, SANE_VALUE_SCAN_MODE_GRAY ) &&
                         hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] )
                     {
                         hpaio->currentScanMode = SCAN_MODE_GRAYSCALE;
                         break;
                     }
-                    if( !strcasecmp( pStrValue, STR_SCAN_MODE_COLOR ) &&
+                    if( !strcasecmp( pStrValue, SANE_VALUE_SCAN_MODE_COLOR ) &&
                         hpaio->supportsScanMode[SCAN_MODE_COLOR] )
                     {
                         hpaio->currentScanMode = SCAN_MODE_COLOR;
@@ -2062,825 +2940,55 @@ extern SANE_Status sane_hpaio_control_option( SANE_Handle handle,
                 return retcode;
             }
             reload : *pInfo = hpaioUpdateDescriptors( hpaio, option );
-            DBG( 0,  "hpaio: sane_hpaio_control_option(option=%d,"
-                            "action=%d): info=0x%2.2X\n",
-                            option,
-                            action,
-                            *pInfo );
             break;
 
         default:
             return SANE_STATUS_INVAL;
     }
 
-    if( ( action == SANE_ACTION_GET_VALUE || action == SANE_ACTION_SET_VALUE ) && pValue )
-    {
-        if( hpaio->option[option].type == SANE_TYPE_STRING )
-        {
-            DBG( 0,  "hpaio: %s option %d = <%s>\n",
-                            ( action == SANE_ACTION_SET_VALUE ? "set " : "" ),
-                            option,
-                            (char *)pValue );
-        }
-        else
-        {
-            DBG( 0,  "hpaio: %s option %d = %d = 0x%8.8X\n",
-                            hpaio->saneDevice.name,
-                            ( action == SANE_ACTION_SET_VALUE ? "set " : "" ),
-                            option,
-                            *( int * ) pValue,
-                            *( int * ) pValue );
-        }
-    }
+    DBG(8, "sane_hpaio_control_option (option=%s action=%s value=%s): %s %d\n", hpaio->option[option].name, 
+                        action==SANE_ACTION_GET_VALUE ? "get" : action==SANE_ACTION_SET_VALUE ? "set" : "auto",
+     pValue ? hpaio->option[option].type == SANE_TYPE_STRING ? (char *)pValue : psnprintf(sz, sizeof(sz), "%d", *(int *)pValue) : "na", __FILE__, __LINE__);
 
     return SANE_STATUS_GOOD;
-}
+}   /* sane_hpaio_control_option() */
 
-
-extern SANE_Status sane_hpaio_open( SANE_String_Const devicename,
-                                    SANE_Handle * pHandle )
-{
-    DBG( 0,  "\nhpaio:sane_hpaio_open(%s) *******************************************************************************************\n", devicename );
-    
-    SANE_Status retcode = SANE_STATUS_INVAL;
-    hpaioScanner_t hpaio = 0;
-    int r;
-    char deviceIDString[LEN_DEVICE_ID_STRING];
-    char model[256];
-    int forceJpegForGrayAndColor = 0;
-    int force300dpiForLineart = 0;
-    int force300dpiForGrayscale = 0;
-    int supportsMfpdtf = 1;
-    char devname[256];
-    MsgAttributes ma;
-
-    hpaio = hpaioFindScanner( devicename );
-    
-    if( hpaio )
-    {
-        goto done;     /* reuse same device, why?? (des) */
-    }
-    
-    hpaio = malloc( sizeof( struct hpaioScanner_s ) );
-    
-    if( !hpaio )
-    {
-        retcode = SANE_STATUS_NO_MEM;
-        goto abort;
-    }
-
-    hpaioAddScanner( hpaio );
-    
-    if( pHandle )
-    {
-        *pHandle = hpaio;
-    }
-    
-    memset( hpaio, 0, sizeof( struct hpaioScanner_s ) );
-    
-    /* add hp: back onto URI that was removed previously */
-    if(strncmp(devicename, "hp:", 3) != 0)
-    {
-        sprintf( devname, "hp:%s", devicename );
-    }
-    else
-    {
-        strcpy( devname, devicename );
-    }
-
-    DBG( 0, "Opening %s...\n", devname );
-    
-    hplip_ModelQuery(devname, &ma);  /* get device specific parameters */
-
-    hpaio->deviceid = hplip_OpenHP( (char *)devname, &ma );
-    strncpy( hpaio->deviceuri, devname, sizeof(hpaio->deviceuri) );
-    
-    if( hpaio->deviceid == -1 )
-    {
-        retcode = SANE_STATUS_IO_ERROR;
-        goto abort;
-    }
-    
-    hpaio->scan_channelid = -1;
-    hpaio->cmd_channelid = -1;
-
-    /* Get the device ID string and initialize the SANE_Device structure. */
-    memset( deviceIDString, 0, LEN_DEVICE_ID_STRING );
-    
-    if( hplip_GetID( hpaio->deviceid,  deviceIDString, sizeof(deviceIDString)) == 0 )
-    {
-        retcode = SANE_STATUS_INVAL;
-        goto abort;
-    }
-    
-    DBG( 0,  "hpaio:device ID string=<%s>\n", deviceIDString );
-    
-    hpaio->saneDevice.name = strdup( devicename ); 
-    
-    hpaio->saneDevice.vendor = "Hewlett-Packard"; 
-    
-    hplip_GetModel( deviceIDString, model, sizeof( model ) );
-    
-    DBG( 0, "Model = %s\n", model );
-    
-    hpaio->saneDevice.model = strdup( model );
-    hpaio->saneDevice.type = "multi-function peripheral";
-
-    /* Initialize option descriptors. */
-    hpaioSetupOptions( hpaio ); 
-
-//BREAKPOINT;
-    
-    /* Guess the command language (SCL or PML) based on the model string. */
-    if( UNDEFINED_MODEL( hpaio ) )
-    {
-        hpaio->scannerType = SCANNER_TYPE_SCL;
-    }
-    else if( strcasestr( hpaio->saneDevice.model, "laserjet" ) )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        hpaio->pml.openFirst = 1;
-        
-        if( strcasecmp( hpaio->saneDevice.model, "HP_LaserJet_1100" ) == 0 )
-        {
-            hpaio->pml.dontResetBeforeNextNonBatchPage = 1;
-        }
-        else
-        {
-            hpaio->pml.startNextBatchPageEarly = 1;
-        }
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet" ) == 0 ||
-             strcasecmp( hpaio->saneDevice.model, "OfficeJet_LX" ) == 0 ||
-             strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_300" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        hpaio->preDenali = 1;
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_500" ) == 0 ||
-             strcasecmp( hpaio->saneDevice.model, "All-in-One_IJP-V100" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        hpaio->fromDenali = 1;
-        force300dpiForLineart = 1;
-        force300dpiForGrayscale = 1;
-        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
-        hpaio->defaultCompression[SCAN_MODE_GRAYSCALE] = COMPRESSION_JPEG;
-        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_600" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        hpaio->denali = 1;
-        forceJpegForGrayAndColor = 1;
-        force300dpiForLineart = 1;
-        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
-        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "Printer/Scanner/Copier_300" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        forceJpegForGrayAndColor = 1;
-        force300dpiForLineart = 1;
-        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
-        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_Series_700" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        forceJpegForGrayAndColor = 1;
-        force300dpiForLineart = 1;
-        hpaio->defaultCompression[SCAN_MODE_LINEART] = COMPRESSION_MH;
-        hpaio->defaultJpegCompressionFactor = SAFER_JPEG_COMPRESSION_FACTOR;
-    }
-    else if( strcasecmp( hpaio->saneDevice.model, "OfficeJet_T_Series" ) == 0 )
-    {
-        hpaio->scannerType = SCANNER_TYPE_PML;
-        forceJpegForGrayAndColor = 1;
-    }
-    else
-    {
-        hpaio->scannerType = SCANNER_TYPE_SCL;
-    }
-
-    DBG( 0, "Scanner type (0=SCL, 1=PML): %d\n", hpaio->scannerType );
-    
-    /* Open and reset scanner command channel.
-     * This also allocates the PML objects if necessary. */
-    
-//BREAKPOINT;
-    
-    retcode = hpaioConnOpen( hpaio );
-    
-    if( retcode != SANE_STATUS_GOOD )
-    {
-        goto abort;
-    }
-
-    /* Probing and setup for SCL scanners... */
-    if( hpaio->scannerType == SCANNER_TYPE_SCL )
-    {
-        /* Even though this isn't SCANNER_TYPE_PML, there are still a few
-         * interesting PML objects. */
-        
-        SclSendCommand( hpaio->deviceid, hpaio->scan_channelid, SCL_CMD_CLEAR_ERROR_STACK, 0 );
-
-	//        hpaio->scl.objSupportedFunctions = hpaioPmlAllocateID( hpaio, "\x1\x1\x2\x43" );
-        hpaio->scl.objSupportedFunctions = hpaioPmlAllocateID( hpaio, "1.3.6.1.4.1.11.2.3.9.4.2.1.1.2.67.0" );
-        /* Probe the SCL model. */
-        DBG( 0,  "hpaio:Using SCL protocol.\n" );
-
-        retcode = SclInquire( hpaio->deviceid, 
-                              hpaio->scan_channelid,
-                              SCL_CMD_INQUIRE_DEVICE_PARAMETER,
-                              SCL_INQ_HP_MODEL_11,
-                              0,
-                              hpaio->scl.compat1150,
-                              LEN_MODEL_RESPONSE );
-        
-        if( retcode == SANE_STATUS_GOOD )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_OFFICEJET;
-        }
-        else if( retcode != SANE_STATUS_UNSUPPORTED )
-        {
-            goto abort;
-        }
-        DBG( 0,  "hpaio: scl.compat1150=<%s>.\n",
-                        hpaio->scl.compat1150 );
-
-        retcode = SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                              SCL_CMD_INQUIRE_DEVICE_PARAMETER,
-                              SCL_INQ_HP_MODEL_12,
-                              0,
-                              hpaio->scl.compatPost1150,
-                              LEN_MODEL_RESPONSE );
-        
-        if( retcode == SANE_STATUS_GOOD )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_POST_1150;
-        }
-        else if( retcode != SANE_STATUS_UNSUPPORTED )
-        {
-            goto abort;
-        }
-        DBG( 0,  "hpaio: scl.compatPost1150=<%s>.\n",
-                        hpaio->scl.compatPost1150 );
-
-        if( !hpaio->scl.compat )
-        {
-            SET_DEFAULT_MODEL( hpaio, "(unknown scanner)" );
-        }
-        else if( hpaio->scl.compat == SCL_COMPAT_OFFICEJET )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_1150;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 1150)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5400A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_1170;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 1170)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5500A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_R_SERIES;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet R Series)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5600A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_G_SERIES;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet G Series)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5700A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_K_SERIES;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet K Series)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5800A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_D_SERIES;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet D Series)" );
-        }
-        else if( !strcmp( hpaio->scl.compatPost1150, "5900A" ) )
-        {
-            hpaio->scl.compat |= SCL_COMPAT_6100_SERIES;
-            SET_DEFAULT_MODEL( hpaio, "(OfficeJet 6100 Series)" );
-        }
-        else
-        {
-            SET_DEFAULT_MODEL( hpaio, "(unknown OfficeJet)" );
-        }
-        DBG( 0,  "hpaio: scl.compat=0x%4.4X.\n",
-                        hpaio->scl.compat );
-
-        /* Decide which position/extent unit to use.  "Device pixels" works
-         * better on most models, but the 1150 requires "decipoints." */
-        if( hpaio->scl.compat & ( SCL_COMPAT_1150 ) )
-        {
-            hpaio->scl.decipixelChar = SCL_CHAR_DECIPOINTS;
-            hpaio->decipixelsPerInch = DECIPOINTS_PER_INCH;
-        }
-        else
-        {
-            hpaio->scl.decipixelChar = SCL_CHAR_DEVPIXELS;
-            hpaio->decipixelsPerInch = DEVPIXELS_PER_INCH;
-            /* Check for non-default decipixelsPerInch definition. */
-            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                        SCL_CMD_INQUIRE_DEVICE_PARAMETER,
-                        SCL_INQ_DEVICE_PIXELS_PER_INCH,
-                        &hpaio->decipixelsPerInch,
-                        0,
-                        0 );
-        }
-        DBG( 0,  "hpaio: decipixelChar='%c', decipixelsPerInch=%d.\n",
-                        hpaio->scl.decipixelChar,
-                        hpaio->decipixelsPerInch );
-
-        /* Is MFPDTF supported? */
-        if( hpaioSclSendCommandCheckError( hpaio,
-                                      SCL_CMD_SET_MFPDTF,
-                                      SCL_MFPDTF_ON ) != SANE_STATUS_GOOD )
-        {
-            DBG( 0,  "hpaio: Doesn't support MFPDTF.\n" );
-            supportsMfpdtf = 0;
-        }
-
-        /* All scan modes are supported with no compression. */
-        hpaio->supportsScanMode[SCAN_MODE_LINEART] = COMPRESSION_NONE;
-        hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] = COMPRESSION_NONE;
-        hpaio->supportsScanMode[SCAN_MODE_COLOR] = COMPRESSION_NONE;
-
-        /* Is JPEG also supported for grayscale and color (requires MFPDTF)? */
-//BREAKPOINT;        
-        
-        if( supportsMfpdtf )
-        {
-            if( hpaioSclSendCommandCheckError( hpaio,
-                                          SCL_CMD_SET_COMPRESSION,
-                                          SCL_COMPRESSION_JPEG ) == SANE_STATUS_GOOD )
-            {
-                hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] |= COMPRESSION_JPEG;
-                hpaio->supportsScanMode[SCAN_MODE_COLOR] |= COMPRESSION_JPEG;
-            }
-        }
-
-        /* Determine the minimum and maximum resolution.
-                  * Probe for both X and Y, and pick largest min and smallest max.
-                 * For the 1150, set min to 50 to prevent scan head crashes (<42). */
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MINIMUM_VALUE,
-                    SCL_CMD_SET_X_RESOLUTION,
-                    &hpaio->scl.minXRes,
-                    0,
-                    0 );
-        
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MINIMUM_VALUE,
-                    SCL_CMD_SET_Y_RESOLUTION,
-                    &hpaio->scl.minYRes,
-                    0,
-                    0 );
-        
-        if( hpaio->scl.compat & SCL_COMPAT_1150 &&
-            hpaio->scl.minYRes < SCL_MIN_Y_RES_1150 )
-        {
-            hpaio->scl.minYRes = SCL_MIN_Y_RES_1150;
-        }
-        r = hpaio->scl.minXRes;
-        if( r < hpaio->scl.minYRes )
-        {
-            r = hpaio->scl.minYRes;
-        }
-        
-        hpaio->resolutionRange.min = r;
-        
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
-                    SCL_CMD_SET_X_RESOLUTION,
-                    &hpaio->scl.maxXRes,
-                    0,
-                    0 );
-        
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
-                    SCL_CMD_SET_Y_RESOLUTION,
-                    &hpaio->scl.maxYRes,
-                    0,
-                   0 );
-        
-        r = hpaio->scl.maxXRes;
-        
-        if( r > hpaio->scl.maxYRes )
-        {
-            r = hpaio->scl.maxYRes;
-        }
-        
-        if( hpaio->scl.compat & ( SCL_COMPAT_1150 | SCL_COMPAT_1170 ) && r > SCL_MAX_RES_1150_1170 )
-        {
-            r = SCL_MAX_RES_1150_1170;
-        }
-        hpaio->resolutionRange.max = r;
-
-        /* Determine ADF/duplex capabilities. */
-        {
-            int flatbedCapability = 1;
-            
-            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                        SCL_CMD_INQUIRE_MAXIMUM_VALUE,
-                        SCL_PSEUDO_FLATBED_Y_RESOLUTION,
-                        &flatbedCapability,
-                        0,
-                        0 );
-                        
-            SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                        SCL_CMD_INQUIRE_DEVICE_PARAMETER,
-                        SCL_INQ_ADF_CAPABILITY,
-                        &hpaio->scl.adfCapability,
-                        0,
-                        0 );
-            
-            DBG( 0,  "hpaio: ADF capability=%d.\n",
-                            hpaio->scl.adfCapability );
-            
-            if( !hpaio->scl.adfCapability )
-            {
-                hpaio->supportedAdfModes = ADF_MODE_FLATBED;
-            }
-            else if( hpaio->scl.compat & SCL_COMPAT_K_SERIES ||
-                     !flatbedCapability )
-            {
-                hpaio->supportedAdfModes = ADF_MODE_ADF;
-            }
-            else
-            {
-                int supportedFunctions;
-
-                hpaio->supportedAdfModes = ADF_MODE_AUTO |
-                                           ADF_MODE_FLATBED |
-                                           ADF_MODE_ADF;
-                if( hpaio->scl.compat & ( SCL_COMPAT_1170 |
-                                          SCL_COMPAT_R_SERIES |
-                                          SCL_COMPAT_G_SERIES ) )
-                {
-                    hpaio->scl.unloadAfterScan = 1;
-                }
-                if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, hpaio->scl.objSupportedFunctions ) != ERROR &&
-                    PmlGetIntegerValue( hpaio->scl.objSupportedFunctions,
-                                        0,
-                                        &supportedFunctions ) != ERROR &&
-                    supportedFunctions & PML_SUPPFUNC_DUPLEX )
-                {
-                    hpaio->supportsDuplex = 1;
-                }
-            }
-        }
-
-        /* Determine maximum X and Y extents. */
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
-                    SCL_CMD_SET_X_EXTENT,
-                    &hpaio->scl.maxXExtent,
-                    0,
-                    0 );
-        
-        SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                    SCL_CMD_INQUIRE_MAXIMUM_VALUE,
-                    SCL_CMD_SET_Y_EXTENT,
-                    &hpaio->scl.maxYExtent,
-                    0,
-                    0 );
-        
-        DBG( 0,  "hpaio: Maximum extents: x=%d, y=%d.\n",
-                        hpaio->scl.maxXExtent,
-                        hpaio->scl.maxYExtent );
-        
-        hpaio->tlxRange.max = hpaio->brxRange.max = DECIPIXELS_TO_MILLIMETERS( hpaio->scl.maxXExtent );
-        hpaio->tlyRange.max = hpaio->bryRange.max = DECIPIXELS_TO_MILLIMETERS( hpaio->scl.maxYExtent );
-
-        /* Probing and setup for PML scanners... */
-    }
-    else /* if (hpaio->scannerType==SCANNER_TYPE_PML) */
-    {
-        int comps = 0;
-
-        hpaio->decipixelsPerInch = DECIPOINTS_PER_INCH;
-
-        /*ChannelSetSelectPollTimeout( hpaio->chan, &selectPollTimeout );
-                        
-                  ChannelSetSelectPollCallback( hpaio->chan,
-                                                                              hpaioPmlSelectCallback,
-                                                                              hpaio );*/
-
-        /* Determine supported scan modes and compression settings. */
-        if( hpaio->preDenali )
-        {
-            comps |= COMPRESSION_MMR;
-        }
-        
-        //DBG( 0, "Set compression\n" );
-        
-        PmlSetIntegerValue( hpaio->pml.objCompression,
-                            PML_TYPE_ENUMERATION,
-                            PML_COMPRESSION_NONE );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
-        {
-            comps |= COMPRESSION_NONE;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objCompression,
-                            PML_TYPE_ENUMERATION,
-                            PML_COMPRESSION_MH );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
-        {
-            comps |= COMPRESSION_MH;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objCompression,
-                            PML_TYPE_ENUMERATION,
-                            PML_COMPRESSION_MR );
-                            
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
-        {
-            comps |= COMPRESSION_MR;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objCompression,
-                            PML_TYPE_ENUMERATION,
-                            PML_COMPRESSION_MMR );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
-        {
-            comps |= COMPRESSION_MMR;
-        }
-        
-        //DBG( 0, "Set data type\n" );
-        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
-                            PML_TYPE_ENUMERATION,
-                            PML_DATA_TYPE_LINEART );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
-        {
-            hpaio->supportsScanMode[SCAN_MODE_LINEART] = comps;
-        }
-            comps &= COMPRESSION_NONE;
-        
-        if( forceJpegForGrayAndColor )
-        {
-            comps = 0;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objCompression,
-                            PML_TYPE_ENUMERATION,
-                            PML_COMPRESSION_JPEG );
-                            
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objCompression, 0, 0 ) != ERROR )
-        {
-            comps |= COMPRESSION_JPEG;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
-                            PML_TYPE_ENUMERATION,
-                            PML_DATA_TYPE_GRAYSCALE );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
-        {
-            hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE] = comps;
-        }
-        
-        PmlSetIntegerValue( hpaio->pml.objPixelDataType,
-                            PML_TYPE_ENUMERATION,
-                            PML_DATA_TYPE_COLOR );
-        
-        if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objPixelDataType, 0, 0 ) != ERROR )
-        {
-            hpaio->supportsScanMode[SCAN_MODE_COLOR] = comps;
-        }
-
-        /* Determine supported resolutions. */
-        NumListClear( hpaio->resolutionList );
-        NumListClear( hpaio->lineartResolutionList );
-        
-        if( hpaio->preDenali )
-        {
-            NumListAdd( hpaio->lineartResolutionList, 200 );
-            if( !strcmp( hpaio->saneDevice.model, "OfficeJet_Series_300" ) )
-            {
-                NumListAdd( hpaio->lineartResolutionList, 300 );
-            }
-            hpaio->option[OPTION_SCAN_RESOLUTION].constraint_type = SANE_CONSTRAINT_WORD_LIST;
-        }
-        else if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                                hpaio->pml.objResolutionRange ) == ERROR )
-        {
-pmlDefaultResRange:
-            /* TODO: What are the correct X and Y resolution ranges
-             * for the OfficeJet T series? */
-            hpaio->resolutionRange.min = 75;
-            hpaio->resolutionRange.max = 600;
-        }
-        else
-        {
-            char resList[PML_MAX_VALUE_LEN + 1];
-            int i, len, res, consumed;
-
-            PmlGetStringValue( hpaio->pml.objResolutionRange,
-                               0,
-                               resList,
-                               PML_MAX_VALUE_LEN );
-            
-            resList[PML_MAX_VALUE_LEN] = 0;
-            len = strlen( resList );
-
-            /* Parse "(100)x(100),(150)x(150),(200)x(200),(300)x(300)".
-                             * This isn't quite the right way to do it, but it'll do. */
-            for( i = 0; i < len; )
-            {
-                if( resList[i] < '0' || resList[i] > '9' )
-                {
-                    i++;
-                    continue;
-                }
-                if( sscanf( resList + i, "%d%n", &res, &consumed ) != 1 )
-                {
-                    break;
-                }
-                i += consumed;
-                if( !force300dpiForGrayscale || res >= 300 )
-                {
-                    NumListAdd( hpaio->resolutionList, res );
-                }
-                if( !force300dpiForLineart || res >= 300 )
-                {
-                    NumListAdd( hpaio->lineartResolutionList, res );
-                }
-            }
-
-            if( !NumListGetCount( hpaio->resolutionList ) )
-            {
-                goto pmlDefaultResRange;
-            }
-            hpaio->option[OPTION_SCAN_RESOLUTION].constraint_type = SANE_CONSTRAINT_WORD_LIST;
-        }
-
-        /* Determine contrast support. */
-        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                           hpaio->pml.objContrast ) != ERROR )
-        {
-            hpaio->option[OPTION_CONTRAST].cap &= ~SANE_CAP_INACTIVE;
-        }
-
-        /* Determine supported ADF modes. */
-        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                           hpaio->pml.objModularHardware ) != ERROR )
-        {
-            int modularHardware = 0;
-            hpaio->pml.flatbedCapability = 1;
-            if( PmlGetIntegerValue( hpaio->pml.objModularHardware,
-                                    0,
-                                    &modularHardware ) != ERROR &&
-                modularHardware & PML_MODHW_ADF )
-            {
-                goto adfAndAuto;
-            }
-            
-            hpaio->supportedAdfModes = ADF_MODE_FLATBED;
-        }
-        else
-        {
-adfAndAuto:
-            hpaio->supportedAdfModes = ADF_MODE_AUTO | ADF_MODE_ADF;
-        }
-            hpaio->supportsDuplex = 0;
-
-        hpaio->tlxRange.max = hpaio->brxRange.max = INCHES_TO_MILLIMETERS( PML_MAX_WIDTH_INCHES );
-        hpaio->tlyRange.max = hpaio->bryRange.max = INCHES_TO_MILLIMETERS( PML_MAX_HEIGHT_INCHES );
-
-    }  /* if( hpaio->scannerType == SCANNER_TYPE_SCL ) */
-
-    DBG( 0,  "hpaio: forceJpegForGrayAndColor=%d.\n",
-                    forceJpegForGrayAndColor );
-    DBG( 0,  "hpaio: force300dpiForLineart=%d.\n",
-                    force300dpiForLineart );
-    DBG( 0,  "hpaio: force300dpiForGrayscale=%d.\n",
-                    force300dpiForGrayscale );
-    DBG( 0,  "hpaio: pml.openFirst=%d.\n",
-                    hpaio->pml.openFirst );
-    DBG( 0,  "hpaio: fromDenali=%d.\n",
-                    hpaio->fromDenali );
-    DBG( 0,  "hpaio: supportsScanMode: lineart=0x%2.2X, "
-                    "grayscale=0x%2.2X, color=0x%2.2X.\n",
-                    hpaio->supportsScanMode[SCAN_MODE_LINEART],
-                    hpaio->supportsScanMode[SCAN_MODE_GRAYSCALE],
-                    hpaio->supportsScanMode[SCAN_MODE_COLOR] );
-    DBG( 0,  "hpaio: supportedAdfModes=0x%2.2X.\n",
-                    hpaio->supportedAdfModes );
-    DBG( 0,  "hpaio: supportsDuplex=%d.\n",
-                    hpaio->supportsDuplex );
-    DBG( 0, "hpaio: supports MFPDTF=%d\n", 
-                    supportsMfpdtf );
-
-//BREAKPOINT;
-
-    /* Allocate MFPDTF parser if supported. */
-    if( supportsMfpdtf )
-    {
-        hpaio->mfpdtf = MfpdtfAllocate( hpaio->deviceid, hpaio->scan_channelid );
-        MfpdtfSetChannel( hpaio->mfpdtf, hpaio->scan_channelid );
-        
-        if( hpaio->preDenali )
-        {
-            MfpdtfReadSetSimulateImageHeaders( hpaio->mfpdtf, 1 );
-        }
-    }
-
-done:
-    /* Finish setting up option descriptors. */
-    hpaioUpdateDescriptors( hpaio, OPTION_FIRST );
-
-    if( pHandle )
-    {
-        *pHandle = hpaio;
-    }
-    //ptalDeviceSetAppInfo( dev, hpaio );
-    retcode = SANE_STATUS_GOOD;
-
-abort:
-    if( hpaio )
-    {
-        hpaioConnClose( hpaio );
-    }
-    if( retcode != SANE_STATUS_GOOD )
-    {
-        if( hpaio )
-        {
-            if( hpaio->saneDevice.name )
-            {
-                free( ( void * ) hpaio->saneDevice.name );
-            }
-            if( hpaio->saneDevice.model )
-            {
-                free( ( void * ) hpaio->saneDevice.model );
-            }
-            free( hpaio );
-        }
-    }
-    return retcode;
-}
-
-/* Note, sane_cancel is called normally not just during IO abort situations. */
-extern void sane_hpaio_cancel( SANE_Handle handle )
+extern SANE_Status sane_hpaio_get_parameters(SANE_Handle handle, SANE_Parameters *pParams)
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
+    char *s = "";
 
-    DBG( 0,  "\nhpaio: sane_hpaio_cancel() *******************************************************************************************\n" ); 
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_get_parameters(handle, pParams);
 
-    if (hpaio->scannerType==SCANNER_TYPE_PML)
+    if( !hpaio->hJob )
     {
-        pml_cancel(hpaio);
-        return ;
+        *pParams = hpaio->prescanParameters;
+        s = "pre";
     }
-
-    /* TODO: convert to scl_cancel. des */
-
-    if( hpaio->mfpdtf )
+    else
     {
-        MfpdtfLogToFile( hpaio->mfpdtf, 0 );
-        //MfpdtfDeallocate( hpaio->mfpdtf );
+        *pParams = hpaio->scanParameters;
     }
-    
-    if( hpaio->hJob )
-    {
-        ipClose( hpaio->hJob );
-        hpaio->hJob = 0;
-    }
-    
-    /* Do not close pml/scan channels if in batch mode. */ 
-    if (hpaio->currentBatchScan != SANE_TRUE && hpaio->cmd_channelid > 0)
-       hpaioConnEndScan(hpaio);
-    
-} // sane_hpaio_cancel()
+    DBG(8, "sane_hpaio_get_parameters(%sscan): format=%d, last_frame=%d, lines=%d, depth=%d, pixels_per_line=%d, bytes_per_line=%d %s %d\n",
+                    s, pParams->format, pParams->last_frame, pParams->lines, pParams->depth, pParams->pixels_per_line, pParams->bytes_per_line, __FILE__, __LINE__);
 
+    return SANE_STATUS_GOOD;
+}  /* sane_hpaio_get_parameters() */
 
-extern SANE_Status sane_hpaio_start( SANE_Handle handle )
+extern SANE_Status sane_hpaio_start(SANE_Handle handle)
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
     SANE_Status retcode;
     IP_IMAGE_TRAITS traits;
     IP_XFORM_SPEC xforms[IP_MAX_XFORMS], * pXform = xforms;
     WORD wResult;
-    
-    DBG( 0,  "\nhpaio: sane_hpaio_start() ******************************************************************************************* \n" );
-    
+        
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_start(handle);
+
+    DBG(8, "sane_hpaio_start(): %s %d\n", __FILE__, __LINE__);
+
     hpaio->endOfData = 0;
 
     if (hpaio->scannerType==SCANNER_TYPE_PML)
@@ -2991,13 +3099,9 @@ extern SANE_Status sane_hpaio_start( SANE_Handle handle )
             
             sprintf(f, "/tmp/mfpdtf_%d.out", cnt++);
             
-            bug("saving raw image to %s \n", f );
+            bug("saving raw image to %s \n", f);
             
             MfpdtfLogToFile( hpaio->mfpdtf,  f );
-        }
-        else
-        {
-            MfpdtfLogToFile( hpaio->mfpdtf,  0 );
         }
         
         while( 1 )
@@ -3042,44 +3146,41 @@ extern SANE_Status sane_hpaio_start( SANE_Handle handle )
             }
             else if( rService & MFPDTF_RESULT_NEW_START_OF_PAGE_RECORD )
             {
-                struct MfpdtfImageStartPageRecord_s sop;
+	      //                struct MfpdtfImageStartPageRecord_s sop;
 
-                if( hpaio->scannerType == SCANNER_TYPE_SCL )
+	      //                if( hpaio->scannerType == SCANNER_TYPE_SCL )
+	      //                {
+                if( hpaio->currentCompression == COMPRESSION_NONE )
                 {
-                    if( hpaio->currentCompression == COMPRESSION_NONE )
-                    {
-                        goto rawDecode;
-                    }
-                    else /* if (hpaio->currentCompression==COMPRESSION_JPEG) */
-                    {
-                        goto jpegDecode;
-                    }
+                   goto rawDecode;
+                }
+                else /* if (hpaio->currentCompression==COMPRESSION_JPEG) */
+                {
+                   goto jpegDecode;
                 }
 
                 /* Read SOP record and set image pipeline input traits. */
-                MfpdtfReadGetStartPageRecord( hpaio->mfpdtf, &sop, sizeof( sop ) );
-                
-                traits.iPixelsPerRow = LEND_GET_SHORT( sop.black.pixelsPerRow );
-                traits.iBitsPerPixel = LEND_GET_SHORT( sop.black.bitsPerPixel );
-                traits.lHorizDPI = LEND_GET_LONG( sop.black.xres );
-                traits.lVertDPI = LEND_GET_LONG( sop.black.yres );
-                sopEncoding = sop.encoding;
+		//                MfpdtfReadGetStartPageRecord( hpaio->mfpdtf, &sop, sizeof( sop ) );
+		//                traits.iPixelsPerRow = LEND_GET_SHORT( sop.black.pixelsPerRow );
+		//                traits.iBitsPerPixel = LEND_GET_SHORT( sop.black.bitsPerPixel );
+		//                traits.lHorizDPI = LEND_GET_LONG( sop.black.xres );
+		//                traits.lVertDPI = LEND_GET_LONG( sop.black.yres );
+		//                sopEncoding = sop.encoding;
+
 setupDecoder:
-                
                 /* Set up image-processing pipeline. */
                 switch( sopEncoding )
                 {
                     case MFPDTF_RASTER_MH:
                         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MH;
-                        goto faxDecode;
-                    
+                        ADD_XFORM( X_FAX_DECODE );
+                        break;
                     case MFPDTF_RASTER_MR:
                         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MR;
-                        goto faxDecode;
-                    
+                        ADD_XFORM( X_FAX_DECODE );
+                        break;
                     case MFPDTF_RASTER_MMR:
                         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MMR;
-faxDecode: 
                         ADD_XFORM( X_FAX_DECODE );
                         break;
 
@@ -3087,7 +3188,7 @@ faxDecode:
                     case MFPDTF_RASTER_GRAYMAP:
                     case MFPDTF_RASTER_RGB:
 rawDecode: 
-                    break;
+                        break;
 
                     case MFPDTF_RASTER_JPEG:
 jpegDecode:
@@ -3104,7 +3205,7 @@ jpegDecode:
                     case MFPDTF_RASTER_NOT:
                     default:
                         /* Skip processing for unknown encodings. */
-                        bug("unknown image encoding sane_start: name=%s sop=%d\n", hpaio->saneDevice.name,sopEncoding);
+                        bug("unknown image encoding sane_start: name=%s sop=%d %s %d\n", hpaio->saneDevice.name,sopEncoding, __FILE__, __LINE__);
                 }
                 continue;
             }
@@ -3205,13 +3306,10 @@ abort:
     }
     return retcode;
     
-} //sane_hpaio_start()
+}   /* sane_hpaio_start() */
 
 
-extern SANE_Status sane_hpaio_read( SANE_Handle handle,
-                                    SANE_Byte * data,
-                                    SANE_Int maxLength,
-                                    SANE_Int * pLength )
+extern SANE_Status sane_hpaio_read(SANE_Handle handle, SANE_Byte *data, SANE_Int maxLength, SANE_Int *pLength)
 {
     hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
     SANE_Status retcode;
@@ -3223,19 +3321,25 @@ extern SANE_Status sane_hpaio_read( SANE_Handle handle,
     DWORD dwOutputUsed, dwOutputThisPos;
     WORD wResult;
 
-    DBG( 0,  "\nhpaio: sane_hpaio_read(maxLength=%d) ****************************************************************************\n", maxLength );
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_read(handle, data, maxLength, pLength);
 
     *pLength = 0;
 
     if( !hpaio->hJob )
     {
-        DBG( 0,  "hpaio: sane_hpaio_read(maxLength=%d): No scan pending!\n", maxLength );
+        bug("sane_hpaio_read(maxLength=%d): No scan pending!\n", maxLength);
         retcode = SANE_STATUS_EOF;
         goto abort;
     }
 
     if (hpaio->scannerType==SCANNER_TYPE_PML)
-        return pml_read(hpaio, data, maxLength, pLength);
+    {
+        retcode = pml_read(hpaio, data, maxLength, pLength);
+        return retcode;
+    }
+
+    DBG(8, "sane_hpaio_read called handle=%p data=%p maxLength=%d length=%d: %s %d\n", (void *)handle, data, maxLength, *pLength, __FILE__, __LINE__);
 
     /* TODO: convert to scl_read. des */
 
@@ -3245,7 +3349,6 @@ needMoreData:
         if( !hpaio->mfpdtf )
         {
             int r, len = hpaio->totalBytesRemaining;
-            DBG( 0,  "hpaio: sane_hpaio_read: totalBytesRemaining=%d.\n", hpaio->totalBytesRemaining );
             if( len <= 0 )
             {
                 hpaio->endOfData = 1;
@@ -3261,7 +3364,7 @@ needMoreData:
                                    hpaio->scan_channelid, 
                                    hpaio->inBuffer, 
                                    len,
-                                   EXCEPTION_TIMEOUT );
+                                   HPLIP_EXCEPTION_TIMEOUT );
                 
                 if( r < 0 )
                 {
@@ -3334,26 +3437,13 @@ needMoreData:
                          &dwOutputUsed,
                          &dwOutputThisPos );
 
-    DBG( 0,  "hpaio: sane_hpaio_read: "
-                    "ipConvert(dwInputAvail=%d,pbInputBuf=0x%8.8X,"
-                    "dwInputUsed=%d,dwInputNextPos=%d,dwOutputAvail=%d,"
-                    "dwOutputUsed=%d,dwOutputThisPos=%d) returns 0x%4.4X.\n",
-                    dwInputAvail,
-                    pbInputBuf,
-                    dwInputUsed,
-                    dwInputNextPos,
-                    dwOutputAvail,
-                    dwOutputUsed,
-                    dwOutputThisPos,
-                    wResult );
-    
     hpaio->bufferOffset += dwInputUsed;
     hpaio->bufferBytesRemaining -= dwInputUsed;
     *pLength = dwOutputUsed;
     
     if( wResult & ( IP_INPUT_ERROR | IP_FATAL_ERROR ) )
     {
-        bug("hpaio: ipConvert error=%x\n", wResult);
+        bug("ipConvert error=%x\n", wResult);
         retcode = SANE_STATUS_IO_ERROR;
         goto abort;
     }
@@ -3363,6 +3453,8 @@ needMoreData:
         {
             retcode = SANE_STATUS_EOF;
             hpaioAdvanceDocument(hpaio);
+            ipClose(hpaio->hJob);
+            hpaio->hJob = 0;
             goto abort;
         }
         goto needMoreData;
@@ -3376,64 +3468,56 @@ abort:
         sane_hpaio_cancel( handle );
     }
 
-    DBG( 0,  "hpaio: sane_hpaio_read(maxLength=%d) returns %d, "
-                    "*pLength=%d\n",
-                    maxLength,
-                    retcode,
-                    *pLength );
+    DBG(8, "sane_hpaio_read returned output=%p outputUsed=%d length=%d status=%d: %s %d\n", pbOutputBuf, dwOutputUsed, *pLength, retcode, __FILE__, __LINE__);
+
     return retcode;
 
-} // sane_hpaio_read()
+} /* sane_hpaio_read() */
 
-extern void sane_hpaio_close(SANE_Handle handle)
+/* Note, sane_cancel is called normally not just during IO abort situations. */
+extern void sane_hpaio_cancel( SANE_Handle handle )
 {
-    
-    hpaioScanner_t hpaio = (hpaioScanner_t) handle;
+    hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;
 
-    DBG( 0,  "\nhpaio: sane_hpaio_close() *******************************************************************************************\n" ); 
+    if (strcmp(*((char **)handle), "SOAP") == 0)
+        return soap_cancel(handle);
 
-    hpaioPmlDeallocateObjects(hpaio);
+    DBG(8, "sane_hpaio_cancel(): %s %d\n", __FILE__, __LINE__); 
 
-    /* ADF may leave channel(s) open. */  
-    if (hpaio->cmd_channelid > 0)
-       hpaioConnEndScan(hpaio);
-    
-    if (hpaio->deviceid > 0)
+    if (hpaio->scannerType==SCANNER_TYPE_PML)
     {
-       hplip_CloseHP(hpaio->deviceid);
-       hpaio->deviceid = -1;
+        pml_cancel(hpaio);
+        return ;
+    }
+
+    /* TODO: convert to scl_cancel. des */
+
+    if( hpaio->mfpdtf )
+    {
+        MfpdtfLogToFile( hpaio->mfpdtf, 0 );
+        //MfpdtfDeallocate( hpaio->mfpdtf );
     }
     
-    /* free hpaio object?? (des) */
-}
+    if( hpaio->hJob )
+    {
+        ipClose( hpaio->hJob );
+        hpaio->hJob = 0;
+    }
+    
+    /* Do not close pml/scan channels if in batch mode. */ 
+    if (hpaio->currentBatchScan != SANE_TRUE && hpaio->cmd_channelid > 0)
+       hpaioConnEndScan(hpaio);
+    
+}  /* sane_hpaio_cancel() */
 
-extern SANE_Status sane_hpaio_set_io_mode( SANE_Handle handle,
-                                           SANE_Bool nonBlocking )
+extern SANE_Status sane_hpaio_set_io_mode(SANE_Handle handle, SANE_Bool nonBlocking)
 {
-    /*hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;*/
-
-    DBG( 0,  "\nhpaio: sane_hpaio_set_io_mode() unsupported!\n" );
-
     return SANE_STATUS_UNSUPPORTED;
 }
 
-extern SANE_Status sane_hpaio_get_select_fd( SANE_Handle handle,
-                                             SANE_Int * pFd )
+extern SANE_Status sane_hpaio_get_select_fd(SANE_Handle handle, SANE_Int *pFd)
 {
-    /*hpaioScanner_t hpaio = ( hpaioScanner_t ) handle;*/
-
-    DBG( 0,  "\nhpaio: sane_hpaio_get_select_fd() unsupported!\n" );
-
     return SANE_STATUS_UNSUPPORTED;
 }
 
-
-extern void sane_hpaio_exit( void )
-{
-    DBG( 0, "\nhpaio: sane_hpaio_exit() *******************************************************************************************\n" );
-
-    ResetDevices( &hpaioDeviceList );
-
-    hplip_Exit();
-}
 

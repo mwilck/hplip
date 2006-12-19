@@ -1,7 +1,7 @@
 /*****************************************************************************\
   context.h : Interface/Implimentation for the PrintContext class
 
-  Copyright (c) 1996 - 2001, Hewlett-Packard Co.
+  Copyright (c) 1996 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -254,6 +254,9 @@ public:
     {
         m_iCopyCount = iNumCopies;
     }
+#ifdef APDK_LINUX
+    DRIVER_ERROR    SetPrinterHint (int iHint, int iValue);
+#endif
 
 private:
 

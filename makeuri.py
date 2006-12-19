@@ -169,15 +169,7 @@ except socket.error:
     log.error("Unable to connect to hpiod.")
     sys.exit(1)
 
-hpssd_sock = None
-try:
-    hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-except socket.error:
-    log.error("Unable to connect to hpssd.")
-    sys.exit(1)
-    
-cups_uri, sane_uri, fax_uri = device.makeuri(hpiod_sock, hpssd_sock, param, jd_port)
+cups_uri, sane_uri, fax_uri = device.makeURI(hpiod_sock, param, jd_port)
 
 if not cups_uri:
     log.error("Device not found")
@@ -205,6 +197,5 @@ elif not fax_uri and fax_quiet_mode:
     log.error("Device does not support fax.")
 
 hpiod_sock.close()
-hpssd_sock.close()
 
 sys.exit(0)

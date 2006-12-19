@@ -1,93 +1,138 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>HPLIP How-Tos - Printing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<div id="banner">
+<div id="banner_graphics">
+		<div id="floatleft">
+		<img src="../images/hplogo2.png" alt="HP Logo" border="0" />
+		</div>
+		<div id="floatcenter">
+		<a href="../index.html">
+		<img src="../images/hpliplogo.png" alt="HP Logo" border="0" />
+		</a>
+		</div>
+		<div id="floatright">
+		<img src="../images/tuxlogo2.png" alt="Tux" border="0" />
+		</div>
+	</div>
+</div>
+<!-- end banner -->
 
- <head>
-  <title>HPLIP How-Tos - Printing</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
-  <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
-  <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
-       <meta name="author" content="" />
-       <meta name="email" content="" />
-  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
- </head>
+<div id="navbar">
+<table>
+	<tr>
+		<td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+	<menu compact="compact">
+		<li><a href="../index.html" title="">Home</a></li> 
+	</menu>
 
- <body>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td align="left" valign="top">
-                <a href="../index.html"><img src="../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
-                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
-            </td>
-        </tr>
-    </table>
-
-    <table  border="0" width="100%" cellspacing="4">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <tr>
-        <!-- LEFT SIDE NAVIGATION -->
-            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
-                <div class="menuheader">About</div> 
-                <menu compact="compact">
-                    <li><a href="../features.html" title="">Features</a></li> 
-                    <li><a href="../screenshots.html" title="">Screenshots</a></li> 
-                    <li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
-                </menu>
-
-                <div class="menuheader">Setup and Installation</div> 
-                <menu compact="compact">
-
-                    <li><a href="../downloads.html" title="Downloads"><b>Download HPLIP</b></a></li>
-                    <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
-                    <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
-                    <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
-                </menu>
-
-                <div class="menuheader">Usage and Support</div> 
-                <menu compact="compact">
-                    <li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
-                    <li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
-                    <li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
-                    <li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
-                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
-                </menu>
-
-                <div class="menuheader">Resources</div>
-                <menu compact="compact">
-                    <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
-                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../license.html" title="Software License">Software License</a></li>
-                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
-                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
-                    <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
-                </menu>
-            </td>
-
-        <!-- CONTENT -->
-
+<div class="menuheader">About</div>
+	<menu compact="compact">
+		<li><a href="../features.html" title="">Features</a></li> 
+		<li><a href="../screenshots.html" title="">Screenshots</a></li> 
+		<li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
+		<li><a a href="../about.html" title="About">About HPLIP</a></li>
+	</menu>
+<div class="menuheader">Setup and Installation</div> 
+	<menu compact="compact">
+		<li><a href="../downloads.html" title="Downloads">Download HPLIP</a></li>
+		<li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+		<li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+		<li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+	</menu>
+<div class="menuheader">Usage and Support</div> 
+	<menu compact="compact">
+		<li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+		<li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+		<li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+		<li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
+	</menu>
+<div class="menuheader">Resources</div>
+	<menu compact="compact">
+		<li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
+		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+		<li><a href="../license.html" title="Software License">Software License</a></li>
+		<li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+		<li><a href="../contacts.html" title="Contacts">Contacts</a></li>
+	</menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="yellowsplit">
+<div id="content"><!-- start content -->
         <a href="../index.html">Home</a>
 &gt;
 <a href="index.html">How-Tos</a>
 &gt;
 Printing
 
-
-        <td align="left" valign="top" class="content">
+<hr size="1"/>
         <div class="document" id="printing-how-tos">
 <h1 class="title">Printing How-Tos</h1>
+<p><a class="reference" href="#manualdup">Manual Duplex Printing</a></p>
 <p><a class="reference" href="#kview">Fullbleed Printing Method Number 1: Using KView or Gwenview</a></p>
 <p><a class="reference" href="#lpr">Fullbleed Printing Method Number 2: Using lpr</a></p>
 <p><a class="reference" href="#troubleshooting">Fullbleed Troubleshooting</a></p>
 <p><a class="reference" href="#gimp">Printing from The GIMP</a></p>
 <p><a class="reference" href="#cddvd">Printing on CDs and DVDs Using the Photosmart D5100</a></p>
 <div class="section">
-<h1><a id="id1" name="id1"><span id="kview"></span>Fullbleed Printing Method Number 1: Using KView or Gwenview</a></h1>
+<h1><a id="id1" name="id1"><span id="manualdup"></span>Manual Duplex Printing</a></h1>
+<p><em>Note</em>:  This was testing using OpenOffice, however this should work with any printing application that has the ability of printing odd/even pages.</p>
+<ol class="arabic">
+<li><p class="first">Open the OpenOffice document to be printed</p>
+</li>
+<li><p class="first">Click on File then Print</p>
+</li>
+<li><p class="first">Click Options</p>
+</li>
+<li><p class="first">Under the Section &quot;Pages&quot; make sure that &quot;Left&quot; is only selected.</p>
+<blockquote>
+<p>Left = Even Numbered Pages | Right = Odd Numbered Pages</p>
+</blockquote>
+</li>
+<li><p class="first">Click Ok then Print</p>
+</li>
+<li><p class="first">The even number pages should print.</p>
+</li>
+<li><p class="first">Once the pages are completed printing change the order of the pages printed so that the pages on the bottom are now on the top.</p>
+</li>
+</ol>
+<p>Example:  Printed 2 even pages from a 4 page document.  Pages 2 then 4 are printed from the printer.  Move page 4 under page 2.</p>
+<ol class="arabic" start="8">
+<li><p class="first">Place the reordered printed document into the paper tray of the printer so that the printed side is face up, and the blank side is face down.  Also ensure that the TOP of the document is going into the printer so that the text is facing the same direction on all of the pages.</p>
+</li>
+<li><p class="first">Click on File then Print</p>
+</li>
+<li><p class="first">Click Options.</p>
+</li>
+<li><p class="first">Under the Section &quot;Pages&quot; make sure that &quot;Right&quot; is only selected.</p>
+<blockquote>
+<p>Left = Even Numbered Pages | Right = Odd Numbered Pages</p>
+</blockquote>
+</li>
+<li><p class="first">Click on Ok then Print.</p>
+</li>
+<li><p class="first">Printer will print odd number pages now on the backside of the even pages.</p>
+</li>
+</ol>
+</div>
+<div class="section">
+<h1><a id="id2" name="id2"><span id="kview"></span>Fullbleed Printing Method Number 1: Using KView or Gwenview</a></h1>
 <div align="center" class="figure">
 <img alt="../images/fullbleed_1.png" src="../images/fullbleed_1.png" />
 <p class="caption">Image before scaled to correct size in GIMP</p>
@@ -139,7 +184,7 @@ Printing
 </ol>
 </div>
 <div class="section">
-<h1><a id="id2" name="id2"><span id="lpr"></span>Fullbleed Printing Method Number 2: Using lpr</a></h1>
+<h1><a id="id3" name="id3"><span id="lpr"></span>Fullbleed Printing Method Number 2: Using lpr</a></h1>
 <div align="center" class="figure">
 <img alt="../images/fullbleed_1.png" src="../images/fullbleed_1.png" />
 <p class="caption">Image before scaled to correct size in GIMP</p>
@@ -183,18 +228,18 @@ Printing
 <li>Open a terminal window.</li>
 <li>Goto the directory where you saved the image.  Example:</li>
 </ol>
-<pre class="literal-block">
-cd ~/Desktop
-</pre>
+<div class="compound">
+<p>cd ~/Desktop</p>
+</div>
 <ol class="arabic simple" start="16">
 <li>Enter this command:</li>
 </ol>
-<pre class="literal-block">
-lpr -Pprinter_name filename.ps
-</pre>
+<div class="compound">
+<p>lpr -Pprinter_name filename.ps</p>
+</div>
 </div>
 <div class="section">
-<h1><a id="id3" name="id3"><span id="troubleshooting"></span>Fullbleed Troubleshooting</a></h1>
+<h1><a id="id4" name="id4"><span id="troubleshooting"></span>Fullbleed Troubleshooting</a></h1>
 <ol class="arabic simple">
 <li>Make sure the image is scaled to the same size as the paper.</li>
 <li>Make sure the printer is set to fullbleed mode.  This is found on the printer properties dialog or in the CUPS printer administration page.</li>
@@ -205,7 +250,7 @@ lpr -Pprinter_name filename.ps
 <p><strong>Special Note regarding orientation:</strong>  If the page orentiation is portrait, and you want to print a fullbleed 3x5 photo, make sure the photo is scaled to 3&quot; width, by 5&quot; height.  If you wish to print the image in the landscape orentiation make sure to scale the image to the correct size and orentiation.</p>
 </div>
 <div class="section">
-<h1><a id="id4" name="id4"><span id="gimp"></span>Printing from The GIMP</a></h1>
+<h1><a id="id5" name="id5"><span id="gimp"></span>Printing from The GIMP</a></h1>
 <p><em>NOTE: HP recommends that you use GIMPPrint/GuttenPrint v5.0 or greater.</em></p>
 <p><strong>Steps:</strong></p>
 <ol class="arabic simple">
@@ -220,7 +265,7 @@ lpr -Pprinter_name filename.ps
 </ol>
 </div>
 <div class="section">
-<h1><a id="id5" name="id5"><span id="cddvd"></span>Printing on CDs and DVDs Using the Photosmart D5100</a></h1>
+<h1><a id="id6" name="id6"><span id="cddvd"></span>Printing on CDs and DVDs Using the Photosmart D5100</a></h1>
 <p>You can print directly special printable CD and DVD media from your Photosmart D5100. This printer allows you to print on either 3in. (80mm) &quot;Mini&quot; or 5in. (120mm) media.</p>
 <p>To print on one of these media, you must configure the printer as follows:</p>
 <ol class="arabic simple">
@@ -239,27 +284,21 @@ lpr -Pprinter_name filename.ps
 </div>
 </div>
 
-
-        <hr size="1"/>
-        <small>Last update: Fri Sep 15 14:35:41 2006; HPLIP Version: 1.6.10</small>
-
-        <!-- FOOTER -->
-    </table>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <!-- <tr><td colspan="3" class="footer"></td> -->
-        <tr>
-            <td class="footer"><a href="../legal.html">Legal Notices</a></td>
-            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
-            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
-        </tr>
-        <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
-        </tr>
-    
-    </table>
+<hr size="1"/>
+<center><small>Page last updated: Mon Dec 18 13:38:37 2006; HPLIP Version: 1.6.12</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+</div><!-- end container -->
+<div id="footer"><!-- start footer -->
+		<hr size="1"/>
+		<a href="../legal.html">Legal Notices</a>
+		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
+		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
 </body>
-
 </html>

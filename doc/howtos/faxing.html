@@ -1,84 +1,87 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>HPLIP How-Tos - Faxing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<div id="banner">
+<div id="banner_graphics">
+		<div id="floatleft">
+		<img src="../images/hplogo2.png" alt="HP Logo" border="0" />
+		</div>
+		<div id="floatcenter">
+		<a href="../index.html">
+		<img src="../images/hpliplogo.png" alt="HP Logo" border="0" />
+		</a>
+		</div>
+		<div id="floatright">
+		<img src="../images/tuxlogo2.png" alt="Tux" border="0" />
+		</div>
+	</div>
+</div>
+<!-- end banner -->
 
- <head>
-  <title>HPLIP How-Tos - Faxing</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!-- <link rel="stylesheet" href="../styles/style.css" type="text/css" /> -->
-  <link rel="stylesheet" href="../styles/rest.css" type="text/css" /> 
-  <link rel="stylesheet" href="../styles/default.css" type="text/css" /> 
-       <meta name="author" content="" />
-       <meta name="email" content="" />
-  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-  <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
- </head>
+<div id="navbar">
+<table>
+	<tr>
+		<td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+	<menu compact="compact">
+		<li><a href="../index.html" title="">Home</a></li> 
+	</menu>
 
- <body>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td align="left" valign="top">
-                <a href="../index.html"><img src="../images/hp-tux-printer.png" alt="HP Linux Imaging and Printing" align="left" border="0"/></a>
-                <h1>HP Linux Imaging and Printing (HPLIP)</h1>
-            </td>
-        </tr>
-    </table>
-
-    <table  border="0" width="100%" cellspacing="4">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <tr>
-        <!-- LEFT SIDE NAVIGATION -->
-            <td  valign="top" class="navleft" width="5%"> <!-- nowrap="nowrap" -->
-                <div class="menuheader">About</div> 
-                <menu compact="compact">
-                    <li><a href="../features.html" title="">Features</a></li> 
-                    <li><a href="../screenshots.html" title="">Screenshots</a></li> 
-                    <li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
-                </menu>
-
-                <div class="menuheader">Setup and Installation</div> 
-                <menu compact="compact">
-
-                    <li><a href="../downloads.html" title="Downloads"><b>Download HPLIP</b></a></li>
-                    <li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
-                    <li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-                    <!-- <li><a href="http://sourceforge.net/project/showfiles.php?group_id=149981" title="Downloads">Downloads</a></li>  -->
-                    <li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
-                </menu>
-
-                <div class="menuheader">Usage and Support</div> 
-                <menu compact="compact">
-                    <li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
-                    <li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
-                    <li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
-                    <li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
-                    <!-- <li><a href="" title="Software Patches">Software Patches</a></li> -->
-                </menu>
-
-                <div class="menuheader">Resources</div>
-                <menu compact="compact">
-                    <li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
-                    <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-                    <li><a href="../license.html" title="Software License">Software License</a></li>
-                    <li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
-                    <li><a a href="../about.html" title="About">About HPLIP</a></li>
-                    <li><a href="../contacts.html" title="Contacts">Contacts</a></li>
-                </menu>
-            </td>
-
-        <!-- CONTENT -->
-
+<div class="menuheader">About</div>
+	<menu compact="compact">
+		<li><a href="../features.html" title="">Features</a></li> 
+		<li><a href="../screenshots.html" title="">Screenshots</a></li> 
+		<li><a href="../faqs.html" title="FAQs">FAQs</a></li> 
+		<li><a a href="../about.html" title="About">About HPLIP</a></li>
+	</menu>
+<div class="menuheader">Setup and Installation</div> 
+	<menu compact="compact">
+		<li><a href="../downloads.html" title="Downloads">Download HPLIP</a></li>
+		<li><a href="../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+		<li><a href="../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+		<li><a href="../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+	</menu>
+<div class="menuheader">Usage and Support</div> 
+	<menu compact="compact">
+		<li><a href="../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+		<li><a href="../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+		<li><a href="../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+		<li><a href="../release_notes.html" title="Release Notes">Release Notes</a></li>
+	</menu>
+<div class="menuheader">Resources</div>
+	<menu compact="compact">
+		<li><a href="../tech_docs/index.html" title="">Technical Documentation</a></li> 
+		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+		<li><a href="../license.html" title="Software License">Software License</a></li>
+		<li><a a href="../other_support.html" title="Other Support Information">Other Support Information</a></li>
+		<li><a href="../contacts.html" title="Contacts">Contacts</a></li>
+	</menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="yellowsplit">
+<div id="content"><!-- start content -->
         <a href="../index.html">Home</a>
 &gt;
 <a href="index.html">How-Tos</a>
 &gt;
 Faxing
 
-
-        <td align="left" valign="top" class="content">
+<hr size="1"/>
         <div class="document" id="faxing-how-tos">
 <h1 class="title">Faxing How-Tos</h1>
 <p><strong>General Notes About Faxing</strong></p>
@@ -91,9 +94,9 @@ Faxing
 <ol class="loweralpha simple" start="2">
 <li>Run the HP Device Manager from the shell by executing:</li>
 </ol>
-<pre class="literal-block">
-$ hp-toolbox
-</pre>
+<div class="compound">
+<p>$ hp-toolbox</p>
+</div>
 <p>Then, select the device that you want to send faxes on. Click &quot;Send Fax...&quot;</p>
 <p><strong>2.</strong> Faxes are sent by &quot;attaching&quot; the documents in the hp-sendfax interface into a fax job, and then by sending the fax job. The files that are to be sent in a fax job are listed in the fax interface in the list that appears on the &quot;Items&quot; tab. There are three ways to attach documents into the fax interface:</p>
 <ol class="loweralpha simple">
@@ -126,27 +129,21 @@ $ hp-toolbox
 <p>Currently, there is no specific feature to be able to add ADF documents directly to a fax. Instead, use xsane, kooka, or another scanning program to save the pages as JPG, PNG, etc. format and then add them into the fax job using the &quot;File&quot; &quot;Add to List&quot; feature.</p>
 </div>
 
-
-        <hr size="1"/>
-        <small>Last update: Mon Jun 12 13:19:33 2006; HPLIP Version: 1.6.10</small>
-
-        <!-- FOOTER -->
-    </table>
-    <table border="0" width="100%" cellspacing="0">
-        <tr>
-            <td colspan="3"><hr noshade="noshade" size="1"/></td>
-        </tr>
-        <!-- <tr><td colspan="3" class="footer"></td> -->
-        <tr>
-            <td class="footer"><a href="../legal.html">Legal Notices</a></td>
-            <td class="footer">Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.</td>
-            <td class="footer"><a href="mailto:hplip@hp.com">Contact Site Maintainer</a></td>
-        </tr>
-        <tr>
-            <td colspan="3" class="footer"><a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a></td>
-        </tr>
-    
-    </table>
+<hr size="1"/>
+<center><small>Page last updated: Tue Dec  5 14:27:42 2006; HPLIP Version: 1.6.12</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+</div><!-- end container -->
+<div id="footer"><!-- start footer -->
+		<hr size="1"/>
+		<a href="../legal.html">Legal Notices</a>
+		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
+		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
 </body>
-
 </html>

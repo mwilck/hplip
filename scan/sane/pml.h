@@ -28,6 +28,8 @@
 #if !defined(_PML_H)
 #define _PML_H
 
+#include "sane.h"
+
 #define PML_MAX_OID_VALUES 2
 #define PML_MAX_VALUE_LEN       1023
 #define PML_MAX_OID_LEN     128
@@ -67,6 +69,7 @@
 #define PML_ERROR_ACTION_CAN_NOT_BE_PERFORMED_NOW   0x87
 #define PML_ERROR_SYNTAX_ERROR          0x88
 
+typedef struct hpaioScanner_s HPAIO_RECORD;
 
 struct PmlValue_s
 {
@@ -94,7 +97,7 @@ struct PmlObject_s
 
 typedef struct PmlObject_s * PmlObject_t;
 
-
+#include "hpaio.h"
 
 #define PML_REQUEST_GET        0x00
 #define PML_REQUEST_GETNEXT    0x01

@@ -40,8 +40,6 @@ enum MLC_COMMAND
   MLC_ERROR = 0x7f
 };
 
-#pragma pack(1)
-
 typedef struct
 {
    unsigned char hsid;   /* host socket id */
@@ -49,14 +47,14 @@ typedef struct
    unsigned short length;   /* packet length (includes header) */ 
    unsigned char credit;   /* data packet credit, reserved if command */
    unsigned char status;  /* upper layer status */
-} MLCHeader;
+} __attribute__((packed)) MLCHeader;
 
 typedef struct
 {
    MLCHeader h;
    unsigned char cmd;
    unsigned char rev;
-} MLCInit;
+} __attribute__((packed)) MLCInit;
 
 typedef struct
 {
@@ -64,20 +62,20 @@ typedef struct
    unsigned char cmd;
    unsigned char result;
    unsigned char rev;
-} MLCInitReply;
+} __attribute__((packed)) MLCInitReply;
 
 typedef struct
 {
    MLCHeader h;
    unsigned char cmd;
-} MLCExit;
+} __attribute__((packed)) MLCExit;
 
 typedef struct
 {
    MLCHeader h;
    unsigned char cmd;
    unsigned char result;
-} MLCExitReply;
+} __attribute__((packed)) MLCExitReply;
 
 typedef struct
 {
@@ -87,7 +85,7 @@ typedef struct
    unsigned short h2psize;    /* host-to-peripheral packet size */
    unsigned short p2hsize;    /* peripheral-to-host packet size */
    unsigned char status;      /* status level */
-} MLCConfigSocket;
+} __attribute__((packed)) MLCConfigSocket;
 
 typedef struct
 {
@@ -97,7 +95,7 @@ typedef struct
    unsigned short h2psize;    /* host-to-peripheral packet size */
    unsigned short p2hsize;    /* peripheral-to-host packet size */
    unsigned char status;      /* status level */
-} MLCConfigSocketReply;
+} __attribute__((packed)) MLCConfigSocketReply;
 
 typedef struct
 {
@@ -106,7 +104,7 @@ typedef struct
    unsigned char hsocket;      /* host socket id */
    unsigned char psocket;      /* peripheral socket id */
    unsigned short credit;
-} MLCOpenChannel;
+} __attribute__((packed)) MLCOpenChannel;
 
 typedef struct
 {
@@ -114,7 +112,7 @@ typedef struct
    unsigned char cmd;
    unsigned char result;
    unsigned short credit;
-} MLCOpenChannelReply;
+} __attribute__((packed)) MLCOpenChannelReply;
 
 typedef struct
 {
@@ -122,7 +120,7 @@ typedef struct
    unsigned char cmd;
    unsigned char hsocket;      /* host socket id */
    unsigned char psocket;      /* peripheral socket id */
-} MLCCloseChannel;
+} __attribute__((packed)) MLCCloseChannel;
 
 typedef MLCExitReply MLCCloseChannelReply;
 typedef MLCExitReply MLCReply;
@@ -132,8 +130,6 @@ typedef MLCExitReply MLCCreditReply;
 typedef MLCOpenChannel MLCCreditRequest;
 typedef MLCOpenChannelReply MLCCreditRequestReply;
 typedef MLCExitReply MLCError;
-
-#pragma pack()
 
 #endif // _MLC_H
 

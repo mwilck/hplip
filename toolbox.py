@@ -188,22 +188,15 @@ class tbx_client(async.dispatcher):
 
     # EVENT
     def handle_eventgui(self):
-        #global toolbox
         if toolbox is not None:
             try:
                 job_id = self.fields['job-id']
                 event_code = self.fields['event-code']
                 event_type = self.fields['event-type']
                 retry_timeout = self.fields['retry-timeout']
-                lines = self.data.splitlines()
-                error_string_short, error_string_long = lines[0], lines[1]
                 device_uri = self.fields['device-uri']
-    
                 log.debug("Event: %d '%s'" % (event_code, event_type))
-    
-                toolbox.EventUI(event_code, event_type, error_string_short,
-                                 error_string_long, retry_timeout, job_id,
-                                 device_uri)
+                toolbox.EventUI(event_code, event_type, retry_timeout, job_id, device_uri)
     
             except:
                 log.exception()
@@ -211,7 +204,6 @@ class tbx_client(async.dispatcher):
         return ''
 
     def handle_unknown(self):
-        #return buildResultMessage('MessageError', None, ERROR_INVALID_MSG_TYPE)
         return ''
 
     def handle_messageerror(self):
@@ -287,23 +279,13 @@ utils.log_title(__title__, __version__)
 # Security: Do *not* create files that other users can muck around with
 os.umask (0077)
 
-# PyQt
-#if not utils.checkPyQtImport():
-#    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
-#    sys.exit(1)
-
-##from qt import *
-##
-### UI Forms
-##from ui.devmgr4 import devmgr4
-
 try:
     client = tbx_client()
 except Error:
     log.error("Unable to create client object.")
     sys.exit(1)
 except socket.error:
-    log.error("Unable to connect to HPLIP I/O (hpiod).")
+    log.error("Unable to connect to HPLIP I/O (hpssd).")
     sys.exit(1)
     
 log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))

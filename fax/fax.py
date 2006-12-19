@@ -657,7 +657,7 @@ class FaxSendThread(threading.Thread):
                     fax_file_name = fax_file[0]
                     log.debug("Processing file (counting pages): %s..." % fax_file_name)
 
-                    self.write_queue((STATUS_PROCESSING_FILES, self.job_total_pages, ''))
+                    #self.write_queue((STATUS_PROCESSING_FILES, self.job_total_pages, ''))
 
                     if os.path.exists(fax_file_name):
                         results[fax_file_name] = ERROR_SUCCESS

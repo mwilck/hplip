@@ -29,6 +29,8 @@
 
 \*****************************************************************************/
 
+#ifdef HAVE_LIBHPIP
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
@@ -192,7 +194,7 @@ int EncodeCommand
    return 0;
 }
 
-int Synch(int hd, int chan)
+int Synch(HplipSession *session, int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -212,12 +214,12 @@ int Synch(int hd, int chan)
                      , gwSynchRefNum
                      );
 
-    bRet = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+    bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
     return( bRet );
 }
 
-int SynchComplete(int hd, int chan)
+int SynchComplete(HplipSession *session, int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -237,12 +239,12 @@ int SynchComplete(int hd, int chan)
                      , gwSynchCompleteRefNum
                      );
 
-    bRet = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+    bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
     return( bRet );
 }
 
-int Reset(int hd, int chan)
+int Reset(HplipSession *session, int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -263,12 +265,12 @@ int Reset(int hd, int chan)
                      , gwResetRefNum
                      );
 
-        bRet = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+        bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
     return( bRet );
 }
 
-int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
+int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAlign *pG)
 {
    int n;
    int dPacketSize = 0;
@@ -287,7 +289,7 @@ int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
    /* Write alignment query. */
    EncodeCommand(buf, sizeof(buf)
@@ -301,7 +303,7 @@ int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -315,10 +317,10 @@ int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
  
    /* Read query response. */
-   n = hplip_ReadHP(hd, chan, (char *)buf, sizeof(buf), EXCEPTION_TIMEOUT);
+   n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
    pA = (LDLResponseAlign038 *)buf;
    memset(pG, 0, sizeof(LDLGenAlign));
    if (pA->h.packet_type == 16)
@@ -338,7 +340,7 @@ int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
    return 0;
 }
 
-int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
+int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAlign *pG)
 {
    int n=0;
    int dPacketSize = 0;
@@ -357,7 +359,7 @@ int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
    /* Write alignment query. */
    EncodeCommand(buf, sizeof(buf)
@@ -371,7 +373,7 @@ int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -385,9 +387,9 @@ int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
-   n = hplip_ReadHP(hd, chan, (char *)buf, sizeof(buf), EXCEPTION_TIMEOUT);
+   n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
    pA = (LDLResponseAlign043 *)buf;
    memset(pG, 0, sizeof(LDLGenAlign));
    if (pA->h.packet_type == 16)
@@ -398,7 +400,7 @@ int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
    return 0;
 }
 
-uint32_t RetrieveVersion(int hd, int chan)
+uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
 {
    int n, version=0;
    int dPacketSize = 0;
@@ -417,7 +419,7 @@ uint32_t RetrieveVersion(int hd, int chan)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
    /* Write lidil version query. */
    EncodeCommand(buf, sizeof(buf)
@@ -431,7 +433,7 @@ uint32_t RetrieveVersion(int hd, int chan)
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(hd, chan,(char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan,(char *)buf, dPacketSize );
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -445,9 +447,9 @@ uint32_t RetrieveVersion(int hd, int chan)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(hd, chan, (char *)buf, dPacketSize );
+   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
 
-        n = hplip_ReadHP(hd, chan, (char *)buf, sizeof(buf), EXCEPTION_TIMEOUT);
+        n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
         pV = (LDLResponseVersion *)buf;
         if (pV->h.packet_type == 16)
         {
@@ -464,46 +466,46 @@ uint32_t RetrieveVersion(int hd, int chan)
  * All alignment values may be zero if pen(s) were never aligned. Valid values
  * may range from -30 to +30.
  */
-int ReadHPVertAlign(int hd)
+int ReadHPVertAlign(HplipSession *session, int hd)
 {
    int channel, n, i, x2colorVert=-1;
    uint32_t ver;
    LDLGenAlign ga;
 
-   if ((channel = hplip_OpenChannel(hd, "PRINT")) < 0)
+   if ((channel = hplip_OpenChannel(session, hd, "PRINT")) < 0)
    {
       bug("unable to open print channel ReadHPVertAlign\n");
       goto bugout;
    }
 
-   if (Synch(hd, channel)==0)
+   if (Synch(session, hd, channel)==0)
    {  
       bug("unable to write sync ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if (SynchComplete(hd, channel)==0)
+   if (SynchComplete(session, hd, channel)==0)
    {  
       bug("unable to write sync complete ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if (Reset(hd, channel)==0)
+   if (Reset(session, hd, channel)==0)
    {  
       bug("unable to write reset ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if ((ver = RetrieveVersion(hd, channel))==0)
+   if ((ver = RetrieveVersion(session, hd, channel))==0)
    {  
       bug("unable to read version ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
    if (ver > 0x308)
-      RetrieveAlignmentValues043(hd, channel, &ga);
+      RetrieveAlignmentValues043(session, hd, channel, &ga);
    else 
-      RetrieveAlignmentValues038(hd, channel, &ga);
+      RetrieveAlignmentValues038(session, hd, channel, &ga);
 
    if (!(n = ga.nPens))
       goto bugout;
@@ -517,14 +519,15 @@ int ReadHPVertAlign(int hd)
       }
    }
 
-   Reset(hd, channel);
+   Reset(session, hd, channel);
 
 bugout: 
    if (channel >= 0)
-      hplip_CloseChannel(hd, channel);
+      hplip_CloseChannel(session, hd, channel);
 
    return x2colorVert;
 }
 
+#endif // HAVE_LIBHPIP
 
 

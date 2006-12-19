@@ -34,6 +34,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdint.h>
 
 
 enum MfpdtfImageRecordID_e { MFPDTF_ID_START_PAGE = 0,
@@ -301,8 +302,6 @@ enum MFPDTF_RECORD_ID
    ID_END_PAGE = 2
 };
 
-#pragma pack(1)
-
 /* All words are stored little endian. */
 
 typedef struct
@@ -311,7 +310,7 @@ typedef struct
    uint16_t HeaderLength;  /* in bytes */
    uint8_t DataType;
    uint8_t PageFlag;      
-} MFPDTF_FIXED_HEADER;
+} __attribute__((packed)) MFPDTF_FIXED_HEADER;
 
 typedef struct
 {
@@ -328,14 +327,14 @@ typedef struct
    uint32_t CMYRows;
    uint32_t CMYHorzDPI;
    uint32_t CMYVertDPI;
-} MFPDTF_START_PAGE;
+} __attribute__((packed)) MFPDTF_START_PAGE;
 
 typedef struct
 {
    uint8_t ID;
    uint8_t dummy;
    uint16_t Size;    /* in bytes */
-} MFPDTF_RASTER;
+} __attribute__((packed)) MFPDTF_RASTER;
 
 typedef struct
 {
@@ -343,9 +342,7 @@ typedef struct
    char dummy[3];
    uint32_t BlackRows;
    uint32_t CMYRows;
-} MFPDTF_END_PAGE;
-
-#pragma pack()  
+} __attribute__((packed)) MFPDTF_END_PAGE;
 
 #if defined(WORDS_BIGENDIAN)
 #define htole16(A) ((((uint16_t)(A) & 0xff00) >> 8) | (((uint16_t)(A) & 0x00ff) << 8))    /* host to little-endian 16-bit value */

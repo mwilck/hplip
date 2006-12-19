@@ -1,7 +1,7 @@
 /*****************************************************************************\
   printer.h : Interface for the Printer class
 
-  Copyright (c) 1996 - 2001, Hewlett-Packard Co.
+  Copyright (c) 1996 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -338,6 +338,25 @@ public:
 
 #endif
 
+#ifdef APDK_LINUX
+    virtual DRIVER_ERROR    SendPerPageHeader (BOOL bLastPage)
+    {
+        return NO_ERROR;
+    }
+    DRIVER_ERROR            SetHint (int iHint, int iValue)
+    {
+        if (iHint & 0x1)
+        {
+            m_iNumPages = iValue;
+        }
+        else if (iHint & 0x2)
+        {
+            return SendPerPageHeader (iValue);
+        }
+        return NO_ERROR;
+    }
+#endif  // ifdef APDK_LINUX
+
 protected:
     SystemServices* pSS;
 #if defined(APDK_FONTS_NEEDED)
@@ -366,6 +385,10 @@ protected:
     BOOL m_bStatusByPJL;
 #ifdef  APDK_AUTODUPLEX
     BOOL m_bRotateBackPage;
+#endif
+
+#ifdef  APDK_LINUX
+    int m_iNumPages;
 #endif
 
     virtual Printer& operator=(const Printer& rhs) {return *this;} // don't allow assignment

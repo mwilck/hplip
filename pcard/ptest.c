@@ -43,29 +43,26 @@
 
 #define DEV_ACK 0x0100
 
-#pragma pack(1)
-
 typedef struct
 {
    short cmd;
    unsigned short nsector;
-} CMD_READ_REQUEST;
+} __attribute__((packed)) CMD_READ_REQUEST;
 
 typedef struct{
    short cmd;
    unsigned short nsector;
    short cs;         /* check sum is not used */
-} CMD_WRITE_REQUEST;
+} __attribute__((packed)) CMD_WRITE_REQUEST;
 
 typedef struct
 {
    short cmd;
    uint32_t nsector;
    short ver;
-} RESPONSE_SECTOR;
+} __attribute__((packed)) RESPONSE_SECTOR;
 
-#pragma pack()
-
+static HplipSession *hplip_session;
 static int hd=-1, channel=-1;
 
 int verbose=0;
@@ -94,7 +91,7 @@ int last_slash(const char *path, int *number_found, int *path_size)
    int i, found=0, lasti=0;
 
    /* Find last '/'. */
-   for (i=0; path[i] && i<LINE_SIZE; i++)
+   for (i=0; path[i] && i<HPLIP_LINE_SIZE; i++)
       if (path[i] == '/')
       {
          found++;
@@ -112,7 +109,7 @@ int nth_slash(const char *path, int n)
    int i, found=0, lasti=0;
 
    /* Find nth '/'. */
-   for (i=0; path[i] && i<LINE_SIZE; i++)
+   for (i=0; path[i] && i<HPLIP_LINE_SIZE; i++)
       if (path[i] == '/')
       {
          found++;
@@ -174,7 +171,7 @@ int GetDir(char *path, char *dir, char **tail)
    }                 
    else
    {
-      for (i=0; path[i] && (path[i] != '/') && (i<LINE_SIZE); i++)   /* copy directory entry */
+      for (i=0; path[i] && (path[i] != '/') && (i<HPLIP_LINE_SIZE); i++)   /* copy directory entry */
          dir[i] = path[i];
       if (i==0)
          strcpy(dir, ".");   /* end of path */
@@ -192,22 +189,22 @@ int GetDir(char *path, char *dir, char **tail)
 
 int DevDiscovery(char *uri, int urisize)
 {
-   char message[LINE_SIZE*64];  
+   char message[HPLIP_LINE_SIZE*64];  
    int i, len=0;  
-   MsgAttributes ma;
+   HplipMsgAttributes ma;
    char *pBeg;
  
    uri[0] = 0;
 
    len = sprintf(message, "msg=ProbeDevices\n");
  
-   if (send(hpiod_socket, message, len, 0) == -1) 
+   if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
    {  
       bug("unable to send ProbeDevices: %m\n");  
       goto mordor;  
    }  
 
-   if ((len = recv(hpiod_socket, message, sizeof(message), 0)) == -1) 
+   if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
    {  
       bug("unable to receive ProbeDevicesResult: %m\n");  
       goto mordor;
@@ -227,7 +224,7 @@ int DevDiscovery(char *uri, int urisize)
       if (ma.ndevice == 1)
       {
          /* Only one device connected make this the default uri. */
-         for (i=0; (strncmp((char *)&ma.data[i], "hp:", 3) != 0) && (i < LINE_SIZE); i++)  /* find start of uri */
+         for (i=0; (strncmp((char *)&ma.data[i], "hp:", 3) != 0) && (i < HPLIP_LINE_SIZE); i++)  /* find start of uri */
             ;
          pBeg = (char *)ma.data + i;
          for (i=0; *pBeg != ' ' && (i < urisize); i++, pBeg++)  /* copy uri */
@@ -242,7 +239,7 @@ mordor:
 
 int ReadSector(int sector, int nsector, void *buf, int size)
 {
-   char message[HEADER_SIZE];
+   char message[HPLIP_HEADER_SIZE];
    int i, len, rlen, stat=1, total=0;
    CMD_READ_REQUEST *pC;
    RESPONSE_SECTOR *pR;
@@ -263,12 +260,12 @@ int ReadSector(int sector, int nsector, void *buf, int size)
    for (i=0; i<nsector; i++)
      *pSect++ = htonl(sector+i);
    len = sizeof(CMD_READ_REQUEST)+(4*nsector);
-   hplip_WriteHP(hd, channel, message, len);
+   hplip_WriteHP(hplip_session, hd, channel, message, len);
 
    /* Read photo card response header from device. */
    memset(message, 0, sizeof(RESPONSE_SECTOR));
    rlen = sizeof(RESPONSE_SECTOR);
-   len = hplip_ReadHP(hd, channel, message, rlen, EXCEPTION_TIMEOUT); 
+   len = hplip_ReadHP(hplip_session, hd, channel, message, rlen, HPLIP_EXCEPTION_TIMEOUT); 
    pR = (RESPONSE_SECTOR *)message;
    if (ntohs(pR->cmd) != (cmd | DEV_ACK))
    {
@@ -287,7 +284,7 @@ int ReadSector(int sector, int nsector, void *buf, int size)
    rlen = nsector*FAT_HARDSECT;
    while (total < rlen)
    { 
-      if ((len = hplip_ReadHP(hd, channel, buf+total, rlen, EXCEPTION_TIMEOUT)) == 0)
+      if ((len = hplip_ReadHP(hplip_session, hd, channel, buf+total, rlen, HPLIP_EXCEPTION_TIMEOUT)) == 0)
          break;  /* timeout */
       total+=len;
    }
@@ -306,7 +303,7 @@ bugout:
 
 int WriteSector(int sector, int nsector, void *buf, int size)
 {
-   char message[HEADER_SIZE];
+   char message[HPLIP_HEADER_SIZE];
    int i, len, stat=1;
    CMD_WRITE_REQUEST *pC;
    uint32_t *pSect;
@@ -327,13 +324,13 @@ int WriteSector(int sector, int nsector, void *buf, int size)
    for (i=0; i<nsector; i++)
      *pSect++ = htonl(sector+i);
    len = sizeof(CMD_WRITE_REQUEST)+(4*nsector);
-   hplip_WriteHP(hd, channel, message, len);
+   hplip_WriteHP(hplip_session, hd, channel, message, len);
 
    /* Write photo card sector data to device. */
-   hplip_WriteHP(hd, channel, buf, size);
+   hplip_WriteHP(hplip_session, hd, channel, buf, size);
 
    /* Read response. */
-   len = hplip_ReadHP(hd, channel, (char *)&response, sizeof(response), EXCEPTION_TIMEOUT); 
+   len = hplip_ReadHP(hplip_session, hd, channel, (char *)&response, sizeof(response), HPLIP_EXCEPTION_TIMEOUT); 
    if (ntohs(response) != DEV_ACK)
    {
       bug("WriteSector invalid response cmd=%x expected=%x\n", ntohs(response), DEV_ACK);
@@ -357,12 +354,12 @@ void usage()
 
 int main(int argc, char *argv[])
 {
-   char cmd[16] = "", path[LINE_SIZE]="", uri[LINE_SIZE]="", dir[LINE_SIZE]="", spath[LINE_SIZE]="";
+   char cmd[16] = "", path[HPLIP_LINE_SIZE]="", uri[HPLIP_LINE_SIZE]="", dir[HPLIP_LINE_SIZE]="", spath[HPLIP_LINE_SIZE]="";
    extern char *optarg;
    char *tail;
    int i, stat=-1;
    PHOTO_CARD_ATTRIBUTES pa;
-   MsgAttributes ma;
+   HplipMsgAttributes ma;
 
    while ((i = getopt(argc, argv, "vhu:c:p:")) != -1)
    {
@@ -392,7 +389,7 @@ int main(int argc, char *argv[])
       }
    }
 
-   hplip_Init();
+   hplip_Init(&hplip_session);
 
    if (uri[0] == 0)
       DevDiscovery(uri, sizeof(uri));
@@ -405,12 +402,12 @@ int main(int argc, char *argv[])
    /* Get any parameters needed for DeviceOpen. */
    hplip_ModelQuery(uri, &ma);  
 
-   if ((hd = hplip_OpenHP(uri, &ma)) < 0)
+   if ((hd = hplip_OpenHP(hplip_session, uri, &ma)) < 0)
    {
       bug("unable to open device %s\n", uri);
       goto bugout;
    }   
-   if ((channel = hplip_OpenChannel(hd, "HP-CARD-ACCESS")) < 0)
+   if ((channel = hplip_OpenChannel(hplip_session, hd, "HP-CARD-ACCESS")) < 0)
    {
       bug("unable to open hp-card-access channel %s\n", uri);
       goto bugout;
@@ -427,8 +424,8 @@ int main(int argc, char *argv[])
    /* If disk is write protected reopen channel to clear write error. */
    if (pa.WriteProtect)
    {
-      hplip_CloseChannel(hd, channel);
-      if ((channel = hplip_OpenChannel(hd, "HP-CARD-ACCESS")) < 0)
+      hplip_CloseChannel(hplip_session, hd, channel);
+      if ((channel = hplip_OpenChannel(hplip_session, hd, "HP-CARD-ACCESS")) < 0)
       {
          bug("unable to open hp-card-access channel %s\n", uri);
          goto bugout;
@@ -489,10 +486,10 @@ int main(int argc, char *argv[])
 
 bugout:
    if (channel >= 0)
-      hplip_CloseChannel(hd, channel);
+      hplip_CloseChannel(hplip_session, hd, channel);
    if (hd >= 0)
-      hplip_CloseHP(hd);   
-   hplip_Exit();  
+      hplip_CloseHP(hplip_session, hd);   
+   hplip_Exit(hplip_session);  
 
    exit (stat);
 }

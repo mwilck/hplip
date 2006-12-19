@@ -25,26 +25,29 @@ import re
 import gzip
 import os.path
 import time
-import struct
-import threading
 import urllib
 import StringIO
 import httplib
-import commands
+import gettext
 
 # Local
 from g import *
 from codes import *
-import msg, utils, status, pml, service
+from msg import *
+import utils, status, pml, service
 from prnt import pcl, ldl, cups
+import models, mdns, slp
+from strings import string_table
 
 DEFAULT_PROBE_BUS = 'usb,par,cups'
-VALID_BUSES = ('par', 'net', 'cups', 'usb', 'bt', 'fw')
+VALID_BUSES = ('par', 'net', 'cups', 'usb') #, 'bt', 'fw')
+VALID_BUSES_WO_CUPS = ('par', 'net', 'usb')
 DEFAULT_FILTER = 'none'
 VALID_FILTERS = ('none', 'print', 'scan', 'fax', 'pcard', 'copy')
 
 pat_deviceuri = re.compile(r"""(.*):/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*)|ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^&]*))(?:&port=(\d))?""", re.IGNORECASE)
 http_pat_url = re.compile(r"""/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*))&loc=(\S*)""", re.IGNORECASE)
+direct_pat = re.compile(r'direct (.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
 
 # Pattern to check for ; at end of CTR fields
 # Note: If ; not present, CTR value is invalid
@@ -52,8 +55,10 @@ pat_dynamic_ctr = re.compile(r"""CTR:\d*\s.*;""", re.IGNORECASE)
 
 MAX_BUFFER = 8192
 
+# Cache for model data
+model_dat = models.ModelData()
 
-def makeuri(hpiod_sock, hpssd_sock, param, port=1):  
+def makeURI(hpiod_sock, param, port=1):  
     ip_pat = re.compile(r"""\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""", re.IGNORECASE)
     dev_pat = re.compile(r"""/dev/.+""", re.IGNORECASE)
     usb_pat = re.compile(r"""(\d+):(\d+)""", re.IGNORECASE)
@@ -72,7 +77,7 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
         log.debug("Trying parallel")
         try:
             fields, data, result_code = \
-                msg.xmitMessage(hpiod_sock, "MakeURI", None, 
+                xmitMessage(hpiod_sock, "MakeURI", None, 
                                 {'device-file' : param, 'bus' : 'par',})
         except Error:
             result_code = ERROR_INTERNAL
@@ -90,8 +95,10 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
 
         try:
             fields, data, result_code = \
-                msg.xmitMessage(hpiod_sock, "MakeURI", None, 
-                                {'usb-bus' : usb_bus_id, 'usb-dev': usb_dev_id, 'bus' : 'usb',})
+                xmitMessage(hpiod_sock, "MakeURI", None, 
+                                {'usb-bus' : usb_bus_id, 
+                                 'usb-dev': usb_dev_id, 
+                                 'bus' : 'usb',})
         except Error:
             result_code = ERROR_INTERNAL
 
@@ -103,8 +110,10 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
         log.debug("Trying IP address")
         try:
             fields, data, result_code = \
-                msg.xmitMessage(hpiod_sock, "MakeURI", None, 
-                                {'hostname' : param, 'port': port, 'bus' : 'net',})
+                xmitMessage(hpiod_sock, "MakeURI", None, 
+                                {'hostname' : param, 
+                                 'port': port, 
+                                 'bus' : 'net',})
         except Error:
             result_code = ERROR_INTERNAL
 
@@ -112,9 +121,9 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
             cups_uri = fields.get( 'device-uri', '' )
             found = True
 
-    elif hpssd_sock is not None: # serial
+    else: # serial
         log.debug("Trying serial number")
-        devices = probeDevices(hpssd_sock, bus="usb,par")
+        devices = probeDevices(None, bus="usb,par")
 
         for d in devices:
             log.debug(d)
@@ -124,13 +133,10 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
                 parseDeviceURI(d)
 
             if bus == 'par': # ...parallel does not. Must get Device ID to obtain it...
-
-                mq, data, result_code = \
-                    msg.xmitMessage(hpssd_sock, 'QueryModel', None, 
-                    {'device-uri' : d,})
+                mq = queryModelByURI(d)
 
                 fields, data, result_code = \
-                    msg.xmitMessage(hpiod_sock, "DeviceOpen", None,
+                    xmitMessage(hpiod_sock, "DeviceOpen", None,
                                     {'device-uri':    d,
                                       'io-mode' :     mq.get('io-mode', '0'),
                                       'io-mfp-mode' : mq.get('io-mfp-mode', '2'),
@@ -142,27 +148,25 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
                     device_id = fields['device-id']
 
                     fields, data, result_code = \
-                        msg.xmitMessage(hpiod_sock, 'DeviceID', None, {'device-id' : device_id,})
+                        xmitMessage(hpiod_sock, 'DeviceID', None, {'device-id' : device_id,})
 
                     serial = parseDeviceID(data).get('SN', '')
 
                 fields, data, result_code = \
-                    msg.xmitMessage(hpiod_sock, "DeviceClose", None, {'device-id': device_id,})
+                    xmitMessage(hpiod_sock, "DeviceClose", None, {'device-id': device_id,})
 
             if serial.lower() == param.lower():
                 found = True
                 cups_uri = d
                 break
 
-    if found and hpssd_sock is not None:
-        fields, data, result_code = \
-            msg.xmitMessage(hpssd_sock, 'QueryModel', None, 
-            {'device-uri' : cups_uri,})
+    if found:
+        mq = queryModelByURI(cups_uri)
 
-        if fields.get('scan-type', 0):
+        if mq.get('scan-type', 0):
             sane_uri = cups_uri.replace("hp:", "hpaio:")
 
-        if fields.get('fax-type', 0):
+        if mq.get('fax-type', 0):
             fax_uri = cups_uri.replace("hp:", "hpfax:")
             
     else:
@@ -170,10 +174,24 @@ def makeuri(hpiod_sock, hpssd_sock, param, port=1):
 
     return cups_uri, sane_uri, fax_uri
 
-
-def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=['hp']):
-    bus = bus.lower()
-    probed_devices = probeDevices(bus=bus, filter=filter)
+    
+def queryModelByModel(model):
+    model = normalizeModelName(model).lower()
+    return model_dat[model]
+    
+def queryModelByURI(device_uri):
+    try:
+        back_end, is_hp, bus, model, \
+            serial, dev_file, host, port = \
+            parseDeviceURI(device_uri)
+    except Error:
+        raise ERROR_INVALID_DEVICE_URI
+    else:
+        return queryModelByModel(model)
+    
+    
+def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=('hp',)):
+    probed_devices = probeDevices(None, bus.lower(), filter=filter)
     cups_printers = cups.getPrinters()
     log.debug(probed_devices)
     log.debug(cups_printers)
@@ -245,49 +263,209 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=[
         return devices[i][0]
 
 
-
-
-def probeDevices(sock=None, bus='cups,usb,par', timeout=5,
-                  ttl=4, filter='none', format='cups'):
-
-    close_sock = False
-
-    if sock is None:
-        close_sock = True
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def probeDevices(hpiod_sock=None, bus='cups,usb,par', timeout=10,
+                 ttl=4, filter='none',  search='', net_search='slp', 
+                 back_end_filter=('hp',)):
+                 
+    close_sock, num_devices, ret_devices = False, 0, {}
+    
+    if search:
         try:
-            sock.connect((prop.hpssd_host, prop.hpssd_port))
-        except socket.error:
-            #log.error("Unable to connect to HPLIP I/O. Please restart HPLIP and try again.")
-            raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
+            search_pat = re.compile(search, re.IGNORECASE)
+        except:
+            log.error("Invalid search pattern. Search uses standard regular expressions. For more info, see: http://www.amk.ca/python/howto/regex/")
+            search = ''
+    
+    buses = bus
+    for bus in buses.split(','):
+        bus = bus.lower().strip()
+        
+        if bus not in VALID_BUSES:
+            log.error("Invalid bus: %s" % bus)
+            continue
+        
+        if bus == 'net':
+            if net_search == 'slp':
+                try:
+                    detected_devices = slp.detectNetworkDevices(ttl, timeout)
+                except Error:
+                    log.error("An error occured during network probe.")
+                    raise ERROR_INTERNAL
+            else:
+                try:
+                    detected_devices = mdns.detectNetworkDevices(ttl, timeout)
+                except Error:
+                    log.error("An error occured during network probe.")
+                    raise ERROR_INTERNAL
+                
+            for ip in detected_devices:
+                update_spinner()
+                hn = detected_devices[ip].get('hn', '?UNKNOWN?')
+                num_devices_on_jd = detected_devices[ip].get('num_devices', 0)
+                num_ports_on_jd = detected_devices[ip].get('num_ports', 1)
 
-    fields, data, result_code = \
-        msg.xmitMessage(sock,
-                         "ProbeDevicesFiltered",
-                         None,
-                         {
-                           'bus' : bus,
-                           'timeout' : timeout,
-                           'ttl' : ttl,
-                           'filter' : filter,
-                           'format' : 'cups'
-                          }
-                       )
+                if num_devices_on_jd > 0:
+                    for port in range(num_ports_on_jd):
+                        dev = detected_devices[ip].get('device%d' % (port+1), '0')
 
-    if close_sock:
-        sock.close()
+                        if dev is not None and dev != '0':
+                            device_id = parseDeviceID(dev)
+                            model = normalizeModelName(device_id.get('MDL', '?UNKNOWN?'))
 
-    if result_code > ERROR_SUCCESS:
-        return ''
+                            if num_ports_on_jd == 1:
+                                device_uri = 'hp:/net/%s?ip=%s' % (model, ip)
+                            else:
+                                device_uri = 'hp:/net/%s?ip=%s&port=%d' % (model, ip, (port+1))
 
-    temp = data.splitlines()
-    probed_devices = []
+                            include = True
+                            mq = queryModelByModel(model)
+                            
+                            if not mq:
+                                log.debug("Not found.")
+                                include = False
+                                
+                            elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                                log.debug("Not supported.")
+                                include = False
+                            
+                            elif filter not in ('none', 'print'):
+                                for f in filter.split(','):
+                                    filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                                    
+                                    if filter_type == 0:
+                                        log.debug("%s filtered out." % device_uri)
+                                        include = False
+                                        break
 
-    for t in temp:
-        probed_devices.append(t.split()[0])
+                            if include:
+                                ret_devices[device_uri] = (model, model, hn)
 
+        elif bus in ('usb', 'par'):
+            
+            if hpiod_sock is None:
+                close_sock = True
+                hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            
+                try:
+                    prop.hpiod_port = int(file(os.path.join(prop.run_dir, 'hpiod.port'), 'r').read())
+                except:
+                    pass
+                    
+                try:
+                    hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
+                except socket.error:
+                    raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
+        
+            fields, data, result_code = \
+                xmitMessage(hpiod_sock, "ProbeDevices", None, {'bus' : bus,})
+
+            if result_code == ERROR_SUCCESS:
+                for x in data.splitlines():
+                    m = direct_pat.match(x)
+                    
+                    uri = m.group(1) or ''
+                    mdl = m.group(2) or ''
+                    desc = m.group(3) or ''
+                    devid = m.group(4) or ''
+                    
+                    log.debug(uri)
+                    
+                    try:
+                        back_end, is_hp, bus, model, serial, dev_file, host, port = \
+                            parseDeviceURI(uri)
+                    except Error:
+                        continue
+                    
+                    include = True
+                    
+                    if mdl and uri and is_hp:
+                        mq = queryModelByModel(model)
+                            
+                        if not mq:
+                            log.debug("Not found.")
+                            include = False
+                            
+                        elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                            log.debug("Not supported.")
+                            include = False
+
+                        elif filter not in ('none', 'print'):
+                            
+                            for f in filter.split(','):
+                                filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                                
+                                if filter_type == 0:
+                                    log.debug("%s filtered out." % uri)
+                                    include = False
+                                    break
+
+                        if include:
+                            ret_devices[uri] = (mdl, desc, devid) # model w/ _'s, mdl w/o
+
+        elif bus == 'cups':
+            cups_printers = cups.getPrinters()
+            x = len(cups_printers)
+
+            for p in cups_printers:
+                device_uri = p.device_uri
+                log.debug("%s: %s" % (device_uri, p.name))
+                
+                if device_uri != '':
+                    try:
+                        back_end, is_hp, bs, model, serial, dev_file, host, port = \
+                            parseDeviceURI(device_uri)
+                    except Error:
+                        log.warning("Inrecognized URI: %s" % device_uri)
+                        continue
+
+                    if not is_hp:
+                        continue
+                        
+                    include = True
+                    mq = queryModelByModel(model)
+                        
+                    if not mq:
+                        include = False
+                        log.debug("Not found.")
+                        
+                    elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
+                        log.debug("Not supported.")
+                        include = False
+                    
+                    elif filter not in ('none', 'print'):
+                        for f in filter.split(','):
+                            filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
+                            
+                            if filter_type == 0:
+                                log.debug("%s filtered out." % device_uri)
+                                include = False
+                                break
+
+                    if include:
+                        ret_devices[device_uri] = (model, model, '')
+
+    probed_devices = {}
+    for uri in ret_devices:
+        num_devices += 1
+        mdl, model, devid_or_hn = ret_devices[uri]
+        
+        include = True
+        if search:
+            match_obj = search_pat.search("%s %s %s %s" % (mdl, model, devid_or_hn, uri))
+            
+            if match_obj is None:
+                log.debug("%s %s %s %s: Does not match search '%s'." % (mdl, model, devid_or_hn, uri, search))
+                include = False
+                
+        if include:
+            probed_devices[uri] = ret_devices[uri]
+                
+    
+    if close_sock and hpiod_sock is not None:
+        hpiod_sock.close()
+                
     return probed_devices
-
+            
 
 def getSupportedCUPSDevices(back_end_filter=['hp']):
     devices = {}
@@ -367,7 +545,6 @@ def parseDeviceURI(device_uri):
         raise Error(ERROR_INVALID_DEVICE_URI)
 
     back_end = m.group(1).lower() or ''
-    #is_hp = (back_end in ('hp', 'hpfax'))
     is_hp = (back_end in ('hp', 'hpfax', 'hpaio'))
     bus = m.group(2).lower() or ''
 
@@ -392,10 +569,14 @@ def parseDeviceURI(device_uri):
     return back_end, is_hp, bus, model, serial, dev_file, host, port
 
 
-def validateBusList(bus):
+def validateBusList(bus, allow_cups=True):
     for x in bus.split(','):
         bb = x.lower().strip()
-        if bb not in VALID_BUSES:
+        if allow_cups:
+            vb = VALID_BUSES
+        else:
+            vb = VALID_BUSES_WO_CUPS
+        if bb not in vb:
             log.error("Invalid bus name: %s" % bb)
             return False
 
@@ -408,6 +589,74 @@ def validateFilterList(filter):
             return False
 
     return True
+    
+    
+inter_pat = re.compile(r"""%(.*)%""", re.IGNORECASE)
+
+strings_init = False
+
+def initStrings():
+    global strings_init
+    strings_init = True
+    
+    gettext.install('hplip')
+    cycles = 0
+
+    while True:
+
+        found = False
+
+        for s in string_table:
+            short_string, long_string = string_table[s]
+            short_replace, long_replace = short_string, long_string
+
+            try:
+                short_match = inter_pat.match(short_string).group(1)
+            except (AttributeError, TypeError):
+                short_match = None
+
+            if short_match is not None:
+                found = True
+
+                try:
+                    short_replace, dummy = string_table[short_match]
+                except KeyError:
+                    log.error("String interpolation error: %s" % short_match)
+
+            try:
+                long_match = inter_pat.match(long_string).group(1)
+            except (AttributeError, TypeError):
+                long_match = None
+
+            if long_match is not None:
+                found = True
+
+                try:
+                    dummy, long_replace = string_table[long_match]
+                except KeyError:
+                    log.error("String interpolation error: %s" % long_match)
+
+            if found:
+                string_table[s] = (short_replace, long_replace)
+
+        if not found:
+            break
+        else:
+            cycles +=1
+            if cycles > 1000:
+                break    
+    
+
+def queryString(string_id, typ=0):
+    if not strings_init:
+        initStrings()
+        
+    s = string_table.get(str(string_id), ('', ''))[typ]
+    
+    if type(s) == type(''):
+        return s
+        
+    return s()
 
 
 AGENT_types = {AGENT_TYPE_NONE        : 'invalid',
@@ -448,7 +697,6 @@ AGENT_kinds = {AGENT_KIND_NONE            : 'invalid',
 
 AGENT_healths = {AGENT_HEALTH_OK           : 'ok',
                   AGENT_HEALTH_MISINSTALLED : 'misinstalled', # supply/cart
-                  #AGENT_HEALTH_FAIR_MODERATE : 'fair_moderate', # head
                   AGENT_HEALTH_FAIR_MODERATE : '',
                   AGENT_HEALTH_INCORRECT    : 'incorrect',
                   AGENT_HEALTH_FAILED       : 'failed',
@@ -652,13 +900,13 @@ class Device(object):
     def xmitHpiodMessage(self, msg_type, other_fields={},
                          payload=None, timeout=prop.read_timeout):
 
-        return msg.xmitMessage(self.hpiod_sock, msg_type,
+        return xmitMessage(self.hpiod_sock, msg_type,
                                 payload, other_fields, timeout)
 
     def xmitHpssdMessage(self, msg_type, other_fields={},
                          payload=None, timeout=prop.read_timeout):
 
-        return msg.xmitMessage(self.hpssd_sock, msg_type,
+        return xmitMessage(self.hpssd_sock, msg_type,
                                 payload, other_fields, timeout)
 
     def quit(self):
@@ -668,12 +916,9 @@ class Device(object):
         if self.close_hpssd_socket:
             self.hpssd_sock.close()                
 
-
-
     def queryModel(self):
         if not self.mq:
-            self.mq, data, result_code = \
-                self.xmitHpssdMessage("QueryModel", {'device-uri' : self.device_uri,})
+            self.mq = queryModelByURI(self.device_uri)
 
         self.supported = bool(self.mq)
 
@@ -681,20 +926,8 @@ class Device(object):
             for m in self.mq:
                 self.__dict__[m.replace('-','_')] = self.mq[m]
 
-
     def queryString(self, string_id):
-        if string_id not in string_cache:
-            fields, data, result_code = \
-                self.xmitHpssdMessage('QueryString', {'string-id' : string_id,})
-
-            if result_code == ERROR_SUCCESS:
-                string_cache[string_id] = data
-                return data
-            else:
-                return ''
-        else:
-            return string_cache[string_id]
-
+        return queryString(string_id)
 
     def open(self, network_timeout=3):
         if self.supported and self.io_state in (IO_STATE_HP_READY, IO_STATE_HP_NOT_AVAIL):
@@ -1031,10 +1264,7 @@ class Device(object):
                     log.error("Error getting device ID.")
                     raise Error(ERROR_DEVICE_IO_ERROR)
 
-            try:
-                status_desc = self.queryString(self.status_code)
-            except Error:
-                status_desc = ''
+            status_desc = self.queryString(self.status_code)
 
             self.dq.update({
                 'serial'           : self.serial,
@@ -1151,6 +1381,7 @@ class Device(object):
                               })
             
             if not quick and reread_cups_printers:
+                self.cups_printers = []
                 log.debug("Re-reading CUPS printer queue information.")
                 printers = cups.getPrinters()
                 for p in printers:
@@ -1206,11 +1437,7 @@ class Device(object):
                         query = 'agent_%s_%s' % (AGENT_types.get(agent_type, 'unknown'), 
                                                  AGENT_kinds.get(agent_kind, 'unknown'))
 
-                        try:
-                            agent_desc = self.queryString(query)
-                        except Error:
-                            agent_desc = ''
-
+                        agent_desc = self.queryString(query)
                         query = 'agent_health_ok'
 
                         # If printer is not in an error state, and
@@ -1231,10 +1458,7 @@ class Device(object):
                                 code = agent_type + STATUS_PRINTER_LOW_TONER_BASE
 
                             self.dq['status-code'] = code
-                            try:
-                                self.dq['status-desc'] = self.queryString(code)
-                            except Error:
-                                self.dq['status-desc'] = ''
+                            self.dq['status-desc'] = self.queryString(code)
 
                             self.dq['error-state'] = STATUS_TO_ERROR_STATE_MAP.get(code, ERROR_STATE_LOW_SUPPLIES)
                             self.sendEvent(code)
@@ -1244,11 +1468,7 @@ class Device(object):
                             else:
                                 query = 'agent_level_low'
 
-                        try:
-                            agent_health_desc = self.queryString(query)
-                        except Error:
-                            agent_health_desc = ''
-
+                        agent_health_desc = self.queryString(query)
 
                         self.dq.update(
                         {
@@ -1275,15 +1495,8 @@ class Device(object):
                         query = 'agent_%s_%s' % (AGENT_types.get(mq_agent_type, 'unknown'),
                                                  AGENT_kinds.get(mq_agent_kind, 'unknown'))
 
-                        try:
-                            agent_desc = self.queryString(query)
-                        except Error:
-                            agent_desc = ''
-
-                        try:
-                            agent_health_desc = self.queryString("agent_health_misinstalled")
-                        except Error:
-                            agent_health_desc = ''
+                        agent_desc = self.queryString(query)
+                        agent_health_desc = self.queryString("agent_health_misinstalled")
 
                         self.dq.update(
                         {
@@ -1328,11 +1541,7 @@ class Device(object):
                         query = 'agent_%s_%s' % (AGENT_types.get(mq_agent_type, 'unknown'),
                                                  AGENT_kinds.get(mq_agent_kind, 'unknown'))
 
-                        try:
-                            agent_desc = self.queryString(query)
-                        except Error:
-                            agent_desc = ''
-
+                        agent_desc = self.queryString(query)
 
                         self.dq.update(
                         {
@@ -1384,6 +1593,8 @@ class Device(object):
 
         pml_result_code = fields.get('pml-result-code', pml.ERROR_OK)
 
+        log.debug("Result code = 0x%x" % pml_result_code)
+        
         if pml_result_code >= pml.ERROR_UNKNOWN_REQUEST:
             return pml_result_code, None
 
@@ -1406,16 +1617,16 @@ class Device(object):
                                  value,
                                 )
 
-        return fields.get('pml-result-code', pml.ERROR_OK)
+        pml_result_code = fields.get('pml-result-code', pml.ERROR_OK)
+        log.debug("Result code = 0x%x" % pml_result_code)
+        return pml_result_code
 
 
     def getDynamicCounter(self, counter, convert_to_int=True):
-        #status_type = self.mq.get('status-type', STATUS_TYPE_NONE)
-        #if 'DYN' in self.deviceID.get('CMD', '').split(','):
-        dyanamic_counters = self.mq.get('status-dynamic-counters', STATUS_DYNAMIC_COUNTERS_NONE)
-        if dyanamic_counters != STATUS_DYNAMIC_COUNTERS_NONE:
+        dynamic_counters = self.mq.get('status-dynamic-counters', STATUS_DYNAMIC_COUNTERS_NONE)
+        if dynamic_counters != STATUS_DYNAMIC_COUNTERS_NONE:
             
-            if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+            if dynamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
                 self.printData(ldl.buildResetPacket(), direct=True) 
                 self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
             else:
@@ -1448,7 +1659,7 @@ class Device(object):
                         return value
 
                 if tries > max_tries:
-                    if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+                    if dynamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
                         self.printData(ldl.buildResetPacket())
                         self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
                     else:
@@ -1456,7 +1667,7 @@ class Device(object):
                     
                     return None
 
-                if dyanamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
+                if dynamic_counters == STATUS_DYNAMIC_COUNTERS_LIDIL_0_5_4:
                     self.printData(ldl.buildResetPacket())
                     self.printData(ldl.buildDynamicCountersPacket(counter), direct=True)
                 else:
@@ -1724,7 +1935,7 @@ class Device(object):
         self.sendEvent(STATUS_PRINTER_CANCELING, jobid)
 
     def sendEvent(self, event, jobid=0, typ='event', no_fwd=False): 
-        msg.sendEvent(self.hpssd_sock, 'Event', None,
+        sendEvent(self.hpssd_sock, 'Event', None,
                       {
                           'job-id'        : jobid,
                           'event-type'    : typ,
@@ -1747,9 +1958,12 @@ class Device(object):
         lines.reverse()
 
         for x in lines:
-            yr, mt, dy, hr, mi, sec, wd, yd, dst, job, user, ec, ess, esl = x.strip().split(',', 13)
+            yr, mt, dy, hr, mi, sec, wd, yd, dst, job, user, ec = x.strip().split(',', 13)
+            ec = int(ec)
+            ess = queryString(ec, 0)
+            esl = queryString(ec, 1)
             result.append((int(yr), int(mt), int(dy), int(hr), int(mi), int(sec), int(wd),
-                             int(yd), int(dst), int(job), user, int(ec), ess, esl))
+                             int(yd), int(dst), int(job), user, ec, ess, esl))
 
         return result
 
@@ -1780,7 +1994,27 @@ class Device(object):
         finally:
             self.closeEWS()
 
-
+    
+    def downloadFirmware(self):
+        ok = False
+        filename = os.path.join(prop.data_dir, "firmware", self.model + '.fw.gz')
+        log.debug(filename)
+        
+        if os.path.exists(filename):
+            try:
+                log.debug("Downloading firmware file '%s'..." % filename)
+                self.openPrint()
+                bytes_written = self.writePrint(gzip.open(filename).read())
+                log.debug("%s bytes downloaded." % utils.commafy(bytes_written))
+                self.closePrint()
+                ok = True
+            except:
+                log.error("An error occured.")
+        else:
+            log.error("Firmware file '%s' not found." % filename)
+        
+        return ok
+    
 
 # ********************************** Support classes/functions
 

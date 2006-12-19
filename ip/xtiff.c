@@ -190,37 +190,36 @@ typedef   signed int   TIFF_SLONG;    /* 32 bits */
 #define XRESOLUTION           282    // 0x011A
 #define YRESOLUTION           283    // 0x011B
 
-#pragma pack(1)
 typedef struct {
      TIFF_ULONG n;
      TIFF_ULONG d;
-} RATIONAL;
+} __attribute__((packed)) RATIONAL;
 
 typedef union {
      TIFF_UBYTE  b[4];
      TIFF_USHORT s[2];
      TIFF_ULONG  l;
      TIFF_ULONG  o;
-} TIFFVALUE;
+} __attribute__((packed)) TIFFVALUE;
 
 typedef struct {
      TIFF_USHORT TagID;
      TIFF_USHORT Kind;
      TIFF_ULONG  Length;  /* number of items, NOT number of bytes */
      TIFFVALUE   Value;
-} TIFFTAG;
+} __attribute__((packed)) TIFFTAG;
 
 typedef struct {
     TIFF_USHORT NumTags;
     TIFFTAG     Tag[NUMTAGS];
     TIFF_ULONG  OffsetNextIFD;
-} TIFFIFD;
+} __attribute__((packed)) TIFFIFD;
 
 typedef struct {
     TIFF_UBYTE    ByteOrder[2];
     TIFF_USHORT    Version;
     TIFF_ULONG    OffsetFirstIFD;
-} TIFFHEADER;
+} __attribute__((packed)) TIFFHEADER;
 
 #define NUMEXTBYTES (2*sizeof(RATIONAL) + 3*sizeof(TIFF_USHORT))
 #define MAX_HEADER_SIZE (sizeof(TIFFHEADER) + sizeof(TIFFIFD) + NUMEXTBYTES)

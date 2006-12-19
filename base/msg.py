@@ -27,8 +27,8 @@ import sys, cStringIO, select, socket
 from g import *
 from codes import *
 
-valid_encodings = ('', 'none', 'base64')
-valid_char_encodings = ('', 'utf-8', 'latin-1')
+#valid_encodings = ('', 'none', 'base64')
+#valid_char_encodings = ('', 'utf-8', 'latin-1')
 
 
 def buildResultMessage(msg_type, payload=None, result_code=ERROR_SUCCESS, other_fields={}):
@@ -48,7 +48,7 @@ def buildMessage(msg_type, payload=None, other_fields={}):
             msg.write('%s=%s\n' % (k, str(other_fields[k])))
 
     if payload is not None:
-        msg.write("encoding=none\n")
+        #msg.write("encoding=none\n")
         msg.write("length=%d\n" % len(str(payload)))
         msg.write("data:\n%s" % str(payload))
 

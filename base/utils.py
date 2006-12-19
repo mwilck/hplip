@@ -28,10 +28,12 @@ import sys, os, fnmatch, tempfile, socket, struct, select, time
 import fcntl, errno, stat, string, commands
 import cStringIO, re
 import xml.parsers.expat as expat
+import getpass
 
 # Local
 from g import *
 from codes import *
+import pexpect
 
 xml_basename_pat = re.compile(r"""HPLIP-(\d*)_(\d*)_(\d*).xml""", re.IGNORECASE)
 
@@ -315,9 +317,6 @@ class Column:
             return ' ' * (self.margin + self.width)
 
 
-
-
-
 class Stack:
     def __init__(self):
         self.stack = []
@@ -363,61 +362,6 @@ class RingBufferFull:
         self.cur=(self.cur+1) % self.max
     def get(self):
         return self.data[self.cur:]+self.data[:self.cur]
-
-
-# CRC routines for RP
-if 0:
-    def updateCRC(crc, ch):
-        ch = ord(ch)
-        for i in range(8):
-            if ((crc ^ ch) & 1):
-                crc = (crc >> 1) ^ 0xa001
-            else:
-                crc = crc >> 1
-            ch = ch >> 1
-
-        return crc
-
-
-
-# 16-bit CRCs should detect 65535/65536 or 99.998% of all errors in
-# data blocks up to 4096 bytes
-MASK_CCITT  = 0x1021     # CRC-CCITT mask (ISO 3309, used in X25, HDLC)
-MASK_CRC16  = 0xA001     # CRC16 mask (used in ARC files)
-
-#----------------------------------------------------------------------------
-# Calculate and return an incremental CRC value based on the current value
-# and the data bytes passed in as a string.
-#
-def updateCRC(crc, data, mask=MASK_CRC16):
-
-    for char in data:
-        c = ord(char)
-        c = c << 8L
-
-        for j in xrange(8):
-            if (crc ^ c) & 0x8000L:
-                crc = (crc << 1L) ^ mask
-            else:
-                crc = crc << 1L
-            c = c << 1L
-
-    return crc & 0xffffL
-
-def calcCRC(data):
-    crc = 0
-    #for c in data:
-    #    crc = updateCRC( crc, c )
-
-    crc = updateCRC(crc, data)
-
-    if crc == 0:
-        crc = len(data)
-
-    return crc
-
-
-
 
 def sort_dict_by_value(d):
     """ Returns the keys of dictionary d sorted by their values """
@@ -602,7 +546,6 @@ def deviceDefaultFunctions():
                 if len(path) > 0:
                     cmd_print = 'xpp -P%PRINTER%'
 
-
     # Scan
     path = which('xsane')
 
@@ -648,7 +591,6 @@ def deviceDefaultFunctions():
     else:
         cmd_fax = 'python %HOME%/sendfax.py -d %FAX_URI%'
 
-    
     # Fax Address Book
     path = which('hp-fab')
 
@@ -658,18 +600,31 @@ def deviceDefaultFunctions():
     else:
         cmd_fab = 'python %HOME%/fab.py'
 
-    
-    
     return cmd_print, cmd_scan, cmd_pcard, \
            cmd_copy, cmd_fax, cmd_fab
 
 
+def no_qt_message_gtk():
+    try:
+        import gtk
+        w = gtk.Window()
+        dialog = gtk.MessageDialog(w, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_WARNING, gtk.BUTTONS_OK, 
+                                   "PyQt not installed. GUI not available. Please check that the PyQt package is installed. Exiting.")
+        dialog.run()
+        dialog.destroy()
+
+    except ImportError:
+        pass
 
 def checkPyQtImport():
     # PyQt
     try:
         import qt
     except ImportError:
+        if os.getenv('DISPLAY') and os.getenv('STARTED_FROM_MENU'):
+            no_qt_message_gtk()
+
         log.error("PyQt not installed. GUI not available. Exiting.")
         return False
 
@@ -894,91 +849,6 @@ except ImportError:
 
 
 cat = lambda _ : Template(_).substitute(sys._getframe(1).f_globals, **sys._getframe(1).f_locals)
-
-
-class ModelParser:
-
-    def __init__(self):
-        self.model = None
-        self.cur_model = None
-        self.stack = []
-        self.in_model = False
-        self.models = {}
-
-    def startElement(self, name, attrs):
-        if name == 'models':
-            return
-
-        elif name == 'model':
-            self.model = {}
-            self.cur_model = str(attrs['name']).replace('_', ' ').strip() #.replace('HP', '').replace('hp', '').strip()
-            self.in_model = True
-            self.stack = []
-
-        else:
-            self.stack.append(str(name).lower())
-            if len(attrs):
-                for a in attrs:
-                    self.stack.append(str(a).lower())
-                    try:
-                        i = int(attrs[a])
-                    except ValueError:
-                        i = str(attrs[a])
-
-                    self.model[str('-'.join(self.stack))] = i
-                    self.stack.pop()
-
-
-    def endElement(self, name):
-        if name == 'model':
-            self.in_model = False
-
-            if self.cur_model in self.models:
-                log.error("Duplicate model in XML: %s" % self.cur_model)
-                raise Error(ERROR_INTERNAL)
-
-            self.model['min-ver'] = self.min_ver
-            self.models[self.cur_model] = self.model
-
-            self.model = None
-        elif name == 'models':
-            return
-        else:
-            self.stack.pop()
-
-
-    def charData(self, data):
-        data = str(data).strip()
-        if data and self.model is not None and self.stack:
-            self.model[str('-'.join(self.stack))] = str(data)
-
-    def loadModels(self, filename, untested=False):
-        
-        basename = os.path.basename(filename)
-        match_obj = xml_basename_pat.search(basename)
-        
-        try:
-            major = match_obj.group(1)
-            year = match_obj.group(2)
-            month = match_obj.group(3)
-        except AttributeError:
-            major, year, month = '0', '0', '0'
-            
-        self.min_ver = "%s.%s.%s" % (major, year, month)
-
-        parser = expat.ParserCreate()
-        parser.StartElementHandler = self.startElement
-        parser.EndElementHandler = self.endElement
-        parser.CharacterDataHandler = self.charData
-        try:
-            parser.Parse(open(filename).read(), True)
-        except expat.ExpatError, e:
-            log.error("XML file parse error: %s" % e)
-            raise Error(ERROR_INTERNAL)
-
-        return self.models
-
-
 identity = string.maketrans('','')
 unprintable = identity.translate(identity, string.printable)
 
@@ -999,7 +869,7 @@ def all(S,f=lambda x:x):
 def openURL(url):
     browsers = ['firefox', 'mozilla', 'konqueror', 'galeon', 'skipstone'] # in preferred order
     browser_opt = {'firefox': '-new-window', 'mozilla' : '', 'konqueror': '', 'galeon': '-w', 'skipstone': ''}
-    
+
     for b in browsers:
         #print b
         if which(b):
@@ -1009,49 +879,27 @@ def openURL(url):
             break
     else:
         log.warn("Unable to open URL: %s" % url)
-        
-        
+
+
 def uniqueList(input):
     temp = []
     [temp.append(i) for i in input if not temp.count(i)]
     return temp
 
-    
+
 def list_move_up(l, m):
     for i in range(1, len(l)):
         if l[i] == m:
             l[i-1],l[i] = l[i],l[i-1]
 
-            
+
 def list_move_down(l, m):
     for i in range(len(l) - 2, 0, -1):
         if l[i] == m:
             l[i],l[i+1] = l[i+1],l[i] 
-            
 
-##def levenshtein_distance(a,b):
-##    """
-##    Calculates the Levenshtein distance between a and b.
-##    Written by Magnus Lie Hetland.
-##    """
-##    n, m = len(a), len(b)
-##    if n > m:
-##        a,b = b,a
-##        n,m = m,n
-##        
-##    current = range(n+1)
-##    for i in range(1,m+1):
-##        previous, current = current, [i]+[0]*m
-##        for j in range(1,n+1):
-##            add, delete = previous[j]+1, current[j-1]+1
-##            change = previous[j-1]
-##            if a[j-1] != b[i-1]:
-##                change = change + 1
-##            current[j] = min(add, delete, change)
-##            
-##    return current[n]
-            
-            
+
+
 class XMLToDictParser:
     def __init__(self):
         self.stack = []
@@ -1059,7 +907,7 @@ class XMLToDictParser:
 
     def startElement(self, name, attrs):
         self.stack.append(str(name).lower())
-        
+
         if len(attrs):
             for a in attrs:
                 self.stack.append(str(a).lower())
@@ -1074,16 +922,16 @@ class XMLToDictParser:
 
         if data and self.stack:
             self.addData(data)
-                
+
     def addData(self, data):
         try:
             data = int(data)
         except ValueError:
             data = str(data)
-        
+
         stack_str = '-'.join(self.stack)
         stack_str_0 = '-'.join([stack_str, '0'])
-        
+
         try:
             self.data[stack_str]
         except KeyError:
@@ -1100,12 +948,12 @@ class XMLToDictParser:
                         self.data['-'.join([stack_str, str(j)])] = data
                         break
                     j += 1                    
-                
+
         else:
             self.data[stack_str_0] = self.data[stack_str]
             self.data['-'.join([stack_str, '1'])] = data
             del self.data[stack_str]
-    
+
 
     def parseXML(self, text):
         parser = expat.ParserCreate()
@@ -1114,8 +962,8 @@ class XMLToDictParser:
         parser.CharacterDataHandler = self.charData
         parser.Parse(text, True)
         return self.data
-        
- 
+
+
  # ------------------------- Usage Help
 
 USAGE_OPTIONS = ("[OPTIONS]", "", "heading", False)
@@ -1143,19 +991,24 @@ def ttysize():
         if len(x) == 2:
             vals[x[0]] = x[1]
             vals[x[1]] = x[0]
-    return int(vals['rows']), int(vals['columns'])
+    try:
+        rows, cols = int(vals['rows']), int(vals['columns'])
+    except TypeError:
+        rows, cols = 25, 80
+
+    return rows, cols
 
 
 def usage_formatter(override=0):
     rows, cols = ttysize()
-    
+
     if override:
         col1 = override
         col2 = cols - col1 - 8
     else:
         col1 = int(cols / 3) - 8
         col2 = cols - col1 - 8
-    
+
     return TextFormatter(({'width': col1, 'margin' : 2},
                             {'width': col2, 'margin' : 2},))
 
@@ -1169,42 +1022,42 @@ def format_text(text_list, typ='text', title='', crumb='', version=''):
     """
     if typ == 'text':
         formatter = usage_formatter()
-        
+
         for line in text_list:
             text1, text2, format, trailing_space = line
-            
+
             # remove any reST/man escapes
             text1 = text1.replace("\\", "")
             text2 = text2.replace("\\", "")
-            
+
             if format == 'summary':
                 log.info(bold(text1))
                 log.info("")
-            
+
             elif format in ('para', 'name', 'seealso'):
                 log.info(text1)
-                
+
                 if trailing_space:
                     log.info("")
-            
+
             elif format in ('heading', 'header'):
                 log.info(bold(text1))
-                
+
             elif format in ('option', 'example'):
                 log.info(formatter.compose((text1, text2), trailing_space))
-                
+
             elif format == 'note':
                 if text1.startswith(' '):
                     log.info('\t' + text1.lstrip())
                 else:
                     log.info(text1)
-                    
+
             elif format == 'space':
                 log.info("")
-            
+
         log.info("")
-        
-                
+
+
     elif typ == 'rest':
         colwidth1, colwidth2 = 0, 0
         for line in text_list:
@@ -1213,10 +1066,10 @@ def format_text(text_list, typ='text', title='', crumb='', version=''):
             if format in ('option', 'example', 'note'):
                 colwidth1 = max(len(text1), colwidth1)
                 colwidth2 = max(len(text2), colwidth2)
-            
+
         colwidth1 += 3
         tablewidth = colwidth1 + colwidth2
-        
+
         # write the rst2web header
         log.info("""restindex
 page-title: %s
@@ -1225,13 +1078,13 @@ format: rest
 file-extension: html
 encoding: utf8
 /restindex\n""" % (title, crumb))
-        
+
         log.info("%s: %s (ver. %s)" % (crumb, title, version))
         log.info("="*80)
         log.info("")
-        
+
         links = []
-        
+
         for line in text_list:
             text1, text2, format, trailing_space = line
 
@@ -1240,96 +1093,96 @@ encoding: utf8
                 text1 = "`%s`_" % text1
 
             len1, len2 = len(text1), len(text2)
-            
+
             if format == 'summary':
                 log.info(''.join(["**", text1, "**"]))
                 log.info("")
-            
+
             elif format in ('para', 'name'):
                 log.info("")
                 log.info(text1)
                 log.info("")
-            
+
             elif format in ('heading', 'header'):
-                    
+
                 log.info("")
                 log.info("**" + text1 + "**")
                 log.info("")
                 log.info(".. class:: borderless")
                 log.info("")
                 log.info(''.join(["+", "-"*colwidth1, "+", "-"*colwidth2, "+"]))
-                
+
             elif format in ('option', 'example', 'seealso'):
-                    
+
                 if text1 and '`_' not in text1:
                     log.info(''.join(["| *", text1, '*', " "*(colwidth1-len1-3), "|", text2, " "*(colwidth2-len2), "|"]))
                 elif text1:
                     log.info(''.join(["|", text1, " "*(colwidth1-len1), "|", text2, " "*(colwidth2-len2), "|"]))
                 else:
                     log.info(''.join(["|", " "*(colwidth1), "|", text2, " "*(colwidth2-len2), "|"]))
-                
+
                 log.info(''.join(["+", "-"*colwidth1, "+", "-"*colwidth2, "+"]))
-                
+
             elif format == 'note':
                 if text1.startswith(' '):
                     log.info(''.join(["|", " "*(tablewidth+1), "|"]))
-                    
+
                 log.info(''.join(["|", text1, " "*(tablewidth-len1+1), "|"]))
                 log.info(''.join(["+", "-"*colwidth1, "+", "-"*colwidth2, "+"]))
-            
+
             elif format == 'space':
                 log.info("")
-        
+
         for l in links:
             log.info("\n.. _`%s`: %s.html\n" % (l, l.replace('hp-', '')))
-        
+
         log.info("")
-        
+
     elif typ == 'man':
         log.info('.TH "%s" 1 "%s" Linux "User Manuals"' % (title, version))
-        
+
         for line in text_list:
             text1, text2, format, trailing_space = line
-            
+
             text1 = text1.replace("\\*", "*")
             text2 = text2.replace("\\*", "*")            
-            
+
             len1, len2 = len(text1), len(text2)
-            
+
             if format == 'summary':
                 log.info(".SH SYNOPSIS")
                 log.info(".B %s" % text1)
-                
+
             elif format == 'name':
                 log.info(".SH NAME\n%s" % text1)
-                
+
             elif format in ('option', 'example', 'note'):
                 if text1:
                     log.info('.IP "%s"\n%s' % (text1, text2))
                 else:
                     log.info(text2)
-                
+
             elif format in ('header', 'heading'):
                 log.info(".SH %s" % text1.upper().replace(':', '').replace('[', '').replace(']', ''))
-                
+
             elif format in ('seealso, para'):
                 log.info(text1)
-                
+
         log.info("")
-        
-        
+
+
 def dquote(s):
     return ''.join(['"', s, '"'])
-    
+
 # Python 2.2 compatibility functions (strip() family with char argument)
 def xlstrip(s, chars=' '):
     i = 0
     for c, i in zip(s, range(len(s))):
         if c not in chars:
             break
-    
+
     return s[i:]
-            
+
 def xrstrip(s, chars=' '):
     return xreverse(xlstrip(xreverse(s), chars))
 
@@ -1341,7 +1194,7 @@ def xreverse(s):
 def xstrip(s, chars=' '):
     return xreverse(xlstrip(xreverse(xlstrip(s, chars)), chars))
 
-    
+
 
 def getBitness():
     try:
@@ -1351,7 +1204,7 @@ def getBitness():
     else:
         return int(platform.architecture()[0][:-3])
 
-        
+
 BIG_ENDIAN = 0
 LITTLE_ENDIAN = 1
 
@@ -1360,45 +1213,46 @@ def getEndian():
         return BIG_ENDIAN
     else:
         return LITTLE_ENDIAN
-        
-        
-def run(cmd):
-    log.debug(cmd)
+
+
+def get_password():
+    return getpass.getpass("Enter password: ")
+
+def run(cmd, log_output=True, password_func=get_password, timeout=1):
     output = cStringIO.StringIO()
-    fh = os.popen('{ ' + cmd + '; } 2>&1', 'r', 1)
 
-    t = ''
-    while True:
-        if t:
-            if 'password' not in t.lower():
-                update_spinner()
-            else:
-                print t
-                t = ''
+    try:
+        child = pexpect.spawn(cmd, timeout=timeout)
+    except pexpect.ExceptionPexpect:
+        return -1, ''
 
-        r, w, x = select.select([fh], [], [], 1)
+    try:
+        while True:
+            update_spinner()
+            i = child.expect(["[pP]assword:", pexpect.EOF, pexpect.TIMEOUT])
 
-        if r:
-            t = r[0].readline()
-        else:
-            continue
+            if child.before:
+                log.debug(child.before)
+                output.write(child.before)
 
-        if not t:
-            break
+            if i == 0: # Password:
+                child.sendline(get_password())
 
-        log.debug(t.replace("\n", ""))
-        output.write(t)
+            elif i == 1: # EOF
+                break
+
+            elif i == 2: # TIMEOUT
+                continue
+
+
+    except Exception, e:
+        print "Exception", e
 
     cleanup_spinner()
+    child.close()
 
-    status = fh.close()
-    if status is None: status = 0
+    return child.exitstatus, output.getvalue()
 
-    if status == 0:
-        log.debug("Exit status =  0")
-    else:
-        log.debug("Exit status = %d" % status)
 
-    return status, output.getvalue()
 
 

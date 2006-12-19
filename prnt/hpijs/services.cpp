@@ -42,7 +42,6 @@
 #include "ijs_server.h"
 #include "hpijs.h"
 #include "services.h"
-#include "hpiom.h"
 
 int UXServices::InitDuplexBuffer()
 {
@@ -177,17 +176,19 @@ int UXServices::ProcessRaster(char *raster, char *k_raster)
     }
 }
 
+
+#ifdef HAVE_LIBHPIP
+
 /*
  *  Check models.xml for bi-di flag and also check the
  *  device id string for integrity. Some devices return
  *  device id without some expected fields.
  *
  */
-
 BOOL UXServices::CanDoBiDi ()
 {
     char            *hpDev;
-    MsgAttributes   ma;
+    HplipMsgAttributes   ma;
     char            strDevID[512];
 
     // Check for CUPS environment
@@ -203,7 +204,7 @@ BOOL UXServices::CanDoBiDi ()
     {
         return FALSE;
     }
-    hplip_Init ();
+    hplip_Init (&hplip_session);
 
     // Check io-mode in models.xml for this device
 
@@ -212,7 +213,7 @@ BOOL UXServices::CanDoBiDi ()
     {
         return FALSE;
     }
-    if ((hpFD = hplip_OpenHP (hpDev, &ma)) < 0)
+    if ((hpFD = hplip_OpenHP (hplip_session, hpDev, &ma)) < 0)
     {
         return FALSE;
     }
@@ -235,6 +236,15 @@ BOOL UXServices::CanDoBiDi ()
     }
     return TRUE;
 }
+
+#else
+
+BOOL UXServices::CanDoBiDi ()
+{
+    return FALSE;
+}
+
+#endif  // HAVE_LIBHPIP
 
 UXServices::UXServices():SystemServices()
 {
@@ -303,9 +313,11 @@ UXServices::~UXServices()
       delete [] RastersOnPage;
    if (KRastersOnPage)
       delete [] KRastersOnPage;
+#ifdef HAVE_LIBHPIP
    if (hpFD >= 0)
-      hplip_CloseHP(hpFD);  
-   hplip_Exit(); 
+      hplip_CloseHP(hplip_session, hpFD);  
+   hplip_Exit(hplip_session); 
+#endif
 }
 
 DRIVER_ERROR UXServices::ToDevice(const BYTE * pBuffer, DWORD * Count)
@@ -330,15 +342,19 @@ DRIVER_ERROR UXServices::ToDevice(const BYTE * pBuffer, DWORD * Count)
 
 BOOL UXServices::GetStatusInfo (BYTE * bStatReg)
 {
-   if (hplip_GetStatus(hpFD, (char *)bStatReg, 1) == 1)
+#ifdef HAVE_LIBHPIP
+   if (hplip_GetStatus(hplip_session, hpFD, (char *)bStatReg, 1) == 1)
       return TRUE;
+#endif
    return FALSE;
 }
 
 DRIVER_ERROR UXServices::ReadDeviceID (BYTE * strID, int iSize)
 {
-   if (hplip_GetID(hpFD, (char *)strID, iSize) < 3)
+#ifdef HAVE_LIBHPIP
+   if (hplip_GetID(hplip_session, hpFD, (char *)strID, iSize) < 3)
       return IO_ERROR;
+#endif
    return NO_ERROR;
 }
 
@@ -353,8 +369,10 @@ BOOL UXServices::GetVerticalAlignmentValue(BYTE* cVertAlignVal)
 
 BOOL UXServices::GetVertAlignFromDevice()
 {
-   if ((VertAlign = ReadHPVertAlign(hpFD)) == -1)
+#ifdef HAVE_LIBHPIP
+   if ((VertAlign = ReadHPVertAlign(hplip_session, hpFD)) == -1)
       return FALSE;
+#endif
    return TRUE;
 }
 

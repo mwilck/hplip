@@ -61,12 +61,15 @@ class UnloadForm(UnloadForm_base):
         self.printer_name = printer_name
         self.init_failed = False
 
+        icon = QPixmap(os.path.join(prop.image_dir, 'HPmenu.png'))
+        self.setIcon(icon)
+
         if self.device_uri and self.printer_name:
             log.error("You may not specify both a printer (-p) and a device (-d).")
             self.device_uri, self.printer_name = None, None
 
         if not self.device_uri and not self.printer_name:
-            probed_devices = device.probeDevices(bus=bus, filter='pcard')
+            probed_devices = device.probeDevices(None, bus=bus, filter='pcard')
             cups_printers = cups.getPrinters()
             log.debug(probed_devices)
             log.debug(cups_printers)
@@ -150,7 +153,7 @@ class UnloadForm(UnloadForm_base):
 
         if not self.pc.write_protect:
             log.info("DO NOT REMOVE PHOTO CARD UNTIL YOU EXIT THIS PROGRAM")
-
+            
         self.unload_dir = os.path.normpath(os.path.expanduser('~'))
         os.chdir(self.unload_dir)
         self.UnloadDirectoryEdit.setText(self.unload_dir)

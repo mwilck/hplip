@@ -22,7 +22,7 @@
 from __future__ import generators
 
 # Std Lib
-import sys, time, os
+import sys, time, os, gzip
 
 # Local
 from base.g import *
@@ -759,7 +759,7 @@ class devmgr4(DevMgr4_base):
         popup = QPopupMenu(self)
 
         if item is not None:
-            if self.cur_device.error_state not in (ERROR_STATE_BUSY, ERROR_STATE_ERROR):
+            if self.cur_device.error_state != ERROR_STATE_ERROR:
                 popup.insertItem(self.__tr("Print..."), self.PrintButton_clicked)
 
                 if self.cur_device.scan_type:
@@ -771,7 +771,7 @@ class devmgr4(DevMgr4_base):
                 if self.cur_device.fax_type:
                     popup.insertItem(self.__tr("Send Fax..."), self.SendFaxButton_clicked)
 
-                if self.cur_device.copy_type == COPY_TYPE_DEVICE:
+                if self.cur_device.copy_type:
                     popup.insertItem(self.__tr("Make Copies..."), self.MakeCopiesButton_clicked)
 
                 popup.insertSeparator()
@@ -789,7 +789,7 @@ class devmgr4(DevMgr4_base):
     def UpdateDevice(self, check_state=True, reread_cups_printers=False):
         if self.cur_device is not None:
             log.debug(utils.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
-            self.setCaption(self.__tr("%1 - HP Device Manager").arg(self.cur_device.model_ui))
+            self.setCaption(self.__tr("HP Device Manager - %1").arg(self.cur_device.model_ui))
     
             if not self.rescanning:
                 self.statusBar().message(self.cur_device_uri)
@@ -1192,7 +1192,7 @@ class devmgr4(DevMgr4_base):
             self.ScanButton.setEnabled(self.cur_device.scan_type)
             self.PCardButton.setEnabled(self.cur_device.pcard_type)
             self.SendFaxButton.setEnabled(self.cur_device.fax_type)
-            self.MakeCopiesButton.setEnabled(self.cur_device.copy_type == COPY_TYPE_DEVICE)
+            self.MakeCopiesButton.setEnabled(self.cur_device.copy_type)
             #self.MakeCopiesButton.setEnabled(False)
         else:
             self.PrintButton.setEnabled(False)
@@ -1368,6 +1368,14 @@ class devmgr4(DevMgr4_base):
                     self.__tr("Your printer can print a test page to help diagnose print quality problems."), 
                     self.__tr("Print Diagnostic Page..."), 
                     self.pqDiag)
+                    
+            if self.cur_device.fw_download:
+                self.ToolList.addItem( "fwdownload", self.__tr("<b>Download Firmware</b>"), 
+                    QPixmap(os.path.join(prop.image_dir, 'download.png')),
+                    self.__tr("Download firmware to your printer (required on some devices after each power-up)."), 
+                    self.__tr("Download Firmware..."), 
+                    self.downloadFirmware)
+                
 
             if self.cur_device.clean_type:
                 self.ToolList.addItem( "clean", self.__tr("<b>Clean Cartridges</b>"), 
@@ -1448,7 +1456,22 @@ class devmgr4(DevMgr4_base):
             d.close()
             QApplication.restoreOverrideCursor()
 
+    def downloadFirmware(self):
+        d = self.cur_device
+        
+        try:
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+            d.open()
 
+            if d.isIdleAndNoError():
+                d.downloadFirmware()
+            else:
+                self.FailureUI(self.__tr("<b>An error occured downloading firmware file.</b><p>Please check your printer and try again."))
+                
+        finally:
+            d.close()
+            QApplication.restoreOverrideCursor()
+                
 
     def linefeedCalibration(self):
         d = self.cur_device
@@ -1501,7 +1524,6 @@ class devmgr4(DevMgr4_base):
             QApplication.restoreOverrideCursor()
 
 
-
     def linefeedCalibration(self):
         d = self.cur_device
         linefeed_type = d.linefeed_cal_type
@@ -1524,12 +1546,9 @@ class devmgr4(DevMgr4_base):
             QApplication.restoreOverrideCursor()
 
 
-    def EventUI(self, event_code, event_type,
-                 error_string_short, error_string_long,
-                 retry_timeout, job_id, device_uri):
-
-        log.debug("Event: code=%d type=%s string=%s timeout=%d id=%d uri=%s" %
-                 (event_code, event_type,  error_string_short, retry_timeout, job_id, device_uri))
+    def EventUI(self, event_code, event_type, retry_timeout, job_id, device_uri):
+        log.debug("Event: code=%d type=%s timeout=%d id=%d uri=%s" %
+                 (event_code, event_type, retry_timeout, job_id, device_uri))
 
         if not self.rescanning:
             if event_code == EVENT_CUPS_QUEUES_CHANGED:
@@ -1808,15 +1827,16 @@ class devmgr4(DevMgr4_base):
 
     def PrintTestPageButton_clicked(self):
         d = self.cur_device
-
         printer_name = d.cups_printers[0]
-
+        
         if len(d.cups_printers) > 1:
             from chooseprinterdlg import ChoosePrinterDlg2
             dlg = ChoosePrinterDlg2(d.cups_printers)
 
             if dlg.exec_loop() == QDialog.Accepted:
                 printer_name = dlg.printer_name
+            else:
+                return
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -1933,15 +1953,11 @@ class devmgr4(DevMgr4_base):
         self.RunCommand(self.cmd_fax)
 
     def MakeCopiesButton_clicked(self):
-        if self.cur_device.copy_type == COPY_TYPE_DEVICE:
+        if self.cur_device.copy_type:
             self.RunCommand(self.cmd_copy)
-        else:
-            self.FailureUI(self.__tr("<p><b>Sorry, the make copies feature is currently not implemented for this device type.</b>"))
-
 
     def ConfigureFeaturesButton_clicked(self):
         self.settingsConfigure_activated(2)
-
 
     def RunCommand(self, cmd, macro_char='%'):
         self.ToggleFunctionButtons(False)
@@ -2020,19 +2036,28 @@ class devmgr4(DevMgr4_base):
         utils.openURL(f)
         
     def deviceInstallAction_activated(self):
+        su_sudo = None
         if utils.which('kdesu'):
             su_sudo = 'kdesu -- %s'
         
         elif utils.which('gksu'):
             su_sudo = 'gksu "%s"'
         
-        if utils.which('hp-setup'):
-            cmd = su_sudo % 'hp-setup -u'
+        if su_sudo is None:
+            QMessageBox.critical(self,
+                                self.caption(),
+                                self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-setup.</b>"),
+                                QMessageBox.Ok,
+                                QMessageBox.NoButton,
+                                QMessageBox.NoButton)
         else:
-            cmd = su_sudo % 'python ./setup.py -u'
-        
-        log.debug(cmd)
-        os.system(cmd)
+            if utils.which('hp-setup'):
+                cmd = su_sudo % 'hp-setup -u'
+            else:
+                cmd = su_sudo % 'python ./setup.py -u'
+            
+            log.debug(cmd)
+            utils.run(cmd, log_output=True, password_func=None, timeout=1)
         
     def deviceRemoveAction_activated(self):
         if self.cur_device is not None:

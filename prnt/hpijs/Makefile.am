@@ -1,8 +1,12 @@
+if HPLIP_BUILD
+INCLUDES = -I../../ip -I../../api
+endif
+
 docdir	= $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL=HPLIP-1_6_9_16
+APDKLABEL=APDK_2006_11_20
 APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug
@@ -58,16 +62,16 @@ apdk_SOURCES = models.cpp breaks_open.cpp \
 	dj4100_cmap.cpp ldlencap.h ljcolor.cpp ljcolor.h pscript.h \
 	printerproxy.cpp printerfactory.cpp printerproxy.h printerfactory.h \
 	ljjetready.cpp ljjetready.h jdatadbf.c jccolor.c ljfastraster.cpp ljfastraster.h \
-	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h
+	jinclude.h jpegint.h dj55xx.h hpijsfax.h ojprokx50.h 
+                
 hpijs_SOURCES = $(apdk_SOURCES) hpijs.cpp ijs_server.c ijs.c hpijsfax.cpp services.cpp \
-    hpijs.h ijs.h ijs_server.h services.h ijs_client.h hpiom.c hpiom.h \
-	hplip_api.c hplip_api.h
+    hpijs.h ijs.h ijs_server.h services.h ijs_client.h hpiom.c hpiom.h 
 
 noinst_PROGRAMS = hppgsz
 hppgsz_SOURCES = $(apdk_SOURCES) PrinterProperties.cpp PrinterProperties.h
 
 if HPLIP_BUILD
-hpijs_LDADD = ../../libhpip.la
+hpijs_LDADD = ../../libhpip.la ../../libhplip-api.la
 endif
 
 doc_DATA = COPYING README_LIBJPG

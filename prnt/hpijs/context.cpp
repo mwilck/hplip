@@ -1,7 +1,7 @@
 /*****************************************************************************\
   context.cpp : Implimentation for the PrintContext class
 
-  Copyright (c) 1996 - 2001, Hewlett-Packard Co.
+  Copyright (c) 1996 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -2030,6 +2030,16 @@ void PrintContext::ResetIOMode (BOOL bDevID, BOOL bStatus)
         thePrinter->bCheckForCancelButton = bDevID;
     }
 }
-  
+
+#ifdef APDK_LINUX
+DRIVER_ERROR PrintContext::SetPrinterHint (int iHint, int iValue)
+{
+    if (thePrinter)
+    {
+        return thePrinter->SetHint (iHint, iValue);
+    }
+    return NO_ERROR;
+}
+#endif // APDK_LINUX
 
 APDK_END_NAMESPACE

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'aboutdlg_base.ui'
 #
-# Created: Fri May 5 15:09:03 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Wed Nov 8 15:54:17 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -71,7 +71,7 @@ class AboutDlg_base(QDialog):
 
         self.languageChange()
 
-        self.resize(QSize(465,522).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(525,371).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.pushButton15,SIGNAL("clicked()"),self.close)
@@ -82,7 +82,8 @@ class AboutDlg_base(QDialog):
         self.textLabel1.setText(self.__tr("<font size=\"+3\"><p align=\"center\">HP Linux Imaging and Printing (HPLIP)</p></font>"))
         self.pushButton15.setText(self.__tr("OK"))
         self.textLabel2.setText(self.__tr("<b>Authors and Contributors:</b>\n"
-"David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh"))
+"David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, \n"
+"Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh, Till Kamppeter, John Hosszu"))
         self.textLabel3.setText(self.__tr("<b>License and Copyright:</b>\n"
 "(c) Copyright 2006 Hewlett-Packard Development Company, L.P. This software is licensed under the GNU General Public License (GPL), BSD, and MIT licenses. See the software sources for details."))
         self.textLabel4.setText(self.__tr("<b>Software Version:</b>"))

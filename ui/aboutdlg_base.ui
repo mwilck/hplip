@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>465</width>
-            <height>522</height>
+            <width>525</width>
+            <height>371</height>
         </rect>
     </property>
     <property name="caption">
@@ -132,7 +132,8 @@
             </property>
             <property name="text">
                 <string>&lt;b&gt;Authors and Contributors:&lt;/b&gt;
-David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh</string>
+David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, 
+Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh, Till Kamppeter, John Hosszu</string>
             </property>
         </widget>
         <widget class="QLabel" row="3" column="0" rowspan="1" colspan="4">

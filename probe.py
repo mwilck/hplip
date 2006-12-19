@@ -21,17 +21,17 @@
 #
 
 
-__version__ = '2.2'
+__version__ = '3.1'
 __title__ = 'Printer Discovery Utility'
 __doc__ = "Discover USB, parallel, and network printers."
 
 
 # Std Lib
-import sys, getopt, re, socket
+import sys, getopt
 
 # Local
 from base.g import *
-from base import device, utils, slp, msg
+from base import device, utils
 
 
 USAGE = [(__doc__, "", "name", True),
@@ -45,6 +45,7 @@ USAGE = [(__doc__, "", "name", True),
          ("", "<filter list>: comma separated list of one or more of: scan, pcard, fax, copy, or none\*. (\*none is the default)", "option", False),
          ("Search:", "-s<search re> or --search=<search re>", "option", False),
          ("", "<search re> must be a valid regular expression (not case sensitive)", "option", False),
+         ("Network discovery method:", "-m<method> or --method=<method>: <method> is 'slp'* or 'mdns'.", "option", False),
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
          utils.USAGE_SPACE,
@@ -70,7 +71,7 @@ log.set_module('hp-probe')
 
 try:
     opts, args = getopt.getopt(sys.argv[1:],
-                                'hl:b:t:o:e:s:g',
+                                'hl:b:t:o:e:s:gm:',
                                 ['help', 'help-rest', 'help-man',
                                   'help-desc',
                                   'logging=',
@@ -79,7 +80,8 @@ try:
                                   'ttl=',
                                   'timeout=',
                                   'filter=',
-                                  'search='
+                                  'search=',
+                                  'method=',
                                 ]
                               )
 except getopt.GetoptError:
@@ -88,11 +90,11 @@ except getopt.GetoptError:
 log_level = logger.DEFAULT_LOG_LEVEL
 bus = "usb"
 align_debug = False
-format='cups'
-timeout=5
+timeout=10
 ttl=4
 filter = 'none'
 search = ''
+method = 'slp'
 
 if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
@@ -117,9 +119,9 @@ for o, a in opts:
 
     elif o in ('-b', '--bus'):
         try:
-            bus = a.lower().strip().split(',')[0]
+            bus = a.lower().strip()
         except:
-            bus = 'cups'
+            bus = 'usb'
             
         if not device.validateBusList(bus):
             usage()
@@ -129,6 +131,16 @@ for o, a in opts:
         if not log.set_level(log_level):
             usage()
 
+    elif o in ('-m', '--method'):
+        method = a.lower().strip()
+        
+        if method not in ('slp', 'mdns', 'bonjour'):
+            log.error("Invalid network search protocol: %s (must be 'slp' or 'mdns')" % method)
+            method = 'slp'
+        
+        else:
+            bus = 'net'
+    
     elif o in ('-t', '--ttl'):
         try:
             ttl = int(a)
@@ -150,9 +162,6 @@ for o, a in opts:
             log.error("You must specify a positive timeout in seconds.")
             usage()
 
-    elif o in ('-f', '--format'):
-        format = a.lower().strip()
-
     elif o in ('-e', '--filter'):
         filter = a.lower().strip()
         if not device.validateFilterList(filter):
@@ -163,95 +172,61 @@ for o, a in opts:
 
 utils.log_title(__title__, __version__)
 
-if bus == 'net':
-    log.info(utils.bold("Probing network for printers. Please wait, this will take approx. %d seconds...\n" % timeout))
-        
-hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-
-fields, data, result_code = \
-    msg.xmitMessage(hpssd_sock,
-                     "ProbeDevicesFiltered",
-                      None,
-                      {
-                            'bus' : bus,
-                            'timeout' : timeout,
-                            'ttl' : ttl,
-                            'format' : 'cups',
-                            'filter' : filter,
-                            'search': search,
-
-                      }
-                    )
-
-hpssd_sock.close()
-
-pat = re.compile(r'(.*?)\s"(.*?)"\s"(.*?)"\s"(.*?)"', re.IGNORECASE)
-
-max_c1, max_c2, max_c3, max_c4 = 0, 0, 0, 0
-dd = data.splitlines()
-
-if dd:
-    for d in dd:
-        x = pat.search(d)
-        
-        c1 = x.group(1) # uri
-        max_c1 = max(len(c1), max_c1)
-        
-        c2 = x.group(2) # model
-        max_c2 = max(len(c2), max_c1)
-
-        c3 = x.group(3) # ex. model
-        max_c3 = max(len(c3), max_c3)
-        
-        c4 = x.group(4) # name
-        max_c4 = max(len(c4), max_c4)
-        
-
-
+buses = bus
+for bus in buses.split(','):
     if bus == 'net':
-        formatter = utils.TextFormatter(
-                    (
-                        {'width': max_c1, 'margin' : 2},
-                        {'width': max_c3, 'margin' : 2},
-                        {'width': max_c4, 'margin' : 2},
-                    )
-                )
-                
-        log.info(formatter.compose(("Device URI", "Model", "Name")))
-        log.info(formatter.compose(('-'*max_c1, '-'*max_c3, '-'*max_c4)))
-        for d in dd:
-            x = pat.search(d)
-            uri = x.group(1)
-            name = x.group(3)
-            model = x.group(4)
-            log.info(formatter.compose((uri, name, model)))
-    else:
-        formatter = utils.TextFormatter(
-                    (
-                        {'width': max_c1, 'margin' : 2},
-                        {'width': max_c2, 'margin' : 2},
-                        #{'width': max_c4, 'margin' : 2},
-                    )
-                )
-                
-        log.info(formatter.compose(("Device URI", "Model")))
-        log.info(formatter.compose(('-'*max_c1, '-'*max_c2)))
-        for d in dd:
-            x = pat.search(d)
-            uri = x.group(1)
-            model = x.group(2)
-            log.info(formatter.compose((uri, model)))
-
-    log.info("\nFound %d printer(s) on the '%s' bus.\n" % (len(dd), bus))
+        log.info(utils.bold("Probing network for printers. Please wait, this will take approx. %d seconds...\n" % timeout))
             
-else:
-    log.warn("No devices found. If this isn't the result you are expecting,")
-
-    if bus == 'net':
-        log.warn("check your network connections and make sure your internet")
-        log.warn("firewall software is disabled.")
+    devices = device.probeDevices(None, bus, timeout, ttl, filter, search, method)
+    cleanup_spinner()
+            
+    max_c1, max_c2, max_c3, max_c4 = 0, 0, 0, 0
+    
+    if devices:
+        for d in devices:
+            max_c1 = max(len(d), max_c1)
+            max_c3 = max(len(devices[d][0]), max_c3)
+            max_c4 = max(len(devices[d][2]), max_c4)
+    
+        if bus == 'net':
+            formatter = utils.TextFormatter(
+                        (
+                            {'width': max_c1, 'margin' : 2},
+                            {'width': max_c3, 'margin' : 2},
+                            {'width': max_c4, 'margin' : 2},
+                        )
+                    )
+                    
+            log.info(formatter.compose(("Device URI", "Model", "Name")))
+            log.info(formatter.compose(('-'*max_c1, '-'*max_c3, '-'*max_c4)))
+            for d in devices:
+                log.info(formatter.compose((d, devices[d][0], devices[d][2])))
+        
+        elif bus in ('usb', 'par', 'cups'):
+            formatter = utils.TextFormatter(
+                        (
+                            {'width': max_c1, 'margin' : 2},
+                            {'width': max_c3, 'margin' : 2},
+                        )
+                    )
+                    
+            log.info(formatter.compose(("Device URI", "Model")))
+            log.info(formatter.compose(('-'*max_c1, '-'*max_c3)))
+            for d in devices:
+                log.info(formatter.compose((d, devices[d][0])))
+                
+        else:
+            log.error("Invalid bus: %s" % bus)
+    
+        log.info("\nFound %d printer(s) on the '%s' bus.\n" % (len(devices), bus))
+                
     else:
-        log.warn("check to make sure your devices are properly connected.")
+        log.warn("No devices found on the '%s' bus. If this isn't the result you are expecting," % bus)
+    
+        if bus == 'net':
+            log.warn("check your network connections and make sure your internet")
+            log.warn("firewall software is disabled.")
+        else:
+            log.warn("check to make sure your devices are properly connected.")
 
 

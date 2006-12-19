@@ -5,7 +5,7 @@
 #
 
 SUBDIRS = . prnt/hpijs
-INCLUDES = -Iprnt/hpijs -Iip
+INCLUDES = -Iip -Iapi
 
 hplipdir = $(datadir)/hplip
 rundir = /var/run
@@ -48,6 +48,10 @@ www242dir = $(docdir)/install/step4/setup
 dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
 www243dir = $(docdir)/install/step4/suse
 dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+www251dir = $(docdir)/install/manual
+dist_www251_DATA = $(wwwsrc)/install/manual/*
+www252dir = $(docdir)/install/manual/distros
+dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
 www3dir = $(docdir)/styles
 dist_www3_DATA = $(wwwsrc)/styles/*
 www4dir = $(docdir)/images
@@ -66,7 +70,7 @@ dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh install.py hplip-install
 
 cmddir = $(hplipdir)
 dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py makecopies.py probe.py timedate.py
+    sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
@@ -81,14 +85,18 @@ hp_LDADD = libhplip-api.la
 sbin_PROGRAMS = hpiod
 hpiod_SOURCES = io/hpiod/hpiod.cpp io/hpiod/channel.cpp io/hpiod/device.cpp io/hpiod/mlc.cpp io/hpiod/system.cpp io/hpiod/jddevice.cpp io/hpiod/jetdirect.cpp \
     io/hpiod/udevice.cpp io/hpiod/uppdevice.cpp io/hpiod/ppdevice.cpp io/hpiod/pp.cpp io/hpiod/channel.h io/hpiod/device.h io/hpiod/hpiod.h io/hpiod/mlc.h \
-    io/hpiod/system.h io/hpiod/dot4.cpp io/hpiod/ppdot4.cpp io/hpiod/dot4.h io/hpiod/list.h io/hpiod/usbext.c io/hpiod/usbext.h io/hpiod/comp.cpp
+    io/hpiod/system.h io/hpiod/dot4.cpp io/hpiod/ppdot4.cpp io/hpiod/dot4.h io/hpiod/usbext.c io/hpiod/usbext.h io/hpiod/comp.cpp
 
 # base
 basedir = $(hplipdir)/base
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  base/async.py \
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
-    base/imagesize.py base/distros.py base/dcheck.py
+    base/imagesize.py base/pexpect.py base/models.py base/mdns.py
+    
+# installer
+installerdir = $(hplipdir)/installer
+dist_installer_SCRIPTS = installer/__init__.py installer/core.py installer/text_install.py installer/dcheck.py installer/distros.py
 
 # makecopies
 copierdir = $(hplipdir)/copier
@@ -108,14 +116,15 @@ ptest_SOURCES = pcard/ptest.c pcard/ptest.h pcard/fat.c pcard/fat.h
 ptest_LDADD = libhplip-api.la
 
 # data
-xmldir = $(hplipdir)/data/xml
+modelsdir = $(hplipdir)/data/models
 imagesdir = $(hplipdir)/data/images
 pcldir = $(hplipdir)/data/pcl
 ldldir = $(hplipdir)/data/ldl
 psdir = $(hplipdir)/data/ps
+firmdir = $(hplipdir)/data/firmware
 icondir = $(hplipdir)/data
 dist_ps_DATA = data/ps/testpage.ps.gz data/ps/clean_page.pdf.gz
-dist_xml_DATA = data/xml/*.xml
+dist_models_DATA = data/models/models.dat
 dist_images_DATA = data/images/*
 dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/align2_8xx.pcl.gz data/pcl/align3_8xx.pcl.gz data/pcl/align4_8xx.pcl.gz \
     data/pcl/align5_8xx.pcl.gz data/pcl/align2_9xx.pcl.gz data/pcl/align3_9xx.pcl.gz data/pcl/align4_450.pcl.gz data/pcl/align6_450.pcl.gz \
@@ -123,6 +132,7 @@ dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/a
     data/pcl/crcpcal.pcl.gz data/pcl/crpcal.pcl.gz 
 dist_ldl_DATA = data/ldl/cb2pcal.ldl.gz data/ldl/cb2pcal_done.ldl.gz data/ldl/cbbcal.ldl.gz data/ldl/cbccal.ldl.gz data/ldl/cbccal_done.ldl.gz data/ldl/cbcpcal.ldl.gz \
     data/ldl/cbpcal.ldl.gz
+dist_firm_DATA = data/firmware/HP_LaserJet_1018.fw.gz data/firmware/HP_LaserJet_1020.fw.gz
 
 # pcard 
 pcarddir = $(hplipdir)/pcard
@@ -151,30 +161,37 @@ endif
 libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
     ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
     ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
-    ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h
+    ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h 
 libhpip_la_LDFLAGS = -version-info 0:1:0
 
-# sane backend
 if SCAN_BUILD
-BASENAME=sane-hpaio
+
+# hpaio sane backend
 MAJORVER=1
 MINORVER=0
 AGEVER=0
+BASENAME=sane-hpaio
 SONOVER=lib$(BASENAME).so
 SOSHORT=$(SONOVER).$(MAJORVER)
 SOLONG=$(SOSHORT).$(MINORVER).$(AGEVER)
 sanedir = $(libdir)/sane
 #lib_LTLIBRARIES = libsane-hpaio.la
-libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h \
-      scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h
+libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
+      scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
+      scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/sanei_debug.h scan/sane/sanei.h \
+      scan/sane/soap_stub.c 
+#      scan/sane/soap.c scan/sane/webScanC.c scan/sane/webScanClient.c scan/sane/stdsoap2.c \
+#      scan/sane/dime.c scan/sane/dime.h scan/sane/webScanStub.h scan/sane/webScanH.h scan/sane/stdsoap2.h scan/sane/webScan.nsmap
 libsane_hpaio_la_LDFLAGS = -version-info $(MAJORVER):$(MINORVER):$(AGEVER) 
 # The following is a interlibrary dependency that must be compiled first.
 libsane_hpaio_la_LIBADD = libhpip.la libhplip-api.la
+libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+
 endif
 
 # api library
 noinst_LTLIBRARIES = libhplip-api.la
-libhplip_api_la_SOURCES = prnt/hpijs/hplip_api.c prnt/hpijs/hplip_api.h
+libhplip_api_la_SOURCES = api/hplip_api.c api/hplip_api.h api/model.c api/list.h
 
 # ui
 uidir = $(hplipdir)/ui
@@ -328,7 +345,8 @@ install-data-hook: install-pcardext install-cupsext
 	else \
 	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
-	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf;
+	echo -e "installinitd=$(INSTALLINITD)\nchkconfig=$(CHKCONFIG)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
+	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 #
 #       Install hpiod.conf. 
 	$(mkinstalldirs) $(DESTDIR)/etc/hp
@@ -347,7 +365,7 @@ install-data-hook: install-pcardext install-cupsext
 	if [ "$(DESTDIR)" = "" ]; then \
 	   if [ "$(INSTALLINITD)" != "" ]; then \
 	      $(INSTALLINITD) $(PACKAGE); \
-	   else \
+	   elif [ "$(CHKCONFIG)" != "" ]; then  \
 	      $(CHKCONFIG) $(PACKAGE) reset; \
 	   fi \
 	fi
@@ -364,7 +382,8 @@ install-data-hook: install-pcardext install-cupsext
 #
 #       For internal testing.
 	if [ "$(SHADOW)" != "" ]; then \
-	   cp -f data/xml/unreleased/*.xml $(DESTDIR)$(hplipdir)/data/xml/; \
+           $(mkinstalldirs) $(DESTDIR)$(modelsdir)/unreleased; \
+	   $(INSTALL_DATA) $(srcdir)/data/models/unreleased.dat $(DESTDIR)$(modelsdir)/unreleased; \
 	fi
 
 uninstall-hook:
@@ -390,7 +409,7 @@ uninstall-hook:
 
 dist-hook:
 	if [ "$(SHADOW)" != "" ]; then \
-	   cp -f data/xml/unreleased/*.xml $(distdir)/data/xml/; \
+	   cp -f data/models/unreleased/unreleased.dat $(distdir)/data/models/; \
 	fi
 
 .PHONY: build-pcardext build-cupsext install-pcardext install-cupsext

@@ -31,7 +31,6 @@ import os.path, os
 import socket
 import syslog
 import time
-import re
 
 pid = os.getpid()
 config_file = '/etc/hp/hplip.conf'
@@ -83,9 +82,6 @@ def usage(typ='text'):
     sys.exit(0)        
 
 
-
-
-
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'l:hg', ['level=', 'help', 'help-rest', 'help-man'])
 
@@ -112,29 +108,9 @@ for o, a in opts:
         
 
 if len( args ) == 0:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
-        log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
-        sys.exit(1)
-
-    fields, data, result_code = \
-        msg.xmitMessage(sock,
-                         "ProbeDevicesFiltered",
-                         None,
-                         {
-                           'bus' : 'usb,par',
-                           'timeout' : 5,
-                           'ttl' : 4,
-                           'filter' : 'fax',
-                           'format' : 'cups',
-                          }
-                       )
-
-    sock.close()
-
-    if not fields.get('num-devices', 0) or result_code > ERROR_SUCCESS:
+    probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
+    
+    if not probed_devices:
         cups_ver_major, cups_ver_minor, cups_ver_patch = cups.getVersionTuple()
         
         if cups_ver_major == 1 and cups_ver_minor < 2:
@@ -142,28 +118,15 @@ if len( args ) == 0:
             
         sys.exit(0)
 
-    direct_pat = re.compile(r'(.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
-    
     good_devices = 0
-    for d in data.splitlines():
-        m = direct_pat.match(d)
-        
-        try:
-            uri = m.group(1) or ''
-            uri = uri.replace('hp:/', 'hpfax:/')
-            mdl = m.group(2) or ''
-            desc = m.group(3) or ''
-            devid = m.group(4) or ''
-        except AttributeError:
-            continue
-        
+    for uri in probed_devices:
         try:
             back_end, is_hp, bus, model, serial, dev_file, host, port = \
                 device.parseDeviceURI(uri)
         except Error:
             continue
         
-        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % (uri, desc)
+        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % (uri, model)
         good_devices += 1
         
     if not good_devices:
@@ -193,9 +156,6 @@ else:
     except IndexError:
         input_fd = 0
         
-    pdb = pwd.getpwnam(username)
-    home_folder, uid, gid = pdb[5], pdb[2], pdb[3]
-    
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((prop.hpssd_host, prop.hpssd_port))
@@ -277,10 +237,6 @@ else:
         fax_data = os.read(input_fd, prop.max_message_len)
     
     os.close(input_fd)
-    
-    #sendEvent(sock, EVENT_END_FAX_PRINT_JOB, 'event',
-    #          job_id, username, device_uri)
-    
     sock.close()
     sys.exit(0)
     

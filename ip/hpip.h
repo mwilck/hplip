@@ -72,15 +72,11 @@ typedef enum { FALSE=0, TRUE=1 } BOOL;
 typedef void VOID, *PVOID, FAR *LPVOID;
 typedef long long int __int64;
 
-#pragma pack(1)
-
 typedef struct {
 	BYTE rgbRed:8;
 	BYTE rgbGreen:8;
 	BYTE rgbBlue:8;
-} RGBQUAD;
-
-#pragma pack()
+} __attribute__((packed)) RGBQUAD;
 
 /****************************************************************************\
  ****************************************************************************
@@ -732,7 +728,6 @@ enum {IP_FAX_MH, IP_FAX_MR, IP_FAX_MMR};
 
 /* aXformInfo[IP_HEADER_SPEC] shall be a pointer pointing to this: */
 
-#pragma pack (1)
 typedef struct {
     PSTR    pszLeftStr;    // ptr to left-justified string; 0 -> none
     PSTR    pszCenterStr;  // ptr to centered string; 0 -> none
@@ -744,8 +739,7 @@ typedef struct {
     BOOL    bOverlay;      // 0=append header, 1=overlay it on top of page
     RGBQUAD rgbWhite;      // a white pixel
     RGBQUAD rgbBlack;      // a black pixel
-} XHEADER_SPEC, *PXHEADER_SPEC, FAR*LPXHEADER_SPEC;
-#pragma pack ()
+} __attribute__((packed)) XHEADER_SPEC, *PXHEADER_SPEC, FAR*LPXHEADER_SPEC;
 
 /* A header is one line of text appearing at the top of faxes.  This is known
  * as a "TTI" in faxland.  We implement this as a left-justified portion, a

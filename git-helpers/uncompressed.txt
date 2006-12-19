@@ -1,3 +1,5 @@
+./data/firmware/HP_LaserJet_1018.fw
+./data/firmware/HP_LaserJet_1020.fw
 ./data/ldl/cb2pcal_done.ldl
 ./data/ldl/cb2pcal.ldl
 ./data/ldl/cbbcal.ldl

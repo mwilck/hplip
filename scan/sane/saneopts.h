@@ -89,6 +89,9 @@
 #define SANE_NAME_HALFTONE		"halftoning"
 #define SANE_NAME_BLACK_LEVEL           "black-level"
 #define SANE_NAME_WHITE_LEVEL           "white-level"
+#define SANE_NAME_WHITE_LEVEL_R         "white-level-r"
+#define SANE_NAME_WHITE_LEVEL_G         "white-level-g"
+#define SANE_NAME_WHITE_LEVEL_B         "white-level-b"
 #define SANE_NAME_SHADOW		"shadow"
 #define SANE_NAME_SHADOW_R		"shadow-r"
 #define SANE_NAME_SHADOW_G		"shadow-g"
@@ -126,6 +129,7 @@
 #define SANE_NAME_CAL_LAMP_DEN		"cal-lamp-density"
 #define SANE_NAME_SCAN_LAMP_DEN		"scan-lamp-density"
 #define SANE_NAME_SELECT_LAMP_DENSITY	"select-lamp-density"
+#define SANE_NAME_LAMP_OFF_AT_EXIT	"lamp-off-at-exit"
 
 #define SANE_TITLE_NUM_OPTIONS		SANE_I18N("Number of options")
 #define SANE_TITLE_PREVIEW		SANE_I18N("Preview")
@@ -153,6 +157,9 @@
 #define SANE_TITLE_HALFTONE		SANE_I18N("Halftoning")
 #define SANE_TITLE_BLACK_LEVEL          SANE_I18N("Black level")
 #define SANE_TITLE_WHITE_LEVEL          SANE_I18N("White level")
+#define SANE_TITLE_WHITE_LEVEL_R        SANE_I18N("White level for red")
+#define SANE_TITLE_WHITE_LEVEL_G        SANE_I18N("White level for green")
+#define SANE_TITLE_WHITE_LEVEL_B        SANE_I18N("White level for blue")
 #define SANE_TITLE_SHADOW		SANE_I18N("Shadow")
 #define SANE_TITLE_SHADOW_R		SANE_I18N("Shadow for red")
 #define SANE_TITLE_SHADOW_G		SANE_I18N("Shadow for green")
@@ -192,6 +199,7 @@
 #define SANE_TITLE_CAL_LAMP_DEN		SANE_I18N("Cal. lamp density")
 #define SANE_TITLE_SCAN_LAMP_DEN	SANE_I18N("Scan lamp density")
 #define SANE_TITLE_SELECT_LAMP_DENSITY	SANE_I18N("Set lamp density")
+#define SANE_TITLE_LAMP_OFF_AT_EXIT	SANE_I18N("Lamp off at exit")
 
 /* Descriptive/help strings for above options: */
 #define SANE_DESC_NUM_OPTIONS \
@@ -281,6 +289,15 @@ SANE_I18N("Selects what radiance level should be considered \"black\".")
 #define SANE_DESC_WHITE_LEVEL \
 SANE_I18N("Selects what radiance level should be considered \"white\".")
 
+#define SANE_DESC_WHITE_LEVEL_R \
+SANE_I18N("Selects what red radiance level should be considered \"white\".")
+
+#define SANE_DESC_WHITE_LEVEL_G \
+SANE_I18N("Selects what green radiance level should be considered \"white\".")
+
+#define SANE_DESC_WHITE_LEVEL_B \
+SANE_I18N("Selects what blue radiance level should be considered \"white\".")
+
 #define SANE_DESC_SHADOW \
 SANE_I18N("Selects what radiance level should be considered \"black\".")
 #define SANE_DESC_SHADOW_R \
@@ -368,5 +385,13 @@ SANE_I18N("Define lamp density for calibration")
 SANE_I18N("Define lamp density for scan")
 #define SANE_DESC_SELECT_LAMP_DENSITY \
 SANE_I18N("Enable selection of lamp density")
+#define SANE_DESC_LAMP_OFF_AT_EXIT \
+SANE_I18N("Turn off lamp when program exits")
+
+/* Typical values for stringlists (to keep the backends consistent) */
+
+#define SANE_VALUE_SCAN_MODE_COLOR		SANE_I18N("Color")
+#define SANE_VALUE_SCAN_MODE_GRAY		SANE_I18N("Gray")
+#define SANE_VALUE_SCAN_MODE_LINEART		SANE_I18N("Lineart")
 
 #endif /* saneopts_h */

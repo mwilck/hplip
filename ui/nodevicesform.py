@@ -41,6 +41,7 @@ class NoDevicesForm(NoDevicesForm_base):
         
     def setupPushButton_clicked(self):
         self.close()
+        su_sudo = None
         
         if utils.which('kdesu'):
             su_sudo = 'kdesu -- %s'
@@ -48,13 +49,22 @@ class NoDevicesForm(NoDevicesForm_base):
         elif utils.which('gksu'):
             su_sudo = 'gksu "%s"'
         
-        if utils.which('hp-setup'):
-            cmd = su_sudo % 'hp-setup -u'
+        if su_sudo is None:
+            QMessageBox.critical(self,
+                                self.caption(),
+                                self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-setup.</b>"),
+                                QMessageBox.Ok,
+                                QMessageBox.NoButton,
+                                QMessageBox.NoButton)
+            
         else:
-            cmd = su_sudo % 'python ./setup.py -u'
-        
-        log.debug(cmd)
-        os.system(cmd)
+            if utils.which('hp-setup'):
+                cmd = su_sudo % 'hp-setup -u'
+            else:
+                cmd = su_sudo % 'python ./setup.py -u'
+            
+            log.debug(cmd)
+            utils.run(cmd, log_output=True, password_func=None, timeout=1)
         
         
         

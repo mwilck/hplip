@@ -25,7 +25,16 @@
 
 \************************************************************************************/
 
-#include "hpaio.h"
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "hplip_api.h"
+#include "io.h"
+#include "common.h"
+#include "pml.h"
+
+#define DEBUG_DECLARE_ONLY
+#include "sanei_debug.h"
 
 int PmlSetID( PmlObject_t obj, char * oid )
 {
@@ -412,7 +421,7 @@ int PmlReadReply( /*ptalDevice_t dev,*/
                   int request )
 {
     //return ptalChannelRead( dev->pmlChannel, data, maxDatalen );
-  return hplip_ReadHP( deviceid, channelid, (char *)data, maxDatalen, EXCEPTION_TIMEOUT );
+  return hplip_ReadHP(hplip_session, deviceid, channelid, (char *)data, maxDatalen, HPLIP_EXCEPTION_TIMEOUT );
 
     /* TODO: Check for and handle traps. */
 }
@@ -421,8 +430,6 @@ int PmlRequestSet( int deviceid, int channelid, PmlObject_t obj )
 {
     unsigned char data[PML_MAX_DATALEN];
     int datalen=0, status=ERROR, type, result, pml_result;
-
-    DBG( 0,  "PmlRequestSet(obj=0x%8.8X)\n", obj );
 
     PmlSetStatus(obj, PML_ERROR);
                 
@@ -478,8 +485,6 @@ int PmlRequestGet( int deviceid, int channelid, PmlObject_t obj )
     unsigned char data[PML_MAX_DATALEN];
     int datalen=0, stat=ERROR, result, type, pml_result;
 
-    DBG( 0,  "PmlRequestGet(obj=0x%8.8X)\n", obj );
-    
     datalen = GetPml(deviceid, channelid, obj->oid, (char *)data, sizeof(data), &result, &type, &pml_result); 
 
     PmlSetStatus(obj, pml_result);
@@ -730,7 +735,7 @@ int pml_start(HPAIO_RECORD *hpaio)
 
    if (hpaio->cmd_channelid < 0)
    {
-      if ((hpaio->cmd_channelid = hplip_OpenChannel(hpaio->deviceid, "HP-MESSAGE")) < 0)
+      if ((hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE")) < 0)
          goto bugout;
       SendScanEvent(hpaio->deviceuri, 2000, "event");  /* hpssd message scan started */
    }
@@ -738,7 +743,7 @@ int pml_start(HPAIO_RECORD *hpaio)
    {
       if (hpaio->scan_channelid < 0)
       {
-         if ((hpaio->scan_channelid = hplip_OpenChannel(hpaio->deviceid, "HP-SCAN")) < 0)
+         if ((hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN")) < 0)
             goto bugout;
       }
    }
@@ -851,7 +856,7 @@ int pml_start(HPAIO_RECORD *hpaio)
    {
       if (hpaio->scan_channelid < 0)
       {
-         if ((hpaio->scan_channelid = hplip_OpenChannel(hpaio->deviceid, "HP-SCAN")) < 0)
+         if ((hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN")) < 0)
             goto bugout;
       }
    }
@@ -877,10 +882,22 @@ int pml_start(HPAIO_RECORD *hpaio)
    traits.iBitsPerPixel = letoh16(ps->BlackBitsPerPixel);
    traits.lHorizDPI = letoh16(ps->BlackHorzDPI);
    traits.lVertDPI = letoh16(ps->BlackVertDPI);
-                
+
    /* Set up image-processing pipeline. */
    switch(ps->Code)
    {
+      case MFPDTF_RASTER_MH:
+         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MH;
+         ADD_XFORM( X_FAX_DECODE );
+         break;
+      case MFPDTF_RASTER_MR:
+         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MR;
+         ADD_XFORM( X_FAX_DECODE );
+         break;
+      case MFPDTF_RASTER_MMR:
+         pXform->aXformInfo[IP_FAX_FORMAT].dword = IP_FAX_MMR;   /* possible lineart compression */
+         ADD_XFORM( X_FAX_DECODE );
+         break;
       case MFPDTF_RASTER_BITMAP:
       case MFPDTF_RASTER_GRAYMAP:
       case MFPDTF_RASTER_RGB:
@@ -896,7 +913,7 @@ int pml_start(HPAIO_RECORD *hpaio)
          break;
       default:
          /* Skip processing for unknown encodings. */
-         bug("unknown image encoding sane_start: name=%s sop=%d\n", hpaio->saneDevice.name, ps->Code);
+         bug("unknown image encoding sane_start: name=%s sop=%d %s %d\n", hpaio->saneDevice.name, ps->Code, __FILE__, __LINE__);
    }
 
    index += sizeof(MFPDTF_START_PAGE);
@@ -994,6 +1011,8 @@ int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int 
    unsigned char *input;
    int bsize, wResult;
 
+   DBG(8, "sane_hpaio_read called handle=%p data=%p maxLength=%d length=%d: %s %d\n", hpaio, data, maxLength, *pLength, __FILE__, __LINE__);
+
    /* Process any bytes in current record. */
    if (hpaio->RecordIndex < hpaio->RecordSize)
    {
@@ -1007,7 +1026,7 @@ int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int 
          bug("ipConvert error=%x: %s %d\n", wResult, __FILE__, __LINE__);
          goto bugout;
       }
-      *pLength += outputUsed;
+      *pLength = outputUsed;
       hpaio->RecordIndex += inputUsed;  /* bump record index */
       if (hpaio->RecordIndex >= hpaio->RecordSize)
          hpaio->BlockIndex += sizeof(MFPDTF_RASTER) + hpaio->RecordSize;  /* bump block index to next record */
@@ -1079,7 +1098,7 @@ int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int 
          bug("hpaio: ipConvert error=%x\n", wResult);
          goto bugout;
       }
-      *pLength += outputUsed;
+      *pLength = outputUsed;
       if (outputUsed == 0)
          hpaio->ip_done = 1;
    }
@@ -1095,6 +1114,20 @@ int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int 
       stat = SANE_STATUS_GOOD; /* repeat scan_read */ 
 
  bugout:
+    if (stat != SANE_STATUS_GOOD)
+    {
+       if (hpaio->hJob)
+       {
+          ipClose(hpaio->hJob); 
+          hpaio->hJob = 0;
+       }   
+    }
+
+    //   bug("ipConvert result: inputAvail=%d input=%p inputUsed=%d inputNextPos=%d outputAvail=%d output=%p outputUsed=%d outputThisPos=%d\n", 
+    //                                                 inputAvail, input, inputUsed, inputNextPos, outputAvail, output, outputUsed, outputThisPos);
+
+    DBG(8, "sane_hpaio_read returned output=%p outputUsed=%d length=%d status=%d: %s %d\n", output, outputUsed, *pLength, stat, __FILE__, __LINE__);
+
     return stat;
 }
 
@@ -1122,12 +1155,12 @@ int pml_cancel(HPAIO_RECORD *hpaio)
 
    if (hpaio->scan_channelid >= 0)
    {
-      hplip_CloseChannel(hpaio->deviceid, hpaio->scan_channelid);
+      hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->scan_channelid);
       hpaio->scan_channelid = -1;
    }
    if (hpaio->cmd_channelid >= 0)
    {
-      hplip_CloseChannel(hpaio->deviceid, hpaio->cmd_channelid);
+      hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->cmd_channelid);
       hpaio->cmd_channelid = -1;
       SendScanEvent(hpaio->deviceuri, 2001, "event");  /* hpssd message scan done */
    }

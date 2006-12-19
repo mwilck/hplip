@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>689</width>
-            <height>661</height>
+            <width>550</width>
+            <height>538</height>
         </rect>
     </property>
     <property name="caption">
@@ -127,17 +127,6 @@
                     </property>
                     <property name="text">
                         <string>Remove selected files</string>
-                    </property>
-                </widget>
-                <widget class="QRadioButton" row="2" column="0">
-                    <property name="name">
-                        <cstring>RemoveAllRadio</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="text">
-                        <string>Remove all files</string>
                     </property>
                 </widget>
             </grid>
@@ -296,9 +285,6 @@
         <slot>CancelButton_clicked()</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">unloadform_base.ui.h</include>
-</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>

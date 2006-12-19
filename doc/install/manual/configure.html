@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Configure HPLIP</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
+
+<div id="banner">
+<div id="banner_graphics">
+		<div id="floatleft">
+		<img src="../../images/hplogo2.png" alt="HP Logo" border="0" />
+		</div>
+		<div id="floatcenter">
+		<a href="../../index.html">
+		<img src="../../images/hpliplogo.png" alt="HP Logo" border="0" />
+		</a>
+		</div>
+		<div id="floatright">
+		<img src="../../images/tuxlogo2.png" alt="Tux" border="0" />
+		</div>
+	</div>
+</div>
+<!-- end banner -->
+
+<div id="navbar">
+<table>
+	<tr>
+		<td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+	<menu compact="compact">
+		<li><a href="../../index.html" title="">Home</a></li> 
+	</menu>
+
+<div class="menuheader">About</div>
+	<menu compact="compact">
+		<li><a href="../../features.html" title="">Features</a></li> 
+		<li><a href="../../screenshots.html" title="">Screenshots</a></li> 
+		<li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
+		<li><a a href="../../about.html" title="About">About HPLIP</a></li>
+	</menu>
+<div class="menuheader">Setup and Installation</div> 
+	<menu compact="compact">
+		<li><a href="../../downloads.html" title="Downloads">Download HPLIP</a></li>
+		<li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+		<li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+		<li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+	</menu>
+<div class="menuheader">Usage and Support</div> 
+	<menu compact="compact">
+		<li><a href="../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+		<li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+		<li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+		<li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
+	</menu>
+<div class="menuheader">Resources</div>
+	<menu compact="compact">
+		<li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+		<li><a href="../../license.html" title="Software License">Software License</a></li>
+		<li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+		<li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
+	</menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="yellowsplit">
+<div id="content"><!-- start content -->
+        <a href="../../index.html">Home</a>
+&gt;
+<a href="../index.html">Installation</a>
+&gt;
+<a href="index.html">Manual Install</a>
+&gt;
+Configure HPLIP
+
+<hr size="1"/>
+        <div class="document" id="configure-the-hplip-install">
+<h1 class="title">Configure the HPLIP Install</h1>
+<div class="section">
+<h1><a id="configure-hplip-most-users-do-this" name="configure-hplip-most-users-do-this">Configure HPLIP (most users do this)</a></h1>
+<p><em>Note</em>: If you want to customize your install please refer to the './configure options' section below.</p>
+<p><em>Note</em>: Run this in the extracted HPLIP tarball directory.</p>
+<p><strong>32 bit distro users</strong> (most users will use this command):</p>
+<div class="compound">
+<p>./configure --prefix=/usr</p>
+</div>
+<p><strong>64 bit distro users</strong></p>
+<p>You will need to run this configure option:</p>
+<div class="compound">
+<p>./confgure --prefix=/usr --libdir=/usr/lib64</p>
+</div>
+</div>
+<div class="section">
+<h1><a id="configure-hpijs-only-server-minimal-install" name="configure-hpijs-only-server-minimal-install">Configure HPIJS Only (Server/Minimal Install)</a></h1>
+<p>Go <a class="reference" href="../../tech_docs/tarball_install.html">here</a> for steps on installing a server or minimal install of HPLIP.</p>
+</div>
+<div class="section">
+<h1><a id="configure-options" name="configure-options">Configure options</a></h1>
+<p>The configure step of HPLIP does several things,</p>
+<ol class="arabic simple">
+<li>Checks your system to ensure that all dependencies are installed and that HPLIP can be compiled.</li>
+<li>Configures the HPLIP for which options will be enabled and/or disabled.</li>
+</ol>
+<p>configure variables:</p>
+<p><em>Note</em>: We recommended to install in the /usr directory.</p>
+<ol class="arabic simple">
+<li><em>--prefix=/usr</em> (This is where HPLIP will be installed.)</li>
+</ol>
+<p><strong>Note</strong>: If you are using a <strong>64 bit</strong> distro you need to use this additional configure variable:</p>
+<ol class="arabic simple">
+<li><em>--libdir=/usr/lib64</em> (Configures HPLIP to work on 64 bit systems.)</li>
+</ol>
+<p>Default enabled options if you run &quot;./configure --prefix=/usr&quot;:</p>
+<ol class="arabic simple">
+<li><em>--enable-network-build</em>  (enable network build (default=yes))</li>
+<li><em>--enable-pp-build</em>  (enable parallel port build (default=yes))</li>
+<li><em>--enable-scan-build</em>  (enable scanner build (default=yes))</li>
+<li><em>--enable-gui-build</em>  (enable gui build (default=yes))</li>
+<li><em>--enable-fax-build</em>  (enable fax build (default=yes))</li>
+</ol>
+<p>Options to disable HPLIP features:</p>
+<ol class="arabic simple">
+<li><em>--disable-network-build</em> (disables HPLIP network support)</li>
+<li><em>--disable-pp-build</em> (disables HPLIP parallel port support)</li>
+<li><em>--disable-scan-build</em> (disables HPLIP scan support)</li>
+<li><em>--disable-gui-build</em> (disables HPLIP GUI support)</li>
+<li><em>--disable-fax-build</em> (disables HPLIP fax support)</li>
+</ol>
+<p><strong>How to</strong> use the configure options:</p>
+<p>If you wanted to disable network support, (for example)--you would run: (see the section './configure options' below for more specific information--however you probably do not need to do this.)</p>
+<div class="compound">
+<p>./configure --prefix=/usr --disable-network-build</p>
+</div>
+</div>
+<div class="section">
+<h1><a id="troubleshooting-errors-produced-after-running-configure-prefix-usr" name="troubleshooting-errors-produced-after-running-configure-prefix-usr">Troubleshooting errors produced after running './configure --prefix=/usr'</a></h1>
+<p>If you receive any errors after running ./configure, such as missing libsnmp, missing gcc-c++, etc these are not complicated to troubleshooting.</p>
+<ol class="arabic simple">
+<li>Make sure you have all of the HPLIP dependencies installed. (This is the most common problem.)</li>
+<li>Search the internet for the error.  Usually someone may have already encoutered and resolved your problem.</li>
+<li>Search the mailing list <a class="reference" href="http://sourceforge.net/mailarchive/forum.php?forum_id=48102">archives</a>.</li>
+<li>Ask your question to the <a class="reference" href="../../mailing_lists.html">mailing list</a>.</li>
+</ol>
+</div>
+<div class="section">
+<h1><a id="next" name="next">Next</a></h1>
+<p><a class="reference" href="make.html">Continue to make</a></p>
+</div>
+</div>
+
+<hr size="1"/>
+<center><small>Page last updated: Wed Dec 13 13:35:08 2006; HPLIP Version: 1.6.12</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+</div><!-- end container -->
+<div id="footer"><!-- start footer -->
+		<hr size="1"/>
+		<a href="../../legal.html">Legal Notices</a>
+		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
+		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
+</body>
+</html>

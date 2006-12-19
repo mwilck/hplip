@@ -1,7 +1,7 @@
 /*****************************************************************************\
   printer.cpp : Implimentation for the Printer class
 
-  Copyright (c) 1996 - 2001, Hewlett-Packard Co.
+  Copyright (c) 1996 - 2006, Hewlett-Packard Co.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,10 @@ Printer::Printer
 {
 
     int i = 0; // counter
+
+#ifdef  APDK_LINUX
+    m_iNumPages = 0;
+#endif
 
     for (i = 0; i < MAX_PRINTMODES; i++)
     {

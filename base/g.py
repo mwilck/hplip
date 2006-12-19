@@ -83,7 +83,7 @@ class ConfigSection(dict):
 
         
 class Config(dict):
-    def __init__(self, filename, *args, **kwargs):
+    def __init__(self, filename, error_if_not_found=False, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         dict.__setattr__(self, "config_obj", ConfigParser.ConfigParser())
         dict.__setattr__(self, "filename", filename)
@@ -93,22 +93,28 @@ class Config(dict):
             if pathmode & 0022 != 0:
                 return
         except (IOError,OSError):
+            if error_if_not_found:
+                log.warn("Config file %s not found or not readable." % filename)
+            
             return
         
+        log.debug("Reading config file %s" % filename)
+        
+        f = file(filename, 'r')
         try:
-            f = file(filename, 'r')
-        except IOError:
-            pass
-        else:
             self.config_obj.readfp(f)
-            f.close()
+        except:
+            log.error("There is an error in the config file: %s" % filename)
+            sys.exit(1)
+            
+        f.close()
 
-            for s in self.config_obj.sections():
-                opts = []
-                for o in self.config_obj.options(s):
-                    opts.append((o, self.config_obj.get(s, o)))
-    
-                self.__setitem__(s, ConfigSection(s, self.config_obj, filename, opts))
+        for s in self.config_obj.sections():
+            opts = []
+            for o in self.config_obj.options(s):
+                opts.append((o, self.config_obj.get(s, o)))
+
+            self.__setitem__(s, ConfigSection(s, self.config_obj, filename, opts))
         
     def __getattr__(self, sect):
         if sect not in self.keys():
@@ -123,7 +129,7 @@ class Config(dict):
 prop.sys_config_file = '/etc/hp/hplip.conf'
 prop.user_config_file = os.path.expanduser('~/.hplip.conf')
   
-sys_cfg = Config(prop.sys_config_file)
+sys_cfg = Config(prop.sys_config_file, True)
 user_cfg = Config(prop.user_config_file)
 
 
@@ -174,9 +180,9 @@ pdb = pwd.getpwnam(prop.username)
 prop.userhome = pdb[5]
 
 prop.data_dir = os.path.join(prop.home_dir, 'data')
-prop.i18n_dir = os.path.join(prop.home_dir, 'data', 'qm')
 prop.image_dir = os.path.join(prop.home_dir, 'data', 'images')
 prop.xml_dir = os.path.join(prop.home_dir, 'data', 'xml')
+prop.models_dir = os.path.join(prop.home_dir, 'data', 'models')
 
 prop.max_message_len = 8192
 prop.max_message_read = 65536
@@ -187,14 +193,8 @@ prop.ppd_search_pattern = 'HP-*.ppd.*'
 prop.ppd_download_url = 'http://www.linuxprinting.org/ppd-o-matic.cgi'
 prop.ppd_file_suffix = '-hpijs.ppd'
 
-prop.errors_file = os.path.join(prop.home_dir, 'data', 'xml', 'errors.xml')
-prop.strings_file = os.path.join(prop.home_dir, 'data', 'xml', 'strings.xml')
-prop.models_file = os.path.join(prop.home_dir, 'data', 'xml', 'models.xml')
-
 # Spinner, ala Gentoo Portage
 spinner = "\|/-\|/-"
-#spinner = "oOo.oOo."
-#spinner = "0123456789"
 spinpos = 0
 
 def update_spinner():
@@ -206,7 +206,7 @@ def update_spinner():
         
 def cleanup_spinner():
     if log.get_level() != log.LOG_LEVEL_DEBUG and sys.stdout.isatty():
-        sys.stdout.write("\b ")
+        sys.stdout.write("\b \b")
         sys.stdout.flush()
 
 
@@ -254,11 +254,6 @@ ERROR_STRINGS = {
                 ERROR_DEVICEOPEN_FAILED_ONE_DEVICE_ONLY : 'Device open failed - 1 open per session allowed',
                 ERROR_DEVICEOPEN_FAILED_DEV_NODE_MOVED : 'Device open failed - device node moved',
                 ERROR_TEST_EMAIL_FAILED : "Email test failed",
-                #ERROR_SMTP_CONNECT_ERROR : "SMTP server connect error",
-                #ERROR_SMTP_RECIPIENTS_REFUSED : "SMTP recipients refused",
-                #ERROR_SMTP_HELO_ERROR : "SMTP HELO error",
-                #ERROR_SMTP_SENDER_REFUSED : "STMP sender refused",
-                #ERROR_SMTP_DATA_ERROR : "SMTP data error",
                 ERROR_INVALID_HOSTNAME : "Invalid hostname ip address",
                 ERROR_INVALID_PORT_NUMBER : "Invalid JetDirect port number",
                 ERROR_INTERFACE_BUSY : "Interface busy",
@@ -281,10 +276,6 @@ except NameError:
     True = (1==1)
     False = not True
     
-# GUI/Console modes
-INTERACTIVE_MODE = 0
-GUI_MODE = 1
-NON_INTERACTIVE_MODE = 2
 
 
 

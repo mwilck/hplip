@@ -2,7 +2,7 @@
 
   scl.h - HP SANE backend for multi-function peripherals (libsane-hpaio)
 
-  (c) 2001-2004 Copyright Hewlett-Packard Development Company, LP
+  (c) 2001-2006 Copyright Hewlett-Packard Development Company, LP
 
   Permission is hereby granted, free of charge, to any person obtaining a copy 
   of this software and associated documentation files (the "Software"), to deal 
@@ -21,18 +21,15 @@
   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  Current Author: Don Welch
-  Original Author: David Paschal 
+  Contributing Authors: David Paschal, Don Welch, David Suffield 
 
 \************************************************************************************/
 
 #if !defined( __SCL_H__ )
 #define __SCL_H__ 
 
-#include "hpaio.h"
+#include "sane.h"
 
-
-#define INFINITE_TIMEOUT        ((struct timeval *)0)
 #define SCL_SEND_COMMAND_START_TIMEOUT      0
 #define SCL_SEND_COMMAND_CONTINUE_TIMEOUT   2
 #define SCL_INQUIRE_START_TIMEOUT     30

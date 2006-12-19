@@ -40,8 +40,8 @@
 #include "header.h"
 #include "ijs.h"
 #include "ijs_server.h"
-#include "services.h"
 #include "hpijs.h"
+#include "services.h"
 
 #ifdef HAVE_LIBHPIP
 extern  int hpijsFaxServer (int argc, char **argv);

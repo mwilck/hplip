@@ -87,6 +87,8 @@ typedef enum
 #define EVENT_START_JOB 500
 #define EVENT_END_JOB 501
 
+static HplipSession *hplip_session;
+
 int bug(const char *fmt, ...)
 {
    char buf[256];
@@ -110,7 +112,7 @@ int bug(const char *fmt, ...)
 int GetUriLine(char *buf, char *uri, char *model, char *description, char **tail)
 {
    int i=0, j;
-   int maxBuf = LINE_SIZE*64;
+   int maxBuf = HPLIP_LINE_SIZE*64;
 
    uri[0] = 0;
    model[0] = 0;
@@ -121,21 +123,21 @@ int GetUriLine(char *buf, char *uri, char *model, char *description, char **tail
       i = 7;
       j = 0;
       for (; buf[i] == ' ' && i < maxBuf; i++);  /* eat white space before string */
-      while ((buf[i] != ' ') && (i < maxBuf) && (j < LINE_SIZE))
+      while ((buf[i] != ' ') && (i < maxBuf) && (j < HPLIP_LINE_SIZE))
          uri[j++] = buf[i++];
       uri[j] = 0;
 
       j = 0;
       for (; buf[i] == ' ' && i < maxBuf; i++);  /* eat white space before string */
       model[j++] = buf[i++];               /* get first " */
-      while ((buf[i] != '"') && (i < maxBuf) && (j < LINE_SIZE))
+      while ((buf[i] != '"') && (i < maxBuf) && (j < HPLIP_LINE_SIZE))
          model[j++] = buf[i++];          
       model[j++] = buf[i++];               /* get last " */
       model[j] = 0;
 
       j = 0;
       for (; buf[i] == ' ' && i < maxBuf; i++);  /* eat white space before string */
-      while ((buf[i] != '\n') && (i < maxBuf) && (j < LINE_SIZE))
+      while ((buf[i] != '\n') && (i < maxBuf) && (j < HPLIP_LINE_SIZE))
          description[j++] = buf[i++];
       description[j] = 0;
    }
@@ -239,7 +241,7 @@ int GetVStatus(int hd)
    char *pSf;
    int vstatus=VSTATUS_IDLE, ver;
 
-   if (hplip_GetID(hd, id, sizeof(id)) == 0)
+   if (hplip_GetID(hplip_session, hd, id, sizeof(id)) == 0)
    {
       vstatus = 5000+R_IO_ERROR;      /* no deviceid, return some error */
       goto bugout;
@@ -250,7 +252,7 @@ int GetVStatus(int hd)
    {
       /* No S-field, use status register instead of device id. */ 
       unsigned char status;
-      hplip_GetStatus(hd, (char *)&status, 1);      
+      hplip_GetStatus(hplip_session, hd, (char *)&status, 1);      
       if (DEVICE_IS_OOP(status))
          vstatus = VSTATUS_OOPA;
       else if (DEVICE_PAPER_JAMMED(status))
@@ -306,19 +308,19 @@ bugout:
 
 int DevDiscovery()
 {
-   char message[LINE_SIZE*64];
+   char message[HPLIP_LINE_SIZE*64];
    int len=0, cnt=0;  
-   MsgAttributes ma;
+   HplipMsgAttributes ma;
  
    len = sprintf(message, "msg=ProbeDevices\n");
  
-   if (send(hpiod_socket, message, len, 0) == -1) 
+   if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
    {  
       bug("unable to send ProbeDevices: %m\n");  
       goto mordor;  
    }  
 
-   if ((len = recv(hpiod_socket, message, sizeof(message), 0)) == -1) 
+   if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
    {  
       bug("unable to receive ProbeDevicesResult: %m\n");  
       goto mordor;
@@ -343,19 +345,19 @@ mordor:
 
 int PState()
 {
-   char message[LINE_SIZE*64];  
+   char message[HPLIP_LINE_SIZE*64];  
    int len=0;
-   MsgAttributes ma;
+   HplipMsgAttributes ma;
  
    len = sprintf(message, "msg=PState\n");
  
-   if (send(hpiod_socket, message, len, 0) == -1) 
+   if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
    {  
       bug("unable to send PState: %m\n");  
       goto bugout;  
    }  
 
-   if ((len = recv(hpiod_socket, message, sizeof(message), 0)) == -1) 
+   if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
    {  
       bug("unable to receive PStateResult: %m\n");  
       goto bugout;
@@ -381,7 +383,7 @@ int DeviceEvent(char *dev, char *jobid, int code, char *type, int timeout)
    char message[512];  
    int len=0;
  
-   if (hpssd_socket < 0)
+   if (hplip_session->hpssd_socket < 0)
       goto mordor;  
 
    if (timeout == 0)
@@ -391,7 +393,7 @@ int DeviceEvent(char *dev, char *jobid, int code, char *type, int timeout)
                      dev, jobid, code, type, timeout);
  
    /* Send message with no response. */
-   if (send(hpssd_socket, message, len, 0) == -1) 
+   if (send(hplip_session->hpssd_socket, message, len, 0) == -1) 
    {  
       bug("unable to send Event %s %s %d: %m\n", dev, jobid, code);
    }  
@@ -406,8 +408,9 @@ int main(int argc, char *argv[])
    int fd;
    int copies;
    int len, vstatus, cnt;
-   char buf[BUFFER_SIZE+HEADER_SIZE];
-   MsgAttributes ma;
+   char buf[HPLIP_BUFFER_SIZE+HPLIP_HEADER_SIZE];
+   HplipMsgAttributes ma;
+   int paperout=0, offline=0;
 
    if (argc > 1)
    {
@@ -420,18 +423,18 @@ int main(int argc, char *argv[])
       }
       if ((arg[0] == '-') && (arg[1] == 's'))
       {
-         hplip_Init();
+         hplip_Init(&hplip_session);
          PState();
-         hplip_Exit();
+         hplip_Exit(hplip_session);
          exit(0);
       }
    }
 
    if (argc == 1)
    {
-      hplip_Init();
+      hplip_Init(&hplip_session);
       DevDiscovery();
-      hplip_Exit();
+      hplip_Exit(hplip_session);
       exit (0);
    }
 
@@ -458,7 +461,7 @@ int main(int argc, char *argv[])
 
    int hd=-1, channel=-1, n, total, retry=0, size;
 
-   hplip_Init();
+   hplip_Init(&hplip_session);
 
    /* Get any parameters needed for DeviceOpen. */
    hplip_ModelQuery(argv[0], &ma);  
@@ -468,7 +471,7 @@ int main(int argc, char *argv[])
    /* Open hp device. */
    do
    {
-      if ((hd = hplip_OpenHP(argv[0], &ma)) < 0)
+      if ((hd = hplip_OpenHP(hplip_session, argv[0], &ma)) < 0)
       {
          /* Display user error. */
          DeviceEvent(argv[0], argv[1], 5000+R_IO_ERROR, "error", RETRY_TIMEOUT);
@@ -498,7 +501,7 @@ int main(int argc, char *argv[])
          lseek(fd, 0, SEEK_SET);
       }
 
-      while ((len = read(fd, buf, BUFFER_SIZE)) > 0)
+      while ((len = read(fd, buf, HPLIP_BUFFER_SIZE)) > 0)
       {
          size=len;
          total=0;
@@ -510,7 +513,7 @@ int main(int argc, char *argv[])
             {
                do
                {
-                  if ((channel = hplip_OpenChannel(hd, "PRINT")) < 0)
+                  if ((channel = hplip_OpenChannel(hplip_session, hd, "PRINT")) < 0)
                   {
                      DeviceEvent(argv[0], argv[1], 5000+R_CHANNEL_BUSY, "error", RETRY_TIMEOUT);
                      bug("INFO: open print channel failed; will retry in %d seconds...\n", RETRY_TIMEOUT);
@@ -528,7 +531,7 @@ int main(int argc, char *argv[])
                }
             }
 
-            n = hplip_WriteHP(hd, channel, buf+total, size);
+            n = hplip_WriteHP(hplip_session, hd, channel, buf+total, size);
 
             if (n != size)
             {
@@ -538,14 +541,48 @@ int main(int argc, char *argv[])
                /* Display user error. */
                DeviceEvent(argv[0], argv[1], vstatus, "error", RETRY_TIMEOUT);
 
-               bug("INFO: %s; will retry in %d seconds...\n", GetVStatusMessage(vstatus), RETRY_TIMEOUT);
+               switch (vstatus)
+               {
+                  case VSTATUS_OOPA:
+                     if (!paperout)
+                     {
+                        fputs("STATE: +media-empty-error\n", stderr);
+                        paperout=1;
+                     }
+                     break;
+                  default:
+                     if (!offline)
+                     {
+                        fputs("STATE: +other\n", stderr);
+                        offline=1;
+                     }
+                     break;
+               }
+
+               bug("ERROR: %s; will retry in %d seconds...\n", GetVStatusMessage(vstatus), RETRY_TIMEOUT);
                sleep(RETRY_TIMEOUT);
                retry = 1;
 
             }
+            else
+            {
+               if (paperout || offline)
+                  bug("INFO: Printing...\n");
+
+               if (paperout)
+               {
+                  paperout = 0;
+                  fputs("STATE: -media-empty-error\n", stderr);
+               }
+               if (offline)
+               {
+                  offline = 0;
+                  fputs("STATE: -other\n", stderr);
+               }
+            }
             total+=n;
             size-=n;
-         }
+         }   /* while (size > 0) */
 
          if (retry)
          {
@@ -553,8 +590,8 @@ int main(int argc, char *argv[])
             DeviceEvent(argv[0], argv[1], VSTATUS_PRNT, "event", 0);
             retry=0;
          }
-      }
-   } /* while (copies > 0) */
+      }   /* while ((len = read(fd, buf, HPLIP_BUFFER_SIZE)) > 0) */
+   }   /* while (copies > 0) */
 
    /* Wait for I/O to complete over the wire. */
    sleep(2);
@@ -589,10 +626,10 @@ int main(int argc, char *argv[])
    fprintf(stderr, "INFO: %s\n", GetVStatusMessage(VSTATUS_IDLE));
 
    if (channel >= 0)
-      hplip_CloseChannel(hd, channel);
+      hplip_CloseChannel(hplip_session, hd, channel);
    if (hd >= 0)
-      hplip_CloseHP(hd);   
-   hplip_Exit();
+      hplip_CloseHP(hplip_session, hd);   
+   hplip_Exit(hplip_session);
    if (fd != 0)
       close(fd);
 

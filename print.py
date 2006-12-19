@@ -156,16 +156,15 @@ class print_client(async.dispatcher):
 
     # EVENT
     def handle_eventgui(self):
-        global printdlg
         try:
             job_id = self.fields['job-id']
             event_code = self.fields['event-code']
             event_type = self.fields['event-type']
             retry_timeout = self.fields['retry-timeout']
-            lines = self.data.splitlines()
-            error_string_short, error_string_long = lines[0], lines[1]
-            device_uri = self.fields['device-uri']
-
+            error_string_short = device.queryString(event_code, 0)
+            error_string_long = device.queryString(event_code, 1)
+            device_uri = self.fields.get('device-uri', '')
+            
             log.debug("Event: %d '%s'" % (event_code, event_type))
 
             printdlg.EventUI(event_code, event_type, error_string_short,

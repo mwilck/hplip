@@ -51,10 +51,8 @@
 #ifdef TRUE
 #undef TRUE
 #endif
-#include "../../ip/hpip.h"
+#include "hpip.h"
 #include "hpijsfax.h"
-
-extern int bug (const char *fmt, ...);
 
 int hpijsfax_status_cb (void *status_cb_data, IjsServerCtx *ctx, IjsJobId job_id)
 {

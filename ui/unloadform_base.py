@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/dwelch/linux-imaging-and-printing/src/ui/unloadform_base.ui'
+# Form implementation generated from reading ui file 'unloadform_base.ui'
 #
-# Created: Fri Apr 1 14:51:29 2005
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Tue Oct 24 15:31:40 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
 
-import sys
 from qt import *
 
 
@@ -80,11 +79,6 @@ class UnloadForm_base(QMainWindow):
 
         FileRemovalGroupLayout.addWidget(self.RemoveSelectedRadio,1,0)
 
-        self.RemoveAllRadio = QRadioButton(self.FileRemovalGroup,"RemoveAllRadio")
-        self.RemoveAllRadio.setEnabled(0)
-
-        FileRemovalGroupLayout.addWidget(self.RemoveAllRadio,2,0)
-
         UnloadForm_baseLayout.addMultiCellWidget(self.FileRemovalGroup,3,3,0,2)
 
         self.groupBox1 = QGroupBox(self.centralWidget(),"groupBox1")
@@ -128,7 +122,7 @@ class UnloadForm_base(QMainWindow):
 
         self.languageChange()
 
-        self.resize(QSize(689,661).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(550,538).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.SelectAllButton,SIGNAL("clicked()"),self.SelectAllButton_clicked)
@@ -155,7 +149,6 @@ class UnloadForm_base(QMainWindow):
         self.FileRemovalGroup.setTitle(self.__tr("File Removal:"))
         self.LeaveAllRadio.setText(self.__tr("Leave all files on photo card"))
         self.RemoveSelectedRadio.setText(self.__tr("Remove selected files"))
-        self.RemoveAllRadio.setText(self.__tr("Remove all files"))
         self.groupBox1.setTitle(self.__tr("Select Files to Unload from Photo Card:"))
         self.SelectAllButton.setText(self.__tr("Select All"))
         self.SelectNoneButton.setText(self.__tr("Select None"))
@@ -251,11 +244,3 @@ class UnloadForm_base(QMainWindow):
 
     def __tr(self,s,c = None):
         return qApp.translate("UnloadForm_base",s,c)
-
-if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = UnloadForm_base()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()

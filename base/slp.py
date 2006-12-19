@@ -82,8 +82,6 @@ def detectNetworkDevices(ttl=4, timeout=10): #, xid=None, qappobj = None):
         log.error("Unable to send broadcast SLP packet: %s" % e)
        
     time_left = timeout
-    
-
     while time_left > 0:
         start_time = time.time()
         r, w, e = select.select([s], [], [s], time_left)
@@ -93,13 +91,12 @@ def detectNetworkDevices(ttl=4, timeout=10): #, xid=None, qappobj = None):
         data, addr = s.recvfrom(2048)
         update_spinner() 
         
-        update_spinner()
+        log.log_data(data, fmt=True, width=32)
         
         ver, func, length, flags, dialect, lang_code, char_encode, recv_xid, status_code, attr_length = \
             struct.unpack("!BBHBBHHHHH", data[:16])
             
         x = struct.unpack("!%ds" % attr_length, data[16:])[0].strip()
-        y = {} 
         
         try:
             num_ports = int(num_port_pat.search(x).group(1))
@@ -109,11 +106,8 @@ def detectNetworkDevices(ttl=4, timeout=10): #, xid=None, qappobj = None):
         if num_ports == 0: # Embedded devices
             num_ports = 1
          
-        y['num_ports'] = num_ports
-        y['num_devices'] = 0
-        y['device1'] = '0'
-        y['device2'] = '0'
-        y['device3'] = '0'
+        y = {'num_devices' : 0, 'num_ports': num_ports, 'product_id' : '', 
+             'status_code': 0, 'device2': '0', 'device3': '0', 'note': '', 'device1': '0'}
         
         # Check port 1
         try:
@@ -175,10 +169,12 @@ def detectNetworkDevices(ttl=4, timeout=10): #, xid=None, qappobj = None):
         
     return found_devices
 
-#import pprint    
-#d = detectNetworkDevices()
 
-#pprint.pprint(d)
-
-#print "\nFound %d printers." % len(d)
+##log.set_level("debug")
+##import pprint    
+##d = detectNetworkDevices()
+##
+##pprint.pprint(d)
+##
+##print "\nFound %d printers." % len(d)
 

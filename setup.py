@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '3.1'
+__version__ = '4.2'
 __title__ = 'Printer/Fax Setup Utility'
 __doc__ = "Installs HPLIP printers and faxes in the CUPS spooler. Tries to automatically determine the correct PPD file to use. Allows the printing of a testpage. Performs basic fax parameter setup."
 
@@ -46,32 +46,34 @@ USAGE = [ (__doc__, "", "name", True),
           utils.USAGE_SPACE,
           utils.USAGE_OPTIONS,
           ("Automatic mode:", "-a or --auto (-i mode only)", "option", False),
-          ("To specify the port on a multi-port JetDirect:", "-p<port> or --port=<port> (Valid values are 1\*, 2, and 3. \*default) (-i mode only)", "option", False),
+          ("To specify the port on a multi-port JetDirect:", "-p<port> or --port=<port> (Valid values are 1\*, 2, and 3. \*default)", "option", False),
           ("No testpage in automatic mode:", "-x (-i mode only)", "option", False),
           ("To specify a CUPS printer queue name:", "-n<printer> or --printer=<printer> (-i mode only)", "option", False),
           ("To specify a CUPS fax queue name:", "-f<fax> or --fax=<fax> (-i mode only)", "option", False),
           ("Type of queue(s) to install:", "-t<typelist> or --type=<typelist>. <typelist>: print*, fax\* (\*default) (-i mode only)", "option", False),
-          ("Bus to probe (if device not specified):", "-b<bus> or --bus=<bus> (-i mode only)", "option", False),
+          ("Bus to probe (if device not specified):", "-b<bus> or --bus=<bus>", "option", False),
           utils.USAGE_BUS2,
           utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
           utils.USAGE_HELP,
-          ("[SERIAL NO.|USB ID|IP|DEVNODE] (-i mode only)", "", "heading", False),
+          ("[SERIAL NO.|USB ID|IP|DEVNODE]", "", "heading", False),
           ("USB bus:device (usb only):", """"xxx:yyy" where 'xxx' is the USB bus and 'yyy' is the USB device. (Note: The ':' and all leading zeros must be present.)""", 'option', False),
           ("", "Use the 'lsusb' command to obtain this information.", "option", False),
           ("IPs (network only):", 'IPv4 address "a.b.c.d" or "hostname"', "option", False),
           ("DEVNODE (parallel only):", '"/dev/parportX", X=0,1,2,...', "option", False),
           ("SERIAL NO. (usb and parallel only):", '"serial no."', "option", True),
           utils.USAGE_EXAMPLES,
-          ("One USB printer attached, automatic:", "$ hp-setup -a", "example", False),
-          ("USB, IDs specified:", "$ hp-setup 001:002", "example", False),
-          ("Network:", "$ hp-setup 66.35.250.209", "example", False),
-          ("Network, Jetdirect port 2:", "$ hp-setup --port=2 66.35.250.209", "example", False),
-          ("Parallel:", "$ hp-setup /dev/parport0", "example", False),
-          ("USB or parallel, using serial number:", "$ hp-setup US12345678A", "example", False),
-          ("USB, automatic:", "$ hp-setup --auto 001:002", "example", False),
-          ("Parallel, automatic, no testpage:", "$ hp-setup -a -x /dev/parport0", "example", False),
-          ("Parallel, choose device:", "$ hp-setup -b par", "example", False),
-          ("Setup using GUI mode:", "$ hp-setup -u", "example", False),
+          ("Setup using GUI mode:", "$ hp-setup", "example", False),
+          ("Setup using GUI mode, specifying usb:", "$ hp-setup -b usb", "example", False),
+          ("Setup using GUI mode, specifying an IP:", "$ hp-setup 192.168.0.101", "example", False),          
+          ("One USB printer attached, automatic:", "$ hp-setup -i -a", "example", False),
+          ("USB, IDs specified:", "$ hp-setup -i 001:002", "example", False),
+          ("Network:", "$ hp-setup -i 66.35.250.209", "example", False),
+          ("Network, Jetdirect port 2:", "$ hp-setup -i --port=2 66.35.250.209", "example", False),
+          ("Parallel:", "$ hp-setup -i /dev/parport0", "example", False),
+          ("USB or parallel, using serial number:", "$ hp-setup -i US12345678A", "example", False),
+          ("USB, automatic:", "$ hp-setup -i --auto 001:002", "example", False),
+          ("Parallel, automatic, no testpage:", "$ hp-setup -i -a -x /dev/parport0", "example", False),
+          ("Parallel, choose device:", "$ hp-setup -i -b par", "example", False),
           utils.USAGE_SPACE,
           utils.USAGE_NOTES,
           ("1. If no serial number, USB ID, IP, or device node is specified, the USB and parallel busses will be probed for devices.", "", 'note', False),
@@ -80,7 +82,7 @@ USAGE = [ (__doc__, "", "name", True),
           ("         Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard", "", 'note', False),
           ("   $ hp-setup --auto 003:011", "", 'note', False),
           ("   (Note: You may have to run 'lsusb' from /sbin or another location. Use '$ locate lsusb' to determine this.)", "", 'note', True),
-          ("3. None of the parameters -a, -p, -n, -f, -t, -b, or \[SERIAL NO.|USB ID|IP|DEVNODE\] are valid in GUI (-u) mode.", "", 'note', True),
+          ("3. Parameters -a, -n, -f, or -t are not valid in GUI (-u) mode.", "", 'note', True),
           utils.USAGE_SPACE,
           utils.USAGE_SEEALSO,
           ("hp-makeuri", "", "seealso", False),
@@ -94,6 +96,17 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hp-setup', __version__)
     sys.exit(0)
 
+
+def restart_cups():
+    if os.path.exists('/etc/init.d/cups'):
+        return '/etc/init.d/cups restart'
+
+    elif os.path.exists('/etc/init.d/cupsys'):
+        return '/etc/init.d/cupsys restart'
+
+    else:
+        return 'killall -HUP cupsd'
+    
 
 log.set_module('hp-setup')
 
@@ -109,11 +122,11 @@ printer_name = None
 fax_name = None
 device_uri = None
 log_level = logger.DEFAULT_LOG_LEVEL
-bus = device.DEFAULT_PROBE_BUS
+bus = 'usb' #device.DEFAULT_PROBE_BUS
 setup_print = True
 setup_fax = True
 makeuri = None
-bus = "par,usb"
+bus = None
 auto = False
 testpage_in_auto_mode = True
 jd_port = 1
@@ -151,7 +164,7 @@ for o, a in opts:
 
     elif o in ('-b', '--bus'):
         bus = a.lower().strip()
-        if not device.validateBusList(bus):
+        if not device.validateBusList(bus, False):
             usage()
 
     elif o in ('-l', '--logging'):
@@ -199,10 +212,12 @@ for o, a in opts:
         mode = INTERACTIVE_MODE
         mode_specified = True
 
-
+try:
+    param = args[0]
+except IndexError:
+    param = ''
+        
 utils.log_title(__title__, __version__)
-
-print os.geteuid()
 
 if mode == GUI_MODE:
     if not os.getenv('DISPLAY'):
@@ -234,7 +249,7 @@ if mode == GUI_MODE:
         sys.exit(1)
         
     try:
-        w = setupform.SetupForm()
+        w = setupform.SetupForm(bus, param, jd_port)
     except Error:
         log.error("Unable to connect to HPLIP I/O. Please (re)start HPLIP and try again.")
         sys.exit(1)
@@ -268,16 +283,19 @@ else: # INTERACTIVE_MODE
     
     # ******************************* MAKEURI
     
-    if len(args):
-        param = args[0]
-        device_uri, sane_uri, fax_uri = device.makeuri(hpiod_sock, hpssd_sock, param, jd_port)
+    if param:
+        device_uri, sane_uri, fax_uri = device.makeURI(hpiod_sock, param, jd_port)
     
     # ******************************* DEVICE CHOOSER
+    if bus is None:
+        bus = 'usb,par'
+    
     if not device_uri: 
         try:
             device_uri = device.getInteractiveDeviceURI(bus)
             if device_uri is None:
                 sys.exit(1)
+                
         except Error:
             log.error("Error occured during interactive mode. Exiting.")
             sys.exit(1)
@@ -299,15 +317,9 @@ else: # INTERACTIVE_MODE
         device.parseDeviceURI(device_uri)
     
     log.debug("Model=%s" % model)
+    mq = device.queryModelByURI(device_uri)
     
-    mq, data, result_code = msg.xmitMessage(hpssd_sock, "QueryModel", payload=None,
-                                            other_fields={"device-uri": device_uri},
-                                            timeout=prop.read_timeout)
-    
-    
-    if result_code == ERROR_UNSUPPORTED_MODEL or \
-        mq.get('support-type', SUPPORT_TYPE_NONE) == SUPPORT_TYPE_NONE:
-    
+    if not mq or mq.get('support-type', SUPPORT_TYPE_NONE) == SUPPORT_TYPE_NONE:
         log.error("Unsupported printer model.")
         sys.exit(1)
     
@@ -608,6 +620,10 @@ else: # INTERACTIVE_MODE
         log.info("PPD file: %s" % print_ppd)
         log.info("Location: %s" % location)
         log.info("Information: %s" % info)
+        
+        log.debug("Restarting CUPS...")
+        status, output = utils.run(restart_cups())
+        log.debug("Restart CUPS returned: exit=%d output=%s" % (status, output))
     
         cups.addPrinter(printer_name, print_uri, location, print_ppd, info)
     

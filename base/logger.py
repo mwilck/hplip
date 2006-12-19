@@ -169,7 +169,23 @@ class Logger(object):
             else:
                 self.log("%s[%d]: debug: :%s" % (self.module, self.pid, title), Logger.LOG_LEVEL_DEBUG)
                 self.log(block, Logger.LOG_LEVEL_DEBUG)
-
+                
+                
+    printable = """ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~  """
+            
+    def log_data(self, data, width=16, fmt=False):
+        if self._level <= Logger.LOG_LEVEL_DEBUG:
+            index, line = 0, data[0:width]
+            while line:
+                txt = ' '.join(['%04x: ' % index, ' '.join(['%02x' % ord(d) for d in line]), ' '*(width*3-3*len(line)), ''.join([('.', i)[i in Logger.printable] for i in line])])
+                if fmt:
+                    self.log("%s%s[%d]: debug: %s:%s" % ('\x1b[34;01m', self.module,  self.pid, txt, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
+                else:
+                    self.log("%s[%d]: debug: :%s" % (self.module, self.pid, txt), Logger.LOG_LEVEL_DEBUG)
+                    
+                index += width
+                line = data[index:index+width]                
+    
     def info(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_INFO:
             self.log(message, Logger.LOG_LEVEL_INFO)

@@ -80,7 +80,7 @@ class PhoneNumValidator(QValidator):
         input = str(input)
         if not input:
             return QValidator.Acceptable, pos
-        elif input[pos-1] not in '0123456789-(+) ':
+        elif input[pos-1] not in '0123456789-(+) *#':
             return QValidator.Invalid, pos
         elif len(input) > 50:
             return QValidator.Invalid, pos
@@ -270,6 +270,7 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
         self.recno = -1
         self.editing = editing
         self.faxEdit.setValidator(PhoneNumValidator(self.faxEdit))
+        self.initial_nickname = ''
 
     def setDlgData(self, abe):
         self.recno = abe.recno
@@ -279,7 +280,7 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
         self.faxEdit.setText(abe.fax)
         self.notesEdit.setText(abe.notes)
         self.nicknameEdit.setText(abe.name)
-
+        self.initial_nickname = abe.name
         self.setGroups(abe.group_list)
 
     def setGroups(self, entry_groups=[]):
@@ -333,7 +334,6 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
                 self.setGroups(abe.group_list)
             
 
-
     def nicknameEdit_textChanged(self, nickname):
         self.CheckOKButton(nickname, None)
 
@@ -351,7 +351,7 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
             
         ok = len(nickname) and len(fax)
         
-        if nickname and not self.editing:
+        if nickname and nickname != self.initial_nickname:
             for x in db.AllRecordEntries():
                 if nickname == x.name:
                     ok = False

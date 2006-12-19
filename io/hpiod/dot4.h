@@ -39,7 +39,10 @@ enum DOT4_COMMAND
   DOT4_ERROR = MLC_ERROR
 };
 
-#pragma pack(1)
+/*
+ * Note, following structures must be packed. The "pragma pack" statement is not recognized by all gcc compilers (ie: ARM based),
+ * so we use __attribute__((packed)) instead.
+ */
 
 typedef struct
 {
@@ -48,14 +51,14 @@ typedef struct
    unsigned short length;   /* packet length (includes header) */ 
    unsigned char credit;   /* data packet credit, reserved if command */
    unsigned char control;  /* bit field: 0=normal */
-} DOT4Header;
+} __attribute__((packed)) DOT4Header;
 
 typedef struct
 {
    DOT4Header h;
    unsigned char cmd;
    unsigned char rev;
-} DOT4Init;
+} __attribute__((packed)) DOT4Init;
 
 typedef struct
 {
@@ -63,20 +66,20 @@ typedef struct
    unsigned char cmd;
    unsigned char result;
    unsigned char rev;
-} DOT4InitReply;
+} __attribute__((packed)) DOT4InitReply;
 
 typedef struct
 {
    DOT4Header h;
    unsigned char cmd;
-} DOT4Exit;
+} __attribute__((packed)) DOT4Exit;
 
 typedef struct
 {
    DOT4Header h;
    unsigned char cmd;
    unsigned char result;
-} DOT4ExitReply;
+} __attribute__((packed)) DOT4ExitReply;
 
 typedef struct
 {
@@ -87,7 +90,7 @@ typedef struct
    unsigned short maxp2s;      /* max primary to secondary packet size in bytes */
    unsigned short maxs2p;      /* max secondary to primary packet size in bytes */
    unsigned short maxcredit;   /* max outstanding credit */
-} DOT4OpenChannel;
+} __attribute__((packed)) DOT4OpenChannel;
 
 typedef struct
 {
@@ -100,7 +103,7 @@ typedef struct
    unsigned short maxs2p;      /* max secondary to primary packet size in bytes */
    unsigned short maxcredit;   /* max outstanding credit */
    unsigned short credit;
-} DOT4OpenChannelReply;
+} __attribute__((packed)) DOT4OpenChannelReply;
 
 typedef struct
 {
@@ -108,7 +111,7 @@ typedef struct
    unsigned char cmd;
    unsigned char psocket;      /* primary socket id */
    unsigned char ssocket;      /* secondary socket id */
-} DOT4CloseChannel;
+} __attribute__((packed)) DOT4CloseChannel;
 
 typedef struct
 {
@@ -117,7 +120,7 @@ typedef struct
    unsigned char result;
    unsigned char psocket;      /* primary socket id */
    unsigned char ssocket;      /* secondary socket id */
-} DOT4CloseChannelReply;
+} __attribute__((packed)) DOT4CloseChannelReply;
 
 typedef struct
 {
@@ -125,7 +128,7 @@ typedef struct
    unsigned char cmd;
    unsigned char result;
    unsigned char socket;
-} DOT4GetSocketReply; 
+} __attribute__((packed)) DOT4GetSocketReply; 
 
 typedef struct
 {
@@ -134,7 +137,7 @@ typedef struct
    unsigned char psocket;
    unsigned char ssocket;
    unsigned short credit;    /* credit for sender */ 
-} DOT4Credit; 
+} __attribute__((packed)) DOT4Credit; 
 
 typedef struct
 {
@@ -143,7 +146,7 @@ typedef struct
    unsigned char psocket;
    unsigned char ssocket;
    unsigned short maxcredit;   /* maximum outstanding credit */
-} DOT4CreditRequest; 
+} __attribute__((packed)) DOT4CreditRequest; 
 
 typedef struct
 {
@@ -153,7 +156,7 @@ typedef struct
    unsigned char psocket;
    unsigned char ssocket;
    unsigned short credit;   /* credit for sender */
-} DOT4CreditRequestReply; 
+} __attribute__((packed)) DOT4CreditRequestReply; 
 
 typedef struct
 {
@@ -162,14 +165,12 @@ typedef struct
    unsigned char psocket;     /* primary socket id which contains the error */
    unsigned char ssocket;     /* secondary socket id which contains the error */
    unsigned char error;
-} DOT4Error; 
+} __attribute__((packed)) DOT4Error; 
 
 typedef DOT4ExitReply DOT4Reply;
 typedef DOT4Exit DOT4Cmd;
 typedef DOT4CloseChannelReply DOT4CreditReply;
 typedef DOT4Exit DOT4GetSocket;
-
-#pragma pack()
 
 #endif // _DOT4_H
 

@@ -46,15 +46,14 @@
 #
 
 
-__version__ = '7.5'
+__version__ = '9.0'
 __title__ = "Services and Status Daemon"
-__doc__ = "Provides various services to HPLIP client applications."
+__doc__ = "Provides persistent data and event services to HPLIP client applications."
 
 
 # Std Lib
 import sys, socket, os, os.path, signal, getopt, glob, time, select
-import popen2, threading, gettext, re, xml.parsers.expat, fcntl
-import cStringIO, pwd
+import popen2, threading, re, fcntl, pwd, tempfile #cStringIO, pwd
 
 from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, \
      ENOTCONN, ESHUTDOWN, EINTR, EISCONN
@@ -63,8 +62,7 @@ from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, \
 from base.g import *
 from base.codes import *
 from base.msg import *
-from base import utils, slp, device
-from base.strings import string_table
+from base import utils, device
 
 # CUPS support
 from prnt import cups
@@ -75,196 +73,19 @@ alerts = {}
 # Fax temp files
 fax_file = {}
 
+# Active devices - to hold event history
+devices = {} # { 'device_uri' : ServerDevice, ... }
+
+socket_map = {}
+loopback_trigger = None
+
 
 class ServerDevice(object):
     def __init__(self, model=''):
         self.history = utils.RingBuffer(prop.history_size)
         self.model = device.normalizeModelName(model)
         self.cache = {}
-       
 
-# Active devices - to hold event history
-devices = {} # { 'device_uri' : ServerDevice, ... }
-
-# Cache for model query data
-model_cache = {} # { 'model_name'(lower) : {mq}, ...}
-
-inter_pat = re.compile(r"""%(.*)%""", re.IGNORECASE)
-direct_pat = re.compile(r'direct (.*?) "(.*?)" "(.*?)" "(.*?)"', re.IGNORECASE)
-
-def QueryString(id, typ=0):
-    id = str(id)
-    try:
-        s = string_table[id][typ]
-    except KeyError:
-        log.debug("String %s not found" % id)
-        raise Error(ERROR_STRING_QUERY_FAILED)
-
-    if type(s) == type(''):
-        return s
-
-    try:
-        return s()
-    except:
-        raise Error(ERROR_STRING_QUERY_FAILED)
-
-
-
-def initStrings():
-    cycles = 0
-
-    while True:
-
-        found = False
-
-        for s in string_table:
-            short_string, long_string = string_table[s]
-            short_replace, long_replace = short_string, long_string
-
-            try:
-                short_match = inter_pat.match(short_string).group(1)
-            except (AttributeError, TypeError):
-                short_match = None
-
-            if short_match is not None:
-                found = True
-
-                try:
-                    short_replace, dummy = string_table[short_match]
-                except KeyError:
-                    log.error("String interpolation error: %s" % short_match)
-
-            try:
-                long_match = inter_pat.match(long_string).group(1)
-            except (AttributeError, TypeError):
-                long_match = None
-
-            if long_match is not None:
-                found = True
-
-                try:
-                    dummy, long_replace = string_table[long_match]
-                except KeyError:
-                    log.error("String interpolation error: %s" % long_match)
-
-            if found:
-                string_table[s] = (short_replace, long_replace)
-
-        if not found:
-            break
-        else:
-            cycles +=1
-            if cycles > 1000:
-                break
-                
-
-class ModelParser:
-    def __init__(self):
-        self.model = {}
-        self.cur_model = None
-        self.stack = []
-        self.model_found = False
-
-    def startElement(self, name, attrs):
-        global models
-
-        if name in ('id', 'models'):
-            return
-
-        elif name == 'model':
-            #self.model = {}
-            self.cur_model = str(attrs['name']).lower()
-            if self.cur_model == self.model_name:
-                #log.debug( "Model found." )
-                self.model_found = True
-                self.stack = []
-            else:
-                self.cur_model = None
-
-        elif self.cur_model is not None:
-            self.stack.append(str(name).lower())
-
-            if len(attrs):
-                for a in attrs:
-                    self.stack.append(str(a).lower())
-
-                    try:
-                        i = int(attrs[a])
-                    except ValueError:
-                        i = str(attrs[a])
-
-                    self.model[str('-'.join(self.stack))] = i
-                    self.stack.pop()
-
-    def endElement(self, name):
-        global models
-        if name == 'model':
-            pass
-        elif name in ('id', 'models'):
-            return
-        else:
-            if self.cur_model is not None:
-                self.stack.pop()
-
-
-    def charData(self, data):
-        data = str(data).strip()
-
-        if data and self.model is not None and \
-            self.cur_model is not None and \
-            self.stack:
-
-            try:
-                i = int(data)
-            except ValueError:
-                i = str(data)
-
-            self.model[str('-'.join(self.stack))] = i
-
-    def parseModels(self, model_name):
-        self.model_name = model_name
-
-        for g in [prop.xml_dir, os.path.join(prop.xml_dir, 'unreleased')]:
-
-            if os.path.exists(g):
-                log.debug("Searching directory: %s" % g)
-
-                for f in glob.glob(g + "/*.xml"):
-                    log.debug("Searching file: %s" % f)
-                    parser = xml.parsers.expat.ParserCreate()
-                    parser.StartElementHandler = self.startElement
-                    parser.EndElementHandler = self.endElement
-                    parser.CharacterDataHandler = self.charData
-                    parser.Parse(open(f).read(), True)
-
-                    if self.model_found:
-                        log.debug("Found")
-                        return self.model
-
-        #log.error("Not found")
-        raise Error(ERROR_UNSUPPORTED_MODEL)
-
-
-
-def QueryModel(model_name):
-    model_name = device.normalizeModelName(model_name).lower()
-    log.debug("Query model: %s" % model_name)
-
-    if model_name in model_cache:
-        return model_cache[model_name]
-
-    try:
-        mq = ModelParser().parseModels(model_name)
-    except Error:
-        mq = {}
-    
-    model_cache[model_name] = mq
-    
-    return mq
-    
-
-socket_map = {}
-loopback_trigger = None
 
 def loop( timeout=1.0, sleep_time=0.1 ):
     while socket_map:
@@ -603,16 +424,11 @@ class hpssd_handler(dispatcher):
         # handlers for all the messages we expect to receive
         self.handlers = {
             # Request/Reply Messages
-            'probedevicesfiltered' : self.handle_probedevicesfiltered,
             'setalerts'            : self.handle_setalerts,
             'testemail'            : self.handle_test_email,
-            'querymodel'           : self.handle_querymodel, # By device URI
-            'modelquery'           : self.handle_modelquery, # By model (backwards compatibility)
             'queryhistory'         : self.handle_queryhistory,
-            'querystring'          : self.handle_querystring,
             'setvalue'             : self.handle_setvalue, # device cache
             'getvalue'             : self.handle_getvalue, # device cache
-            'injectvalue'          : self.handle_injectvalue, # model query data (debugging use)
 
             # Event Messages (no reply message)
             'event'                : self.handle_event,
@@ -635,11 +451,10 @@ class hpssd_handler(dispatcher):
         log.debug("Reading data on channel (%d)" % self._fileno)
         self.in_buffer = self.recv(prop.max_message_read)
 
-        log.debug(repr(self.in_buffer))
-
         if not self.in_buffer:
             return False
 
+        log.debug(repr(self.in_buffer))
         remaining_msg = self.in_buffer
 
         while True:
@@ -744,68 +559,6 @@ class hpssd_handler(dispatcher):
 
         self.out_buffer = buildResultMessage('QueryHistoryResult', payload, result_code)
 
-    def handle_querymodel(self): # By device URI (used by toolbox, info, etc)
-        device_uri = self.fields.get('device-uri', '').replace('hpfax:', 'hp:')
-        result_code = self.__checkdevice(device_uri)
-        mq = {}
-        
-        if result_code == ERROR_SUCCESS:    
-            try:
-                back_end, is_hp, bus, model, \
-                    serial, dev_file, host, port = \
-                    device.parseDeviceURI(device_uri)
-            except Error:
-                result_code = e.opt
-            else:
-                try:
-                    mq = QueryModel(model)
-                except Error, e:
-                    mq = {}
-                    result_code = e.opt
-    
-        self.out_buffer = buildResultMessage('QueryModelResult', None, result_code, mq)
-
-
-    def handle_modelquery(self): # By model (used by hp: backend)
-        model = self.fields.get('model', '')
-        result_code = ERROR_SUCCESS
-
-        try:
-            mq = QueryModel(model)
-        except Error, e:
-            mq = {}
-            result_code = e.opt
-
-        self.out_buffer = buildResultMessage('ModelQueryResult', None, result_code, mq)
-
-    def handle_injectvalue(self): # Tweak MQ values at runtime
-        device_uri = self.fields.get('device-uri', '').replace('hpfax:', 'hp:')
-        model = self.fields.get('model', '')
-        result_code = ERROR_INTERNAL
-        
-        if not model and device_uri:
-            try:
-                back_end, is_hp, bus, model, \
-                    serial, dev_file, host, port = \
-                    device.parseDeviceURI(device_uri)
-            except Error:
-                result_code = e.opt
-        
-        log.debug(model)
-        
-        if model:
-            key = self.fields.get('key', '')
-            value = self.fields.get('value', '')
-            
-            if key and value: 
-                if QueryModel(model):
-                    if model.lower() in model_cache:
-                        model_cache[model.lower()][key] = value
-                        result_code = ERROR_SUCCESS
-                
-        self.out_buffer = buildResultMessage('InjectValueResult', None, result_code)
-        
-
     # TODO: Need to load alerts at start-up
     def handle_setalerts(self):
         result_code = ERROR_SUCCESS
@@ -837,51 +590,17 @@ class hpssd_handler(dispatcher):
     def handle_test_email(self):
         result_code = ERROR_SUCCESS
         username = self.fields.get('username', prop.username)
-
-        try:
-            message = QueryString('email_test_message')
-        except Error:
-            message = ''
-            
-        try:
-            subject = QueryString('email_test_subject')
-        except Error:
-            subject = ''
-
+        message = device.queryString('email_test_message')
+        subject = device.queryString('email_test_subject')
         result_code = self.sendEmail(username, subject, message, True)
         self.out_buffer = buildResultMessage('TestEmailResult', None, result_code)
-
-
-    def handle_querystring(self):
-        payload, result_code = '', ERROR_SUCCESS
-        string_id = self.fields['string-id']
-        try:
-            payload = QueryString(string_id)
-        except Error:
-            log.error("String query failed for id %s" % string_id)
-            payload = None
-            result_code = ERROR_STRING_QUERY_FAILED
-
-        self.out_buffer = buildResultMessage('QueryStringResult', payload, result_code)
-
         
     def createHistory(self, device_uri, code, jobid=0, username=prop.username):
         result_code = self.__checkdevice(device_uri)
         
         if result_code == ERROR_SUCCESS:    
-            try:
-                short_string = QueryString(code, 0)
-            except Error:
-                short_string, long_string = '', ''
-            else:
-                try:
-                    long_string = QueryString(code, 1)
-                except Error:
-                    pass
-
             devices[device_uri].history.append(tuple(time.localtime()) +
-                                                (jobid, username, code,
-                                                 short_string, long_string))
+                                                (jobid, username, code))
                                                  
             # return True if added code is the same 
             # as the previous code (dup_event)
@@ -918,7 +637,7 @@ class hpssd_handler(dispatcher):
                 # send event to already running hp-sendfax
                 handler_obj.out_buffer = \
                     buildMessage('EventGUI', 
-                                '\n\n',
+                                None, 
                                 {'job-id' : job_id,
                                  'event-code' : EVENT_FAX_RENDER_DISTANT_EARLY_WARNING,
                                  'event-type' : 'event',
@@ -933,8 +652,8 @@ class hpssd_handler(dispatcher):
 
                 # Only create a data store if a UI was found
                 log.debug("Creating data store for %s:%d" % (username, job_id))
-                fax_file[(username, job_id)] = cStringIO.StringIO()
-                
+                fax_file[(username, job_id)] = tempfile.NamedTemporaryFile(prefix="hpfax")
+                log.debug("Fax job %d for user %s stored in temp file %s." % (job_id, username, fax_file[(username, job_id)].name))
                 break
         
         # hpfax: will repeatedly send HPFaxBegin messages until it gets a 
@@ -981,7 +700,7 @@ class hpssd_handler(dispatcher):
                 # send event to already running hp-sendfax
                 handler_obj.out_buffer = \
                     buildMessage('EventGUI', 
-                                '\n\n',
+                                None,
                                 {'job-id' : job_id,
                                  'event-code' : EVENT_FAX_RENDER_COMPLETE,
                                  'event-type' : 'event',
@@ -1030,15 +749,8 @@ class hpssd_handler(dispatcher):
         device_uri = self.fields.get('device-uri', '').replace('hpfax:', 'hp:')
         log.debug("Device URI: %s" % device_uri)
 
-        try:
-            error_string_short = QueryString(str(event_code), 0)
-        except Error:
-            error_string_short, error_string_long = '', ''
-        else:
-            try:
-                error_string_long = QueryString(str(event_code), 1)
-            except Error:
-                pass
+        error_string_short = device.queryString(str(event_code), 0)
+        error_string_long = device.queryString(str(event_code), 1)
 
         log.debug("Short/Long: %s/%s" % (error_string_short, error_string_long))
 
@@ -1059,7 +771,7 @@ class hpssd_handler(dispatcher):
                     username = prop.username
 
 
-        no_fwd = self.fields.get('no-fwd', False)
+        no_fwd = utils.to_bool(self.fields.get('no-fwd', '0'))
         log.debug("Username (jobid): %s (%d)" % (username, job_id))
         retry_timeout = self.fields.get('retry-timeout', 0)
         user_alerts = alerts.get(username, {})        
@@ -1084,7 +796,7 @@ class hpssd_handler(dispatcher):
                     
                     handler_obj.out_buffer = \
                         buildMessage('EventGUI', 
-                            '%s\n%s\n' % (error_string_short, error_string_long),
+                            None,
                             {'job-id' : job_id,
                              'event-code' : event_code,
                              'event-type' : event_type,
@@ -1100,10 +812,7 @@ class hpssd_handler(dispatcher):
                 event_type == 'error' and \
                 not dup_event:
 
-                try:
-                    subject = QueryString('email_alert_subject') + device_uri
-                except Error:
-                    subject = device_uri
+                subject = device.queryString('email_alert_subject') + device_uri
                 
                 message = '\n'.join([device_uri, 
                                      time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime()),
@@ -1148,210 +857,6 @@ class hpssd_handler(dispatcher):
             
         return result_code
 
-
-    def handle_probedevicesfiltered(self):
-        payload, result_code = '', ERROR_SUCCESS
-        num_devices, ret_devices = 0, {}
-
-        buses = self.fields.get('bus', 'cups,usb,par').split(',')
-        format = self.fields.get('format', 'default')
-        search = str(self.fields.get('search', ''))
-        
-        if search:
-            try:
-                search_pat = re.compile(search, re.IGNORECASE)
-            except:
-                log.error("Invalid search pattern. Search uses standard regular expressions. For more info, see: http://www.amk.ca/python/howto/regex/")
-                search = ''
-
-        for b in buses:
-            bus = b.lower().strip()
-            
-            if bus == 'net':
-                ttl = int(self.fields.get('ttl', 4))
-                timeout = int(self.fields.get('timeout', 5))
-
-                try:
-                    detected_devices = slp.detectNetworkDevices(ttl, timeout)
-                except Error:
-                    log.error("An error occured during network probe.")
-                else:
-                    for ip in detected_devices:
-                        hn = detected_devices[ip].get('hn', '?UNKNOWN?')
-                        num_devices_on_jd = detected_devices[ip].get('num_devices', 0)
-                        num_ports_on_jd = detected_devices[ip].get('num_ports', 1)
-
-                        if num_devices_on_jd > 0:
-                            for port in range(num_ports_on_jd):
-                                dev = detected_devices[ip].get('device%d' % (port+1), '0')
-
-                                if dev is not None and dev != '0':
-                                    device_id = device.parseDeviceID(dev)
-                                    model = device.normalizeModelName(device_id.get('MDL', '?UNKNOWN?'))
-
-                                    if num_ports_on_jd == 1:
-                                        device_uri = 'hp:/net/%s?ip=%s' % (model, ip)
-                                    else:
-                                        device_uri = 'hp:/net/%s?ip=%s&port=%d' % (model, ip, (port+1))
-
-                                    device_filter = self.fields.get('filter', 'none')
-                                    include = True
-                                    
-                                    try:
-                                        mq = QueryModel(model)
-                                    except Error:
-                                        mq = {}
-                                    
-                                    if not mq:
-                                        log.debug("Not found.")
-                                        include = False
-                                        
-                                    elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
-                                        log.debug("Not supported.")
-                                        include = False
-                                    
-                                    elif device_filter not in ('none', 'print'):
-                                        for f in device_filter.split(','):
-                                            filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
-                                            
-                                            if filter_type == 0:
-                                                log.debug("Filtered out.")
-                                                include = False
-                                                break
-
-                                    if include:
-                                        ret_devices[device_uri] = (model, model, hn)
-
-            elif bus in ('usb', 'par'):
-                log.debug(bus)
-                try:
-                    prop.hpiod_port = int(file(os.path.join(prop.run_dir, 'hpiod.port'), 'r').read())
-                except:
-                    prop.hpiod_port = 0
-                
-                log.debug("Connecting to hpiod (%s:%d)..." % (prop.hpiod_host, prop.hpiod_port))
-                hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-            
-                fields, data, result_code = \
-                    xmitMessage(hpiod_sock, "ProbeDevices", None, {'bus' : bus,})
-                
-                hpiod_sock.close()
-
-                if result_code == ERROR_SUCCESS:
-                    for x in data.splitlines():
-                        m = direct_pat.match(x)
-                        
-                        uri = m.group(1) or ''
-                        mdl = m.group(2) or ''
-                        desc = m.group(3) or ''
-                        devid = m.group(4) or ''
-                        
-                        try:
-                            back_end, is_hp, bus, model, serial, dev_file, host, port = \
-                                device.parseDeviceURI(uri)
-                        except Error:
-                            continue
-                        
-                        if mdl and uri and is_hp:
-                            device_filter = self.fields.get('filter', 'none')
-                            include = True
-                            
-                            try:
-                                mq = QueryModel(model)
-                            except Error:
-                                mq = {}
-                                
-                            if not mq:
-                                log.debug("Not found.")
-                                include = False
-                                
-                            elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
-                                log.debug("Not supported.")
-                                include = False
-
-                            elif device_filter not in ('none', 'print'):
-                                
-                                for f in device_filter.split(','):
-                                    filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
-                                    
-                                    if filter_type == 0:
-                                        log.debug("Filtered out.")
-                                        include = False
-                                        break
-    
-                            if include:
-                                ret_devices[uri] = (mdl, desc, devid) # model w/ _'s, mdl w/o
-
-            elif bus == 'cups':
-                cups_printers = cups.getPrinters()
-                x = len(cups_printers)
-
-                for p in cups_printers:
-                    device_uri = p.device_uri
-
-                    if p.device_uri != '':
-                        device_filter = self.fields.get('filter', 'none')
-
-                        try:
-                            back_end, is_hp, bs, model, serial, dev_file, host, port = \
-                                device.parseDeviceURI(device_uri)
-                        except Error:
-                            log.warning("Inrecognized URI: %s" % device_uri)
-                            continue
-
-                        if not is_hp:
-                            continue
-                            
-                        include = True
-                        
-                        try:
-                            mq = QueryModel(model)
-                        except Error:
-                            mq = {}
-                            
-                        if not mq:
-                            include = False
-                            log.debug("Not found.")
-                            
-                        elif int(mq.get('support-type', SUPPORT_TYPE_NONE)) == SUPPORT_TYPE_NONE:
-                            log.debug("Not supported.")
-                            include = False
-                        
-                        elif device_filter not in ('none', 'print'):
-                            for f in device_filter.split(','):
-                                filter_type = int(mq.get('%s-type' % f.lower().strip(), 0))
-                                
-                                if filter_type == 0:
-                                    log.debug("Filtered out.")
-                                    include = False
-                                    break
-
-                        if include:
-                            ret_devices[device_uri] = (model, model, '')
-
-
-        for uri in ret_devices:
-            num_devices += 1
-            mdl, model, devid_or_hn = ret_devices[uri]
-            
-            include = True
-            if search:
-                match_obj = search_pat.search("%s %s %s %s" % (mdl, model, devid_or_hn, uri))
-                
-                if match_obj is None:
-                    log.debug("%s %s %s %s: Does not match search '%s'." % (mdl, model, devid_or_hn, uri, search))
-                    include = False
-                    
-            if include:
-                if format == 'cups':
-                    payload = ''.join([payload, uri, ' ', utils.dquote(mdl), ' ', utils.dquote(model), ' ',utils.dquote(devid_or_hn), '\n'])
-                else: # default
-                    payload = ''.join([payload, uri, ',', mdl, '\n'])
-            
-
-        self.out_buffer = buildResultMessage('ProbeDevicesFilteredResult', payload,
-                                             result_code, {'num-devices' : num_devices})
 
     # EVENT
     def handle_exit(self):
@@ -1407,7 +912,7 @@ class MailThread(threading.Thread):
 
 
 def reInit():
-    initStrings()
+    pass
 
 
 def handleSIGHUP(signo, frame):
@@ -1502,9 +1007,6 @@ def main(args):
     if prop.daemonize:
         utils.daemonize()
 
-
-    # configure the various data stores
-    gettext.install('hplip')
     reInit()
 
     # hpssd server dispatcher object
@@ -1532,7 +1034,7 @@ def main(args):
     try:
         log.debug("Starting async loop...")
         try:
-            loop(timeout=0.5)
+            loop(timeout=5.0)
         except KeyboardInterrupt:
             log.warn("Ctrl-C hit, exiting...")
         except Exception:

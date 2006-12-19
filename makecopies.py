@@ -136,10 +136,10 @@ class makecopies_client(async.dispatcher):
             event_code = self.fields['event-code']
             event_type = self.fields['event-type']
             retry_timeout = self.fields['retry-timeout']
-            lines = self.data.splitlines()
-            error_string_short, error_string_long = lines[0], lines[1]
             device_uri = self.fields['device-uri']
-
+            error_string_short = device.queryString(event_code, 0)
+            error_string_long = device.queryString(event_code, 1)
+            
             log.debug("Event: %d '%s'" % (event_code, event_type))
 
             makecopiesdlg.EventUI(event_code, event_type, error_string_short,
@@ -404,7 +404,7 @@ if mode == GUI_MODE:
 else: # NON_INTERACTIVE_MODE
     if not device_uri and not printer_name:
         try:
-            device_uri = device.getInteractiveDeviceURI(bus)
+            device_uri = device.getInteractiveDeviceURI(bus, filter='copy')
             if device_uri is None:
                 sys.exit(1)
         except Error:
@@ -422,8 +422,8 @@ else: # NON_INTERACTIVE_MODE
                                sock)
                                
                                
-    if dev.copy_type not in (COPY_TYPE_DEVICE, COPY_TYPE_AIO_DEVICE):
-        log.error("Sorry, make copies functionality is not implemented for this device type.")
+    if dev.copy_type == COPY_TYPE_NONE:
+        log.error("Sorry, make copies functionality is not supported on this device.")
         sys.exit(1)
         
     try:
