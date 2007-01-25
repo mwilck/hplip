@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ class PhoneNumValidator(QValidator):
             return QValidator.Invalid, pos
         else:
             return QValidator.Acceptable, pos
-            
+
 
 # **************************************************************************** #
 
@@ -271,8 +271,10 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
         self.editing = editing
         self.faxEdit.setValidator(PhoneNumValidator(self.faxEdit))
         self.initial_nickname = ''
+        self.OKButton.setEnabled(True)
 
     def setDlgData(self, abe):
+        self.initial_nickname = abe.name
         self.recno = abe.recno
         self.titleEdit.setText(abe.title)
         self.firstnameEdit.setText(abe.firstname)
@@ -280,7 +282,6 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
         self.faxEdit.setText(abe.fax)
         self.notesEdit.setText(abe.notes)
         self.nicknameEdit.setText(abe.name)
-        self.initial_nickname = abe.name
         self.setGroups(abe.group_list)
 
     def setGroups(self, entry_groups=[]):
@@ -332,7 +333,7 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
                 abe.group_list.append(new_group_name)
                 db.update(['recno'], [self.recno], [','.join(abe.group_list)], ['groups'])
                 self.setGroups(abe.group_list)
-            
+
 
     def nicknameEdit_textChanged(self, nickname):
         self.CheckOKButton(nickname, None)
@@ -345,15 +346,15 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
     def CheckOKButton(self, nickname=None, fax=None):
         if nickname is None:
             nickname = str(self.nicknameEdit.text())
-        
+
         if fax is None:
             fax = str(self.faxEdit.text())
-            
-        ok = len(nickname) and len(fax)
-        
-        if nickname and nickname != self.initial_nickname:
+
+        ok = bool(len(nickname) and len(fax))
+
+        if nickname:
             for x in db.AllRecordEntries():
-                if nickname == x.name:
+                if nickname == x.name and nickname != self.initial_nickname:
                     ok = False
 
         self.OKButton.setEnabled(ok)
@@ -525,7 +526,7 @@ class FaxAddrBookForm(FaxAddrBookForm_base):
         self.sendUpdateEvent()
         if self.hpssd_sock is not None:
             self.hpssd_sock.close()
-            
+
         FaxAddrBookForm_base.accept(self)
 
     def sendUpdateEvent(self):

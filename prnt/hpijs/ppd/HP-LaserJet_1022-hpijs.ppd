@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -37,7 +37,7 @@
 *%pprRIP:        foomatic-rip other
 *ModelName:     "HP LaserJet 1022"
 *ShortNickName: "HP LaserJet 1022 hpijs"
-*NickName:      "HP LaserJet 1022 Foomatic/hpijs (recommended)"
+*NickName:      "HP LaserJet 1022 Foomatic/hpijs"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"

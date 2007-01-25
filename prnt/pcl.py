@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,13 +33,13 @@ PJL_END_JOB = '@PJL EOJ\n'
 def buildPCLCmd(punc, letter1, letter2, data=None, value=None):
     if data is None:
         return ''.join([ESC, punc, letter1, str(value), letter2])
-        
+
     return ''.join([ESC, punc, letter1, str(len(data)), letter2, data])
 
 
 def buildEmbeddedPML(pml):
     return ''.join([UEL, PJL_ENTER_LANG, RESET, pml, RESET, UEL])
-    
+
 
 def buildEmbeddedPML2(pml):
     return ''.join([RESET, UEL, PJL_BEGIN_JOB, PJL_ENTER_LANG, RESET, pml, RESET, PJL_END_JOB, RESET, UEL])
@@ -48,6 +48,6 @@ def buildEmbeddedPML2(pml):
 def buildDynamicCounter(counter):
     #return ''.join([UEL, PJL_ENTER_LANG, ESC, '*o5W\xc0\x01', struct.pack(">I", counter)[1:], UEL])
     return ''.join([UEL, PJL_ENTER_LANG, ESC, '*o5W\xc0\x01', struct.pack(">I", counter)[1:], PJL_END_JOB, UEL])
-    
+
 def buildRP(a, b, c, d, e):
     return ''.join(['\x00'*600, RESET, UEL, PJL_ENTER_LANG, buildPCLCmd('&', 'b', 'W', pml.buildEmbeddedPMLSetPacket('1.1.1.36', a + b + c + d + e, pml.TYPE_STRING)), RESET, UEL])

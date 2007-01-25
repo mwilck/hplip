@@ -60,7 +60,7 @@
                 </property>
                 <widget class="QWidget">
                     <property name="name">
-                        <cstring>TabPage</cstring>
+                        <cstring>FunctionsTab</cstring>
                     </property>
                     <attribute name="title">
                         <string>Functions</string>
@@ -274,7 +274,7 @@
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
-                        <cstring>TabPage</cstring>
+                        <cstring>PrintJobsTab</cstring>
                     </property>
                     <attribute name="title">
                         <string>Print Jobs</string>
@@ -378,7 +378,7 @@
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
-                        <cstring>TabPage</cstring>
+                        <cstring>PanelTab</cstring>
                     </property>
                     <attribute name="title">
                         <string>Panel</string>

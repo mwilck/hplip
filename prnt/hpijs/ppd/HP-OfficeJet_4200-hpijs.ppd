@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -82,7 +82,7 @@ le=- -"
 
 *FoomaticRIPOption Model: enum CmdLine A 100
 *FoomaticRIPOptionSetting Model=HP-OfficeJet_4200: " -sDeviceManufactu&&
-rer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;deskjet 3320&quot;&&
+rer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;deskjet 3600&quot;&&
 "
 *End
 
@@ -113,7 +113,9 @@ aleK"
 eK"
 *End
 *PrintoutMode Photo/Photo (Color cartridge, on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=Photo"
-*FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=600PhotoCMY"
+*FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=600PhotoCMYKFul&&
+lBleed"
+*End
 *CloseUI: *PrintoutMode
 
 *OpenUI *PageSize/Page Size: PickOne
@@ -362,6 +364,11 @@ lity:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet=&&
 ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 =2"
 *End
+*Quality 300PhotoCMYKFullBleed/300 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=300PhotoCMYKFullBleed"
+*FoomaticRIPOptionSetting Quality=300PhotoCMYKFullBleed: " -r300 -sIjs&&
+Params=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quali&&
+ty:PenSet=2,Quality:FullBleed=1"
+*End
 *Quality 600ColorCMY/600 dpi, Color, Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMY"
 *FoomaticRIPOptionSetting Quality=600ColorCMY: " -r600 -sIjsParams=Qua&&
 lity:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet=&&
@@ -382,10 +389,25 @@ t=0"
 lity:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet=&&
 1"
 *End
+*Quality 600PhotoCMYcmK/600 dpi, Photo, Photo + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYcmK"
+*FoomaticRIPOptionSetting Quality=600PhotoCMYcmK: " -r600 -sIjsParams=&&
+Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenS&&
+et=4"
+*End
+*Quality 600PhotoCMYcmKFullBleed/600 dpi, Photo, Full Bleed, Photo + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYcmKFullBleed"
+*FoomaticRIPOptionSetting Quality=600PhotoCMYcmKFullBleed: " -r600 -sI&&
+jsParams=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
+lity:PenSet=4,Quality:FullBleed=1"
+*End
 *Quality 600PhotoCMYK/600 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYK"
 *FoomaticRIPOptionSetting Quality=600PhotoCMYK: " -r600 -sIjsParams=Qu&&
 ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 =2"
+*End
+*Quality 600PhotoCMYKFullBleed/600 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYKFullBleed"
+*FoomaticRIPOptionSetting Quality=600PhotoCMYKFullBleed: " -r600 -sIjs&&
+Params=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quali&&
+ty:PenSet=2,Quality:FullBleed=1"
 *End
 *CloseUI: *Quality
 

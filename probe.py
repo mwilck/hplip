@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -56,15 +56,15 @@ USAGE = [(__doc__, "", "name", True),
          ("Find all devices that have queues installed in CUPS:", "hp-probe -bcups", "example", False),
          ("Find all devices on the USB bus:", "hp-probe", "example", False),
          ]
-         
+
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-probe', __version__)
     sys.exit(0)
 
-         
+
 log.set_module('hp-probe')
 
 
@@ -103,17 +103,17 @@ for o, a in opts:
 
     if o in ('-h', '--help'):
         usage()
-        
+
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
-        
+
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
-    
+
     elif o == '-g':
         log.set_level('debug')
 
@@ -122,7 +122,7 @@ for o, a in opts:
             bus = a.lower().strip()
         except:
             bus = 'usb'
-            
+
         if not device.validateBusList(bus):
             usage()
 
@@ -133,14 +133,14 @@ for o, a in opts:
 
     elif o in ('-m', '--method'):
         method = a.lower().strip()
-        
+
         if method not in ('slp', 'mdns', 'bonjour'):
             log.error("Invalid network search protocol: %s (must be 'slp' or 'mdns')" % method)
             method = 'slp'
-        
+
         else:
             bus = 'net'
-    
+
     elif o in ('-t', '--ttl'):
         try:
             ttl = int(a)
@@ -176,18 +176,18 @@ buses = bus
 for bus in buses.split(','):
     if bus == 'net':
         log.info(utils.bold("Probing network for printers. Please wait, this will take approx. %d seconds...\n" % timeout))
-            
+
     devices = device.probeDevices(None, bus, timeout, ttl, filter, search, method)
     cleanup_spinner()
-            
+
     max_c1, max_c2, max_c3, max_c4 = 0, 0, 0, 0
-    
+
     if devices:
         for d in devices:
             max_c1 = max(len(d), max_c1)
             max_c3 = max(len(devices[d][0]), max_c3)
             max_c4 = max(len(devices[d][2]), max_c4)
-    
+
         if bus == 'net':
             formatter = utils.TextFormatter(
                         (
@@ -196,12 +196,12 @@ for bus in buses.split(','):
                             {'width': max_c4, 'margin' : 2},
                         )
                     )
-                    
+
             log.info(formatter.compose(("Device URI", "Model", "Name")))
             log.info(formatter.compose(('-'*max_c1, '-'*max_c3, '-'*max_c4)))
             for d in devices:
                 log.info(formatter.compose((d, devices[d][0], devices[d][2])))
-        
+
         elif bus in ('usb', 'par', 'cups'):
             formatter = utils.TextFormatter(
                         (
@@ -209,20 +209,20 @@ for bus in buses.split(','):
                             {'width': max_c3, 'margin' : 2},
                         )
                     )
-                    
+
             log.info(formatter.compose(("Device URI", "Model")))
             log.info(formatter.compose(('-'*max_c1, '-'*max_c3)))
             for d in devices:
                 log.info(formatter.compose((d, devices[d][0])))
-                
+
         else:
             log.error("Invalid bus: %s" % bus)
-    
+
         log.info("\nFound %d printer(s) on the '%s' bus.\n" % (len(devices), bus))
-                
+
     else:
         log.warn("No devices found on the '%s' bus. If this isn't the result you are expecting," % bus)
-    
+
         if bus == 'net':
             log.warn("check your network connections and make sure your internet")
             log.warn("firewall software is disabled.")

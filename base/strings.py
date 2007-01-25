@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ string_table = {
 
 '501' :             (lambda : _('Print job has completed.'),
                      ''),
-                     
+
 '600' :             (lambda : _('Started rendering a fax job.'),
                      ''),
 
@@ -252,7 +252,7 @@ string_table = {
 
 '1806' :            (lambda : _('Service request.'),
                       '%try_again%'),
-                      
+
 '1807' :            (lambda : _('Fuser error.'),
                       '%try_again%'),
 
@@ -321,10 +321,10 @@ string_table = {
 
 '5034' :            (lambda : _('Device does not support requested operation.'),
                       '%try_again%'),
-                      
+
 '5052' :            (lambda : _('To send a fax you must run hp-sendfax first.'),
                       'Run hp-sendfax now to continue. Fax will resume within 10 seconds.'),
-                      
+
 '6000' :            (lambda : _('Photocard unload started.'),
                       ''),
 
@@ -339,7 +339,7 @@ string_table = {
 
 '6004' :            (lambda : _('Photocard unloaded successfully.'),
                       ''),
-                      
+
 'unknown_error' :   (lambda : _('Unknown error.'),
                       ''),
 
@@ -376,7 +376,6 @@ string_table = {
 'agent_unspecified_battery' : ('Battery',
                             ''),
 
-
 'agent_black_head' :      (lambda : _('Black print head'),
                             ''),
 
@@ -385,9 +384,6 @@ string_table = {
 
 'agent_black_cartridge' : (lambda : _('Black cartridge'),
                             ''),
-
-
-
 
 'agent_cmy_head' :        (lambda : _('Tri-color print head'),
                             ''),
@@ -398,7 +394,6 @@ string_table = {
 'agent_cmy_cartridge' :   (lambda : _('Tri-color cartridge'),
                             ''),
 
-
 'agent_kcm_head' :        (lambda : _('Photo print head'),
                             ''),
 
@@ -407,7 +402,6 @@ string_table = {
 
 'agent_kcm_cartridge' :   (lambda : _('Photo cartridge'),
                             ''),
-
 
 'agent_cyan_head' :       (lambda : _('Cyan print head'),
                             ''),
@@ -418,7 +412,6 @@ string_table = {
 'agent_cyan_cartridge' :  (lambda : _('Cyan cartridge'),
                             ''),
 
-
 'agent_magenta_head' :    (lambda : _('Magenta print head'),
                             ''),
 
@@ -427,7 +420,6 @@ string_table = {
 
 'agent_magenta_cartridge':(lambda : _('Magenta cartridge'),
                             ''),
-
 
 'agent_yellow_head' :     (lambda : _('Yellow print head'),
                             ''),
@@ -438,7 +430,6 @@ string_table = {
 'agent_yellow_cartridge': (lambda : _('Yellow cartridge'),
                             ''),
 
-
 'agent_photo_cyan_head' :       (lambda : _('Photo cyan print head'),
                                    ''),
 
@@ -447,7 +438,6 @@ string_table = {
 
 'agent_photo_cyan_cartridge' :  (lambda : _('Photo cyan cartridge'),
                                   ''),
-
 
 'agent_photo_magenta_head' :    (lambda : _('Photo magenta print head'),
                                   ''),
@@ -458,7 +448,6 @@ string_table = {
 'agent_photo_magenta_cartridge':(lambda : _('Photo magenta cartridge'),
                                   ''),
 
-
 'agent_photo_yellow_head' :     (lambda : _('Photo yellow print head'),
                                   ''),
 
@@ -467,7 +456,6 @@ string_table = {
 
 'agent_photo_yellow_cartridge': (lambda : _('Photo yellow cartridge'),
                                   ''),
-
 
 'agent_photo_gray_head' :       (lambda : _('Photo gray print head'),
                                    ''),
@@ -478,7 +466,6 @@ string_table = {
 'agent_photo_gray_cartridge' :  (lambda : _('Photo gray cartridge'),
                                   ''),
 
-
 'agent_photo_blue_head' :       (lambda : _('Photo blue print head'),
                                    ''),
 
@@ -487,8 +474,6 @@ string_table = {
 
 'agent_photo_blue_cartridge' :  (lambda : _('Photo blue cartridge'),
                                   ''),
-
-                                  
 
 'agent_photo_cyan_and_photo_magenta_head' : (lambda : _('Photo magenta and photo cyan print head'),
                                             ''),
@@ -510,7 +495,6 @@ string_table = {
 
 'agent_photo_gray_supply' :                 (lambda : _('Photo black ink cartridge'), # PK
                                             '' ),
-
 
 'agent_black_toner' :           (lambda : _('Black toner cartridge'),
                                 ''),
@@ -536,13 +520,12 @@ string_table = {
 'agent_unspecified_transfer_kit'   : (lambda : _('Image transfer kit'),
                                   ''),
 
-
 'agent_health_unknown'     : ('Unknown',
                                ''),
 
 'agent_health_ok'          : (lambda : _('Good/OK'),
                                ''),
-                               
+
 'agent_health_fair_moderate' : (lambda : _('Fair/Moderate'),
                                ''),
 
@@ -564,7 +547,6 @@ string_table = {
 'agent_health_charging'      : (lambda : _('Charging'),
                                ''),
 
-
 'agent_level_unknown'      : ('%unknown%',
                                ''),
 
@@ -577,7 +559,7 @@ string_table = {
 'email_test_subject'      : (lambda : _('HPLIP: Email alert test message'),
                                ''),
 
-'email_test_message'      : (lambda : _('This email is to test the functionality of email alerts'),
+'email_test_message'      : (lambda : _('This email is to test the functionality of HPLIP email alerts.'),
                                ''),
 
 'email_alert_subject'      : (lambda : _('HPLIP: Error/alert on device: '),

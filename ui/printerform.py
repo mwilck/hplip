@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,6 +28,69 @@ from prnt import cups
 import glob
 
 
+def expand_range(ns): # ns -> string repr. of numeric range, ie. "1-4, 7, 9-12"
+    """Credit: Jean Brouwers, comp.lang.python 16-7-2004"""
+    fs = []
+    for n in ns.split(','):
+        n = n.strip()
+        r = n.split('-')
+        if len(r) == 2:  # expand name with range
+            h = r[0].rstrip('0123456789')  # header
+            r[0] = r[0][len(h):]
+             # range can't be empty
+            if not (r[0] and r[1]):
+                raise ValueError, 'empty range: ' + n
+             # handle leading zeros
+            if r[0] == '0' or r[0][0] != '0':
+                h += '%d'
+            else:
+                w = [len(i) for i in r]
+                if w[1] > w[0]:
+                   raise ValueError, 'wide range: ' + n
+                h += '%%0%dd' % max(w)
+             # check range
+            r = [int(i, 10) for i in r]
+            if r[0] > r[1]:
+               raise ValueError, 'bad range: ' + n
+            for i in range(r[0], r[1]+1):
+                fs.append(h % i)
+        else:  # simple name
+            fs.append(n)
+
+     # remove duplicates
+    fs = dict([(n, i) for i, n in enumerate(fs)]).keys()
+     # convert to ints and sort
+    fs = [int(x) for x in fs if x]
+    fs.sort()
+
+    return fs
+
+
+def collapse_range(x): # x --> sorted list of ints
+    if not x:
+        return ""
+
+    s, c, r = [str(x[0])], x[0], False
+
+    for i in x[1:]:
+        if i == (c+1):
+            r = True
+        else:
+            if r:
+                s.append('-%s,%s' % (c,i))
+                r = False
+            else:
+                s.append(',%s' % i)
+
+        c = i
+
+    if r:
+        s.append('-%s' % i)
+
+    return ''.join(s)
+
+
+
 class RangeValidator(QValidator):
     def __init__(self, parent=None, name=None):
         QValidator.__init__(self, parent, name)
@@ -38,6 +101,7 @@ class RangeValidator(QValidator):
                 return QValidator.Invalid, pos
 
         return QValidator.Acceptable, pos
+
 
 
 class PrinterForm(PrinterForm_base):
@@ -54,6 +118,7 @@ class PrinterForm(PrinterForm_base):
         self.orientation_button_group = 0
         self.pages_button_group = 0
         self.init_failed = False
+        self.prettyprint = False
 
         self.pageRangeEdit.setValidator(RangeValidator(self.pageRangeEdit))
 
@@ -95,6 +160,8 @@ class PrinterForm(PrinterForm_base):
             "image/x-xbitmap" : self.__tr("X11 Bitmap (XBM)"),
             "image/x-xpixmap" : self.__tr("X11 Pixmap (XPM)"),
             "image/x-sun-raster" : self.__tr("Sun Raster Format"),
+            "text/cpp" : self.__tr("C++ Source Code"),
+            "image/x-bmp" : self.__tr("Bitmap (BMP) Image"),
         }
 
         if args is not None:
@@ -115,6 +182,9 @@ class PrinterForm(PrinterForm_base):
 
         self.fileListView.setSorting(-1)
 
+        self.bg = self.pageRangeEdit.paletteBackgroundColor()
+        self.invalid_page_range = False
+
 
         if self.device_uri and self.printer_name:
             log.error("You may not specify both a printer (-p) and a device (-d).")
@@ -128,11 +198,11 @@ class PrinterForm(PrinterForm_base):
         if not self.device_uri and not self.printer_name:
             t = device.probeDevices(None, bus=bus, filter='none')
             probed_devices = []
-            
+
             for d in t:
                 if d.startswith('hp:'):
                     probed_devices.append(d)
-            
+
             log.debug(probed_devices)
 
             max_deviceid_size, x, devices = 0, 0, {}
@@ -159,7 +229,7 @@ class PrinterForm(PrinterForm_base):
             else:
                 from chooseprinterdlg import ChoosePrinterDlg
                 dlg = ChoosePrinterDlg(self.cups_printers)
-                
+
                 if dlg.exec_loop() == QDialog.Accepted:
                     self.device_uri = dlg.device_uri
                 else:
@@ -187,6 +257,7 @@ class PrinterForm(PrinterForm_base):
             return
 
         self.device_uri = self.dev.device_uri
+        user_cfg.last_used.device_uri = self.device_uri
 
         log.debug(self.device_uri)
         self.DeviceURIText.setText(self.device_uri)
@@ -212,7 +283,7 @@ class PrinterForm(PrinterForm_base):
 
     def UpdatePrinterStatus(self):
         QApplication.setOverrideCursor(QApplication.waitCursor)
-        
+
         try:
             try:
                 self.dev.open()
@@ -228,8 +299,8 @@ class PrinterForm(PrinterForm_base):
         finally:
             self.dev.close()
             QApplication.restoreOverrideCursor()
-        
-        
+
+
         if self.dev.device_state == DEVICE_STATE_NOT_FOUND:
             self.FailureUI(self.__tr("<b>Unable to communicate with device:</b><p>%s" % self.device_uri))
 
@@ -237,20 +308,6 @@ class PrinterForm(PrinterForm_base):
             self.StateText.setText(self.dev.status_desc)
         except AttributeError:
             pass
-        
-
-
-    def EventUI(self, event_code, event_type, error_string_short,
-                error_string_long, retry_timeout, job_id,
-                device_uri):
-
-        log.debug("Event: device_uri=%s code=%d type=%s string=%s timeout=%d id=%d uri=%s" %
-                 (device_uri, event_code, event_type,  
-                  error_string_short, retry_timeout, job_id, device_uri))
-
-        if device_uri == self.dev.device_uri:
-            self.StateText.setText(error_string_short)
-
 
     def addFile(self, path):
         path = os.path.realpath(path)
@@ -280,7 +337,6 @@ class PrinterForm(PrinterForm_base):
             #self.fileListView.setSelected( i, True )
 
         non_empty_file_list = self.fileListView.childCount() > 0
-        ##self.delFileButton.setEnabled( non_empty_file_list )
         self.printPushButton.setEnabled(non_empty_file_list)
 
     def addFileButton_clicked(self):
@@ -329,7 +385,6 @@ class PrinterForm(PrinterForm_base):
 
 
     def fileListView_currentChanged(self,item):
-        #print item
         pass
 
     def printerNameComboBox_highlighted(self,a0):
@@ -375,6 +430,10 @@ class PrinterForm(PrinterForm_base):
         self.pageRangeEdit.setEnabled(item == 1)
 
     def printPushButton_clicked(self):
+        if self.invalid_page_range:
+            self.FailureUI(self.__tr("<b>Cannot print: Invalid page range: %1</b><p>A valid page range is a list of pages or ranges of pages separated by commas (e.g., 1-2,4,6-7)").arg(self.pageRangeEdit.text()))
+            return
+
         copies = int(self.copiesSpinBox.value())
         rev = bool(self.reverseCheckBox.isChecked())
         collate = bool(self.collateCheckBox.isChecked())
@@ -385,24 +444,24 @@ class PrinterForm(PrinterForm_base):
         mirror = bool(self.mirrorCheckBox.isChecked())
 
         for p, t, d in self.file_list:
-            
+
             alt_nup = (nup > 1 and t == 'application/postscript' and utils.which('psnup'))
-                
+
             if utils.which('lpr'):
                 if alt_nup:
                     cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lpr -P', self.current_printer])
                 else:
                     cmd = ' '.join(['lpr -P', self.current_printer])
-                
+
                 if copies > 1:
                     cmd = ' '.join([cmd, '-#%d' % copies])
-                
+
             else:
                 if alt_nup:
                     cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lp -c -d', self.current_printer])
                 else:
                     cmd = ' '.join(['lp -c -d', self.current_printer])
-                
+
                 if copies > 1:
                     cmd = ' '.join([cmd, '-n%d' % copies])
 
@@ -418,7 +477,7 @@ class PrinterForm(PrinterForm_base):
 
             if rev:
                 cmd = ' '.join([cmd, '-o outputorder=reverse'])
-                
+
             if mirror:
                 cmd = ' '.join([cmd, '-o mirror'])
 
@@ -429,8 +488,8 @@ class PrinterForm(PrinterForm_base):
                      "application/x-perl",
                      "application/x-python",
                      "application/x-shell",
-                     "text/plain",]:
-                     
+                     "text/plain",] and self.prettyprint:
+
                 cmd = ' '.join([cmd, '-o prettyprint'])
 
             if nup > 1 and not alt_nup:
@@ -454,7 +513,7 @@ class PrinterForm(PrinterForm_base):
             if os.system(cmd) != 0:
                 log.error("Print command failed.")
                 self.FailureUI(self.__tr("Print command failed."))
-        
+
         del self.file_list[:]
         self.UpdateFileList()
 
@@ -471,6 +530,39 @@ class PrinterForm(PrinterForm_base):
 
     def refreshToolButton_clicked(self):
         self.UpdatePrinterStatus()
+
+    def checkBoxPrettyPrinting_toggled(self,a0):
+        self.prettyprint = bool(a0)
+
+    def pageRangeEdit_lostFocus(self):
+        x = []
+        try:
+            x = expand_range(str(self.pageRangeEdit.text()))
+        except ValueError:
+            log.error("Invalid page range entered.")
+            self.invalid_page_range = True
+            self.pageRangeEdit.setPaletteBackgroundColor(QColor(0xff, 0x99, 0x99))
+
+        else:
+            self.pageRangeEdit.setText(QString(collapse_range(x)))
+            self.pageRangeEdit.setPaletteBackgroundColor(self.bg)
+            self.invalid_page_range = False
+
+    def pageRangeEdit_textChanged(self,a0):
+        x = []
+        try:
+            x = expand_range(str(self.pageRangeEdit.text()))
+        except ValueError:
+            #log.error("Invalid page range entered.")
+            self.invalid_page_range = True
+            self.pageRangeEdit.setPaletteBackgroundColor(QColor(0xff, 0x99, 0x99))
+
+        else:
+            #self.pageRangeEdit.setText(QString(collapse_range(x)))
+            self.pageRangeEdit.setPaletteBackgroundColor(self.bg)
+            self.invalid_page_range = False
+
+
 
 
     def SuccessUI(self):

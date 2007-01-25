@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ def update_ld_output():
     # For library checks
     global ld_output
     status, ld_output = utils.run('%s -p' % os.path.join(utils.which('ldconfig'), 'ldconfig'), log_output=False)
-    
+
     if status != 0:
         log.debug("ldconfig failed.")
 
@@ -63,10 +63,10 @@ def check_tool(cmd, min_ver=0.0):
                 return False
             else:
                 log.debug("Ver=%f Min ver=%f" % (v_f, min_ver))
-                
+
                 if v_f < min_ver:
                     log.debug("Found, but newer version required.")
-                
+
                 return v_f >= min_ver
         else:
             log.debug("Found.")
@@ -78,7 +78,7 @@ def check_lib(lib, min_ver=0):
 
     if ld_output.find(lib) >= 0:
         log.debug("Found.")
-        
+
         #if min_ver:
         #    pass
         #else:
@@ -92,7 +92,7 @@ def check_file(f, dir="/usr/include"):
     for w in utils.walkFiles(dir, recurse=True, abs_paths=True, return_folders=False, pattern=f):
         log.debug("File found at '%s'" % w)
         return True
-    
+
     log.debug("File not found.")
     return False
 
@@ -100,19 +100,19 @@ def check_lsb():
     return check_file("install_initd", '/usr/lib/lsb') or \
            check_file('install_initd', '/usr/sbin') or \
            check_file('install_initd', '/usr/bin')
-           
+
 def locate_files(f, dir):
     log.debug("Searching for file(s) '%s' under '%s'..." % (f, dir))
     found = []
     for w in utils.walkFiles(dir, recurse=True, abs_paths=True, return_folders=False, pattern=f):
         log.debug(w)
         found.append(w)
-        
+
     if found:
         log.debug("Found files: %s" % found)
     else:
         log.debug("No files not found.")
-    
+
     return found
 
 def check_file_contains(f, s):
@@ -121,14 +121,14 @@ def check_file_contains(f, s):
         if os.path.exists(f):
             for a in file(f, 'r'):
                 update_spinner()
-    
+
                 if s in a:
                     log.debug("'%s' found in file '%s'." % (s.replace('\n', ''), f))
                     return True
-    
+
         log.debug("Contents not found.")
         return False
-    
+
     finally:
         cleanup_spinner()
 
@@ -139,15 +139,15 @@ def check_ps(process_list):
     try:
         for a in output.splitlines():
             update_spinner()
-    
+
             for p in process_list:
                 if p in a:
                     log.debug("'%s' found." % a.replace('\n', ''))
                     return True
-    
+
         log.debug("Process not found.")
         return False
-    
+
     finally:
         cleanup_spinner()
 
@@ -279,20 +279,20 @@ def check_cups():
         return False
     else:
         log.debug("CUPS is running.")
-        return "scheduler is running" in output
+        return True
 
 def check_hpoj():
     log.debug("Checking for 'HPOJ'...")
     return check_ps(['ptal-mlcd', 'ptal-printd', 'ptal-photod']) or bool(utils.which("ptal-init"))
-    
+
 def check_hplip():
     log.debug("Checking for HPLIP (previous install)...")
     return check_ps(['hpssd', 'hpiod']) or locate_files('hplip.conf', '/etc/hp')
-    
+
 def check_hplip_running():
     log.debug("Checking for HPLIP running...")
     return check_ps(['hpssd']) and check_ps(['hpiod'])
-    
-    
 
-    
+
+
+

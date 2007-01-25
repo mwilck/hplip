@@ -13,7 +13,7 @@
 
 AC_PREREQ(2.59)
 #AC_INIT([HP Printer Driver], 2.1.10,, hpijs)
-AC_INIT([HP Printer Driver], 2.6.12,, hpijs)
+AC_INIT([HP Printer Driver], 2.7.1,, hpijs)
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_PROG_LIBTOOL
 AC_CONFIG_SRCDIR([hpijs.cpp])

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/printerform_base.ui'
 #
-# Created: Wed Oct 18 09:41:53 2006
+# Created: Tue Jan 9 15:35:50 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -268,13 +268,23 @@ class PrinterForm_base(QDialog):
         TabPageLayout_2.addItem(spacer19,2,0)
         self.tabWidget3.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
+        self.TabPage_3 = QWidget(self.tabWidget3,"TabPage_3")
+        TabPageLayout_3 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_3")
+
+        self.checkBoxPrettyPrinting = QCheckBox(self.TabPage_3,"checkBoxPrettyPrinting")
+
+        TabPageLayout_3.addWidget(self.checkBoxPrettyPrinting,0,0)
+        spacer11 = QSpacerItem(20,301,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout_3.addItem(spacer11,1,0)
+        self.tabWidget3.insertTab(self.TabPage_3,QString.fromLatin1(""))
+
         tabLayout_2.addWidget(self.tabWidget3,0,0)
         self.tabWidget4.insertTab(self.tab_2,QString.fromLatin1(""))
 
-        self.TabPage_3 = QWidget(self.tabWidget4,"TabPage_3")
-        TabPageLayout_3 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_3")
+        self.TabPage_4 = QWidget(self.tabWidget4,"TabPage_4")
+        TabPageLayout_4 = QGridLayout(self.TabPage_4,1,1,11,6,"TabPageLayout_4")
 
-        self.groupBox3 = QGroupBox(self.TabPage_3,"groupBox3")
+        self.groupBox3 = QGroupBox(self.TabPage_4,"groupBox3")
         self.groupBox3.setColumnLayout(0,Qt.Vertical)
         self.groupBox3.layout().setSpacing(6)
         self.groupBox3.layout().setMargin(11)
@@ -349,10 +359,10 @@ class PrinterForm_base(QDialog):
 
         groupBox3Layout.addMultiCellLayout(layout6,7,7,1,2)
 
-        TabPageLayout_3.addWidget(self.groupBox3,0,0)
+        TabPageLayout_4.addWidget(self.groupBox3,0,0)
         spacer20 = QSpacerItem(41,211,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        TabPageLayout_3.addItem(spacer20,1,0)
-        self.tabWidget4.insertTab(self.TabPage_3,QString.fromLatin1(""))
+        TabPageLayout_4.addItem(spacer20,1,0)
+        self.tabWidget4.insertTab(self.TabPage_4,QString.fromLatin1(""))
 
         PrinterForm_baseLayout.addMultiCellWidget(self.tabWidget4,0,0,0,2)
 
@@ -371,6 +381,9 @@ class PrinterForm_base(QDialog):
         self.connect(self.duplexButtonGroup,SIGNAL("clicked(int)"),self.duplexButtonGroup_clicked)
         self.connect(self.orientationButtonGroup,SIGNAL("clicked(int)"),self.orientationButtonGroup_clicked)
         self.connect(self.refreshToolButton,SIGNAL("clicked()"),self.refreshToolButton_clicked)
+        self.connect(self.checkBoxPrettyPrinting,SIGNAL("toggled(bool)"),self.checkBoxPrettyPrinting_toggled)
+        self.connect(self.pageRangeEdit,SIGNAL("lostFocus()"),self.pageRangeEdit_lostFocus)
+        self.connect(self.pageRangeEdit,SIGNAL("textChanged(const QString&)"),self.pageRangeEdit_textChanged)
 
 
     def languageChange(self):
@@ -428,6 +441,8 @@ class PrinterForm_base(QDialog):
         self.radioButton8.setText(self.__tr("Long edge (standard)"))
         self.radioButton9.setText(self.__tr("Short edge (flip)"))
         self.tabWidget3.changeTab(self.TabPage_2,self.__tr("Duplex"))
+        self.checkBoxPrettyPrinting.setText(self.__tr("Pretty printing of plain text files"))
+        self.tabWidget3.changeTab(self.TabPage_3,self.__tr("Options"))
         self.tabWidget4.changeTab(self.tab_2,self.__tr("Options"))
         self.groupBox3.setTitle(self.__tr("Printer"))
         self.textLabel4.setText(self.__tr("Location:"))
@@ -442,7 +457,7 @@ class PrinterForm_base(QDialog):
         self.StateText.setText(QString.null)
         self.refreshToolButton.setText(QString.null)
         QToolTip.add(self.refreshToolButton,self.__tr("Refresh status"))
-        self.tabWidget4.changeTab(self.TabPage_3,self.__tr("Printer"))
+        self.tabWidget4.changeTab(self.TabPage_4,self.__tr("Printer"))
 
 
     def addFileButton_clicked(self):
@@ -471,6 +486,15 @@ class PrinterForm_base(QDialog):
 
     def refreshToolButton_clicked(self):
         print "PrinterForm_base.refreshToolButton_clicked(): Not implemented yet"
+
+    def checkBoxPrettyPrinting_toggled(self,a0):
+        print "PrinterForm_base.checkBoxPrettyPrinting_toggled(bool): Not implemented yet"
+
+    def pageRangeEdit_lostFocus(self):
+        print "PrinterForm_base.pageRangeEdit_lostFocus(): Not implemented yet"
+
+    def pageRangeEdit_textChanged(self,a0):
+        print "PrinterForm_base.pageRangeEdit_textChanged(const QString&): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("PrinterForm_base",s,c)

@@ -59,8 +59,8 @@ SOFTWARE.
 Pexpect Copyright (c) 2006 Noah Spurrier
 http://pexpect.sourceforge.net/
 
-$Revision: 1.1 $
-$Date: 2006/10/18 20:20:56 $
+$Revision: 1.2 $
+$Date: 2007/01/11 20:51:46 $
 """
 try:
     import os, sys, time
@@ -83,7 +83,7 @@ A critical module was not found. Probably this operating system does not support
 Pexpect is intended for UNIX-like operating systems.""")
 
 __version__ = '2.1'
-__revision__ = '$Revision: 1.1 $'
+__revision__ = '$Revision: 1.2 $'
 __all__ = ['ExceptionPexpect', 'EOF', 'TIMEOUT', 'spawn', 'run', 'which', 'split_command_line',
     '__version__', '__revision__']
 
@@ -114,14 +114,6 @@ class EOF(ExceptionPexpect):
 class TIMEOUT(ExceptionPexpect):
     """Raised when a read time exceeds the timeout.
     """
-##class TIMEOUT_PATTERN(TIMEOUT):
-##    """Raised when the pattern match time exceeds the timeout.
-##    This is different than a read TIMEOUT because the child process may
-##    give output, thus never give a TIMEOUT, but the output
-##    may never match a pattern.
-##    """
-##class MAXBUFFER(ExceptionPexpect):
-##    """Raised when a scan buffer fills before matching an expected pattern."""
 
 def run (command, timeout=-1, withexitstatus=False, events=None, extra_args=None, logfile=None):
     """This function runs the given command; waits for it to finish;
@@ -253,7 +245,7 @@ class spawn (object):
         Setting the maxread value higher may help performance in cases
         where large amounts of output are read back from the child.
         This feature is useful in conjunction with searchwindowsize.
-        
+
         The searchwindowsize attribute sets the how far back in
         the incomming seach buffer Pexpect will search for pattern matches.
         Every time Pexpect reads some data from the child it will append the data to
@@ -263,7 +255,7 @@ class spawn (object):
         generates a large amount of data where you want to match
         The searchwindowsize does not effect the size of the incomming data buffer.
         You will still have access to the full buffer after expect() returns.
-        
+
         The logfile member turns on or off logging.
         All input and output will be copied to the given file object.
         Set logfile to None to stop logging. This is the default.
@@ -276,7 +268,7 @@ class spawn (object):
         Example 2:
             child = pexpect.spawn('some_command')
             child.logfile = sys.stdout
-            
+
         The delaybeforesend helps overcome a weird behavior that many users were experiencing.
         The typical problem was that a user would expect() a "Password:" prompt and
         then immediately call sendline() to send the password. The user would then
@@ -291,7 +283,7 @@ class spawn (object):
         should be to sleep just before writing to the child application.
         1/10th of a second (100 ms) seems to be enough to clear up the problem.
         You can set delaybeforesend to 0 to return to the old behavior.
-        
+
         Note that spawn is clever about finding commands on your path.
         It uses the same logic that "which" uses to find executables.
 
@@ -483,7 +475,7 @@ class spawn (object):
         """This implements a substitute for the forkpty system call.
         This should be more portable than the pty.fork() function.
         Specifically, this should work on Solaris.
-        
+
         Modified 10.06.05 by Geoff Marshall:
             Implemented __fork_pty() method to resolve the issue with Python's 
             pty.fork() not supporting Solaris, particularly ssh.
@@ -493,7 +485,7 @@ class spawn (object):
         parent_fd, child_fd = os.openpty()
         if parent_fd < 0 or child_fd < 0:
             raise ExceptionPexpect, "Error! Could not open pty with os.openpty()."
-        
+
         pid = os.fork()
         if pid < 0:
             raise ExceptionPexpect, "Error! Failed os.fork()."
@@ -501,33 +493,33 @@ class spawn (object):
             # Child.
             os.close(parent_fd)
             self.__pty_make_controlling_tty(child_fd)
-            
+
             os.dup2(child_fd, 0)
             os.dup2(child_fd, 1)
             os.dup2(child_fd, 2)
-            
+
             if child_fd > 2:
                 os.close(child_fd)
         else:
             # Parent.
             os.close(child_fd)
-        
+
         return pid, parent_fd
-                
+
     def __pty_make_controlling_tty(self, tty_fd):
         """This makes the pseudo-terminal the controlling tty.
         This should be more portable than the pty.fork() function.
         Specifically, this should work on Solaris.
         """
         child_name = os.ttyname(tty_fd)
-        
+
         # Disconnect from controlling tty if still connected.
         fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY);
         if fd >= 0:
             os.close(fd)
-            
+
         os.setsid()
-        
+
         # Verify we are disconnected from controlling tty
         try:
             fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY);
@@ -537,7 +529,7 @@ class spawn (object):
         except:
             # Good! We are disconnected from a controlling tty.
             pass
-        
+
         # Verify we can open child pty.
         fd = os.open(child_name, os.O_RDWR);
         if fd < 0:
@@ -551,7 +543,7 @@ class spawn (object):
             raise ExceptionPexpect, "Error! Could not open controlling tty, /dev/tty"
         else:
             os.close(fd)
-         
+
     def fileno (self):   # File-like object.
         """This returns the file descriptor of the pty for the child.
         """
@@ -619,7 +611,7 @@ class spawn (object):
         # I tried TCSADRAIN and TCSAFLUSH, but these were inconsistent
         # and blocked on some platforms. TCSADRAIN is probably ideal if it worked.
         termios.tcsetattr(self.child_fd, termios.TCSANOW, new)
-    
+
     def read_nonblocking (self, size = 1, timeout = -1):
         """This reads at most size characters from the child application.
         It includes a timeout. If the read does not complete within the
@@ -632,13 +624,13 @@ class spawn (object):
         If timeout==-1 then the self.timeout value is used.
         If timeout==0 then the child is polled and 
             if there was no data immediately ready then this will raise a TIMEOUT exception.
-        
+
         The "timeout" refers only to the amount of time to read at least one character.
         This is not effected by the 'size' parameter, so if you call
         read_nonblocking(size=100, timeout=30) and only one character is
         available right away then one character will be returned immediately. 
         It will not wait for 30 seconds for another 99 characters to come in.
-        
+
         This is a wrapper around os.read().
         It uses select.select() to implement a timeout. 
         """
@@ -665,9 +657,9 @@ class spawn (object):
             if not r and not self.isalive():
                 self.flag_eof = True
                 raise EOF ('End Of File (EOF) in read_nonblocking(). Pokey platform.')
-            
+
         r,w,e = self.__select([self.child_fd], [], [], timeout)
-        
+
         if not r:
             if not self.isalive():
                 # Some platforms, such as Irix, will claim that their processes are alive;
@@ -721,7 +713,7 @@ class spawn (object):
         if index == 0:
             return self.after ### self.before should be ''. Should I assert this?
         return self.before
-        
+
     def readline (self, size = -1):    # File-like object.
         """This reads and returns one entire line. A trailing newline is kept in
         the string, but may be absent when a file ends with an incomplete line. 
@@ -811,9 +803,6 @@ class spawn (object):
         This method does not send a newline. It is the responsibility
         of the caller to ensure the eof is sent at the beginning of a line.
         """
-        ### Hmmm... how do I send an EOF?
-        ###C  if ((m = write(pty, *buf, p - *buf)) < 0)
-        ###C      return (errno == EWOULDBLOCK) ? n : -1;
         fd = sys.stdin.fileno()
         old = termios.tcgetattr(fd) # remember current state
         new = termios.tcgetattr(fd)
@@ -862,7 +851,7 @@ class spawn (object):
                 return False
         return False
         #raise ExceptionPexpect ('terminate() could not terminate child process. Try terminate(force=True)?')
-     
+
     def wait(self):
         """This waits until the child exits. This is a blocking call.
             This will not read any data from the child, so this will block forever
@@ -888,7 +877,7 @@ class spawn (object):
         elif os.WIFSTOPPED (status):
             raise ExceptionPexpect ('Wait was called for a child process that is stopped. This is not supported. Is some other process attempting job control with our child pid?')
         return self.exitstatus
-   
+
     def isalive(self):
         """This tests if the child process is running or not.
         This is non-blocking. If the child was terminated then this
@@ -906,7 +895,7 @@ class spawn (object):
             waitpid_options = 0
         else:
             waitpid_options = os.WNOHANG
-            
+
         try:
             pid, status = os.waitpid(self.pid, waitpid_options)
         except OSError, e: # No child processes
@@ -1003,7 +992,7 @@ class spawn (object):
                 raise TypeError ('Argument must be one of StringType, EOF, TIMEOUT, SRE_Pattern, or a list of those type. %s' % str(type(p)))
 
         return compiled_pattern_list
- 
+
     def expect(self, pattern, timeout = -1, searchwindowsize=None):
 
         """This seeks through the stream until a pattern is matched.

@@ -1849,6 +1849,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     int force300dpiForLineart = 0;
     int force300dpiForGrayscale = 0;
     int supportsMfpdtf = 1;
+    int modularHardware = 0;
     char devname[256];
     HplipMsgAttributes ma;
 
@@ -2037,7 +2038,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
         {
             goto abort;
         }
-        DBG(8, "scl.compat1150=<%s>: %s %d\n", hpaio->scl.compat1150, __FILE__, __LINE__);
+        DBG(6, "scl.compat1150=<%s>: %s %d\n", hpaio->scl.compat1150, __FILE__, __LINE__);
 
         retcode = SclInquire( hpaio->deviceid, hpaio->scan_channelid,
                               SCL_CMD_INQUIRE_DEVICE_PARAMETER,
@@ -2054,7 +2055,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
         {
             goto abort;
         }
-        DBG(8, "scl.compatPost1150=<%s>: %s %d\n", hpaio->scl.compatPost1150, __FILE__, __LINE__);
+        DBG(6, "scl.compatPost1150=<%s>: %s %d\n", hpaio->scl.compatPost1150, __FILE__, __LINE__);
 
         if( !hpaio->scl.compat )
         {
@@ -2099,7 +2100,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
         {
             SET_DEFAULT_MODEL( hpaio, "(unknown OfficeJet)" );
         }
-        DBG(8, "scl.compat=0x%4.4X: %s %d\n", hpaio->scl.compat, __FILE__, __LINE__);
+        DBG(6, "scl.compat=0x%4.4X: %s %d\n", hpaio->scl.compat, __FILE__, __LINE__);
 
         /* Decide which position/extent unit to use.  "Device pixels" works
          * better on most models, but the 1150 requires "decipoints." */
@@ -2120,14 +2121,14 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
                         0,
                         0 );
         }
-        DBG(8, "decipixelChar='%c', decipixelsPerInch=%d: %s %d\n", hpaio->scl.decipixelChar, hpaio->decipixelsPerInch, __FILE__, __LINE__);
+        DBG(6, "decipixelChar='%c', decipixelsPerInch=%d: %s %d\n", hpaio->scl.decipixelChar, hpaio->decipixelsPerInch, __FILE__, __LINE__);
 
         /* Is MFPDTF supported? */
         if( hpaioSclSendCommandCheckError( hpaio,
                                       SCL_CMD_SET_MFPDTF,
                                       SCL_MFPDTF_ON ) != SANE_STATUS_GOOD )
         {
-            DBG(8, "Doesn't support MFPDTF: %s %d\n", __FILE__, __LINE__);
+            DBG(6, "Doesn't support MFPDTF: %s %d\n", __FILE__, __LINE__);
             supportsMfpdtf = 0;
         }
 
@@ -2222,7 +2223,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
                         0,
                         0 );
             
-            DBG(8, "ADF capability=%d: %s %d\n", hpaio->scl.adfCapability, __FILE__, __LINE__);
+            DBG(6, "ADF capability=%d: %s %d\n", hpaio->scl.adfCapability, __FILE__, __LINE__);
             
             if( !hpaio->scl.adfCapability )
             {
@@ -2450,34 +2451,30 @@ pmlDefaultResRange:
         }
 
         /* Determine contrast support. */
-        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                           hpaio->pml.objContrast ) != ERROR )
+        if( PmlRequestGet(hpaio->deviceid, hpaio->cmd_channelid, hpaio->pml.objContrast) != ERROR)
         {
             hpaio->option[OPTION_CONTRAST].cap &= ~SANE_CAP_INACTIVE;
         }
 
         /* Determine supported ADF modes. */
-        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                           hpaio->pml.objModularHardware ) != ERROR )
+        if(PmlRequestGet(hpaio->deviceid, hpaio->cmd_channelid, hpaio->pml.objModularHardware) != ERROR && 
+               PmlGetIntegerValue(hpaio->pml.objModularHardware, 0, &modularHardware) != ERROR)
         {
-            int modularHardware = 0;
             hpaio->pml.flatbedCapability = 1;
-            if( PmlGetIntegerValue( hpaio->pml.objModularHardware,
-                                    0,
-                                    &modularHardware ) != ERROR &&
-                modularHardware & PML_MODHW_ADF )
-            {
-                goto adfAndAuto;
-            }
-            
-            hpaio->supportedAdfModes = ADF_MODE_FLATBED;
+
+            DBG(6, "Valid PML modularHardware object value=%x: %s %d\n", modularHardware, __FILE__, __LINE__);
+
+            if(modularHardware & PML_MODHW_ADF)
+                hpaio->supportedAdfModes = ADF_MODE_AUTO | ADF_MODE_ADF;
+            else
+                hpaio->supportedAdfModes = ADF_MODE_FLATBED;
         }
         else
         {
-adfAndAuto:
-            hpaio->supportedAdfModes = ADF_MODE_AUTO | ADF_MODE_ADF;
+            DBG(6, "No valid PML modularHardware object, default to ADF and AUTO support: %s %d\n", __FILE__, __LINE__);
+            hpaio->supportedAdfModes = ADF_MODE_AUTO | ADF_MODE_ADF; 
         }
-            hpaio->supportsDuplex = 0;
+        hpaio->supportsDuplex = 0;
 
         hpaio->tlxRange.max = hpaio->brxRange.max = INCHES_TO_MILLIMETERS( PML_MAX_WIDTH_INCHES );
         hpaio->tlyRange.max = hpaio->bryRange.max = INCHES_TO_MILLIMETERS( PML_MAX_HEIGHT_INCHES );

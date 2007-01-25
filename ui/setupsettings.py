@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ from setupsettings_base import SetupSettings_base
 class SetupSettings(SetupSettings_base):
     def __init__(self, bus, filter, search, ttl, timeout, parent=None, name=None, modal=0, fl = 0):
         SetupSettings_base.__init__(self, parent, name, modal, fl)
-        
+
         self.filter = filter
         self.search = search
         self.ttl = ttl
         self.timeout = timeout
-    
+
         if 'none' in filter:
             self.filterButtonGroup.setButton(0)
         else:
@@ -42,13 +42,13 @@ class SetupSettings(SetupSettings_base):
             self.scanCheckBox.setChecked('scan' in filter)
             self.pcardCheckBox.setChecked('pcard' in filter)
             self.copyCheckBox.setChecked('copy' in filter)
-            
+
         self.searchTermLineEdit.setText(self.search)
-        
+
         self.ttlSpinBox.setValue(self.ttl)
         self.timeoutSpinBox.setValue(self.timeout)
-        
-       
+
+
     def faxCheckBox_toggled(self,a0):
         self.updateFilter()
 
@@ -63,7 +63,7 @@ class SetupSettings(SetupSettings_base):
 
     def filterButtonGroup_clicked(self, a0):
         self.updateFilter(a0)
-            
+
     def searchTermLineEdit_textChanged(self, a0):
         self.search = str(a0)
 
@@ -74,34 +74,34 @@ class SetupSettings(SetupSettings_base):
     def timeoutSpinBox_valueChanged(self, a0):
         self.timeout = a0
         log.debug(self.timeout)
-        
+
     def updateFilter(self, id=-1):
         if id == 0:
             self.filter = 'none'
-        
+
         else:
             filters = []
-            
+
             if self.faxCheckBox.isChecked():
                 filters.append('fax')
-            
+
             if self.scanCheckBox.isChecked():
                 filters.append('scan')
-            
+
             if self.pcardCheckBox.isChecked():
                 filters.append('pcard')
-                
+
             if self.copyCheckBox.isChecked():
                 filters.append('copy')
-                
+
             if not filters:
                 filters.append('none')
-            
+
             self.filter = ','.join(filters)
-            
+
         log.debug(self.filter)
-        
-        
+
+
     def defaultsPushButton_clicked(self):
         self.filterButtonGroup.setButton(0)
         self.updateFilter(0)

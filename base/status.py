@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -235,7 +235,7 @@ def parseVStatus(s):
     pens, pen, c = [], {}, 0
     fields = s.split(',')
     f0 = fields[0]
-    
+
     if len(f0) == 20:
         # TODO: $H00000000$M00000000 style (OJ Pro 1150/70)
         # Need spec
@@ -260,10 +260,10 @@ def parseVStatus(s):
             elif c == 3:
                 if p == '0': pen['state'] = 1
                 else: pen['state'] = 0
-    
+
                 pen['level'] = 0
                 i = 8
-    
+
                 while True:
                     try:
                         f = fields[i]
@@ -275,13 +275,13 @@ def parseVStatus(s):
                         elif f[:2] == 'CP' and pen['type'] == AGENT_TYPE_CMY:
                             pen['level'] = int(f[2:])
                     i += 1
-    
+
                 pens.append(pen)
                 pen = {}
                 c = 0
     else:
         pass
-        
+
     if fields[2] == 'DN':
         top_lid = 1
     else:
@@ -403,7 +403,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
         result_code,  value = dev.getPML( pml.OID_DETECTED_ERROR_STATE )
     except Error:
        dev.closePML()
-       
+
        return {'revision' :    STATUS_REV_UNKNOWN,
                  'agents' :      [],
                  'top-door' :    0,
@@ -415,12 +415,12 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                  'in-tray2' :    0,
                  'media-path' :  0,
                }        
-        
+
     try:
         detected_error_state = struct.unpack( 'B', value[0])[0]
     except IndexError:
         detected_error_state = pml.DETECTED_ERROR_STATE_OFFLINE_MASK
-    
+
     agents, x = [], 1
 
     while True:
@@ -441,7 +441,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
             agent_kind = AGENT_KIND_UNKNOWN
 
         # TODO: Deal with printers that return -1 and -2 for level and max (LJ3380)
-        
+
         log.debug("OID_MARKER_SUPPLIES_LEVEL_%d:" % x)
         oid = ( pml.OID_MARKER_SUPPLIES_LEVEL_x % x, pml.OID_MARKER_SUPPLIES_LEVEL_x_TYPE )
         result_code, agent_level = dev.getPML( oid )
@@ -449,12 +449,12 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
         if result_code != ERROR_SUCCESS:
             log.debug("Failed")
             break
-            
+
         log.debug( 'agent%d-level: %d' % ( x, agent_level ) )
         log.debug("OID_MARKER_SUPPLIES_MAX_%d:" % x)
         oid = ( pml.OID_MARKER_SUPPLIES_MAX_x % x, pml.OID_MARKER_SUPPLIES_MAX_x_TYPE )
         result_code, agent_max = dev.getPML( oid )
-        
+
         if agent_max == 0: agent_max = 1
 
         if result_code != ERROR_SUCCESS:
@@ -476,7 +476,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
             log.debug("OID_MARKER_COLORANT_VALUE_%d" % x)
             oid = ( pml.OID_MARKER_COLORANT_VALUE_x % colorant_index, pml.OID_MARKER_COLORANT_VALUE_x_TYPE )
             result_code, colorant_value = dev.getPML( oid )
-    
+
             if result_code != ERROR_SUCCESS:
                 log.debug("Failed. Defaulting to black.")
                 agent_type = AGENT_TYPE_BLACK
@@ -484,43 +484,43 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
             if 1:
                 if agent_kind in (AGENT_KIND_MAINT_KIT, AGENT_KIND_ADF_KIT,
                                   AGENT_KIND_DRUM_KIT, AGENT_KIND_TRANSFER_KIT):
-        
+
                     agent_type = AGENT_TYPE_UNSPECIFIED
-        
+
                 else:
                     agent_type = AGENT_TYPE_BLACK
-        
+
                     if result_code != ERROR_SUCCESS:
                         log.debug("OID_MARKER_SUPPLIES_DESCRIPTION_%d:" % x)
                         oid = (pml.OID_MARKER_SUPPLIES_DESCRIPTION_x % x, pml.OID_MARKER_SUPPLIES_DESCRIPTION_x_TYPE)
                         result_code, colorant_value = dev.getPML( oid )
-                        
+
                         if result_code != ERROR_SUCCESS:
                             log.debug("Failed")
                             break
-        
+
                         if colorant_value is not None:
                             log.debug("colorant value: %s" % colorant_value)
                             colorant_value = colorant_value.lower().strip()
-        
+
                             for c in COLORANT_INDEX_TO_AGENT_TYPE_MAP:
                                 if colorant_value.find(c) >= 0:
                                     agent_type = COLORANT_INDEX_TO_AGENT_TYPE_MAP[c]
                                     break
                             else:
                                 agent_type = AGENT_TYPE_BLACK
-        
+
                     else: # SUCCESS
                         if colorant_value is not None:
                             log.debug("colorant value: %s" % colorant_value)
                             agent_type = COLORANT_INDEX_TO_AGENT_TYPE_MAP.get( colorant_value, None )
-        
+
                         if agent_type == AGENT_TYPE_NONE:
                             if agent_kind == AGENT_KIND_TONER_CARTRIDGE:
                                 agent_type = AGENT_TYPE_BLACK
                             else:
                                 agent_type = AGENT_TYPE_UNSPECIFIED
-    
+
         log.debug("OID_MARKER_STATUS_%d:" % x)
         oid = ( pml.OID_MARKER_STATUS_x % x, pml.OID_MARKER_STATUS_x_TYPE )
         result_code, agent_status = dev.getPML( oid )
@@ -563,7 +563,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                        'level-trigger' : agent_trigger,})
 
         x += 1
-    
+
 
     log.debug("on_off_line=%d" % on_off_line)
     log.debug("sleep_mode=%d" % sleep_mode)
@@ -692,10 +692,10 @@ BATTERY_PML_TRIGGER_MAP = {
         (4,   -1)  : AGENT_LEVEL_TRIGGER_ALMOST_DEFINITELY_OUT,
         }
 
-        
+
 def BatteryCheck(dev, status_block):
     try_dynamic_counters = False
-    
+
     try:
         try:
             dev.openPML()
@@ -705,27 +705,27 @@ def BatteryCheck(dev, status_block):
         else:
             result, battery_level = dev.getPML(pml.OID_BATTERY_LEVEL)
             result, power_mode =  dev.getPML(pml.OID_POWER_MODE)
-    
+
             if battery_level is not None and \
                 power_mode is not None:
-    
+
                 if power_mode & pml.POWER_MODE_BATTERY_LEVEL_KNOWN and \
                     battery_level >= 0:
-    
+
                     for x in BATTERY_PML_TRIGGER_MAP:
                         if x[0] >= battery_level > x[1]:
                             battery_trigger_level = BATTERY_PML_TRIGGER_MAP[x]
                             break
-    
+
                     if power_mode & pml.POWER_MODE_CHARGING:
                         agent_health = AGENT_HEALTH_CHARGING
-    
+
                     elif power_mode & pml.POWER_MODE_DISCHARGING:
                         agent_health = AGENT_HEALTH_DISCHARGING
-    
+
                     else:
                         agent_health = AGENT_HEALTH_OK
-    
+
                     status_block['agents'].append({
                                                     'kind'   : AGENT_KIND_INT_BATTERY,
                                                     'type'   : AGENT_TYPE_UNSPECIFIED,
@@ -741,7 +741,7 @@ def BatteryCheck(dev, status_block):
                                                     'level'  : 0,
                                                     'level-trigger' : AGENT_LEVEL_TRIGGER_SUFFICIENT_0,
                                                     })
-    
+
             else:
                 try_dynamic_counters = True
 
@@ -773,7 +773,7 @@ def BatteryCheck(dev, status_block):
                                                 })
         finally:
             dev.closePrint()
-            
+
 
 # this works for 2 pen products that allow 1 or 2 pens inserted
 # from: k, kcm, cmy, ggk
@@ -816,28 +816,28 @@ def getPenConfiguration(s): # s=status dict from parsed device ID
 
 def getFaxStatus(dev):
     tx_active, rx_active = False, False
-    
+
     try:
         dev.openPML()
-    
+
         result_code, tx_state = dev.getPML(pml.OID_FAXJOB_TX_STATUS)
-        
+
         if result_code == ERROR_SUCCESS:
             if tx_state not in (pml.FAXJOB_TX_STATUS_IDLE, pml.FAXJOB_TX_STATUS_DONE):
                 tx_active = True
-        
+
         result_code, rx_state = dev.getPML(pml.OID_FAXJOB_RX_STATUS)
 
         if result_code == ERROR_SUCCESS:
             if rx_state not in (pml.FAXJOB_RX_STATUS_IDLE, pml.FAXJOB_RX_STATUS_DONE):
                 rx_active = True
-    
+
     finally:
         dev.closePML()
-        
+
     return tx_active, rx_active
-    
-    
+
+
 TYPE6_STATUS_CODE_MAP = {
      0    : STATUS_PRINTER_IDLE, #</DevStatusUnknown>
     -19928: STATUS_PRINTER_IDLE,
@@ -958,22 +958,22 @@ TYPE6_STATUS_CODE_MAP = {
     -13841: STATUS_PRINTER_BUSY, #</DevStatusNoFaxDetected>
     -13848: STATUS_PRINTER_BUSY, #</DevStatusFaxMemoryFullReceive>
     -13849: STATUS_PRINTER_BUSY, #</DevStatusFaxReceiveError>
-    
+
 }    
 
 def StatusType6(dev): #  LaserJet Status (XML)
     info_device_status = cStringIO.StringIO()
     info_ssp = cStringIO.StringIO()
-    
+
     dev.getEWSUrl("/hp/device/info_device_status.xml", info_device_status)
     dev.getEWSUrl("/hp/device/info_ssp.xml", info_ssp)
-    
+
     info_device_status = info_device_status.getvalue()
     info_ssp = info_ssp.getvalue()
-    
+
     device_status = {}
     ssp = {}
-    
+
     if info_device_status:
         try:
             device_status = utils.XMLToDictParser().parseXML(info_device_status)
@@ -992,23 +992,23 @@ def StatusType6(dev): #  LaserJet Status (XML)
         except expat.ExpatError:
             log.error("SSP XML parse error")            
             ssp = {}
-    
+
     status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
-    
+
     if not status_code:
         status_code = ssp.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
-    
+
     black_supply_level = device_status.get('devicestatuspage-suppliesstatus-blacksupply-percentremaining', 0)
     black_supply_low = ssp.get('suppliesstatuspage-blacksupply-lowreached', 0)
     agents = []
-    
+
     agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
                      'type' : AGENT_TYPE_BLACK,
                      'health' : 0,
                      'level' : black_supply_level,
                      'level-trigger' : 0,
                   })
-    
+
     if dev.tech_type == TECH_TYPE_COLOR_LASER:
         cyan_supply_level = device_status.get('devicestatuspage-suppliesstatus-cyansupply-percentremaining', 0)
         agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
@@ -1046,9 +1046,9 @@ def StatusType6(dev): #  LaserJet Status (XML)
              'media-path' :  1,
              'status-code' : TYPE6_STATUS_CODE_MAP.get(status_code, STATUS_PRINTER_IDLE),
            }     
-    
-        
-    
-    
-    
-    
+
+
+
+
+
+

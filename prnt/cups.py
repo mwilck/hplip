@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,22 +51,27 @@ def getPPDPath(addtional_paths=[]):
 def getAllowableMIMETypes():    
     # Scan all /etc/cups/*.convs files for allowable file formats
     files = glob.glob("/etc/cups/*.convs")
-    
+
     allowable_mime_types = []
-    
+
     for f in files:
         #log.debug( "Capturing allowable MIME types from: %s" % f )
         conv_file = file(f, 'r')
-    
+
         for line in conv_file:
             if not line.startswith("#") and len(line) > 1:
                 try:
                     source, dest, cost, prog =  line.split()
                 except ValueError:
                     continue
-    
-                allowable_mime_types.append(source)
-            
+
+                if source not in ('application/octet-stream', 'application/vnd.cups-postscript'):
+                    allowable_mime_types.append(source)
+
+    # Add some well-known MIME types that may not appear in the .convs files
+    allowable_mime_types.append("image/x-bmp")
+    allowable_mime_types.append("text/cpp")
+
     return allowable_mime_types
 
 
@@ -80,7 +85,7 @@ def openPPD(printer):
 
 def closePPD():
     return cupsext.closePPD()
-    
+
 def getPPD(printer):
     return cupsext.getPPD(printer)
 
@@ -101,7 +106,7 @@ def getAllJobs(my_job=0):
 
 def getVersion():
     return cupsext.getVersion()
-    
+
 def getVersionTuple():
     return cupsext.getVersionTuple()
 
@@ -118,26 +123,26 @@ def cancelJob(jobid, dest=None):
                 return cupsext.cancelJob(j.dest, jobid)
 
     return False
-    
+
 def resetOptions():
     return cupsext.resetOptions()
-    
+
 def addOption(option):
     return cupsext.addOption(option)
-    
+
 def printFile(printer, filename, title):
     if os.path.exists(filename):
         return cupsext.printFileWithOptions(printer, filename, title)
     else:
         return -1
-        
+
 def addPrinter(printer_name, device_uri, location, ppd_file, info):
     return cupsext.addPrinter(printer_name, device_uri, location, ppd_file, info)
-    
+
 def delPrinter(printer_name):
     return cupsext.delPrinter(printer_name)
-        
-        
+
+
 def levenshtein_distance(a,b):
     """
     Calculates the Levenshtein distance between a and b.
@@ -147,7 +152,7 @@ def levenshtein_distance(a,b):
     if n > m:
         a,b = b,a
         n,m = m,n
-        
+
     current = range(n+1)
     for i in range(1,m+1):
         previous, current = current, [i]+[0]*m
@@ -157,11 +162,11 @@ def levenshtein_distance(a,b):
             if a[j-1] != b[i-1]:
                 change = change + 1
             current[j] = min(add, delete, change)
-            
+
     return current[n]
-    
+
 number_pat = re.compile(r""".*?(\d+)""", re.IGNORECASE)
-        
+
 def getPPDFile(stripped_model, ppds):
     log.debug("1st stage edit distance match")
     mins = []
@@ -175,7 +180,7 @@ def getPPDFile(stripped_model, ppds):
         eds[f] = levenshtein_distance(stripped_model, t)
         #log.debug("dist('%s', '%s') = %d" % (stripped_model, t, eds[f]))
         min_edit_distance = min(min_edit_distance, eds[f])
-        
+
     log.debug("Min. dist = %d" % min_edit_distance)
 
     for f in ppds:
@@ -185,7 +190,7 @@ def getPPDFile(stripped_model, ppds):
                     break # File already in list possibly with different path (Ubuntu, etc)
             else:
                 mins.append(f)
-                
+
     log.debug(mins)
 
     if len(mins) > 1: # try pattern matching the model number 
@@ -232,7 +237,6 @@ def getPPDFile(stripped_model, ppds):
                 if len(matches):
                     mins = matches[:]
                     break
-                    
+
     return mins
-    
-    
+

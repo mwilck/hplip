@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -83,9 +83,10 @@ class FaxSendJobForm(FaxSendJobForm_base):
         self.recipient_list = []
         self.username = prop.username
         self.args = args
+        self.prettyprint = False
 
         self.update_queue = Queue.Queue() # UI updates from send thread
-        self.event_queue = Queue.Queue() # UI events (from hpssd) to send thread
+        self.event_queue = Queue.Queue() # UI events (cancel) to send thread
 
         pix = QPixmap(os.path.join(prop.image_dir, 'folder_remove.png'))
         self.delFileButton.setPixmap(pix)
@@ -112,11 +113,10 @@ class FaxSendJobForm(FaxSendJobForm_base):
         self.cover_page_re = ''
         self.cover_page_name = ''
 
-        self.event_handler = self.addFileFromJob
-
         self.file_list = []
 
         self.db =  fax.FaxAddressBook() # kirbybase instance
+        self.last_db_modification = self.db.last_modification_time()
 
         self.allowable_mime_types = cups.getAllowableMIMETypes()
         self.allowable_mime_types.append("application/hplip-fax")
@@ -129,7 +129,9 @@ class FaxSendJobForm(FaxSendJobForm_base):
             "application/pdf" : (self.__tr("PDF Document"), '.pdf'),
             "application/postscript" : (self.__tr("Postscript Document"), '.ps'),
             "application/vnd.hp-HPGL" : (self.__tr("HP Graphics Language File"), '.hgl, .hpg, .plt, .prn'),
-            "application/x-cshell" : (self.__tr("C Shell Script"), '.csh'),
+            "application/x-cshell" : (self.__tr("C Shell Script"), '.csh, .sh'),
+            "application/x-csource" : (self.__tr("C Source Code"), '.c'),
+            "text/cpp": (self.__tr("C++ Source Code"), '.cpp, .cxx'),
             "application/x-perl" : (self.__tr("Perl Script"), '.pl'),
             "application/x-python" : (self.__tr("Python Program"), '.py'),
             "application/x-shell" : (self.__tr("Shell Script"), '.sh'),
@@ -140,6 +142,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             "image/jpeg" : (self.__tr("JPEG Image"), '.jpg, .jpeg'),
             "image/tiff" : (self.__tr("TIFF Image"), '.tif, .tiff'),
             "image/x-bitmap" : (self.__tr("Bitmap (BMP) Image"), '.bmp'),
+            "image/x-bmp" : (self.__tr("Bitmap (BMP) Image"), '.bmp'),
             "image/x-photocd" : (self.__tr("Photo CD Image"), '.pcd'),
             "image/x-portable-anymap" : (self.__tr("Portable Image (PNM)"), '.pnm'),
             "image/x-portable-bitmap" : (self.__tr("Portable B&W Image (PBM)"), '.pbm'),
@@ -148,7 +151,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             "image/x-sgi-rgb" : (self.__tr("SGI RGB"), '.rgb'),
             "image/x-xbitmap" : (self.__tr("X11 Bitmap (XBM)"), '.xbm'),
             "image/x-xpixmap" : (self.__tr("X11 Pixmap (XPM)"), '.xpm'),
-            "image/x-sun-raster" : (self.__tr("Sucoverpages_enabledn Raster Format"), '.ras'),
+            "image/x-sun-raster" : (self.__tr("Sun Raster Format"), '.ras'),
             "application/hplip-fax" : (self.__tr("HP Fax"), '.g3'),
             "application/hplip-fax-coverpage" : (self.__tr("HP Fax Coverpage"), 'n/a'),
         }
@@ -230,12 +233,17 @@ class FaxSendJobForm(FaxSendJobForm_base):
             return
 
         self.device_uri = self.dev.device_uri
+        user_cfg.last_used.device_uri = self.device_uri
 
         log.debug("Device URI=%s" %self.device_uri)
         self.DeviceURIText.setText(self.device_uri)
-        
+
         log.debug("Setting date and time on device.")
-        self.dev.setDateAndTime()
+
+        try:
+            self.dev.setDateAndTime()
+        except Error:
+            pass # This will be caught further down
 
         for p in self.cups_printers:
             if p.device_uri == self.device_uri:
@@ -272,6 +280,55 @@ class FaxSendJobForm(FaxSendJobForm_base):
                 else:
                     self.FailureUI(self.__tr("<b>File not found:</b><p>%1").arg(a))
 
+        self.check_timer = QTimer(self, "CheckTimer")
+        self.connect(self.check_timer, SIGNAL('timeout()'), self.PeriodicCheck)
+        self.check_timer.start(3000)
+
+        self.busy = False
+
+    def PeriodicCheck(self):
+        if not self.busy:
+            log.debug("Checking for incoming faxes...")
+
+            fields, data, result_code = \
+                msg.xmitMessage(self.sock, "FaxCheck", None,
+                                {"username": self.username})
+
+            if result_code == ERROR_FAX_READY:
+                # fax is waiting
+                username = fields['username']
+                job_id = fields['job-id']
+                job_size = fields['job-size']
+                title = fields['title']
+
+                if self.isMinimized():
+                    self.showNormal()
+
+                self.check_timer.stop()
+                self.addFileFromJob(0, title, username, job_id, job_size)
+                self.check_timer.start(3000)
+                return
+
+            elif result_code == ERROR_FAX_PROCESSING:
+                # fax is being processed
+                print "processing..."
+                if self.waitdlg is None:
+                    self.waitdlg = WaitForm(0, self.__tr("Processing fax..."), None, self, modal=1) # self.add_fax_canceled
+                    self.waitdlg.show()
+
+            # Check for updated FAB
+            last_db_modification = self.db.last_modification_time()
+
+            if last_db_modification > self.last_db_modification:
+                QApplication.setOverrideCursor(QApplication.waitCursor)
+                log.debug("FAB has been modified. Re-reading...")
+                self.last_db_modification = last_db_modification
+
+                self.UpdateIndividualList()
+                self.UpdateGroupList()
+                self.UpdateSelectionEdit()
+                QApplication.restoreOverrideCursor()
+
 
     def UpdatePrinterStatus(self):
         QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -295,7 +352,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         if self.dev.device_state == DEVICE_STATE_NOT_FOUND:
             self.FailureUI(self.__tr("<b>Unable to communicate with device:</b><p>%1").arg(self.device_uri))
-            
+
         try:
             self.StateText.setText(self.dev.status_desc)
         except AttributeError:
@@ -410,7 +467,6 @@ class FaxSendJobForm(FaxSendJobForm_base):
     def sendLaterButton_clicked(self):
         print "FaxSendJobForm.sendLaterButton_clicked(): Not implemented yet"
 
-
     def individualSendListView_clicked(self,a0):
         self.UpdateSelectionEdit()
 
@@ -443,6 +499,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
     # ************************************** Send fax handling
     def sendNowButton_clicked(self):
+
         phone_num_list = []
 
         log.debug("Current printer=%s" % self.current_printer)
@@ -498,7 +555,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
         for f in self.file_list:
             log.debug(str(f))
 
-        self.event_handler = self.sendFaxEvent # Switch to send event handler
+        self.busy = True
 
         service.sendEvent(self.sock, EVENT_START_FAX_JOB, device_uri=self.device_uri)
 
@@ -508,6 +565,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
             self.FailureUI(self.__tr("<b>Send fax is active.</b><p>Please wait for operation to complete."))
             service.sendEvent(self.sock, EVENT_FAX_JOB_FAIL, device_uri=self.device_uri)
+            self.busy = False
             return
 
 
@@ -532,14 +590,13 @@ class FaxSendJobForm(FaxSendJobForm_base):
                 break
 
             if status == fax.STATUS_IDLE:
+                self.busy = False
                 self.send_fax_timer.stop()
 
                 if self.waitdlg is not None:
                     self.waitdlg.hide()
                     self.waitdlg.close()
                     self.waitdlg = None
-
-                self.event_handler = self.addFileFromJob # Reset handler
 
             elif status == fax.STATUS_PROCESSING_FILES:
                 self.waitdlg.setMessage(self.__tr("Processing page %1...").arg(page_num))
@@ -557,14 +614,13 @@ class FaxSendJobForm(FaxSendJobForm_base):
                 self.waitdlg.setMessage(self.__tr("Cleaning up..."))
 
             elif status in (fax.STATUS_ERROR, fax.STATUS_BUSY, fax.STATUS_COMPLETED):
+                self.busy = False
                 self.send_fax_timer.stop()
 
                 if self.waitdlg is not None:
                     self.waitdlg.hide()
                     self.waitdlg.close()
                     self.waitdlg = None
-
-                self.event_handler = self.addFileFromJob # Reset handler
 
                 if status  == fax.STATUS_ERROR:
                     self.FailureUI(self.__tr("<b>Fax send error.</b><p>"))
@@ -582,10 +638,10 @@ class FaxSendJobForm(FaxSendJobForm_base):
                     del self.file_list[:]
                     self.UpdateFileList()
                     self.CheckSendButtons()
-                    
+
                     self.addCoverpagePushButton.setEnabled(coverpages_enabled)
                     self.editCoverpagePushButton.setEnabled(False)
-                    
+
 
 
     # ************************************** File and event handling
@@ -687,42 +743,6 @@ class FaxSendJobForm(FaxSendJobForm_base):
                                                os.path.exists(self.filename) and 
                                                os.path.isfile(self.filename)))
 
-
-    def EventUI(self, event_code, event_type, error_string_short,
-                error_string_long, retry_timeout, job_id,
-                device_uri, printer_name, title, job_size):
-
-        log.debug("Event: device_uri=%s code=%d type=%s string=%s timeout=%d id=%d uri=%s printer=%s title=%s" %
-                 (device_uri, event_code, event_type,  
-                  error_string_short, retry_timeout, 
-                  job_id, device_uri, printer_name, title))
-
-        if event_code  == EVENT_FAX_RENDER_COMPLETE:
-
-            if device_uri == self.dev.device_uri:
-                log.debug("Render completed message received for %s." % device_uri)
-
-                if self.isMinimized():
-                    self.showNormal()
-
-                self.event_handler(event_code, title, self.username, job_id, job_size)
-
-        elif event_code == EVENT_FAX_RENDER_DISTANT_EARLY_WARNING:
-            if device_uri == self.dev.device_uri:
-                QApplication.setOverrideCursor(QApplication.waitCursor)
-                log.debug("Distant early warning received.")
-
-        elif event_code == EVENT_FAX_ADDRESS_BOOK_UPDATED:
-            log.debug("Address book updated event received.")
-            self.UpdateIndividualList()
-            self.UpdateGroupList()
-            self.UpdateSelectionEdit()
-
-        else: # Printer status...
-            if self.dev is not None and device_uri == self.dev.device_uri:
-                log.debug("Device status update event received for %s." % device_uri)
-                self.StateText.setText(error_string_short) 
-
     def allowableTypesPushButton_clicked(self):
         x = {}
         for a in self.allowable_mime_types:
@@ -732,87 +752,92 @@ class FaxSendJobForm(FaxSendJobForm_base):
         dlg = FaxAllowableTypesDlg(x, self)
         dlg.exec_loop()
 
-    # ************************************** Event handling
+
     # Event handler for adding files from a external print job (not during fax send thread)
     def addFileFromJob(self, event, title, username, job_id=0, job_size=0):
-        log.debug("Transfering job %d (%d bytes)" % (job_id, job_size))
+        QApplication.setOverrideCursor(QApplication.waitCursor)
+        self.busy = True
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            sock.connect((prop.hpssd_host, prop.hpssd_port))
-        except socket.error:
-            log.error("Unable to contact HPLIP I/O (hpssd).")
-            sys.exit(1)    
+            if self.waitdlg is None:
+                self.waitdlg = WaitForm(0, self.__tr("Receiving fax data..."), self.add_fax_canceled, self, modal=1)
+                self.waitdlg.show()
 
-        fax_dir = os.path.expanduser("~/hpfax")
+            log.debug("Transfering job %d (%d bytes)" % (job_id, job_size))
+            fax_dir = os.path.expanduser("~/hpfax")
 
-        if not os.path.exists(fax_dir):
-            os.mkdir(fax_dir)
+            if not os.path.exists(fax_dir):
+                os.mkdir(fax_dir)
 
-        fax_file = os.path.expanduser(os.path.join(fax_dir, "hpfax-%d.g3" % job_id))
-        fd = file(fax_file, 'w')
-        bytes_read = 0
-        header_read = False
-        total_pages = 0
+            fax_file = os.path.expanduser(os.path.join(fax_dir, "hpfax-%d.g3" % job_id))
+            fd = file(fax_file, 'w')
+            bytes_read = 0
+            header_read = False
+            total_pages = 0
 
-        if self.waitdlg is not None:
-            self.waitdlg.setMessage(self.__tr("Receiving fax data..."))
+            #if self.waitdlg is not None:
+            #    self.waitdlg.setMessage(self.__tr("Receiving fax data..."))
 
-        while True:
-            qApp.processEvents()
+            while True:
+                qApp.processEvents()
+                log.debug("Transfering fax data...")
 
-            fields, data, result_code = \
-                msg.xmitMessage(sock, "FaxGetData", None,
-                                     {"username": username,
-                                      "job-id": job_id,
-                                     })
+                fields, data, result_code = \
+                    msg.xmitMessage(self.sock, "FaxGetData", None,
+                                         {"username": username,
+                                          "job-id": job_id,
+                                         })
 
-            log.debug(repr(data)), len(data)
-            if len(data) and result_code == ERROR_SUCCESS:
-                fd.write(data)
-                bytes_read += len(data)
+                log.debug(repr(data)), len(data)
 
-                if not header_read and len(data) >= fax.FILE_HEADER_SIZE:
-                    mg, version, total_pages, hort_dpi, vert_dpi, page_size, \
-                        resolution, encoding, reserved1, reserved2 = \
-                        struct.unpack(">8sBIHHBBBII", data[:fax.FILE_HEADER_SIZE])
+                if data and result_code == ERROR_SUCCESS:
+                    fd.write(data)
+                    bytes_read += len(data)
 
-                    log.debug("Magic=%s Ver=%d Pages=%d hDPI=%d vDPI=%d Size=%d Res=%d Enc=%d" %
-                              (mg, version, total_pages, hort_dpi, vert_dpi, page_size, resolution, encoding))
+                    self.waitdlg.setMessage(self.__tr("Read %1 of fax data...").arg(utils.format_bytes(bytes_read)))
 
-                    header_read = True
+                    if not header_read and len(data) >= fax.FILE_HEADER_SIZE:
+                        mg, version, total_pages, hort_dpi, vert_dpi, page_size, \
+                            resolution, encoding, reserved1, reserved2 = \
+                            struct.unpack(">8sBIHHBBBII", data[:fax.FILE_HEADER_SIZE])
 
+                        log.debug("Magic=%s Ver=%d Pages=%d hDPI=%d vDPI=%d Size=%d Res=%d Enc=%d" %
+                                  (mg, version, total_pages, hort_dpi, vert_dpi, page_size, resolution, encoding))
+
+                        header_read = True
+
+                else:
+                    break # Done
+
+            fd.close()
+
+            if self.waitdlg is not None:
+                self.waitdlg.hide()
+                self.waitdlg.close()
+                self.waitdlg = None
+
+            log.debug("Transfered %d bytes" % bytes_read)
+
+            if total_pages > 0:
+                mime_type = job_types.get(job_id, "application/hplip-fax")
+                mime_type_desc = self.MIME_TYPES_DESC.get(mime_type, ('Unknown', 'n/a'))[0]
+                log.debug("%s (%s)" % (mime_type, mime_type_desc))
+                self.file_list.append((fax_file, mime_type, mime_type_desc, title, total_pages))
             else:
-                break
+                self.FailureUI("<b>Render Failure:</b><p>Rendered document contains no data.")
 
-        fd.close()
-        sock.close()
-        QApplication.restoreOverrideCursor()
+            self.UpdateFileList()
+            self.document_num += 1
+            self.fileEdit.setText("")
+            self.CheckSendButtons()
 
-        if self.waitdlg is not None:
-            self.waitdlg.hide()
-            self.waitdlg.close()
-            self.waitdlg = None
-
-        log.debug("Transfered %d bytes" % bytes_read)
-
-        #self.file_list.append((fax_file, "application/hplip-fax", "HP Fax", title, total_pages))
-        mime_type = job_types.get(job_id, "application/hplip-fax")
-        mime_type_desc = self.MIME_TYPES_DESC.get(mime_type, ('Unknown', 'n/a'))[0]
-        log.debug("%s (%s)" % (mime_type, mime_type_desc))
-        self.file_list.append((fax_file, mime_type, mime_type_desc, title, total_pages))
-
-        self.UpdateFileList()
-        self.document_num += 1
-        self.fileEdit.setText("")
-        self.CheckSendButtons()
+        finally:
+            self.busy = False
+            QApplication.restoreOverrideCursor()
 
 
-    # Event handler called during fax send thread
-    # NEW: Used only for rendering coverpages
-    def sendFaxEvent(self, event, title, username, job_id=0, job_size=0): # event handler during send
-        self.event_queue.put((event, title, username, job_id, job_size))
-        QApplication.restoreOverrideCursor()
+    def add_fax_canceled(self):
+        pass
 
     # **************************************
 
@@ -858,7 +883,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
                 self.addFile(path, title, mime_type, mime_type_desc, pages)
             else:
-
+                log.debug(repr(mime_type))
                 try:
                     mime_type_desc = self.MIME_TYPES_DESC[mime_type][0]
                 except KeyError:
@@ -878,7 +903,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
                                      "application/x-perl",
                                      "application/x-python",
                                      "application/x-shell",
-                                     "text/plain",]:
+                                     "text/plain",] and self.prettyprint:
 
                         cups.addOption('prettyprint')
 
@@ -903,7 +928,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
                         QApplication.setOverrideCursor(QApplication.waitCursor)
 
-                        self.waitdlg = WaitForm(0, self.__tr("Processing fax file..."), None, self, modal=1)
+                        self.waitdlg = WaitForm(0, self.__tr("Processing fax file..."), None, self, modal=1) # self.add_fax_canceled
                         self.waitdlg.show()
 
                     else:
@@ -1022,6 +1047,10 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         finally:
             self.dev.close()
+
+
+    def checkBoxPrettyPrinting_toggled(self,a0):
+        self.prettyprint = bool(a0)
 
 
     def SuccessUI(self):

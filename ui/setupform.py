@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ class PrinterNameValidator(QValidator):
         if not input:
             return QValidator.Acceptable, pos
 
-        elif input[pos-1] in ' #/':
+        elif input[pos-1] in ' #/%':
             return QValidator.Invalid, pos
 
         elif input != utils.printable(input): 
@@ -108,11 +108,12 @@ class PhoneNumValidator(QValidator):
 
 
 class SetupForm(SetupForm_base):
-    def __init__(self, bus, param, jd_port=1, parent=None, name=None, modal=0, fl=0):
+    def __init__(self, bus, param, jd_port=1, username='', parent=None, name=None, modal=0, fl=0):
         SetupForm_base.__init__(self, parent, name, modal, fl)
 
         self.start_page = self.ConnectionPage
         self.first_page = True
+        self.username = username
 
         if bus is None:
             self.bus = 'usb'
@@ -248,7 +249,7 @@ class SetupForm(SetupForm_base):
             log.debug("Restarting CUPS...")
             status, output = utils.run(restart_cups())
             log.debug("Restart CUPS returned: exit=%d output=%s" % (status, output))
-            
+
             self.setupPrinter()
 
             if self.setup_fax:
@@ -469,7 +470,7 @@ class SetupForm(SetupForm_base):
             self.FailureUI(self.__tr("<b>Device not found or invalid HPLIP device.</b><p>If you specified a USB ID, IP address, or other parameter, please re-check it and try again."))
             self.close()
             sys.exit()
-        
+
         log.debug("Searching for PPDs in: %s" % sys_cfg.dirs.ppd)
 
         if ppds is None or not ppds:
@@ -705,15 +706,15 @@ class SetupForm(SetupForm_base):
                                            QMessageBox.Cancel | QMessageBox.Escape,
                                            QMessageBox.NoButton) == QMessageBox.Cancel:
                         break
-                    
+
                 else:
                     try:
                         tries = 0
                         ok = True
-    
+
                         while True:
                             tries += 1
-    
+
                             try:
                                 if read:
                                     self.fax_number = d.getPhoneNum()
@@ -721,11 +722,11 @@ class SetupForm(SetupForm_base):
                                 else:
                                     d.setStationName(self.fax_name_company)
                                     d.setPhoneNum(self.fax_number)
-    
+
                             except Error:
                                 error_text = self.__tr("<b>Device I/O Error</b><p>Could not communicate with device. Device may be busy.")
                                 log.error(str(error_text))
-                                
+
                                 if QMessageBox.critical(self,
                                                        self.caption(),
                                                        error_text,
@@ -733,25 +734,25 @@ class SetupForm(SetupForm_base):
                                                        QMessageBox.Cancel | QMessageBox.Escape,
                                                        QMessageBox.NoButton) == QMessageBox.Cancel:
                                     break
-                                
-                                
+
+
                                 time.sleep(5)
                                 ok = False
-    
+
                                 if tries > 12:
                                     break
-    
+
                             else:
                                 ok = True
                                 break
-    
+
                     finally:
                         d.close()
-    
+
                     if ok and read:
                         self.faxNumberLineEdit.setText(self.fax_number)
                         self.faxNameCoLineEdit.setText(self.fax_name_company)
-                    
+
                     break
 
         finally:
@@ -841,6 +842,15 @@ class SetupForm(SetupForm_base):
 
         self.hpiod_sock.close()
         self.hpssd_sock.close()
+        
+        if self.username:
+            import pwd
+            user_path = pwd.getpwnam(self.username)[5]
+            user_config_file = os.path.join(user_path, '.hplip.conf')
+            
+            if os.path.exists(user_config_file):
+                cfg = Config(user_config_file)
+                cfg.last_used.device_uri = self.device_uri
 
         QWizard.accept(self)
 
@@ -852,7 +862,7 @@ class SetupForm(SetupForm_base):
         QWizard.reject(self)
 
     def FailureUI(self, error_text):
-        log.error(str(error_text))
+        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,

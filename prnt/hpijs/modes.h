@@ -1,7 +1,7 @@
 #ifdef APDK_EXTENDED_MEDIASIZE
-#define MAX_PRINTMODES 13
+#define MAX_PRINTMODES 14
 #else
-#define MAX_PRINTMODES 9
+#define MAX_PRINTMODES 10
 #endif
 
 #define GRAYMODE_INDEX 0

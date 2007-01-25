@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settingsdialog_base.ui'
 #
-# Created: Thu Jun 15 14:00:36 2006
+# Created: Mon Jan 8 14:13:19 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -73,8 +73,8 @@ class SettingsDialog_base(QDialog):
         self.AutoRefreshRate.setWrapping(1)
         self.AutoRefreshRate.setButtonSymbols(QSpinBox.PlusMinus)
         self.AutoRefreshRate.setMaxValue(60)
-        self.AutoRefreshRate.setMinValue(1)
-        self.AutoRefreshRate.setValue(1)
+        self.AutoRefreshRate.setMinValue(5)
+        self.AutoRefreshRate.setValue(6)
         layout7.addWidget(self.AutoRefreshRate)
 
         self.textLabel1_3 = QLabel(self.CleaningLevel,"textLabel1_3")
@@ -313,7 +313,7 @@ class SettingsDialog_base(QDialog):
         self.autoRefreshCheckBox.setText(self.__tr("Enable device auto refresh"))
         self.CleaningLevel.setTitle(self.__tr("Auto Interval"))
         self.textLabel1_4.setText(self.__tr("Refresh every:"))
-        self.textLabel1_3.setText(self.__tr("minutes"))
+        self.textLabel1_3.setText(self.__tr("seconds"))
         self.refreshScopeButtonGroup.setTitle(self.__tr("Device(s) to Refresh "))
         self.radioButton1.setText(self.__tr("Only currently selected device"))
         self.radioButton2.setText(self.__tr("All devices"))

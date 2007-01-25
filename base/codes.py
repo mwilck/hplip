@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -77,6 +77,8 @@ ERROR_FAX_FILE_NOT_FOUND = 49
 ERROR_FAX_INCOMPATIBLE_OPTIONS = 50
 ERROR_FAX_INVALID_FAX_FILE = 51
 ERROR_FAX_MUST_RUN_SENDFAX_FIRST = 52
+ERROR_FAX_PROCESSING = 53
+ERROR_FAX_READY = 54
 # --> add new codes here <--
 ERROR_UNABLE_TO_BIND_SOCKET = 95
 ERROR_UNABLE_TO_CONTACT_SERVICE = 96
@@ -560,6 +562,7 @@ TECH_TYPE_MONO_INK = 1
 TECH_TYPE_COLOR_INK = 2
 TECH_TYPE_MONO_LASER = 3
 TECH_TYPE_COLOR_LASER = 4
+TECH_TYPE_COLOR_EDGELINE = 5
 
 # support-type
 SUPPORT_TYPE_NONE = 0
@@ -642,6 +645,7 @@ MODEL_TYPE_COLOR_LASER_AIO = 3
 MODEL_TYPE_COLOR_INKJET_AIO = 4
 MODEL_TYPE_MONO_LASER = 5
 MODEL_TYPE_MONO_LASER_AIO = 6
+MODEL_TYPE_EDGELINE = 7
 
 # 'io-mode'
 IO_MODE_UNI = 0
@@ -653,4 +657,4 @@ IO_MODE_DOT4 = 3
 
 
 
-    
+

@@ -87,9 +87,9 @@ enum hpaioScanMode_e { SCAN_MODE_FIRST = 0,
 #define COMPRESSION_MMR   0x08
 #define COMPRESSION_JPEG  0x10
 
-#define ADF_MODE_AUTO   0x01
-#define ADF_MODE_FLATBED  0x02
-#define ADF_MODE_ADF    0x04
+#define ADF_MODE_AUTO   0x01     /* flatbed or ADF */
+#define ADF_MODE_FLATBED  0x02   /* flatbed only */
+#define ADF_MODE_ADF    0x04     /* ADF only */
 
 #define LENGTH_MEASUREMENT_UNKNOWN    0
 #define LENGTH_MEASUREMENT_UNLIMITED    1

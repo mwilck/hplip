@@ -25,7 +25,7 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 # ======================================================================
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -113,20 +113,20 @@ class dispatcher(QObject):
                 pass
         else:
             self.socket = None
-        
+
 
     def add_channel(self): 
         global channels
         channels[self._fileno] = self
-        
+
         self.sock_read_notifier = QSocketNotifier(self._fileno, QSocketNotifier.Read) 
         QObject.connect(self.sock_read_notifier, SIGNAL("activated(int)"), self.handle_read_event)
-        
+
         self.sock_read_notifier.setEnabled(True)
-        
+
         self.sock_write_notifier = QSocketNotifier(self._fileno, QSocketNotifier.Write) 
         QObject.connect(self.sock_write_notifier, SIGNAL("activated(int)"), self.handle_write_event)
-        
+
         self.sock_write_notifier.setEnabled(False)
 
     def del_channel(self): 
@@ -141,9 +141,9 @@ class dispatcher(QObject):
             del channels[self._fileno]
         except KeyError:
             pass 
-        
+
         self._fileno = 0
-        
+
 
     def create_socket(self, family, type):
         self.family_and_type = family, type
@@ -168,7 +168,7 @@ class dispatcher(QObject):
         except socket.error:
             pass
 
- 
+
     # ==================================================
     # socket object methods.
     # ==================================================
@@ -184,7 +184,7 @@ class dispatcher(QObject):
     def connect(self, address):
         self.connected = False
         err = self.socket.connect_ex(address)
-        
+
         if err in (EINPROGRESS, EALREADY, EWOULDBLOCK):
             r, w, e = select.select([], [self.socket.fileno()], [], 5.0)
             err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
@@ -284,7 +284,7 @@ class dispatcher(QObject):
 
     def handle_write(self):
         raise Error
-        
+
     def handle_connect(self):
         pass
 

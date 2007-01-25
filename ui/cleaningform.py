@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,22 +32,22 @@ class CleaningForm(CleaningForm_base):
 
         text = str(self.CleaningText.text())
         self.CleaningText.setText(text % str(cleaning_level + 1))
-        
+
         text = str(self.Continue.text())
         self.Continue.setText(text % str(cleaning_level + 1))
-        
+
         text = str(self.CleaningTitle.text())
         self.CleaningTitle.setText(text % str(cleaning_level))
 
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir, 'clean.png')))
-        
+
         self.check_timer = QTimer(self, "CheckTimer")
         self.connect(self.check_timer, SIGNAL('timeout()'), self.CheckTimerTimeout)
 
         self.check_timer.start(3000)
-        
+
     def CheckTimerTimeout(self):
         if self.dev.isIdleAndNoError():
             self.Continue.setEnabled(True)
             self.check_timer.stop()
-    
+

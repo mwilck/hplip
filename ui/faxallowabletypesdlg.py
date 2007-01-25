@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,10 +25,9 @@ from faxallowabletypesdlg_base import FaxAllowableTypesDlg_base
 class FaxAllowableTypesDlg(FaxAllowableTypesDlg_base):
     def __init__(self, allowables, parent=None, name=None, modal=0, fl=0):
         FaxAllowableTypesDlg_base.__init__(self,parent,name,modal,fl)
-        #self.allowables = allowables
-        
+
         for x in allowables:
             QListViewItem(self.allowableTypesListView, x, *allowables[x])
-        
+
     def __tr(self,s,c = None):
         return qApp.translate("FaxAllowableTypesDlg",s,c)

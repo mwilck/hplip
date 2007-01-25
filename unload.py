@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #
 # Author: Don Welch
 #
-
 
 __version__ = '2.2'
 __title__ = 'Photo Card Access Utility'
@@ -67,11 +66,11 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_STD_NOTES1, utils.USAGE_STD_NOTES2, 
          ("3. Use 'help' command at the pcard:> prompt for command help (Interactive mode (-i) only).", "", "note", True),
          ]
-         
+
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-unload', __version__)
     sys.exit(0)
 
@@ -514,7 +513,6 @@ class Console(cmd.Cmd):
 
         if len(matched_files) == 1:
             typ, subtyp = self.pc.classify_file(args).split('/')
-            #print "'%s' '%s'" % (typ, subtyp)
 
             if typ == 'image' and subtyp in ('jpeg', 'tiff'):
                 exif_info = self.pc.get_exif(args)
@@ -523,16 +521,12 @@ class Console(cmd.Cmd):
                 photo_name, photo_ext=os.path.splitext(args)
 
                 if 'JPEGThumbnail' in exif_info:
-                    #print "JPEG thumbnail found."
                     temp_file_fd, temp_file_name = utils.make_temp_file()
-                    #thumb_name = os.path.join( os.getcwd(), photo_name ) + '_thumb.jpg'
                     open(temp_file_name, 'wb').write(exif_info['JPEGThumbnail'])
                     os.system('display %s' % temp_file_name)
                     os.remove(temp_file_name)
 
                 elif 'TIFFThumbnail' in exif_info:
-                    #print "TIFF thumbnail found."
-                    #thumb_name = os.path.join( os.getcwd(), photo_name ) + '_thumb.tif'
                     temp_file_fd, temp_file_name = utils.make_temp_file()
                     open(temp_file_name, 'wb').write(exif_info['TIFFThumbnail'])
                     os.system('display %s' % temp_file_name)
@@ -596,7 +590,7 @@ class Console(cmd.Cmd):
     def do_info(self, args):
         """Synonym for the exif command."""
         self.do_exif(args)
-        
+
     def do_about(self, args):
         utils.log_title(__title__, __version__)
 
@@ -608,8 +602,8 @@ def status_callback(src, trg, size):
     else:
         print "\nCopied %s to %s (%s)..." % (src, trg, utils.format_bytes(size))
 
-    
-    
+
+
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hb:l:giuno:',
                                ['printer=', 'device=', 'help', 'help-rest', 'help-man',
@@ -632,17 +626,17 @@ if os.getenv("HPLIP_DEBUG"):
 for o, a in opts:
     if o in ('-h', '--help'):
         usage()
-        
+
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
 
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
-    
+
     elif o in ('-p', '--printer'):
         printer_name = a
 
@@ -658,10 +652,10 @@ for o, a in opts:
         log_level = a.lower().strip()
         if not log.set_level(log_level):
             usage()
-            
+
     elif o == '-g':
         log.set_level('debug')
-        
+
     elif o in ('-i', '--interactive'):
         if mode_specified:
             log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
@@ -669,23 +663,23 @@ for o, a in opts:
 
         mode = INTERACTIVE_MODE
         mode_specified = True
-        
+
     elif o in ('-u', '--gui'):
         if mode_specified:
             log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
             sys.exit(1)
-        
+
         mode = GUI_MODE
         mode_specified = True
-        
+
     elif o in ('-n', '--non-interactive'):
         if mode_specified:
             log.error("You may only specify a single mode as a parameter (-i, -n or -u).")
             sys.exit(1)
-        
+
         mode = NON_INTERACTIVE_MODE
         mode_specified = True
-        
+
     elif o in ('-o', '--output'):
         output_dir = a
 
@@ -705,20 +699,20 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
     if device_uri and printer_name:
         log.error("You may not specify both a printer (-p) and a device (-d).")
         usage()
-    
-        
+
+
     if printer_name:
         printer_list = cups.getPrinters()
         found = False
         for p in printer_list:
             if p.name == printer_name:
                 found = True
-    
+
         if not found:
             log.error("Unknown printer name: %s" % printer_name)
             sys.exit(1)
-    
-    
+
+
     if not device_uri and not printer_name:
         try:
             device_uri = device.getInteractiveDeviceURI(bus, 'pcard')
@@ -733,19 +727,21 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
     except Error, e:
         log.error("Unable to start photocard session: %s" % e.msg)
         sys.exit(1)
-    
+
     pc.set_callback(update_spinner)
-    
+
     if pc.device.device_uri is None and printer_name:
         log.error("Printer '%s' not found." % printer_name)
         sys.exit(1)
-    
+
     if pc.device.device_uri is None and device_uri:
         log.error("Malformed/invalid device-uri: %s" % device_uri)
         sys.exit(1)
-    
+        
+    user_cfg.last_used.device_uri = pc.device.device_uri
+
     pc.device.sendEvent(EVENT_START_PCARD_JOB)
-    
+
     try:
         pc.mount()
     except Error:
@@ -753,22 +749,22 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
         pc.umount()
         pc.device.sendEvent(EVENT_PCARD_UNABLE_TO_MOUNT, typ='error')
         sys.exit(1)
-    
+
     log.info(utils.bold("\nPhotocard on device %s mounted" % pc.device.device_uri))
     log.info(utils.bold("DO NOT REMOVE PHOTO CARD UNTIL YOU EXIT THIS PROGRAM"))
-    
+
     output_dir = os.path.realpath(os.path.normpath(os.path.expanduser(output_dir)))
-        
+
     try:
         os.chdir(output_dir)
     except OSError:
         print utils.bold("ERROR: Output directory %s not found." % output_dir)
         sys.exit(1)
-    
-    
-            
+
+
+
     if mode == INTERACTIVE_MODE: # INTERACTIVE_MODE
-        
+
         console = Console(pc)
         try:
             try:
@@ -779,9 +775,9 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
                 log.error("An error occured: %s" % e)
         finally:
             pc.umount()
-        
+
         pc.device.sendEvent(EVENT_END_PCARD_JOB)
-        
+
 
     else: # NON_INTERACTIVE_MODE
         print "Output directory is %s" % os.getcwd()
@@ -789,13 +785,13 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
             try:
                 unload_list = pc.get_unload_list()
                 print
-        
+
                 if len(unload_list) > 0:
-        
+
                     max_len = 0
                     for u in unload_list:
                         max_len = max(max_len, len(u[0]))
-        
+
                     formatter = utils.TextFormatter(
                             (
                                 {'width': max_len+2, 'margin' : 2},
@@ -803,31 +799,31 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
                                 {'width': 12, 'margin' : 2},
                             )
                         )
-        
+
                     print
                     print utils.bold(formatter.compose(("Name", "Size", "Type")))
-        
+
                     total = 0
                     for u in unload_list:
                          print formatter.compose(('%s' % u[0], utils.format_bytes(u[1]), '%s/%s' % (u[2], u[3])))
                          total += u[1]
-        
-        
+
+
                     print utils.bold("Found %d files to unload, %s\n" % (len(unload_list), utils.format_bytes(total, True)))
                     print utils.bold("Unloading files...\n")
                     total, delta, was_cancelled = pc.unload(unload_list, status_callback, None, True)
                     print utils.bold("\n%s unloaded in %d sec (%d KB/sec)" % (utils.format_bytes(total), delta, (total/1024)/delta))
-            
+
             except KeyboardInterrupt:
                 log.error("Aborted.")
                 pass
-                
+
         finally:
             pc.umount()
 
 
 else: # GUI_MODE
-    
+
     from qt import *
     from ui import unloadform
 
@@ -839,7 +835,7 @@ else: # GUI_MODE
     except Error:
         log.error("Unable to connect to HPLIP I/O. Please (re)start HPLIP and try again.")
         sys.exit(1)
-        
+
     a.setMainWidget(w)
     w.show()
 

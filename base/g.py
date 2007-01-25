@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ class ConfigSection(dict):
         dict.__setattr__(self, "config_obj", config_obj)
         dict.__setattr__(self, "filename", filename)
         dict.__init__(self, *args, **kwargs)
-        
+
     def __getattr__(self, attr):
         if attr in self.keys():
             return self.__getitem__(attr)
@@ -75,19 +75,19 @@ class ConfigSection(dict):
         self.__setitem__(option, val)
         if not self.config_obj.has_section(self.section_name):
             self.config_obj.add_section(self.section_name)
-            
+
         self.config_obj.set(self.section_name, option, val)
         f = file(self.filename, 'w')
         self.config_obj.write(f)
         f.close()
 
-        
+
 class Config(dict):
     def __init__(self, filename, error_if_not_found=False, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         dict.__setattr__(self, "config_obj", ConfigParser.ConfigParser())
         dict.__setattr__(self, "filename", filename)
-        
+
         try:
             pathmode = os.stat(filename)[stat.ST_MODE]
             if pathmode & 0022 != 0:
@@ -95,18 +95,18 @@ class Config(dict):
         except (IOError,OSError):
             if error_if_not_found:
                 log.warn("Config file %s not found or not readable." % filename)
-            
+
             return
-        
+
         log.debug("Reading config file %s" % filename)
-        
+
         f = file(filename, 'r')
         try:
             self.config_obj.readfp(f)
         except:
             log.error("There is an error in the config file: %s" % filename)
             sys.exit(1)
-            
+
         f.close()
 
         for s in self.config_obj.sections():
@@ -115,7 +115,7 @@ class Config(dict):
                 opts.append((o, self.config_obj.get(s, o)))
 
             self.__setitem__(s, ConfigSection(s, self.config_obj, filename, opts))
-        
+
     def __getattr__(self, sect):
         if sect not in self.keys():
             self.__setitem__(sect, ConfigSection(sect, self.config_obj, self.filename))
@@ -128,7 +128,7 @@ class Config(dict):
 # Config file: directories and ports
 prop.sys_config_file = '/etc/hp/hplip.conf'
 prop.user_config_file = os.path.expanduser('~/.hplip.conf')
-  
+
 sys_cfg = Config(prop.sys_config_file, True)
 user_cfg = Config(prop.user_config_file)
 
@@ -140,7 +140,7 @@ except locale.Error:
     # TODO: Is this the right thing to do?
     log.error("Unable to set locale.")
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
-    
+
 try:
     t, prop.encoding = locale.getdefaultlocale()
 except ValueError:
@@ -156,7 +156,7 @@ try:
     prop.hpssd_cfg_port = int(sys_cfg.hpssd.port)
 except ValueError:
     prop.hpssd_cfg_port = 0
-    
+
 prop.version = sys_cfg.hplip.version or 'x.x.x'
 prop.home_dir = sys_cfg.dirs.home or os.path.realpath(os.path.normpath(os.getcwd()))
 prop.run_dir = sys_cfg.dirs.run or '/var/run'
@@ -203,7 +203,7 @@ def update_spinner():
         sys.stdout.write("\b" + spinner[spinpos])
         spinpos=(spinpos + 1) % 8
         sys.stdout.flush()
-        
+
 def cleanup_spinner():
     if log.get_level() != log.LOG_LEVEL_DEBUG and sys.stdout.isatty():
         sys.stdout.write("\b \b")
@@ -275,7 +275,7 @@ try:
 except NameError:
     True = (1==1)
     False = not True
-    
+
 
 
 

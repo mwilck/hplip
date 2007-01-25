@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,18 +29,18 @@ class SetupManualFind(SetupManualFind_base):
         SetupManualFind_base.__init__(self, parent, name, modal, fl)
         self.bus = bus
         self.param = ''
-        
+
         if self.bus == 'net':
             self.findHeadingText.setText(self.__tr("""Please enter the printer's network hostname or IP address."""))
             self.hintTextLabel.setText(self.__tr("""<i>(IPv4 address "a.b.c.d" or "hostname".)</i>"""))
             self.findTextLabel.setText(self.__tr("""Hostname or IP Address:"""))
-        
+
         elif self.bus == 'usb':
             self.findHeadingText.setText(self.__tr("""Please enter the USB ID for the printer."""))
             self.hintTextLabel.setText(self.__tr("""<i>("xxx:yyy" where xxx is the USB bus ID and yyy is the USB device ID. The ':' and all leading zeroes must be present. Use 'lsusb' to determine this information.)</i>"""))
             self.findTextLabel.setText(self.__tr("""USB ID:"""))
             self.findLineEdit.setInputMask("000:000;0")
-            
+
         elif self.bus == 'par':
             self.findHeadingText.setText(self.__tr("""Please enter the filesystem device node for the printer."""))
             self.hintTextLabel.setText(self.__tr(""" <i>("/dev/parportX", X=0,1,2,...)</i>"""))
@@ -48,11 +48,10 @@ class SetupManualFind(SetupManualFind_base):
 
     def findLineEdit_textChanged(self,a0):
         self.param = str(a0)
-        
+
         if self.bus == 'usb':
             bus, dev = self.param.split(':')
             self.param = ''.join(['0'*(3-len(bus)), bus, ':', '0'*(3-len(dev)), dev])
-    
-    
+
     def __tr(self,s,c = None):
         return qApp.translate("SetupManualFind_base",s,c)

@@ -14,12 +14,15 @@ unpack_hplip() {
     TD=$(mktemp -d /tmp/hplip-XXXXXX)
     CLEANUP='rm -rf "$TD";'"$CLEANUP"
     tar xz -C "$TD" -f "/tmp/hplip-$ver.tar.gz"
-    rsync -ai --delete --exclude=.git\* --exclude=git-helpers "$TD/hplip-$ver/" "$TARGET"
+    rsync -ai --delete --exclude=.git\* --exclude=git-helpers \
+	  "$TD/hplip-$ver/" "$TARGET" 2>&1 | tee "$TD/rsync.txt"
     find . -name '*.gz' | xargs gzip -dvf 2>&1 | tee "$TD/uncompressed.txt"
     sed -i 's/\.gz:.*//' "$TD/uncompressed.txt"
     cat git-helpers/uncompressed.txt "$TD/uncompressed.txt" | sort -u >"$TD/new.txt"
     cp "$TD/new.txt" git-helpers/uncompressed.txt
     git add .
+    echo "entering shell"
+    bash
     git commit -m "hplip $ver"
     git tag "$ver"
 }

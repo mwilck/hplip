@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ for o, a in opts:
 
     elif o in ('-a', '--auto'):
         auto = True
-        
+
     elif o in ('-w', '--browser', '--web'):
         mode = BROWSER_MODE
 
@@ -127,13 +127,13 @@ if mode == BROWSER_MODE:
     from installer import web_install
     log.debug("Starting web browser installer...")
     web_install.start()
-    
+
 elif mode == INTERACTIVE_MODE:
     from installer import text_install
     log.debug("Starting text installer...")
     text_install.start(auto)
-    
+
 else:
     log.error("Invalid mode. Please use '-i' or '-w' to select the mode.")
     sys.exit(1)
-    
+

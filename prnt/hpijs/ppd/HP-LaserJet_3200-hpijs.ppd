@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(LaserJet 3200)"
+*Product:	"(HP LaserJet 3200)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 3200;CMD:PJL,MLC,PCL,PCLXL;DES:Hewlett-Packard LaserJet 3200;"
 *DefaultResolution: 600dpi
 
 

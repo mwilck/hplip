@@ -722,6 +722,44 @@
                                 </spacer>
                             </grid>
                         </widget>
+                        <widget class="QWidget">
+                            <property name="name">
+                                <cstring>TabPage</cstring>
+                            </property>
+                            <attribute name="title">
+                                <string>Options</string>
+                            </attribute>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QCheckBox" row="0" column="0">
+                                    <property name="name">
+                                        <cstring>checkBoxPrettyPrinting</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Pretty printing of plain text files</string>
+                                    </property>
+                                </widget>
+                                <spacer row="1" column="0">
+                                    <property name="name">
+                                        <cstring>spacer11</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Vertical</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>20</width>
+                                            <height>301</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </grid>
+                        </widget>
                     </widget>
                 </grid>
             </widget>
@@ -1021,7 +1059,28 @@
         <receiver>PrinterForm_base</receiver>
         <slot>refreshToolButton_clicked()</slot>
     </connection>
+    <connection>
+        <sender>checkBoxPrettyPrinting</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>PrinterForm_base</receiver>
+        <slot>checkBoxPrettyPrinting_toggled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>pageRangeEdit</sender>
+        <signal>lostFocus()</signal>
+        <receiver>PrinterForm_base</receiver>
+        <slot>pageRangeEdit_lostFocus()</slot>
+    </connection>
+    <connection>
+        <sender>pageRangeEdit</sender>
+        <signal>textChanged(const QString&amp;)</signal>
+        <receiver>PrinterForm_base</receiver>
+        <slot>pageRangeEdit_textChanged(const QString&amp;)</slot>
+    </connection>
 </connections>
+<includes>
+    <include location="local" impldecl="in implementation">printerform_base.ui.h</include>
+</includes>
 <slots>
     <slot>addFileButton_clicked()</slot>
     <slot>delFileButton_clicked()</slot>
@@ -1032,6 +1091,9 @@
     <slot>duplexButtonGroup_clicked( int )</slot>
     <slot>orientationButtonGroup_clicked( int )</slot>
     <slot>refreshToolButton_clicked()</slot>
+    <slot>checkBoxPrettyPrinting_toggled( bool )</slot>
+    <slot>pageRangeEdit_lostFocus()</slot>
+    <slot>pageRangeEdit_textChanged( const QString &amp; )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

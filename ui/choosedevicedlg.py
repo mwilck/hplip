@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ class ChooseDeviceDlg(QDialog):
             self.setName("ChooseDeviceDlg")
 
         self.device_uri = ''
-            
+
         ChooseDeviceDlg_Layout = QGridLayout(self,1,1,6,6,"ChooseDeviceDlg_Layout")
 
         self.OKButton = QPushButton(self,"OKButton")
@@ -52,18 +52,28 @@ class ChooseDeviceDlg(QDialog):
         self.DevicesButtonGroup.layout().setMargin(6)
         DevicesButtonGroupLayout = QGridLayout(self.DevicesButtonGroup.layout())
         DevicesButtonGroupLayout.setAlignment(Qt.AlignTop)
-            
+
         self.radio_buttons = {}
+        
+        last_used_device_uri = user_cfg.last_used.device_uri
+        last_used_index = None
 
         for y in range(len(devices)):
-            if y == 0:
-                self.device_uri = devices[y][0]
             self.radio_buttons[y] = QRadioButton(self.DevicesButtonGroup,"radioButton%d" % y)
             self.radio_buttons[y].setText(devices[y][0])
+            
+            if devices[y][0] == last_used_device_uri:
+                last_used_index = y
+                self.device_uri = devices[y][0]
+            
             DevicesButtonGroupLayout.addWidget(self.radio_buttons[y], y, 0)
 
-        self.radio_buttons[0].setChecked(1)
-        
+        if last_used_index is not None:
+            self.radio_buttons[last_used_index].setChecked(1)
+        else:
+            self.radio_buttons[0].setChecked(1)
+            self.device_uri = devices[0][0]
+            
         ChooseDeviceDlg_Layout.addMultiCellWidget(self.DevicesButtonGroup,0,0,0,2)
 
         self.languageChange()
@@ -87,7 +97,6 @@ class ChooseDeviceDlg(QDialog):
 
     def DevicesButtonGroup_clicked(self,a0):
         self.device_uri = str(self.radio_buttons[a0].text())
-        #print self.device_uri
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)

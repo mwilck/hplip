@@ -868,6 +868,44 @@
                     </widget>
                 </grid>
             </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Options</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QCheckBox" row="0" column="0">
+                        <property name="name">
+                            <cstring>checkBoxPrettyPrinting</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Pretty printing of plain text files</string>
+                        </property>
+                    </widget>
+                    <spacer row="1" column="0">
+                        <property name="name">
+                            <cstring>spacer18</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>401</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </grid>
+            </widget>
         </widget>
         <spacer row="1" column="2">
             <property name="name">
@@ -999,6 +1037,12 @@
         <receiver>FaxSendJobForm_base</receiver>
         <slot>allowableTypesPushButton_clicked()</slot>
     </connection>
+    <connection>
+        <sender>checkBoxPrettyPrinting</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>FaxSendJobForm_base</receiver>
+        <slot>checkBoxPrettyPrinting_toggled(bool)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>fileListView</tabstop>
@@ -1040,6 +1084,7 @@
     <slot>editCoverpagePushButton_clicked()</slot>
     <slot>settingsPushButton_clicked()</slot>
     <slot>allowableTypesPushButton_clicked()</slot>
+    <slot>checkBoxPrettyPrinting_toggled( bool )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

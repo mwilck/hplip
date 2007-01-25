@@ -269,7 +269,7 @@ static int DelList()
 /* Parse *.inc file. */
 static int ParseInc(char *incFile)
 {
-   FILE *fp;
+   FILE *fp=NULL;
    struct list_head *p;
    LabelRecord *pl;
    char rcbuf[255];
@@ -390,6 +390,8 @@ int hplip_GetModelAttributes(char *uri, char *attr, int attrSize)
 
    if (!found)
    {
+      bug("no %s attributes found in %s: %s %d\n", model, sz, __FILE__, __LINE__);  
+
       DelList();   /* Unregister all labels. */
 
       /* Search /data/models/unreleased/unreleased.dat file for specified model. */
@@ -399,7 +401,7 @@ int hplip_GetModelAttributes(char *uri, char *attr, int attrSize)
 
    if (!found)
    {  
-      bug("no %s attributes found in models.dat: %s %d\n", model, __FILE__, __LINE__);  
+      bug("no %s attributes found in %s: %s %d\n", model, sz, __FILE__, __LINE__);  
       goto bugout;
    }  
 

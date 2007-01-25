@@ -85,7 +85,7 @@ class AboutDlg_base(QDialog):
 "David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, \n"
 "Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh, Till Kamppeter, John Hosszu"))
         self.textLabel3.setText(self.__tr("<b>License and Copyright:</b>\n"
-"(c) Copyright 2006 Hewlett-Packard Development Company, L.P. This software is licensed under the GNU General Public License (GPL), BSD, and MIT licenses. See the software sources for details."))
+"(c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P. This software is licensed under the GNU General Public License (GPL), BSD, and MIT licenses. See the software sources for details."))
         self.textLabel4.setText(self.__tr("<b>Software Version:</b>"))
         self.VersionText.setText(self.__tr("0.0.0"))
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class ColorAdjForm(ColorAdjForm_base):
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir,  'color-adj.png')))
         self.LineLabel.setText("""<b><font size="+1">%s</font></b>""" % line)
         self.value = 11
-        
+
     def buttonGroup_clicked(self,a0):
         self.value = a0
- 
+

@@ -27,7 +27,7 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 # ======================================================================
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,8 +45,6 @@
 #
 # Modified by: Don Welch
 #
-
-
 
 """
 Basic infrastructure for asynchronous socket service clients and servers.
@@ -105,7 +103,7 @@ def loop(timeout=1.0, sleep_time=0.1):
                 if err[0] != EINTR:
                     raise Error(ERROR_INTERNAL)
                 r = []; w = []; e = []
-        
+
         for fd in r:
             try:
                 obj = socket_map[fd]
@@ -131,7 +129,7 @@ def loop(timeout=1.0, sleep_time=0.1):
                 raise ExitNow
             except Error, e:
                 obj.handle_error(e)
-                
+
             time.sleep(sleep_time)
 
 
@@ -324,7 +322,7 @@ class dispatcher:
 
     def handle_write(self):
         raise Error
-        
+
     def handle_connect(self):
         raise Error
 
@@ -334,128 +332,6 @@ class dispatcher:
     def handle_close(self):
         self.close()
 
-        
-##class loopback_channel( dispatcher ):
-##
-##    def __init__( self ):
-##        self.address = ( prop.server_host, prop.loopback_port )
-##        print self.address
-##        a = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-##        w = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-##
-##        a.bind( self.address )
-##        a.listen( 1 )
-##        w.setblocking( 0 )
-##        try:
-##            w.connect( self.address )
-##        except:
-##            pass
-##        r, addr = a.accept()
-##        a.close()
-##        w.setblocking( 1 )
-##        self.trigger = w
-##
-##        dispatcher.__init__( self, r )
-##        self.lock = thread.allocate_lock()
-##        self.thunks = []
-##        self._trigger_connected = 0
-##
-##
-##    def __str__( self ):
-##        return '<loopback_channel %d>' % self._fileno
-##
-##    def readable( self ):
-##        return True
-##
-##    def writable( self ):
-##        return False
-##
-##    def handle_connect( self ):
-##        pass
-##
-##    def pull_trigger(self, thunk=None):
-##        if thunk:
-##            try:
-##                self.lock.acquire()
-##                self.thunks.append( thunk )
-##            finally:
-##                self.lock.release()
-##        self.trigger.send( '.' )
-##
-##    def handle_read( self ):
-##        self.recv( 1 )
-##        try:
-##            self.lock.acquire()
-##            for thunk in self.thunks:
-##                try:
-##                    thunk()
-##                except Exception, e:
-##                    log.fatal( e )
-##            self.thunks = []
-##        finally:
-##            self.lock.release()
-
-
-class file_wrapper:
-    def __init__(self, fd):
-        self.fd = fd
-
-    def recv(self, *args):
-        return os.read(self.fd, *args)
-
-    def send(self, *args):
-        return os.write(self.fd, *args)
-
-    read = recv
-    write = send
-
-    def close(self):
-        os.close(self.fd)
-
-    def fileno(self):
-        return self.fd
-
-
-class file_dispatcher(dispatcher):
-
-    def __init__(self, fd):
-        dispatcher.__init__(self, None)
-        self.connected = True
-        self.set_file(fd)
-        flags = fcntl.fcntl(fd, fcntl.F_GETFL, 0)
-        flags = flags | os.O_NONBLOCK
-        fcntl.fcntl(fd, fcntl.F_SETFL, flags)
-
-    def set_file(self, fd):
-        self._fileno = fd
-        self.socket = file_wrapper(fd)
-        self.add_channel()    
-
-
-class trigger(file_dispatcher):
-        def __init__(self):
-            r, w = os.pipe()
-            self.trigger = w
-            file_dispatcher.__init__(self, r)
-            self.send_events = False
-
-        def readable(self):
-            return 1
-
-        def writable(self):
-            return 0
-
-        def handle_connect(self):
-            pass
-
-        def pull_trigger(self):
-            os.write(self.trigger, '.')
-
-        def handle_read (self):
-            self.recv(8192)
-
-            
-            
 def close_all(): 
     global channels
     for x in channels.values():

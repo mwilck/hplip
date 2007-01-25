@@ -45,14 +45,16 @@ DIST_COMMON = $(am__configure_deps) $(am__dist_www0_DATA_DIST) \
 	$(am__dist_www22_DATA_DIST) $(am__dist_www23_DATA_DIST) \
 	$(am__dist_www241_DATA_DIST) $(am__dist_www242_DATA_DIST) \
 	$(am__dist_www243_DATA_DIST) $(am__dist_www24_DATA_DIST) \
-	$(am__dist_www2_DATA_DIST) $(am__dist_www3_DATA_DIST) \
-	$(am__dist_www4_DATA_DIST) $(am__dist_www5_DATA_DIST) \
-	$(am__dist_www61_DATA_DIST) $(am__dist_www6_DATA_DIST) \
-	$(am__dist_www7_DATA_DIST) $(srcdir)/../../config.guess \
-	$(srcdir)/../../config.sub $(srcdir)/../../depcomp \
-	$(srcdir)/../../install-sh $(srcdir)/../../ltmain.sh \
-	$(srcdir)/../../missing $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/configure COPYING
+	$(am__dist_www251_DATA_DIST) $(am__dist_www252_DATA_DIST) \
+	$(am__dist_www261_DATA_DIST) $(am__dist_www2_DATA_DIST) \
+	$(am__dist_www3_DATA_DIST) $(am__dist_www4_DATA_DIST) \
+	$(am__dist_www5_DATA_DIST) $(am__dist_www61_DATA_DIST) \
+	$(am__dist_www6_DATA_DIST) $(am__dist_www7_DATA_DIST) \
+	$(srcdir)/../../config.guess $(srcdir)/../../config.sub \
+	$(srcdir)/../../depcomp $(srcdir)/../../install-sh \
+	$(srcdir)/../../ltmain.sh $(srcdir)/../../missing \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(top_srcdir)/configure COPYING
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
@@ -68,10 +70,11 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" \
 	"$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" \
 	"$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" \
-	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
-	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
-	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
-	"$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" \
+	"$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" \
+	"$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" \
+	"$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" \
+	"$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am__objects_1 = models.$(OBJEXT) breaks_open.$(OBJEXT) \
@@ -136,7 +139,8 @@ am__dist_www0_DATA_DIST = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html \
 	$(wwwsrc)/legal.html $(wwwsrc)/license.html \
 	$(wwwsrc)/mailing_lists.html $(wwwsrc)/release_notes.html \
 	$(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html \
-	$(wwwsrc)/system_requirements.html
+	$(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
+	$(wwwsrc)/other_support.html $(wwwsrc)/downloads.html
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -162,6 +166,12 @@ am__dist_www242_DATA_DIST = $(wwwsrc)/install/step4/setup/*
 dist_www242DATA_INSTALL = $(INSTALL_DATA)
 am__dist_www243_DATA_DIST = $(wwwsrc)/install/step4/suse/*
 dist_www243DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www251_DATA_DIST = $(wwwsrc)/install/manual/*
+dist_www251DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www252_DATA_DIST = $(wwwsrc)/install/manual/distros/*
+dist_www252DATA_INSTALL = $(INSTALL_DATA)
+am__dist_www261_DATA_DIST = $(wwwsrc)/install/install/*
+dist_www261DATA_INSTALL = $(INSTALL_DATA)
 am__dist_www3_DATA_DIST = $(wwwsrc)/styles/*
 dist_www3DATA_INSTALL = $(INSTALL_DATA)
 am__dist_www4_DATA_DIST = $(wwwsrc)/images/*
@@ -178,7 +188,8 @@ docDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(dist_www0_DATA) $(dist_www1_DATA) $(dist_www2_DATA) \
 	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
 	$(dist_www24_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
-	$(dist_www243_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
+	$(dist_www243_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
+	$(dist_www261_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
 	$(dist_www5_DATA) $(dist_www6_DATA) $(dist_www61_DATA) \
 	$(dist_www7_DATA) $(doc_DATA)
 ETAGS = etags
@@ -303,7 +314,7 @@ docdir = $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL = APDK_2006_11_20
+APDKLABEL = APDK_2007_01_11
 APDKCOMMON = slimhost/source/common
 APDKOPEN = slimhost/source/open
 APDKDEBUG = slimhost/source/debug
@@ -364,7 +375,8 @@ wwwsrc = ../../doc
 # HPLIP and HPIJS documention are the same, only install one copy if HPLIP build.
 @HPLIP_BUILD_FALSE@www0dir = $(docdir)
 @HPLIP_BUILD_FALSE@dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
-@HPLIP_BUILD_FALSE@    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+@HPLIP_BUILD_FALSE@   $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
+@HPLIP_BUILD_FALSE@   $(wwwsrc)/other_support.html $(wwwsrc)/downloads.html
 
 @HPLIP_BUILD_FALSE@www1dir = $(docdir)/howtos
 @HPLIP_BUILD_FALSE@dist_www1_DATA = $(wwwsrc)/howtos/*
@@ -384,6 +396,12 @@ wwwsrc = ../../doc
 @HPLIP_BUILD_FALSE@dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
 @HPLIP_BUILD_FALSE@www243dir = $(docdir)/install/step4/suse
 @HPLIP_BUILD_FALSE@dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+@HPLIP_BUILD_FALSE@www251dir = $(docdir)/install/manual
+@HPLIP_BUILD_FALSE@dist_www251_DATA = $(wwwsrc)/install/manual/*
+@HPLIP_BUILD_FALSE@www252dir = $(docdir)/install/manual/distros
+@HPLIP_BUILD_FALSE@dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
+@HPLIP_BUILD_FALSE@www261dir = $(docdir)/install/install
+@HPLIP_BUILD_FALSE@dist_www261_DATA = $(wwwsrc)/install/install/*
 @HPLIP_BUILD_FALSE@www3dir = $(docdir)/styles
 @HPLIP_BUILD_FALSE@dist_www3_DATA = $(wwwsrc)/styles/*
 @HPLIP_BUILD_FALSE@www4dir = $(docdir)/images
@@ -797,6 +815,57 @@ uninstall-dist_www243DATA:
 	  echo " rm -f '$(DESTDIR)$(www243dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(www243dir)/$$f"; \
 	done
+install-dist_www251DATA: $(dist_www251_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www251dir)" || $(mkdir_p) "$(DESTDIR)$(www251dir)"
+	@list='$(dist_www251_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www251DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www251dir)/$$f'"; \
+	  $(dist_www251DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www251dir)/$$f"; \
+	done
+
+uninstall-dist_www251DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www251_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www251dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www251dir)/$$f"; \
+	done
+install-dist_www252DATA: $(dist_www252_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www252dir)" || $(mkdir_p) "$(DESTDIR)$(www252dir)"
+	@list='$(dist_www252_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www252DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www252dir)/$$f'"; \
+	  $(dist_www252DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www252dir)/$$f"; \
+	done
+
+uninstall-dist_www252DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www252_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www252dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www252dir)/$$f"; \
+	done
+install-dist_www261DATA: $(dist_www261_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www261dir)" || $(mkdir_p) "$(DESTDIR)$(www261dir)"
+	@list='$(dist_www261_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www261DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www261dir)/$$f'"; \
+	  $(dist_www261DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www261dir)/$$f"; \
+	done
+
+uninstall-dist_www261DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www261_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www261dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www261dir)/$$f"; \
+	done
 install-dist_www3DATA: $(dist_www3_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(www3dir)" || $(mkdir_p) "$(DESTDIR)$(www3dir)"
@@ -968,7 +1037,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/../..
+	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/install $(distdir)/$(wwwsrc)/install/manual $(distdir)/$(wwwsrc)/install/manual/distros $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/../..
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -1096,7 +1165,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -1149,10 +1218,12 @@ install-data-am: install-dist_www0DATA install-dist_www1DATA \
 	install-dist_www21DATA install-dist_www22DATA \
 	install-dist_www23DATA install-dist_www241DATA \
 	install-dist_www242DATA install-dist_www243DATA \
-	install-dist_www24DATA install-dist_www2DATA \
-	install-dist_www3DATA install-dist_www4DATA \
-	install-dist_www5DATA install-dist_www61DATA \
-	install-dist_www6DATA install-dist_www7DATA install-docDATA
+	install-dist_www24DATA install-dist_www251DATA \
+	install-dist_www252DATA install-dist_www261DATA \
+	install-dist_www2DATA install-dist_www3DATA \
+	install-dist_www4DATA install-dist_www5DATA \
+	install-dist_www61DATA install-dist_www6DATA \
+	install-dist_www7DATA install-docDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -1189,11 +1260,12 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	uninstall-dist_www21DATA uninstall-dist_www22DATA \
 	uninstall-dist_www23DATA uninstall-dist_www241DATA \
 	uninstall-dist_www242DATA uninstall-dist_www243DATA \
-	uninstall-dist_www24DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-docDATA uninstall-info-am
+	uninstall-dist_www24DATA uninstall-dist_www251DATA \
+	uninstall-dist_www252DATA uninstall-dist_www261DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-info-am
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
@@ -1210,25 +1282,28 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	install-dist_www22DATA install-dist_www23DATA \
 	install-dist_www241DATA install-dist_www242DATA \
 	install-dist_www243DATA install-dist_www24DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-docDATA install-exec \
-	install-exec-am install-info install-info-am install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-binSCRIPTS \
+	install-dist_www251DATA install-dist_www252DATA \
+	install-dist_www261DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA install-docDATA \
+	install-exec install-exec-am install-info install-info-am \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	uninstall-dist_www0DATA uninstall-dist_www1DATA \
 	uninstall-dist_www21DATA uninstall-dist_www22DATA \
 	uninstall-dist_www23DATA uninstall-dist_www241DATA \
 	uninstall-dist_www242DATA uninstall-dist_www243DATA \
-	uninstall-dist_www24DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-docDATA uninstall-hook uninstall-info-am
+	uninstall-dist_www24DATA uninstall-dist_www251DATA \
+	uninstall-dist_www252DATA uninstall-dist_www261DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-hook \
+	uninstall-info-am
 
 
 install-data-hook: $(foomatichook) $(cupshook)

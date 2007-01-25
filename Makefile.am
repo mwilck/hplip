@@ -14,22 +14,11 @@ docdir = $(datadir)/doc/$(distdir)
 doc_DATA = COPYING scan/sane/hpaio.desc
 
 wwwsrc = doc
+
 www0dir = $(docdir)
-
-dist_www0_DATA = $(wwwsrc)/contacts.html \
-                 $(wwwsrc)/faqs.html \
-                 $(wwwsrc)/features.html \
-                 $(wwwsrc)/index.html \
-                 $(wwwsrc)/legal.html \
-                 $(wwwsrc)/license.html \
-                 $(wwwsrc)/mailing_lists.html \
-                 $(wwwsrc)/release_notes.html \
-                 $(wwwsrc)/screenshots.html \
-                 $(wwwsrc)/support_statement.html \
-                 $(wwwsrc)/system_requirements.html \
-                 $(wwwsrc)/about.html \
-                 $(wwwsrc)/other_support.html
-
+dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
+   $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
+   $(wwwsrc)/other_support.html $(wwwsrc)/downloads.html
 www1dir = $(docdir)/howtos
 dist_www1_DATA = $(wwwsrc)/howtos/*
 www2dir = $(docdir)/install
@@ -52,6 +41,8 @@ www251dir = $(docdir)/install/manual
 dist_www251_DATA = $(wwwsrc)/install/manual/*
 www252dir = $(docdir)/install/manual/distros
 dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
+www261dir = $(docdir)/install/install
+dist_www261_DATA = $(wwwsrc)/install/install/*
 www3dir = $(docdir)/styles
 dist_www3_DATA = $(wwwsrc)/styles/*
 www4dir = $(docdir)/images
@@ -185,7 +176,8 @@ libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c 
 libsane_hpaio_la_LDFLAGS = -version-info $(MAJORVER):$(MINORVER):$(AGEVER) 
 # The following is a interlibrary dependency that must be compiled first.
 libsane_hpaio_la_LIBADD = libhpip.la libhplip-api.la
-libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+#libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DWITH_LEAN
 
 endif
 

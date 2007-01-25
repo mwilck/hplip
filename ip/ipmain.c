@@ -44,33 +44,40 @@
  *
 \*****************************************************************************/
 
-
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>    /* for memcpy, memset, etc. */
+#include <unistd.h>
 #include "hpip.h"
 #include "ipdefs.h"
-#include "string.h"    /* for memcpy, memset, etc. */
 
-#if 0
+//#define HPIP_DEBUG
+
+#ifdef HPIP_DEBUG
     #include <stdio.h>
     #include <assert.h>
 
     #define _T(msg) msg
 
-    #define PRINT0(ctl_msg, param1, param2) \
-        fprintf(stdout, ctl_msg, param1, param2)
+    #define PRINT0(args...) fprintf(stderr, args) 
 
     #if 0
-        #define PRINT1(ctl_msg, param1, param2) \
-            fprintf(stdout, ctl_msg, param1, param2)
+        #define PRINT1(args...) fprintf(stderr, args)
     #else
-        #define PRINT1(ctl_msg, param1, param2)
+        #define PRINT1(args...)
     #endif
 
     #undef INSURE
     #define INSURE(boolexp) \
         do { if (0) goto fatal_error; assert(boolexp); } while(0)
+
+    int infd;
+    int outfd;
+
 #else
-    #define PRINT0(ctl_msg, param1, param2)
-    #define PRINT1(ctl_msg, param1, param2)
+    #define PRINT0(args...)
+    #define PRINT1(args...)
 #endif
 
 
@@ -261,7 +268,7 @@ void fatalBreakPoint (void)
 #if defined _DEBUG
     __asm int 3;
 #endif
-   PRINT0 (_T("\nhit fatalBreakPoint!\n"), 0, 0);
+   PRINT0 (_T("\nhit fatalBreakPoint!\n"));
 }
 
 
@@ -274,7 +281,7 @@ void fatalBreakPoint (void)
 
 static void deleteMidBufs (PINST g)
 {
-    PRINT0 (_T("deleteMidBufs\n"), 0, 0);
+    PRINT0 (_T("deleteMidBufs\n"));
 
     if (g->pbMidInBuf != NULL)
         IP_MEM_FREE (g->pbMidInBuf);
@@ -305,8 +312,53 @@ EXPORT(WORD) ipOpen (
     PIP_XFORM_SPEC src;
     PXFORM_INFO     dest;
 
-    PRINT0 (_T("ipOpen: nXforms=%d\n"), nXforms, 0);
+#ifdef HPIP_DEBUG
+    char *ipIn = "/tmp/ipIn.dib";
+#endif
+
+    PRINT0 (_T("ipOpen: nXforms=%d\n"), nXforms);
     INSURE (nXforms>0 && lpXforms!=NULL && nClientData>=0 && phJob!=NULL);
+
+#ifdef HPIP_DEBUG
+    for (i=0; i<nXforms; i++)
+    {
+       switch (lpXforms[i].eXform)
+       {
+          case X_FAX_DECODE:
+            PRINT0("Fax_format=%d\n", lpXforms[i].aXformInfo[IP_FAX_FORMAT].dword);
+            ipIn = "/tmp/ipIn.pbm";
+            break;
+          case X_JPG_DECODE:
+            PRINT0("JPG_decode=%d\n", lpXforms[i].aXformInfo[IP_JPG_DECODE_FROM_DENALI].dword);
+            ipIn = "/tmp/ipIn.jpg";
+            break;
+          case X_CNV_COLOR_SPACE:
+            PRINT0("Color_space conversion=%d\n", lpXforms[i].aXformInfo[IP_CNV_COLOR_SPACE_WHICH_CNV].dword);
+            PRINT0("Color_space gamma=%d\n", lpXforms[i].aXformInfo[IP_CNV_COLOR_SPACE_GAMMA].dword);
+            break;
+          case X_CROP:
+            PRINT0("Crop_left=%d\n", lpXforms[i].aXformInfo[IP_CROP_LEFT].dword);
+            PRINT0("Crop_right=%d\n", lpXforms[i].aXformInfo[IP_CROP_RIGHT].dword);
+            PRINT0("Crop_top=%d\n", lpXforms[i].aXformInfo[IP_CROP_TOP].dword);
+            PRINT0("Crop_maxoutrows=%d\n", lpXforms[i].aXformInfo[IP_CROP_MAXOUTROWS].dword);
+            break;
+          case X_PAD:
+            PRINT0("Pad_left=%d\n", lpXforms[i].aXformInfo[IP_PAD_LEFT].dword);
+            PRINT0("Pad_right=%d\n", lpXforms[i].aXformInfo[IP_PAD_RIGHT].dword);
+            PRINT0("Pad_top=%d\n", lpXforms[i].aXformInfo[IP_PAD_TOP].dword);
+            PRINT0("Pad_bottom=%d\n", lpXforms[i].aXformInfo[IP_PAD_BOTTOM].dword);
+            PRINT0("Pad_value=%d\n", lpXforms[i].aXformInfo[IP_PAD_VALUE].dword);
+            PRINT0("Pad_minheight=%d\n", lpXforms[i].aXformInfo[IP_PAD_MIN_HEIGHT].dword);
+            break;
+          default:
+            PRINT0("Unknown xform\n");
+            break;
+       }
+    }
+
+    infd = creat(ipIn, 0600);
+    outfd = creat("/tmp/ipOut.ppm", 0600);
+#endif
 
     /**** Create Instance and Init Misc Variables ****/
 
@@ -357,7 +409,7 @@ EXPORT(WORD) ipClose (IP_HANDLE hJob)
     PXFORM_INFO pXform;
     WORD        n;
 
-    PRINT0 (_T("ipClose: hJob=%p\n"), (void*)hJob, 0);
+    PRINT0 (_T("ipClose: hJob=%p\n"), (void*)hJob);
     HANDLE_TO_PTR (hJob, g);
 
     /**** Delete All Buffers ****/
@@ -379,6 +431,11 @@ EXPORT(WORD) ipClose (IP_HANDLE hJob)
 
     IP_MEM_FREE (g);   /* Delete our instance, and we're done */
 
+#ifdef HPIP_DEBUG
+    close(infd); 
+    close(outfd); 
+#endif
+
     return IP_DONE;
 
     fatal_error:
@@ -399,7 +456,7 @@ EXPORT(WORD) ipGetClientDataPtr (
 {
     PINST g;
 
-    PRINT1 (_T("ipGetClientDataPtr\n"), 0, 0);
+    PRINT0 (_T("ipGetClientDataPtr\n"));
     HANDLE_TO_PTR (hJob, g);
     *ppvClientData = (PVOID)((PBYTE)g + sizeof(INST));
     return IP_DONE;
@@ -454,7 +511,9 @@ EXPORT(WORD) ipSetDefaultInputTraits (
     PINST g;
     PIP_IMAGE_TRAITS p;
 
-    PRINT0 (_T("ipSetDefaultInputTraits: hJob=%p\n"), (void*)hJob, 0);
+    PRINT0 (_T("ipSetDefaultInputTraits: hJob=%p PixelsPerRow=%d BitsPerPixel=%d ComponentsPerPixel=%d HorzDPI=%ld VertDPI=%ld Rows=%ld Pages=%d PageNum=%d\n"), 
+                       (void*)hJob, pTraits->iPixelsPerRow, pTraits->iBitsPerPixel, pTraits->iComponentsPerPixel, pTraits->lHorizDPI, 
+                        pTraits->lVertDPI, pTraits->lNumRows, pTraits->iNumPages, pTraits->iPageNum);
     HANDLE_TO_PTR (hJob, g);
     INSURE (g->xfArray[0].eState == XS_NONEXISTENT);
     g->xfArray[0].inTraits = *pTraits;   /* a structure copy */
@@ -491,7 +550,7 @@ EXPORT(WORD) ipGetImageTraits (
     PINST       g;
     PXFORM_INFO pTail;
 
-    PRINT0 (_T("ipGetImageTraits: hJob=%p\n"), (void*)hJob, 0);
+    PRINT0 (_T("ipGetImageTraits: hJob=%p\n"), (void*)hJob);
     HANDLE_TO_PTR (hJob, g);
     INSURE (g->xfCount > 0);
     pTail = &(g->xfArray[g->xfCount-1]);
@@ -499,11 +558,17 @@ EXPORT(WORD) ipGetImageTraits (
     if (pInputTraits != NULL) {
         INSURE (g->xfArray[0].eState > XS_PARSING_HEADER);
         *pInputTraits = g->xfArray[0].inTraits;
+        PRINT0 (_T("InputTraits: hJob=%p PixelsPerRow=%d BitsPerPixel=%d ComponentsPerPixel=%d HorzDPI=%ld VertDPI=%ld Rows=%ld Pages=%d PageNum=%d\n"), 
+                       (void*)hJob, pInputTraits->iPixelsPerRow, pInputTraits->iBitsPerPixel, pInputTraits->iComponentsPerPixel, pInputTraits->lHorizDPI, 
+                        pInputTraits->lVertDPI, pInputTraits->lNumRows, pInputTraits->iNumPages, pInputTraits->iPageNum);
     }
 
     if (pOutputTraits != NULL) {
         INSURE (pTail->eState > XS_PARSING_HEADER);
         *pOutputTraits = pTail->outTraits;
+        PRINT0 (_T("OutputTraits: hJob=%p PixelsPerRow=%d BitsPerPixel=%d ComponentsPerPixel=%d HorzDPI=%ld VertDPI=%ld Rows=%ld Pages=%d PageNum=%d\n"), 
+                       (void*)hJob, pOutputTraits->iPixelsPerRow, pOutputTraits->iBitsPerPixel, pOutputTraits->iComponentsPerPixel, pOutputTraits->lHorizDPI, 
+                        pOutputTraits->lVertDPI, pOutputTraits->lNumRows, pOutputTraits->iNumPages, pOutputTraits->iPageNum);
     }
 
     return IP_DONE;
@@ -582,7 +647,7 @@ EXPORT(WORD) ipOverrideDPI (
 
 EXPORT(WORD) ipGetFuncPtrs (LPIP_JUMP_TBL lpJumpTbl)
 {
-    PRINT0 (_T("ipGetFuncPtrs\n"), 0, 0);
+    PRINT0 (_T("ipGetFuncPtrs\n"));
     INSURE (lpJumpTbl!=NULL && lpJumpTbl->wStructSize==sizeof(IP_JUMP_TBL));
 
     lpJumpTbl->ipOpen                  = (LPVOID) ipOpen;
@@ -722,7 +787,8 @@ EXPORT(WORD) ipConvert (
         dwOutputAvail    = 0xfffffffu;
     }
 
-    PRINT1 (_T("ipConvert: hJob=%p, pbInputBuf=%p\n"), (void*)hJob, pbInputBuf);
+    PRINT0 (_T("ipConvert: hJob=%p, pbInputBuf=%p InputBufSize=%d pbOutputBuf=%p OutputBufSize=%d\n"),
+                             (void*)hJob, pbInputBuf, dwInputAvail, pbOutputBuf, dwOutputAvail);
     INSURE (pdwInputUsed !=NULL && pdwInputNextPos !=NULL &&
             pdwOutputUsed!=NULL && pdwOutputThisPos!=NULL);
     HANDLE_TO_PTR (hJob, g);
@@ -761,7 +827,7 @@ EXPORT(WORD) ipConvert (
          */
 
         if ((*pdwOutputThisPos+*pdwOutputUsed) != pgbOut->dwFilePos) {
-            PRINT0 (_T("ipConvert: output seek to %d\n"), pgbOut->dwFilePos, 0);
+            PRINT0 (_T("ipConvert: output seek to %d\n"), pgbOut->dwFilePos);
             goto exitLoop;
         }
 
@@ -846,7 +912,7 @@ EXPORT(WORD) ipConvert (
     /**** Create the Xform if necessary ****/
 
     if (pXform->eState == XS_NONEXISTENT) {
-        PRINT0 (_T("ipConvert: creating xform %d\n"), iXform, 0);
+        PRINT0 (_T("ipConvert: creating xform %d\n"), iXform);
         INSURE (atTheHead || pPriorXform->eState>=XS_CONVERTING);
         
         if (atTheHead) {
@@ -885,7 +951,7 @@ EXPORT(WORD) ipConvert (
             if (pXform->dwMinInBufLen == 0)
                 pXform->dwMinInBufLen = 1;
             PRINT0 (_T("ipConvert: alloc input genbuf, len=%d\n"),
-                pXform->dwMinInBufLen, 0);
+                pXform->dwMinInBufLen);
             IP_MEM_ALLOC (pXform->dwMinInBufLen, pgbIn->pbBuf);
             pgbIn->dwBufLen     = pXform->dwMinInBufLen;
             pgbIn->dwValidStart = 0;
@@ -902,7 +968,7 @@ EXPORT(WORD) ipConvert (
         (( atTheHead && pbInputBuf==NULL && pgbIn->dwValidLen==0) ||
          (!atTheHead && pPriorXform->eState==XS_DONE && g->iOwner<0))) {
         /* there will never be any more input to this xform: start flushing */
-        PRINT0 (_T("ipConvert: xform %d is now flushing\n"), iXform, 0);
+        PRINT0 (_T("ipConvert: xform %d is now flushing\n"), iXform);
         pXform->eState = XS_FLUSHING;
     }
 
@@ -915,7 +981,7 @@ EXPORT(WORD) ipConvert (
         if (! atTheHead) {
             /* the input midbuf must contain data */
             INSURE (g->iOwner>=0 && g->dwMidValidLen>0);
-            PRINT1 (_T("not at head, pixels = %08x\n"), *(DWORD*)(g->pbMidInBuf), 0);
+            PRINT1 (_T("not at head, pixels = %08x\n"), *(DWORD*)(g->pbMidInBuf));
         } else if (pbInputBuf != NULL) {
             DWORD dwUnusedStart;
 
@@ -926,7 +992,7 @@ EXPORT(WORD) ipConvert (
                 memmove (pgbIn->pbBuf, pgbIn->pbBuf + pgbIn->dwValidStart,
                          pgbIn->dwValidLen);
                 pgbIn->dwValidStart = 0;
-                PRINT1 (_T("left just, pixels = %08x\n"), *(DWORD*)(pgbIn->pbBuf), 0);
+                PRINT1 (_T("left just, pixels = %08x\n"), *(DWORD*)(pgbIn->pbBuf));
             }
 
             /* put as much client input as possible into the input genbuf */
@@ -948,7 +1014,7 @@ EXPORT(WORD) ipConvert (
             /* if input genbuf has insufficient data, exit loop */
             if (pgbIn->dwValidLen < pXform->dwMinInBufLen)
                 goto exitLoop;
-            PRINT1 (_T("at head, pixels = %08x\n"), *(DWORD*)(pgbIn->pbBuf), 0);
+            PRINT1 (_T("at head, pixels = %08x\n"), *(DWORD*)(pgbIn->pbBuf));
         }
     }
 
@@ -986,7 +1052,7 @@ EXPORT(WORD) ipConvert (
            dwInUsed, dwOutUsed);
 
     if (pbTheOutBuf != NULL)
-        PRINT1 (_T("ipConvert: out data = %08x\n"), *(DWORD*)pbTheOutBuf, 0);
+        PRINT1 (_T("ipConvert: out data = %08x\n"), *(DWORD*)pbTheOutBuf);
 
     INSURE ((result & IP_FATAL_ERROR) == 0);
 
@@ -1030,7 +1096,7 @@ EXPORT(WORD) ipConvert (
         /* if new genbuf file-pos doesn't match what xform wants,
          * discard remainder of buffer */
         if (pgbIn->dwFilePos != dwInNextPos) {
-            PRINT0 (_T("ipConvert: input seek to %d\n"), dwInNextPos, 0);
+            PRINT0 (_T("ipConvert: input seek to %d\n"), dwInNextPos);
             pgbIn->dwValidLen   = 0;
             pgbIn->dwValidStart = 0;
             pgbIn->dwFilePos    = dwInNextPos;
@@ -1074,7 +1140,7 @@ EXPORT(WORD) ipConvert (
     if (pXform->eState == XS_PARSING_HEADER) {
 
         if (result & IP_DONE) {
-            PRINT0 (_T("ipConvert: xform %d is done parsing header\n"), iXform, 0);
+            PRINT0 (_T("ipConvert: xform %d is done parsing header\n"), iXform);
             pXform->pXform->getActualBufSizes (pXform->hXform,
                 &pXform->dwMinInBufLen, &pXform->dwMinOutBufLen);
 
@@ -1171,12 +1237,12 @@ EXPORT(WORD) ipConvert (
                 g->pendingInsert = TRUE;
         } else if (result & IP_NEW_OUTPUT_PAGE) {
             /* this xform hit end of page, so tell next xform about it */
-            PRINT0 (_T("ipConvert: xform %d hit end of page\n"), iXform, 0);
+            PRINT0 (_T("ipConvert: xform %d hit end of page\n"), iXform);
             pNextXform->pXform->newPage (pNextXform->hXform);
         }
 
         if (result & IP_DONE) {
-            PRINT0 (_T("ipConvert: xform %d is done\n"), iXform, 0);
+            PRINT0 (_T("ipConvert: xform %d is done\n"), iXform);
             pXform->eState = XS_DONE;
         } else if (pXform->eState != XS_FLUSHING)
             selectCnvState = TRUE;
@@ -1185,7 +1251,7 @@ EXPORT(WORD) ipConvert (
     if (selectCnvState) {
         /* go to one of the two 'converting' states */
         if ((result & IP_READY_FOR_DATA) == 0)
-            PRINT1 (_T("ipConvert: xform %d is not ready for data\n"), iXform, 0);
+            PRINT1 (_T("ipConvert: xform %d is not ready for data\n"), iXform);
         pXform->eState = (result & IP_READY_FOR_DATA)
                          ? XS_CONVERTING : XS_CONV_NOT_RFD;
     }
@@ -1203,8 +1269,17 @@ EXPORT(WORD) ipConvert (
     if (g->xfArray[g->xfCount-1].eState >= XS_CONVERTING)
         ipResult |= IP_PARSED_HEADER;
 
-    PRINT1 (_T("ipConvert: ipResult=%04x, returning %04x\n"),
-            ipResult, ipResult & g->wResultMask);
+    PRINT0 (_T("ipConvert: ipResult=%04x, returning %04x, InputUsed=%d InputNextPos=%d OutputUsed=%d OutputThisPos=%d\n"),
+            ipResult, ipResult & g->wResultMask, *pdwInputUsed, *pdwInputNextPos, *pdwOutputUsed, *pdwOutputThisPos);
+
+#ifdef HPIP_DEBUG
+    if (pbInputBuf && *pdwInputUsed)
+       write(infd, pbInputBuf, *pdwInputUsed); 
+
+    if (*pdwOutputUsed)
+       write(outfd, pbOutputBuf, *pdwOutputUsed); 
+#endif
+
     return ipResult & g->wResultMask;
 
     fatal_error:

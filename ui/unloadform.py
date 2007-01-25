@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 # Author: Don Welch
 #
 
-
 from base.g import *
 from base import utils, device, msg
 from prnt import cups
@@ -30,8 +29,6 @@ import os, os.path
 import socket
 
 from qt import *
-
-
 from unloadform_base import UnloadForm_base
 from imagepropertiesdlg import ImagePropertiesDlg
 
@@ -48,7 +45,6 @@ class IconViewItem(QIconViewItem):
         self.exif_info = exif_info
         self.size = size
         self.thumbnail_set = False
-
 
 
 class UnloadForm(UnloadForm_base):
@@ -111,7 +107,7 @@ class UnloadForm(UnloadForm_base):
             return
 
         QApplication.setOverrideCursor(QApplication.waitCursor)
-        
+
         try:
             self.pc = photocard.PhotoCard(None, self.device_uri, self.printer_name)
         except Error, e:
@@ -141,6 +137,9 @@ class UnloadForm(UnloadForm_base):
             self.cleanup(EVENT_PCARD_UNABLE_TO_MOUNT)
             return
 
+        self.device_uri = self.pc.device.device_uri
+        user_cfg.last_used.device_uri = self.device_uri
+
         self.pc.device.sendEvent(EVENT_START_PCARD_JOB)
 
         disk_info = self.pc.info()
@@ -153,7 +152,7 @@ class UnloadForm(UnloadForm_base):
 
         if not self.pc.write_protect:
             log.info("DO NOT REMOVE PHOTO CARD UNTIL YOU EXIT THIS PROGRAM")
-            
+
         self.unload_dir = os.path.normpath(os.path.expanduser('~'))
         os.chdir(self.unload_dir)
         self.UnloadDirectoryEdit.setText(self.unload_dir)
@@ -182,13 +181,18 @@ class UnloadForm(UnloadForm_base):
             self.FileRemovalGroup.setEnabled(False)
             self.LeaveAllRadio.setEnabled(False)
             self.RemoveSelectedRadio.setEnabled(False)
-            self.RemoveAllRadio.setEnabled(False)
 
         # Item map disambiguates between files of the same
         # name that are on the pcard in more than one location
         self.item_map = {}
-        
+
         QApplication.restoreOverrideCursor()
+
+        self.display_update_timer = QTimer(self, "DisplayUpdateTimer")
+        self.connect(self.display_update_timer, SIGNAL('timeout()'), self.DisplayUpdate)
+
+        self.display_update_timer.start(1000)
+        self.busy = False
 
         self.load_icon_view(first_load=True)
 
@@ -230,6 +234,7 @@ class UnloadForm(UnloadForm_base):
 
     def load_icon_view(self, first_load):
         QApplication.setOverrideCursor(QApplication.waitCursor)
+        self.busy = True
         self.first_load = first_load
 
         if first_load:
@@ -243,7 +248,7 @@ class UnloadForm(UnloadForm_base):
         self.pb.show()
 
         self.item_num = 0
-        
+
         self.load_timer = QTimer(self, "ScanTimer")
         self.connect(self.load_timer, SIGNAL('timeout()'), self.continue_load_icon_view)
         self.load_timer.start(0)
@@ -260,6 +265,7 @@ class UnloadForm(UnloadForm_base):
             self.statusBar().removeWidget(self.pb)
 
             self.IconView.adjustItems()
+            self.busy = False
             QApplication.restoreOverrideCursor()
             return
 
@@ -389,60 +395,72 @@ class UnloadForm(UnloadForm_base):
 
     def UnloadButton_clicked(self):
         was_cancelled = False
+        self.busy = True
         self.unload_dir = unicode(self.UnloadDirectoryEdit.text())
         dir_error = False
 
         try:
-            os.chdir(self.unload_dir)
-        except OSError:
-            log.error("Directory not found: %s" % self.unload_dir)
-            dir_error = True
+            try:
+                os.chdir(self.unload_dir)
+            except OSError:
+                log.error("Directory not found: %s" % self.unload_dir)
+                dir_error = True
 
-        if dir_error or not utils.is_path_writable(self.unload_dir):
-            self.failure(self.__tr("<p><b>The unload directory path is not valid.</b><p>Please enter a new path and try again."))
-            return
+            if dir_error or not utils.is_path_writable(self.unload_dir):
+                self.failure(self.__tr("<p><b>The unload directory path is not valid.</b><p>Please enter a new path and try again."))
+                return
 
-        unload_list = []
-        i = self.IconView.firstItem()
-        total_size = 0
-        while i is not None:
+            unload_list = []
+            i = self.IconView.firstItem()
+            total_size = 0
+            while i is not None:
 
-            if i.isSelected():
-                unload_list.append((i.path, i.size, i.mime_type, i.mime_subtype))
-                total_size += i.size
-            i = i.nextItem()
+                if i.isSelected():
+                    unload_list.append((i.path, i.size, i.mime_type, i.mime_subtype))
+                    total_size += i.size
+                i = i.nextItem()
 
-        if total_size == 0:
-            self.failure(self.__tr("<p><b>No files are selected to unload.</b><p>Please select one or more files to unload and try again."))
-            return
+            if total_size == 0:
+                self.failure(self.__tr("<p><b>No files are selected to unload.</b><p>Please select one or more files to unload and try again."))
+                return
 
-        global progress_dlg
-        progress_dlg = QProgressDialog(self.__tr("Unloading Files..."), self.__tr("Cancel"),
-                                       total_size, self, 'progress', True)
-        progress_dlg.setMinimumDuration(0)
-        progress_dlg.show()
+            global progress_dlg
+            progress_dlg = QProgressDialog(self.__tr("Unloading Files..."), self.__tr("Cancel"),
+                                           total_size, self, 'progress', True)
+            progress_dlg.setMinimumDuration(0)
+            progress_dlg.show()
 
-        if self.removal_option == 0:
-            total_size, total_time, was_cancelled = \
-                self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, True)
+            if self.removal_option == 0:
+                total_size, total_time, was_cancelled = \
+                    self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, True)
 
-        elif self.removal_option == 1: # remove selected
-            total_size, total_time, was_cancelled = \
-                self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, False)
+            elif self.removal_option == 1: # remove selected
+                total_size, total_time, was_cancelled = \
+                    self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, False)
 
-        else: # remove all
-            total_size, total_time, was_cancelled = \
-                self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, False)
-            # TODO: Remove remainder of files
+            else: # remove all
+                total_size, total_time, was_cancelled = \
+                    self.pc.unload(unload_list, self.UpdateUnloadProgressDlg, None, False)
+                # TODO: Remove remainder of files
 
-        progress_dlg.close()
+            progress_dlg.close()
 
-        self.pc.device.sendEvent(EVENT_PCARD_FILES_TRANSFERED)
+            self.pc.device.sendEvent(EVENT_PCARD_FILES_TRANSFERED)
 
-        if was_cancelled:
-            self.failure(self.__tr("<b>Unload cancelled at user request.</b>"))
-        else:
-            self.success()
+            if self.removal_option != 0: # remove selected or remove all
+                self.unload_list = self.pc.get_unload_list()
+                self.total_number = 0
+                self.total_size = 0
+                self.item_map = {}
+                self.load_icon_view(first_load=True)
+
+            if was_cancelled:
+                self.failure(self.__tr("<b>Unload cancelled at user request.</b>"))
+            else:
+                self.success()
+
+        finally:
+            self.busy = False
 
 
     def UpdateUnloadProgressDlg(self, src, trg, size):
@@ -460,6 +478,7 @@ class UnloadForm(UnloadForm_base):
         if item is not None and \
             item.mime_type == 'image' and \
             item.mime_subtype == 'jpeg' and \
+            self.pc.get_exif_path(item.path) and \
             not item.thumbnail_set:
 
             popup.insertItem("Show Thumbnail", self.showThumbNail)
@@ -507,21 +526,25 @@ class UnloadForm(UnloadForm_base):
                                 item.exif_info, self).exec_loop()
 
 
-
     def IconView_selectionChanged(self):
-        self.total_number = 0
-        self.total_size = 0
-        i = self.IconView.firstItem()
+        pass
 
-        while i is not None:
 
-            if i.isSelected():
-                self.total_number += 1
-                self.total_size += i.size
+    def DisplayUpdate(self):
+        if not self.busy:
+            self.total_number = 0
+            self.total_size = 0
+            i = self.IconView.firstItem()
 
-            i = i.nextItem()
+            while i is not None:
 
-        self.UpdateStatusBar()
+                if i.isSelected():
+                    self.total_number += 1
+                    self.total_size += i.size
+
+                i = i.nextItem()
+
+            self.UpdateStatusBar()
 
 
     def IconView_clicked(self,a0,a1):

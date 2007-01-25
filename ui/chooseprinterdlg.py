@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,13 +27,13 @@ from qt import *
 class ChoosePrinterDlg(QDialog):
     def __init__(self, printers, back_end_filter=['hp'], parent = None,name = None,modal = 0,fl = 0, show_uris=True):
         QDialog.__init__(self,parent,name,modal,fl)
-        
+
         if not name:
             self.setName("ChooseDeviceDlg")
 
         self.device_uri = ''
         self.back_end_filter = back_end_filter
-        
+
         ChooseDeviceDlg_Layout = QGridLayout(self,1,1,6,6,"ChooseDeviceDlg_Layout")
 
         self.OKButton = QPushButton(self,"OKButton")
@@ -54,7 +54,7 @@ class ChoosePrinterDlg(QDialog):
         self.DevicesButtonGroup.layout().setMargin(6)
         DevicesButtonGroupLayout = QGridLayout(self.DevicesButtonGroup.layout())
         DevicesButtonGroupLayout.setAlignment(Qt.AlignTop)
-            
+
         self.radio_buttons = {}
 
         self.printer_index, x = {}, 0
@@ -62,30 +62,30 @@ class ChoosePrinterDlg(QDialog):
             try:
                 back_end, is_hp, bus, model, serial, dev_file, host, port = \
                     device.parseDeviceURI(p.device_uri)
-    
+
             except Error:
                 continue
-                
+
             if back_end in back_end_filter:
                 self.printer_index[x] = (p.name, p.device_uri)
                 x += 1
-                
-        
+
+
         for y in range(len(self.printer_index)):
             if y == 0:
                 self.device_uri = self.printer_index[y][1]
-            
+
             self.radio_buttons[y] = QRadioButton(self.DevicesButtonGroup,"radioButton%d" % y)
-            
+
             if show_uris:
                 self.radio_buttons[y].setText("%s  (%s)" % self.printer_index[y])
             else:
                 self.radio_buttons[y].setText(self.printer_index[y])
-                
+
             DevicesButtonGroupLayout.addWidget(self.radio_buttons[y], y, 0)
 
         self.radio_buttons[0].setChecked(1)
-        
+
         ChooseDeviceDlg_Layout.addMultiCellWidget(self.DevicesButtonGroup,0,0,0,2)
 
         self.languageChange()
@@ -101,7 +101,7 @@ class ChoosePrinterDlg(QDialog):
         self.setCaption(self.__tr("Choose Device"))
         self.OKButton.setText(self.__tr("OK"))
         self.CancelButton.setText(self.__tr("Cancel"))
-        
+
         if 'hp' in self.back_end_filter and 'hpfax' in self.back_end_filter:
             self.DevicesButtonGroup.setTitle(self.__tr("Available Devices:"))
         elif 'hp' in self.back_end_filter:
@@ -110,7 +110,7 @@ class ChoosePrinterDlg(QDialog):
             self.DevicesButtonGroup.setTitle(self.__tr("Available Faxes:"))
         else:
             self.DevicesButtonGroup.setTitle(self.__tr("Available Devices:"))
-            
+
     def __tr(self,s,c = None):
         return qApp.translate("ChooseDeviceDlg",s,c)
 
@@ -120,15 +120,15 @@ class ChoosePrinterDlg(QDialog):
             if str(self.radio_buttons[a0].text()).startswith(pp[0]):
                 self.device_uri = pp[1]
                 break
-                
 
-                
+
+
 class ChoosePrinterDlg2(QDialog):
     def __init__(self, printers, parent = None,name = None,modal = 0,fl = 0):
         QDialog.__init__(self,parent,name,modal,fl)
-        
+
         self.printers = printers
-        
+
         if not name:
             self.setName("ChooseDeviceDlg2")
 
@@ -152,19 +152,19 @@ class ChoosePrinterDlg2(QDialog):
         self.DevicesButtonGroup.layout().setMargin(6)
         DevicesButtonGroupLayout = QGridLayout(self.DevicesButtonGroup.layout())
         DevicesButtonGroupLayout.setAlignment(Qt.AlignTop)
-            
+
         self.radio_buttons = {}
 
         for y in range(len(self.printers)):
             if y == 0:
                 self.printer_name = self.printers[0]
-            
+
             self.radio_buttons[y] = QRadioButton(self.DevicesButtonGroup,"radioButton%d" % y)
             self.radio_buttons[y].setText(self.printers[y])
             DevicesButtonGroupLayout.addWidget(self.radio_buttons[y], y, 0)
 
         self.radio_buttons[0].setChecked(1)
-        
+
         ChooseDeviceDlg_Layout.addMultiCellWidget(self.DevicesButtonGroup,0,0,0,2)
 
         self.languageChange()
@@ -180,11 +180,11 @@ class ChoosePrinterDlg2(QDialog):
         self.setCaption(self.__tr("Choose Printer"))
         self.OKButton.setText(self.__tr("OK"))
         self.CancelButton.setText(self.__tr("Cancel"))
-        
+
         self.DevicesButtonGroup.setTitle(self.__tr("Printers:"))
-            
+
     def __tr(self,s,c = None):
         return qApp.translate("ChooseDeviceDlg2",s,c)
 
     def DevicesButtonGroup_clicked(self,a0):
-        self.printer_name = str(a0)
+        self.printer_name = self.printers[a0]

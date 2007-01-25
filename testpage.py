@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,13 +55,13 @@ USAGE = [(__doc__, "", "name", True),
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-testpage', __version__)
     sys.exit(0)
-    
-    
+
+
 log.set_module('hp-testpage')
- 
+
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:gx',
                                ['printer=', 'device=', 'help', 'help-rest', 
@@ -81,17 +81,17 @@ if os.getenv("HPLIP_DEBUG"):
 for o, a in opts:
     if o in ('-h', '--help'):
         usage()
-        
+
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
-    
+
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
-        
+
     elif o in ('-p', '--printer'):
         printer_name = a
 
@@ -107,13 +107,13 @@ for o, a in opts:
         log_level = a.lower().strip()
         if not log.set_level(log_level):
             usage()
-            
+
     elif o == '-g':
         log.set_level('debug')
-        
+
     elif o == '-x':
         wait_for_printout = False
-        
+
 
 if device_uri and printer_name:
     log.error("You may not specify both a printer (-p) and a device (-d).")
@@ -148,6 +148,7 @@ if d.device_uri is None and device_uri:
     log.error("Malformed/invalid device-uri: %s" % device_uri)
     sys.exit(1)
 
+user_cfg.last_used.device_uri = d.device_uri
 
 try:
     try:
@@ -155,34 +156,34 @@ try:
     except Error:
         log.error("Unable to print to printer. Please check device and try again.")
         sys.exit(1)
-    
+
     if len(d.cups_printers) == 0:
         log.error("No printer queues found for device.")
         sys.exit(1)
-        
+
     elif len(d.cups_printers) > 1:
         log.info("\nMultiple printers (queues) found in CUPS for device.")
         log.info(utils.bold("\nPlease choose the printer (queue) to use for the test page:\n"))
-        
+
         max_name = 24
         for q in d.cups_printers:
             max_name = max(max_name, len(q))
-            
+
         formatter = utils.TextFormatter(
             (
                 {'width': 4, 'margin': 2},
                 {'width': max_name, 'margin': 2},
             )
         )
-        
+
         log.info(formatter.compose(("Num.", "CUPS printer (queue)")))
         log.info(formatter.compose(('-'*4, '-'*(max_name))))
-        
+
         x = 0
         for q in d.cups_printers:
             log.info(formatter.compose((str(x), d.cups_printers[x])))
             x += 1
-            
+
         while 1:
             user_input = raw_input(utils.bold("\nEnter number 0...%d for printer (q=quit) ?" % (x-1)))
 
@@ -204,14 +205,14 @@ try:
                 continue
 
             break
-            
+
         printer_name = d.cups_printers[i]
-            
+
     else:
         printer_name = d.cups_printers[0]
-        
+
     log.info("")
-    
+
     if d.isIdleAndNoError():
         d.close()
         log.info( "Printing test page to printer %s..." % printer_name)
@@ -225,51 +226,51 @@ try:
         else:
             if wait_for_printout:
                 log.info("Test page has been sent to printer. Waiting for printout to complete...")
-                
+
                 time.sleep(5)
                 i = 0
-    
+
                 while True:
                     time.sleep(5)
-                    
+
                     try:
                         d.queryDevice(quick=True)
                     except Error, e:
                         log.error("An error has occured.")
-                    
+
                     if d.error_state == ERROR_STATE_CLEAR:
                         break
-                    
+
                     elif d.error_state == ERROR_STATE_ERROR:
                         cleanup_spinner()
                         log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
                         break
-                        
+
                     elif d.error_state == ERROR_STATE_WARNING:
                         cleanup_spinner()
                         log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
-                    
+
                     else: # ERROR_STATE_BUSY
                         update_spinner()
-                        
+
                     i += 1
-                    
+
                     if i > 24:  # 2min
                         break
-                        
+
                 cleanup_spinner()
-                
+
             else:
                 log.info("Test page has been sent to printer.")
 
     else:
         log.error("Device is busy or in an error state. Please check device and try again.")
         sys.exit(1)
-        
-        
+
+
 finally:
     d.close()
-    
+
     log.info("")
     log.notice("If an error occured, or the test page failed to print, refer to the HPLIP website")
     log.notice("at: http://hplip.sourceforge.net for troubleshooting and support.")

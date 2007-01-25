@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:officejet 7300 series;CMD:MLC,PCL,PML,DW-PCL,BIDI-ECP;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:officejet 7300 series;CMD:MLC,PCL,PML,DW-PCL,BIDI-ECP;DES:6543;"
 *DefaultResolution: 1200dpi
 
 

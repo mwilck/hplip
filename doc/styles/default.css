@@ -1,14 +1,12 @@
 #page {
 position: relative;
-width: 95%;
-\width: 95%;
-w\idth: 95%;
+width: 96%;
+\width: 96%;
+w\idth: 96%;
 margin-left: auto;
 margin-right: auto;
 margin-top: auto;
 margin-bottom: auto;
-height: ;
-/* border: solid 1px black;*/
 padding: 0px;
 }
 
@@ -16,37 +14,25 @@ padding: 0px;
 position: relative;
 background-color: rgb(239,244,244);
 border: solid 1px orange;
-margin: 0px;
-padding: 0px;
 }
 
 /* ******************* divs ******************* */
 
 #content {
 position: relative; 
-width: 700px;
 padding: 0px;
 font-size: 12pt;
 border: solid 0px red;
 white-space: pre-line;
 }
 
-#yellowsplit {
-position: relative; 
-border-left: solid 0px orange;
-border-top: solid 0px orange;
-/* margin-left: 195px; */
-}
-
 #navbar {
-border: solid 0px red;
 }
 
 #sidebar-a {
 float: left;
 height: ;
-/* margin-top: 10px; */
-margin-left: 10px;
+margin-left: 5px;
 margin-right: 10px;
 margin-bottom: 0px;
 padding-right: 5px;
@@ -64,7 +50,7 @@ margin-left: 0px;
 margin-right: 0px;
 text-align: center;
 vertical-align: middle;
-font-size: 12pt;
+font-size: 10pt;
 }
 
 /* ******************* banner graphics ******************* */
@@ -111,7 +97,7 @@ position: absolute;
 left: 1px; 
 top: 1px; 
 color: rgb(26,77,143);
-font-size: 18pt;
+font-size: 12pt;
 }
 
 .header_title_text1 { 
@@ -119,7 +105,7 @@ position: absolute;
 left: -1px; 
 top: -1px; 
 color: #fff;
-font-size: 18pt;
+font-size: 12pt;
 } 
 
 #header_title a:link {
@@ -154,7 +140,7 @@ list-style-type: none;
 
 #sidebar-a a {
 display: block;
-padding: 1px;
+padding: 2px;
 }
 
 #sidebar-a a:link, #sidebar-a-list a:visited {
@@ -179,12 +165,13 @@ margin-right: 0px;
 margin-top: 0px;
 margin-bottom: 0px;
 padding-right: 0px;
-padding-left: .5em;
+padding-left: 1em;
 white-space: nowrap;
 color: black;
 }
 
 .menuheader {
+padding-left: .5em;
 font-weight: bold;
 font-size: 12pt;
 }
@@ -223,8 +210,8 @@ color: #fff;
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
-:Date: $Date: 2006/12/18 19:55:46 $
-:Version: $Revision: 1.10 $
+:Date: $Date: 2007/01/20 00:07:22 $
+:Version: $Revision: 1.12 $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.

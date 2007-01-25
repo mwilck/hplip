@@ -267,6 +267,28 @@ DJ990BestMode::DJ990BestMode () : PrintMode (NULL)
     pmMediaType = MEDIA_PHOTO;
 } // DJ990BestMode
 
+DJ990PhotoNormalMode::DJ990PhotoNormalMode () : PrintMode (NULL)
+{
+    BaseResX = BaseResY = ResolutionX[0] = ResolutionY[0] = VIP_BASE_RES;
+
+	bFontCapable = FALSE;
+
+#ifdef  APDK_AUTODUPLEX
+	bDuplexCapable = TRUE;
+#endif
+
+#if defined(APDK_VIP_COLORFILTERING)
+    Config.bErnie = TRUE;
+#endif
+
+   Config.bColorImage = FALSE;
+
+	medium      = mediaGlossy;
+	theQuality  = qualityNormal;
+	pmQuality   = QUALITY_NORMAL;
+    pmMediaType = MEDIA_PHOTO;
+} // DJ990PhotoNormalMode
+
 BOOL DJ9xxVIP::UseGUIMode
 (
     PrintMode* pPrintMode

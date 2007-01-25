@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,69 +70,75 @@ DISTRO_YELLOWDOG = 31 # PPC
 
 def getDistro():
     distro, distro_version = DISTRO_UNKNOWN, '0.0'
-    
+
     found = False
-    
+
     lsb_release = utils.which("lsb_release")
     if lsb_release:
         cmd = os.path.join(lsb_release, "lsb_release")
-        
+
         status, name = utils.run(cmd + " -i")
         name = name.split(':')[1].strip().lower()
-        
+
         status, distro_version = utils.run(cmd + " -r")
         distro_version = distro_version.split(':')[1].strip()
-        
+
         status, code = utils.run(cmd + " -c")
         code = code.split(':')[1].strip()
-        
+
         #log.debug("LSB: %s %s (%s)" % (name, distro_version, code))
-        
+
         for d in distros:
             if name.find(d) > -1:
                 distro = distros[d]['index']
                 found = True
                 break
-    
+
     if not found:
         try:
             name = file('/etc/issue', 'r').read().lower().strip()
         except IOError:
             # Some O/Ss don't have /etc/issue (Mac)
             return DISTRO_UNKNOWN, '0.0'
-    
+
+        found = False
         for d in distros:
             if name.find(d) > -1:
                 distro = distros[d]['index']
-                break
+                found = True
             else:
                 for x in distros[d].get('alt_names', '').split(','):
-                    if name.find(x) > -1:
+                    if x and name.find(x) > -1:
                         distro = distros[d]['index']
+                        found = True
                         break
-        
-        for n in name.split(): 
-            if '.' in n:
-                m = '.'.join(n.split('.')[:2])
-            else:
-                m = n
             
-            try:
-                distro_version = str(float(m))
-            except ValueError:
+            if found:
+                break
+                
+        if found:
+            for n in name.split(): 
+                if '.' in n:
+                    m = '.'.join(n.split('.')[:2])
+                else:
+                    m = n
+    
                 try:
-                    distro_version = str(int(m))
+                    distro_version = str(float(m))
                 except ValueError:
-                    distro_version = '0.0'
+                    try:
+                        distro_version = str(int(m))
+                    except ValueError:
+                        distro_version = '0.0'
+                    else:
+                        break
                 else:
                     break
-            else:
-                break
-    
+
     return distro, distro_version
 
-    
-    
+
+
 # Helper functions
 def __copy_cmds(distro, src_ver, dst_ver):
     """ Copy the cmds from one version to another. """
@@ -141,11 +147,11 @@ def __copy_cmds(distro, src_ver, dst_ver):
 def __set_ver_cmds(distro, ver, cmds):
     """ Set the cmds for a given distro version. """
     distros[distro]['versions'][ver]['dependency_cmds'].update(cmds)
-    
+
 def __update_ver_cmd(distro, ver, dependency, cmd):
     """ Update an existing dependency cmd. """
     distros[distro]['versions'][ver]['dependency_cmds'][dependency] = cmd
-    
+
 
 # distros:
 #
@@ -190,8 +196,8 @@ distros = \
         'index': 1,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
         'package_mgr_cmd' : 'sudo apt-get install --force-yes --yes $packages_to_install',
-        'pre_depend_cmd': 'sudo dpkg --configure -a && sudo apt-get update',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get install -f', 'sudo apt-get update', 'xterm -e sudo apt-get install postfix'],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': 'sudo apt-get remove --force-yes --yes hpoj',
         'hplip_remove_cmd': 'sudo apt-get remove --force-yes --yes hplip hpijs',
         'su_sudo' : 'sudo',
@@ -201,41 +207,41 @@ distros = \
                 'release_date': '5/2004', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.  In addition disable the Ubuntu CD source. https://help.ubuntu.com/community/Repositories for more information.', 
-                'pre_depend_cmd': '',
-                'post_depend_cmd':  ''
+                'notes': 'Enable the universe/multiverse repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.', 
+                'pre_depend_cmd': [ ],
+                'post_depend_cmd':  [],
             },
             '5.1': {
                 'code_name': 'Breezy', 
                 'release_date': '10/2005', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.  In addition disable the Ubuntu CD source. https://help.ubuntu.com/community/Repositories for more information.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'notes': 'Enable the universe/multiverse repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.', 
+                'pre_depend_cmd': [],
+                'post_depend_cmd': [],
             },
             '6.06': {
                 'code_name': 'Dapper', 
                 'release_date': '6/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.  In addition disable the Ubuntu CD source. https://help.ubuntu.com/community/Repositories for more information.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'notes': 'Enable the universe/multiverse repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.',
+                'pre_depend_cmd': [],
+                'post_depend_cmd': [],
             },
             '6.10': {
                 'code_name': 'Edgy', 
                 'release_date': '10/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.  In addition disable the Ubuntu CD source. https://help.ubuntu.com/community/Repositories for more information.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'notes': 'Enable the universe/multiverse repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.', 
+                'pre_depend_cmd': [],
+                'post_depend_cmd': [],
             },
         },
     },
-                 
-    
+
+
      'debian': {
         'alt_names': '',
         'display_name': 'Debian',
@@ -244,8 +250,8 @@ distros = \
         'index': 2,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],            
         'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
-        'pre_depend_cmd': 'su -c "apt-get update"',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': ['su -c "dpkg --configure -a"', 'su -c "apt-get install -f"', 'su -c "apt-get update"'],
+        'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': 'su -c "apt-get remove --force-yes --yes hpoj"',
         'hplip_remove_cmd': 'su -c "apt-get remove --force-yes --yes hplip hpijs"',
@@ -256,8 +262,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '3.0': {
                 'code_name': 'Woody', 
@@ -265,8 +271,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '3.1': {
                 'code_name': 'Sarge', 
@@ -274,12 +280,12 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         }
     },
-        
+
      'suse': {
         'alt_names': '',
         'display_name': 'SUSE Linux',
@@ -288,8 +294,8 @@ distros = \
         'index': 3,
         'package_mgrs': ["yast"],
         'package_mgr_cmd': 'su -c "yast --install $packages_to_install"',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
@@ -300,8 +306,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.1': {
                 'code_name': '', 
@@ -309,8 +315,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.2': {
                 'code_name': '', 
@@ -318,8 +324,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.3': {
                 'code_name': '', 
@@ -327,8 +333,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.0': {
                 'code_name': '', 
@@ -336,8 +342,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': 'Before proceeding, open another terminal and run: installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/\n and then run: installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.1': {
                 'code_name': '', 
@@ -345,12 +351,12 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': "Before proceeding, please add these installation sources to your YaST configuration. For help on this process please see your distribution documentation.\nhttp://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/\nhttp://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra", 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'mandriva': {
         'alt_names': 'Mandrakelinux, Mandrake Linux',
         'display_name': 'Mandriva Linux',
@@ -359,8 +365,8 @@ distros = \
         'index': 4,
         'package_mgrs': ["urpmi"],
         'package_mgr_cmd': 'su - -c "urpmi --auto $packages_to_install"',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
@@ -371,8 +377,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration.  Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.2': {
                 'code_name': 'Fivestar', 
@@ -380,8 +386,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration.  Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.0': {
                 'code_name': 'Community and official', 
@@ -389,44 +395,44 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.1': {
                 'code_name': 'Official', 
                 'release_date': '2004', 
                 'supported': False, 
                 'dependency_cmds': {}, 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.2': {
                 'code_name': 'Limited edition 2005', 
                 'release_date': '2005', 
                 'supported': False, 
                 'dependency_cmds': {}, 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '2006.0': {
                 'code_name': '2k6', 
                 'release_date': '2005', 
                 'supported': True, 
                 'dependency_cmds': {}, 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '2007.0': {
                 'code_name': '2k7', 
                 'release_date': '2007', 
                 'supported': True, 
                 'dependency_cmds': {}, 'notes': 'Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-    
+
      'fedora': {
         'alt_names': 'Fedora Core',
         'display': True,
@@ -435,8 +441,8 @@ distros = \
         'index': 5,
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'su -c "yum -y -d 10 -e 1 install $packages_to_install"',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': 'su -c "yum -y -d 10 -e 1 remove hplip hpijs"',
         'hplip_remove_cmd': 'su -c "yum -y -d 10 -e 1 remove hplip hpijs"',
@@ -447,8 +453,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '2.0': {
                 'code_name': 'Tettnang', 
@@ -456,8 +462,8 @@ distros = \
                 'supported':  False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '3.0': {
                 'code_name': 'Heidelberg', 
@@ -465,8 +471,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '4.0': {
                 'code_name': 'Stentz', 
@@ -474,8 +480,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '5.0': {
                 'code_name': 'Bordeaux', 
@@ -483,8 +489,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '5.92': {
                 'code_name': 'RC3', 
@@ -492,8 +498,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '6.0': {
                 'code_name': '', 
@@ -501,8 +507,8 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '6': {
                 'code_name': '', 
@@ -510,12 +516,12 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-    
+
      'redhat': {
         'alt_names': '',
         'display_name': 'Red Hat',
@@ -525,8 +531,8 @@ distros = \
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'rpm install $packages_to_install',
         'su_sudo' : 'su',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -536,8 +542,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.0': {
                 'code_name': 
@@ -545,12 +551,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-    
+
      'rhel': {
         'alt_names': 'red hat enterprise linux',
         'display_name': 'Red Hat Enterprise Linux',
@@ -560,8 +566,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'rpm install $packages_to_install',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -571,8 +577,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '4.0': {
                 'code_name': 'Nahant', 
@@ -580,12 +586,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-    
+
      'slackware': {
         'alt_names': '',
         'display_name': 'Slackware Linux',
@@ -595,8 +601,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -606,8 +612,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.1': {
                 'code_name': '', 
@@ -615,8 +621,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '10.2': {
                 'code_name': '', 
@@ -624,8 +630,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.0': {
                 'code_name': '', 
@@ -633,8 +639,8 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
             '9.1': {
                 'code_name': '', 
@@ -642,12 +648,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'gentoo': {
         'alt_names': '',
         'display_name': 'Gentoo Linux',
@@ -657,8 +663,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -668,12 +674,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'turbolinux': {
         'alt_names': '',
         'display_name': 'Turbolinux',
@@ -683,8 +689,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -694,12 +700,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'redflag': {
         'alt_names': '',
         'display_name': 'Red Flag Linux',
@@ -709,8 +715,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -720,12 +726,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'mepis': {
         'alt_names': '',
         'display_name': 'Mepis',
@@ -734,8 +740,8 @@ distros = \
         'index': 12,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
         'package_mgr_cmd' : 'sudo apt-get install --force-yes --yes $packages_to_install',
-        'pre_depend_cmd': 'sudo dpkg --configure -a && sudo apt-get update',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get update'],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': 'sudo apt-get remove --force-yes --yes hpoj',
         'hplip_remove_cmd': 'sudo apt-get remove --force-yes --yes hplip hpijs',
         'su_sudo' : 'sudo',
@@ -746,12 +752,12 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': 'Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.', 
-                'pre_depend_cmd': '',
+                'pre_depend_cmd': [],
                 'post_depend_cmd':  ''
             },
         },
     },
-        
+
     'xandros': {
         'alt_names': '',
         'display_name': 'Xandros',
@@ -761,8 +767,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -772,12 +778,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'freebsd': {
         'alt_names': '',
         'display_name': 'FreeBSD',
@@ -787,8 +793,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -798,12 +804,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'linspire': {
         'alt_names': '',
         'display_name': 'Linspire',
@@ -813,8 +819,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", ],
         'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
-        'pre_depend_cmd': 'su -c "cp -f /etc/apt/sources.list /etc/apt/sources.hplip && echo deb ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list && echo deb-src ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list && apt-get update"',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': ['su -c "cp -f /etc/apt/sources.list /etc/apt/sources.hplip', 'echo deb ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list', 'echo deb-src ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list', 'su -c "apt-get update"'],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': 'su -c "apt-get remove hpoj"',
         'hplip_remove_cmd': 'su -c "apt-get remove hplip hpijs"',
         'versions': {
@@ -824,12 +830,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'ark': {
         'alt_names': '',
         'display_name': 'Ark Linux',
@@ -839,8 +845,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -850,12 +856,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'pclinuxos': {
         'alt_names': '',
         'display_name': 'PCLinuxOS',
@@ -865,8 +871,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", "synaptic"],
         'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
-        'pre_depend_cmd': 'su -c "apt-get update"',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': ['su -c "apt-get update"'],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': 'su -c "apt-get remove --force-yes --yes hpoj"',
         'hplip_remove_cmd': 'su -c "apt-get remove --force-yes --yes hplip hpijs"',
         'versions': {
@@ -876,12 +882,12 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'asianux': {
         'alt_names': '',
         'display_name': 'AsianUX',
@@ -891,8 +897,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -902,12 +908,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'pcbsd': {
         'alt_names': '',
         'display_name': 'PC-BSD',
@@ -917,8 +923,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -928,12 +934,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'sun wah rays lx': {
         'alt_names': '',
         'display_name': 'Sun Wah RAYS LX',
@@ -943,8 +949,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -954,12 +960,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'miracle': {
         'alt_names': '',
         'display_name': 'Miracle Linux',
@@ -969,8 +975,8 @@ distros = \
         'su_sudo' : 'su',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -980,12 +986,12 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': ''
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     },
-        
+
      'unknown' : {
         'index': 0,
         'display': True, # Must be 'True' 
@@ -993,8 +999,8 @@ distros = \
         'display_name' : 'Unknown or not listed',
         'package_mgrs': [],
         'package_mgr_cmd' : '',
-        'pre_depend_cmd': '',
-        'post_depend_cmd': '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
         'hpoj_remove_cmd': '',
         'hplip_remove_cmd': '',
         'versions': {
@@ -1004,18 +1010,18 @@ distros = \
                 'supported': False, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': '', 
-                'post_depend_cmd': '',
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
             },
         },
     }
 }
-    
+
 # Create the 'reverse' index (index# --> distro name)
 distros_index = {}
 for d in distros:
     distros_index[distros[d]['index']] = d
-    
+
 # Package manager names
 package_mgrs = []
 for d in distros:
@@ -1055,6 +1061,8 @@ __copy_cmds('ubuntu', '6.06', '6.10') # 6.06 = 6.10
 __update_ver_cmd('ubuntu', '5.04', 'gs', ('gs', ''))
 __update_ver_cmd('ubuntu', '5.04', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
+__update_ver_cmd('ubuntu', '6.06', 'cups', ('libcupsys2', ''))
+__update_ver_cmd('ubuntu', '6.10', 'cups', ('libcupsys2', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '6.10', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'cups-devel', ('libcupsys2-dev', ''))
@@ -1100,7 +1108,7 @@ __set_ver_cmds('suse', '9.0',
 'libpthread' : ('glibc', ''),
 'python2x' : ('python', ''),
 'gs' : ('ghostscript-library', ''),
-'libusb' : ('libusb', ''),
+'libusb' : ('libusb libusb-devel', ''),
 'lsb' : ('lsb', ''),
 'sane' : ('sane', ''),
 'xsane' : ('xsane', ''),
@@ -1169,7 +1177,7 @@ __set_ver_cmds('fedora', '3.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', 'su -c "/sbin/modprobe ppdev"'),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1211,7 +1219,7 @@ __set_ver_cmds('redhat', '8.0',
 })
 
 __copy_cmds('redhat', '8.0', '9.0') 
- 
+
 ################### RHEL (7) ###################
 __set_ver_cmds('rhel', '3.0',
 { 

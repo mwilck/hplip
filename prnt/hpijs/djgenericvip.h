@@ -150,6 +150,9 @@ public:
 #ifdef APDK_MLC_PRINTER
 		"PSC 1500\0"
 		"PSC 1600\0"
+        "PSC 2100\0"              
+        "PSC 2150\0"
+		"PSC 2170\0"
         "PSC 2200\0"
         "psc 2300\0"
 		"PSC 2350\0"

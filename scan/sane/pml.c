@@ -656,6 +656,8 @@ int pml_to_sane_status(HPAIO_RECORD *hpaio)
       goto bugout;
    PmlGetIntegerValue(hpaio->pml.objScannerStatus, 0, &status);
 
+   DBG(6, "PML scannerStatus=%x: %s %d\n", status, __FILE__, __LINE__);
+
    if(status & PML_SCANNER_STATUS_FEEDER_JAM)
    {
       stat = SANE_STATUS_JAMMED;
@@ -666,7 +668,7 @@ int pml_to_sane_status(HPAIO_RECORD *hpaio)
    }
    else if(status & PML_SCANNER_STATUS_FEEDER_EMPTY)
    {
-      if(hpaio->currentBatchScan == SANE_FALSE && hpaio->currentAdfMode == ADF_MODE_AUTO)
+      if(hpaio->currentAdfMode == ADF_MODE_FLATBED || (hpaio->currentBatchScan == SANE_FALSE && hpaio->currentAdfMode == ADF_MODE_AUTO))
       {
          stat = SANE_STATUS_GOOD;
       }
@@ -762,6 +764,7 @@ int pml_start(HPAIO_RECORD *hpaio)
       goto bugout;
    }
    PmlGetIntegerValue(hpaio->pml.objUploadState, 0, &state);
+   DBG(6, "PML uploadState=%d before scan: %s %d\n", state, __FILE__, __LINE__);
    switch (state)
    {
       case PML_UPLOAD_STATE_IDLE:

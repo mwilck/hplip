@@ -1106,10 +1106,6 @@ protected:
 	int			 FrPaperToMediaSize(PAPER_SIZE ps);
 }; //HeaderLJFastRaster
 
-//RasterSender
-//! Send rasters to the device
-/*!
-******************************************************************************/
 class RasterSender : public Processor
 {
 friend class Header;

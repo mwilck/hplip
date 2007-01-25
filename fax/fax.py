@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,15 +200,15 @@ PAGE_HEADER_SIZE = 24
 class FaxAddressBook(KirbyBase):
     def __init__(self):
         KirbyBase.__init__(self)
-        
+
         # Transitional code to handle moving of db file
         t = os.path.expanduser('~/.hplip.fab') # old location
         self._fab = os.path.expanduser('~/hpfax/fab.db') # new location
-        
+
         fax_dir = os.path.expanduser("~/hpfax")
         if not os.path.exists(fax_dir):
             os.mkdir(fax_dir)
-        
+
         if os.path.exists(t) and not os.path.exists(self._fab):
             import shutil
             shutil.move(t, self._fab)
@@ -231,6 +231,9 @@ class FaxAddressBook(KirbyBase):
 
     def filename(self):
         return self._fab
+
+    def last_modification_time(self):
+        return os.stat(self._fab).st_mtime
 
     def close(self):
         return KirbyBase.close(self)
@@ -387,7 +390,7 @@ class FaxDevice(device.Device):
         p = struct.pack("BBBBBBB", t[0]-2000, t[1], t[2], t[6]+1, t[3], t[4], t[5])
         log.debug(repr(p))
         return self.setPML(pml.OID_DATE_AND_TIME, p)
-    
+
     def uploadLog(self):
         if not self.isUloadLogActive():
             self.upload_log_thread = UploadLogThread(self)
@@ -789,7 +792,7 @@ class FaxSendThread(threading.Thread):
                 log.debug("Merging g3 files...")
                 state = STATE_SEND_FAX
                 self.remove_temp_file = True
-                
+
                 if self.job_total_pages:
                     f_fd, f = utils.make_temp_file()
                     log.debug("Temp file=%s" % f)
@@ -908,8 +911,13 @@ class FaxSendThread(threading.Thread):
                     elif fax_send_state == FAX_SEND_STATE_ERROR: # -------------- Error (110, 20, 0)
                         log.error("Fax send error.")
                         monitor_state = False
+
                         fax_send_state = FAX_SEND_STATE_RESET_TOKEN
                         state = STATE_ERROR
+
+                        #fax_send_state = FAX_SEND_STATE_DONE
+                        #state = STATE_NEXT_RECIPIENT
+
 
                     elif fax_send_state == FAX_SEND_STATE_BUSY: # -------------- Busy (110, 25, 0)
                         log.error("Fax device busy.")
@@ -1076,6 +1084,8 @@ class FaxSendThread(threading.Thread):
                         log.debug("%s State: Send dial strings" % ("*"*20))
                         fax_send_state = FAX_SEND_STATE_SEND_FAX_HEADER
 
+                        log.debug("Dialing: %s" % recipient.fax)
+
                         log.debug("Sending dial strings...")
                         self.create_mfpdtf_fixed_header(DT_DIAL_STRINGS, True, 
                             PAGE_FLAG_NEW_DOC | PAGE_FLAG_END_DOC | PAGE_FLAG_END_STREAM) # 0x1c on Windows, we were sending 0x0c
@@ -1173,7 +1183,7 @@ class FaxSendThread(threading.Thread):
                                 log.error("No data!")
                                 fax_send_state = FAX_SEND_STATE_ERROR
                                 continue
-                            
+
                             self.create_raster_data_record(data)
                             total_read = RASTER_DATA_SIZE
 
@@ -1185,7 +1195,7 @@ class FaxSendThread(threading.Thread):
 
                                 if data == '':
                                     self.create_eop_record(rpp)
-                                    
+
                                     try:
                                         self.write_stream()
                                     except Error:
@@ -1205,7 +1215,7 @@ class FaxSendThread(threading.Thread):
                                 while status  == pml.FAXJOB_TX_STATUS_DIALING:
                                     self.write_queue((STATUS_DIALING, 0, recipient.fax))
                                     time.sleep(1.0)
-    
+
                                     if self.check_for_cancel():
                                         fax_send_state = FAX_SEND_STATE_ABORT
                                         break
@@ -1218,11 +1228,11 @@ class FaxSendThread(threading.Thread):
                                     status = self.getFaxJobTxStatus()
 
                                 if fax_send_state not in (FAX_SEND_STATE_ABORT, FAX_SEND_STATE_ERROR):
-                                    
+
                                     while status  == pml.FAXJOB_TX_STATUS_CONNECTING: 
                                         self.write_queue((STATUS_CONNECTING, 0, recipient.fax))
                                         time.sleep(1.0)
-        
+
                                         if self.check_for_cancel():
                                             fax_send_state = FAX_SEND_STATE_ABORT
                                             break
@@ -1264,30 +1274,30 @@ class FaxSendThread(threading.Thread):
 
                     elif fax_send_state == FAX_SEND_STATE_WAIT_FOR_COMPLETE: # -------------- Wait for complete (110, 150, 0)
                         log.debug("%s State: Wait for completion" % ("*"*20))
-                        
+
                         fax_send_state = FAX_SEND_STATE_WAIT_FOR_COMPLETE
-                        
+
                         time.sleep(1.0)
                         status = self.getFaxJobTxStatus()
-                        
+
                         if status == pml.FAXJOB_TX_STATUS_DIALING:
                                 self.write_queue((STATUS_DIALING, 0, recipient.fax))
-    
+
                         elif status == pml.FAXJOB_TX_STATUS_TRANSMITTING:    
                             self.write_queue((STATUS_SENDING, page_num, recipient.fax))
 
                         elif status in (pml.FAXJOB_TX_STATUS_DONE, pml.FAXJOB_RX_STATUS_IDLE):
                             fax_send_state = FAX_SEND_STATE_RESET_TOKEN
                             state = STATE_NEXT_RECIPIENT
-                        
+
                         else:
                             self.write_queue((STATUS_SENDING, page_num, recipient.fax))
-                                
+
 
                     elif fax_send_state == FAX_SEND_STATE_RESET_TOKEN: # -------------- Release fax token (110, 160, 0)
                         self.write_queue((STATUS_CLEANUP, 0, ''))
                         log.debug("%s State: Release fax token" % ("*"*20))
-                        
+
                         try:
                             self.dev.setPML(pml.OID_FAX_TOKEN, '\x00'*16)
                         except Error:
@@ -1328,7 +1338,7 @@ class FaxSendThread(threading.Thread):
 
             elif state == STATE_CLEANUP: # --------------------------------- Cleanup (120, 0, 0)
                 log.debug("%s State: Cleanup" % ("*"*20))
-                
+
                 if self.remove_temp_file:
                     log.debug("Removing merged file: %s" % f)
                     try:
@@ -1336,7 +1346,7 @@ class FaxSendThread(threading.Thread):
                         log.debug("Removed")
                     except OSError:
                         log.debug("Not found")
-                    
+
                 state = STATE_DONE
 
 
@@ -1376,61 +1386,38 @@ class FaxSendThread(threading.Thread):
         log.debug("Job ID=%d" % sent_job_id)    
         job_id = 0
 
+        time.sleep(1)
+
         fax_file = ''
         complete = False
-        end_time = time.time() + 90.0 # 90 second timeout
-        
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            sock.connect((prop.hpssd_host, prop.hpssd_port))
+        except socket.error:
+            log.error("Unable to contact HPLIP I/O (hpssd).")
+            return '', True   
+
+        end_time = time.time() + 120.0 
         while time.time() < end_time:
-            while self.event_queue.qsize():
-                try:
-                    event = self.event_queue.get(0)
-                    code = event[0]
+            log.debug("Waiting for fax...")
+            fields, data, result_code = \
+                msg.xmitMessage(sock, "FaxCheck", None,
+                                     {"username": prop.username,
+                                     })
 
-                    log.debug("Received event '%s'" % repr(event))
-                    
-                    if code == EVENT_FAX_RENDER_COMPLETE:
-                        title, username, job_id, job_size = event[1:5]
-                        
-                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        try:
-                            sock.connect((prop.hpssd_host, prop.hpssd_port))
-                        except socket.error:
-                            log.error("Unable to contact HPLIP I/O (hpssd).")
-                            return '', True   
-        
-                        fd, fax_file = utils.make_temp_file()
-                        
-                        log.debug("Transfering job %d (%d bytes)" % (job_id, job_size))
-                        
-                        while True:
-                            fields, data, result_code = \
-                                msg.xmitMessage(sock, "FaxGetData", None,
-                                                     {"username": username,
-                                                      "job-id": job_id,
-                                                     })
-                                                     
-                            if data and result_code == ERROR_SUCCESS:
-                                os.write(fd, data)
-                            else:
-                                complete = True
-                                break
-                            
-                        os.close(fd)
-                        sock.close()
-                        
-                    elif code == EVENT_FAX_SEND_CANCELED:
-                        log.debug("Cancel pressed!")
-                        log.error("Render canceled. Canceling job #%d..." % sent_job_id)
-                        cups.cancelJob(sent_job_id)
-                        return '', True
+            if result_code == ERROR_FAX_PROCESSING:
+                log.debug("Fax is being rendered...")
 
-                except Queue.Empty:
-                    break
-
-            if complete and \
-                sent_job_id == job_id:
-                
+            elif result_code == ERROR_FAX_READY:
                 break
+
+            if self.check_for_cancel():
+                log.error("Render canceled. Canceling job #%d..." % sent_job_id)
+                cups.cancelJob(sent_job_id)
+                os.close(fd)
+                sock.close()
+                return '', True
 
             time.sleep(1)
 
@@ -1438,6 +1425,34 @@ class FaxSendThread(threading.Thread):
             log.error("Timeout waiting for rendering. Canceling job #%d..." % sent_job_id)
             cups.cancelJob(sent_job_id)
             return '', False
+
+        fd, fax_file = utils.make_temp_file()
+
+        while True:
+            log.debug("Transfering fax data...")
+            fields, data, result_code = \
+                msg.xmitMessage(sock, "FaxGetData", None,
+                                     {"username": prop.username,
+                                      "job-id": sent_job_id,
+                                     })
+
+            if data and result_code == ERROR_SUCCESS:
+                os.write(fd, data)
+
+            else:
+                complete = True
+                break
+
+            if self.check_for_cancel():
+                log.error("Render canceled. Canceling job #%d..." % sent_job_id)
+                cups.cancelJob(sent_job_id)
+                os.close(fd)
+                sock.close()
+                return '', True
+
+
+        os.close(fd)
+        sock.close()
 
         return fax_file, False
 

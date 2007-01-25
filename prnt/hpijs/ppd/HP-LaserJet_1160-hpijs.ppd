@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"HPIJS.PPD"
 *Manufacturer:	"HP"
-*Product:	"(LaserJet 1160)"
+*Product:	"(hp LaserJet 1160 series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp LaserJet 1160 series;CMD:PJL,MLC,BIDI-ECP,PCL,DW-PCL;DES:Hewlett-Packard LaserJet 1160 series;"
 *DefaultResolution: 600dpi
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,15 +35,15 @@ class AlignForm(QDialog):
         # line_count: 2 or 3
         # choice_count: 5, 7, 9, 11, etc. (odd)
         mid_point = (choice_count+1)/2
-        
+
         if not name:
             self.setProperty("name", QVariant("AlignForm"))
 
         AlignFormLayout = QGridLayout(self,1,1,11,6,"AlignFormLayout")
 
-        self.helpButton = QPushButton(self,"helpButton")
+        #self.helpButton = QPushButton(self,"helpButton")
 
-        AlignFormLayout.addWidget(self.helpButton,1,0)
+        #AlignFormLayout.addWidget(self.helpButton,1,0)
 
         self.CancelButton = QPushButton(self,"CancelButton")
 
@@ -59,7 +59,7 @@ class AlignForm(QDialog):
         self.buttonGroup.setColumnLayout(0,Qt.Vertical)
         self.buttonGroup.layout().setSpacing(6)
         self.buttonGroup.layout().setMargin(11)
-        
+
         buttonGroupLayout = QGridLayout(self.buttonGroup.layout())
         buttonGroupLayout.setAlignment(Qt.AlignTop)
 
@@ -99,7 +99,7 @@ class AlignForm(QDialog):
         self.Icon.setPixmap(QPixmap(os.path.join(prop.image_dir, '%s-%s-%d.png' % (orientation, colors, line_count))))
 
         self.buttonGroup.setTitle(line_id)
-        
+
         self.value = (choice_count + 1) / 2
 
     def buttonGroup_clicked(self,a0):
@@ -108,7 +108,7 @@ class AlignForm(QDialog):
 
     def languageChange(self):
         self.setProperty("caption",QVariant(self.__tr("HP Device Manager - Alignment")))
-        self.helpButton.setProperty("text",QVariant(self.__tr("Help")))
+        #self.helpButton.setProperty("text",QVariant(self.__tr("Help")))
         self.CancelButton.setProperty("text",QVariant(self.__tr("Cancel")))
         self.ContinueButton.setProperty("text",QVariant(self.__tr("Next >")))
         self.buttonGroup.setProperty("title",QVariant(self.__tr("")))

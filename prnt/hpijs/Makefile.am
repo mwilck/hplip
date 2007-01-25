@@ -6,7 +6,7 @@ docdir	= $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL=APDK_2006_11_20
+APDKLABEL=APDK_2007_01_11
 APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug
@@ -83,7 +83,8 @@ wwwsrc = ../../doc
 if !HPLIP_BUILD
 www0dir = $(docdir)
 dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
-    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html
+   $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
+   $(wwwsrc)/other_support.html $(wwwsrc)/downloads.html
 www1dir = $(docdir)/howtos
 dist_www1_DATA = $(wwwsrc)/howtos/*
 www2dir = $(docdir)/install
@@ -102,6 +103,12 @@ www242dir = $(docdir)/install/step4/setup
 dist_www242_DATA = $(wwwsrc)/install/step4/setup/*
 www243dir = $(docdir)/install/step4/suse
 dist_www243_DATA = $(wwwsrc)/install/step4/suse/*
+www251dir = $(docdir)/install/manual
+dist_www251_DATA = $(wwwsrc)/install/manual/*
+www252dir = $(docdir)/install/manual/distros
+dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
+www261dir = $(docdir)/install/install
+dist_www261_DATA = $(wwwsrc)/install/install/*
 www3dir = $(docdir)/styles
 dist_www3_DATA = $(wwwsrc)/styles/*
 www4dir = $(docdir)/images

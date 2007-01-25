@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -267,7 +267,7 @@ have_dependencies = {}
 def init(callback=None):
     if callback is not None:
         callback("Initializing...\n")
-        
+
     global version_description, version_public, version_internal
     global hpijs_version_description, hpijs_version
     global bitness, endian
@@ -276,11 +276,11 @@ def init(callback=None):
     global install_location
     global hpoj_present, hplip_present
     global have_dependencies
-        
+
     version_description, version_public, version_internal = getHPLIPVersion()
     log.debug("HPLIP Description=%s Public version=%s Internal version = %s"  % 
         (version_description, version_public, version_internal))
-    
+
     hpijs_version_description, hpijs_version = getHPIJSVersion()
     log.debug("HPIJS Description=%s Version=%s"  % 
         (hpijs_version_description, hpijs_version))
@@ -291,90 +291,73 @@ def init(callback=None):
         for d in dependencies:
             if opt in dependencies[d][1]:
                 options[opt][2].append(d)
-    
+
     cleanup_spinner()
-    
+
     # have_dependencies
     # is each dependency satisfied?
     # start with each one 'No'
-    
     for d in dependencies:
         have_dependencies[d] = False
-    
-    ##try:
-    ##    import pprint
-    ##    log.debug_block('distros', pprint.pformat(distros), fmt=True)
-    ##    log.debug_block('distros_index', pprint.pformat(distros_index), fmt=True)
-    ##    log.debug_block('options', pprint.pformat(options), fmt=True)
-    ##    log.debug_block('components', pprint.pformat(components), fmt=True)
-    ##    log.debug_block('dependencies', pprint.pformat(dependencies), fmt=True)
-    ##    log.debug_block('package_mgrs', pprint.pformat(package_mgrs), fmt=True)
-    ##except ImportError:
-    ##    log.debug(distros)
-    ##    log.debug(distros_index)
-    ##    log.debug(options)
-    ##    log.debug(components)
-    ##    log.debug(dependencies)
-    ##    log.debug(package_mgrs)
-    
+
     dcheck.update_ld_output()
-    
+
     if callback is not None:
         callback("Checking dependencies...\n")
-    
+
     for d in dependencies:
         log.debug("***")
-    
+
         update_spinner()
-    
+
         log.debug("Checking for dependency '%s'...\n" % d)
-        
+
         if callback is not None:
             callback("Checking for dependency '%s'...\n" % d)
-        
+
         have_dependencies[d] = dependencies[d][3]()
         log.debug("have %s = %d" % (d, have_dependencies[d]))
-    
+
     cleanup_spinner()
-    
+
     log.debug("******")
     for d in dependencies:
         log.debug("have %s = %d" % (d, have_dependencies[d]))
-        
+
         if callback is not None:
             callback("Dependency '%s' = %d.\n" % (d, have_dependencies[d]))
-    
+
     log.debug("******")
-    
+
     log.debug("Running package manager: %s" % check_pkg_mgr())
-    
+
     bitness = utils.getBitness()
     log.debug("Bitness = %d" % bitness)
-    
+
     endian = utils.getEndian()
     log.debug("Endian = %d" % endian)
-    
+
     if callback is not None:
         callback("Checking distribution...\n")
 
     distro, distro_version = getDistro()
     distro_name = distros_index[distro]
-    
+
     try:
         distro_version_supported = distros[distro_name]['versions'][distro_version]['supported']
     except KeyError:
         distro_version_supported = False
-    
+
     log.debug("Distro = %s Distro Name = %s Display Name= %s Version = %s Supported = %s" % 
         (distro, distro_name, distros[distro_name]['display_name'], distro_version, distro_version_supported))
-    
+
     install_location = sys_cfg.dirs.home.replace("/share/hplip", '') or '/usr' # --prefix
-    
+
     if callback is not None:
         callback("Checking for HPOJ and HPLIP...\n")
 
     hpoj_present = dcheck.check_hpoj()
     log.debug("HPOJ = %s" % hpoj_present)
-    
+
     hplip_present = dcheck.check_hplip()
     log.debug("HPLIP (prev install) = %s" % hplip_present)    

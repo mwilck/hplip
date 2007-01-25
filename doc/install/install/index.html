@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>HPLIP Installation - Installer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
+
+<div id="banner">
+<div id="banner_graphics">
+        <div id="floatleft">
+        <img src="../../images/hplogo2.png" alt="HP Logo" border="0" />
+        </div>
+        <div id="floatcenter">
+        <a href="../../index.html">
+        <img src="../../images/hpliplogo.png" alt="HP Logo" border="0" />
+        </a>
+        </div>
+        <div id="floatright">
+        <img src="../../images/tuxlogo2.png" alt="Tux" border="0" />
+        </div>
+    </div>
+</div>
+<!-- end banner -->
+
+<div id="navbar">
+<table>
+    <tr>
+        <td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+    <menu compact="compact">
+        <div class="menuheader"><a href="../../index.html" title="">Home</a></div>
+    </menu>
+
+<div class="menuheader">About</div>
+    <menu compact="compact">
+        <li><a href="../../features.html" title="">Features</a></li> 
+        <li><a href="../../screenshots.html" title="">Screenshots</a></li> 
+        <li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
+        <li><a a href="../../about.html" title="About">About HPLIP</a></li>
+    </menu>
+<div class="menuheader">Setup and Installation</div>
+    <menu compact="compact">
+        <li><a href="../../downloads.html" title="Downloads">Download HPLIP</a></li>
+        <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+        <li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+        <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+    </menu>
+<div class="menuheader">Usage and Support</div>
+    <menu compact="compact">
+        <li><a href="../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+        <li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+        <li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+        <li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
+    </menu>
+<div class="menuheader">Resources</div>
+    <menu compact="compact">
+        <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+        <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+        <li><a href="../../license.html" title="Software License">Software License</a></li>
+        <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+        <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
+    </menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="content"><!-- start content -->
+        <a href="../../index.html">Home</a>
+&gt;
+<a href="../index.html">Installation</a>
+&gt;
+Installer
+
+<hr size="1"/>
+        <div class="document" id="installer-walkthrough">
+<h1 class="title">Installer Walkthrough</h1>
+<p><strong>Download HPLIP 1.7.1</strong></p>
+<p><a class="reference" href="http://prdownloads.sourceforge.net/hplip-1.7.1.run"><img alt="Download the Self-Extracting Archive With Installer" src="../../images/download.png" /></a> <a class="reference" href="http://prdownloads.sourceforge.net/hplip/hplip-1.7.1.run">Download the Self-Extracting Archive With Installer</a></p>
+<p><strong>Installer</strong></p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">After downloading make sure to put the hplip-1.7.1.run file in the directory you will want the hplip directory to be created.</p>
+</div>
+<p>After downloading the hplip .run file run this command:</p>
+<div class="compound">
+<p>sh ./hplip-1.7.1.run</p>
+</div>
+<p>At this step the hplip directory is created and the hplip source files are extracted. You should see something similar to the below.</p>
+<center><p><img alt="install_1" src="../../images/Install_1.png" /></p>
+</center><p>Select the install mode, automatic or custom install.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">In automatic mode parallel support is NOT enabled.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">In automatic mode the following settings are preset: Installs HPLIP, doesn't display the release notes, installs all options EXCEPT parallel support, doesn't ask to confirm linux distribution, tries to remove previous installs of HPLIP and HPOJ, assumes that all optional and required dependencies will be downloaded and installed, installs HPLIP to the /usr directory, will automatically compile and install hplip, and will run the hp-setup tool to configure your printer.</p>
+</div>
+<center><p><img alt="install_2" src="../../images/Install_2.png" /></p>
+</center><p>Verify or select your linux distribution:</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ensure the installer detected the correct linux distribution. Different linux versions use different install procedures if the incorrect version is selected the installer may fail.</p>
+</div>
+<center><p><img alt="install_3" src="../../images/Install_3.png" /></p>
+</center><p>The pre-installation notes are displayed (below):</p>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be sure to read the Installation Notes: there is specific information or directions that need to be followed for your distribution.</p>
+</div>
+<center><p><img alt="install_4" src="../../images/Install_4.png" /></p>
+</center><p>Next you will see the dependencies required for HPLIP to function that are missing:</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are installing in automatic mode all of the missing required and optional dependencies will be installed.</p>
+</div>
+<center><p><img alt="install_5" src="../../images/Install_5.png" /></p>
+</center><p>Your package manager, ie apt-get--will be updated and any other maintenance will be completed for your specific distribution.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may need to enter the root password.</p>
+</div>
+<center><p><img alt="install_6" src="../../images/Install_6.png" /></p>
+</center><p>The installer will now download and install the missing dependencies:</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the installer seems to pause for a long time hit enter or tab then enter enter several times. or if you get a blank line--enter your root password and hit enter.
+This is being looked into and should be fixed in a future release.</p>
+</div>
+<center><p><img alt="install_7" src="../../images/Install_7.png" /></p>
+</center><p>The installer checks to see if HPLIP is already installed and/or running.  Then the installer compiles and installs the HPLIP software.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may need to enter your root password.</p>
+</div>
+<center><p><img alt="install_8" src="../../images/Install_8.png" /></p>
+</center><p>The installer will run the hp-setup tool so that you can configure your printer.  The first step is to select the printer connection type:</p>
+<center><p><img alt="install_9" src="../../images/Install_Printer_Setup_1.png" /></p>
+</center><p>Next the setup tool will display printers detected (depending on the connection type selected):</p>
+<center><p><img alt="install_10" src="../../images/Install_Printer_Setup_2.png" /></p>
+</center><p>The PPD files (drivers) which are most similar to your printer are displayed.  Select the appropriate PPD file for your printer:</p>
+<center><p><img alt="install_11" src="../../images/Install_Printer_Setup_3.png" /></p>
+</center><p>Enter your printer information:</p>
+<center><p><img alt="install_12" src="../../images/Install_Printer_Setup_4.png" /></p>
+</center><p>Click FINISH to complete the printer setup process:</p>
+<center><p><img alt="install_13" src="../../images/Install_Printer_Setup_5.png" /></p>
+</center></div>
+
+<hr size="1"/>
+<center><small>Page last updated: Tue Dec  5 14:27:42 2006; HPLIP Version: 1.7.1</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+<!-- end container -->
+<div id="footer"><!-- start footer -->
+        <hr size="1"/>
+        <a href="../../legal.html">Legal Notices</a>
+        Copyright &#169; 2003-2007, Hewlett-Packard Development Company, L.P.
+        <a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+        <a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
+</body>
+</html>

@@ -340,7 +340,7 @@ def olympus_special_mode(v):
         3: 'Bottom to top',
         4: 'Top to bottom'}
     return '%s - sequence %d - %s' % (a[v[0]], v[1], b[v[2]])
-        
+
 MAKERNOTE_OLYMPUS_TAGS={
     # ah HAH! those sneeeeeaky bastids! this is how they get past the fact
     # that a JPEG thumbnail is not allowed in an uncompressed TIFF file
@@ -686,10 +686,10 @@ class IFD_Tag:
         self.field_length=field_length
         # either a string or array of data items
         self.values=values
-        
+
     def __str__(self):
         return self.printable
-    
+
     def __repr__(self):
         return '(0x%04X) %s=%s @ %d' % (self.tag,
                                         FIELD_TYPES[self.field_type][2],
@@ -704,7 +704,7 @@ class EXIF_header:
         self.offset=offset
         self.debug=debug
         self.tags={}
-        
+
     # convert slice to integer, based on sign and endian flags
     def s2n(self, offset, length, signed=0):
         self.file.seek(self.offset+offset)
@@ -731,7 +731,7 @@ class EXIF_header:
                 s=chr(offset & 0xFF)+s
             offset=offset >> 8
         return s
-    
+
     # return first IFD
     def first_IFD(self):
         return self.s2n(4, 4)
@@ -829,7 +829,7 @@ class EXIF_header:
         # ... plus thumbnail IFD data plus a null "next IFD" pointer
         self.file.seek(self.offset+thumb_ifd)
         tiff+=self.file.read(entries*12+2)+'\x00\x00\x00\x00'
-        
+
         # fix up large value offset pointers into data area
         for i in range(entries):
             entry=thumb_ifd+2+12*i
@@ -857,7 +857,7 @@ class EXIF_header:
                 # get original data and store it
                 self.file.seek(self.offset+oldoff)
                 tiff+=self.file.read(count*typelen)
-                
+
         # add pixel strips and update strip offset info
         old_offsets=self.tags['Thumbnail StripOffsets'].values
         old_counts=self.tags['Thumbnail StripByteCounts'].values
@@ -869,9 +869,9 @@ class EXIF_header:
             # add pixel strip to end
             self.file.seek(self.offset+old_offsets[i])
             tiff+=self.file.read(old_counts[i])
-            
+
         self.tags['TIFFThumbnail']=tiff
-        
+
     # decode all the camera-specific MakerNote formats
     def decode_maker_note(self):
         note=self.tags['EXIF MakerNote']
@@ -901,7 +901,7 @@ class EXIF_header:
             self.dump_IFD(note.field_offset, 'MakerNote',
                           dict=MAKERNOTE_CASIO_TAGS)
             return
-        
+
         # Fujifilm
         if make == 'FUJIFILM':
             # bug: everything else is "Motorola" endian, but the MakerNote
@@ -918,7 +918,7 @@ class EXIF_header:
             self.endian=endian
             self.offset=offset
             return
-        
+
         # Canon
         if make == 'Canon':
             self.dump_IFD(note.field_offset, 'MakerNote',
@@ -1019,14 +1019,14 @@ def process_file(file, debug=0):
     thumb=hdr.tags.get('Thumbnail Compression')
     if thumb and thumb.printable == 'Uncompressed TIFF':
         hdr.extract_TIFF_thumbnail(thumb_ifd)
-        
+
     # JPEG thumbnail (thankfully the JPEG data is stored as a unit)
     thumb_off=hdr.tags.get('Thumbnail JPEGInterchangeFormat')
     if thumb_off:
         file.seek(offset+thumb_off.values[0])
         size=hdr.tags['Thumbnail JPEGInterchangeFormatLength'].values[0]
         hdr.tags['JPEGThumbnail']=file.read(size)
-        
+
     # deal with MakerNote contained in EXIF IFD
     if hdr.tags.has_key('EXIF MakerNote'):
         hdr.decode_maker_note()
@@ -1038,17 +1038,17 @@ def process_file(file, debug=0):
         if thumb_off:
             file.seek(offset+thumb_off.values[0])
             hdr.tags['JPEGThumbnail']=file.read(thumb_off.field_length)
-            
+
     return hdr.tags
 
 # library test/debug function (dump given files)
 if __name__ == '__main__':
     import sys
-    
+
     if len(sys.argv) < 2:
         print 'Usage: %s files...\n' % sys.argv[0]
         sys.exit(0)
-        
+
     for filename in sys.argv[1:]:
         try:
             file=open(filename, 'rb')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ USAGE = [(__doc__, "", "para", True),
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, title=__title__, crumb='hpfax:')
     sys.exit(0)        
 
@@ -96,26 +96,26 @@ for o, a in opts:
 
     elif o == '-g':
         log.set_level('debug')
-    
+
     elif o in ('-h', '--help'):
         usage()
-        
+
     elif o == '--help-rest':
         usage('rest')
-    
+
     elif o == '--help-man':
         usage('man')
-        
+
 
 if len( args ) == 0:
     probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
-    
+
     if not probed_devices:
         cups_ver_major, cups_ver_minor, cups_ver_patch = cups.getVersionTuple()
-        
+
         if cups_ver_major == 1 and cups_ver_minor < 2:
             print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
-            
+
         sys.exit(0)
 
     good_devices = 0
@@ -125,10 +125,10 @@ if len( args ) == 0:
                 device.parseDeviceURI(uri)
         except Error:
             continue
-        
+
         print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % (uri, model)
         good_devices += 1
-        
+
     if not good_devices:
         print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
 
@@ -142,20 +142,20 @@ else:
     except KeyError:
         log.stderr("hpfax[%d]: error: Improper environment: Must be run by CUPS." % pid)
         sys.exit(1)
-        
+
     log.debug(args)
-    
+
     try:
         job_id, username, title, copies, options = args[0:5]
     except IndexError:
         log.stderr("hpfax[%d]: error: Invalid command line: Invalid arguments." % pid)
         sys.exit(1)
-        
+
     try:
         input_fd = file(args[5], 'r')
     except IndexError:
         input_fd = 0
-        
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((prop.hpssd_host, prop.hpssd_port))
@@ -167,17 +167,17 @@ else:
 
     if not len(fax_data):
         log.stderr("hpfax[%d]: error: No data!" % pid)
-        
+
         sendEvent(sock, EVENT_ERROR_NO_DATA_AVAILABLE, 'error',
                   job_id, username, device_uri)
-        
+
         sock.close()
         sys.exit(1)
-        
+
 
     sendEvent(sock, EVENT_START_FAX_PRINT_JOB, 'event',
               job_id, username, device_uri)
-    
+
     while True:
         try:
             fields, data, result_code = \
@@ -189,23 +189,23 @@ else:
                                       "printer": printer_name,
                                       "title": title,
                                      })
-                               
+
         except Error:
             log.stderr("hpfax[%d]: error: Unable to send event to HPLIP I/O (hpssd)." % pid)
             sys.exit(1) 
-       
+
         if result_code == ERROR_GUI_NOT_AVAILABLE:
             # New behavior in 1.6.6a (10sec retry)
             log.stderr("hpfax[%d]: error: You must run hp-sendfax first. Run hp-sendfax now to continue. Fax will resume within 10 seconds." % pid)
-            
+
             sendEvent(sock, EVENT_ERROR_FAX_MUST_RUN_SENDFAX_FIRST, 'event',
                       job_id, username, device_uri)
-            
+
         else: # ERROR_SUCCESS
             break
-        
+
         time.sleep(10)
-    
+
 
     bytes_read = 0
     while True:
@@ -221,12 +221,12 @@ else:
                                       "device-uri": device_uri,
                                       "job-size": bytes_read,
                                      })
-            
+
             break
-                                   
-            
+
+
         bytes_read += len(fax_data) 
-        
+
         fields, data, result_code = \
             msg.xmitMessage(sock, "HPFaxData", 
                                  fax_data,
@@ -235,9 +235,9 @@ else:
                                  })
 
         fax_data = os.read(input_fd, prop.max_message_len)
-    
+
     os.close(input_fd)
     sock.close()
     sys.exit(0)
-    
-    
+
+

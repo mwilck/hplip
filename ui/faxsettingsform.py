@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,8 +40,8 @@ class PhoneNumValidator(QValidator):
             return QValidator.Invalid, pos
         else:
             return QValidator.Acceptable, pos
-            
-            
+
+
 class StationNameValidator(QValidator):
     def __init__(self, parent=None, name=None):
         QValidator.__init__(self, parent, name)
@@ -57,45 +57,29 @@ class StationNameValidator(QValidator):
             return QValidator.Invalid, pos
         else:
             return QValidator.Acceptable, pos
-            
-    
+
+
 
 class FaxSettingsForm(FaxSettingsForm_base):
 
     def __init__(self, dev, fax_num, name_co, parent = None,name = None,modal = 0,fl = 0):
         FaxSettingsForm_base.__init__(self,parent,name,modal,fl)
         self.dev = dev
-        
         self.faxEdit.setValidator(PhoneNumValidator(self.faxEdit))
         self.nameEdit.setValidator(StationNameValidator(self.nameEdit))
         self.voiceEdit.setValidator(PhoneNumValidator(self.voiceEdit))
-        
-##        try:
-##            result_code, fax_num = dev.getPML(pml.OID_FAX_LOCAL_PHONE_NUM)
-##        except Error:
-##            log.error("PML failure.")
-##        else:
-##            fax_num = str(fax_num)
         self.faxEdit.setText(fax_num)
-##            
-##        try:
-##            result_code, name = dev.getPML(pml.OID_FAX_STATION_NAME)
-##        except Error:
-##            log.error("PML failure.")
-##            name = str(name)
         self.nameEdit.setText(name_co)
-        
         self.setOKButton(fax_num and name_co)
-        
         self.voiceEdit.setText(user_cfg.fax.voice_phone or '')
         self.emailEdit.setText(user_cfg.fax.email_address or user_cfg.alerts.email_address or '')
-        
+
     def faxEdit_textChanged(self,a0):
         self.setOKButton()
-        
+
     def nameEdit_textChanged(self,a0):
         self.setOKButton()
-        
+
     def setOKButton(self, toggle=None):
         if toggle is not None:
             self.pushButtonOK.setEnabled(bool(toggle))
@@ -103,16 +87,16 @@ class FaxSettingsForm(FaxSettingsForm_base):
             name = str(self.nameEdit.text())
             fax_num = str(self.faxEdit.text())
             self.pushButtonOK.setEnabled(bool(name and fax_num))
-        
-        
+
+
     def accept(self):
         try:
             self.dev.setPML(pml.OID_FAX_LOCAL_PHONE_NUM, str(self.faxEdit.text()))
             self.dev.setPML(pml.OID_FAX_STATION_NAME, str(self.nameEdit.text()))
         except Error:
             log.error("Error setting fax settings to device.")
-            
+
         user_cfg.fax.voice_phone = str(self.voiceEdit.text())
         user_cfg.fax.email_address = str(self.emailEdit.text())
         FaxSettingsForm_base.accept(self)
-        
+

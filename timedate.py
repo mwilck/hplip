@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ for o, a in opts:
 
     elif o == '--help-man':
         usage('man')
-        
+
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
@@ -165,6 +165,8 @@ if d.device_uri is None and device_uri:
     log.error("Malformed/invalid device-uri: %s" % device_uri)
     sys.exit(1)
 
+user_cfg.last_used.device_uri = d.device_uri
+
 try:
     d.open()
 except Error:
@@ -176,7 +178,7 @@ try:
 except Error:
     log.error("An error occured!")
 
-    
+
 log.info("")
 d.close()
 log.info('Done.')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ def write_name(packet, name):
         packet.write(struct.pack('!B', len(utf8_string)))
         packet.write(utf8_string)
 
-        
+
 def create_outgoing_packets(answers):
     index = 0
     num_questions = 1
@@ -114,36 +114,36 @@ def create_outgoing_packets(answers):
     packets = []
     packet = cStringIO.StringIO()
     answer_record = cStringIO.StringIO()
-    
+
     while True:
         packet.seek(0)
         packet.truncate()
-        
+
         num_answers = len(answers[index:index+MAX_ANSWERS_PER_PACKET])
-            
+
         if num_answers == 0 and num_questions == 0:
             break
-        
+
         flags = 0x0200 # truncated
         if len(answers) - index <= MAX_ANSWERS_PER_PACKET:
             flags = 0x0000 # not truncated
 
         # ID/FLAGS/QDCOUNT/ANCOUNT/NSCOUNT/ARCOUNT
         packet.write(struct.pack("!HHHHHH", 0x0000, flags, num_questions, num_answers, 0x0000, 0x0000))
-        
+
         if num_questions:
             # QNAME
             write_name(packet, "_pdl-datastream._tcp.local") # QNAME
             packet.write(struct.pack("!B", 0x00))
-            
+
             # QTYPE/QCLASS
             packet.write(struct.pack("!HH", QTYPE_PTR, QCLASS_IN)) 
-        
+
         first_record = True
         for d in answers[index:index+MAX_ANSWERS_PER_PACKET]:
             answer_record.seek(0)
             answer_record.truncate()
-            
+
             # NAME
             if not first_packet and first_record:
                 first_record = False
@@ -151,37 +151,37 @@ def create_outgoing_packets(answers):
                 answer_record.write(struct.pack("!B", 0x00))
             else:
                 answer_record.write(struct.pack("!H", 0xc00c)) # Pointer
-            
+
             # TYPE/CLASS
             answer_record.write(struct.pack("!HH", QTYPE_PTR, QCLASS_IN)) 
-            
+
             # TTL
             answer_record.write(struct.pack("!I", 0xffff))
             rdlength_pos = answer_record.tell()
-            
+
             # RDLENGTH
             answer_record.write(struct.pack("!H", 0x0000)) # (adj later)
-            
+
             # RDATA
             write_name(answer_record, d)
             answer_record.write(struct.pack("!H", 0xc00c)) # Ptr
-            
+
             # RDLENGTH
             rdlength = answer_record.tell() - rdlength_pos - 2
             answer_record.seek(rdlength_pos)
             answer_record.write(struct.pack("!H", rdlength))
-                
+
             answer_record.seek(0)
             packet.write(answer_record.read())
-        
+
         packets.append(packet.getvalue())
 
         index += 20
-        
+
         if first_packet:
             num_questions = 0
             first_packet = False
-            
+
     return packets
 
 
@@ -219,30 +219,30 @@ def detectNetworkDevices(ttl=4, timeout=10):
     next = now
     last = now + timeout
     delay = 1
-    
+
     while True:
         now = time.time()
-        
+
         if now > last:
             break
-        
+
         if now >= next:
             try:
                 for p in create_outgoing_packets(answers):
                     log.debug("Outgoing: (%d)" % len(p))
                     log.log_data(p, fmt=True, width=16)
                     s.sendto(p, 0, (mcast_addr, mcast_port))
-            
+
             except socket.error, e:
                 log.error("Unable to send broadcast DNS packet: %s" % e)
-                
+
             next += delay
             delay *= 2
-        
+
         update_spinner()
-        
+
         r, w, e = select.select([s], [], [s], 0.5)
-        
+
         if not r: 
             continue
 
@@ -325,19 +325,10 @@ def detectNetworkDevices(ttl=4, timeout=10):
                     break
 
         found_devices[y['ip']] = y
-        
+
 
     log.debug("Found %d devices" % len(found_devices))
 
     return found_devices
 
-
-##
-##log.set_level("debug")
-##import pprint    
-##d = detectNetworkDevices()
-##
-###pprint.pprint(d)
-##
-##print "\nFound %d printers." % len(d)
 

@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -113,6 +113,14 @@ eCMYK"
 *End
 *PrintoutMode Photo/Photo (on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=Photo"
 *FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=1200PhotoCMYK"
+*PrintoutMode PhotoBest/Best Quality (color on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=PhotoBest"
+*FoomaticRIPOptionSetting PrintoutMode=PhotoBest: "Quality=600PhotoCMY&&
+K"
+*End
+*PrintoutMode PhotoNormal/Normal Quality (color on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=PhotoNormal"
+*FoomaticRIPOptionSetting PrintoutMode=PhotoNormal: "Quality=600PhotoN&&
+ormalCMYK"
+*End
 *CloseUI: *PrintoutMode
 
 *OpenUI *InputSlot/Media Source: PickOne
@@ -392,6 +400,16 @@ ality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet&&
 *FoomaticRIPOptionSetting Quality=600GrayscaleCMYK: " -r600 -sIjsParam&&
 s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
 nSet=2"
+*End
+*Quality 600PhotoCMYK/600 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYK"
+*FoomaticRIPOptionSetting Quality=600PhotoCMYK: " -r600 -sIjsParams=Qu&&
+ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
+=2"
+*End
+*Quality 600PhotoNormalCMYK/600 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600PhotoNormalCMYK"
+*FoomaticRIPOptionSetting Quality=600PhotoNormalCMYK: " -r600 -sIjsPar&&
+ams=Quality:Quality=0,Quality:ColorMode=2,Quality:MediaType=2,Quality:&&
+PenSet=2"
 *End
 *Quality 1200PhotoCMYK/1200 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=1200PhotoCMYK"
 *FoomaticRIPOptionSetting Quality=1200PhotoCMYK: " -r1200 -sIjsParams=&&

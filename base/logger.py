@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2002-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2002-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@
 
 # Std Lib
 import sys, thread, syslog, traceback, string, os
-
-
 
 identity = string.maketrans('','')
 unprintable = identity.translate(identity, string.printable)
@@ -110,13 +108,13 @@ class Logger(object):
 
     def get_level(self):
         return self._level
-        
+
     def is_debug(self):
         return self._level == Logger.LOG_LEVEL_DEBUG
 
     level = property(get_level, set_level)
 
-    
+
     def log(self, message, level):
         if self._where in (Logger.LOG_TO_CONSOLE, Logger.LOG_TO_CONSOLE_AND_FILE):
             try:
@@ -156,11 +154,11 @@ class Logger(object):
                 self.log("%s%s[%d]: debug: %s%s" % ('\x1b[34;01m', self.module, self.pid, message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
             else:
                 self.log("%s[%d]: debug: %s" % (self.module, self.pid, message), Logger.LOG_LEVEL_DEBUG)
-            
+
             syslog.syslog(syslog.LOG_DEBUG, "%s[%d]: debug: %s" % (self.module, self.pid, message))
-            
+
     dbg = debug
-    
+
     def debug_block(self, title, block, fmt=False):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
             if fmt:
@@ -169,10 +167,10 @@ class Logger(object):
             else:
                 self.log("%s[%d]: debug: :%s" % (self.module, self.pid, title), Logger.LOG_LEVEL_DEBUG)
                 self.log(block, Logger.LOG_LEVEL_DEBUG)
-                
-                
+
+
     printable = """ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~  """
-            
+
     def log_data(self, data, width=16, fmt=False):
         if self._level <= Logger.LOG_LEVEL_DEBUG:
             index, line = 0, data[0:width]
@@ -182,10 +180,10 @@ class Logger(object):
                     self.log("%s%s[%d]: debug: %s:%s" % ('\x1b[34;01m', self.module,  self.pid, txt, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
                 else:
                     self.log("%s[%d]: debug: :%s" % (self.module, self.pid, txt), Logger.LOG_LEVEL_DEBUG)
-                    
+
                 index += width
                 line = data[index:index+width]                
-    
+
     def info(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_INFO:
             self.log(message, Logger.LOG_LEVEL_INFO)
@@ -198,7 +196,7 @@ class Logger(object):
                 self.log("%swarning: %s%s" % ('\x1b[35;06m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
             else:
                 self.log("warning: %s" % message, Logger.LOG_LEVEL_WARN)
-            
+
             syslog.syslog(syslog.LOG_WARNING, "%s[%d]: warning: %s" % (self.module, self.pid, message))
 
     warning = warn
@@ -209,7 +207,7 @@ class Logger(object):
                 self.log("%snote: %s%s" % ('\x1b[32;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_WARN)
             else:
                 self.log("note: %s" % message, Logger.LOG_LEVEL_WARN)
-            
+
             syslog.syslog(syslog.LOG_WARNING, "%s[%d]: note: %s" % (self.module, self.pid, message))
 
     notice = note
@@ -220,7 +218,7 @@ class Logger(object):
                 self.log("%serror: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_ERROR)
             else:
                 self.log("error: %s" % message, Logger.LOG_LEVEL_ERROR)
-            
+
             syslog.syslog(syslog.LOG_ALERT, "%s[%d] error: %s" % (self.module, self.pid, message))
 
     def fatal(self, message, fmt=True):
@@ -229,7 +227,7 @@ class Logger(object):
                 self.log("%sfatal error: %s%s" % ('\x1b[31;01m', message, '\x1b[0m'), Logger.LOG_LEVEL_DEBUG)
             else:
                 self.log("fatal error: %s" % message, Logger.LOG_LEVEL_DEBUG)
-            
+
             syslog.syslog(syslog.LOG_ALERT, "%s[%d]: fatal: %s" % (self.module, self.pid, message))
 
     def exception(self):

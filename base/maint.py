@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -289,16 +289,10 @@ def AlignType6(dev, ui1, ui2, loadpaper_ui):
     while state != -1:
         if state == 0:
             state = 2
-            #okay, print_page = ui1()
             accept = ui1()
-            #print okay, print_page
             if not accept:
                 # Need to printout alignment page
                 state = 1
-            #elif okay:
-            #else:
-                # Next >
-            #    state = 2
 
         elif state == 1: # Load and print
             state = -1
@@ -399,9 +393,9 @@ def AlignType10(dev, loadpaper_ui, align_ui):
 def alignType10Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_ALIGNMENT_PAGE)
-    
+
     dev.closePrint()
-    
+
 
 def alignType10Phase2(dev, values, pattern):
     i, p = 0, ''.join([pcl.UEL, '\n'])
@@ -420,7 +414,7 @@ def alignType10Phase2(dev, values, pattern):
 def alignType10Phase3(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_ALIGNMENT_PAGE_VERIFICATION)
-                         
+
     dev.closePrint()
 
 
@@ -444,7 +438,7 @@ def align10and11Controls(pattern, align_type):
                          'F' : (True, 9),
                          'G' : (True, 9),
                          'H' : (True, 9),}
-    
+
         elif pattern == 3: # color + photo (iii)
             controls = { 'A' : (True, 9),
                          'B' : (True, 23),
@@ -474,7 +468,7 @@ def align10and11Controls(pattern, align_type):
                          'F' : (True, 9),
                          'G' : (True, 9),
                          'H' : (True, 9),}
-        
+
         elif pattern == 3:
             controls = {'A' : (True, 23),
                          'B' : (True, 9),
@@ -484,10 +478,10 @@ def align10and11Controls(pattern, align_type):
                          'F' : (True, 9),
                          'G' : (True, 9),
                          'H' : (True, 9),}
-    
+
     return controls
 
-                    
+
 def AlignType11(dev, loadpaper_ui, align_ui, invalidpen_ui):
     pen_config = status.getPenConfiguration(dev.getStatusFromDeviceID())
     log.debug("Pen config=%d" % pen_config)
@@ -500,7 +494,7 @@ def AlignType11(dev, loadpaper_ui, align_ui, invalidpen_ui):
 
     elif pen_config == AGENT_CONFIG_COLOR_AND_PHOTO: # (iii)
         pattern = 3
-        
+
     elif pen_config == AGENT_CONFIG_PHOTO_ONLY:
         invalidpen_ui()
         return
@@ -534,7 +528,7 @@ def alignType11Phase1(dev):
     dev.printData(ldl.buildResetPacket())
     dev.printData(ldl.buildReportPagePacket(ldl.COMMAND_REPORT_PAGE_PEN_CALIBRATION))
     dev.closePrint()
-    
+
 
 def alignType11Phase2(dev, values, pattern, pen_config):
     active_colors = 0
@@ -562,7 +556,7 @@ def alignType11Phase2(dev, values, pattern, pen_config):
 def alignType11Phase3(dev):
     dev.printData(ldl.buildReportPagePacket(ldl.COMMAND_REPORT_PAGE_PEN_CALIBRATION_VERIFY))
     dev.closePrint()
-    
+
 def alignType2Phase1(dev): # Type 2 (8xx)
     dev.writeEmbeddedPML(pml.OID_AGENT2_VERTICAL_ALIGNMENT, 0)
     dev.writeEmbeddedPML(pml.OID_AGENT2_HORIZONTAL_ALIGNMENT, 0)
@@ -696,7 +690,7 @@ def alignType5Phase1(dev): # Type 5 (xBow+/LIDIL 0.4.3)
     dev.printData(ldl.buildPhotoHuePacket(0))
     dev.printData(ldl.buildColorHuePacket(0))
     dev.closePrint()
-    
+
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'ldl', ldl_file))
 
 
@@ -856,7 +850,7 @@ def alignType7Phase2(dev, a, b, c, d, e, f, g): # Type 7 (xBow VIP)
         dev.writeEmbeddedPML(pml.OID_AGENT3_VERTICAL_ALIGNMENT, vert)
 
     dev.closePrint()
-    
+
 def alignType7Phase3(dev): # Type 7 (xBow VIP)
     dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data', 'pcl', "crcaldone.pcl.gz"))
@@ -1188,7 +1182,7 @@ def colorCalType2PenCheck(dev):
 def colorCalType2Phase1(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
-    
+
     dev.closePrint()
 
 
@@ -1363,7 +1357,7 @@ def colorCalType4Phase2(dev, values):
 
     dev.closePrint()
 
-    
+
 def colorCalType4Phase3(dev):
     dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_PALETTE_CMYK_PAGE)
@@ -1386,4 +1380,4 @@ def printQualityDiagType1(dev, loadpaper_ui):
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 14;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
         dev.closePrint()
 
-        
+

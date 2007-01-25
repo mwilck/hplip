@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -111,10 +111,10 @@ def start(auto=True):
 
     if auto:
         log.note("Running in automatic mode. The most common options will be selected.")
-    
+
     log.info("Initializing...")
-    
-    
+
+
     try:
         print
         log.note("Defaults for each question are maked with a '*'. Press <enter> to accept the default.")
@@ -173,7 +173,7 @@ def start(auto=True):
                         num_req_missing += 1
 
 
-                        
+
         x = False
         num_opt_missing = 0
         # not-required options
@@ -184,7 +184,7 @@ def start(auto=True):
                         print
                         title("BUILD/INSTALL OPTIONS")
                         x = True
-                    
+
                     core.selected_options[opt] = enter_yes_no("\nDo you wish to enable '%s' (y=yes*, n=no, q=quit) ? " % core.options[opt][1], default="y")
 
                 if core.selected_options[opt]: # only for options that are ON
@@ -233,7 +233,7 @@ def start(auto=True):
                 x = 0
                 for d in core.distros_index:
                     dd = core.distros[core.distros_index[d]]
-                    
+
                     if dd['display']:
                         d_temp[x] = d
                         log.info(formatter.compose((str(x), dd['display_name'])))
@@ -501,13 +501,14 @@ def start(auto=True):
             try:
                 pre_cmd = core.distros[core.distro_name]['versions'][core.distro_version]['pre_depend_cmd'] or core.distros[core.distro_name]['pre_depend_cmd']
             except KeyError:
-                pre_cmd = ''
+                pre_cmd = []
 
             if pre_cmd:
                 password_prompt()
-
-                log.info("Running '%s'\nPlease wait, this may take several minutes..." % pre_cmd)
-                status, output = utils.run(pre_cmd)
+                
+                for cmd in pre_cmd:
+                    log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+                    status, output = utils.run(cmd)
 
             #
             # INSTALL PACKAGES AND RUN COMMANDS
@@ -538,7 +539,7 @@ def start(auto=True):
                     commands_to_run.append(command)
 
             packages_to_install = ' '.join(packages_to_install)
-            
+
             if package_mgr_cmd and packages_to_install:
                 while True:
                     cmd = utils.cat(package_mgr_cmd)
@@ -677,7 +678,7 @@ def start(auto=True):
                 log.debug("have %s = %d" % (d, core.have_dependencies[d]))
 
             cleanup_spinner()
-            
+
             # re-check missing required core.options
             for opt in core.components[selected_component][1]:
                 if core.options[opt][0]: # required core.options
@@ -710,13 +711,14 @@ def start(auto=True):
             try:
                 post_cmd = core.distros[core.distro_name]['versions'][core.distro_version]['post_depend_cmd'] or core.distros[core.distro_name]['post_depend_cmd']
             except KeyError:
-                post_cmd = ''
+                post_cmd = []
 
             if post_cmd:
                 password_prompt()
 
-                log.info("Running '%s'\nPlease wait, this may take several minutes..." % post_cmd)
-                status, output = utils.run(post_cmd)
+                for cmd in post_cmd:
+                    log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+                    status, output = utils.run(cmd)
 
         #
         # INSTALL LOCATION

@@ -14,66 +14,65 @@
 
 <div id="banner">
 <div id="banner_graphics">
-		<div id="floatleft">
-		<img src="images/hplogo2.png" alt="HP Logo" border="0" />
-		</div>
-		<div id="floatcenter">
-		<a href="index.html">
-		<img src="images/hpliplogo.png" alt="HP Logo" border="0" />
-		</a>
-		</div>
-		<div id="floatright">
-		<img src="images/tuxlogo2.png" alt="Tux" border="0" />
-		</div>
-	</div>
+        <div id="floatleft">
+        <img src="images/hplogo2.png" alt="HP Logo" border="0" />
+        </div>
+        <div id="floatcenter">
+        <a href="index.html">
+        <img src="images/hpliplogo.png" alt="HP Logo" border="0" />
+        </a>
+        </div>
+        <div id="floatright">
+        <img src="images/tuxlogo2.png" alt="Tux" border="0" />
+        </div>
+    </div>
 </div>
 <!-- end banner -->
 
 <div id="navbar">
 <table>
-	<tr>
-		<td valign="top">
+    <tr>
+        <td valign="top">
 <div id="sidebar-a">
 <ul id="sidebar-a-list">
-	<menu compact="compact">
-		<li><a href="index.html" title="">Home</a></li> 
-	</menu>
+    <menu compact="compact">
+        <div class="menuheader"><a href="index.html" title="">Home</a></div>
+    </menu>
 
 <div class="menuheader">About</div>
-	<menu compact="compact">
-		<li><a href="features.html" title="">Features</a></li> 
-		<li><a href="screenshots.html" title="">Screenshots</a></li> 
-		<li><a href="faqs.html" title="FAQs">FAQs</a></li> 
-		<li><a a href="about.html" title="About">About HPLIP</a></li>
-	</menu>
-<div class="menuheader">Setup and Installation</div> 
-	<menu compact="compact">
-		<li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
-		<li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
-		<li><a href="system_requirements.html" title="System Requirements">System Requirements</a></li> 
-		<li><a href="supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-	</menu>
-<div class="menuheader">Usage and Support</div> 
-	<menu compact="compact">
-		<li><a href="mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
-		<li><a href="howtos/index.html" title="How-Tos">How-Tos</a></li> 
-		<li><a href="troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
-		<li><a href="release_notes.html" title="Release Notes">Release Notes</a></li>
-	</menu>
+    <menu compact="compact">
+        <li><a href="features.html" title="">Features</a></li> 
+        <li><a href="screenshots.html" title="">Screenshots</a></li> 
+        <li><a href="faqs.html" title="FAQs">FAQs</a></li> 
+        <li><a a href="about.html" title="About">About HPLIP</a></li>
+    </menu>
+<div class="menuheader">Setup and Installation</div>
+    <menu compact="compact">
+        <li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
+        <li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+        <li><a href="system_requirements.html" title="System Requirements">System Requirements</a></li> 
+        <li><a href="supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+    </menu>
+<div class="menuheader">Usage and Support</div>
+    <menu compact="compact">
+        <li><a href="mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+        <li><a href="howtos/index.html" title="How-Tos">How-Tos</a></li> 
+        <li><a href="troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+        <li><a href="release_notes.html" title="Release Notes">Release Notes</a></li>
+    </menu>
 <div class="menuheader">Resources</div>
-	<menu compact="compact">
-		<li><a href="tech_docs/index.html" title="">Technical Documentation</a></li> 
-		<li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-		<li><a href="license.html" title="Software License">Software License</a></li>
-		<li><a a href="other_support.html" title="Other Support Information">Other Support Information</a></li>
-		<li><a href="contacts.html" title="Contacts">Contacts</a></li>
-	</menu>
+    <menu compact="compact">
+        <li><a href="tech_docs/index.html" title="">Technical Documentation</a></li> 
+        <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+        <li><a href="license.html" title="Software License">Software License</a></li>
+        <li><a a href="other_support.html" title="Other Support Information">Other Support Information</a></li>
+        <li><a href="contacts.html" title="Contacts">Contacts</a></li>
+    </menu>
 </ul>
 </div>
 <!-- end sidebar --></td>
 </div>
 <td width=100%>
-<div id="yellowsplit">
 <div id="content"><!-- start content -->
         <a href="index.html">Home</a>
 &gt;
@@ -83,6 +82,56 @@ Release Notes
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.7.1 - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Added some new html files to Makefile.am for hplip and hpijs.</li>
+<li>Fixed uninitilized pointer in hplip_api library. As requested by SUSE.</li>
+<li>Got some newer inkjet all-in-ones working with hp-makecopies</li>
+<li>photosmart_c5100_series: Changed copy-type from '0' to '3'</li>
+<li>photosmart_c6100_series: Changed copy-type from '0' to '3'</li>
+<li>photosmart_c7100_series: Changed copy-type from '0' to '3'</li>
+<li>photosmart_3300_series: Changed copy-type from '0' to '3'</li>
+<li>photosmart_3100_series: Changed copy-type from '0' to '3'</li>
+<li>photosmart_3200_series: Changed copy-type from '0' to '3'</li>
+<li>Fixed defect (HPLIP Installer didn't display the correct OS information on the Red Hat Enterprise OS.)</li>
+<li>Changed the pre- and post- depend Installer command fields to a list of commands</li>
+<li>Added a &quot;last used device URI&quot; feature to all utilities/UIs</li>
+<li>Added a device refresh after the job cancel function in the toolbox</li>
+<li>Fixed defect (hp-setup -u no devices &lt;b&gt;, &lt;p&gt;, etc. characters in error log)</li>
+<li>Fixed sane_start: &quot;Document feeder out of documents&quot; problem with LJ3300 MFP which have no ADF.</li>
+<li>Fixed defect (Test email text update)</li>
+<li>Improved progress dialog behaviour and messaging in hp-sendfax</li>
+<li>Fixed defect (The counter of selected picture in status bar does not work if selecting picture by drag action.)</li>
+<li>Fixed defect (The &quot;Show Thumbnail&quot; item still appears after executing &quot;Show Thumbnails&quot; operation if the picture does not support &quot;show thumbnail&quot; function.)</li>
+<li>Implemented enhancement (Have front panel tab appear when supported by printer)</li>
+<li>Fixed defect (The fax job can not be done while executing 'hp-sendfax -n' in terminal on Fedora Core 6 32bit OS.)</li>
+<li>photosmart_c7100_series: Changed pcard-type from '2' to '1'</li>
+<li>Added feature (Fax Address Book also should be added on the Tools &amp; Settings tab in toolbox for usability.)</li>
+<li>Fixed defect (The printer still appears in the device list while deleting the printer from CUPS.)</li>
+<li>Added feature: Toolbox device list auto refreshes after device is added using hp-setup from toolbox</li>
+<li>Fixed an issue with ChoosePrinterDlg2</li>
+<li>Re-wired &quot;Configure Print Settings&quot; in the toolbox to go directly to the correct settings page for the printer</li>
+<li>Fixed an issue with toolbox auto refresh settings save in ~/.hplip.conf</li>
+<li>Fixed defect (New Fax Address can not be listed in Individual(s) and Group(s) fields of Recipients tab on Debian 3.1 32bit OS.)</li>
+<li>Fixed defect (The address can not be added to a group through edit function in Fax Address Book.)</li>
+<li>Fixed defect (Help button is ineffective after clicking Align Cartridges in Toolbox on Debian3.1 32bit OS.)</li>
+<li>Added some error checking to struct.unpack() in SLP packet decoding</li>
+<li>Fixed defect (An error occurs when enter &quot;%&quot; in &quot;Print Name&quot; of &quot;Enter Printer Information&quot; window during setting up a device.)</li>
+<li>Fixed defect (The unloaded file still be showed in &quot;Unload Files from Photo Card&quot; dialog box after unload it with &quot;Remove selected files&quot; option in GUI mode.)</li>
+<li>Fixed defect (installer LANG=C problem) [problem with CUPS running detection, reported by a user]</li>
+<li>Fixed defect ('.bmp' type file can not be directly added to a fax job though this file type is listed in the Direct Allowable Types list. )</li>
+<li>Fixed problem with adding XPM files to hp-sendfax</li>
+<li>Removed extraneous MIME types from hp-sendfax allowable types</li>
+<li>Changed auto refresh update range to 5-60 sec.</li>
+<li>Merged PyQt polling fix (should fix faxing on systems with PyQt 3.16 or 3.17)</li>
+<li>Added page range validation to hp-print (disallows ranges like &quot;-2&quot; and &quot;2-&quot;)</li>
+<li>Fixed defect 1291 (The plain-text type file which begins with character &quot;/*&quot; can not be added rendered by the fax driver.) [Pretty printing checkbox added to hp-print and hp-sendfax. Off by default.]</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.7.1 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Moved PSC 21XX from DJ9xxVIP to DJGenericVIP - these printers can do fullbleed printing on 4x6 media</li>
+<li>Added a new printmode, photonormal for DJ9xxVIP to enable printers without media sensors to print to photo media</li>
+</ol>
 <p><strong>HPLIP 1.6.12 - This release has the following changes.</strong></p>
 <ol class="arabic">
 <li><dl class="first docutils">
@@ -136,19 +185,17 @@ takes care of the big-endian to little-endian conversion.</p>
 will display the following messages to stderr.</p>
 </li>
 </ol>
-<pre class="literal-block">
-- SANE_DEBUG_HPAIO=2   (error messages)
-- SANE_DEBUG_HPAIO=6   (error messages + device info)
-- SANE_DEBUG_HPAIO=8   (error messages + device info + sane api calls)
-
-The following command will display all hpaio messages while running xsane.
-
-SANE_DEBUG_HPAIO=8 xsane
-
-The following command will display all sane and hpaio messages while running xsane.
-
-SANE_DEBUG_DLL=128 SANE_DEBUG_HPAIO=8 xsane
-</pre>
+<div class="compound">
+<ul class="compound-first simple">
+<li>SANE_DEBUG_HPAIO=2   (error messages)</li>
+<li>SANE_DEBUG_HPAIO=6   (error messages + device info)</li>
+<li>SANE_DEBUG_HPAIO=8   (error messages + device info + sane api calls)</li>
+</ul>
+<p class="compound-middle">The following command will display all hpaio messages while running xsane.</p>
+<p class="compound-middle">SANE_DEBUG_HPAIO=8 xsane</p>
+<p class="compound-middle">The following command will display all sane and hpaio messages while running xsane.</p>
+<p class="compound-last">SANE_DEBUG_DLL=128 SANE_DEBUG_HPAIO=8 xsane</p>
+</div>
 <ol class="arabic simple" start="21">
 <li>Finished enhancement (Add mDNS/Bonjour/Rendezvous support to hp-probe).</li>
 <li>Updated graphics and text in hp-toolbox about dialog.</li>
@@ -1466,7 +1513,8 @@ loop x/y extent check.</p>
 <li>HPIJS print mode parameters must use the &quot;Quality:&quot; prefix. The prefix will allow better management of parameter namespace. See the following Ghostscript command example.</li>
 </ol>
 <div class="compound">
-<p>-sIjsParams=&quot;Quality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet=2&quot;</p>
+<p class="compound-first">-sIjsParams=</p>
+<p class="compound-last">&quot;Quality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet=2&quot;</p>
 </div>
 <ol class="arabic simple" start="5">
 <li>The following Ghostscript command without the &quot;Quality:&quot; prefex is no longer supported.</li>
@@ -1544,17 +1592,17 @@ loop x/y extent check.</p>
 <li>Fixed a scaling problem with device-dependent postscript using CUPS. This was a problem with DJ630, DJ6xxP and DJ8xx photo mode only. This was not a problem printing device-independent postscript.</li>
 <li>Changed Ghostscript command interface to HPIJS driver. The HPIJS driver is now called with the following Ghostscript commands.</li>
 </ol>
-<pre class="literal-block">
--sDEVICE=hpijs
+<div class="compound">
+<p>-sDEVICE=hpijs
 -sDeviceName=x
-where x equals: DJ630, DJ6xx, DJ6xxPhoto, DJ8xx, DJ9xx or DJ9xxVIP
-</pre>
+where x equals: DJ630, DJ6xx, DJ6xxPhoto, DJ8xx, DJ9xx or DJ9xxVIP</p>
+</div>
 <p>3. This removes the hard coded device parameters from gdevhpij.c so new printer drivers can be added to HPIJS with out re-compiling Ghostscript.
 The old interface used the following Ghostscript commands.</p>
-<pre class="literal-block">
-    -sDEVICE=x
-where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP
-</pre>
+<div class="compound">
+<p>-sDEVICE=x
+where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP</p>
+</div>
 <ol class="arabic simple" start="4">
 <li>The old interface is degraded and will eventually be dropped. New printer drivers will not use the old interface.</li>
 </ol>
@@ -1567,18 +1615,18 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Mon Dec 18 16:03:11 2006; HPLIP Version: 1.6.12</small></center>
+<center><small>Page last updated: Tue Jan 23 10:09:01 2007; HPLIP Version: 1.7.1</small></center>
 </div>
 </td></tr></table>
 </div>
 <!-- end content -->
-</div><!-- end container -->
+<!-- end container -->
 <div id="footer"><!-- start footer -->
-		<hr size="1"/>
-		<a href="legal.html">Legal Notices</a>
-		Copyright &#169; 2003-2006, Hewlett-Packard Development Company, L.P.
-		<a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
-		<a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="images/sflogo.png" border="0"></a>
+        <hr size="1"/>
+        <a href="legal.html">Legal Notices</a>
+        Copyright &#169; 2003-2007, Hewlett-Packard Development Company, L.P.
+        <a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+        <a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="images/sflogo.png" border="0"></a>
 </div>
 <!-- end footer -->
 </div><!-- end page -->

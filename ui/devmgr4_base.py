@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/devmgr4_base.ui'
 #
-# Created: Tue Oct 3 10:42:44 2006
+# Created: Wed Jan 10 16:26:25 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,8 +35,8 @@ class DevMgr4_base(QMainWindow):
 
         self.Tabs = QTabWidget(self.splitter2,"Tabs")
 
-        self.TabPage = QWidget(self.Tabs,"TabPage")
-        self.Tabs.insertTab(self.TabPage,QString.fromLatin1(""))
+        self.FunctionsTab = QWidget(self.Tabs,"FunctionsTab")
+        self.Tabs.insertTab(self.FunctionsTab,QString.fromLatin1(""))
 
         self.StatusTab = QWidget(self.Tabs,"StatusTab")
         StatusTabLayout = QGridLayout(self.StatusTab,1,1,11,6,"StatusTabLayout")
@@ -105,10 +105,10 @@ class DevMgr4_base(QMainWindow):
         self.SuppliesTab = QWidget(self.Tabs,"SuppliesTab")
         self.Tabs.insertTab(self.SuppliesTab,QString.fromLatin1(""))
 
-        self.TabPage_2 = QWidget(self.Tabs,"TabPage_2")
-        TabPageLayout = QGridLayout(self.TabPage_2,1,1,11,6,"TabPageLayout")
+        self.PrintJobsTab = QWidget(self.Tabs,"PrintJobsTab")
+        PrintJobsTabLayout = QGridLayout(self.PrintJobsTab,1,1,11,6,"PrintJobsTabLayout")
 
-        self.PrintJobList = QListView(self.TabPage_2,"PrintJobList")
+        self.PrintJobList = QListView(self.PrintJobsTab,"PrintJobList")
         self.PrintJobList.addColumn(self.__tr("Queue"))
         self.PrintJobList.addColumn(self.__tr("Job ID"))
         self.PrintJobList.addColumn(self.__tr("Status"))
@@ -116,20 +116,20 @@ class DevMgr4_base(QMainWindow):
         self.PrintJobList.addColumn(self.__tr("Title"))
         self.PrintJobList.setAllColumnsShowFocus(1)
 
-        TabPageLayout.addMultiCellWidget(self.PrintJobList,0,0,0,1)
+        PrintJobsTabLayout.addMultiCellWidget(self.PrintJobList,0,0,0,1)
 
-        self.CancelPrintJobButton = QPushButton(self.TabPage_2,"CancelPrintJobButton")
+        self.CancelPrintJobButton = QPushButton(self.PrintJobsTab,"CancelPrintJobButton")
         self.CancelPrintJobButton.setEnabled(0)
 
-        TabPageLayout.addWidget(self.CancelPrintJobButton,1,1)
+        PrintJobsTabLayout.addWidget(self.CancelPrintJobButton,1,1)
         spacer12_3 = QSpacerItem(471,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        TabPageLayout.addItem(spacer12_3,1,0)
-        self.Tabs.insertTab(self.TabPage_2,QString.fromLatin1(""))
+        PrintJobsTabLayout.addItem(spacer12_3,1,0)
+        self.Tabs.insertTab(self.PrintJobsTab,QString.fromLatin1(""))
 
-        self.TabPage_3 = QWidget(self.Tabs,"TabPage_3")
-        TabPageLayout_2 = QGridLayout(self.TabPage_3,1,1,11,6,"TabPageLayout_2")
+        self.PanelTab = QWidget(self.Tabs,"PanelTab")
+        PanelTabLayout = QGridLayout(self.PanelTab,1,1,11,6,"PanelTabLayout")
 
-        self.groupBox9_2 = QGroupBox(self.TabPage_3,"groupBox9_2")
+        self.groupBox9_2 = QGroupBox(self.PanelTab,"groupBox9_2")
         self.groupBox9_2.setColumnLayout(0,Qt.Vertical)
         self.groupBox9_2.layout().setSpacing(6)
         self.groupBox9_2.layout().setMargin(11)
@@ -153,8 +153,8 @@ class DevMgr4_base(QMainWindow):
         spacer14_2 = QSpacerItem(151,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         groupBox9_2Layout.addItem(spacer14_2,1,0)
 
-        TabPageLayout_2.addWidget(self.groupBox9_2,0,0)
-        self.Tabs.insertTab(self.TabPage_3,QString.fromLatin1(""))
+        PanelTabLayout.addWidget(self.groupBox9_2,0,0)
+        self.Tabs.insertTab(self.PanelTab,QString.fromLatin1(""))
 
         DevMgr4_baseLayout.addWidget(self.splitter2,0,0)
 
@@ -237,7 +237,7 @@ class DevMgr4_base(QMainWindow):
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager"))
-        self.Tabs.changeTab(self.TabPage,self.__tr("Functions"))
+        self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions"))
         self.StatusGroupBox.setTitle(self.__tr("Last"))
         self.StatusText.setText(QString.null)
         self.StatusText2.setText(QString.null)
@@ -258,9 +258,9 @@ class DevMgr4_base(QMainWindow):
         self.PrintJobList.header().setLabel(3,self.__tr("User"))
         self.PrintJobList.header().setLabel(4,self.__tr("Title"))
         self.CancelPrintJobButton.setText(self.__tr("Cancel Job"))
-        self.Tabs.changeTab(self.TabPage_2,self.__tr("Print Jobs"))
+        self.Tabs.changeTab(self.PrintJobsTab,self.__tr("Print Jobs"))
         self.groupBox9_2.setTitle(self.__tr("Front Panel Display"))
-        self.Tabs.changeTab(self.TabPage_3,self.__tr("Panel"))
+        self.Tabs.changeTab(self.PanelTab,self.__tr("Panel"))
         self.helpContentsAction.setText(self.__tr("Contents"))
         self.helpContentsAction.setMenuText(self.__tr("&Contents..."))
         self.helpContentsAction.setToolTip(self.__tr("Help Contents (F1)"))

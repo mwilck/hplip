@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.0'
+__version__ = '3.0'
 __title__ = 'Print Utility'
 __doc__ = "A simple front end to 'lp'. Provides a print UI from the Device Manager if kprinter, gtklp, or xpp are not installed."
 
@@ -31,14 +31,12 @@ import sys, os, getopt, re, socket
 from base.g import *
 from base.msg import *
 from base import utils, device
-import base.async_qt as async
 from prnt import cups
 
 log.set_module('hp-print')
 
 app = None
 printdlg = None
-client = None
 
 USAGE = [(__doc__, "", "name", True),
          ("Usage: hp-print [PRINTER|DEVICE-URI] [OPTIONS] [FILE LIST]", "", "summary", True),
@@ -55,144 +53,14 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_NOTES,
          utils.USAGE_STD_NOTES1, utils.USAGE_STD_NOTES2, 
          ]
-                 
+
 
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-print', __version__)
     sys.exit(0)
-
-
-
-class print_client(async.dispatcher):
-
-    def __init__(self):
-        async.dispatcher.__init__(self)
-        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect((prop.hpssd_host, prop.hpssd_port)) 
-        self.in_buffer = ""
-        self.out_buffer = ""
-        self.fields = {}
-        self.data = ''
-        self.error_dialog = None
-        self.signal_exit = False
-
-        # handlers for all the messages we expect to receive
-        self.handlers = {
-                        'eventgui' : self.handle_eventgui,
-                        'unknown' : self.handle_unknown,
-                        'exitguievent' : self.handle_exitguievent,
-                        }
-
-        self.register_gui()
-
-    def handle_read(self):
-        log.debug("Reading data on channel (%d)" % self._fileno)
-        log.debug(repr(self.in_buffer))
-
-        self.in_buffer = self.recv(prop.max_message_len)
-
-        if self.in_buffer == '':
-            return False
-
-        remaining_msg = self.in_buffer
-
-        while True:
-            try:
-                self.fields, self.data, remaining_msg = parseMessage(remaining_msg)
-            except Error, e:
-                log.debug(repr(self.in_buffer))
-                log.warn("Message parsing error: %s (%d)" % (e.opt, e.msg))
-                self.out_buffer = self.handle_unknown()
-                log.debug(self.out_buffer)
-                return True
-
-            msg_type = self.fields.get('msg', 'unknown')
-            log.debug("%s %s %s" % ("*"*40, msg_type, "*"*40))
-            log.debug(repr(self.in_buffer))
-
-            try:
-                self.out_buffer = self.handlers.get(msg_type, self.handle_unknown)()
-            except Error:
-                log.error("Unhandled exception during processing")
-
-            if len(self.out_buffer): # data is ready for send
-                self.sock_write_notifier.setEnabled(True)
-
-            if not remaining_msg:
-                break
-
-        return True
-
-    def handle_write(self):
-        if not len(self.out_buffer):
-            return
-
-        log.debug("Sending data on channel (%d)" % self._fileno)
-        log.debug(repr(self.out_buffer))
-        
-        try:
-            sent = self.send(self.out_buffer)
-        except:
-            log.error("send() failed.")
-
-        self.out_buffer = self.out_buffer[sent:]
-
-
-    def writable(self):
-        return not ((len(self.out_buffer) == 0)
-                     and self.connected)
-
-    def handle_exitguievent(self):
-        self.signal_exit = True
-        if self.signal_exit:
-            if printdlg is not None:
-                printdlg.close()
-            qApp.quit()
-
-        return ''
-
-    # EVENT
-    def handle_eventgui(self):
-        try:
-            job_id = self.fields['job-id']
-            event_code = self.fields['event-code']
-            event_type = self.fields['event-type']
-            retry_timeout = self.fields['retry-timeout']
-            error_string_short = device.queryString(event_code, 0)
-            error_string_long = device.queryString(event_code, 1)
-            device_uri = self.fields.get('device-uri', '')
-            
-            log.debug("Event: %d '%s'" % (event_code, event_type))
-
-            printdlg.EventUI(event_code, event_type, error_string_short,
-                             error_string_long, retry_timeout, job_id,
-                             device_uri)
-
-        except:
-            log.exception()
-
-        return ''
-
-    def handle_unknown(self):
-        #return buildResultMessage('MessageError', None, ERROR_INVALID_MSG_TYPE)
-        return ''
-
-    def handle_messageerror(self):
-        return ''
-
-    def handle_close(self):
-        log.debug("closing channel (%d)" % self._fileno)
-        self.connected = False
-        async.dispatcher.close(self)
-
-    def register_gui(self):
-        out_buffer = buildMessage("RegisterGUIEvent", None, 
-                                  {'type': 'print', 
-                                   'username': prop.username})
-        self.send(out_buffer)
 
 
 try:
@@ -216,14 +84,14 @@ for o, a in opts:
 
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
 
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
-    
+
     elif o in ('-p', '-P', '--printer'):
         printer_name = a
 
@@ -234,7 +102,7 @@ for o, a in opts:
         log_level = a.lower().strip()
         if not log.set_level(log_level):
             usage()
-            
+
     elif o == '-g':
         log.set_level('debug')
 
@@ -252,16 +120,17 @@ if not utils.checkPyQtImport():
 from qt import *
 from ui.printerform import PrinterForm
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    client = print_client()
-except Error:
-    log.error("Unable to create client object.")
-    sys.exit(0)
+    sock.connect((prop.hpssd_host, prop.hpssd_port))
+except socket.error:
+    log.error("Unable to connect to HPLIP I/O (hpssd).")
+    sys.exit(1)
 
 # create the main application object
 app = QApplication(sys.argv)
 
-printdlg = PrinterForm(client.socket, bus, device_uri, printer_name, args)
+printdlg = PrinterForm(sock, bus, device_uri, printer_name, args)
 printdlg.show()
 app.setMainWidget(printdlg)
 
@@ -276,6 +145,7 @@ except KeyboardInterrupt:
 except:
     log.exception()
 
+sock.close()
 sys.exit(0)
 
 

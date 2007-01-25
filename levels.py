@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,11 +53,11 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_NOTES,
          utils.USAGE_STD_NOTES1, utils.USAGE_STD_NOTES2, 
          ]
-         
+
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-levels', __version__)
     sys.exit(0)
 
@@ -105,16 +105,16 @@ def logBarGraph(agent_level, agent_type, size=DEFAULT_BAR_GRAPH_SIZE, use_colors
     log.info(("-"*size)+color)
 
 
-    
-    
+
+
 log.set_module('hp-levels')
 
-    
+
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:s:ca:g',
         ['printer=', 'device=', 'help', 'help-rest', 'help-man', 
          'help-desc', 'logging=', 'size=', 'color', 'char='])
-         
+
 except getopt.GetoptError:
     usage()
 
@@ -135,10 +135,10 @@ for o, a in opts:
 
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
-    
+
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
@@ -201,6 +201,9 @@ if not device_uri and not printer_name:
         log.error("Error occured during interactive mode. Exiting.")
         sys.exit(1)
 
+        
+user_cfg.last_used.device_uri = d.device_uri
+
 try:
     d = device.Device(device_uri, printer_name)
 except Error:
@@ -215,6 +218,7 @@ if d.device_uri is None and device_uri:
     log.error("Malformed/invalid device-uri: %s" % device_uri)
     sys.exit(1)
 
+user_cfg.last_used.device_uri = d.device_uri
 
 try:
     d.open()
@@ -237,9 +241,9 @@ if d.mq['status-type'] != STATUS_TYPE_NONE:
             break
         else:
             sorted_supplies.append((a, agent_kind, agent_type))
-            
+
         a += 1
-        
+
     sorted_supplies.sort(lambda x, y: cmp(x[2], y[2]) or cmp(x[1], y[1]))
 
     for x in sorted_supplies:

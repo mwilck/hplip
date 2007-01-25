@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,8 +19,6 @@
 # Author: Don Welch
 #
 
-#from base.g import *
-#import os.path
 from qt import *
 from aligntype6form1_base import AlignType6Form1_base
 
@@ -28,9 +26,4 @@ class AlignType6Form1(AlignType6Form1_base):
     
     def __init__(self,parent = None,name = None,modal = 0,fl = 0):
         AlignType6Form1_base.__init__(self,parent,name,modal,fl)
-        #self.print_page = False
-        
-    #def printPageButton_clicked(self):
-        #print "AlignType6Form1_base.printPageButton_clicked(): Not implemented yet"
-    #    self.print_page = True
-    #    self.accept()
+ 

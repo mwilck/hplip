@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import sys
 import re
 import getopt
 import socket
-
 
 # Local
 from base.g import *
@@ -72,12 +71,12 @@ USAGE = [ (__doc__, "", "name", True),
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
-        
+
     utils.format_text(USAGE, typ, __title__, 'hp-makeuri', __version__)
     sys.exit(0)
 
-    
-    
+
+
 log.set_module('hp-makeuri')
 
 try:
@@ -108,13 +107,13 @@ for o, a in opts:
 
     if o in ('-h', '--help'):
         usage()
-        
+
     elif o == '--help-rest':
         usage('rest')
-        
+
     elif o == '--help-man':
         usage('man')
-        
+
     elif o == '--help-desc':
         print __doc__,
         sys.exit(0)
@@ -123,13 +122,13 @@ for o, a in opts:
         log_level = a.lower().strip()
         if not log.set_level(log_level):
             usage()
-        
+
     elif o in ('-c', '--cups'):
         cups_quiet_mode = True
-        
+
     elif o in ('-s', '--sane'):
         sane_quiet_mode = True
-        
+
     elif o in ('-f', '--fax'):
         fax_quiet_mode = True
 
@@ -139,22 +138,22 @@ for o, a in opts:
         except ValueError:
             log.error("Invalid port number. Must be between 1 and 3 inclusive.")
             usage()
-            
+
     elif o == '-g':
         log.set_level('debug')
-        
+
 
 quiet_mode = cups_quiet_mode or sane_quiet_mode or fax_quiet_mode
 
 if quiet_mode:
     log.set_level('warn')
-    
+
 utils.log_title(__title__, __version__)    
 
 if len(args) != 1:
     log.error("You must specify one SERIAL NO., IP, USB ID or DEVNODE on the command line.")
     usage()
-    
+
 param = args[0]
 
 if 'localhost' in param.lower():
@@ -187,7 +186,7 @@ if sane_uri:
         print "SANE URI:", sane_uri
 elif not sane_uri and sane_quiet_mode:
     log.error("Device does not support scan.")
-    
+
 if fax_uri:
     if fax_quiet_mode:
         print fax_uri

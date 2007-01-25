@@ -138,6 +138,12 @@ public:
     DJ990BestMode ();
 };  // DJ990BestMode
 
+class DJ990PhotoNormalMode : public PrintMode
+{
+public:
+    DJ990PhotoNormalMode ();
+}; // DJ990 PhotoNormalMode
+
 #ifdef APDK_HIGH_RES_MODES
     const int VIP_BASE_RES = 600;
 #else
@@ -331,9 +337,6 @@ public:
 #ifdef APDK_MLC_PRINTER
         "officejet d\0"                             // officejet d series
 		"officejet 7100\0"                          // offjetjet 7100 series
-        "PSC 2100\0"              
-        "PSC 2150\0"
-		"PSC 2170\0"
 #endif
     ) {m_iPrinterType = eDJ9xxVIP;}
     inline Printer* CreatePrinter(SystemServices* pSS) const { return new DJ9xxVIP(pSS); }

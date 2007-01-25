@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'faxsendjobform_base.ui'
 #
-# Created: Tue Apr 11 10:17:21 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.14.1
+# Created: Tue Jan 9 10:08:58 2007
+#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -301,6 +301,16 @@ class FaxSendJobForm_base(QDialog):
         TabPageLayout.addWidget(self.textLabel3_2_2_2,0,0)
         self.tabWidget2.insertTab(self.TabPage,QString.fromLatin1(""))
 
+        self.TabPage_2 = QWidget(self.tabWidget2,"TabPage_2")
+        TabPageLayout_2 = QGridLayout(self.TabPage_2,1,1,11,6,"TabPageLayout_2")
+
+        self.checkBoxPrettyPrinting = QCheckBox(self.TabPage_2,"checkBoxPrettyPrinting")
+
+        TabPageLayout_2.addWidget(self.checkBoxPrettyPrinting,0,0)
+        spacer18 = QSpacerItem(20,401,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        TabPageLayout_2.addItem(spacer18,1,0)
+        self.tabWidget2.insertTab(self.TabPage_2,QString.fromLatin1(""))
+
         FaxSendJobForm_baseLayout.addMultiCellWidget(self.tabWidget2,0,0,0,4)
         spacer30 = QSpacerItem(70,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         FaxSendJobForm_baseLayout.addItem(spacer30,1,2)
@@ -331,6 +341,7 @@ class FaxSendJobForm_base(QDialog):
         self.connect(self.editCoverpagePushButton,SIGNAL("clicked()"),self.editCoverpagePushButton_clicked)
         self.connect(self.settingsPushButton,SIGNAL("clicked()"),self.settingsPushButton_clicked)
         self.connect(self.allowableTypesPushButton,SIGNAL("clicked()"),self.allowableTypesPushButton_clicked)
+        self.connect(self.checkBoxPrettyPrinting,SIGNAL("toggled(bool)"),self.checkBoxPrettyPrinting_toggled)
 
         self.setTabOrder(self.fileListView,self.fileEdit)
         self.setTabOrder(self.fileEdit,self.browsePushButton)
@@ -399,6 +410,8 @@ class FaxSendJobForm_base(QDialog):
         self.CommentText.setText(QString.null)
         self.textLabel3_2_2_2.setText(self.__tr("<b>Device information and status.</b>"))
         self.tabWidget2.changeTab(self.TabPage,self.__tr("Device"))
+        self.checkBoxPrettyPrinting.setText(self.__tr("Pretty printing of plain text files"))
+        self.tabWidget2.changeTab(self.TabPage_2,self.__tr("Options"))
         self.settingsPushButton.setText(self.__tr("Settings..."))
 
 
@@ -458,6 +471,9 @@ class FaxSendJobForm_base(QDialog):
 
     def allowableTypesPushButton_clicked(self):
         print "FaxSendJobForm_base.allowableTypesPushButton_clicked(): Not implemented yet"
+
+    def checkBoxPrettyPrinting_toggled(self,a0):
+        print "FaxSendJobForm_base.checkBoxPrettyPrinting_toggled(bool): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("FaxSendJobForm_base",s,c)

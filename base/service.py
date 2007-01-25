@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #
 # Author: Don Welch
 #
-
 
 #Std Lib
 import socket
@@ -73,7 +72,7 @@ def testEmail(sock, username):
 def sendEvent(sock, event, typ='event', jobid=0, 
               username=prop.username, device_uri='', 
               other_fields={}, data=None):
-    
+
     fields = {'job-id'        : jobid,
               'event-type'    : typ,
               'event-code'    : event,
@@ -91,9 +90,9 @@ def setAlertsEx(sock):
     email_to_addresses = user_cfg.alerts.email_to_addresses
     email_from_address = user_cfg.alerts.email_from_address
     email_alerts = user_cfg.alerts.email_alerts
-    
+
     setAlerts(sock, email_alerts, email_from_address, email_to_addresses)
-    
+
 
 def setAlerts(sock, email_alerts, email_from_address, email_to_addresses): 
     fields, data, result_code = \
@@ -106,4 +105,4 @@ def setAlerts(sock, email_alerts, email_from_address, email_to_addresses):
                             'email-from-address' : email_from_address,
                             'email-to-addresses' : email_to_addresses,
                         })
-                        
+

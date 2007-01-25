@@ -60,11 +60,11 @@ DIST_COMMON = $(am__configure_deps) $(dist_base_SCRIPTS) \
 	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
 	$(dist_www241_DATA) $(dist_www242_DATA) $(dist_www243_DATA) \
 	$(dist_www24_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
-	$(dist_www2_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
-	$(dist_www5_DATA) $(dist_www61_DATA) $(dist_www6_DATA) \
-	$(dist_www7_DATA) $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/configure COPYING compile config.guess \
-	config.sub depcomp install-sh ltmain.sh missing
+	$(dist_www261_DATA) $(dist_www2_DATA) $(dist_www3_DATA) \
+	$(dist_www4_DATA) $(dist_www5_DATA) $(dist_www61_DATA) \
+	$(dist_www6_DATA) $(dist_www7_DATA) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(top_srcdir)/configure COPYING compile \
+	config.guess config.sub depcomp install-sh ltmain.sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
@@ -97,10 +97,11 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" \
 	"$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" \
 	"$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" \
 	"$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" \
-	"$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www3dir)" \
-	"$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" \
-	"$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" \
-	"$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" \
+	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
+	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
+	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
+	"$(DESTDIR)$(docdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libhpip_la_LIBADD =
@@ -221,6 +222,7 @@ dist_www242DATA_INSTALL = $(INSTALL_DATA)
 dist_www243DATA_INSTALL = $(INSTALL_DATA)
 dist_www251DATA_INSTALL = $(INSTALL_DATA)
 dist_www252DATA_INSTALL = $(INSTALL_DATA)
+dist_www261DATA_INSTALL = $(INSTALL_DATA)
 dist_www3DATA_INSTALL = $(INSTALL_DATA)
 dist_www4DATA_INSTALL = $(INSTALL_DATA)
 dist_www5DATA_INSTALL = $(INSTALL_DATA)
@@ -235,9 +237,9 @@ DATA = $(dist_faxppd_DATA) $(dist_firm_DATA) $(dist_hplip_DATA) \
 	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
 	$(dist_www24_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
 	$(dist_www243_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
-	$(dist_www3_DATA) $(dist_www4_DATA) $(dist_www5_DATA) \
-	$(dist_www6_DATA) $(dist_www61_DATA) $(dist_www7_DATA) \
-	$(doc_DATA) $(noinst_DATA)
+	$(dist_www261_DATA) $(dist_www3_DATA) $(dist_www4_DATA) \
+	$(dist_www5_DATA) $(dist_www6_DATA) $(dist_www61_DATA) \
+	$(dist_www7_DATA) $(doc_DATA) $(noinst_DATA)
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
@@ -381,19 +383,9 @@ docdir = $(datadir)/doc/$(distdir)
 doc_DATA = COPYING scan/sane/hpaio.desc
 wwwsrc = doc
 www0dir = $(docdir)
-dist_www0_DATA = $(wwwsrc)/contacts.html \
-                 $(wwwsrc)/faqs.html \
-                 $(wwwsrc)/features.html \
-                 $(wwwsrc)/index.html \
-                 $(wwwsrc)/legal.html \
-                 $(wwwsrc)/license.html \
-                 $(wwwsrc)/mailing_lists.html \
-                 $(wwwsrc)/release_notes.html \
-                 $(wwwsrc)/screenshots.html \
-                 $(wwwsrc)/support_statement.html \
-                 $(wwwsrc)/system_requirements.html \
-                 $(wwwsrc)/about.html \
-                 $(wwwsrc)/other_support.html
+dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
+   $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
+   $(wwwsrc)/other_support.html $(wwwsrc)/downloads.html
 
 www1dir = $(docdir)/howtos
 dist_www1_DATA = $(wwwsrc)/howtos/*
@@ -417,6 +409,8 @@ www251dir = $(docdir)/install/manual
 dist_www251_DATA = $(wwwsrc)/install/manual/*
 www252dir = $(docdir)/install/manual/distros
 dist_www252_DATA = $(wwwsrc)/install/manual/distros/*
+www261dir = $(docdir)/install/install
+dist_www261_DATA = $(wwwsrc)/install/install/*
 www3dir = $(docdir)/styles
 dist_www3_DATA = $(wwwsrc)/styles/*
 www4dir = $(docdir)/images
@@ -540,7 +534,8 @@ libhpip_la_LDFLAGS = -version-info 0:1:0
 @SCAN_BUILD_TRUE@libsane_hpaio_la_LDFLAGS = -version-info $(MAJORVER):$(MINORVER):$(AGEVER) 
 # The following is a interlibrary dependency that must be compiled first.
 @SCAN_BUILD_TRUE@libsane_hpaio_la_LIBADD = libhpip.la libhplip-api.la
-@SCAN_BUILD_TRUE@libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+#libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+@SCAN_BUILD_TRUE@libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DWITH_LEAN
 
 # api library
 noinst_LTLIBRARIES = libhplip-api.la
@@ -1942,6 +1937,23 @@ uninstall-dist_www252DATA:
 	  echo " rm -f '$(DESTDIR)$(www252dir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(www252dir)/$$f"; \
 	done
+install-dist_www261DATA: $(dist_www261_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(www261dir)" || $(mkdir_p) "$(DESTDIR)$(www261dir)"
+	@list='$(dist_www261_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(dist_www261DATA_INSTALL) '$$d$$p' '$(DESTDIR)$(www261dir)/$$f'"; \
+	  $(dist_www261DATA_INSTALL) "$$d$$p" "$(DESTDIR)$(www261dir)/$$f"; \
+	done
+
+uninstall-dist_www261DATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_www261_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(www261dir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(www261dir)/$$f"; \
+	done
 install-dist_www3DATA: $(dist_www3_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(www3dir)" || $(mkdir_p) "$(DESTDIR)$(www3dir)"
@@ -2197,7 +2209,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/manual $(distdir)/$(wwwsrc)/install/manual/distros $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/copier $(distdir)/data/firmware $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/models $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/installer $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
+	$(mkdir_p) $(distdir)/$(wwwsrc) $(distdir)/$(wwwsrc)/howtos $(distdir)/$(wwwsrc)/images $(distdir)/$(wwwsrc)/install $(distdir)/$(wwwsrc)/install/install $(distdir)/$(wwwsrc)/install/manual $(distdir)/$(wwwsrc)/install/manual/distros $(distdir)/$(wwwsrc)/install/step1 $(distdir)/$(wwwsrc)/install/step2 $(distdir)/$(wwwsrc)/install/step3 $(distdir)/$(wwwsrc)/install/step4 $(distdir)/$(wwwsrc)/install/step4/cups $(distdir)/$(wwwsrc)/install/step4/setup $(distdir)/$(wwwsrc)/install/step4/suse $(distdir)/$(wwwsrc)/styles $(distdir)/$(wwwsrc)/supported_devices $(distdir)/$(wwwsrc)/tech_docs $(distdir)/$(wwwsrc)/tech_docs/man_pages $(distdir)/$(wwwsrc)/troubleshooting $(distdir)/base $(distdir)/copier $(distdir)/data/firmware $(distdir)/data/images $(distdir)/data/ldl $(distdir)/data/models $(distdir)/data/pcl $(distdir)/data/ps $(distdir)/fax $(distdir)/fax/backend $(distdir)/fax/ppd $(distdir)/installer $(distdir)/pcard $(distdir)/pcard/pcardext $(distdir)/plugins $(distdir)/prnt $(distdir)/prnt/cupsext $(distdir)/scan $(distdir)/scan/sane $(distdir)/ui
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -2344,7 +2356,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installerdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installerdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -2410,10 +2422,10 @@ install-data-am: install-cupsPROGRAMS install-dist_baseSCRIPTS \
 	install-dist_www241DATA install-dist_www242DATA \
 	install-dist_www243DATA install-dist_www24DATA \
 	install-dist_www251DATA install-dist_www252DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-docDATA
+	install-dist_www261DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA install-docDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -2463,11 +2475,12 @@ uninstall-am: uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
 	uninstall-dist_www241DATA uninstall-dist_www242DATA \
 	uninstall-dist_www243DATA uninstall-dist_www24DATA \
 	uninstall-dist_www251DATA uninstall-dist_www252DATA \
-	uninstall-dist_www2DATA uninstall-dist_www3DATA \
-	uninstall-dist_www4DATA uninstall-dist_www5DATA \
-	uninstall-dist_www61DATA uninstall-dist_www6DATA \
-	uninstall-dist_www7DATA uninstall-docDATA uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-sbinPROGRAMS
+	uninstall-dist_www261DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
+	uninstall-docDATA uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-sbinPROGRAMS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
@@ -2499,17 +2512,18 @@ uninstall-info: uninstall-info-recursive
 	install-dist_www241DATA install-dist_www242DATA \
 	install-dist_www243DATA install-dist_www24DATA \
 	install-dist_www251DATA install-dist_www252DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-docDATA install-exec \
-	install-exec-am install-exec-hook install-info install-info-am \
-	install-libLTLIBRARIES install-man install-sbinPROGRAMS \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
-	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	install-dist_www261DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA install-docDATA \
+	install-exec install-exec-am install-exec-hook install-info \
+	install-info-am install-libLTLIBRARIES install-man \
+	install-sbinPROGRAMS install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
+	tags tags-recursive uninstall uninstall-am \
 	uninstall-cupsPROGRAMS uninstall-dist_baseSCRIPTS \
 	uninstall-dist_cmdSCRIPTS uninstall-dist_copierSCRIPTS \
 	uninstall-dist_faxSCRIPTS uninstall-dist_faxppdDATA \
@@ -2526,12 +2540,12 @@ uninstall-info: uninstall-info-recursive
 	uninstall-dist_www241DATA uninstall-dist_www242DATA \
 	uninstall-dist_www243DATA uninstall-dist_www24DATA \
 	uninstall-dist_www251DATA uninstall-dist_www252DATA \
-	uninstall-dist_www2DATA uninstall-dist_www3DATA \
-	uninstall-dist_www4DATA uninstall-dist_www5DATA \
-	uninstall-dist_www61DATA uninstall-dist_www6DATA \
-	uninstall-dist_www7DATA uninstall-docDATA uninstall-hook \
-	uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-sbinPROGRAMS
+	uninstall-dist_www261DATA uninstall-dist_www2DATA \
+	uninstall-dist_www3DATA uninstall-dist_www4DATA \
+	uninstall-dist_www5DATA uninstall-dist_www61DATA \
+	uninstall-dist_www6DATA uninstall-dist_www7DATA \
+	uninstall-docDATA uninstall-hook uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-sbinPROGRAMS
 
 
 build-pcardext: 

@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -99,11 +99,19 @@ YK"
 *FoomaticRIPOptionSetting PrintoutMode=Draft.Gray: "Quality=300DraftGr&&
 ayscaleCMYK"
 *End
+*PrintoutMode Draft.GrayK/High Quality: "%% FoomaticRIPOptionSetting: PrintoutMode=Draft.GrayK"
+*FoomaticRIPOptionSetting PrintoutMode=Draft.GrayK: "Quality=300DraftG&&
+rayscaleK"
+*End
 *PrintoutMode Normal/Normal: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal"
 *FoomaticRIPOptionSetting PrintoutMode=Normal: "Quality=300ColorCMYK"
 *PrintoutMode Normal.Gray/Normal Grayscale: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal.Gray"
 *FoomaticRIPOptionSetting PrintoutMode=Normal.Gray: "Quality=300Graysc&&
 aleCMYK"
+*End
+*PrintoutMode Normal.GrayK/High Quality: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal.GrayK"
+*FoomaticRIPOptionSetting PrintoutMode=Normal.GrayK: "Quality=600Grays&&
+caleK"
 *End
 *PrintoutMode High/High Quality: "%% FoomaticRIPOptionSetting: PrintoutMode=High"
 *FoomaticRIPOptionSetting PrintoutMode=High: "Quality=600BestColorCMYK&&
@@ -359,6 +367,11 @@ enSet=2"
 Params=Quality:Quality=1,Quality:ColorMode=0,Quality:MediaType=0,Quali&&
 ty:PenSet=2"
 *End
+*Quality 300DraftGrayscaleK/300 dpi, Draft, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=300DraftGrayscaleK"
+*FoomaticRIPOptionSetting Quality=300DraftGrayscaleK: " -r300 -sIjsPar&&
+ams=Quality:Quality=1,Quality:ColorMode=0,Quality:MediaType=0,Quality:&&
+PenSet=0"
+*End
 *Quality 300GrayscaleCMYK/300 dpi, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300GrayscaleCMYK"
 *FoomaticRIPOptionSetting Quality=300GrayscaleCMYK: " -r300 -sIjsParam&&
 s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
@@ -378,6 +391,11 @@ nSet=2"
 *FoomaticRIPOptionSetting Quality=600GrayscaleCMYK: " -r600 -sIjsParam&&
 s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
 nSet=2"
+*End
+*Quality 600GrayscaleK/600 dpi, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
+*FoomaticRIPOptionSetting Quality=600GrayscaleK: " -r600 -sIjsParams=Q&&
+uality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:PenSe&&
+t=0"
 *End
 *Quality 600PhotoCMYK/600 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYK"
 *FoomaticRIPOptionSetting Quality=600PhotoCMYK: " -r600 -sIjsParams=Qu&&

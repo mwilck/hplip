@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import struct, cStringIO
 # Local
 from g import *
 from codes import *
-    
+
 # Page flags
 NEW_PAGE =            0x01
 END_PAGE  =           0x02
@@ -113,7 +113,7 @@ def parseFixedHeader(buffer):
     block_len, header_len, data_type, page_flags = struct.unpack(fmt, buffer[:8])
     page_flags = page_flags & 0x1f
     return block_len, header_len, data_type, page_flags
-    
+
 def parseImageVariantHeader(buffer, data_type):
     if data_type == DT_SCANNED_IMAGES:
         fmt = "<BBHHHH"
@@ -121,29 +121,29 @@ def parseImageVariantHeader(buffer, data_type):
         return major_ver, minor_ver, src_pages, copies_per_page, zoom, jpeg_q_factor
     elif data_type == DT_FAX_IMAGES:
         pass
-    
+
 def parseRecord(buffer):
     record_type = struct.unpack("<B", buffer[0])[0]
-    
+
     if record_type == RT_START_PAGE:
         fmt = "<BBHHHIIIHHIII"
         id, encoding, page_num, black_ppr, black_bpp, black_rpp, black_hort_dpi, black_vert_dpi, cmy_ppr, cmy_bpp, cmy_rpp, cmy_hort_dpi, cmy_vert_dpi = \
             struct.unpack(fmt, buffer[:SOP_RECORD_SIZE])
         assert id == record_type
         return id, (encoding, page_num, black_ppr, black_bpp, black_rpp, black_hort_dpi, black_vert_dpi, cmy_ppr, cmy_bpp, cmy_rpp, cmy_hort_dpi, cmy_vert_dpi)
-        
+
     elif record_type == RT_RASTER:
         fmt = "<BBH"
         id, unused, data_size = struct.unpack(fmt, buffer[:RASTER_RECORD_SIZE])
         assert id == record_type
         return id, (unused, data_size)
-        
+
     elif record_type == RT_END_PAGE:
         fmt = "<BBBBII"
         id, unused1, unused2, unused3, black_rows, cmy_rows = struct.unpack(fmt, buffer[:EOP_RECORD_SIZE])
         assert id == record_type
         return id, (unused1, unused2, unused3, black_rows, cmy_rows)
-        
+
     log.error("Error: Invalid record type: %d" % record_type)
     raise Error(ERROR_INTERNAL)
 
@@ -156,17 +156,17 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
     while state != STATE_END:
         log.debug("**** State %d ****" % state)
         if state == STATE_FIXED_HEADER: 
-            
+
             if endScan:
                 state = STATE_END
                 break
-            
+
             if data_remaining == 0:
                 fields, data = device.readChannel(channel_id)
                 data_remaining = len(data)
                 if callback is not None:
                     endScan = callback()
-            
+
             block_len, header_len, data_type, page_flags = parseFixedHeader(data)
             block_remaining, header_remaining = block_len-FIXED_HEADER_SIZE, header_len-FIXED_HEADER_SIZE
             log.debug("Fixed header: (datalen=%d(0x%x),blocklen=%d(0x%x),headerlen=%d(0x%x),datatype=0x%x,pageflags=0x%x)" % 
@@ -175,15 +175,15 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
             data = data[FIXED_HEADER_SIZE:]
             state = STATE_RECORD
             log.debug("Data: data=%d,block=%d,header=%d" % (data_remaining, block_remaining, header_remaining))
-            
+
             if page_flags & PAGE_FLAG_END_STREAM:
                 state = STATE_END
                 break
-            
+
             if header_remaining > 0:
                 state = STATE_VARIANT_HEADER
-            
-        
+
+
         elif state == STATE_VARIANT_HEADER:
             if data_type == DT_SCANNED_IMAGES:
                 major_ver, minor_ver, src_pages, copies_per_page, zoom, jpeg_q_factor = parseImageVariantHeader(data, data_type)
@@ -193,28 +193,28 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
                 block_remaining -= IMAGE_VARIANT_HEADER_SIZE
                 header_remaining -= IMAGE_VARIANT_HEADER_SIZE
                 data_remaining -= IMAGE_VARIANT_HEADER_SIZE
-                
+
             elif data_type == DT_FAX_IMAGES:
                 log.error("Unsupported data type")
-            
+
             else:
                 log.error("Unsupported data type")
-                
+
             log.debug("Data: data=%d,block=%d,header=%d" % (data_remaining, block_remaining, header_remaining))
-            
+
             if header_remaining > 0:
                 log.error("Header size error.")
                 state = STATE_END
                 continue
-            
+
             state = STATE_RECORD
             if block_remaining == 0:
                 state = STATE_FIXED_HEADER
             continue
-        
+
         elif state == STATE_RECORD:
             record_type, record = parseRecord(data)
-            
+
             if record_type == RT_START_PAGE:
                 encoding, page_num, black_ppr, black_bpp, black_rpp, black_hort_dpi, black_vert_dpi, \
                     cmy_ppr, cmy_bpp, cmy_rpp, cmy_hort_dpi, cmy_vert_dpi = record
@@ -233,7 +233,7 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
                     state = STATE_FIXED_HEADER
                     log.debug("Data: data=%d,block=%d,header=%d" % (data_remaining, block_remaining, header_remaining))
                 continue
-                
+
             elif record_type == RT_RASTER:
                 unused, data_size = record
                 log.debug("Raster record: (data size=%d(0x%x))" % (data_size, data_size))
@@ -249,20 +249,20 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
                     stream.write(data[:block_remaining])
                     block_remaining -= data_len
                     data_remaining -= data_len
-                    
+
                     if data_remaining != 0:
                         log.error("Data size error")
                         state = STATE_END
                         continue
-                    
+
                 while block_remaining > 0:
                     if endScan:
                         #state = STATE_END
                         break
-                        
+
                     log.debug("Reading more data from device...")
                     fields, data = device.readChannel(channel_id)
-                    
+
                     if callback is not None:
                         endScan = callback()
 
@@ -271,15 +271,15 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
                     stream.write(data[:block_remaining])
                     total_bytes += data_len
                     block_remaining -= data_len
-                
+
                 if block_remaining != 0:
                     log.error("Block size error.")
                     state = STATE_END
                     continue
-                
+
                 state = STATE_FIXED_HEADER
                 continue
-                
+
             elif record_type == RT_END_PAGE:
                 unused1, unused2, unused3, black_rows, cmy_rows = record
                 log.debug("End page record: (black_rows=%d,cmy_rows=%d)" % (black_rows, cmy_rows))
@@ -299,9 +299,9 @@ def readChannelToStream(device, channel_id, stream, single_read=True, callback=N
 
     log.debug("Read %d bytes" % total_bytes)
     return endScan 
-    
 
-    
+
+
 def buildMFPDTFBlock(data_type, page_flags=0, send_variant=False, data=None):
     # Fixed header
     # [Variant header - dial, fax, or scan]
@@ -310,24 +310,24 @@ def buildMFPDTFBlock(data_type, page_flags=0, send_variant=False, data=None):
     block = cStringIO.StringIO()
     block.write(struct.pack("<I", 0)) # Block len (4bytes)
     header_len = FIXED_HEADER_SIZE
-    
+
     if send_variant:
         if data_type == DT_DIAL_STRINGS:
             header_len += DIAL_STRINGS_VARIANT_HEADER_SIZE
-    
+
         elif data_type == DT_FAX_IMAGES:
             header_len += FAX_IMAGE_VARIANT_HEADER_SIZE
-        
+
     block.write(struct.pack("<H", header_len)) # Header len (2 bytes)
     block.write(struct.pack("<B", data_type)) # Data type (1 byte)
     block.write(struct.pack("<B", page_flags)) # Page flags (1 byte)
-    
+
     if send_variant:
         if data_type == DT_DIAL_STRINGS:
             block.write(struct.pack("<BB", MAJOR_VER, MINOR_VER))
             block.write(struct.pack("<H", 1)) # num strings
             block.write(struct.pack("<H", 51)) # ?
-            
+
         elif data_type == DT_FAX_IMAGES:
             block.write(struct.pack("<BB", MAJOR_VER, MINOR_VER))
             block.write(struct.pack("<B", SRC_HOST)) # Data source (1 byte)
@@ -338,17 +338,17 @@ def buildMFPDTFBlock(data_type, page_flags=0, send_variant=False, data=None):
             block.write("\x20"*20) # T30_SUB (20 bytes)
             block.write("\x20"*20) # T30_PWD (20 bytes)
             block.write("<I", 0) # xaction ID (4 bytes)
-    
+
     if data_type == DT_DIAL_STRINGS:
         if data is not None:
             dial_string = data['dial-string']
             block.write(dial_string)
             block.write('\x00'*(51-len(dial_string)))
-        
+
     elif data_type == DT_FAX_IMAGES:
         pass
-    
-    
+
+
     # fixed header (8 bytes):
     # 
     # +----------------------------+
@@ -501,13 +501,3 @@ def buildMFPDTFBlock(data_type, page_flags=0, send_variant=False, data=None):
     # +----------------------------+
     #    
 
-    
-##def buildFixedHeader(data_type, page_flags):
-##    pass
-##    
-##def buildVariantHeader():
-##    pass
-##    
-##def buildRecord():
-##    pass
-    

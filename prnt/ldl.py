@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -210,13 +210,13 @@ def buildLIDILPacket(packet_type, command=0, operation=0, other={}):
             p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command,
                             0, 0, operation, other['active_colors'], 
                             num_selections, *selections)
-                            
+
         elif command == COMMAND_DYNAMIC_COUNTERS and operation == COMMAND_DYNAMIC_COUNTERS_OPERATION: # 0.5.4
             fmt = CMD_HEADER_FMT + "BIB"
-            
+
             p = struct.pack(fmt, PACKET_FRAME, struct.calcsize(fmt), 0, PACKET_TYPE_COMMAND, command,
                             0, 0, operation, other['counter'], PACKET_FRAME)
-            
+
 
     assert len(p) >= 16
 
@@ -366,7 +366,7 @@ def buildSetPenAlignment3Packet(active_colors, selections): # 0.5.4
                             COMMAND_SET_PEN_ALIGNMENT_3_OPERATION,
                             other={'active_colors': active_colors,
                                    'selections': selections,})
-                                   
+
 def buildDynamicCountersPacket(counter): # 0.5.4
     return buildLIDILPacket(PACKET_TYPE_COMMAND, COMMAND_DYNAMIC_COUNTERS,
                             COMMAND_DYNAMIC_COUNTERS_OPERATION,

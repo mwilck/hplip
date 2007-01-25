@@ -7,7 +7,7 @@
 # All Rights Reserved
 #
 # Modifications by Don Welch
-# (c) Copyright 2003-2006 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
 #  
 # Redistribution and use in source and binary forms, with or without modification, 
 # are permitted provided that the following conditions are met:
@@ -476,7 +476,7 @@ magic = [
   [0L, 'string', '=', 'PI', 'PC pointer image data'],
   [0L, 'string', '=', 'CI', 'PC color icon data'],
   [0L, 'string', '=', 'CP', 'PC color pointer image data'],
-  [0L, 'string', '=', '/* XPM */', 'X pixmap image text'],
+  [0L, 'string', '=', '/* XPM */', 'image/x-xpixmap'],
   [0L, 'leshort', '=', 52306L, 'RLE image data,'],
   [0L, 'string', '=', 'Imagefile version-', 'iff image data'],
   [0L, 'belong', '=', 1504078485L, 'image/x-sun-raster'],
@@ -924,43 +924,43 @@ def unescape(s):
     # replace string escape sequences
     while 1:
         m = re.search(r'\\', s)
-        
+
         if not m: 
             break
-        
+
         x = m.start()+1
-        
+
         if m.end() == len(s): 
             # escaped space at end
             s = s[:len(s)-1] + ' '
-        
+
         elif s[x:x+2] == '0x':
             # hex ascii value
             c = chr(strToNum(s[x:x+4]))
             s = s[:x-1] + c + s[x+4:]
-        
+
         elif s[m.start()+1] == 'x':
             # hex ascii value
             c = chr(strToNum(s[x:x+3]))
             s = s[:x-1] + c + s[x+3:]
-        
+
         elif 58 > ord(s[x]) > 47:
             # octal ascii value
             end = x
-            
+
             while (ord(s[end]) > 47 and ord(s[end]) < 58):
                 end = end + 1
                 if end > len(s) - 1: break
             c = chr(strToNum(s[x-1:end]))
             s = s[:x-1] + c + s[end:]
-        
+
         elif s[x] == 'n':
             # newline
             s = s[:x-1] + '\n' + s[x+1:]
-        
+
         else:
             break
-    
+
     return s
 
 class magicTest:
@@ -968,7 +968,7 @@ class magicTest:
         if t.count('&') > 0:
             mask = strToNum(t[t.index('&')+1:])  
             t = t[:t.index('&')]
-        
+
         if type(offset) == type('a'):
             self.offset = strToNum(offset)
         else:
@@ -1002,22 +1002,22 @@ class magicTest:
                     s = s + c
                     [c] = struct.unpack('c', data[self.offset + i])
                 data = s
-            
+
             elif self.type == 'short':
                 [data] = struct.unpack('h', data[self.offset : self.offset + 2])
-            
+
             elif self.type == 'leshort':
                 [data] = struct.unpack('<h', data[self.offset : self.offset + 2])
-            
+
             elif self.type == 'beshort':
                 [data] = struct.unpack('>H', data[self.offset : self.offset + 2])
-                    
+
             elif self.type == 'long':
                 [data] = struct.unpack('l', data[self.offset : self.offset + 4])
-            
+
             elif self.type == 'lelong':
                 [data] = struct.unpack('<l', data[self.offset : self.offset + 4])
-            
+
             elif self.type == 'belong':
                 [data] = struct.unpack('>l', data[self.offset : self.offset + 4])
             else:
@@ -1046,23 +1046,23 @@ def load(file):
             type = line[1]
             value = line[2]
             level = 0
-            
+
             while offset[0] == '>':
                 # count the level of the type
                 level = level + 1
                 offset = offset[1:]
             l = magicNumbers
-            
+
             if level > 0:
                 l = last[level - 1].subTests
-            
+
             if offset[0] in ( '(', '&' ):
                 # don't handle indirect and relative offsets just yet
                 pass
-            
+
             else:
                 operands = ['=', '<', '>', '&']
-                
+
                 if operands.count(value[0]) > 0:
                     # a comparison operator is specified
                     op = value[0] 
@@ -1072,9 +1072,9 @@ def load(file):
                     # literal value that collides with operands is escaped
                         value = value[1:]
                     op = '='
-                
+
                 mask = None
-                
+
                 if type == 'string':
                     while 1:
                         value = unescape(value)
@@ -1088,14 +1088,14 @@ def load(file):
                     if value.count('&') != 0:
                         mask = value[(value.index('&') + 1):]
                         value = value[:(value.index('&')+1)]
-                    
+
                     try: 
                         value = strToNum(value)
                     except: 
                         continue
-                    
+
                     msg = ''.join(list(line[3:]))
-                
+
                 new = magicTest(offset, type, op, value, msg, mask)
                 last[level] = new
                 l.append(new)
@@ -1157,7 +1157,6 @@ def load(file):
         else:
           if value.count('&') != 0:
             mask = value[(value.index('&') + 1):]
-            #print 'MASK: ' + mask
             value = value[:(value.index('&')+1)]
           try: value = strToNum(value)
           except: continue
