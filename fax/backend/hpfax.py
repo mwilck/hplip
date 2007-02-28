@@ -108,7 +108,11 @@ for o, a in opts:
 
 
 if len( args ) == 0:
-    probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
+    try:
+        probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
+    except Error:
+        log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
+        sys.exit(1)
 
     if not probed_devices:
         cups_ver_major, cups_ver_minor, cups_ver_patch = cups.getVersionTuple()
@@ -126,7 +130,9 @@ if len( args ) == 0:
         except Error:
             continue
 
-        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % (uri, model)
+        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % \
+            (uri.replace("hp:", "hpfax:"), model.replace("_", " "))
+            
         good_devices += 1
 
     if not good_devices:

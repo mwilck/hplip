@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '3.0'
+__version__ = '4.0'
 __title__ = 'Print Utility'
 __doc__ = "A simple front end to 'lp'. Provides a print UI from the Device Manager if kprinter, gtklp, or xpp are not installed."
 

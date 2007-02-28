@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/devmgr4_base.ui'
 #
-# Created: Wed Jan 10 16:26:25 2007
+# Created: Tue Feb 13 13:46:50 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,9 +25,10 @@ class DevMgr4_base(QMainWindow):
 
         self.splitter2 = QSplitter(self.centralWidget(),"splitter2")
         self.splitter2.setOrientation(QSplitter.Horizontal)
+        self.splitter2.setOpaqueResize(1)
 
         self.DeviceList = QIconView(self.splitter2,"DeviceList")
-        self.DeviceList.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred,0,0,self.DeviceList.sizePolicy().hasHeightForWidth()))
+        self.DeviceList.setSizePolicy(QSizePolicy(QSizePolicy.Maximum,QSizePolicy.Preferred,0,0,self.DeviceList.sizePolicy().hasHeightForWidth()))
         self.DeviceList.setMaximumSize(QSize(32767,32767))
         self.DeviceList.setResizePolicy(QIconView.Manual)
         self.DeviceList.setArrangement(QIconView.TopToBottom)
@@ -39,122 +40,19 @@ class DevMgr4_base(QMainWindow):
         self.Tabs.insertTab(self.FunctionsTab,QString.fromLatin1(""))
 
         self.StatusTab = QWidget(self.Tabs,"StatusTab")
-        StatusTabLayout = QGridLayout(self.StatusTab,1,1,11,6,"StatusTabLayout")
-
-        self.StatusGroupBox = QGroupBox(self.StatusTab,"StatusGroupBox")
-        self.StatusGroupBox.setColumnLayout(0,Qt.Vertical)
-        self.StatusGroupBox.layout().setSpacing(6)
-        self.StatusGroupBox.layout().setMargin(11)
-        StatusGroupBoxLayout = QGridLayout(self.StatusGroupBox.layout())
-        StatusGroupBoxLayout.setAlignment(Qt.AlignTop)
-
-        self.StatusText = QLabel(self.StatusGroupBox,"StatusText")
-        StatusText_font = QFont(self.StatusText.font())
-        StatusText_font.setBold(1)
-        self.StatusText.setFont(StatusText_font)
-        self.StatusText.setFrameShape(QLabel.NoFrame)
-
-        StatusGroupBoxLayout.addWidget(self.StatusText,0,0)
-
-        self.StatusIcon = QLabel(self.StatusGroupBox,"StatusIcon")
-        self.StatusIcon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.StatusIcon.sizePolicy().hasHeightForWidth()))
-        self.StatusIcon.setMinimumSize(QSize(32,32))
-        self.StatusIcon.setMaximumSize(QSize(32,32))
-        self.StatusIcon.setScaledContents(1)
-
-        StatusGroupBoxLayout.addWidget(self.StatusIcon,0,1)
-
-        self.StatusText2 = QLabel(self.StatusGroupBox,"StatusText2")
-        StatusText2_font = QFont(self.StatusText2.font())
-        StatusText2_font.setItalic(1)
-        self.StatusText2.setFont(StatusText2_font)
-        self.StatusText2.setFrameShape(QLabel.NoFrame)
-
-        StatusGroupBoxLayout.addMultiCellWidget(self.StatusText2,1,1,0,1)
-
-        StatusTabLayout.addWidget(self.StatusGroupBox,0,0)
-
-        self.groupBox3 = QGroupBox(self.StatusTab,"groupBox3")
-        self.groupBox3.setColumnLayout(0,Qt.Vertical)
-        self.groupBox3.layout().setSpacing(6)
-        self.groupBox3.layout().setMargin(11)
-        groupBox3Layout = QGridLayout(self.groupBox3.layout())
-        groupBox3Layout.setAlignment(Qt.AlignTop)
-
-        self.StatusHistoryList = QListView(self.groupBox3,"StatusHistoryList")
-        self.StatusHistoryList.addColumn(QString.null)
-        self.StatusHistoryList.header().setResizeEnabled(0,self.StatusHistoryList.header().count() - 1)
-        self.StatusHistoryList.addColumn(self.__tr("Date"))
-        self.StatusHistoryList.addColumn(self.__tr("Time"))
-        self.StatusHistoryList.addColumn(self.__tr("User"))
-        self.StatusHistoryList.addColumn(self.__tr("Job ID"))
-        self.StatusHistoryList.addColumn(self.__tr("Code"))
-        self.StatusHistoryList.addColumn(self.__tr("Description"))
-        self.StatusHistoryList.setEnabled(1)
-        self.StatusHistoryList.setSelectionMode(QListView.Single)
-        self.StatusHistoryList.setAllColumnsShowFocus(1)
-
-        groupBox3Layout.addWidget(self.StatusHistoryList,0,0)
-
-        StatusTabLayout.addWidget(self.groupBox3,1,0)
         self.Tabs.insertTab(self.StatusTab,QString.fromLatin1(""))
-
-        self.MaintTab = QWidget(self.Tabs,"MaintTab")
-        self.Tabs.insertTab(self.MaintTab,QString.fromLatin1(""))
 
         self.SuppliesTab = QWidget(self.Tabs,"SuppliesTab")
         self.Tabs.insertTab(self.SuppliesTab,QString.fromLatin1(""))
 
+        self.MaintTab = QWidget(self.Tabs,"MaintTab")
+        self.Tabs.insertTab(self.MaintTab,QString.fromLatin1(""))
+
+        self.PrintSettingsTab = QWidget(self.Tabs,"PrintSettingsTab")
+        self.Tabs.insertTab(self.PrintSettingsTab,QString.fromLatin1(""))
+
         self.PrintJobsTab = QWidget(self.Tabs,"PrintJobsTab")
-        PrintJobsTabLayout = QGridLayout(self.PrintJobsTab,1,1,11,6,"PrintJobsTabLayout")
-
-        self.PrintJobList = QListView(self.PrintJobsTab,"PrintJobList")
-        self.PrintJobList.addColumn(self.__tr("Queue"))
-        self.PrintJobList.addColumn(self.__tr("Job ID"))
-        self.PrintJobList.addColumn(self.__tr("Status"))
-        self.PrintJobList.addColumn(self.__tr("User"))
-        self.PrintJobList.addColumn(self.__tr("Title"))
-        self.PrintJobList.setAllColumnsShowFocus(1)
-
-        PrintJobsTabLayout.addMultiCellWidget(self.PrintJobList,0,0,0,1)
-
-        self.CancelPrintJobButton = QPushButton(self.PrintJobsTab,"CancelPrintJobButton")
-        self.CancelPrintJobButton.setEnabled(0)
-
-        PrintJobsTabLayout.addWidget(self.CancelPrintJobButton,1,1)
-        spacer12_3 = QSpacerItem(471,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        PrintJobsTabLayout.addItem(spacer12_3,1,0)
         self.Tabs.insertTab(self.PrintJobsTab,QString.fromLatin1(""))
-
-        self.PanelTab = QWidget(self.Tabs,"PanelTab")
-        PanelTabLayout = QGridLayout(self.PanelTab,1,1,11,6,"PanelTabLayout")
-
-        self.groupBox9_2 = QGroupBox(self.PanelTab,"groupBox9_2")
-        self.groupBox9_2.setColumnLayout(0,Qt.Vertical)
-        self.groupBox9_2.layout().setSpacing(6)
-        self.groupBox9_2.layout().setMargin(11)
-        groupBox9_2Layout = QGridLayout(self.groupBox9_2.layout())
-        groupBox9_2Layout.setAlignment(Qt.AlignTop)
-
-        self.Panel = QLabel(self.groupBox9_2,"Panel")
-        self.Panel.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.Panel.sizePolicy().hasHeightForWidth()))
-        self.Panel.setMinimumSize(QSize(254,40))
-        self.Panel.setMaximumSize(QSize(254,40))
-        self.Panel.setFrameShape(QLabel.NoFrame)
-        self.Panel.setScaledContents(1)
-
-        groupBox9_2Layout.addWidget(self.Panel,1,1)
-        spacer11_3 = QSpacerItem(20,101,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        groupBox9_2Layout.addItem(spacer11_3,0,1)
-        spacer12_4 = QSpacerItem(20,181,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        groupBox9_2Layout.addItem(spacer12_4,2,1)
-        spacer13_3 = QSpacerItem(121,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        groupBox9_2Layout.addItem(spacer13_3,1,2)
-        spacer14_2 = QSpacerItem(151,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        groupBox9_2Layout.addItem(spacer14_2,1,0)
-
-        PanelTabLayout.addWidget(self.groupBox9_2,0,0)
-        self.Tabs.insertTab(self.PanelTab,QString.fromLatin1(""))
 
         DevMgr4_baseLayout.addWidget(self.splitter2,0,0)
 
@@ -211,7 +109,7 @@ class DevMgr4_base(QMainWindow):
 
         self.languageChange()
 
-        self.resize(QSize(838,493).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(812,518).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.helpIndexAction,SIGNAL("activated()"),self.helpIndex)
@@ -225,42 +123,22 @@ class DevMgr4_base(QMainWindow):
         self.connect(self.deviceRefreshAll,SIGNAL("activated()"),self.deviceRefreshAll_activated)
         self.connect(self.DeviceList,SIGNAL("clicked(QIconViewItem*)"),self.DeviceList_clicked)
         self.connect(self.autoRefresh,SIGNAL("toggled(bool)"),self.autoRefresh_toggled)
-        self.connect(self.PrintJobList,SIGNAL("currentChanged(QListViewItem*)"),self.PrintJobList_currentChanged)
-        self.connect(self.CancelPrintJobButton,SIGNAL("clicked()"),self.CancelPrintJobButton_clicked)
-        self.connect(self.PrintJobList,SIGNAL("selectionChanged(QListViewItem*)"),self.PrintJobList_selectionChanged)
         self.connect(self.DeviceList,SIGNAL("rightButtonClicked(QIconViewItem*,const QPoint&)"),self.DeviceList_rightButtonClicked)
         self.connect(self.setupDevice,SIGNAL("activated()"),self.setupDevice_activated)
         self.connect(self.viewSupportAction,SIGNAL("activated()"),self.viewSupportAction_activated)
         self.connect(self.deviceInstallAction,SIGNAL("activated()"),self.deviceInstallAction_activated)
         self.connect(self.deviceRemoveAction,SIGNAL("activated()"),self.deviceRemoveAction_activated)
+        self.connect(self.Tabs,SIGNAL("currentChanged(QWidget*)"),self.Tabs_currentChanged)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager"))
         self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions"))
-        self.StatusGroupBox.setTitle(self.__tr("Last"))
-        self.StatusText.setText(QString.null)
-        self.StatusText2.setText(QString.null)
-        self.groupBox3.setTitle(self.__tr("History"))
-        self.StatusHistoryList.header().setLabel(0,QString.null)
-        self.StatusHistoryList.header().setLabel(1,self.__tr("Date"))
-        self.StatusHistoryList.header().setLabel(2,self.__tr("Time"))
-        self.StatusHistoryList.header().setLabel(3,self.__tr("User"))
-        self.StatusHistoryList.header().setLabel(4,self.__tr("Job ID"))
-        self.StatusHistoryList.header().setLabel(5,self.__tr("Code"))
-        self.StatusHistoryList.header().setLabel(6,self.__tr("Description"))
         self.Tabs.changeTab(self.StatusTab,self.__tr("Status"))
-        self.Tabs.changeTab(self.MaintTab,self.__tr("Tools && Settings"))
         self.Tabs.changeTab(self.SuppliesTab,self.__tr("Supplies"))
-        self.PrintJobList.header().setLabel(0,self.__tr("Queue"))
-        self.PrintJobList.header().setLabel(1,self.__tr("Job ID"))
-        self.PrintJobList.header().setLabel(2,self.__tr("Status"))
-        self.PrintJobList.header().setLabel(3,self.__tr("User"))
-        self.PrintJobList.header().setLabel(4,self.__tr("Title"))
-        self.CancelPrintJobButton.setText(self.__tr("Cancel Job"))
-        self.Tabs.changeTab(self.PrintJobsTab,self.__tr("Print Jobs"))
-        self.groupBox9_2.setTitle(self.__tr("Front Panel Display"))
-        self.Tabs.changeTab(self.PanelTab,self.__tr("Panel"))
+        self.Tabs.changeTab(self.MaintTab,self.__tr("Tools"))
+        self.Tabs.changeTab(self.PrintSettingsTab,self.__tr("Print Settings"))
+        self.Tabs.changeTab(self.PrintJobsTab,self.__tr("Print Control"))
         self.helpContentsAction.setText(self.__tr("Contents"))
         self.helpContentsAction.setMenuText(self.__tr("&Contents..."))
         self.helpContentsAction.setToolTip(self.__tr("Help Contents (F1)"))
@@ -450,6 +328,9 @@ class DevMgr4_base(QMainWindow):
 
     def deviceRemoveAction_activated(self):
         print "DevMgr4_base.deviceRemoveAction_activated(): Not implemented yet"
+
+    def Tabs_currentChanged(self,a0):
+        print "DevMgr4_base.Tabs_currentChanged(QWidget*): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4_base",s,c)

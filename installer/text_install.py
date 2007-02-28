@@ -459,7 +459,7 @@ def start(auto=True):
 
                                     else:
                                         log.warning("Missing dependencies may effect the proper functioning of HPLIP. Please manually install this dependency after you exit this installer.")
-                                        log.warning("Note: core.options that have REQUIRED dependencies that are missing will be turned off.")
+                                        log.warning("Note: Options that have REQUIRED dependencies that are missing will be turned off.")
 
                                         if core.dependencies[d][0]:
                                             log.warn("Option '%s' has been turned off." % opt)

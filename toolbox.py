@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '7.0'
+__version__ = '9.0'
 __title__ = 'HP Device Manager'
 __doc__ = "The HP Device Manager (aka Toolbox) for HPLIP supported devices. Provides status, tools, and supplies levels."
 
@@ -48,7 +48,7 @@ if not utils.checkPyQtImport():
     sys.exit(1)
 
 from qt import *
-from ui.devmgr4 import devmgr4
+from ui.devmgr4 import DevMgr4
 
 
 app = None
@@ -156,7 +156,7 @@ except socket.error:
 
 log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
 
-toolbox = devmgr4(hpiod_sock, hpssd_sock, toolboxCleanup)
+toolbox = DevMgr4(hpiod_sock, hpssd_sock, toolboxCleanup, __version__)
 app.setMainWidget(toolbox)
 
 toolbox.show()

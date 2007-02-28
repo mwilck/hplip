@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'aboutdlg_base.ui'
+# Form implementation generated from reading ui file 'ui/aboutdlg_base.ui'
 #
-# Created: Wed Nov 8 15:54:17 2006
+# Created: Fri Feb 2 13:51:32 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,39 +23,26 @@ class AboutDlg_base(QDialog):
 
         self.textLabel1 = QLabel(self,"textLabel1")
 
-        AboutDlg_baseLayout.addMultiCellWidget(self.textLabel1,0,0,0,3)
-        spacer15 = QSpacerItem(340,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        AboutDlg_baseLayout.addMultiCell(spacer15,7,7,0,2)
+        AboutDlg_baseLayout.addWidget(self.textLabel1,0,0)
+
+        layout17 = QHBoxLayout(None,0,6,"layout17")
+        spacer27 = QSpacerItem(150,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout17.addItem(spacer27)
+
+        self.logoPixmap = QLabel(self,"logoPixmap")
+        self.logoPixmap.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,self.logoPixmap.sizePolicy().hasHeightForWidth()))
+        self.logoPixmap.setMinimumSize(QSize(100,110))
+        self.logoPixmap.setMaximumSize(QSize(100,110))
+        self.logoPixmap.setScaledContents(1)
+        layout17.addWidget(self.logoPixmap)
+        spacer28 = QSpacerItem(151,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout17.addItem(spacer28)
+
+        AboutDlg_baseLayout.addLayout(layout17,1,0)
 
         self.pushButton15 = QPushButton(self,"pushButton15")
 
-        AboutDlg_baseLayout.addWidget(self.pushButton15,7,3)
-
-        self.pyPixmap = QLabel(self,"pyPixmap")
-        self.pyPixmap.setMinimumSize(QSize(200,62))
-        self.pyPixmap.setMaximumSize(QSize(200,62))
-        self.pyPixmap.setScaledContents(1)
-
-        AboutDlg_baseLayout.addWidget(self.pyPixmap,6,0)
-
-        self.osiPixmap = QLabel(self,"osiPixmap")
-        self.osiPixmap.setMinimumSize(QSize(75,65))
-        self.osiPixmap.setMaximumSize(QSize(75,65))
-        self.osiPixmap.setScaledContents(1)
-
-        AboutDlg_baseLayout.addMultiCellWidget(self.osiPixmap,6,6,1,2)
-        spacer5 = QSpacerItem(20,50,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        AboutDlg_baseLayout.addItem(spacer5,5,2)
-        spacer4 = QSpacerItem(20,50,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        AboutDlg_baseLayout.addItem(spacer4,5,0)
-
-        self.textLabel2 = QLabel(self,"textLabel2")
-
-        AboutDlg_baseLayout.addMultiCellWidget(self.textLabel2,4,4,0,3)
-
-        self.textLabel3 = QLabel(self,"textLabel3")
-
-        AboutDlg_baseLayout.addMultiCellWidget(self.textLabel3,3,3,0,3)
+        AboutDlg_baseLayout.addWidget(self.pushButton15,8,0)
 
         layout1 = QHBoxLayout(None,0,6,"layout1")
 
@@ -65,13 +52,47 @@ class AboutDlg_base(QDialog):
         self.VersionText = QLabel(self,"VersionText")
         layout1.addWidget(self.VersionText)
 
-        AboutDlg_baseLayout.addMultiCellLayout(layout1,2,2,0,3)
-        spacer6 = QSpacerItem(20,21,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        AboutDlg_baseLayout.addItem(spacer6,1,1)
+        AboutDlg_baseLayout.addLayout(layout1,2,0)
+
+        layout1_2 = QHBoxLayout(None,0,6,"layout1_2")
+
+        self.textLabel4_2 = QLabel(self,"textLabel4_2")
+        layout1_2.addWidget(self.textLabel4_2)
+
+        self.ToolboxVersionText = QLabel(self,"ToolboxVersionText")
+        layout1_2.addWidget(self.ToolboxVersionText)
+
+        AboutDlg_baseLayout.addLayout(layout1_2,3,0)
+
+        self.textLabel2 = QLabel(self,"textLabel2")
+
+        AboutDlg_baseLayout.addWidget(self.textLabel2,5,0)
+
+        self.textLabel3 = QLabel(self,"textLabel3")
+
+        AboutDlg_baseLayout.addWidget(self.textLabel3,4,0)
+
+        layout18 = QHBoxLayout(None,0,6,"layout18")
+
+        self.pyPixmap = QLabel(self,"pyPixmap")
+        self.pyPixmap.setMinimumSize(QSize(200,62))
+        self.pyPixmap.setMaximumSize(QSize(200,62))
+        self.pyPixmap.setScaledContents(1)
+        layout18.addWidget(self.pyPixmap)
+
+        self.osiPixmap = QLabel(self,"osiPixmap")
+        self.osiPixmap.setMinimumSize(QSize(75,65))
+        self.osiPixmap.setMaximumSize(QSize(75,65))
+        self.osiPixmap.setScaledContents(1)
+        layout18.addWidget(self.osiPixmap)
+
+        AboutDlg_baseLayout.addLayout(layout18,6,0)
+        spacer29 = QSpacerItem(20,20,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        AboutDlg_baseLayout.addItem(spacer29,7,0)
 
         self.languageChange()
 
-        self.resize(QSize(525,371).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(481,560).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.pushButton15,SIGNAL("clicked()"),self.close)
@@ -80,14 +101,16 @@ class AboutDlg_base(QDialog):
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - About"))
         self.textLabel1.setText(self.__tr("<font size=\"+3\"><p align=\"center\">HP Linux Imaging and Printing (HPLIP)</p></font>"))
-        self.pushButton15.setText(self.__tr("OK"))
+        self.pushButton15.setText(self.__tr("Close"))
+        self.textLabel4.setText(self.__tr("<b>HPLIP Software Version:</b>"))
+        self.VersionText.setText(self.__tr("0.0.0"))
+        self.textLabel4_2.setText(self.__tr("<b>Device Manager Software Version:</b>"))
+        self.ToolboxVersionText.setText(self.__tr("0.0.0"))
         self.textLabel2.setText(self.__tr("<b>Authors and Contributors:</b>\n"
 "David Suffield, Don Welch, Shiyun Yie, Raghothama Cauligi, John Oleinik, Cory Meisch, Foster Nuffer, Pete Parks, Jacqueline Pitter, David Paschal, \n"
-"Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh, Till Kamppeter, John Hosszu"))
+"Steve DeRoos, Mark Overton, Aaron Albright, Smith Kennedy, John Hosszu, Chris Wiesner, Henrique M. Holschuh, Till Kamppeter"))
         self.textLabel3.setText(self.__tr("<b>License and Copyright:</b>\n"
-"(c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P. This software is licensed under the GNU General Public License (GPL), BSD, and MIT licenses. See the software sources for details."))
-        self.textLabel4.setText(self.__tr("<b>Software Version:</b>"))
-        self.VersionText.setText(self.__tr("0.0.0"))
+"(c) Copyright 2006 Hewlett-Packard Development Company, L.P. This software is licensed under the GNU General Public License (GPL), BSD, and MIT licenses. See the software sources for details."))
 
 
     def __tr(self,s,c = None):

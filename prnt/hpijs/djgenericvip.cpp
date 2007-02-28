@@ -81,6 +81,14 @@ DJGenericVIP::DJGenericVIP (SystemServices* pSS, BOOL proto)
             pMode[i]->CompatiblePens[j] = (PEN_TYPE) j;
         }
     }
+#ifdef APDK_EXTENDED_MEDIASIZE
+/*
+ *  Set quality to marvellous for high res (1200 dpi) mode.
+ *  This mode was not available in the older printers, which only supported the
+ *  media_high_res paper type, but used qualityPresentation for 1200 dpi mode.
+ */
+    pMode[4]->theQuality = qualityMarvellous;
+#endif
 }
 
 VIPFastDraftMode::VIPFastDraftMode () : PrintMode (NULL)

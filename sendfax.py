@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '5.0'
+__version__ = '5.1'
 __title__ = 'PC Sendfax Utility'
 __doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers." 
 
@@ -170,7 +170,7 @@ for o, a in opts:
     elif o in ('-g', '--group'):
         group_list.extend(a.split(','))
 
-    elif o in ('t', '--prettyprint'):
+    elif o in ('-t', '--prettyprint'):
         prettyprint = True
 
 
@@ -654,7 +654,7 @@ else: # NON_INTERACTIVE_MODE
             log.error("Query device error (%s)." % e.msg)
             dev.error_state = ERROR_STATE_ERROR
 
-        if dev.error_state in (ERROR_STATE_WARNING, ERROR_STATE_ERROR, ERROR_STATE_BUSY):
+        if dev.error_state > ERROR_STATE_MAX_OK:
             log.error("Device is busy or in an error state (code=%d). Please wait for the device to become idle or clear the error and try again." % dev.error_state)
             sys.exit(1)
             

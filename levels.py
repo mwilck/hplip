@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '1.0'
+__version__ = '1.1'
 __title__ = 'Supply Levels Utility'
 __doc__ = "Display bar graphs of current supply levels for supported HPLIP printers."
 
@@ -201,8 +201,6 @@ if not device_uri and not printer_name:
         log.error("Error occured during interactive mode. Exiting.")
         sys.exit(1)
 
-        
-user_cfg.last_used.device_uri = d.device_uri
 
 try:
     d = device.Device(device_uri, printer_name)

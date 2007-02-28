@@ -89,7 +89,8 @@ DJ9xxVIP::DJ9xxVIP
     pMode[ModeCount++] = new DJ9902400Mode ();         // HiRes
     pMode[ModeCount++] = new DJ990DraftMode ();        // Draft Color
 #endif
-    pMode[ModeCount++] = new DJ990BestMode ();        // Photo Best
+    pMode[ModeCount++] = new DJ990BestMode ();         // Photo Best
+    pMode[ModeCount++] = new DJ990PhotoNormalMode ();  // Photo Normal
 
 }
 
@@ -597,6 +598,10 @@ DRIVER_ERROR HeaderDJ990::Send()
         err = thePrinter->Send ((const BYTE *) cBuf, 2);
     }
 
+//  Now send media pre-load command
+    err = thePrinter->Send ((const BYTE *) "\033&l-2H", 6);   // Moved from Modes(), des 3/11/03
+    ERRCHECK;
+
     // no need for compression command, it's in the CRD
 
     err = thePrinter->Send((const BYTE*)grafStart, sizeof(grafStart) );
@@ -646,10 +651,6 @@ DRIVER_ERROR HeaderDJ990::StartSend()
     ERRCHECK;
 
     err = Modes ();            // Set media source, type, size and quality modes.
-    ERRCHECK;
-
-//  Now send media pre-load command
-    err = thePrinter->Send ((const BYTE *) "\033&l-2H", 6);   // Moved from Modes(), des 3/11/03
     ERRCHECK;
 
     if (!thePrinter->UseGUIMode(thePrintContext->CurrentMode))

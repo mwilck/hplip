@@ -151,6 +151,7 @@ DRIVER_ERROR DJ3320::SetPens (PEN_TYPE eNewPen)
     }
     ePen = eNewPen;
     InitPrintModes ();
+    AdjustResolution ();
 
     return NO_ERROR;
 } //SetPens
@@ -3066,7 +3067,7 @@ DRIVER_ERROR    LDLEncap::EndJob ()
     }
 
     // Send Sync packet
-    err = pPrinterXBow->Send (pbySync, (DWORD) sizeof (pbySync));
+    err = pPrinterXBow->Send (pbySync, SYNCSIZE);
     if(err)
     {
         return err;

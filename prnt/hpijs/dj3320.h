@@ -89,6 +89,10 @@ public:
 protected:
     DISPLAY_STATUS m_dsCurrentStatus;
     virtual void InitPrintModes ();
+    virtual void AdjustResolution ()
+    {
+        return;
+    }
 
 #ifdef APDK_HP_UX
 protected:

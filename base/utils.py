@@ -342,12 +342,19 @@ class RingBuffer:
     def __init__(self,size_max=50):
         self.max = size_max
         self.data = []
+    
     def append(self,x):
         """append an element at the end of the buffer"""
         self.data.append(x)
+        
         if len(self.data) == self.max:
-            self.cur=0
+            self.cur = 0
             self.__class__ = RingBufferFull
+            
+    def replace(self, x):
+        """replace the last element instead off appending"""
+        self.data[-1] = x
+    
     def get(self):
         """ return a list of elements from the oldest to the newest"""
         return self.data
@@ -357,11 +364,20 @@ class RingBufferFull:
     def __init__(self,n):
         #raise "you should use RingBuffer"
         pass
+    
     def append(self,x):
-        self.data[self.cur]=x
-        self.cur=(self.cur+1) % self.max
+        self.data[self.cur] = x
+        self.cur = (self.cur+1) % self.max
+        
+    def replace(self, x):
+        # back up 1 position to previous location
+        self.cur = (self.cur-1) % self.max
+        self.data[self.cur] = x
+        # setup for next item
+        self.cur = (self.cur+1) % self.max
+    
     def get(self):
-        return self.data[self.cur:]+self.data[:self.cur]
+        return self.data[self.cur:] + self.data[:self.cur]
 
 def sort_dict_by_value(d):
     """ Returns the keys of dictionary d sorted by their values """

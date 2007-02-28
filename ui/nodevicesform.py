@@ -68,4 +68,5 @@ class NoDevicesForm(NoDevicesForm_base):
 
             self.parent().RescanDevices()
 
-
+    def __tr(self,s,c = None):
+        return qApp.translate("DevMgr4",s,c)

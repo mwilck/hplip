@@ -272,7 +272,7 @@ DRIVER_ERROR HeaderLJColor::Send ()
 DRIVER_ERROR HeaderLJColor::StartSend ()
 {
     DRIVER_ERROR err;
-    char    res[64];
+    char    res[72];
     int     iRes;
 
     iRes = thePrintContext->EffectiveResolutionY ();

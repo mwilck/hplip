@@ -53,7 +53,7 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_STD_NOTES1, utils.USAGE_STD_NOTES2, 
          utils.USAGE_SEEALSO,
          ("hp-clean", "", "seealso", False),
-         ("hp-colorcal", "", "seealso", False),
+         ("hp-align", "", "seealso", False),
 
          ]
 
@@ -344,6 +344,10 @@ try:
 
         elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU: # 5
             maint.colorCalType5(d, loadPlainPaper)
+        
+        elif color_cal_type == COLOR_CAL_TYPE_CARRIER: # 5
+            maint.colorCalType6(d, loadPlainPaper)
+        
         else:
             log.error("Invalid color calibration type.")
 

@@ -495,6 +495,12 @@ string_table = {
 
 'agent_photo_gray_supply' :                 (lambda : _('Photo black ink cartridge'), # PK
                                             '' ),
+                                            
+'agent_cyan_and_magenta_head' :             (lambda : _('Cyan and magenta print head'),
+                                             ''),
+
+'agent_black_and_yellow_head' :             (lambda : _('Black and yellow print head'),
+                                             ''),
 
 'agent_black_toner' :           (lambda : _('Black toner cartridge'),
                                 ''),

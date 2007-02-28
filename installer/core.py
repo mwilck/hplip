@@ -107,6 +107,7 @@ def check_pkg_mgr(): # modified from EasyUbuntu
     """
     Check if any pkg mgr processes are running
     """
+    #print("####>>>>check_pkg_mgr")
     log.debug("Searching for '%s' in 'ps' output..." % package_mgrs)
 
     p = os.popen("ps -U root -o comm")
@@ -121,6 +122,7 @@ def check_pkg_mgr(): # modified from EasyUbuntu
     return ''
 
 def getHPLIPVersion():
+    #print("####>>>>getHPLIPVersion")
     version_description, version_public, version_internal = '', '', ''
     ac_init_pat = re.compile(r"""AC_INIT\(\[(.*?)\], *\[(.*?)\], *\[(.*?)\], *\[(.*?)\] *\)""", re.IGNORECASE)
     config_in = file('./configure.in', 'r')
@@ -141,6 +143,7 @@ def getHPLIPVersion():
     return version_description, version_public, version_internal
 
 def getHPIJSVersion():
+    #print("####>>>>getHPIJSVersion")
     hpijs_version_description, hpijs_version = '', ''
     ac_init_pat = re.compile(r"""AC_INIT\(\[(.*?)\], *(.*?), *(.*?), *(.*?) *\)""", re.IGNORECASE)
     config_in = file('./prnt/hpijs/configure.in', 'r')
@@ -161,6 +164,7 @@ def getHPIJSVersion():
     return hpijs_version_description, hpijs_version
 
 def configure():
+    #print("####>>>>configure")
     configure_cmd = './configure'
 
     if selected_options['network']:
@@ -192,11 +196,13 @@ def configure():
         configure_cmd += ' --libdir=/usr/lib64'
 
     configure_cmd += ' --prefix=%s' % install_location
+    #print "Core::configure_cmd: ", install_location
 
     return configure_cmd
 
 
 def hpijs_configure():
+    #print("####>>>>hpijs_configure")
     configure_cmd = './configure'
 
     if bitness == 64:
@@ -214,6 +220,7 @@ def hpijs_configure():
 
 
 def restart_cups():
+    #print("####>>>>restart_cups")
     if os.path.exists('/etc/init.d/cups'):
         return su_sudo() % '/etc/init.d/cups restart'
 
@@ -225,6 +232,7 @@ def restart_cups():
 
 
 def su_sudo():
+    #print("####>>>>su_sudo")
     if os.geteuid() == 0:
         return '%s'
     else:
@@ -236,9 +244,10 @@ def su_sudo():
         if cmd == 'su':
             return 'su -c "%s"'
         else:
-            return 'sudo %s'
+            return 'sudo %s'  #sudo -K &&
 
 def build_cmds():
+    #print("####>>>>build_cmds")
     return [configure(), 
             'make clean', 
             'make', 
@@ -247,6 +256,7 @@ def build_cmds():
             restart_cups()]
 
 def hpijs_build_cmds():
+    #print("####>>>>hpijs_build_cmds")
     return [hpijs_configure(), 
             'make clean', 
             'make', 
@@ -265,6 +275,7 @@ hplip_present = False
 have_dependencies = {}
 
 def init(callback=None):
+    #print("####>>>>init")
     if callback is not None:
         callback("Initializing...\n")
 
@@ -352,6 +363,7 @@ def init(callback=None):
         (distro, distro_name, distros[distro_name]['display_name'], distro_version, distro_version_supported))
 
     install_location = sys_cfg.dirs.home.replace("/share/hplip", '') or '/usr' # --prefix
+    #print "Core::spot2:: install_location: ", install_location
 
     if callback is not None:
         callback("Checking for HPOJ and HPLIP...\n")

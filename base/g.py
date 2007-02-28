@@ -188,7 +188,7 @@ prop.max_message_len = 8192
 prop.max_message_read = 65536
 prop.read_timeout = 90
 
-prop.ppd_search_path = '/usr/share;/usr/local/share;/usr/lib;/usr/local/lib;/usr/libexec;/opt'
+prop.ppd_search_path = '/usr/share;/usr/local/share;/usr/lib;/usr/local/lib;/usr/libexec;/opt;/usr/lib64'
 prop.ppd_search_pattern = 'HP-*.ppd.*'
 prop.ppd_download_url = 'http://www.linuxprinting.org/ppd-o-matic.cgi'
 prop.ppd_file_suffix = '-hpijs.ppd'

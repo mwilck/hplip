@@ -347,7 +347,7 @@ int LoadFileInCWD(int filenumber)
       return FAT_FILE_DELETED;
 
    /* Read file information from directory and convert to 8.3 format. */
-   for (i=0; pde->Name[i] && (pde->Name[i] != ' ') && (i<sizeof(pde->Name)); i++)  /* copy charactors up to any space */
+   for (i=0; (i<sizeof(pde->Name)) && pde->Name[i] && (pde->Name[i] != ' '); i++)  /* copy charactors up to any space */
       fa.Name[i] = pde->Name[i];
    if (pde->Ext[0] && (pde->Ext[0] != ' '))
    {

@@ -35,7 +35,7 @@ from base import utils
 # These must match the indexes used in the 'index' field 
 # in the distros data structure
 DISTRO_UNKNOWN = 0
-DISTRO_UBUNTU = 1 # (Debian based)
+DISTRO_MEPIS = 1 # (Debian based)
 DISTRO_DEBIAN = 2 #
 DISTRO_SUSE = 3 #
 DISTRO_MANDRIVA = 4 # (RPM based)
@@ -46,7 +46,7 @@ DISTRO_SLACKWARE = 8 #
 DISTRO_GENTOO = 9 #
 DISTRO_TURBO = 10 # Japan/China (RH based)
 DISTRO_REDFLAG = 11 # (RPM based)
-DISTRO_MEPIS = 12 # (Debian based)
+DISTRO_UBUNTU = 12 # (Debian based)
 DISTRO_XANDROS = 13 # (Debian based)
 DISTRO_FREEBSD = 14 #
 DISTRO_LINSPIRE = 15 # (Debian baseD)
@@ -193,13 +193,13 @@ distros = \
         'display_name': 'Ubuntu',
         'display': True,
         'notes': '',
-        'index': 1,
+        'index': 12,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
-        'package_mgr_cmd' : 'sudo apt-get install --force-yes --yes $packages_to_install',
-        'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get install -f', 'sudo apt-get update', 'xterm -e sudo apt-get install postfix'],
+        'package_mgr_cmd' : 'sudo apt-get install --yes --force-yes $packages_to_install',
+        'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get install --yes --force-yes -f ', 'sudo apt-get update', 'xterm -e sudo apt-get install --yes --force-yes postfix'],
         'post_depend_cmd': [],
-        'hpoj_remove_cmd': 'sudo apt-get remove --force-yes --yes hpoj',
-        'hplip_remove_cmd': 'sudo apt-get remove --force-yes --yes hplip hpijs',
+        'hpoj_remove_cmd': 'sudo apt-get remove --yes --force-yes hpoj',
+        'hplip_remove_cmd': 'sudo apt-get remove --yes --force-yes hplip hpijs',
         'su_sudo' : 'sudo',
         'versions': {
             '5.04': {
@@ -238,6 +238,15 @@ distros = \
                 'pre_depend_cmd': [],
                 'post_depend_cmd': [],
             },
+            '7.04': {
+                'code_name': 'Feisty', 
+                'release_date': '', 
+                'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': 'Enable the universe/multiverse repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.', 
+                'pre_depend_cmd': [],
+                'post_depend_cmd': [],
+            },
         },
     },
 
@@ -249,12 +258,12 @@ distros = \
         'notes': '',
         'index': 2,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],            
-        'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
+        'package_mgr_cmd' : 'su -c "apt-get install --yes $packages_to_install"',
         'pre_depend_cmd': ['su -c "dpkg --configure -a"', 'su -c "apt-get install -f"', 'su -c "apt-get update"'],
         'post_depend_cmd': [],
         'su_sudo' : 'su',
-        'hpoj_remove_cmd': 'su -c "apt-get remove --force-yes --yes hpoj"',
-        'hplip_remove_cmd': 'su -c "apt-get remove --force-yes --yes hplip hpijs"',
+        'hpoj_remove_cmd': 'su -c "apt-get remove --yes hpoj"',
+        'hplip_remove_cmd': 'su -c "apt-get remove --yes hplip hpijs"',
         'versions': {
             '2.2': {
                 'code_name': 'Potato', 
@@ -292,13 +301,13 @@ distros = \
         'display': True,
         'notes': '',
         'index': 3,
-        'package_mgrs': ["yast"],
-        'package_mgr_cmd': 'su -c "yast --install $packages_to_install"',
+        'package_mgrs': ["yast", "yast2"],
+        'package_mgr_cmd': 'xterm -e su -c "yast --install $packages_to_install"',
         'pre_depend_cmd': [],
         'post_depend_cmd': [],
         'su_sudo' : 'su',
-        'hpoj_remove_cmd': '',
-        'hplip_remove_cmd': '',
+        'hpoj_remove_cmd': 'su -c "yast --remove hpoj"',
+        'hplip_remove_cmd': 'su -c "yast --remove hplip"',
         'versions': {
             '9.0': {
                 'code_name': '', 
@@ -350,8 +359,17 @@ distros = \
                 'release_date': '11/5/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': "Before proceeding, please add these installation sources to your YaST configuration. For help on this process please see your distribution documentation.\nhttp://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/\nhttp://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra", 
+                'notes': 'Add http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/  and http://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra to your YaST installation sources.', 
                 'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
+            },
+            '10.2': {
+                'code_name': '', 
+                'release_date': '12/7/2006', 
+                'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': '', 
+                'pre_depend_cmd': ['xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/oss/"', 'xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/non-oss/"','xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/debug/"',], 
                 'post_depend_cmd': [],
             },
         },
@@ -441,7 +459,7 @@ distros = \
         'index': 5,
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'su -c "yum -y -d 10 -e 1 install $packages_to_install"',
-        'pre_depend_cmd': [],
+        'pre_depend_cmd': ['su -c "yum clean all"'],
         'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': 'su -c "yum -y -d 10 -e 1 remove hplip hpijs"',
@@ -737,13 +755,13 @@ distros = \
         'display_name': 'Mepis',
         'display': True,
         'notes': '',
-        'index': 12,
+        'index': 1,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
-        'package_mgr_cmd' : 'sudo apt-get install --force-yes --yes $packages_to_install',
+        'package_mgr_cmd' : 'sudo apt-get install --yes $packages_to_install',
         'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get update'],
         'post_depend_cmd': [],
-        'hpoj_remove_cmd': 'sudo apt-get remove --force-yes --yes hpoj',
-        'hplip_remove_cmd': 'sudo apt-get remove --force-yes --yes hplip hpijs',
+        'hpoj_remove_cmd': 'sudo apt-get remove --yes hpoj',
+        'hplip_remove_cmd': 'sudo apt-get remove --yes hplip hpijs',
         'su_sudo' : 'sudo',
         'versions': {
             '6.0': {
@@ -818,7 +836,7 @@ distros = \
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", ],
-        'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
+        'package_mgr_cmd' : 'su -c "apt-get install --yes $packages_to_install"',
         'pre_depend_cmd': ['su -c "cp -f /etc/apt/sources.list /etc/apt/sources.hplip', 'echo deb ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list', 'echo deb-src ftp://mirrors.kernel.org/debian/ sid main contrib non-free | sudo tee -a /etc/apt/sources.list', 'su -c "apt-get update"'],
         'post_depend_cmd': [],
         'hpoj_remove_cmd': 'su -c "apt-get remove hpoj"',
@@ -870,11 +888,11 @@ distros = \
         'display': True,
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", "synaptic"],
-        'package_mgr_cmd' : 'su -c "apt-get install --force-yes --yes $packages_to_install"',
+        'package_mgr_cmd' : 'su -c "apt-get install --yes $packages_to_install"',
         'pre_depend_cmd': ['su -c "apt-get update"'],
         'post_depend_cmd': [],
-        'hpoj_remove_cmd': 'su -c "apt-get remove --force-yes --yes hpoj"',
-        'hplip_remove_cmd': 'su -c "apt-get remove --force-yes --yes hplip hpijs"',
+        'hpoj_remove_cmd': 'su -c "apt-get remove --yes hpoj"',
+        'hplip_remove_cmd': 'su -c "apt-get remove --yes hplip hpijs"',
         'versions': {
             '2006.0': {
                 'code_name': 'Texstar', 
@@ -992,6 +1010,32 @@ distros = \
         },
     },
 
+         'centos': {
+        'alt_names': '',
+        'display_name': 'CentOS',
+        'notes': '',
+        'index': 23,
+        'display': False,
+        'su_sudo' : 'su',
+        'package_mgrs': [],
+        'package_mgr_cmd' : '',
+        'pre_depend_cmd': [],
+        'post_depend_cmd': [],
+        'hpoj_remove_cmd': '',
+        'hplip_remove_cmd': '',
+        'versions': {
+            'any': {
+                'code_name': '', 
+                'release_date': '', 
+                'supported': False, 
+                'dependency_cmds': {}, 
+                'notes': '', 
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
+            },
+        },
+    },
+
      'unknown' : {
         'index': 0,
         'display': True, # Must be 'True' 
@@ -1058,13 +1102,16 @@ __set_ver_cmds('ubuntu', '5.04',
 __copy_cmds('ubuntu', '5.04', '5.1') # 5.10 = 5.04
 __copy_cmds('ubuntu', '5.1', '6.06') # 6.06 = 5.10
 __copy_cmds('ubuntu', '6.06', '6.10') # 6.06 = 6.10
+__copy_cmds('ubuntu', '6.10', '7.04') 
 __update_ver_cmd('ubuntu', '5.04', 'gs', ('gs', ''))
 __update_ver_cmd('ubuntu', '5.04', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups', ('libcupsys2', ''))
 __update_ver_cmd('ubuntu', '6.10', 'cups', ('libcupsys2', ''))
+__update_ver_cmd('ubuntu', '7.04', 'cups', ('libcupsys2', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '6.10', 'cups-devel', ('libcupsys2-dev', ''))
+__update_ver_cmd('ubuntu', '7.04', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'pyqt', ('python2.4-qt3', ''))
 
@@ -1121,12 +1168,14 @@ __set_ver_cmds('suse', '9.0',
 'libcrypto' : ('openssl', ''),
 'libjpeg' : ('libjpeg-devel', ''),
 })
-
 __copy_cmds('suse', '9.0', '9.1') # 9.0 = 9.1
 __copy_cmds('suse', '9.1', '9.2') # 9.1 = 9.2
 __copy_cmds('suse', '9.2', '9.3') # 9.2 = 9.3
 __copy_cmds('suse', '9.3', '10.0') # 9.2 = 9.3
 __copy_cmds('suse', '10.0', '10.1') # 10.0 = 10.1
+__copy_cmds('suse', '10.1', '10.2') # 10.0 = 10.1
+__update_ver_cmd('suse', '10.2', 'reportlab', ('', ''))
+__update_ver_cmd('suse', '10.2', 'libusb', ('libusb', ''))
 
 ################### MANDRIVA (4) ###################
 __set_ver_cmds('mandriva', '10.0',

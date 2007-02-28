@@ -108,7 +108,7 @@ FAQs
 <li>There is a desire to have the smallest printing system possible.</li>
 </ol>
 <p>Most people do <strong>NOT</strong> need to do this.</p>
-<p>See the question &quot;How do I install only the printing functionality for a Server or to install the lowest possible functionality?&quot; for steps on installing a server setup.</p>
+<p>See the question &quot;How do I install HPIJS only?&quot; for steps on installing a server setup.</p>
 <p><strong>Question: What printers and features do you support?</strong></p>
 <p>Answer: The list of <a class="reference" href="supported_devices/index.html">supported printers</a> and features can be found on the products supported page.</p>
 <p><strong>Question: What distributions/operating systems are supported?</strong></p>
@@ -141,6 +141,8 @@ FAQs
 <p>Answer: Yes, they are <a class="reference" href="supported_devices/index.html">supported</a> (with a few <a class="reference" href="supported_devices/unsupported.html">exceptions</a>)</p>
 <p><strong>Question: Are HP Officejet All-in-ones and MFPs supported?</strong></p>
 <p>Answer: Yes, they are <a class="reference" href="supported_devices/index.html">supported</a> (with a few <a class="reference" href="supported_devices/unsupported.html">exceptions</a>).</p>
+<p><strong>Question: Does HPLIP support HP Scanjet single function scanners?</strong></p>
+<p>Answer: No, HPLIP only supports devices that include print functionality. For possible Scanjet drivers, visit <a class="reference" href="http://www.sane-project.org/sane-mfgs.html#Z-HEWLETT-PACKARD">HP SANE Drivers</a>.</p>
 <p><strong>Question: Does HPLIP support networked printers?</strong></p>
 <p>Answer: Yes, HPLIP supports printers that are directly network connected (via a built-in Ethernet port) or connected to a network via a JetDirect.</p>
 <p><strong>Question:  Does HPLIP support a SAMBA setup/configuration?</strong></p>
@@ -160,16 +162,17 @@ cd hplip-0.9.10/prnt/hpijs
 make
 make install
 </pre>
+<p>You can also use the installer to install only HPIJS if you use &quot;custom&quot; mode (ie, not &quot;automatic&quot;).</p>
 <p><strong>Question:  I need/lost the driver for my Windows machine, where do I go to get it?</strong></p>
 <p>Answer:  The HPLIP Team only provides support for the HPLIP solution.  For assistance with a Windows machine/driver please contact the HP Technical Support at <a class="reference" href="http://www.hp.com">HP</a>.</p>
 <p><strong>Question:  What network print servers are supported?</strong></p>
 <p>Answer:  Currently we have only tested HP JetDirect devices with HPLIP. No other network print servers are supported.</p>
-<p><strong>Question:  How can I configure my MS Windows system to share my printer to my linux system?</strong></p>
+<p><strong>Question:  How can I configure my MS Windows system to share my printer to my Linux system?</strong></p>
 <p>Answer:  This configuration is not currently supported.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Mon Oct 16 16:33:46 2006; HPLIP Version: 1.7.1</small></center>
+<center><small>Page last updated: Wed Feb 28 14:35:14 2007; HPLIP Version: 1.7.2</small></center>
 </div>
 </td></tr></table>
 </div>

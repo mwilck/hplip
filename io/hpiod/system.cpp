@@ -247,7 +247,7 @@ int System::GeneralizeModel(char *sz, char *buf, int bufSize)
       }
    }
 
-   for (j--; pMd[j] == '_' && j > 0; j--);  /* eat trailing white space */
+   for (j--; buf[j] == '_' && j > 0; j--);  /* eat trailing white space */
 
    buf[++j] = 0;
 
@@ -266,7 +266,7 @@ int System::GeneralizeSerial(char *sz, char *buf, int bufSize)
       buf[j++] = pMd[i];
    }
 
-   for (i--; pMd[i] == '_' && i > 0; i--);  /* eat trailing white space */
+   for (i--; buf[i] == '_' && i > 0; i--);  /* eat trailing white space */
 
    buf[++i] = 0;
 

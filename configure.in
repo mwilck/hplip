@@ -15,10 +15,11 @@
 #   8 = no ppdev-devel
 #   9 = no libcups
 #   10 = no libm
+#   11 = no libusb-devel
 #
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [1.7.1], [1.7.1.5], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [1.7.2], [1.7.2.22], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -52,6 +53,7 @@ AC_CHECK_HEADERS(cups/cups.h, ,[AC_MSG_ERROR([cannot find cups-devel support], 3
 AC_CHECK_HEADERS(net-snmp/net-snmp-config.h, snmpdevel=yes, snmpdevel=no)
 AC_CHECK_HEADERS(python$PYTHON_VERSION/Python.h, ,[AC_MSG_ERROR([cannot find python-devel support], 6)])
 AC_CHECK_HEADERS(pthread.h, ,[AC_MSG_ERROR([cannot find pthread-devel support], 7)])
+AC_CHECK_HEADERS(usb.h, ,[AC_MSG_ERROR([cannot find libusb-devel support], 11)])
 AC_CHECK_HEADERS(linux/compiler.h)
 
 # Checks for typedefs, structures, and compiler characteristics.

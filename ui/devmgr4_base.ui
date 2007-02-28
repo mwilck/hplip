@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>838</width>
-            <height>493</height>
+            <width>812</width>
+            <height>518</height>
         </rect>
     </property>
     <property name="caption">
@@ -26,13 +26,16 @@
             <property name="orientation">
                 <enum>Horizontal</enum>
             </property>
+            <property name="opaqueResize">
+                <bool>true</bool>
+            </property>
             <widget class="QIconView">
                 <property name="name">
                     <cstring>DeviceList</cstring>
                 </property>
                 <property name="sizePolicy">
                     <sizepolicy>
-                        <hsizetype>5</hsizetype>
+                        <hsizetype>4</hsizetype>
                         <vsizetype>5</vsizetype>
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
@@ -73,196 +76,6 @@
                     <attribute name="title">
                         <string>Status</string>
                     </attribute>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QGroupBox" row="0" column="0">
-                            <property name="name">
-                                <cstring>StatusGroupBox</cstring>
-                            </property>
-                            <property name="title">
-                                <string>Last</string>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLabel" row="0" column="0">
-                                    <property name="name">
-                                        <cstring>StatusText</cstring>
-                                    </property>
-                                    <property name="font">
-                                        <font>
-                                            <bold>1</bold>
-                                        </font>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>NoFrame</enum>
-                                    </property>
-                                    <property name="text">
-                                        <string></string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="0" column="1">
-                                    <property name="name">
-                                        <cstring>StatusIcon</cstring>
-                                    </property>
-                                    <property name="sizePolicy">
-                                        <sizepolicy>
-                                            <hsizetype>0</hsizetype>
-                                            <vsizetype>0</vsizetype>
-                                            <horstretch>0</horstretch>
-                                            <verstretch>0</verstretch>
-                                        </sizepolicy>
-                                    </property>
-                                    <property name="minimumSize">
-                                        <size>
-                                            <width>32</width>
-                                            <height>32</height>
-                                        </size>
-                                    </property>
-                                    <property name="maximumSize">
-                                        <size>
-                                            <width>32</width>
-                                            <height>32</height>
-                                        </size>
-                                    </property>
-                                    <property name="scaledContents">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
-                                    <property name="name">
-                                        <cstring>StatusText2</cstring>
-                                    </property>
-                                    <property name="font">
-                                        <font>
-                                            <italic>1</italic>
-                                        </font>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>NoFrame</enum>
-                                    </property>
-                                    <property name="text">
-                                        <string></string>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                        <widget class="QGroupBox" row="1" column="0">
-                            <property name="name">
-                                <cstring>groupBox3</cstring>
-                            </property>
-                            <property name="title">
-                                <string>History</string>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QListView" row="0" column="0">
-                                    <column>
-                                        <property name="text">
-                                            <string></string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>false</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Date</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Time</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>User</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Job ID</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Code</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Description</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <property name="name">
-                                        <cstring>StatusHistoryList</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>true</bool>
-                                    </property>
-                                    <property name="selectionMode">
-                                        <enum>Single</enum>
-                                    </property>
-                                    <property name="allColumnsShowFocus">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                    </grid>
-                </widget>
-                <widget class="QWidget">
-                    <property name="name">
-                        <cstring>MaintTab</cstring>
-                    </property>
-                    <attribute name="title">
-                        <string>Tools &amp;&amp; Settings</string>
-                    </attribute>
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
@@ -274,232 +87,27 @@
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
-                        <cstring>PrintJobsTab</cstring>
+                        <cstring>MaintTab</cstring>
                     </property>
                     <attribute name="title">
-                        <string>Print Jobs</string>
+                        <string>Tools</string>
                     </attribute>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QListView" row="0" column="0" rowspan="1" colspan="2">
-                            <column>
-                                <property name="text">
-                                    <string>Queue</string>
-                                </property>
-                                <property name="clickable">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="resizable">
-                                    <bool>true</bool>
-                                </property>
-                            </column>
-                            <column>
-                                <property name="text">
-                                    <string>Job ID</string>
-                                </property>
-                                <property name="clickable">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="resizable">
-                                    <bool>true</bool>
-                                </property>
-                            </column>
-                            <column>
-                                <property name="text">
-                                    <string>Status</string>
-                                </property>
-                                <property name="clickable">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="resizable">
-                                    <bool>true</bool>
-                                </property>
-                            </column>
-                            <column>
-                                <property name="text">
-                                    <string>User</string>
-                                </property>
-                                <property name="clickable">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="resizable">
-                                    <bool>true</bool>
-                                </property>
-                            </column>
-                            <column>
-                                <property name="text">
-                                    <string>Title</string>
-                                </property>
-                                <property name="clickable">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="resizable">
-                                    <bool>true</bool>
-                                </property>
-                            </column>
-                            <property name="name">
-                                <cstring>PrintJobList</cstring>
-                            </property>
-                            <property name="allColumnsShowFocus">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="1" column="1">
-                            <property name="name">
-                                <cstring>CancelPrintJobButton</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Cancel Job</string>
-                            </property>
-                        </widget>
-                        <spacer row="1" column="0">
-                            <property name="name">
-                                <cstring>spacer12_3</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>471</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </grid>
                 </widget>
                 <widget class="QWidget">
                     <property name="name">
-                        <cstring>PanelTab</cstring>
+                        <cstring>PrintSettingsTab</cstring>
                     </property>
                     <attribute name="title">
-                        <string>Panel</string>
+                        <string>Print Settings</string>
                     </attribute>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QGroupBox" row="0" column="0">
-                            <property name="name">
-                                <cstring>groupBox9_2</cstring>
-                            </property>
-                            <property name="title">
-                                <string>Front Panel Display</string>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLabel" row="1" column="1">
-                                    <property name="name">
-                                        <cstring>Panel</cstring>
-                                    </property>
-                                    <property name="sizePolicy">
-                                        <sizepolicy>
-                                            <hsizetype>0</hsizetype>
-                                            <vsizetype>0</vsizetype>
-                                            <horstretch>0</horstretch>
-                                            <verstretch>0</verstretch>
-                                        </sizepolicy>
-                                    </property>
-                                    <property name="minimumSize">
-                                        <size>
-                                            <width>254</width>
-                                            <height>40</height>
-                                        </size>
-                                    </property>
-                                    <property name="maximumSize">
-                                        <size>
-                                            <width>254</width>
-                                            <height>40</height>
-                                        </size>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>NoFrame</enum>
-                                    </property>
-                                    <property name="scaledContents">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                                <spacer row="0" column="1">
-                                    <property name="name">
-                                        <cstring>spacer11_3</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Vertical</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>20</width>
-                                            <height>101</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <spacer row="2" column="1">
-                                    <property name="name">
-                                        <cstring>spacer12_4</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Vertical</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>20</width>
-                                            <height>181</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <spacer row="1" column="2">
-                                    <property name="name">
-                                        <cstring>spacer13_3</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>121</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <spacer row="1" column="0">
-                                    <property name="name">
-                                        <cstring>spacer14_2</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>151</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                            </grid>
-                        </widget>
-                    </grid>
+                </widget>
+                <widget class="QWidget">
+                    <property name="name">
+                        <cstring>PrintJobsTab</cstring>
+                    </property>
+                    <attribute name="title">
+                        <string>Print Control</string>
+                    </attribute>
                 </widget>
             </widget>
         </widget>
@@ -810,24 +418,6 @@
         <slot>autoRefresh_toggled(bool)</slot>
     </connection>
     <connection>
-        <sender>PrintJobList</sender>
-        <signal>currentChanged(QListViewItem*)</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>PrintJobList_currentChanged(QListViewItem*)</slot>
-    </connection>
-    <connection>
-        <sender>CancelPrintJobButton</sender>
-        <signal>clicked()</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>CancelPrintJobButton_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>PrintJobList</sender>
-        <signal>selectionChanged(QListViewItem*)</signal>
-        <receiver>DevMgr4_base</receiver>
-        <slot>PrintJobList_selectionChanged(QListViewItem*)</slot>
-    </connection>
-    <connection>
         <sender>DeviceList</sender>
         <signal>rightButtonClicked(QIconViewItem*,const QPoint&amp;)</signal>
         <receiver>DevMgr4_base</receiver>
@@ -857,7 +447,16 @@
         <receiver>DevMgr4_base</receiver>
         <slot>deviceRemoveAction_activated()</slot>
     </connection>
+    <connection>
+        <sender>Tabs</sender>
+        <signal>currentChanged(QWidget*)</signal>
+        <receiver>DevMgr4_base</receiver>
+        <slot>Tabs_currentChanged(QWidget*)</slot>
+    </connection>
 </connections>
+<includes>
+    <include location="local" impldecl="in implementation">devmgr4_base.ui.h</include>
+</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>
@@ -906,6 +505,7 @@
     <slot>installDevice_activated()</slot>
     <slot>deviceInstallAction_activated()</slot>
     <slot>deviceRemoveAction_activated()</slot>
+    <slot>Tabs_currentChanged( QWidget * )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

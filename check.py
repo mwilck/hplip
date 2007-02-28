@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '5.2'
+__version__ = '5.3'
 __title__ = 'Dependency/Version Check Utility'
 __doc__ = "Check the existence and versions of HPLIP dependencies."
 
@@ -349,14 +349,14 @@ try:
 
                 if back_end == 'hpfax' and desc != 'HP Fax':
                     num_errors += 1
-                    log.error("Incorrect PPD file for fax queue '%s'. Fax queue must use 'HP-Fax-hplip.ppd'." % p[0])
+                    log.error("Incorrect PPD file for fax queue '%s'. Fax queues must use 'HP-Fax-hplip.ppd'." % p[0])
 
                 elif back_end == 'hp' and desc == 'HP Fax':
                     num_errors += 1
                     log.error("Incorrect PPD file for a print queue '%s'. Print queues must not use 'HP-Fax-hplip.ppd'." % p[0])
 
                 elif back_end not in ('hp', 'hpfax'):
-                    log.error("Printer is not HPLIP installed. Printers must use the hp: or hpfax: CUPS backend to function in HPLIP.")
+                    log.error("Printer is not HPLIP installed. Printers must use the hp: or hpfax: CUPS backend to function in HPLIP. (You can still print to this printer using another backend and HPIJS.)")
                     num_errors += 1
 
             log.info("")
@@ -365,26 +365,30 @@ try:
         log.warn("No queues found.")
 
     header("SANE CONFIGURATION")
-    log.info(utils.bold("'hpaio' in /etc/sane.d/dll.conf'..."))
-    f = file('/etc/sane.d/dll.conf', 'r')
-    found = False
-    for line in f:
-        if 'hpaio' in line:
-            found = True
-
-    if found:
-        log.info("OK, found. SANE backend 'hpaio' is properly set up.")
-    else:
+    log.info(utils.bold("'hpaio' in '/etc/sane.d/dll.conf'..."))
+    try:
+        f = file('/etc/sane.d/dll.conf', 'r')
+    except IOError:
+        log.error("'/etc/sane.d/dll.conf' not found. Is SANE installed?")
         num_errors += 1
-        log.error("Not found. SANE backend 'hpaio' not properly setup (needs to be added to /etc/sane.d/dll.conf).")
-
-
-    log.info(utils.bold("\nChecking output of 'scanimage -L'..."))
-    if utils.which('scanimage'):
-        status, output = utils.run("scanimage -L")
-        log.info(output)
     else:
-        log.error("scanimage not found.")
+        found = False
+        for line in f:
+            if 'hpaio' in line:
+                found = True
+
+        if found:
+            log.info("OK, found. SANE backend 'hpaio' is properly set up.")
+        else:
+            num_errors += 1
+            log.error("Not found. SANE backend 'hpaio' not properly setup (needs to be added to /etc/sane.d/dll.conf).")
+
+        log.info(utils.bold("\nChecking output of 'scanimage -L'..."))
+        if utils.which('scanimage'):
+            status, output = utils.run("scanimage -L")
+            log.info(output)
+        else:
+            log.error("scanimage not found.")
 
     header("PYTHON EXTENSIONS")
 

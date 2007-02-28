@@ -738,7 +738,10 @@ int pml_start(HPAIO_RECORD *hpaio)
    if (hpaio->cmd_channelid < 0)
    {
       if ((hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE")) < 0)
+      {
+         bug("failed to open pml channel: %s %d\n", __FILE__, __LINE__);
          goto bugout;
+      }
       SendScanEvent(hpaio->deviceuri, 2000, "event");  /* hpssd message scan started */
    }
    if (!oldStuff)
@@ -746,7 +749,10 @@ int pml_start(HPAIO_RECORD *hpaio)
       if (hpaio->scan_channelid < 0)
       {
          if ((hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN")) < 0)
+         {
+            bug("failed to open scan channel: %s %d\n", __FILE__, __LINE__);
             goto bugout;
+         }
       }
    }
 

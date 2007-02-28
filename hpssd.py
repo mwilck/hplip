@@ -46,7 +46,7 @@
 #
 
 
-__version__ = '9.0'
+__version__ = '9.1'
 __title__ = "Services and Status Daemon"
 __doc__ = "Provides persistent data and event services to HPLIP client applications."
 
@@ -332,18 +332,16 @@ class hpssd_handler(dispatcher):
         result_code = self.__checkdevice(device_uri)
 
         if result_code == ERROR_SUCCESS:    
-            devices[device_uri].history.append(tuple(time.localtime()) +
+            history = devices[device_uri].history.get()
+            
+            if history and history[-1][11] == code:
+                devices[device_uri].history.replace(tuple(time.localtime()) +
                                                 (jobid, username, code))
-
-            # return True if added code is the same 
-            # as the previous code (dup_event)
-            try:
-                prev_code = devices[device_uri].history.get()[-2][11]
-            except IndexError:
-                return False
+                return True
             else:
-                return code == prev_code
-
+                devices[device_uri].history.append(tuple(time.localtime()) +
+                                                    (jobid, username, code))
+                return False
 
     # sent by hpfax: to indicate the start of a complete fax rendering job
     def handle_hpfaxbegin(self):

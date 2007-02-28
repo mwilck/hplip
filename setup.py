@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '4.3'
+__version__ = '4.4'
 __title__ = 'Printer/Fax Setup Utility'
 __doc__ = "Installs HPLIP printers and faxes in the CUPS spooler. Tries to automatically determine the correct PPD file to use. Allows the printing of a testpage. Performs basic fax parameter setup."
 
@@ -330,12 +330,8 @@ else: # INTERACTIVE_MODE
     if not mq.get('fax-type', 0) and setup_fax:
         log.warning("Cannot setup fax - device does not have fax feature.")
         setup_fax = False
-
-    log.debug("Searching for PPDs in: %s" % sys_cfg.dirs.ppd)
-    ppds = []
-
-    for f in utils.walkFiles(sys_cfg.dirs.ppd, pattern="HP*ppd*;hp*ppd*", abs_paths=True):
-        ppds.append(f)
+   
+    ppds = cups.getSystemPPDs()
 
     default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
     stripped_model = default_model.lower().replace('hp-', '').replace('hp_', '')
@@ -433,12 +429,13 @@ else: # INTERACTIVE_MODE
             enter_ppd = True
 
         elif x == 1:
-            print_ppd = mins[0]
+            print_ppd = mins.keys()[0]
             log.info("\nFound a possible PPD file: %s" % print_ppd)
+            log.info("Desc: %s" % mins[print_ppd])
 
             if not auto:
                 while True:
-                    log.info("Note: The model number may vary slightly from the actual model number on the device.")
+                    log.info("\nNote: The model number may vary slightly from the actual model number on the device.")
                     user_input = raw_input(utils.bold("\nDoes this PPD file appear to be the correct one (y=yes*, n=no, q=quit) ?"))
                     user_input = user_input.strip().lower()
 
@@ -477,18 +474,10 @@ else: # INTERACTIVE_MODE
             log.info(formatter.compose(("Num.", "PPD Filename", "Description")))
             log.info(formatter.compose(('-'*4, '-'*(max_ppd_filename_size), '-'*40 )))
 
+            mins_list = mins.keys()
+            
             for y in range(x):
-                if mins[y].endswith('.gz'):
-                    nickname = gzip.GzipFile(mins[y], 'r').read(4096)
-                else:
-                    nickname = file(mins[y], 'r').read(4096)
-
-                try:
-                    desc = nickname_pat.search(nickname).group(1)
-                except AttributeError:
-                    desc = ''
-
-                log.info(formatter.compose((str(y), mins[y], desc)))
+                log.info(formatter.compose((str(y), mins_list[y], mins[mins_list[y]])))
 
             x += 1
             none_of_the_above = y+1
@@ -523,7 +512,7 @@ else: # INTERACTIVE_MODE
                 break
 
             if not enter_ppd:
-                print_ppd = mins[i]
+                print_ppd = mins[mins_list[i]]
 
         if enter_ppd:
             log.error("Unable to find an appropriate PPD file.")

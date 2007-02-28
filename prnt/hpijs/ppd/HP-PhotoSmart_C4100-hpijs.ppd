@@ -52,7 +52,25 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:HP;MDL:Photosmart C4100 series;"
+*1284DeviceID: "MFG:HP;MDL:Photosmart C4100 series;DRV:Dhpijs,R1,M1,F1,Sv,TI,X1200,Y1200,C1,t90,l90,g100,p100,s70;"
+
+*driverName hpijs/hpijs - HP's IJS driver for most of their non-PostScript printers: ""
+*driverType I/IJS: ""
+*driverUrl: "http://hplip.sourceforge.net/"
+*driverObsolete: False
+*driverSupplier: "Hewlett-Packard"
+*driverManufacturerSupplied: True
+*driverLicense: "BSD"
+*driverFreeSoftware: True
+*driverSupportContactVoluntary: "http://lists.sourceforge.net/mailman/listinfo/hplip-help HPLIP-Help Mailing List"
+*driverMaxResolution: 1200 1200
+*driverColor: True
+*driverTextSupport: 90
+*driverLineartSupport: 90
+*driverGraphicsSupport: 100
+*driverPhotoSupport: 100
+*driverRenderingSpeed: 70
+
 *DefaultResolution: 1200dpi
 
 
@@ -130,7 +148,7 @@ llBleed"
 *FoomaticRIPOptionSetting InputSlot=Upper: ",PS:MediaPosition=1"
 *InputSlot Lower/Lower Tray: "%% FoomaticRIPOptionSetting: InputSlot=Lower"
 *FoomaticRIPOptionSetting InputSlot=Lower: ",PS:MediaPosition=4"
-*InputSlot CDDVDTray/CD/DVD Tray: "%% FoomaticRIPOptionSetting: InputSlot=CDDVDTray"
+*InputSlot CDDVDTray/CD or DVD Tray: "%% FoomaticRIPOptionSetting: InputSlot=CDDVDTray"
 *FoomaticRIPOptionSetting InputSlot=CDDVDTray: ",PS:MediaPosition=14"
 *InputSlot Envelope/Envelope Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Envelope"
 *FoomaticRIPOptionSetting InputSlot=Envelope: ",PS:MediaPosition=3"
@@ -156,11 +174,11 @@ dDEVICEHEIGHTPOINTS=792"
 *FoomaticRIPOptionSetting PageSize=A4: " -dDEVICEWIDTHPOINTS=595 -dDEV&&
 ICEHEIGHTPOINTS=842"
 *End
-*PageSize Photo/Photo/4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
+*PageSize Photo/Photo or 4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
 *FoomaticRIPOptionSetting PageSize=Photo: " -dDEVICEWIDTHPOINTS=288 -d&&
 DEVICEHEIGHTPOINTS=432"
 *End
-*PageSize Photo5x7/Photo/5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
+*PageSize Photo5x7/Photo or 5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
 *FoomaticRIPOptionSetting PageSize=Photo5x7: " -dDEVICEWIDTHPOINTS=360&&
  -dDEVICEHEIGHTPOINTS=504"
 *End
@@ -192,11 +210,11 @@ ICEHEIGHTPOINTS=420"
 *FoomaticRIPOptionSetting PageSize=B5JIS: " -dDEVICEWIDTHPOINTS=516 -d&&
 DEVICEHEIGHTPOINTS=729"
 *End
-*PageSize CDDVD80/CD/DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
+*PageSize CDDVD80/CD or DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
 *FoomaticRIPOptionSetting PageSize=CDDVD80: " -dDEVICEWIDTHPOINTS=237 &&
 -dDEVICEHEIGHTPOINTS=237"
 *End
-*PageSize CDDVD120/CD/DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
+*PageSize CDDVD120/CD or DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
 *FoomaticRIPOptionSetting PageSize=CDDVD120: " -dDEVICEWIDTHPOINTS=360&&
  -dDEVICEHEIGHTPOINTS=360"
 *End
@@ -259,8 +277,8 @@ dDEVICEHEIGHTPOINTS=567"
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
-*PageRegion Photo/Photo/4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
-*PageRegion Photo5x7/Photo/5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
+*PageRegion Photo/Photo or 4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
+*PageRegion Photo5x7/Photo or 5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
 *PageRegion PhotoTearOff/Photo with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=PhotoTearOff"
 *PageRegion 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *PageRegion 5x8/5x8 inch index card: "%% FoomaticRIPOptionSetting: PageSize=5x8"
@@ -268,8 +286,8 @@ dDEVICEHEIGHTPOINTS=567"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageRegion A6TearOff/A6 with tear-off tab: "%% FoomaticRIPOptionSetting: PageSize=A6TearOff"
 *PageRegion B5JIS/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5JIS"
-*PageRegion CDDVD80/CD/DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
-*PageRegion CDDVD120/CD/DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
+*PageRegion CDDVD80/CD or DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
+*PageRegion CDDVD120/CD or DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
 *PageRegion Env10/Envelope #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageRegion EnvC5/Envelope C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *PageRegion EnvC6/Envelope C6: "%% FoomaticRIPOptionSetting: PageSize=EnvC6"
@@ -288,8 +306,8 @@ dDEVICEHEIGHTPOINTS=567"
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "18 36 594 783"
 *ImageableArea A4/A4: "9.72 36 585.28 833"
-*ImageableArea Photo/Photo/4x6 inch index card: "0 36 288 432"
-*ImageableArea Photo5x7/Photo/5x7 inch index card: "0 36 360 504"
+*ImageableArea Photo/Photo or 4x6 inch index card: "0 36 288 432"
+*ImageableArea Photo5x7/Photo or 5x7 inch index card: "0 36 360 504"
 *ImageableArea PhotoTearOff/Photo with tear-off tab: "0 0 288 432"
 *ImageableArea 3x5/3x5 inch index card: "0 36 216 360"
 *ImageableArea 5x8/5x8 inch index card: "0 36 360 576"
@@ -297,8 +315,8 @@ dDEVICEHEIGHTPOINTS=567"
 *ImageableArea A6/A6: "0 36 297 420"
 *ImageableArea A6TearOff/A6 with tear-off tab: "0 0 297 420"
 *ImageableArea B5JIS/B5 (JIS): "18 36 498 720"
-*ImageableArea CDDVD80/CD/DVD 80 mm: "0 36 237 237"
-*ImageableArea CDDVD120/CD/DVD 120 mm: "0 36 360 360"
+*ImageableArea CDDVD80/CD or DVD 80 mm: "0 36 237 237"
+*ImageableArea CDDVD120/CD or DVD 120 mm: "0 36 360 360"
 *ImageableArea Env10/Envelope #10: "0 36 297 684"
 *ImageableArea EnvC5/Envelope C5: "18 36 441 640"
 *ImageableArea EnvC6/Envelope C6: "0 36 323 459"
@@ -316,8 +334,8 @@ dDEVICEHEIGHTPOINTS=567"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
-*PaperDimension Photo/Photo/4x6 inch index card: "288 432"
-*PaperDimension Photo5x7/Photo/5x7 inch index card: "360 504"
+*PaperDimension Photo/Photo or 4x6 inch index card: "288 432"
+*PaperDimension Photo5x7/Photo or 5x7 inch index card: "360 504"
 *PaperDimension PhotoTearOff/Photo with tear-off tab: "288 432"
 *PaperDimension 3x5/3x5 inch index card: "216 360"
 *PaperDimension 5x8/5x8 inch index card: "360 576"
@@ -325,8 +343,8 @@ dDEVICEHEIGHTPOINTS=567"
 *PaperDimension A6/A6: "297 420"
 *PaperDimension A6TearOff/A6 with tear-off tab: "297 420"
 *PaperDimension B5JIS/B5 (JIS): "516 729"
-*PaperDimension CDDVD80/CD/DVD 80 mm: "237 237"
-*PaperDimension CDDVD120/CD/DVD 120 mm: "360 360"
+*PaperDimension CDDVD80/CD or DVD 80 mm: "237 237"
+*PaperDimension CDDVD120/CD or DVD 120 mm: "360 360"
 *PaperDimension Env10/Envelope #10: "297 684"
 *PaperDimension EnvC5/Envelope C5: "459 649"
 *PaperDimension EnvC6/Envelope C6: "323 459"

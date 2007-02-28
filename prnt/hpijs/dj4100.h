@@ -51,6 +51,21 @@ public:
         m_iBytesPerSwing = 4;
         m_iLdlVersion = 2;
         m_iColorPenResolution = 600;
+        AdjustResolution ();
+        if (ePen == BOTH_PENS)
+        {
+            pMode[DEFAULTMODE_INDEX]->cmap.ulMap1 =
+            pMode[DEFAULTMODE_INDEX]->cmap.ulMap2 = NULL;
+            pMode[DEFAULTMODE_INDEX]->cmap.ulMap3 = (unsigned char *) ucMapDJ4100_KCMY_6x6x1;
+
+            pMode[SPECIALMODE_INDEX]->cmap.ulMap1 =
+            pMode[SPECIALMODE_INDEX]->cmap.ulMap2 = NULL;
+            pMode[SPECIALMODE_INDEX]->cmap.ulMap3 = (unsigned char *) ucMapDJ4100_KCMY_Photo_BestA_12x12x1;
+            pMode[SPECIALMODE_INDEX]->ColorFEDTable = GetHT12x12x1_4100_Photo_Best ();
+        }
+    }
+    virtual void AdjustResolution ()
+    {
         for (int i = 0; i < (int) ModeCount; i++)
         {
             if (pMode[i] && pMode[i]->ResolutionX[0] == 300)
@@ -64,17 +79,7 @@ public:
                 pMode[i]->BaseResY       = 600;
             }
         }
-        if (ePen == BOTH_PENS)
-        {
-            pMode[DEFAULTMODE_INDEX]->cmap.ulMap1 =
-            pMode[DEFAULTMODE_INDEX]->cmap.ulMap2 = NULL;
-            pMode[DEFAULTMODE_INDEX]->cmap.ulMap3 = (unsigned char *) ucMapDJ4100_KCMY_6x6x1;
 
-            pMode[SPECIALMODE_INDEX]->cmap.ulMap1 =
-            pMode[SPECIALMODE_INDEX]->cmap.ulMap2 = NULL;
-            pMode[SPECIALMODE_INDEX]->cmap.ulMap3 = (unsigned char *) ucMapDJ4100_KCMY_Photo_BestA_12x12x1;
-            pMode[SPECIALMODE_INDEX]->ColorFEDTable = GetHT12x12x1_4100_Photo_Best ();
-        }
     }
 }; //DJ4100
 

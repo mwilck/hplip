@@ -678,7 +678,7 @@ def queryString(string_id, typ=0):
     return s()
 
 
-AGENT_types = {AGENT_TYPE_NONE        : 'invalid',
+AGENT_types = { AGENT_TYPE_NONE        : 'invalid',
                 AGENT_TYPE_BLACK       : 'black',
                 AGENT_TYPE_CMY         : 'cmy',
                 AGENT_TYPE_KCM         : 'kcm',
@@ -697,7 +697,9 @@ AGENT_types = {AGENT_TYPE_NONE        : 'invalid',
                 AGENT_TYPE_LG_PK       : 'light_gray_and_photo_black',
                 AGENT_TYPE_LG          : 'light_gray',
                 AGENT_TYPE_G           : 'medium_gray',
-                AGENT_TYPE_PG          : 'photo_gray', 
+                AGENT_TYPE_PG          : 'photo_gray',
+                AGENT_TYPE_C_M         : 'cyan_and_magenta',
+                AGENT_TYPE_K_Y         : 'black_and_yellow',
                 AGENT_TYPE_UNSPECIFIED : 'unspecified', # Kind=5,6
             }
 
@@ -778,8 +780,9 @@ class Device(object):
                 hpssd_sock=None, hpiod_sock=None,
                 callback=None):
 
+        printers = cups.getPrinters()
+        
         if device_uri is None:
-            printers = cups.getPrinters()
             for p in printers:
                 if p.name.lower() == printer_name.lower():
                     device_uri = p.device_uri
@@ -863,7 +866,7 @@ class Device(object):
         self.device_state = DEVICE_STATE_NOT_FOUND
         self.status_code = EVENT_ERROR_DEVICE_NOT_FOUND
 
-        printers = cups.getPrinters()
+        #printers = cups.getPrinters()
         for p in printers:
             if self.device_uri == p.device_uri:
                 self.cups_printers.append(p.name)
@@ -1587,12 +1590,11 @@ class Device(object):
 
     def isBusyOrInErrorState(self):
         self.queryDevice(quick=True)
-        return self.error_state in (ERROR_STATE_ERROR, ERROR_STATE_BUSY)
+        return self.error_state > ERROR_STATE_MAX_OK
 
     def isIdleAndNoError(self):
         self.queryDevice(quick=True)
-        return self.error_state not in (ERROR_STATE_ERROR, ERROR_STATE_BUSY)
-
+        return self.error_state <= ERROR_STATE_MAX_OK
 
     def getPML(self, oid, desired_int_size=pml.INT_SIZE_INT): # oid => ( 'dotted oid value', pml type )
         channel_id = self.openPML()

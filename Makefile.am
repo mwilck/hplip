@@ -1,6 +1,6 @@
 #
 #  Makefile.am - hplip automake input file
-# 
+#
 #  (c) 2004-2005 Copyright Hewlett-Packard Development Company, LP
 #
 
@@ -65,6 +65,7 @@ dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unl
 
 cupsdir = $(CUPS_BACKEND_PATH)
 cupsppddir = $(CUPS_PPD_PATH)
+ppddir = $(datadir)/ppd
 hpppddir = $(datadir)/ppd/HP
 
 # hp backend.
@@ -84,10 +85,26 @@ dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/statu
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
     base/imagesize.py base/pexpect.py base/models.py base/mdns.py
-    
+
 # installer
-installerdir = $(hplipdir)/installer
-dist_installer_SCRIPTS = installer/__init__.py installer/core.py installer/text_install.py installer/dcheck.py installer/distros.py
+installdir = $(hplipdir)/installer
+installpagedir = $(hplipdir)/installer/pages
+installscriptdir = $(hplipdir)/installer/scripts
+installimagedir = $(hplipdir)/installer/images
+installstyledir = $(hplipdir)/installer/styles
+dist_install_SCRIPTS = installer/__init__.py installer/core.py installer/text_install.py installer/dcheck.py \
+    installer/distros.py installer/web_install.py
+dist_installpage_SCRIPTS = installer/pages/__init__.py installer/pages/install_required.tmpl installer/pages/installation_path.tmpl installer/pages/component.tmpl \
+    installer/pages/mode.tmpl installer/pages/confirm_distro.tmpl installer/pages/notes.tmpl installer/pages/error.tmpl installer/pages/options.tmpl \
+    installer/pages/error_package_manager.tmpl installer/pages/password.tmpl installer/pages/error_required_missing.tmpl installer/pages/progress.tmpl \
+    installer/pages/error_unsupported_distro.tmpl installer/pages/ready_to_build.tmpl installer/pages/finished.tmpl installer/pages/select_distro.tmpl \
+    installer/pages/hplip_remove.tmpl installer/pages/hpoj_remove.tmpl installer/pages/turn_off_options.tmpl \
+    installer/pages/index.tmpl installer/pages/welcome.tmpl installer/pages/install_optional.tmpl installer/pages/quit.tmpl
+dist_installscript_SCRIPTS = installer/scripts/hplip.js installer/scripts/xml_loader.js
+dist_installimage_DATA = installer/images/button.png installer/images/favicon.ico installer/images/topbar.png installer/images/view.png \
+    installer/images/back.png installer/images/circular.gif installer/images/hplogo.png installer/images/tux.png \
+    installer/images/button1.png  installer/images/button1d.png
+dist_installstyle_SCRIPTS = installer/styles/hplip.css
 
 # makecopies
 copierdir = $(hplipdir)/copier
@@ -203,7 +220,8 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
     ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py \
     ui/makecopiesform_base.py ui/makecopiesform.py ui/setupform_base.py ui/setupform.py ui/setupmanualfind_base.py \
-    ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py
+    ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py ui/scrollfunc.py ui/scrollstatus.py \
+    ui/scrollprintsettings.py ui/scrollprintcontrol.py ui/scrolltool.py ui/scrollsupplies.py 
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -219,6 +237,36 @@ dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdia
 pluginsdir = $(hplipdir)/plugins
 dist_plugins_SCRIPTS = plugins/dj450.py plugins/__init__.py plugins/powersettings.py plugins/powersettingsdialog.py \
     plugins/powersettingsdialog_base.py plugins/Deskjet_460.py
+
+# cheetah
+cheetahdir = $(hplipdir)/Cheetah
+cheetahutildir = $(hplipdir)/Cheetah/Utils
+cheetahoptikdir = $(hplipdir)/Cheetah/Utils/optik
+dist_cheetah_SCRIPTS = Cheetah/Filters.py Cheetah/SettingsManager.py Cheetah/CheetahWrapper.py Cheetah/ImportHooks.py \
+    Cheetah/SourceReader.py Cheetah/Compiler.py Cheetah/ImportManager.py Cheetah/Template.py Cheetah/DummyTransaction.py \
+    Cheetah/NameMapper.py Cheetah/TemplateCmdLineIface.py Cheetah/ErrorCatchers.py Cheetah/Parser.py Cheetah/Version.py \
+    Cheetah/FileUtils.py Cheetah/Servlet.py Cheetah/CacheRegion.py Cheetah/__init__.py
+dist_cheetahutil_SCRIPTS = Cheetah/Utils/Indenter.py Cheetah/Utils/Misc.py Cheetah/Utils/VerifyType.py \
+    Cheetah/Utils/WebInputMixin.py Cheetah/Utils/__init__.py
+dist_cheetahoptik_SCRIPTS = Cheetah/Utils/optik/errors.py Cheetah/Utils/optik/option_parser.py Cheetah/Utils/optik/option.py \
+    Cheetah/Utils/optik/__init__.py
+
+# cherrypy
+cherrydir = $(hplipdir)/cherrypy
+cherrylibdir = $(hplipdir)/cherrypy/lib
+cherryfiltersdir = $(hplipdir)/cherrypy/filters
+dist_cherry_SCRIPTS = cherrypy/_cphttptools.py cherrypy/_cpwsgi.py cherrypy/__init__.py cherrypy/_cpserver.py cherrypy/_cpwsgiserver.py \
+    cherrypy/_cpcgifs.py cherrypy/_cpthreadinglocal.py cherrypy/config.py cherrypy/_cpengine.py cherrypy/_cptree.py cherrypy/_cperror.py \
+    cherrypy/_cputil.py 
+dist_cherrylib_SCRIPTS = cherrypy/lib/covercp.py cherrypy/lib/form.py cherrypy/lib/__init__.py cherrypy/lib/cptools.py \
+    cherrypy/lib/httptools.py cherrypy/lib/autoreload.py cherrypy/lib/defaultformmask.py cherrypy/lib/profiler.py
+dist_cherryfilters_SCRIPTS = cherrypy/filters/nsgmlsfilter.py cherrypy/filters/__init__.py \
+    cherrypy/filters/responseheadersfilter.py \
+    cherrypy/filters/basefilter.py cherrypy/filters/sessionauthenticatefilter.py cherrypy/filters/baseurlfilter.py \
+    cherrypy/filters/sessionfilter.py cherrypy/filters/cachefilter.py cherrypy/filters/staticfilter.py \
+    cherrypy/filters/decodingfilter.py cherrypy/filters/tidyfilter.py cherrypy/filters/encodingfilter.py \
+    cherrypy/filters/virtualhostfilter.py cherrypy/filters/gzipfilter.py cherrypy/filters/wsgiappfilter.py \
+    cherrypy/filters/logdebuginfofilter.py cherrypy/filters/xmlrpcfilter.py
 
 build-pcardext: 
 	cd pcard/pcardext; \
@@ -244,7 +292,7 @@ install-cupsext:
 	   $(PYTHON) setup.py install --root=$(DESTDIR) --prefix=$(prefix); \
 	fi
 
-install-exec-hook: 
+install-exec-hook:
 #
 #       If scanner build, install sane backend.
 	if [ "$(scan_build)" = "yes" ]; then \
@@ -310,7 +358,7 @@ install-data-hook: install-pcardext install-cupsext
 #
 #       Edit hpiod.conf in destdir.
 	echo -e "\n[$(PACKAGE)]\nversion=$(VERSION)\njdprobe=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -e "[dirs]\nhome=$(hplipdir)\nrun=$(rundir)\nppd=$(hpppddir)\ndoc=$(docdir)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
+	echo -e "[dirs]\nhome=$(hplipdir)\nrun=$(rundir)\nppd=$(hpppddir)\nppdbase=$(ppddir)\ndoc=$(docdir)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 	echo -e "# Following values are determined at configure time and cannot be changed.\n[configure]" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 	if [ "$(network_build)" = "yes" ]; then \
 	   echo -e "network-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
@@ -374,8 +422,8 @@ install-data-hook: install-pcardext install-cupsext
 #
 #       For internal testing.
 	if [ "$(SHADOW)" != "" ]; then \
-           $(mkinstalldirs) $(DESTDIR)$(modelsdir)/unreleased; \
-	   $(INSTALL_DATA) $(srcdir)/data/models/unreleased.dat $(DESTDIR)$(modelsdir)/unreleased; \
+	$(mkinstalldirs) $(DESTDIR)$(modelsdir)/unreleased; \
+	$(INSTALL_DATA) $(srcdir)/data/models/unreleased.dat $(DESTDIR)$(modelsdir)/unreleased; \
 	fi
 
 uninstall-hook:

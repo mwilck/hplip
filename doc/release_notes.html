@@ -82,6 +82,84 @@ Release Notes
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.7.2 - This release has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Fixed defect (The fax file is printed out by the sender when use printer name with &quot;-p&quot; parameter to perform a fax job.)</li>
+<li>Added CUPS fax queues to Print Settings and Print Control tabs</li>
+<li>Added PQ Diag type 2, align type 12, color cal type 6, and LF cal type 2 for Officejet Pro L7xxx</li>
+<li>Added agent types 20 and 21 for Officejet Pro L7xxx</li>
+<li>Fixed defect (There is no response when click &quot;About&quot; in the &quot;Help&quot; menu in the toolbox window.)</li>
+<li>Fixed defect (Function Commands configuration was disabled)</li>
+<li>Fixed an issue where the ending banner page combo box would not show the proper setting if it were not 'none'</li>
+<li>Fixed defect (An error occurs when select other ppd files from toolbox to setup)</li>
+<li>Fixed defect (The command &quot;hp-setup -i&quot; can not work normally)</li>
+<li>Fixed defect (The output of &quot;-t&quot; parameter is not the same as &quot;--prettyprint&quot; parameter when send a fax job using pretty printing for text files.)</li>
+<li>Fixed defect (An error occurs when enter &quot;#&quot; in Fax Name field on &quot;Enter Printer Information&quot; window during setting up a printer.)</li>
+<li>Fixed defect (Print outcomes are not full when set the &quot;Page Orientation&quot; as &quot;Landscape&quot; on &quot;Print Settings&quot; table.) [added &quot;Fit to page&quot; option in image printing section of Print Settings tab.]</li>
+<li>Moved installer/images/xxx files from SCRIPT to DATA install in Makefile.am.</li>
+<li>Fixed non-functioning printer control in hp-toolbox</li>
+<li>Fixed an issue with the settings dialog not working [reported by Johannes]</li>
+<li>Additional fixes to get PPD file handling working on Edgy and Feisty for CUPS 1.2.</li>
+<li>Fixes for CUPS 1.2 and auto-generated PPD files for Feisty Fawn [reported by Till]</li>
+<li>Fixed potential subscript array overflow in pcard/fat.c (reported by Suse).</li>
+<li>Fixed an issue reported by Till with the device string returned by hpfax:</li>
+<li>Fixed an issue in in the NoDeviceForm (missing __tr() method)</li>
+<li>Fixed defect (Ubuntu Fiesty Herd 3 - ppd file w/hp-setup problem) [implemented change to PPD file enumeration for CUPS 1.2 as suggested by Till]</li>
+<li>Added banner pages to print settings (job-sheets)</li>
+<li>Fixed problem with watermark angle text in print settings (utf-8 decoding)</li>
+<li>Added libusb-devel check to configure.in.</li>
+<li>Added image printing settings to toolbox print settings</li>
+<li>Added print adjustment settings to toolbox print settings</li>
+<li>Enhanced the default button behavior in toolbox print settings</li>
+<li>Removed sticky print settings from hp-print</li>
+<li>hp_laserjet_p2015_series: Changed embedded-server-type from '0' to '1'</li>
+<li>hp_laserjet_p2015_series: Changed panel-check-type from '0' to '1'</li>
+<li>Fixed a traceback in hpfax: if HPLIP is not running during device detection (Launchpad bug #83936)</li>
+<li>Added print job icons to indicate print job status</li>
+<li>Updated some status icons</li>
+<li>Fixed defect (An unexpected error occurs when enter hp-makecopies -d&lt;device-uri&gt; -m1 -n in terminal)</li>
+<li>Fixed defect (&quot;See Also:hp-colorcal&quot; should not occur in the explanation for the hp-colorcal command on hplip website.)</li>
+<li>Fixed defect (Refresh All button can not work on build hplip-1.7.1 public release.)</li>
+<li>Fixed an issue in hpssd that caused history items in the ring buffer to slotted incorrectly</li>
+<li>Added duplexer detection to the &quot;sides&quot; setting in the toolbox Print Settings (no &quot;sides&quot; selection if duplexer == 0)</li>
+<li>Added new, more useful icons to the status list in the toolbox</li>
+<li>Major toolbox (Device Manager) upgrade/redesign</li>
+<li>Added printer settings tab (sets printer options in ~/.cups/lpoptions)</li>
+<li>Removed panel tab (merged panel with status tab)</li>
+<li>Redo of functions tab (new layout)</li>
+<li>Redo of status tab (new icons, layout, inclusion of front panel display)</li>
+<li>Front panel display will show device panel if available, otherwise most recent status text</li>
+<li>Redo of supplies tab (new layout)</li>
+<li>Redo of print jobs tab (now called printer control) (print control widget, new layout, etc)</li>
+<li>hpssd will not store multiple history items with the same error code (last one gets replaced)</li>
+<li>About box upgraded</li>
+<li>cupsext extended in functionality (ppd, options, etc)</li>
+<li>Removed trailing white space in IEEE 1284 model name. This will fix URIs that have a trailing &quot;_&quot; character in the model name.
+This issue crept back into the hpiod code after the libusb update.</li>
+<li>Fixed an issue in hp-check that caused a traceback if '/etc/sane.d/dll.conf' is missing</li>
+<li>Added some more bug messages to hpaio.</li>
+<li>Fixed a traceback in hp-levels reported on the mailing list (defect)</li>
+<li>Set the device list column width in the toolbox splitter to be more narrow by default</li>
+<li>Added the toolbox software version to the Device Manager about dialog</li>
+</ol>
+<p><strong>This HPLIP package includes HPIJS 2.7.2 which has the following changes.</strong></p>
+<ol class="arabic simple">
+<li>Fixed media type for maxdpi printmode for vip printers and its derivatives</li>
+<li>Fixed the cause of carriage stall error in C41xx printers</li>
+<li>Added support for the following new printer(s).</li>
+</ol>
+<div class="compound">
+<ul class="simple">
+<li>Officejet Pro L7300 series (OJProKx50)</li>
+<li>Officejet Pro L7500 series (OJProKx50)</li>
+<li>Officejet Pro L7600 series (OJProKx50)</li>
+<li>Officejet Pro L7700 series (OJProKx50)</li>
+<li>HP Officejet Pro K5300 series (OJProKx50)</li>
+<li>HP Officejet Pro K5400 series (OJProKx50)</li>
+<li>HP Officejet J5700 series (DJGenericVIP)</li>
+</ul>
+</div>
+<p>OJProKx50 is derived from DJGenericVIP.</p>
 <p><strong>HPLIP 1.7.1 - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>Added some new html files to Makefile.am for hplip and hpijs.</li>
@@ -1615,7 +1693,7 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Jan 23 10:09:01 2007; HPLIP Version: 1.7.1</small></center>
+<center><small>Page last updated: Wed Feb 28 14:35:14 2007; HPLIP Version: 1.7.2</small></center>
 </div>
 </td></tr></table>
 </div>

@@ -73,6 +73,12 @@ public:
         "OJProKx50",                // family name
         "Officejet Pro K550\0"
         "Officejet Pro K850\0"
+        "OfficeJet Pro K53\0"
+        "OfficeJet Pro K56\0"
+        "Officejet Pro L73\0"
+        "Officejet Pro L75\0"
+        "Officejet Pro L76\0"
+        "Officejet Pro L77\0"
     ) {m_iPrinterType = eOJProKx50;}
     inline Printer* CreatePrinter(SystemServices* pSS) const { return new OJProKx50(pSS); }
 	inline PRINTER_TYPE GetPrinterType() const { return eOJProKx50;}

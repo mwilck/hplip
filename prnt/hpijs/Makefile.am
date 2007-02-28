@@ -6,7 +6,7 @@ docdir	= $(datadir)/doc/$(distdir)
 ppddir = $(datadir)/ppd/HP
 
 #APDKLABEL=JetReady_PreMerge_11-08-04 
-APDKLABEL=APDK_2007_01_11
+APDKLABEL=APDK_2007_02_12
 APDKCOMMON=slimhost/source/common
 APDKOPEN=slimhost/source/open
 APDKDEBUG=slimhost/source/debug

@@ -720,6 +720,7 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
        hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN");
        if(hpaio->scan_channelid < 0)
        {
+          bug("failed to open scan channel: %s %d\n", __FILE__, __LINE__);
           retcode = SANE_STATUS_DEVICE_BUSY;
           goto abort;
        }
@@ -728,6 +729,7 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
     hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE");
     if(hpaio->cmd_channelid < 0)
     {
+       bug("failed to open pml channel: %s %d\n", __FILE__, __LINE__);
        retcode = SANE_STATUS_IO_ERROR;
        goto abort;
     }

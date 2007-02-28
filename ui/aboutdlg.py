@@ -31,3 +31,4 @@ class AboutDlg(AboutDlg_base):
 
         self.pyPixmap.setPixmap(QPixmap(os.path.join(prop.image_dir, 'powered_by_python.png')))
         self.osiPixmap.setPixmap(QPixmap(os.path.join(prop.image_dir, 'opensource-75x65.png')))
+        self.logoPixmap.setPixmap(QPixmap(os.path.join(prop.image_dir, 'hp-tux-printer.png')))

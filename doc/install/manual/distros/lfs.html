@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Configure Linux From Scratch</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../../styles/default.css" type="text/css" /> 
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+</head>
+<body>
+<div id="page"><!-- start page -->
+<div id="container"><!-- start main container -->
+<!-- start banner -->
+
+<div id="banner">
+<div id="banner_graphics">
+        <div id="floatleft">
+        <img src="../../../images/hplogo2.png" alt="HP Logo" border="0" />
+        </div>
+        <div id="floatcenter">
+        <a href="../../../index.html">
+        <img src="../../../images/hpliplogo.png" alt="HP Logo" border="0" />
+        </a>
+        </div>
+        <div id="floatright">
+        <img src="../../../images/tuxlogo2.png" alt="Tux" border="0" />
+        </div>
+    </div>
+</div>
+<!-- end banner -->
+
+<div id="navbar">
+<table>
+    <tr>
+        <td valign="top">
+<div id="sidebar-a">
+<ul id="sidebar-a-list">
+    <menu compact="compact">
+        <div class="menuheader"><a href="../../../index.html" title="">Home</a></div>
+    </menu>
+
+<div class="menuheader">About</div>
+    <menu compact="compact">
+        <li><a href="../../../features.html" title="">Features</a></li> 
+        <li><a href="../../../screenshots.html" title="">Screenshots</a></li> 
+        <li><a href="../../../faqs.html" title="FAQs">FAQs</a></li> 
+        <li><a a href="../../../about.html" title="About">About HPLIP</a></li>
+    </menu>
+<div class="menuheader">Setup and Installation</div>
+    <menu compact="compact">
+        <li><a href="../../../downloads.html" title="Downloads">Download HPLIP</a></li>
+        <li><a href="../../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+        <li><a href="../../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
+        <li><a href="../../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+    </menu>
+<div class="menuheader">Usage and Support</div>
+    <menu compact="compact">
+        <li><a href="../../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
+        <li><a href="../../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
+        <li><a href="../../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
+        <li><a href="../../../release_notes.html" title="Release Notes">Release Notes</a></li>
+    </menu>
+<div class="menuheader">Resources</div>
+    <menu compact="compact">
+        <li><a href="../../../tech_docs/index.html" title="">Technical Documentation</a></li> 
+        <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
+        <li><a href="../../../license.html" title="Software License">Software License</a></li>
+        <li><a a href="../../../other_support.html" title="Other Support Information">Other Support Information</a></li>
+        <li><a href="../../../contacts.html" title="Contacts">Contacts</a></li>
+    </menu>
+</ul>
+</div>
+<!-- end sidebar --></td>
+</div>
+<td width=100%>
+<div id="content"><!-- start content -->
+        <a href="../../../index.html">Home</a>
+&gt;
+<a href="../../index.html">Installation</a>
+&gt;
+<a href="../index.html">Manual Install</a>
+&gt;
+<a href="index.html">Linux Distributions</a>
+&gt;
+LFS/BLFS
+
+<hr size="1"/>
+        <div class="document" id="linux-from-scratch">
+<h1 class="title">Linux From Scratch</h1>
+<p><em>Note</em>: This process has not been tested by the HPLIP Team and is not supported.</p>
+<p>Installing hplip-1.7.1 on an LFS/BLFS system</p>
+<p>This document describes the installation of hplip-1.7.1 on a Linux from Scratch (LFS)/Beyond Linux from Scratch (BLFS) setup.</p>
+<p>Some system components of the LFS/BLFS build on which this experience is based are: gcc-4.0.3 ; glibc-2.3.6; udev-088; Linux-2.6.16.5; python-2.4.3; libusb-0.1.12; xfree86-4.5.0; gimp-2.2.10; cups-1.1.23; ESP_Ghostscript-8.15.1; sane-1.0.17; foomatic-3.1.0.</p>
+<p>The procedure installs hplip in a directory different from /usr or /usr/local. If these standard locations are used, some of the configuration steps may be omitted.</p>
+<p>It is assumed that:</p>
+<ol class="arabic simple">
+<li>All the system requirements for the building of hplip are met;</li>
+<li>Hplip-1.7.1.tar.gz has been untarred into a directory we shall call &quot;Build&quot; and that the patch hplip-1.7.1-1.patch has been copied to this directory. The contents of Build should look like this: hplip-1.7.1/hplip-1.7.1-1.patch;</li>
+</ol>
+<p>The various steps are described below.</p>
+<p>First as an unprivileged user:</p>
+<div class="compound">
+<p class="compound-first">$ cd hplip-1.7.1</p>
+<p class="compound-middle">$ patch -Np1 -i ../hplip-1.7.1-1.patch</p>
+<p class="compound-middle">$ sed -i &quot;s&#64;daemon&#64;pidofproc&#64;g&quot; hplip.sh</p>
+<p class="compound-middle">$ ./configure --prefix=/usr/local/Hplip-1.7.1 --disable-network-build --disable-pp-build</p>
+<p class="compound-last">$ make</p>
+</div>
+<p>Explanations:</p>
+<p>sed -i &quot;s&#64;daemon&#64;pidofproc&#64;g&quot; hplip.sh is done to replace the 'daemon' function in hplip.sh with 'pidofproc'. Lfs does not use 'daemon' at all, but 'pidofproc' in stead.</p>
+<p>--disable-network-build: if you do not have net-snmp installed.</p>
+<dl class="docutils">
+<dt>--disable-pp-build: if your printers do not connect to the parallel</dt>
+<dd>port.</dd>
+</dl>
+<p>Next, as root:</p>
+<div class="compound">
+<p class="compound-first"># export HPLIP_DIR=&quot;/usr/local/Hplip-1.7.1&quot;</p>
+<p class="compound-middle"># mkdir -p $HPLIP_DIR/bin</p>
+<p class="compound-last"># make install</p>
+</div>
+<p>Explanations:</p>
+<p>You need to do the 'mkdir' bit because hplip will not create the 'bin' directory and installation will fail as a result. If you install in /usr/local or /usr this would not be a problem.</p>
+<p>Now you need to configure for hplip (still as root):</p>
+<div class="compound">
+<p class="compound-first"># chmod 0744 $HPLIP_DIR/share/hplip/hplip</p>
+<p class="compound-middle"># cd /etc/rc.d/init.d</p>
+<p class="compound-middle"># ln -s $HPLIP_DIR/share/hplip/hplip hplip</p>
+<p class="compound-middle"># cd ../rc0.d</p>
+<p class="compound-middle"># ln -s ../init.d/hplip K01hplip</p>
+<p class="compound-middle"># cd ../rc3.d</p>
+<p class="compound-middle"># ln -s ../init.d/hplip S24hplip</p>
+<p class="compound-middle"># cd ../rc5.d</p>
+<p class="compound-middle"># ln -s ../init.d/hplip S24hplip</p>
+<p class="compound-middle"># cd ../rc6.d</p>
+<p class="compound-middle"># ln -s ../init.d/hplip K01hplip</p>
+<p class="compound-middle"># cd /usr/bin</p>
+<p class="compound-middle"># ln -s $HPLIP_DIR/bin/hpijs hpijs</p>
+<p class="compound-middle"># cd ../lib/sane</p>
+<p class="compound-last"># ln -s $HPLIP_DIR/lib/libsane-hpaio.* .</p>
+</div>
+<p>Find the path in /dev to the printer. This is done by ls /dev and looking for the usb/ directory, for example. Suppose the path is /dev/usb/lp0</p>
+<p>Edit /etc/profile and add the line</p>
+<div class="compound">
+<p>export SANE_DEFAULT_DEVICE=&quot;hpaio:/dev/usb/lp0&quot;</p>
+</div>
+<p>Then run the command:</p>
+<div class="compound">
+<p># . /etc/profile</p>
+</div>
+<p>To /etc/ld.so.conf add the line</p>
+<div class="compound">
+<p>/usr/local/Hplip-1.7.1/lib</p>
+</div>
+<p>and run the command</p>
+<div class="compound">
+<p># ldconfig</p>
+</div>
+<p>Finally:</p>
+<div class="compound">
+<p># unset HPLIP_DIR</p>
+</div>
+<p>Explanations:</p>
+<p>-- The 'hplip' binary as installed is not executable, hence the &quot;chmod&quot; step.</p>
+<p>-- The lfs-setup has 'init.d' in a place different from what the installation procedure expects. We have to make a symlink in ' init.d' to where 'hplip' is.</p>
+<p>-- The symlinks set up in the rc.{0,1,3,5,6} directories will activate the two hplip daemons at boot time and bring them down at shutdown time.  It is important to note that these daemons must be activated before the 'cups' daemon and shut down after the 'cups' daemon. Thus the numbers 'xy' in the 'Sxy' links must preceed those for 'cups'. The 'xy' in 'Kxy' must be larger than those for cups. So have a good look at what goes on in the 'rc.n' directories.</p>
+<p>-- It is important to have a link in /usr/bin to the 'hpijs' binary. Without this link 'cups' will get lost. That is one reason why installation of 'hplip' in /usr is recommended.</p>
+<p>-- Sane will look for the 'libsane-hpaio' libraries in /usr/lib/sane. So we have to establish a link. Without these links scanning at least with 'xscanimage' will not work. The final dot in the command line should not be left out.</p>
+<p>-- The environment variable SANE_DEFAULT_DEVICE will make 'xscanimage' work from wherever it is called. This really is a nice thing to do!</p>
+<p>-- Having 'ldconfig' make the hplip libraries visible to the system may be of importance to software that leans on hplip.</p>
+<p>If you set the variable SANE_DEFAULT_DEVICE do not give a command to
+xscanimage when you configure.</p>
+<p>Hopefully this is of value to users of other Linux distributions as well.</p>
+<p>Documentation provided by Niko Sauer</p>
+<div class="section">
+<h1><a id="next" name="next">Next</a></h1>
+<p><a class="reference" href="../hp_setup.html">Continue to hp-setup</a></p>
+</div>
+</div>
+
+<hr size="1"/>
+<center><small>Page last updated: Fri Feb 23 09:20:16 2007; HPLIP Version: 1.7.2</small></center>
+</div>
+</td></tr></table>
+</div>
+<!-- end content -->
+<!-- end container -->
+<div id="footer"><!-- start footer -->
+        <hr size="1"/>
+        <a href="../../../legal.html">Legal Notices</a>
+        Copyright &#169; 2003-2007, Hewlett-Packard Development Company, L.P.
+        <a href="mailto:hplip@hp.com">Contact Site Maintainer</a><br>
+        <a href="http://sourceforge.net/" alt="Hosted by Sourceforge.net"><img src="../../../images/sflogo.png" border="0"></a>
+</div>
+<!-- end footer -->
+</div><!-- end page -->
+</body>
+</html>

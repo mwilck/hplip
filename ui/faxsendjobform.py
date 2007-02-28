@@ -165,6 +165,21 @@ class FaxSendJobForm(FaxSendJobForm_base):
         self.cups_printers = cups.getPrinters()
         log.debug(self.cups_printers)
 
+        if self.printer_name:
+            found = False
+            for p in self.cups_printers:
+                if p.name == printer_name:
+                    self.device_uri = p.device_uri
+                    found = True
+                    break
+    
+            if not found:
+                self.FailureUI(self.__tr("<b>Unknown printer name: %1</b><p>Please check the printer name and try again.").arg(self.printer_name))
+    
+            if found and not p.device_uri.startswith('hpfax:/'):
+                self.FailureUI(self.__tr("You must specify a printer that has a device URI in the form 'hpfax:/...'"))
+                self.init_failed = True
+        
         if not self.device_uri and not self.printer_name:
             t = device.probeDevices(None, bus=bus, filter='fax')
             probed_devices = []
@@ -529,7 +544,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             QApplication.restoreOverrideCursor()
 
 
-        if self.dev.error_state in (ERROR_STATE_WARNING, ERROR_STATE_ERROR, ERROR_STATE_BUSY):
+        if self.dev.error_state > ERROR_STATE_MAX_OK:
             self.FailureUI(self.__tr("<b>Device is busy or in an error state (code=%1)</b><p>Please wait for the device to become idle or clear the error and try again.").arg(self.dev.status_code))
             return
 

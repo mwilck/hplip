@@ -334,7 +334,6 @@ class PrinterForm(PrinterForm_base):
 
         for p, t, d in temp:
             i = QListViewItem(self.fileListView, os.path.basename(p), d, p)
-            #self.fileListView.setSelected( i, True )
 
         non_empty_file_list = self.fileListView.childCount() > 0
         self.printPushButton.setEnabled(non_empty_file_list)
@@ -364,8 +363,6 @@ class PrinterForm(PrinterForm_base):
 
                 if results:
                     self.addFile(str(results))
-
-
 
     def delFileButton_clicked(self):
         try:
@@ -405,26 +402,7 @@ class PrinterForm(PrinterForm_base):
                 except AttributeError:
                     self.CommentText.setText('')
 
-                cups.openPPD(p.name)
-                self.UpdateDuplex()
-                cups.closePPD()
                 break
-
-    def UpdateDuplex(self):
-        duplex = cups.getPPDOption("Duplex")
-        if duplex is not None:
-            if duplex.startswith("long"):
-                self.duplexButtonGroup.setButton(1)
-                self.auto_duplex_button_group = 1
-            elif duplex.startswith("short"):
-                self.duplexButtonGroup.setButton(2)
-                self.auto_duplex_button_group = 2
-            else:
-                self.duplexButtonGroup.setButton(0)
-                self.auto_duplex_button_group = 0
-        else:
-            self.duplexButtonGroup.setEnabled(False)
-
 
     def pagesButtonGroup_clicked(self,item):
         self.pageRangeEdit.setEnabled(item == 1)
@@ -435,14 +413,17 @@ class PrinterForm(PrinterForm_base):
             return
 
         copies = int(self.copiesSpinBox.value())
-        rev = bool(self.reverseCheckBox.isChecked())
-        collate = bool(self.collateCheckBox.isChecked())
         all_pages = self.pages_button_group == 0
         page_range = str(self.pageRangeEdit.text())
         page_set = int(self.pageSetComboBox.currentItem())
-        nup = int(str(self.nUpComboBox.currentText()))
-        mirror = bool(self.mirrorCheckBox.isChecked())
-
+    
+        cups.resetOptions()
+        cups.openPPD(self.current_printer)
+        current_options = dict(cups.getOptions())
+        cups.closePPD()
+        
+        nup = int(current_options.get("number-up", 1))
+            
         for p, t, d in self.file_list:
 
             alt_nup = (nup > 1 and t == 'application/postscript' and utils.which('psnup'))
@@ -475,36 +456,6 @@ class PrinterForm(PrinterForm_base):
                 else:
                     cmd = ' '.join([cmd, '-o page-set=odd'])
 
-            if rev:
-                cmd = ' '.join([cmd, '-o outputorder=reverse'])
-
-            if mirror:
-                cmd = ' '.join([cmd, '-o mirror'])
-
-            if collate and copies > 1:
-                cmd = ' '.join([cmd, '-o Collate=True'])
-
-            if t in ["application/x-cshell",
-                     "application/x-perl",
-                     "application/x-python",
-                     "application/x-shell",
-                     "text/plain",] and self.prettyprint:
-
-                cmd = ' '.join([cmd, '-o prettyprint'])
-
-            if nup > 1 and not alt_nup:
-                cmd = ' '.join([cmd, '-o number-up=%d' % nup])
-
-            if self.auto_duplex_button_group == 1: # long
-                cmd = ' '.join([cmd, '-o sides=two-sided-long-edge'])
-            elif self.auto_duplex_button_group == 2: # short
-                cmd = ' '.join([cmd, '-o sides=two-sided-short-edge'])
-            else:
-                cmd = ' '.join([cmd, '-o sides=one-sided'])
-
-            if self.orientation_button_group == 1:
-                cmd = ' '.join([cmd, '-o landscape'])
-
             if not alt_nup:
                 cmd = ''.join([cmd, ' "', p, '"'])
 
@@ -521,18 +472,8 @@ class PrinterForm(PrinterForm_base):
         self.pages_button_group = a0
         self.pageRangeEdit.setEnabled(a0 == 1)
 
-
-    def duplexButtonGroup_clicked(self,a0):
-        self.auto_duplex_button_group = a0
-
-    def orientationButtonGroup_clicked(self,a0):
-        self.orientation_button_group = a0
-
     def refreshToolButton_clicked(self):
         self.UpdatePrinterStatus()
-
-    def checkBoxPrettyPrinting_toggled(self,a0):
-        self.prettyprint = bool(a0)
 
     def pageRangeEdit_lostFocus(self):
         x = []
@@ -553,16 +494,12 @@ class PrinterForm(PrinterForm_base):
         try:
             x = expand_range(str(self.pageRangeEdit.text()))
         except ValueError:
-            #log.error("Invalid page range entered.")
             self.invalid_page_range = True
             self.pageRangeEdit.setPaletteBackgroundColor(QColor(0xff, 0x99, 0x99))
 
         else:
-            #self.pageRangeEdit.setText(QString(collapse_range(x)))
             self.pageRangeEdit.setPaletteBackgroundColor(self.bg)
             self.invalid_page_range = False
-
-
 
 
     def SuccessUI(self):
@@ -588,7 +525,6 @@ class PrinterForm(PrinterForm_base):
                               QMessageBox.Ok,
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)
-
 
     def __tr(self,s,c = None):
         return qApp.translate("PrinterForm",s,c)

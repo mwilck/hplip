@@ -308,6 +308,10 @@ try:
 
         elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
             maint.AlignType11(d, loadPlainPaper, type10and11Align, invalidPen2)
+            
+        elif align_type == ALIGN_TYPE_OJ_PRO:
+            maint.AlignType12(d, loadPlainPaper)
+            
 
         else:
             log.error("Invalid alignment type.")

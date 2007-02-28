@@ -157,6 +157,18 @@
 :model "officejet_pro_1170c_series"
 :status :good
 
+:model "officejet_pro_l7300"
+:status :good
+
+:model "officejet_pro_l7500"
+:status :good
+
+:model "officejet_pro_l7600"
+:status :good
+
+:model "officejet_pro_l7700"
+:status :good
+
 :model "officejet_d_series"
 :status :good
 
@@ -173,6 +185,9 @@
 :status :good
 
 :model "officejet_g95"
+:status :good
+
+:model "officejet_j5700_series"
 :status :good
 
 :model "officejet_k60"

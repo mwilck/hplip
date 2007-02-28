@@ -169,14 +169,12 @@ void Header::SetQuality(Quality qual)
     }
 #endif
 
-    ASSERT( (qual==qualityPresentation) || (qual==qualityNormal)
-            || (qual==qualityDraft) || qual == qualityFastDraft);
+    ASSERT (qual < qualityAuto || qual > qualityMarvellous);
 
-    if ( (qual!=qualityPresentation) && (qual!=qualityNormal)
-            && (qual!=qualityDraft) && (qual != qualityFastDraft))
-        qual=qualityNormal;
+    if (qual < qualityAuto || qual > qualityMarvellous)
+        qual = qualityNormal;
 
-    qualcount=EscCopy((BYTE*)quality,"*o",qual,'M');
+    qualcount = EscCopy ((BYTE*)quality,"*o",qual,'M');
 }
 
 BYTE Header::QualityCode()

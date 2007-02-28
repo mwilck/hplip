@@ -933,6 +933,12 @@ def alignType8Phase2(dev, num_inks, a, b, c, d): # 450
 
     dev.printData(s)
     dev.closePrint()
+    
+    
+def AlignType12(dev, loadpaper_ui):
+    if loadpaper_ui():
+        dev.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_ALIGNMENT_PAGE)
+        dev.closePML()
 
 # ********************** Clean **********************
 
@@ -1370,14 +1376,33 @@ def colorCalType5(dev, loadpaper_ui):
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 20;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
         dev.closePrint()
 
+        
+def colorCalType6(dev, loadpaper_ui):
+    if loadpaper_ui:
+        dev.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
+        dev.closePML()
+
+# ********************** LF Cal **********************        
+        
 def linefeedCalType1(dev, loadpaper_ui):
     if loadpaper_ui():
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 3;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
         dev.closePrint()
+        
+def linefeedCalType2(dev, loadpaper_ui):
+    if loadpaper_ui():
+        dev.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_LINEFEED_CALIBRATION)
+        dev.closePML()
 
+
+# ********************** PQ Diag **********************        
+        
 def printQualityDiagType1(dev, loadpaper_ui):
     if loadpaper_ui():
         dev.printData("""\x1b%-12345X@PJL ENTER LANGUAGE=PCL3GUI\n\x1bE\x1b%Puifp.multi_button_push 14;\nudw.quit;\x1b*rC\x1bE\x1b%-12345X""")
         dev.closePrint()
 
-
+def printQualityDiagType2(dev, loadpaper_ui):
+    if loadpaper_ui():
+        dev.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_PRINT_QUALITY_DIAGNOSTIC)
+        dev.closePML()

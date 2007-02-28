@@ -30,7 +30,7 @@ import sys, os, getopt, re, socket, Queue, time
 # Local
 from base.g import *
 from base.msg import *
-from base import utils, device, pml
+from base import utils, device, pml, service
 from copier import copier
 from prnt import cups
 
