@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <title>HPLIP</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="styles/default.css" type="text/css" /> 
@@ -82,6 +83,76 @@ Release Notes
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 1.7.3 - This release has the following changes.</strong></p>
+<ol class="arabic">
+<li><p class="first">Added the &lt;nopjl /&gt; tag to hpijs-generator.in. This will remove the extra foomatic PJL options from most HP LaserJet PPD files.
+The extra foomatic PJL options caused some HPIJS PCL data issues. This fixes a &quot;PCL XL error&quot; on LJ1010/1012 that can
+occur on different PCs.</p>
+</li>
+<li><p class="first">Fixed defect (An error occurs when send a fax coverpage with &quot;&amp;&quot; or &quot;&lt;&quot; character in Regarding or Optional Message field.)</p>
+</li>
+<li><p class="first">Removed banner pages from fax print settings</p>
+</li>
+<li><p class="first">Altered hpfax: device discovery output to match hp: scheme (CUPS 1.2 only)</p>
+</li>
+<li><p class="first">Removed the wait cursor during the password entry screen [reported by Johannes]</p>
+</li>
+<li><p class="first">Added error messages and suppressed content in toolbox when device is not found or unsupported</p>
+</li>
+<li><p class="first">A new configure option was added --enable-cups11-build, this option controls the hp/hpfax device discovery message when
+no devices are found. If needed, this option provides backward compatibility with CUPS 1.1.x applications.</p>
+<p>With --enable-cups11-build set the &quot;no_device_found&quot; message is displayed during device discovery by the &quot;hp&quot; backend.</p>
+<p>With --disable-cups11-build (default) set the backend prints a scheme based on the following conditions.</p>
+</li>
+</ol>
+<div class="compound">
+<dl class="docutils">
+<dt>Condition 1 - no daemons</dt>
+<dd>output nothing stdout
+return exit 1</dd>
+<dt>Condition 2 - daemons running, no HP devices, output scheme</dt>
+<dd>direct hp &quot;Unknown&quot; &quot;HP Printer (HPLIP)&quot;
+return exit 0</dd>
+<dt>Condition 3 - daemons running, HP printer found, output URI</dt>
+<dd>direct hp:/... &quot;hp model&quot; &quot;HP model HPLIP&quot; &quot;deviceid&quot;
+return exit 0</dd>
+</dl>
+</div>
+<ol class="arabic simple" start="9">
+<li>Changed the way that hp-setup was being launched from the toolbox, it was hanging on Edgy</li>
+<li>Added Tools &gt; Printer Information</li>
+<li>Added a check for 'lpr' for Debian installation (to force install of cupsys-bsd)</li>
+<li>Moved the password prompt in the text/CLI installer past the distro confirm/select prompts to handle a problem with Mepis</li>
+<li>Made a change to determine if networking is working during installation.</li>
+<li>Added a private copy of sanei_init_debug to libsane-hpaio. This will remove the libsane.so dependency which was a problem for WINE.</li>
+<li>Fixed defect (PPD file &quot;foomatic:HP-PSC_2400-hpijs.ppd&quot; can not be found when set up PSC 2400 in interactive mode.)</li>
+<li>Fixed a page update defectin the toolbox (when switching devices, update page correctly)</li>
+<li>Re-wrote hpaioAdvanceDocument function in libsane-hpaio. This change only effects SCL scanners with an ADF (ie: inkjet all-in-ones).
+This fixes a double-feed ADF issue which occurred when scanning a single page.</li>
+<li>Fixed defect (An unexpected error occurs when perform color calibration job in GUI mode on photosmart c7180.)</li>
+<li>Some toolbox UI improvements</li>
+<li>Converted hp-print to new UI</li>
+<li>Fixed some defects in scrollprintview and devmgr</li>
+<li>Added network detection to text/CLI installer</li>
+<li>Toolbox internal/built-in print utility</li>
+<li>Added password entry and validation to text/CLI installer</li>
+<li>Fixed an issue when the ~/.hplip.conf file is not present on 1st run, the hp-setup run as root owns the file and doesn't allow the regular user to write to it.</li>
+<li>Fixed defect (hp-setup -i can not setup a printer Photosmart c3100 which has multiple possible PPD files.)</li>
+<li>Some visual updates to the toolbox</li>
+<li>Fixed defect (DJ 4x0 power/battery settings not staying set)</li>
+<li>Added a confirmation dialog to device remove in the toolbox</li>
+<li>Linked quality and printoutmode in print settings</li>
+<li>Switched [x] Enable style controls to (*) On ( ) Off style in print settings</li>
+<li>Supply icons auto generate (removed supply PNG icons from data/images)</li>
+<li>Fixed an issue with r_values in supplies processing</li>
+<li>Added type 12 head support for PS33xx, PSC61xx, etc.</li>
+<li>Fixed defect (The Print Settings of Fax device are invalid)</li>
+<li>Fixed issue where L7xxx color cal wasn't showing the load paper UI</li>
+<li>Fixed defect (The command &quot;hp-setup -i&quot; can not work normally)</li>
+<li>Fixed defect (The setup process will hang up when modify the fax name to a name which contains more than 104 characters on setup UI.)</li>
+<li>Changed magic.py to better handle text/plain vs. data detection</li>
+<li>Added last used working directory support to hp-sendfax, hp-print, and hp-unload</li>
+</ol>
 <p><strong>HPLIP 1.7.2 - This release has the following changes.</strong></p>
 <ol class="arabic simple">
 <li>Fixed defect (The fax file is printed out by the sender when use printer name with &quot;-p&quot; parameter to perform a fax job.)</li>
@@ -1693,7 +1764,7 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Wed Feb 28 14:35:14 2007; HPLIP Version: 1.7.2</small></center>
+<center><small>Page last updated: Fri Mar 23 13:38:17 2007; HPLIP Version: 1.7.3</small></center>
 </div>
 </td></tr></table>
 </div>
@@ -1708,5 +1779,28 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP</p>
 </div>
 <!-- end footer -->
 </div><!-- end page -->
+
+<!-- google analytics -->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1543832-1";
+urchinTracker();
+</script>
+<!-- end google analytics -->
+
+<!-- START OF ACTIVEMETER CODE -->
+<script type="text/javascript" language="javascript">
+var __pid=30231;
+var __am_invisible=1;
+</script>
+<script type="text/javascript" language="javascript" src="http://www.activemeter.com/counter.js"></script>
+<noscript>
+   <a href="http://www.activemeter.com/" target="_blank">
+      <img  src="http://am1.activemeter.com/webtracker/track.html?method=track&pid=30231&java=0" alt="Free Web Counter" border="0">
+   </a> 
+</noscript>
+<!-- END OF ACTIVEMETER CODE -->
+
 </body>
 </html>

@@ -36,8 +36,8 @@
     window.reload = todoOnReload();
     
     function todoOnReload() {
-        var width = 660;
-        var height = 500;
+        var width = 680;
+        var height = 520;
         var x = 0.5 * (window.screen.width - width);
         var y = 0.5 * (window.screen.height - height);
         window.resizeTo(width + 2, height + 100);
@@ -62,7 +62,7 @@
             indexClickActions("startButton", url_ref);
         } else {
             if(win == null) {
-                win = openNewWindow(0);  // pass '1' if you don't want the toolbar.
+                win = openNewWindow(1);  // pass '1' if you don't want the toolbar.
                 if(win != null) {
                     window.opener = self;
                 } else {

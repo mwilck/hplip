@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '3.1'
+__version__ = '3.2'
 __title__ = 'Printer Discovery Utility'
 __doc__ = "Discover USB, parallel, and network printers."
 
@@ -227,6 +227,6 @@ for bus in buses.split(','):
             log.warn("check your network connections and make sure your internet")
             log.warn("firewall software is disabled.")
         else:
-            log.warn("check to make sure your devices are properly connected.")
+            log.warn("check to make sure your devices are properly connected and powered on.")
 
 

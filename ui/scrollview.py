@@ -21,26 +21,47 @@
 
 # Local
 from base.g import *
+from prnt import cups
 
 # Qt
 from qt import *
 
+class Widget(QWidget):
+    def __init__(self, parent=None, name=None, fl=0):
+        QWidget.__init__(self, parent, name, fl)
+        self.control = None
+        
+    def setControl(self, control):
+        self.control = control
+        
+        
 
 class ScrollView(QScrollView):
     def __init__(self,parent = None,name = None,fl = 0):
         QScrollView.__init__(self,parent,name,fl)
         self.items = {}
         self.enableClipper(True)
-        self.viewport().setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Base))
+        self.viewport().setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Background))
         self.cur_device = None
         self.cur_printer = None
         self.item_margin = 2
         self.y = 0
-
+        self.printers = []
+        self.maximize = None
+        self.orig_height = 0
+        
+        if log.get_level() == log.LOG_LEVEL_DEBUG:
+            self.heading_color = qApp.palette().color(QPalette.Active, QColorGroup.Base)
+            self.frame_shape = QFrame.Box
+        else:
+            self.heading_color = qApp.palette().color(QPalette.Active, QColorGroup.Background)            
+            self.frame_shape = QFrame.NoFrame
+            
     def getWidget(self):
-        widget = QWidget(self.viewport(),"widget")
-        widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Base))
-        widget.setSizePolicy(QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum))
+        widget = Widget(self.viewport(),"widget")
+        #widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Base))
+        widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Background))
+        widget.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Maximum))
         widget.resize(self.visibleWidth(), self.size().height())
         widget.setMinimumWidth(self.visibleWidth())
         widget.resize(self.viewport().size().width(), self.size().height())
@@ -50,34 +71,89 @@ class ScrollView(QScrollView):
         QScrollView.viewportResizeEvent(self, e)
 
         total_height = 0
+        item_margin = self.item_margin
+        width = e.size().width()
+        
         for w in self.items:
-            self.items[w].resize(e.size().width(), self.items[w].size().height())
-            self.items[w].setMinimumWidth(e.size().width())
-            total_height += (self.items[w].size().height() + self.item_margin)
-
+            height  = self.items[w].size().height()
+            self.items[w].resize(width, height)
+            self.items[w].setMinimumWidth(width)
+            total_height += (height + item_margin)
+            
+        if self.maximize is not None:
+            self.maximizeControl(total_height)
+        
         self.resizeContents(e.size().width(), total_height)
-
+            
+    def maximizeControl(self, total_height=0):
+        if self.maximize is not None:
+            
+            if total_height == 0:
+                item_margin = self.item_margin
+                for w in self.items:
+                    total_height += (self.items[w].size().height() + item_margin)
+            
+            width = self.items[self.maximize].size().width()
+            old_height = self.items[self.maximize].size().height()
+            
+            new_height = max((self.visibleHeight()-(total_height-old_height)), 
+                self.orig_height)
+                
+            delta = new_height - old_height
+            
+            if delta:
+                self.items[self.maximize].resize(width, new_height)
+                self.resizeContents(width, self.contentsHeight()+delta)
+                m_y = self.childY(self.items[self.maximize])
+                
+                for w in self.items:
+                    w_y = self.childY(self.items[w])
+                    if w_y > m_y:
+                        self.moveChild(self.items[w], 0, w_y+delta)
+    
+    def isFax(self):
+        self.is_fax = False
+        self.printers = cups.getPrinters()
+        for p in self.printers:
+            if p.name == self.cur_printer:
+                if p.device_uri.startswith("hpfax:"):
+                    self.is_fax = True
+                
+                break
+        
     def onDeviceChange(self, cur_device=None):
+        if cur_device is not None:
+            log.debug("onDeviceChange(%s)" % cur_device.device_uri)
+        else:
+            log.debug("onDeviceChange(None)")
+            
         if cur_device is not None:
             self.cur_device = cur_device
 
         if self.cur_device is not None and self.cur_device.supported:
-            self.cur_printer = self.cur_device.cups_printers[0]
-
-            QApplication.setOverrideCursor(QApplication.waitCursor)
             try:
+                self.cur_printer = self.cur_device.cups_printers[0]
+            except IndexError:
+                log.error("Printer list empty")
+            else:
+                self.isFax()
+                
+                QApplication.setOverrideCursor(QApplication.waitCursor)
                 try:
-                    self.fillControls()
-                except Exception, e:
-                    log.exception()
-            finally:
-                QApplication.restoreOverrideCursor()
+                    try:
+                        self.fillControls()
+                    except Exception, e:
+                        log.exception()
+                finally:
+                    QApplication.restoreOverrideCursor()
         
         else:
+            log.debug("Unsupported device")
             self.y = 0
             self.clear()
 
     def fillControls(self):
+        log.debug("fillControls(%s)" % str(self.name()))
         self.y = 0
         self.clear()
 
@@ -88,6 +164,7 @@ class ScrollView(QScrollView):
         self.cur_printer = str(printer_name)
         
         if self.cur_device is not None and self.cur_device.supported:
+            self.isFax()
             QApplication.setOverrideCursor(QApplication.waitCursor)
             try:
                 try:
@@ -96,26 +173,35 @@ class ScrollView(QScrollView):
                     log.exception()
             finally:
                 QApplication.restoreOverrideCursor()
+                
+            try:
+                self.printerComboBox.setCurrentText(self.cur_printer)
+            except AttributeError:
+                pass
         
         else:
             self.y = 0
             self.clear()
 
-    def addControl(self, widget, key):
-        key = "c:" + key
+    def addWidget(self, widget, key, control=None, maximize=False):
         try:
             self.items[key]
         except KeyError:
+            if maximize:
+                self.maximize = key
+                widget.resize(widget.size().width(), 150)
+                self.orig_height = widget.size().height()
+                
+            widget.setControl(control)
             self.items[key] = widget
             widget.setMinimumWidth(self.visibleWidth())
             widget.adjustSize()
             self.addChild(widget, 0, self.y)
             self.y += (widget.size().height() + self.item_margin)
             self.resizeContents(self.visibleWidth(), self.y)
-
             widget.show()
         else:
-            log.error("ERROR: Duplicate control name: %s" % key)
+            log.debug("ERROR: Duplicate control name: %s" % key)
 
     def clear(self):
         if len(self.items):
@@ -127,27 +213,205 @@ class ScrollView(QScrollView):
 
     def addGroupHeading(self, group, heading, read_only=False):
         widget = self.getWidget()
-        layout = QGridLayout(widget,1,1,5,10,"layout10")
-
-        self.textLabel2 = QLabel(widget,"textLabel2")
-        #layout.addWidget(self.textLabel2,0,0)
-        self.textLabel2.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred,0,0,
-            self.textLabel2.sizePolicy().hasHeightForWidth()))
+        widget.setMinimumHeight(30)
+        widget.setMaximumHeight(30)
         
-        layout.addMultiCellWidget(self.textLabel2,0,0,0,3)
-
-        line = QFrame(widget,"line")
-        #line.setFrameShadow(QFrame.Sunken)
-        line.setFrameShape(QFrame.HLine)
-        #line.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Foreground))
-        layout.addMultiCellWidget(line,1,1,0,3)
+        if heading:
+            widget.setPaletteBackgroundColor(self.heading_color)
+        
+        layout = QGridLayout(widget, 1, 1, 5, 10, "layout")
+        textLabel2 = QLabel(widget, "textLabel2")
+        
+        if heading:
+            textLabel2.setFrameShape(QFrame.TabWidgetPanel)
+        
+        textLabel2.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, 
+            QSizePolicy.Minimum, 0, 0,
+            textLabel2.sizePolicy().hasHeightForWidth()))
+        
+        textLabel2.setAlignment( QLabel.AlignLeft | QLabel.AlignVCenter)
+        layout.addWidget(textLabel2, 0, 0)
 
         if read_only:
-            self.textLabel2.setText(self.__tr("<b>%1 (read only)</b>").arg(heading))
+            textLabel2.setText(self.__tr("<b>%1 (read only)</b>").arg(heading))
         else:
-            self.textLabel2.setText(QString("<b>%1</b>").arg(heading))
+            textLabel2.setText(QString("<b>%1</b>").arg(heading))
 
-        self.addControl(widget, "g:"+group)
+        self.addWidget(widget, "g:"+str(group))
+        
+        
+    def addActionButton(self, name, action_text, action_func, nav_text ='', nav_func=None):
+        widget = self.getWidget()
+        
+        widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Highlight))
+        self.actionPushButton = None
+        self.navPushButton = None
+        
+        layout36 = QHBoxLayout(widget,5,10,"layout36")
+
+        if nav_func is not None:
+            self.navPushButton = QPushButton(widget,"navPushButton")
+            navPushButton_font = QFont(self.navPushButton.font())
+            navPushButton_font.setBold(1)
+            self.navPushButton.setFont(navPushButton_font)
+            self.navPushButton.setText(nav_text)
+            layout36.addWidget(self.navPushButton)
+            
+            self.connect(self.navPushButton, SIGNAL("clicked()"), nav_func)
+            
+        spacer35 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout36.addItem(spacer35)
+
+        if action_func is not None:
+            self.actionPushButton = QPushButton(widget,"actionPushButton")
+            actionPushButton_font = QFont(self.actionPushButton.font())
+            actionPushButton_font.setBold(1)
+            self.actionPushButton.setFont(actionPushButton_font)
+            layout36.addWidget(self.actionPushButton)
+            
+            self.actionPushButton.setText(action_text)
+        
+            self.connect(self.actionPushButton, SIGNAL("clicked()"), action_func)
+        
+        self.addWidget(widget, name)
+        
+        if self.actionPushButton is not None:
+            return self.actionPushButton
+        elif self.navPushButton is not None:
+            return self.navPushButton
+        else:
+            return None
+        
+    def printerComboBox_activated(self, p):
+        self.cur_printer = str(p)
+        
+    def addPrinterFaxList(self, printers=True, faxes=False):
+        widget = self.getWidget()
+        
+        layout = QGridLayout(widget,1,1,5,10,"layout")
+
+        self.printernameTextLabel = QLabel(widget,"printernameTextLabel")
+        layout.addWidget(self.printernameTextLabel,0,0)
+
+        self.printerComboBox = QComboBox(0,widget,"printerComboBox")
+        layout.addWidget(self.printerComboBox,0,1)
+        
+        if printers and faxes:
+            self.addGroupHeading("printer_list_heading", self.__tr("Printer/Fax"))
+            self.printernameTextLabel.setText(self.__tr("Printer/Fax Name:"))
+        elif printers:
+            self.addGroupHeading("printer_list_heading", self.__tr("Printer"))
+            self.printernameTextLabel.setText(self.__tr("Printer Name:"))
+        else:
+            self.addGroupHeading("printer_list_heading", self.__tr("Fax"))
+            self.printernameTextLabel.setText(self.__tr("Fax Name:"))
+            
+        for p in self.printers:
+            if p.device_uri == self.cur_device.device_uri or \
+                p.device_uri == self.cur_device.device_uri.replace("hp:", "hpfax:"):
+                    if (p.device_uri.startswith("hpfax:") and faxes) or \
+                       (p.device_uri.startswith("hp:") and printers):
+                        
+                        self.printerComboBox.insertItem(p.name)
+                        
+        self.connect(self.printerComboBox, SIGNAL("activated(const QString&)"), self.printerComboBox_activated)
+        
+        self.addWidget(widget, "printer_list")
+        
+        
+    def addLoadPaper(self):
+        self.addGroupHeading("load_paper", self.__tr("Load Paper"))
+        
+        widget = self.getWidget()
+        layout1 = QGridLayout(widget, 1, 2, 5, 10,"layout1")
+        
+        layout1.setColStretch(0, 1)
+        layout1.setColStretch(1, 10)
+        
+        icon = QLabel(widget, "icon")
+        icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
+            icon.sizePolicy().hasHeightForWidth()))
+
+        icon.setScaledContents(1)
+        layout1.addWidget(icon, 0, 0)
+
+        textLabel = QLabel(widget, "textLabel")
+        textLabel.setAlignment(QLabel.WordBreak)
+        textLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
+            textLabel.sizePolicy().hasHeightForWidth()))        
+        textLabel.setFrameShape(self.frame_shape)
+        layout1.addWidget(textLabel, 0, 1)
+
+        spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        layout1.addItem(spacer1, 0, 2)
+
+        textLabel.setText(self.__tr("A page will be printed. Please load <b>plain paper</b> into the printer."))
+        icon.setPixmap(QPixmap(os.path.join(prop.image_dir, "load_paper.png")))
+
+        self.addWidget(widget, "load_paper")
+        
+        
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)
+        
+        
+        
+class PixmapLabelButton(QPushButton):
+    def __init__(self, parent=None, pixmap=None, disabled_pixmap=None, name=''):
+        QPushButton.__init__(self, parent, name)
+        
+        if type(pixmap) == type(''):
+            self.pixmap = QPixmap(os.path.join(prop.image_dir, pixmap))
+        else:
+            self.pixmap = pixmap
+        
+        if type(disabled_pixmap) == type(''):
+            self.disabled_pixmap = QPixmap(os.path.join(prop.image_dir, disabled_pixmap))
+        else:
+            self.disabled_pixmap = disabled_pixmap
+        
+        self.pixmap_width, self.pixmap_height = self.pixmap.width(), self.pixmap.height()
+        self.width_set = None
+
+        
+    def drawButtonLabel(self, painter):
+        button_width, button_height = self.width(), self.height()
+        
+        adj = 0
+        if self.isDown():
+            adj = 1
+        
+        
+        if self.isEnabled():
+            painter.setPen(Qt.black)
+        else:
+            painter.setPen(Qt.gray)
+        
+        #f = QFont()
+        #painter.setFont(f)
+
+        text_rect = painter.boundingRect(0, 0, 1000, 1000, Qt.AlignLeft, self.text())
+        text_width, text_height = text_rect.right() - text_rect.left(), text_rect.bottom() - text_rect.top()
+        
+        button_width_center = button_width/2
+        button_height_center = button_height/2
+        combined_width_center = (self.pixmap_width + text_width + 10)/2
+        
+        
+        if self.isEnabled():
+            painter.drawPixmap(button_width_center - combined_width_center + adj,
+                button_height_center - self.pixmap_height/2 + adj, self.pixmap)
+        else:
+            painter.drawPixmap(button_width_center - combined_width_center + adj,
+                button_height_center - self.pixmap_height/2 + adj, self.disabled_pixmap)
+        
+        if self.width_set is None:
+            self.setMinimumWidth(self.pixmap_width + text_width + 20)
+            self.width_set = 0
+        
+        painter.drawText(button_width_center - combined_width_center + 
+            self.pixmap_width + 5 + adj, 
+            button_height_center - text_height/2 + adj, 1000, 1000, 
+            Qt.AlignLeft, self.text())
+                                 

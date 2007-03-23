@@ -29,6 +29,7 @@
 #include <stdarg.h>
 #include <syslog.h>
 #include <string.h>
+#include <ctype.h>
 #include "common.h"
 
 #define DEBUG_NOT_STATIC
@@ -47,6 +48,53 @@ int bug(const char *fmt, ...)
    DBG(2, buf);
    va_end(args);
    return n;
+}
+
+void sysdump(const void *data, int size)
+{
+    /* Dump size bytes of *data. Output looks like:
+     * [0000] 75 6E 6B 6E 6F 77 6E 20 30 FF 00 00 00 00 39 00 unknown 0.....9.
+     */
+
+    unsigned char *p = (unsigned char *)data;
+    unsigned char c;
+    int n;
+    char bytestr[4] = {0};
+    char addrstr[10] = {0};
+    char hexstr[16*3 + 5] = {0};
+    char charstr[16*1 + 5] = {0};
+    for(n=1;n<=size;n++) {
+        if (n%16 == 1) {
+            /* store address for this line */
+            snprintf(addrstr, sizeof(addrstr), "%.4x", (p-(unsigned char *)data) && 0xffff);
+        }
+            
+        c = *p;
+        if (isprint(c) == 0) {
+            c = '.';
+        }
+
+        /* store hex str (for left side) */
+        snprintf(bytestr, sizeof(bytestr), "%02X ", *p);
+        strncat(hexstr, bytestr, sizeof(hexstr)-strlen(hexstr)-1);
+
+        /* store char str (for right side) */
+        snprintf(bytestr, sizeof(bytestr), "%c", c);
+        strncat(charstr, bytestr, sizeof(charstr)-strlen(charstr)-1);
+
+        if(n%16 == 0) { 
+            /* line completed */
+            DBG(6, "[%4.4s]   %-50.50s  %s\n", addrstr, hexstr, charstr);
+            hexstr[0] = 0;
+            charstr[0] = 0;
+        }
+        p++; /* next byte */
+    }
+
+    if (strlen(hexstr) > 0) {
+        /* print rest of buffer if not empty */
+        DBG(6, "[%4.4s]   %-50.50s  %s\n", addrstr, hexstr, charstr);
+    }
 }
 
 char *psnprintf(char *buf, int bufSize, const char *fmt, ...)

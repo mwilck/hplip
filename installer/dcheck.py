@@ -28,6 +28,12 @@ from base import utils
 ver_pat = re.compile("""(\d+.\d+)""", re.IGNORECASE)
 
 ld_output = ''
+ps_output = ''
+mod_output = ''
+
+# 
+# Generic fucntions
+#
 
 def update_ld_output():
     # For library checks
@@ -133,11 +139,15 @@ def check_file_contains(f, s):
         cleanup_spinner()
 
 def check_ps(process_list):
+    global ps_output
+    
     log.debug("Searching any process(es) '%s' in 'ps' output..." % process_list)
-    status, output = utils.run('ps ax', log_output=False)
+    
+    if not ps_output:
+        status, ps_output = utils.run('ps ax', log_output=False)
 
     try:
-        for a in output.splitlines():
+        for a in ps_output.splitlines():
             update_spinner()
 
             for p in process_list:
@@ -150,6 +160,19 @@ def check_ps(process_list):
 
     finally:
         cleanup_spinner()
+        
+def check_lsmod(module):
+    global mod_output
+    
+    if not mod_output:
+        lsmod = utils.which('lsmod')
+        status, mod_output = utils.run(os.path.join(lsmod, 'lsmod'), log_output=False)
+        
+    return mod_output.find(module) >= 0
+
+#
+# Specific functions    
+#
 
 def check_python2x():
     py_ver = sys.version_info
@@ -214,9 +237,7 @@ def check_scanimage():
     return check_tool('scanimage --version', 1.0)
 
 def check_ppdev():
-    lsmod = utils.which('lsmod')
-    status, lsmod_output = utils.run(os.path.join(lsmod, 'lsmod'), log_output=False)
-    return lsmod_output.find('ppdev') >= 0
+    return check_lsmod('ppdev')
 
 def check_gs():
     return check_tool('gs -v', 7.05)
@@ -269,7 +290,7 @@ def check_python_devel():
     return check_file('Python.h')
 
 def check_cups_devel():
-    return check_file('cups.h')
+    return check_file('cups.h') and bool(utils.which('lpr'))
 
 def check_cups():
     status, output = utils.run('lpstat -r')

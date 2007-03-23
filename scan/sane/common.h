@@ -149,6 +149,7 @@
   } while(0)
 
 int bug(const char *fmt, ...);
+void sysdump(const void *data, int size);
 char *psnprintf(char *buf, int bufSize, const char *fmt, ...);
 
 unsigned long DivideAndShift( int line,

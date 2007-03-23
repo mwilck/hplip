@@ -1309,10 +1309,10 @@ def colorCalType4(dev, loadpaper_ui, colorcal_ui, wait_ui):
 
 
 def colorCalType4Phase1(dev):
-    dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
-                         pml.PRINT_INTERNAL_PAGE_COLOR_CAL, style=0, 
-                         direct=False)
-    dev.closePrint()
+    dev.setPML(pml.OID_PRINT_INTERNAL_PAGE,
+              pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
+              
+    dev.closePML()
 
 
 def colorCalType4AdjValue(value):
@@ -1343,32 +1343,32 @@ def colorCalType4Phase2(dev, values):
 
     log.debug("C=%d, M=%d, Y=%d, c=%d, m=%d, k=%d\n" % (Cadj, Madj, Yadj, cadj, madj, kadj))
 
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_1,
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_1,
                             kadj)
-
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_2,
+                            
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_2,
                             Cadj)
-
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_3,
+                            
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_3,
                             Madj)
-
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_4,
+    
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_4,
                             Yadj)
-
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_5,
+                            
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_5,
                             cadj)
-
-    dev.writeEmbeddedPML(pml.OID_COLOR_CALIBRATION_ARRAY_6,
+    
+    dev.setPML(pml.OID_COLOR_CALIBRATION_ARRAY_6,
                             madj)
-
-    dev.closePrint()
+                            
+    dev.closePML()
 
 
 def colorCalType4Phase3(dev):
-    dev.writeEmbeddedPML(pml.OID_PRINT_INTERNAL_PAGE,
+    dev.setPML(pml.OID_PRINT_INTERNAL_PAGE,
                          pml.PRINT_INTERNAL_PAGE_COLOR_PALETTE_CMYK_PAGE)
-    dev.closePrint()
-
+                         
+    dev.closePML()
 
 
 def colorCalType5(dev, loadpaper_ui):
@@ -1378,7 +1378,7 @@ def colorCalType5(dev, loadpaper_ui):
 
         
 def colorCalType6(dev, loadpaper_ui):
-    if loadpaper_ui:
+    if loadpaper_ui():
         dev.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_COLOR_CAL)
         dev.closePML()
 

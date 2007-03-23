@@ -21,7 +21,7 @@
 #
 
 
-__version__ = '4.4'
+__version__ = '4.5'
 __title__ = 'Printer/Fax Setup Utility'
 __doc__ = "Installs HPLIP printers and faxes in the CUPS spooler. Tries to automatically determine the correct PPD file to use. Allows the printing of a testpage. Performs basic fax parameter setup."
 
@@ -212,7 +212,7 @@ for o, a in opts:
 
         mode = INTERACTIVE_MODE
         mode_specified = True
-        
+
     elif o == '--username':
         username = a
 
@@ -330,7 +330,7 @@ else: # INTERACTIVE_MODE
     if not mq.get('fax-type', 0) and setup_fax:
         log.warning("Cannot setup fax - device does not have fax feature.")
         setup_fax = False
-   
+
     ppds = cups.getSystemPPDs()
 
     default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
@@ -475,7 +475,7 @@ else: # INTERACTIVE_MODE
             log.info(formatter.compose(('-'*4, '-'*(max_ppd_filename_size), '-'*40 )))
 
             mins_list = mins.keys()
-            
+
             for y in range(x):
                 log.info(formatter.compose((str(y), mins_list[y], mins[mins_list[y]])))
 
@@ -512,7 +512,7 @@ else: # INTERACTIVE_MODE
                 break
 
             if not enter_ppd:
-                print_ppd = mins[mins_list[i]]
+                print_ppd = mins_list[i]
 
         if enter_ppd:
             log.error("Unable to find an appropriate PPD file.")
@@ -620,7 +620,12 @@ else: # INTERACTIVE_MODE
         status, output = utils.run(restart_cups())
         log.debug("Restart CUPS returned: exit=%d output=%s" % (status, output))
 
-        cups.addPrinter(printer_name, print_uri, location, print_ppd, info)
+        if not os.path.exists(print_ppd): # assume foomatic: or some such
+            status, status_str = cups.addPrinter(printer_name, print_uri,
+                location, '', print_ppd, info)
+        else:
+            status, status_str = cups.addPrinter(printer_name, print_uri,
+                location, print_ppd, '', info)
 
         installed_print_devices = device.getSupportedCUPSDevices(['hp']) 
 
@@ -633,12 +638,12 @@ else: # INTERACTIVE_MODE
             sys.exit(1)
         else:
             service.sendEvent(hpssd_sock, EVENT_CUPS_QUEUES_CHANGED, device_uri=print_uri)
-            
+
         if username:
             import pwd
             user_path = pwd.getpwnam(username)[5]
             user_config_file = os.path.join(user_path, '.hplip.conf')
-            
+
             if os.path.exists(user_config_file):
                 cfg = Config(user_config_file)
                 cfg.last_used.device_uri = print_uri
@@ -778,7 +783,7 @@ else: # INTERACTIVE_MODE
         log.info("Location: %s" % location)
         log.info("Information: %s" % info)
 
-        cups.addPrinter(fax_name, fax_uri, location, fax_ppd, info)
+        cups.addPrinter(fax_name, fax_uri, location, fax_ppd, "", info)
 
         installed_fax_devices = device.getSupportedCUPSDevices(['hpfax']) 
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
@@ -20,16 +21,12 @@
 # Author: Don Welch, Aaron Albright
 #
 
-__version__ = '1.0'
-__date__ = '2006-09-14'
-
 # StdLib
 import os
 
 # Local
 from base.g import *
 from base import utils
-
 
 # Distro IDs
 # These must match the indexes used in the 'index' field 
@@ -69,12 +66,14 @@ DISTRO_YELLOWDOG = 31 # PPC
 
 
 def getDistro():
+    log.debug("Determining distro...")
     distro, distro_version = DISTRO_UNKNOWN, '0.0'
 
     found = False
 
     lsb_release = utils.which("lsb_release")
     if lsb_release:
+        log.debug("Using 'lsb_release -i/-r'")
         cmd = os.path.join(lsb_release, "lsb_release")
 
         status, name = utils.run(cmd + " -i")
@@ -83,10 +82,7 @@ def getDistro():
         status, distro_version = utils.run(cmd + " -r")
         distro_version = distro_version.split(':')[1].strip()
 
-        status, code = utils.run(cmd + " -c")
-        code = code.split(':')[1].strip()
-
-        #log.debug("LSB: %s %s (%s)" % (name, distro_version, code))
+        log.debug("LSB: %s %s" % (name, distro_version))
 
         for d in distros:
             if name.find(d) > -1:
@@ -134,7 +130,10 @@ def getDistro():
                         break
                 else:
                     break
-
+            
+            log.debug("/etc/issue: %s %s" % (name, distro_version))
+            
+    log.debug("distro=%d, distro_version=%s" % (distro, distro_version))
     return distro, distro_version
 
 
@@ -152,6 +151,33 @@ def __update_ver_cmd(distro, ver, dependency, cmd):
     """ Update an existing dependency cmd. """
     distros[distro]['versions'][ver]['dependency_cmds'][dependency] = cmd
 
+
+    
+##def enableRepositoriesUbuntu(distro, distro_version, password_func):
+##    sources_list = '/etc/apt/sources.list'
+##    
+##    if os.path.exists(sources_list):
+##        if distro == DISTRO_UBUNTU:
+##            try:
+##                code_name = distros[distros_index[distro]]['versions'][distro_version]['code_name'].lower()
+##            except KeyError:
+##                return 0
+##        
+##            for l in file(sources_list, 'r'):
+##                print l
+##            
+##            status, output = utils.run(core.su_sudo() % "true", True, password_func)
+##            
+##            line = "deb http://us.archive.ubuntu.com/ubuntu/ %s main universe multiverse" % code_name
+##            tee = "tee -a %s" % sources_list
+##            cmd = "echo %s | " % line + core.su_sudo() % tee
+##            log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+##            #status, output = utils.run(cmd)
+##            status = os.system(cmd)
+##            print status
+##            #print status, output
+##        
+##    return 0
 
 # distros:
 #
@@ -259,7 +285,7 @@ distros = \
         'index': 2,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],            
         'package_mgr_cmd' : 'su -c "apt-get install --yes $packages_to_install"',
-        'pre_depend_cmd': ['su -c "dpkg --configure -a"', 'su -c "apt-get install -f"', 'su -c "apt-get update"'],
+        'pre_depend_cmd': ['su -c "dpkg --configure -a"', 'su -c "apt-get install -f"', 'su -c "apt-get update"', 'gnome-terminal -x su -c "apt-get install --yes cupsys-bsd"'],
         'post_depend_cmd': [],
         'su_sudo' : 'su',
         'hpoj_remove_cmd': 'su -c "apt-get remove --yes hpoj"',
@@ -350,8 +376,8 @@ distros = \
                 'release_date': '5/10/2005', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Before proceeding, open another terminal and run: installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/\n and then run: installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/', 
-                'pre_depend_cmd': [], 
+                'notes': [],
+                'pre_depend_cmd': ['xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/"', 'xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/"',],  
                 'post_depend_cmd': [],
             },
             '10.1': {
@@ -359,8 +385,8 @@ distros = \
                 'release_date': '11/5/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': 'Add http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/  and http://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra to your YaST installation sources.', 
-                'pre_depend_cmd': [], 
+                'notes': [], 
+                'pre_depend_cmd': ['xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/"', 'xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra"',],  
                 'post_depend_cmd': [],
             },
             '10.2': {
@@ -369,7 +395,7 @@ distros = \
                 'supported': True, 
                 'dependency_cmds': {}, 
                 'notes': '', 
-                'pre_depend_cmd': ['xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/oss/"', 'xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/non-oss/"','xterm -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/debug/"',], 
+                'pre_depend_cmd': ['xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/oss/"', 'xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/non-oss/"','xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://download.opensuse.org/distribution/10.2/repo/debug/"',], 
                 'post_depend_cmd': [],
             },
         },
@@ -762,7 +788,7 @@ distros = \
         'post_depend_cmd': [],
         'hpoj_remove_cmd': 'sudo apt-get remove --yes hpoj',
         'hplip_remove_cmd': 'sudo apt-get remove --yes hplip hpijs',
-        'su_sudo' : 'sudo',
+        'su_sudo' : 'su',
         'versions': {
             '6.0': {
                 'code_name': 'mepis', 
@@ -1119,7 +1145,7 @@ __update_ver_cmd('ubuntu', '5.1', 'pyqt', ('python2.4-qt3', ''))
 __set_ver_cmds('debian', '2.2',
 { 
 'cups' : ('cupsys cupsys-client', ''),
-'cups-devel' : ('libcupsys2-dev', ''),
+'cups-devel' : ('libcupsys2-dev cupsys-bsd', ''),
 'gcc' : ('gcc g++', ''),
 'make' : ('make', ''),
 'python-devel' : ('python-dev', ''),

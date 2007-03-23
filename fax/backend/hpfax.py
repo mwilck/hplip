@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.5'
+__version__ = '2.6'
 __title__ = 'CUPS Fax Backend (hpfax:)'
 __doc__ = "CUPS backend for PC send fax. Generally this backend is run by CUPS, not directly by a user. To send a fax as a user, run hp-sendfax."
 
@@ -31,6 +31,13 @@ import os.path, os
 import socket
 import syslog
 import time
+
+CUPS_BACKEND_OK = 0 # Job completed successfully
+CUPS_BACKEND_FAILED = 1 # Job failed, use error-policy
+CUPS_BACKEND_AUTH_REQUIRED = 2 # Job failed, authentication required
+CUPS_BACKEND_HOLD = 3 # Job failed, hold job
+CUPS_BACKEND_STOP = 4 #  Job failed, stop queue
+CUPS_BACKEND_CANCEL = 5 # Job failed, cancel job
 
 pid = os.getpid()
 config_file = '/etc/hp/hplip.conf'
@@ -79,7 +86,7 @@ def usage(typ='text'):
         utils.log_title(__title__, __version__)
 
     utils.format_text(USAGE, typ, title=__title__, crumb='hpfax:')
-    sys.exit(0)        
+    sys.exit(CUPS_BACKEND_OK)        
 
 
 try:
@@ -108,19 +115,13 @@ for o, a in opts:
 
 
 if len( args ) == 0:
+    cups11 = utils.to_bool(sys_cfg.configure.cups11, False)
+    
     try:
         probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
     except Error:
         log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
-        sys.exit(1)
-
-    if not probed_devices:
-        cups_ver_major, cups_ver_minor, cups_ver_patch = cups.getVersionTuple()
-
-        if cups_ver_major == 1 and cups_ver_minor < 2:
-            print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
-
-        sys.exit(0)
+        sys.exit(CUPS_BACKEND_FAILED)
 
     good_devices = 0
     for uri in probed_devices:
@@ -130,15 +131,18 @@ if len( args ) == 0:
         except Error:
             continue
 
-        print 'direct %s "HP Fax" "%s HP Fax" "MFG:HP;MDL:Fax;DES:HP Fax;"' % \
+        print 'direct %s "HP Fax" "%s HP Fax HPLIP" "MFG:HP;MDL:Fax;DES:HP Fax;"' % \
             (uri.replace("hp:", "hpfax:"), model.replace("_", " "))
             
         good_devices += 1
 
-    if not good_devices:
-        print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""' 
+    if good_devices == 0:
+        if cups11:
+            print 'direct hpfax:/no_device_found "HP Fax" "no_device_found" ""'
+        else:
+            print 'direct hpfax "Unknown" "HP Fax (HPLIP)" ""' 
 
-    sys.exit(0)
+    sys.exit(CUPS_BACKEND_OK)
 
 else:
     # CUPS provided environment
@@ -147,7 +151,7 @@ else:
         printer_name = os.environ['PRINTER']
     except KeyError:
         log.stderr("hpfax[%d]: error: Improper environment: Must be run by CUPS." % pid)
-        sys.exit(1)
+        sys.exit(CUPS_BACKEND_FAILED)
 
     log.debug(args)
 
@@ -155,7 +159,7 @@ else:
         job_id, username, title, copies, options = args[0:5]
     except IndexError:
         log.stderr("hpfax[%d]: error: Invalid command line: Invalid arguments." % pid)
-        sys.exit(1)
+        sys.exit(CUPS_BACKEND_FAILED)
 
     try:
         input_fd = file(args[5], 'r')
@@ -167,7 +171,7 @@ else:
         sock.connect((prop.hpssd_host, prop.hpssd_port))
     except socket.error:
         log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
-        sys.exit(1)
+        sys.exit(CUPS_BACKEND_FAILED)
 
     fax_data = os.read(input_fd, prop.max_message_len)
 
@@ -178,7 +182,7 @@ else:
                   job_id, username, device_uri)
 
         sock.close()
-        sys.exit(1)
+        sys.exit(CUPS_BACKEND_FAILED)
 
 
     sendEvent(sock, EVENT_START_FAX_PRINT_JOB, 'event',
@@ -198,7 +202,7 @@ else:
 
         except Error:
             log.stderr("hpfax[%d]: error: Unable to send event to HPLIP I/O (hpssd)." % pid)
-            sys.exit(1) 
+            sys.exit(CUPS_BACKEND_FAILED) 
 
         if result_code == ERROR_GUI_NOT_AVAILABLE:
             # New behavior in 1.6.6a (10sec retry)
@@ -244,6 +248,6 @@ else:
 
     os.close(input_fd)
     sock.close()
-    sys.exit(0)
+    sys.exit(CUPS_BACKEND_OK)
 
 

@@ -173,6 +173,7 @@ def parseSStatus(s, z=''):
 
         if pen_data_size == 4:
             pen['type'] = REVISION_2_TYPE_MAP.get(int((info & 0xf000L) >> 12L), 0)
+            
             if index < (num_pens / 2):
                 pen['kind'] = AGENT_KIND_HEAD
             else:
@@ -513,7 +514,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                     else: # SUCCESS
                         if colorant_value is not None:
                             log.debug("colorant value: %s" % colorant_value)
-                            agent_type = COLORANT_INDEX_TO_AGENT_TYPE_MAP.get( colorant_value, None )
+                            agent_type = COLORANT_INDEX_TO_AGENT_TYPE_MAP.get( colorant_value, AGENT_TYPE_BLACK )
 
                         if agent_type == AGENT_TYPE_NONE:
                             if agent_kind == AGENT_KIND_TONER_CARTRIDGE:
@@ -551,7 +552,7 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                 agent_health = AGENT_HEALTH_OK
 
         agent_level = int(agent_level/agent_max * 100)
-
+        
         log.debug("agent%d: kind=%d, type=%d, health=%d, level=%d, level-trigger=%d" % \
             (x, agent_kind, agent_type, agent_health, agent_level, agent_trigger))
 
@@ -980,7 +981,6 @@ def StatusType6(dev): #  LaserJet Status (XML)
             log.debug_block("info_device_status", info_device_status)
             log.debug(device_status)
         except expat.ExpatError:
-            print repr(e)
             log.error("Device Status XML parse error")
             device_status = {}
 

@@ -309,7 +309,7 @@ bugout:
 int DevDiscovery()
 {
    char message[HPLIP_LINE_SIZE*64];
-   int len=0, cnt=0;  
+   int len=0, stat=1;  
    HplipMsgAttributes ma;
  
    len = sprintf(message, "msg=ProbeDevices\n");
@@ -317,30 +317,35 @@ int DevDiscovery()
    if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
    {  
       bug("unable to send ProbeDevices: %m\n");  
-      goto mordor;  
+      goto bugout;  
    }  
 
    if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
    {  
       bug("unable to receive ProbeDevicesResult: %m\n");  
-      goto mordor;
+      goto bugout;
    }  
 
    message[len] = 0;
 
    hplip_ParseMsg(message, len, &ma);
 
-   if (ma.result == R_AOK && ma.length)
-   {
-      cnt = ma.ndevice;
-      fprintf(stdout, "%s", ma.data);
-   }
+   if (ma.result != R_AOK)
+      goto bugout;
 
-   if (cnt == 0)
+   if (ma.ndevice == 0)
+#ifdef HAVE_CUPS11
       fprintf(stdout, "direct hp:/no_device_found \"Unknown\" \"hp no_device_found\"\n");
+#else
+      fprintf(stdout, "direct hp \"Unknown\" \"HP Printer (HPLIP)\"\n");
+#endif
+   else
+      fprintf(stdout, "%s", ma.data);
 
-mordor:
-   return cnt;
+   stat = 0;
+
+bugout:
+   return stat;
 }
 
 int PState()
@@ -406,7 +411,7 @@ mordor:
 int main(int argc, char *argv[])
 {
    int fd;
-   int copies;
+   int copies, r;
    int len, vstatus, cnt;
    char buf[HPLIP_BUFFER_SIZE+HPLIP_HEADER_SIZE];
    HplipMsgAttributes ma;
@@ -433,9 +438,9 @@ int main(int argc, char *argv[])
    if (argc == 1)
    {
       hplip_Init(&hplip_session);
-      DevDiscovery();
+      r = DevDiscovery();
       hplip_Exit(hplip_session);
-      exit (0);
+      exit (r);
    }
 
    if (argc < 6 || argc > 7)

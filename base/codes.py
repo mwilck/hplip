@@ -469,16 +469,16 @@ AGENT_TYPE_MAGENTA_LOW = 8
 AGENT_TYPE_YELLOW_LOW = 9
 AGENT_TYPE_GGK = 10 # 2 shades of grey and black
 AGENT_TYPE_BLUE = 11
-AGENT_TYPE_KCMY_CM = 12 # ???
+AGENT_TYPE_KCMY_CM = 12 # K/C/M/Y/LM/LC (02 pen set head)
 AGENT_TYPE_LC_LM = 13 # light cyan and light magenta
-AGENT_TYPE_Y_M = 14 # yellow and magenta
-AGENT_TYPE_C_K = 15 # cyan and black
+#AGENT_TYPE_Y_M = 14 # yellow and magenta (B9180)
+#AGENT_TYPE_C_K = 15 # cyan and black (B9180)
+AGENT_TYPE_K_Y = 14 # black and yellow (for LJ Pro)
+AGENT_TYPE_C_M = 15 # cyan and magenta (for LJ Pro)
 AGENT_TYPE_LG_PK = 16 # light grey and photo black
 AGENT_TYPE_LG = 17 # light grey
 AGENT_TYPE_G = 18 # medium grey
 AGENT_TYPE_PG = 19 # photo grey
-AGENT_TYPE_C_M = 20 # cyan and magenta (for LJ Pro)
-AGENT_TYPE_K_Y = 21 # black and yellow (for LJ Pro)
 AGENT_TYPE_WHITE = 0x20 # For ISO 10180 compatibility
 AGENT_TYPE_RED = 0x21 # For ISO 10180 compatibility
 AGENT_TYPE_UNSPECIFIED = 0x3e # (62) Used for kind = 5, 6, 7, 8, or 9
@@ -544,7 +544,7 @@ COLOR_CAL_TYPE_MALIBU_CRICK = 2
 COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO = 3
 COLOR_CAL_TYPE_CONNERY = 4
 COLOR_CAL_TYPE_COUSTEAU = 5
-COLOR_CAL_CARRIER = 6
+COLOR_CAL_TYPE_CARRIER = 6
 
 # status-types
 STATUS_TYPE_NONE = 0

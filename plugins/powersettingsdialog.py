@@ -69,7 +69,8 @@ class PowerSettingsDialog(PowerSettingsDialog_base):
 
 
 def settingsUI(d, parent=None):
-
+    log.debug("settingsUI(%s)" % __file__)
+    
     value = powersettings.getPowerSettings(d)
     log.debug("Battery power settings: %s" % value)
 

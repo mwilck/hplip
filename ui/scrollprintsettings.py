@@ -49,17 +49,6 @@ class OptionComboBox(QComboBox):
         self.other = other
 
 
-class OptionCheckBox(QCheckBox):
-    def __init__(self,  parent, name, group, option, default):
-        QCheckBox.__init__(self, parent, name)
-        self.group = group
-        self.option = option
-        self.default = default
-
-    def setDefaultPushbutton(self, pushbutton):
-        self.pushbutton = pushbutton
-
-
 class OptionSpinBox(QSpinBox):
     def __init__(self,  parent, name, group, option, default):
         QSpinBox.__init__(self, parent, name)
@@ -71,6 +60,17 @@ class OptionSpinBox(QSpinBox):
         self.pushbutton = pushbutton
 
 
+class OptionButtonGroup(QButtonGroup):
+    def __init__(self,  parent, name, group, option, default):
+        QButtonGroup.__init__(self, parent, name)
+        self.group = group
+        self.option = option
+        self.default = default
+
+    def setDefaultPushbutton(self, pushbutton):
+        self.pushbutton = pushbutton
+            
+        
 class DefaultPushButton(QPushButton):
     def __init__(self,  parent, name, group, option, choices, default, control, typ):
         QPushButton.__init__(self, parent, name)
@@ -80,6 +80,7 @@ class DefaultPushButton(QPushButton):
         self.control = control
         self.typ = typ
         self.choices = choices
+        
 
 
 class ScrollPrintSettingsView(ScrollView):
@@ -95,64 +96,67 @@ class ScrollPrintSettingsView(ScrollView):
 
         try:
             try:
-                self.addGroupHeading("basic", self.__tr("Basic"))
-                log.debug("Group: Basic")
-
-                # Basic
-                    # PageSize (in PPD section)
-                    # orientation-requested
-                    # sides
-                    # outputorder
-                    # Collate
-
                 current_options = dict(cups.getOptions())
-                current = current_options.get('orientation-requested', '3')
-
-                self.addItem("basic", "orientation-requested", self.__tr("Page Orientation"), 
-                    cups.PPD_UI_PICKONE, current, 
-                    [('3', self.__tr('Portrait')), 
-                     ('4', self.__tr('Landscape')), 
-                     ('5', self.__tr('Reverse landscape')), 
-                     ('6', self.__tr('Reverse portrait'))], '3')
-
-                log.debug("Option: orientation-requested")
-                log.debug("Current value: %s" % current)
-
-                duplexer = self.cur_device.dq.get('duplexer', 0)
-                log.debug("Duplexer = %d" % duplexer)
-
-                if duplexer:
-                    current = current_options.get('sides', 'one-sided')
-                    self.addItem("basic", "sides", 
-                        self.__tr("Duplex (Print on both sides of the page)"), 
+                
+                if not self.is_fax:
+                    self.addGroupHeading("basic", self.__tr("Basic"))
+                    log.debug("Group: Basic")
+    
+                    # Basic
+                        # PageSize (in PPD section)
+                        # orientation-requested
+                        # sides
+                        # outputorder
+                        # Collate
+    
+                    
+                    current = current_options.get('orientation-requested', '3')
+    
+                    self.addItem("basic", "orientation-requested", self.__tr("Page Orientation"), 
                         cups.PPD_UI_PICKONE, current, 
-                        [('one-sided',self.__tr('Single sided')), 
-                         ('two-sided-long-edge', self.__tr('Two sided (long edge)')), 
-                         ('two-sided-short-edge', self.__tr('Two sided (short edge)'))], 'one-sided')
-
-                    log.debug("Option: sides")
+                        [('3', self.__tr('Portrait')), 
+                         ('4', self.__tr('Landscape')), 
+                         ('5', self.__tr('Reverse landscape')), 
+                         ('6', self.__tr('Reverse portrait'))], '3')
+    
+                    log.debug("Option: orientation-requested")
                     log.debug("Current value: %s" % current)
-
-                current = current_options.get('outputorder', 'normal')
-
-                self.addItem("basic", "outputorder", 
-                    self.__tr("Output Order (Print last page first)"), 
-                    cups.PPD_UI_PICKONE, current, 
-                    [('normal', self.__tr('Normal (Print first page first)')), 
-                     ('reverse', self.__tr('Reversed (Print last page first)'))], 'normal')
-
-                log.debug("Option: outputorder")
-                log.debug("Current value: %s" % current)
-
-                current = int(utils.to_bool(current_options.get('Collate', '0')))
-
-                self.addItem("basic", "Collate", 
-                    self.__tr("Collate (Group together multiple copies)"), 
-                    cups.PPD_UI_BOOLEAN, current, 
-                    [], 0)
-
-                log.debug("Option: Collate")
-                log.debug("Current value: %s" % current)
+    
+                    duplexer = self.cur_device.dq.get('duplexer', 0)
+                    log.debug("Duplexer = %d" % duplexer)
+    
+                    if duplexer:
+                        current = current_options.get('sides', 'one-sided')
+                        self.addItem("basic", "sides", 
+                            self.__tr("Duplex (Print on both sides of the page)"), 
+                            cups.PPD_UI_PICKONE, current, 
+                            [('one-sided',self.__tr('Single sided')), 
+                             ('two-sided-long-edge', self.__tr('Two sided (long edge)')), 
+                             ('two-sided-short-edge', self.__tr('Two sided (short edge)'))], 'one-sided')
+    
+                        log.debug("Option: sides")
+                        log.debug("Current value: %s" % current)
+    
+                    current = current_options.get('outputorder', 'normal')
+    
+                    self.addItem("basic", "outputorder", 
+                        self.__tr("Output Order (Print last page first)"), 
+                        cups.PPD_UI_PICKONE, current, 
+                        [('normal', self.__tr('Normal (Print first page first)')), 
+                         ('reverse', self.__tr('Reversed (Print last page first)'))], 'normal')
+    
+                    log.debug("Option: outputorder")
+                    log.debug("Current value: %s" % current)
+    
+                    current = int(utils.to_bool(current_options.get('Collate', '0')))
+    
+                    self.addItem("basic", "Collate", 
+                        self.__tr("Collate (Group together multiple copies)"), 
+                        cups.PPD_UI_BOOLEAN, current, 
+                        [], 0)
+    
+                    log.debug("Option: Collate")
+                    log.debug("Current value: %s" % current)
 
                 groups = cups.getGroupList()
 
@@ -160,6 +164,10 @@ class ScrollPrintSettingsView(ScrollView):
                     log.debug("Group: %s" % g)
                     text, num_subgroups = cups.getGroup(g) 
                     read_only = 'install' in g.lower()
+                    
+                    if g.lower() == 'printoutmode':
+                        text = self.__tr("Quality")
+                    
                     self.addGroupHeading(g, text, read_only)
 
                     log.debug("  Text: %s" % text)
@@ -176,6 +184,9 @@ class ScrollPrintSettingsView(ScrollView):
 
                         option_text, defchoice, conflicted, ui  = cups.getOption(g, o)
 
+                        if o.lower() == 'quality':
+                            option_text = self.__tr("Quality")
+                        
                         log.debug("    Text: %s" % option_text)
                         log.debug("    Defchoice: %s" % defchoice)
 
@@ -272,24 +283,25 @@ class ScrollPrintSettingsView(ScrollView):
                     # brightness
                     # gamma
 
-                self.addGroupHeading("adjustment", self.__tr("Printout Appearance"))
-
-                current = int(current_options.get('brightness', 100))
-
-                log.debug("  Option: brightness")
-                log.debug("  Current value: %s" % current)
-
-                self.addItem("adjustment", "brightness", self.__tr("Brightness"),
-                    cups.UI_SPINNER, current, (0, 200), 100, suffix=" %")
-
-                current = int(current_options.get('gamma', 1000))
-
-                log.debug("  Option: gamma")
-                log.debug("  Current value: %s" % current)
-
-                self.addItem("adjustment", "gamma", self.__tr("Gamma"), cups.UI_SPINNER, current,
-                    (1, 10000), 1000)
-
+                if not self.is_fax:
+                    self.addGroupHeading("adjustment", self.__tr("Printout Appearance"))
+    
+                    current = int(current_options.get('brightness', 100))
+    
+                    log.debug("  Option: brightness")
+                    log.debug("  Current value: %s" % current)
+    
+                    self.addItem("adjustment", "brightness", self.__tr("Brightness"),
+                        cups.UI_SPINNER, current, (0, 200), 100, suffix=" %")
+    
+                    current = int(current_options.get('gamma', 1000))
+    
+                    log.debug("  Option: gamma")
+                    log.debug("  Current value: %s" % current)
+    
+                    self.addItem("adjustment", "gamma", self.__tr("Gamma"), cups.UI_SPINNER, current,
+                        (1, 10000), 1000)
+    
                 # Margins (pts)
                     # page-left
                     # page-right
@@ -362,22 +374,23 @@ class ScrollPrintSettingsView(ScrollView):
                 log.debug("  Option: position")
                 log.debug("  Current value: %s" % current)
 
-                current = int(current_options.get('saturation', 100))
-
-                log.debug("  Option: saturation")
-                log.debug("  Current value: %s" % current)
-
-                self.addItem("image", "saturation", self.__tr("Saturation"), 
-                    cups.UI_SPINNER, current, (0, 200), 100, suffix=" %")
-
-                current = int(current_options.get('hue', 0))
-
-                log.debug("  Option: hue")
-                log.debug("  Current value: %s" % current)
-
-                self.addItem("image", "hue", self.__tr("Hue (color shift/rotation)"), 
-                    cups.UI_SPINNER, current,
-                    (-100, 100), 0)
+                if not self.is_fax:
+                    current = int(current_options.get('saturation', 100))
+    
+                    log.debug("  Option: saturation")
+                    log.debug("  Current value: %s" % current)
+    
+                    self.addItem("image", "saturation", self.__tr("Saturation"), 
+                        cups.UI_SPINNER, current, (0, 200), 100, suffix=" %")
+    
+                    current = int(current_options.get('hue', 0))
+    
+                    log.debug("  Option: hue")
+                    log.debug("  Current value: %s" % current)
+    
+                    self.addItem("image", "hue", self.__tr("Hue (color shift/rotation)"), 
+                        cups.UI_SPINNER, current,
+                        (-100, 100), 0)
 
                 current = int(current_options.get('natural-scaling', 100))
 
@@ -415,31 +428,32 @@ class ScrollPrintSettingsView(ScrollView):
                 log.debug("  Option: prettyprint")
                 log.debug("  Current value: %s" % current)
 
-                current = current_options.get('job-sheets', 'none').split(',')
-                
-                try:
-                    start = current[0]
-                except IndexError:
-                    start = 'none'
+                if not self.is_fax:
+                    current = current_options.get('job-sheets', 'none').split(',')
                     
-                try:
-                    end = current[1]
-                except IndexError:
-                    end = 'none'
-                
-                # TODO: Look for locally installed banner pages beyond the default CUPS ones?
-                self.addItem("misc", "job-sheets", self.__tr("Banner Pages"), cups.UI_BANNER_JOB_SHEETS, 
-                    (start, end), 
-                    [("none", self.__tr("No banner page")), 
-                     ('classified', self.__tr("Classified")), 
-                     ('confidential', self.__tr("Confidential")),
-                     ('secret', self.__tr("Secret")), 
-                     ('standard', self.__tr("Standard")), 
-                     ('topsecret', self.__tr("Top secret")), 
-                     ('unclassified', self.__tr("Unclassified"))], ('none', 'none'))
-                
-                log.debug("  Option: job-sheets")
-                log.debug("  Current value: %s,%s" % (start, end))
+                    try:
+                        start = current[0]
+                    except IndexError:
+                        start = 'none'
+                        
+                    try:
+                        end = current[1]
+                    except IndexError:
+                        end = 'none'
+                    
+                    # TODO: Look for locally installed banner pages beyond the default CUPS ones?
+                    self.addItem("misc", "job-sheets", self.__tr("Banner Pages"), cups.UI_BANNER_JOB_SHEETS, 
+                        (start, end), 
+                        [("none", self.__tr("No banner page")), 
+                         ('classified', self.__tr("Classified")), 
+                         ('confidential', self.__tr("Confidential")),
+                         ('secret', self.__tr("Secret")), 
+                         ('standard', self.__tr("Standard")), 
+                         ('topsecret', self.__tr("Top secret")), 
+                         ('unclassified', self.__tr("Unclassified"))], ('none', 'none'))
+                    
+                    log.debug("  Option: job-sheets")
+                    log.debug("  Current value: %s,%s" % (start, end))
 
                 current = int(utils.to_bool(current_options.get('mirror', '0')))
 
@@ -460,7 +474,7 @@ class ScrollPrintSettingsView(ScrollView):
         a = str(a)
         sender = self.sender()
         choice = None
-
+        
         if sender.typ == cups.UI_BANNER_JOB_SHEETS:
             start, end = None, None
             for c, t in sender.choices:
@@ -505,9 +519,60 @@ class ScrollPrintSettingsView(ScrollView):
     
                 if choice is not None:
                     self.setPrinterOption(sender.option, choice)
+                    
+            self.linkPrintoutModeAndQuality(sender.option, choice)
+
+    
+    def linkPrintoutModeAndQuality(self, option, choice):
+        if option.lower() == 'quality' and \
+            choice is not None:
+            
+            try:
+                c = self.items['o:PrintoutMode'].control
+            except KeyError:
+                return
+            else:
+                if c is not None:
+                    if choice.lower() == 'fromprintoutmode':
+                        # from printoutmode selected
+                        # determine printoutmode option combo enable state
+                        c.setEnabled(True)
+                        QToolTip.remove(c)
+                        a = str(c.currentText())
+                        
+                        # determine printoutmode default button state
+                        link_choice = None
+                        for x, t in c.choices:
+                            if t == a:
+                                link_choice = x
+                                break
+                
+                        if link_choice is not None and \
+                            link_choice.lower() == c.default.lower():
+                            
+                            c.pushbutton.setEnabled(False)
+                        else:
+                            c.pushbutton.setEnabled(True)
+                    
+                    else: # fromprintoutmode not selected, disable printoutmode
+                        c.setEnabled(False)
+                        QToolTip.add(c, self.__tr("""Set Quality to "Controlled by 'Printout Mode'" to enable."""))
+                        c.pushbutton.setEnabled(False)
+                            
 
 
-    def optionCheckBox_toggled(self, b):
+    def optionSpinBox_valueChanged(self, i):
+        sender = self.sender()
+
+        if i == sender.default:
+            self.removePrinterOption(sender.option)
+            sender.pushbutton.setEnabled(False)
+        else:
+            sender.pushbutton.setEnabled(True)
+            self.setPrinterOption(sender.option, str(i))
+
+            
+    def optionButtonGroup_clicked(self, b):
         sender = self.sender()
         b = int(b)
 
@@ -521,26 +586,19 @@ class ScrollPrintSettingsView(ScrollView):
                 self.setPrinterOption(sender.option, "true")
             else:
                 self.setPrinterOption(sender.option, "false")
-
-
-    def optionSpinBox_valueChanged(self, i):
-        sender = self.sender()
-
-        if i == sender.default:
-            self.removePrinterOption(sender.option)
-            sender.pushbutton.setEnabled(False)
-        else:
-            sender.pushbutton.setEnabled(True)
-            self.setPrinterOption(sender.option, str(i))
+        
 
 
     def defaultPushButton_clicked(self):
         sender = self.sender()
-
         sender.setEnabled(False)
 
         if sender.typ == cups.PPD_UI_BOOLEAN:
-            sender.control.setChecked(sender.default)
+            if sender.default:
+                sender.control.setButton(1)
+            else:
+                sender.control.setButton(0)
+                
             self.removePrinterOption(sender.option)
 
         elif sender.typ == cups.PPD_UI_PICKONE:
@@ -555,6 +613,8 @@ class ScrollPrintSettingsView(ScrollView):
             if choice is not None:
                 self.removePrinterOption(sender.option)
                 sender.control.setCurrentText(text)
+                
+                self.linkPrintoutModeAndQuality(sender.option, choice)
 
         elif sender.typ == cups.UI_SPINNER:
             sender.control.setValue(sender.default)
@@ -600,54 +660,74 @@ class ScrollPrintSettingsView(ScrollView):
 
 
     def addItem(self, group, option, text, typ, value, choices, default, read_only=False, suffix=""):
-        widget = None
+        widget, control = None, None
 
-        if typ == cups.PPD_UI_BOOLEAN:
+        if typ == cups.PPD_UI_BOOLEAN: # () On (*) Off widget
             widget = self.getWidget()
-
+            layout = QGridLayout(widget, 1, 1, 5, 10, "layout")
             default = int(utils.to_bool(str(default)))
             value = int(utils.to_bool(str(value)))
-            layout1 = QHBoxLayout(widget,5,10,"layout1")
-
-            textLabel1 = QLabel(widget,"textLabel1")
-            layout1.addWidget(textLabel1)
-            spacer1 = QSpacerItem(231, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-            layout1.addItem(spacer1)
-
-            optionCheckBox = OptionCheckBox(widget, "optionCheckBox", group, option, default)
-            layout1.addWidget(optionCheckBox)
-
+    
+            textLabel1 = QLabel(widget, "textLabel1")
+            layout.addWidget(textLabel1, 0, 0)
+    
+            buttonGroup = OptionButtonGroup(widget, "buttonGroup", group, option, default)
+            buttonGroup.setLineWidth(0)
+            buttonGroup.setColumnLayout(0,Qt.Vertical)
+            buttonGroup.layout().setSpacing(1)
+            buttonGroup.layout().setMargin(5)
+            buttonGroupLayout = QHBoxLayout(buttonGroup.layout())
+            buttonGroupLayout.setAlignment(Qt.AlignTop)
+    
             defaultPushButton = DefaultPushButton(widget,"defaultPushButton", group, option, 
-                choices, default, optionCheckBox, typ)
-
-            optionCheckBox.setDefaultPushbutton(defaultPushButton)
-
-            x = self.__tr('Disabled (False)')
-            if default:
-                x = self.__tr('Enabled (True)')
-
-            layout1.addWidget(defaultPushButton)
-
+                choices, default, buttonGroup, typ)    
+    
+            buttonGroup.setDefaultPushbutton(defaultPushButton)
+            
+            layout.addWidget(defaultPushButton, 0, 3)
+            
+            spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+            layout.addItem(spacer1, 0, 1)
+            
+            onRadioButton = QRadioButton(buttonGroup,"onRadioButton")
+            buttonGroup.insert(onRadioButton, 1)
+            buttonGroupLayout.addWidget(onRadioButton)
+    
+            offRadioButton = QRadioButton(buttonGroup,"offRadioButton")
+            buttonGroup.insert(offRadioButton, 0)
+            buttonGroupLayout.addWidget(offRadioButton)
+    
+            layout.addWidget(buttonGroup, 0, 2)
+            
             textLabel1.setText(text)
-            optionCheckBox.setText("Enable")
-            defaultPushButton.setText("Default")
-
-            optionCheckBox.setChecked(value)
-
+            onRadioButton.setText(self.__tr("On"))
+            offRadioButton.setText(self.__tr("Off"))
+            
             if value == default:
                 defaultPushButton.setEnabled(False)
-
+                
             self.connect(defaultPushButton, SIGNAL("clicked()"), self.defaultPushButton_clicked)
-            self.connect(optionCheckBox, SIGNAL("toggled(bool)"), self.optionCheckBox_toggled)
+            self.connect(buttonGroup, SIGNAL("clicked(int)"), self.optionButtonGroup_clicked)
 
+            x = self.__tr('Off')
+            if default:
+                x = self.__tr('On')
+
+            if value:
+                buttonGroup.setButton(1)
+            else:
+                buttonGroup.setButton(0)
+            
             if read_only:
-                optionCheckBox.setEnabled(False)
+                onRadioButton.setEnabled(False)
+                offRadioButton.setEnabled(False)
                 defaultPushButton.setEnabled(False)
             else:
                 QToolTip.add(defaultPushButton, self.__tr('Set to default value of "%1".').arg(x))
+            
+            defaultPushButton.setText("Default")
 
-
-        elif typ == cups.PPD_UI_PICKONE:
+        elif typ == cups.PPD_UI_PICKONE: # Combo box widget
             widget = self.getWidget()
 
             layout1 = QHBoxLayout(widget,5,10,"layout1")
@@ -655,7 +735,7 @@ class ScrollPrintSettingsView(ScrollView):
             textLabel1 = QLabel(widget,"textLabel1")
             layout1.addWidget(textLabel1)
 
-            spacer1 = QSpacerItem(171, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+            spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
             layout1.addItem(spacer1)
 
             optionComboBox = OptionComboBox(0, widget, "optionComboBox", group, option, choices, default)
@@ -687,6 +767,8 @@ class ScrollPrintSettingsView(ScrollView):
 
             if value is not None and value.lower() == default.lower():
                 defaultPushButton.setEnabled(False)
+                
+            self.linkPrintoutModeAndQuality(option, value)
 
             if read_only:
                 optionComboBox.setEnabled(False)
@@ -696,8 +778,10 @@ class ScrollPrintSettingsView(ScrollView):
 
             self.connect(defaultPushButton, SIGNAL("clicked()"), self.defaultPushButton_clicked)
             self.connect(optionComboBox, SIGNAL("activated(const QString&)"), self.optionComboBox_activated)
+            
+            control = optionComboBox
 
-        elif typ == cups.UI_SPINNER:
+        elif typ == cups.UI_SPINNER: # Spinner widget
             widget = self.getWidget()
 
             layout1 = QHBoxLayout(widget,5,10, "layout1")
@@ -705,7 +789,7 @@ class ScrollPrintSettingsView(ScrollView):
             textLabel1 = QLabel(widget, "textLabel1")
             layout1.addWidget(textLabel1)
 
-            spacer1 = QSpacerItem(381, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+            spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
             layout1.addItem(spacer1)
 
             optionSpinBox = OptionSpinBox(widget,"optionSpinBox", group, option, default)
@@ -742,7 +826,7 @@ class ScrollPrintSettingsView(ScrollView):
                 QToolTip.add(defaultPushButton, 
                     self.__tr('Set to default value of "%1".').arg(default))
 
-        elif typ == cups.UI_BANNER_JOB_SHEETS:
+        elif typ == cups.UI_BANNER_JOB_SHEETS:  # Job sheets widget
             widget = self.getWidget()
             
             layout1 = QGridLayout(widget,1,1,5,10,"layout1")
@@ -776,7 +860,7 @@ class ScrollPrintSettingsView(ScrollView):
             textLabel1 = QLabel(widget,"textLabel1")
             layout1.addWidget(textLabel1,0,0)
             
-            spacer1 = QSpacerItem(180,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+            spacer1 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
             layout1.addItem(spacer1,0,1)
             
             textLabel1.setText(text)
@@ -834,7 +918,7 @@ class ScrollPrintSettingsView(ScrollView):
             textLabel1 = QLabel(widget,"textLabel1")
             layout1.addWidget(textLabel1)
             
-            spacer1 = QSpacerItem(370,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+            spacer1 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
             layout1.addItem(spacer1)
     
             lineEdit1 = QLineEdit(widget,"lineEdit1")
@@ -853,7 +937,7 @@ class ScrollPrintSettingsView(ScrollView):
             log.error("Invalid UI value: %s/%s" % (group, option))
 
         if widget is not None:
-            self.addControl(widget, "o:"+option)
+            self.addWidget(widget, "o:"+option, control)
             return widget
             
 

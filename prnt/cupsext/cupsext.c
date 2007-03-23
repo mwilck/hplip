@@ -1052,10 +1052,10 @@ PyObject * getPPDList( PyObject * self, PyObject * args )
     language = cupsLangDefault();
 
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_CHARSET,
-        	 "attributes-charset", NULL, cupsLangEncoding(language));
+             "attributes-charset", NULL, cupsLangEncoding(language));
 
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_LANGUAGE,
-        	 "attributes-natural-language", NULL, language->language);
+             "attributes-natural-language", NULL, language->language);
 
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                  NULL, "ipp://localhost/printers/");
@@ -1623,16 +1623,99 @@ PyObject * printFileWithOptions( PyObject * self, PyObject * args )
     char * filename;
     char * title;
     int job_id = -1;
+    cups_dest_t * dests = NULL;
+    cups_dest_t * dest = NULL;
+    int num_dests = 0;
+    int i = 0;
 
     if ( !PyArg_ParseTuple( args, "zzz", &printer, &filename, &title ) )
     {
         return Py_BuildValue( "" ); // None
     }
 
-    job_id = cupsPrintFile( printer, filename, title, g_num_options, g_options );
-
-    return Py_BuildValue( "i", job_id );
+    num_dests = cupsGetDests(&dests);
+    dest = cupsGetDest( printer, NULL, num_dests, dests );
+    
+    if ( dest != NULL )
+    {
+        for( i = 0; i < dest->num_options; i++ )
+        {
+            if ( cupsGetOption( dest->options[i].name, g_num_options, g_options ) == NULL )
+                g_num_options = cupsAddOption( dest->options[i].name, dest->options[i].value, g_num_options, &g_options );
+                
+        }
+        
+        job_id = cupsPrintFile( dest->name, filename, title, g_num_options, g_options );
+    
+        return Py_BuildValue( "i", job_id );
+    }
+    
+    return Py_BuildValue( "i", -1 );
 }
+
+// ***************************************************************************************************
+
+static PyObject * passwordFunc = NULL;
+
+const char * password_callback(const char * prompt)
+{
+    PyObject * result;
+    char * result_str = NULL;
+    
+    if ( passwordFunc != NULL )
+    {
+        result = PyObject_CallFunction( passwordFunc, "s", prompt );
+        
+        if( result )
+        {
+            result_str = PyString_AsString( result );
+        
+            if ( result_str != NULL )
+            {
+                return result_str;
+            }
+        }
+     
+    }
+    
+    return "";
+}
+
+PyObject * setPasswordCallback( PyObject * self, PyObject * args )
+{   
+    if( !PyArg_ParseTuple( args, "O", &passwordFunc ) )
+    {
+        return Py_BuildValue( "i", 0 );
+    }
+
+    cupsSetPasswordCB(password_callback);
+    
+    return Py_BuildValue( "i", 1 );
+}
+
+
+PyObject * getPassword( PyObject * self, PyObject * args )
+{   
+    const char * pwd;
+    char * prompt;
+    
+    if( !PyArg_ParseTuple( args, "s", &prompt ) )
+    {
+        return Py_BuildValue( "" );
+    }
+    
+    pwd = cupsGetPassword( prompt );
+    
+    if( pwd )
+    {
+        return Py_BuildValue( "s", pwd );
+    }
+    else
+    {
+        return Py_BuildValue( "" );
+    }
+}
+
 
 // ***************************************************************************************************
 
@@ -1669,7 +1752,8 @@ static PyMethodDef cupsext_methods[] =
         { "getChoice", ( PyCFunction ) getChoice, METH_VARARGS },
         { "setOptions", ( PyCFunction ) setOptions, METH_VARARGS },
         { "getOptions", ( PyCFunction ) getOptions, METH_VARARGS },
-
+        { "setPasswordCallback", ( PyCFunction ) setPasswordCallback, METH_VARARGS },
+        { "getPassword", ( PyCFunction ) getPassword, METH_VARARGS },
         { NULL, NULL }
     };
 

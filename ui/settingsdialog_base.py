@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'settingsdialog_base.ui'
+# Form implementation generated from reading ui file 'ui/settingsdialog_base.ui'
 #
-# Created: Mon Jan 8 14:13:19 2007
-#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
+# Created: Tue Mar 13 11:36:27 2007
+#      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -201,80 +201,138 @@ class SettingsDialog_base(QDialog):
 
         FunctionCommandsLayout.addMultiCellWidget(self.textLabel3_2_2_2,0,0,0,1)
 
-        self.textLabel1_2 = QLabel(self.FunctionCommands,"textLabel1_2")
+        self.pcardButtonGroup = QButtonGroup(self.FunctionCommands,"pcardButtonGroup")
+        self.pcardButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.pcardButtonGroup.layout().setSpacing(6)
+        self.pcardButtonGroup.layout().setMargin(11)
+        pcardButtonGroupLayout = QGridLayout(self.pcardButtonGroup.layout())
+        pcardButtonGroupLayout.setAlignment(Qt.AlignTop)
 
-        FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2,2,2,0,1)
+        self.radioButton19 = QRadioButton(self.pcardButtonGroup,"radioButton19")
+        self.radioButton19.setEnabled(0)
 
-        layout8_2 = QHBoxLayout(None,0,6,"layout8_2")
+        pcardButtonGroupLayout.addMultiCellWidget(self.radioButton19,0,0,0,1)
 
-        self.PrintCommand = QLineEdit(self.FunctionCommands,"PrintCommand")
-        layout8_2.addWidget(self.PrintCommand)
+        self.radioButton20 = QRadioButton(self.pcardButtonGroup,"radioButton20")
+        self.radioButton20.setChecked(1)
 
-        FunctionCommandsLayout.addMultiCellLayout(layout8_2,3,3,0,1)
+        pcardButtonGroupLayout.addWidget(self.radioButton20,1,0)
 
-        self.textLabel1_2_2 = QLabel(self.FunctionCommands,"textLabel1_2_2")
+        self.AccessPCardCommand = QLineEdit(self.pcardButtonGroup,"AccessPCardCommand")
 
-        FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2_2,4,4,0,1)
+        pcardButtonGroupLayout.addWidget(self.AccessPCardCommand,1,1)
 
-        layout9 = QHBoxLayout(None,0,6,"layout9")
+        FunctionCommandsLayout.addMultiCellWidget(self.pcardButtonGroup,5,5,0,1)
 
-        self.ScanCommand = QLineEdit(self.FunctionCommands,"ScanCommand")
-        layout9.addWidget(self.ScanCommand)
+        self.faxButtonGroup = QButtonGroup(self.FunctionCommands,"faxButtonGroup")
+        self.faxButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.faxButtonGroup.layout().setSpacing(6)
+        self.faxButtonGroup.layout().setMargin(11)
+        faxButtonGroupLayout = QGridLayout(self.faxButtonGroup.layout())
+        faxButtonGroupLayout.setAlignment(Qt.AlignTop)
 
-        FunctionCommandsLayout.addMultiCellLayout(layout9,5,5,0,1)
+        self.radioButton17 = QRadioButton(self.faxButtonGroup,"radioButton17")
+        self.radioButton17.setEnabled(0)
 
-        self.textLabel1_2_3_3 = QLabel(self.FunctionCommands,"textLabel1_2_3_3")
+        faxButtonGroupLayout.addMultiCellWidget(self.radioButton17,0,0,0,1)
 
-        FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2_3_3,6,6,0,1)
+        self.radioButton18 = QRadioButton(self.faxButtonGroup,"radioButton18")
+        self.radioButton18.setChecked(1)
 
-        layout10_2 = QHBoxLayout(None,0,6,"layout10_2")
+        faxButtonGroupLayout.addWidget(self.radioButton18,1,0)
 
-        self.AccessPCardCommand = QLineEdit(self.FunctionCommands,"AccessPCardCommand")
-        layout10_2.addWidget(self.AccessPCardCommand)
-
-        FunctionCommandsLayout.addMultiCellLayout(layout10_2,7,7,0,1)
-
-        self.textLabel1_2_3 = QLabel(self.FunctionCommands,"textLabel1_2_3")
-        self.textLabel1_2_3.setEnabled(1)
-
-        FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2_3,8,8,0,1)
-
-        layout11_2 = QHBoxLayout(None,0,6,"layout11_2")
-
-        self.SendFaxCommand = QLineEdit(self.FunctionCommands,"SendFaxCommand")
+        self.SendFaxCommand = QLineEdit(self.faxButtonGroup,"SendFaxCommand")
         self.SendFaxCommand.setEnabled(1)
-        layout11_2.addWidget(self.SendFaxCommand)
 
-        FunctionCommandsLayout.addMultiCellLayout(layout11_2,9,9,0,1)
+        faxButtonGroupLayout.addWidget(self.SendFaxCommand,1,1)
 
-        self.textLabel1_2_3_2 = QLabel(self.FunctionCommands,"textLabel1_2_3_2")
-        self.textLabel1_2_3_2.setEnabled(1)
+        FunctionCommandsLayout.addMultiCellWidget(self.faxButtonGroup,4,4,0,1)
 
-        FunctionCommandsLayout.addMultiCellWidget(self.textLabel1_2_3_2,10,10,0,1)
+        self.scanButtonGroup = QButtonGroup(self.FunctionCommands,"scanButtonGroup")
+        self.scanButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.scanButtonGroup.layout().setSpacing(6)
+        self.scanButtonGroup.layout().setMargin(11)
+        scanButtonGroupLayout = QGridLayout(self.scanButtonGroup.layout())
+        scanButtonGroupLayout.setAlignment(Qt.AlignTop)
 
-        layout12_2 = QHBoxLayout(None,0,6,"layout12_2")
+        self.radioButton15 = QRadioButton(self.scanButtonGroup,"radioButton15")
+        self.radioButton15.setEnabled(0)
 
-        self.MakeCopiesCommand = QLineEdit(self.FunctionCommands,"MakeCopiesCommand")
-        self.MakeCopiesCommand.setEnabled(1)
-        layout12_2.addWidget(self.MakeCopiesCommand)
+        scanButtonGroupLayout.addMultiCellWidget(self.radioButton15,0,0,0,1)
 
-        FunctionCommandsLayout.addMultiCellLayout(layout12_2,11,11,0,1)
+        self.radioButton16 = QRadioButton(self.scanButtonGroup,"radioButton16")
+        self.radioButton16.setChecked(1)
+
+        scanButtonGroupLayout.addWidget(self.radioButton16,1,0)
+
+        self.ScanCommand = QLineEdit(self.scanButtonGroup,"ScanCommand")
+
+        scanButtonGroupLayout.addWidget(self.ScanCommand,1,1)
+
+        FunctionCommandsLayout.addMultiCellWidget(self.scanButtonGroup,3,3,0,1)
+
+        self.printButtonGroup = QButtonGroup(self.FunctionCommands,"printButtonGroup")
+        self.printButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.printButtonGroup.layout().setSpacing(6)
+        self.printButtonGroup.layout().setMargin(11)
+        printButtonGroupLayout = QGridLayout(self.printButtonGroup.layout())
+        printButtonGroupLayout.setAlignment(Qt.AlignTop)
+
+        self.radioButton13 = QRadioButton(self.printButtonGroup,"radioButton13")
+        self.radioButton13.setChecked(1)
+
+        printButtonGroupLayout.addMultiCellWidget(self.radioButton13,0,0,0,1)
+
+        self.radioButton14 = QRadioButton(self.printButtonGroup,"radioButton14")
+
+        printButtonGroupLayout.addWidget(self.radioButton14,1,0)
+
+        self.PrintCommand = QLineEdit(self.printButtonGroup,"PrintCommand")
+        self.PrintCommand.setEnabled(0)
+
+        printButtonGroupLayout.addWidget(self.PrintCommand,1,1)
+
+        FunctionCommandsLayout.addMultiCellWidget(self.printButtonGroup,2,2,0,1)
 
         self.DefaultsButton = QPushButton(self.FunctionCommands,"DefaultsButton")
         self.DefaultsButton.setEnabled(1)
 
-        FunctionCommandsLayout.addWidget(self.DefaultsButton,13,0)
-        spacer8_2 = QSpacerItem(471,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        FunctionCommandsLayout.addItem(spacer8_2,13,1)
-        spacer9 = QSpacerItem(20,81,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        FunctionCommandsLayout.addItem(spacer9,12,0)
+        FunctionCommandsLayout.addWidget(self.DefaultsButton,8,0)
+        spacer8_2 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        FunctionCommandsLayout.addItem(spacer8_2,8,1)
+
+        self.copyButtonGroup = QButtonGroup(self.FunctionCommands,"copyButtonGroup")
+        self.copyButtonGroup.setColumnLayout(0,Qt.Vertical)
+        self.copyButtonGroup.layout().setSpacing(6)
+        self.copyButtonGroup.layout().setMargin(11)
+        copyButtonGroupLayout = QGridLayout(self.copyButtonGroup.layout())
+        copyButtonGroupLayout.setAlignment(Qt.AlignTop)
+
+        self.radioButton21 = QRadioButton(self.copyButtonGroup,"radioButton21")
+        self.radioButton21.setEnabled(0)
+
+        copyButtonGroupLayout.addMultiCellWidget(self.radioButton21,0,0,0,1)
+
+        self.radioButton22 = QRadioButton(self.copyButtonGroup,"radioButton22")
+        self.radioButton22.setChecked(1)
+
+        copyButtonGroupLayout.addWidget(self.radioButton22,1,0)
+
+        self.MakeCopiesCommand = QLineEdit(self.copyButtonGroup,"MakeCopiesCommand")
+        self.MakeCopiesCommand.setEnabled(1)
+
+        copyButtonGroupLayout.addWidget(self.MakeCopiesCommand,1,1)
+
+        FunctionCommandsLayout.addMultiCellWidget(self.copyButtonGroup,6,6,0,1)
+        spacer49 = QSpacerItem(20,51,QSizePolicy.Minimum,QSizePolicy.Expanding)
+        FunctionCommandsLayout.addItem(spacer49,7,0)
         self.TabWidget.insertTab(self.FunctionCommands,QString.fromLatin1(""))
 
         SettingsDialog_baseLayout.addMultiCellWidget(self.TabWidget,0,0,0,2)
 
         self.languageChange()
 
-        self.resize(QSize(627,481).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(548,618).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.pushButton31,SIGNAL("clicked()"),self.reject)
@@ -291,6 +349,11 @@ class SettingsDialog_base(QDialog):
         self.connect(self.autoRefreshCheckBox,SIGNAL("toggled(bool)"),self.radioButton1.setEnabled)
         self.connect(self.autoRefreshCheckBox,SIGNAL("toggled(bool)"),self.radioButton2.setEnabled)
         self.connect(self.refreshScopeButtonGroup,SIGNAL("clicked(int)"),self.refreshScopeButtonGroup_clicked)
+        self.connect(self.printButtonGroup,SIGNAL("clicked(int)"),self.printButtonGroup_clicked)
+        self.connect(self.scanButtonGroup,SIGNAL("clicked(int)"),self.scanButtonGroup_clicked)
+        self.connect(self.faxButtonGroup,SIGNAL("clicked(int)"),self.faxButtonGroup_clicked)
+        self.connect(self.pcardButtonGroup,SIGNAL("clicked(int)"),self.pcardButtonGroup_clicked)
+        self.connect(self.copyButtonGroup,SIGNAL("clicked(int)"),self.copyButtonGroup_clicked)
 
         self.setTabOrder(self.TabWidget,self.pushButton30)
         self.setTabOrder(self.pushButton30,self.pushButton31)
@@ -329,13 +392,23 @@ class SettingsDialog_base(QDialog):
         self.textLabel3.setText(self.__tr("<i>Note: This should generally be your email address.</i>"))
         self.TabWidget.changeTab(self.EmailAlerts,self.__tr("Email Alerts"))
         self.textLabel3_2_2_2.setText(self.__tr("<b>Configure what commands to run for device functions</b>"))
-        self.textLabel1_2.setText(self.__tr("Print Command:"))
-        self.textLabel1_2_2.setText(self.__tr("Scan Command:"))
-        self.textLabel1_2_3_3.setText(self.__tr("Access Photo Cards Command:"))
-        self.textLabel1_2_3.setText(self.__tr("Send Fax Command:"))
-        self.textLabel1_2_3_2.setText(self.__tr("Make Copies Command:"))
+        self.pcardButtonGroup.setTitle(self.__tr("Access Photo Cards"))
+        self.radioButton19.setText(self.__tr("Built-in access photo cards function"))
+        self.radioButton20.setText(self.__tr("External command:"))
+        self.faxButtonGroup.setTitle(self.__tr("Send PC Fax"))
+        self.radioButton17.setText(self.__tr("Built-in send PC fax function"))
+        self.radioButton18.setText(self.__tr("External command:"))
+        self.scanButtonGroup.setTitle(self.__tr("Scan"))
+        self.radioButton15.setText(self.__tr("Built-in scan function"))
+        self.radioButton16.setText(self.__tr("External scan command:"))
+        self.printButtonGroup.setTitle(self.__tr("Print"))
+        self.radioButton13.setText(self.__tr("Built-in print function"))
+        self.radioButton14.setText(self.__tr("External command:"))
         self.DefaultsButton.setText(self.__tr("Set Defaults"))
-        self.TabWidget.changeTab(self.FunctionCommands,self.__tr("Function Commands"))
+        self.copyButtonGroup.setTitle(self.__tr("Make Copies"))
+        self.radioButton21.setText(self.__tr("Built-inmake copies function"))
+        self.radioButton22.setText(self.__tr("External command:"))
+        self.TabWidget.changeTab(self.FunctionCommands,self.__tr("Functions (Advanced)"))
 
 
     def PrintCmdChangeButton_clicked(self):
@@ -376,6 +449,21 @@ class SettingsDialog_base(QDialog):
 
     def refreshScopeButtonGroup_clicked(self,a0):
         print "SettingsDialog_base.refreshScopeButtonGroup_clicked(int): Not implemented yet"
+
+    def printButtonGroup_clicked(self,a0):
+        print "SettingsDialog_base.printButtonGroup_clicked(int): Not implemented yet"
+
+    def scanButtonGroup_clicked(self,a0):
+        print "SettingsDialog_base.scanButtonGroup_clicked(int): Not implemented yet"
+
+    def faxButtonGroup_clicked(self,a0):
+        print "SettingsDialog_base.faxButtonGroup_clicked(int): Not implemented yet"
+
+    def pcardButtonGroup_clicked(self,a0):
+        print "SettingsDialog_base.pcardButtonGroup_clicked(int): Not implemented yet"
+
+    def copyButtonGroup_clicked(self,a0):
+        print "SettingsDialog_base.copyButtonGroup_clicked(int): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("SettingsDialog_base",s,c)

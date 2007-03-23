@@ -157,7 +157,7 @@ function openNewWindow(state) {
 
     if(new_window != null) { 
         window.resizeTo(width - 100, height - 100);
-        window.moveTo(x + 100 ,y + 100);
+        window.moveTo(x + 100, y + 100);
     }
     return new_window;
 }

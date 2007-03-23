@@ -33,6 +33,9 @@
 #include "common.h"
 #include "scl.h"
 
+#define DEBUG_DECLARE_ONLY
+#include "sanei_debug.h"
+
 static int SclBufferIsPartialReply( unsigned char * data, int datalen )
 {
     int i = 0, value = 0;
@@ -215,6 +218,10 @@ SANE_Status SclSendCommand(int deviceid, int channelid, int cmd, int param)
         return SANE_STATUS_IO_ERROR;
     }
 
+    DBG(6, "SclSendCommand: len=%d: %s %d\n", datalen, __FILE__, __LINE__);
+    if (DBG_LEVEL >= 6)
+       sysdump(buffer, datalen);
+
     return SANE_STATUS_GOOD;
 }
 
@@ -258,6 +265,10 @@ SANE_Status SclInquire(int deviceid, int channelid, int cmd, int param, int * pV
     /* Read the response. */
     lenResponse = SclChannelRead( deviceid, channelid, response, LEN_SCL_BUFFER, 1 );
                                       
+    DBG(6, "SclChannelRead: len=%d: %s %d\n", lenResponse, __FILE__, __LINE__);
+    if (DBG_LEVEL >= 6)
+       sysdump(response, lenResponse);
+
     /* Validate the first part of the response. */
     if( lenResponse <= len || memcmp( response, expected, len ) )
     {

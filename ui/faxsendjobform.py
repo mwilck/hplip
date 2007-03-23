@@ -40,7 +40,7 @@ from qt import *
 from faxsendjobform_base import FaxSendJobForm_base
 from waitform import WaitForm
 from faxsettingsform import FaxSettingsForm
-from faxallowabletypesdlg import FaxAllowableTypesDlg
+from allowabletypesdlg import AllowableTypesDlg
 
 try:
     import reportlab
@@ -742,6 +742,12 @@ class FaxSendJobForm(FaxSendJobForm_base):
 
         if self.filename and os.path.isdir(self.filename):
             d = self.filename
+        
+        elif user_cfg.last_used.working_dir and \
+            os.path.exists(user_cfg.last_used.working_dir):
+            
+            d = user_cfg.last_used.working_dir
+        
         else:
             d = os.path.expanduser("~")
 
@@ -749,6 +755,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
                                               "openfile", self.caption()))
 
         if s and os.path.exists(s):
+            user_cfg.last_used.working_dir = os.path.dirname(s)
             self.fileEdit.setText(s)
             self.enableAddFileButton()
 
@@ -764,7 +771,7 @@ class FaxSendJobForm(FaxSendJobForm_base):
             x[a] = self.MIME_TYPES_DESC.get(a, ('Unknown', 'n/a'))
 
         log.debug(x)
-        dlg = FaxAllowableTypesDlg(x, self)
+        dlg = AllowableTypesDlg(x, self)
         dlg.exec_loop()
 
 

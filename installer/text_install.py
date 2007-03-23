@@ -26,6 +26,12 @@ import core
 import dcheck
 import distros
 import re
+import getpass
+
+password = ''
+
+def password_func():
+    return password
 
 def enter_yes_no(question, default="y"):
     default_bool = utils.to_bool(default)
@@ -97,13 +103,14 @@ def title(text):
     log.info(utils.bold("-"*len(text)))
 
 def password_prompt():
-    if not os.geteuid() == 0:
-        try:
-            su_sudo_str = core.distros[core.distro_name]['su_sudo']
-        except KeyError:
-            su_sudo_str = 'su'
-
-        log.notice("You may be prompted for a password. Please enter the appropriate password for your system for '%s' when prompted." % su_sudo_str)
+    pass
+##    if not os.geteuid() == 0:
+##        try:
+##            su_sudo_str = core.distros[core.distro_name]['su_sudo']
+##        except KeyError:
+##            su_sudo_str = 'su'
+##
+##        log.notice("You may be prompted for a password. Please enter the appropriate password for your system for '%s' when prompted." % su_sudo_str)
 
 
 def start(auto=True):
@@ -127,7 +134,7 @@ def start(auto=True):
 
             if user_input == 'a':
                 auto = True
-
+        
         #
         # HPLIP vs. HPIJS INSTALLATION
         #
@@ -143,13 +150,15 @@ def start(auto=True):
                 selected_component = 'hpijs'
 
         #
-        # RELEASE NOTES
+        # INTRODUCTION/RELEASE NOTES
         #
-
+        
+        title("INTRODUCTION")
+        
         if selected_component == 'hplip':
-            log.info("\nThis installer will install HPLIP version %s on your computer." % core.version_public)
+            log.info("This installer will install HPLIP version %s on your computer." % core.version_public)
         else:
-            log.info("\nThis installer will install HPIJS version %s on your computer." % core.hpijs_version)
+            log.info("This installer will install HPIJS version %s on your computer." % core.hpijs_version)
 
         if not auto and selected_component == 'hplip':
             if os.getenv('DISPLAY'):
@@ -158,7 +167,7 @@ def start(auto=True):
                 if enter_yes_no("\nWould you like to view the release notes for this version of HPLIP (y=yes, n=no*, q=quit) ? ", default="n"):
                     url = "file://%s" % os.path.join(os.getcwd(), 'doc', 'release_notes.html')
                     log.debug(url)
-                    status, output = utils.run("xhost +")
+                    status, output = utils.run("xhost +", True, password_func)
                     utils.openURL(url)
 
 
@@ -200,7 +209,8 @@ def start(auto=True):
             log.info("Distro is %s %s" % (core.distros[core.distro_name]['display_name'], core.distro_version))
 
         if num_req_missing or num_opt_missing or (core.hpoj_present and selected_component == 'hplip'):
-            log.info("")
+            print
+            
             title("DISTRO/OS SELECTION")
             distro_ok = False
 
@@ -335,7 +345,40 @@ def start(auto=True):
 
                     if not enter_yes_no("\n\nDo you still wish to continue (y=yes*, n=no, q=quit) ?", default="y"):
                         sys.exit(0)
-
+        
+        #
+        # Collect password
+        #
+        
+        if not os.geteuid() == 0:
+            title("ENTER ROOT/SUPERUSER PASSWORD")
+                
+            # Clear sudo password if set
+            try:
+                su_sudo_str = core.distros[core.distro_name]['su_sudo']
+            except KeyError:
+                su_sudo_str = 'su'
+                
+            if su_sudo_str == 'sudo':
+                status, output = utils.run("sudo -K")
+            
+            global password
+            x = 1
+            
+            while True:
+                password = getpass.getpass("Please enter the root/superuser password: ")
+                status, output = utils.run(core.su_sudo() % "true", True, password_func)
+                
+                if status == 0:
+                    log.note("Password accepted.")
+                    break
+                    
+                log.error("Incorrect password (attempt %d). Please re-enter." % x)
+                x += 1
+                
+                if x > 3:
+                    log.error("3 incorrect attempts. Exiting.")
+                    sys.exit(1)
 
         #
         # INSTALLATION NOTES
@@ -366,6 +409,7 @@ def start(auto=True):
                 if user_input == 'q':
                     sys.exit(0)
 
+        
         #
         # REQUIRED dependencies
         #
@@ -495,6 +539,20 @@ def start(auto=True):
 
 
             #
+            # CHECK FOR ACTIVE NETWORK CONNECTION
+            #
+            ping = utils.which("ping")
+            
+            if ping:
+                ping = os.path.join(ping, "ping")
+                status, output = utils.run(ping + " -c3 www.google.com", True, None)
+                
+                if status != 0:
+                    log.error("\nThe network appears to be unreachable. Installation cannot complete without access to")
+                    log.error("distribution repositories. Please check the network and try again.")
+                    sys.exit(1)
+                
+            #
             # PRE-DEPEND
             #
 
@@ -507,8 +565,16 @@ def start(auto=True):
                 password_prompt()
                 
                 for cmd in pre_cmd:
-                    log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-                    status, output = utils.run(cmd)
+                    if type(cmd) == type(''):
+                        log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+                        status, output = utils.run(cmd, True, password_func)
+                        
+                    else: # func
+                        log.info("Running command...")
+                        status = cmd(core.distro, core.distro_version)
+                    
+                    if status != 0:
+                        log.warn("Command failed.")
 
             #
             # INSTALL PACKAGES AND RUN COMMANDS
@@ -548,7 +614,7 @@ def start(auto=True):
                     password_prompt()
 
                     log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-                    status, output = utils.run(cmd)
+                    status, output = utils.run(cmd, True, password_func)
 
                     if status != 0:
                         log.error("Package install command failed with error code %d" % status)
@@ -564,14 +630,22 @@ def start(auto=True):
 
             if commands_to_run:
                 for cmd in commands_to_run:
-                    log.debug(cmd)
-                    log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-                    status, output = utils.run(cmd)
+                    if type(cmd) == type(''):
+                        log.debug(cmd)
+                        log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+                        status, output = utils.run(cmd, True, password_func)
+    
+                        if status != 0:
+                            log.error("Install command failed with error code %d" % status)
+                            sys.exit(1)
 
-                    if status != 0:
-                        log.error("Install command failed with error code %d" % status)
-                        sys.exit(1)
-
+                        else: # func
+                            log.info("Running command...")
+                            status = cmd(core.distro, core.distro_version)
+                        
+                            if status != 0:
+                                log.error("Command failed.")
+                                sys.exit(1)
 
             #
             # HPOJ REMOVAL
@@ -594,7 +668,7 @@ def start(auto=True):
                         password_prompt()
 
                         log.info("\nRunning '%s'\nPlease wait, this may take several minutes..." % hpoj_remove_cmd)
-                        status, output = utils.run(hpoj_remove_cmd)
+                        status, output = utils.run(hpoj_remove_cmd, True, password_func)
 
                         if status != 0:
                             log.error("HPOJ removal failed. Please manually stop/remove/uninstall HPOJ and then re-run this installer.")
@@ -639,10 +713,10 @@ def start(auto=True):
 
                         cmd = core.su_sudo() % '/etc/init.d/hplip stop'
                         log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-                        status, output = utils.run(cmd)
+                        status, output = utils.run(cmd, True, password_func)
 
                         log.info("\nRunning '%s'\nPlease wait, this may take several minutes..." % hplip_remove_cmd)
-                        status, output = utils.run(hplip_remove_cmd)
+                        status, output = utils.run(hplip_remove_cmd, True, password_func)
 
                         if status == 0:
                             core.hplip_present = dcheck.check_hplip()
@@ -717,8 +791,16 @@ def start(auto=True):
                 password_prompt()
 
                 for cmd in post_cmd:
-                    log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-                    status, output = utils.run(cmd)
+                    if type(cmd) == type(''):
+                        log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
+                        status, output = utils.run(cmd, True, password_func)
+                    
+                    else: # func
+                        log.info("Running command...")
+                        status = cmd(core.distro, core.distro_version)
+                    
+                    if status != 0:
+                        log.warn("Command failed.")
 
         #
         # INSTALL LOCATION
@@ -774,7 +856,7 @@ def start(auto=True):
 
             for cmd in core.build_cmds():
                 log.info("\nRunning '%s'\nPlease wait, this may take several minutes..." % cmd)
-                status, output = utils.run(cmd)
+                status, output = utils.run(cmd, True, password_func)
                 print
 
                 if status != 0:
@@ -784,6 +866,15 @@ def start(auto=True):
                     log.info("Command completed successfully.")
 
 
+            log.info("Restarting CUPS...")
+            status, output = utils.run(core.restart_cups(), True, password_func)
+            print
+            
+            if status != 0:
+                log.warn("CUPS restart failed.")
+            else:
+                log.info("Command completed successfully.")
+                
             #
             # Install printer
             #
@@ -883,7 +974,7 @@ def start(auto=True):
 
             for cmd in core.hpijs_build_cmds():
                 log.info("\nRunning '%s'\nPlease wait, this may take several minutes..." % cmd)
-                status, output = utils.run(cmd)
+                status, output = utils.run(cmd, True, password_func)
                 print
 
                 if status != 0:
@@ -894,6 +985,16 @@ def start(auto=True):
 
 
             os.chdir("../..")
+            
+            log.info("Restarting CUPS...")
+            status, output = utils.run(core.restart_cups(), True, password_func)
+            print
+            
+            if status != 0:
+                log.warn("CUPS restart failed.")
+            else:
+                log.info("Command completed successfully.")
+            
 
     except KeyboardInterrupt:
         log.info("")

@@ -27,7 +27,7 @@ from base.codes import *
 
 # Qt
 from qt import *
-from scrollview import ScrollView
+from scrollview import ScrollView, PixmapLabelButton
 
 # Std Lib
 import sys, os.path, os
@@ -51,14 +51,17 @@ from cleaningform import CleaningForm
 from cleaningform2 import CleaningForm2
 from waitform import WaitForm
 from faxsettingsform import FaxSettingsForm
-from informationform import InformationForm
+#from informationform import InformationForm
 
 
 
 class ScrollToolView(ScrollView):
-    def __init__(self,parent = None,name = None,fl = 0):
+    def __init__(self, toolbox_hosted=True, parent = None,form=None, name = None,fl = 0):
         ScrollView.__init__(self,parent,name,fl)
-        
+
+        self.form = form
+        self.toolbox_hosted = toolbox_hosted
+
         cmd_print, cmd_scan, cmd_pcard, \
             cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
 
@@ -68,156 +71,166 @@ class ScrollToolView(ScrollView):
         self.cmd_copy = user_cfg.commands.cpy or cmd_copy
         self.cmd_fax = user_cfg.commands.fax or cmd_fax
         self.cmd_fab = user_cfg.commands.fab or cmd_fab
-        
-        
+
+
     def fillControls(self):
         ScrollView.fillControls(self)
-        
+
         if self.cur_device is not None and \
             self.cur_device.supported and \
             self.cur_device.device_state != DEVICE_STATE_NOT_FOUND:
-    
+
             if self.cur_device.device_settings_ui is not None:
                 self.addItem( "device_settings", self.__tr("<b>Device Settings</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_settings.png')), 
                     self.__tr("Your device has special device settings. You may alter these settings here."), 
                     self.__tr("Device Settings..."), 
                     self.deviceSettingsButton_clicked)
-        
+
             if self.cur_device.fax_type:
                 self.addItem( "fax_settings", self.__tr("<b>Fax Setup</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_fax.png')), 
                     self.__tr("Fax support must be setup before you can send faxes."), 
                     self.__tr("Setup Fax..."), 
                     self.faxSettingsButton_clicked)
-        
+
                 self.addItem( "fax_address_book", self.__tr("<b>Fax Address Book</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_fax.png')), 
                     self.__tr("Setup fax phone numbers to use when sending faxes from the PC."), 
                     self.__tr("Fax Address Book..."), 
                     self.faxAddressBookButton_clicked)
-        
-        
+
+
             self.addItem( "testpage", self.__tr("<b>Print Test Page</b>"), 
                 QPixmap(os.path.join(prop.image_dir, 'icon_testpage.png')), 
                 self.__tr("Print a test page to test the setup of your printer."), 
-                self.__tr("Print Test Page..."), 
+                self.__tr("Print Test Page >>"), 
                 self.PrintTestPageButton_clicked)
-        
-        
-            self.addItem( "info", self.__tr("<b>View Device Information</b>"), 
+
+            self.addItem( "printer_info", self.__tr("<b>View Printer (Queue) Information</b>"), 
+                QPixmap(os.path.join(prop.image_dir, 'icon_cups.png')), 
+                self.__tr("View the printers (queues) installed in CUPS."), 
+                self.__tr("View Printer Information >>"), 
+                self.viewPrinterInformation) 
+
+            self.addItem( "device_info", self.__tr("<b>View Device Information</b>"), 
                 QPixmap(os.path.join(prop.image_dir, 'icon_info.png')), 
-                self.__tr("This information is primarily useful for debugging and troubleshooting."), 
-                self.__tr("View Information..."), 
+                self.__tr("This information is primarily useful for debugging and troubleshooting (advanced)."), 
+                self.__tr("View Device Information >>"), 
                 self.viewInformation) 
-        
+
             if self.cur_device.pq_diag_type:
                 self.addItem( "pqdiag", self.__tr("<b>Print Quality Diagnostics</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_pq_diag.png')),
                     self.__tr("Your printer can print a test page to help diagnose print quality problems."), 
                     self.__tr("Print Diagnostic Page..."), 
                     self.pqDiag)
-        
+
             if self.cur_device.fw_download:
                 self.addItem( "fwdownload", self.__tr("<b>Download Firmware</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'download.png')),
                     self.__tr("Download firmware to your printer (required on some devices after each power-up)."), 
                     self.__tr("Download Firmware..."), 
                     self.downloadFirmware)
-        
+
             if self.cur_device.clean_type:
                 self.addItem( "clean", self.__tr("<b>Clean Cartridges</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_clean.png')), 
                     self.__tr("You only need to perform this action if you are having problems with poor printout quality due to clogged ink nozzles."), 
                     self.__tr("Clean Cartridges..."), 
                     self.CleanPensButton_clicked)
-        
+
             if self.cur_device.align_type:
                 self.addItem( "align", self.__tr("<b>Align Cartridges</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_align.png')), 
                     self.__tr("This will improve the quality of output when a new cartridge is installed."), 
                     self.__tr("Align Cartridges..."), 
                     self.AlignPensButton_clicked)
-        
+
             if self.cur_device.color_cal_type:
                 self.addItem( "colorcal", self.__tr("<b>Perform Color Calibration</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_colorcal.png')), 
                     self.__tr("Use this procedure to optimimize your printer's color output."), 
                     self.__tr("Color Calibration..."), 
                     self.ColorCalibrationButton_clicked)
-        
+
             if self.cur_device.linefeed_cal_type:
                 self.addItem( "linefeed", self.__tr("<b>Perform Line Feed Calibration</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_linefeed_cal.png')),
                     self.__tr("Use line feed calibration to optimize print quality (to remove gaps in the printed output)."), 
                     self.__tr("Line Feed Calibration..."), 
                     self.linefeedCalibration) 
-        
+
             if self.cur_device.embedded_server_type and self.cur_device.bus == 'net':
                 self.addItem( "ews", self.__tr("<b>Access Embedded Web Page</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_ews.png')), 
                     self.__tr("You can use your printer's embedded web server to configure, maintain, and monitor the device from a web browser."),
                     self.__tr("Open in Browser..."), 
                     self.OpenEmbeddedBrowserButton_clicked)
-        
+
         self.addItem("support",  self.__tr("<b>View Documentation</b>"), 
             QPixmap(os.path.join(prop.image_dir, 'icon_support2.png')), 
             self.__tr("View documentation installed on your system."), 
             self.__tr("View Documentation..."), 
             self.viewSupport) 
-            
+
 
     def addItem(self, name, title, pix, text, button_text, button_func):
-        widget = self.getWidget()
-        layout1 = QGridLayout(widget, 1, 1, 10, 5, "layout1")
+        self.addGroupHeading(title, title)
 
-        pushButton1 = QPushButton(widget, "pushButton1")
-        layout1.addWidget(pushButton1, 1, 3)
+        widget = self.getWidget()
+
+        layout1 = QGridLayout(widget, 1, 3, 5, 10,"layout1")
+
+        layout1.setColStretch(0, 1)
+        layout1.setColStretch(1, 10)
+        layout1.setColStretch(2, 2)
+
+        pushButton = QPushButton(widget, "pushButton")
+        pushButton.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed, 0, 0,
+            pushButton.sizePolicy().hasHeightForWidth()))
+
+        layout1.addWidget(pushButton, 0, 3)
 
         icon = QLabel(widget, "icon")
         icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
             icon.sizePolicy().hasHeightForWidth()))
 
+        icon.setMinimumSize(QSize(32, 32))
+        icon.setMaximumSize(QSize(32, 32))
         icon.setScaledContents(1)
-        icon.setPixmap(pix)
-        layout1.addWidget(icon, 1, 0)
+        layout1.addWidget(icon, 0, 0)
 
-        spacer1 = QSpacerItem(20, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-        layout1.addItem(spacer1, 1, 2)
-
-        titleLabel = QLabel(widget, "titleLabel")
-        layout1.addMultiCellWidget(titleLabel, 0, 0, 0, 3)
 
         textLabel = QLabel(widget, "textLabel")
-        textLabel.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred, 0, 0,
-            textLabel.sizePolicy().hasHeightForWidth()))
+        textLabel.setAlignment(QLabel.WordBreak)
+        textLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
+            textLabel.sizePolicy().hasHeightForWidth()))        
+        textLabel.setFrameShape(self.frame_shape)
+        layout1.addWidget(textLabel, 0, 1)
 
-        textLabel.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
+        spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        layout1.addItem(spacer1, 0, 2)
 
-        layout1.addWidget(textLabel, 1, 1)
-
-        line1 = QFrame(widget,"line1")
-        line1.setFrameShape(QFrame.HLine)
-
-        layout1.addMultiCellWidget(line1, 2, 2, 0, 3)
-
-        self.connect(pushButton1,SIGNAL("clicked()"), button_func)
-
-        titleLabel.setText(title)
         textLabel.setText(text)
-        pushButton1.setText(button_text)
+        pushButton.setText(button_text)
+        icon.setPixmap(pix)
 
-        self.addControl(widget, name)
-        
-        
+        self.connect(pushButton, SIGNAL("clicked()"), button_func)
+
+        self.addWidget(widget, str(title))
+
     def viewInformation(self):
-        InformationForm(self.cur_device, self).exec_loop()
+        self.form.SwitchMaintTab("device_info")
+        
+    def viewPrinterInformation(self):
+        self.form.SwitchMaintTab("printer_info")
 
     def viewSupport(self):
         f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
         log.debug(f)
         utils.openURL(f)
-        
+
     def pqDiag(self):
         d = self.cur_device
         pq_diag = d.pq_diag_type
@@ -231,7 +244,7 @@ class ScrollToolView(ScrollView):
 
                 if pq_diag == 1:
                     maint.printQualityDiagType1(d, self.LoadPaperUI)
-                    
+
                 elif pq_diag == 2:
                     maint.printQualityDiagType2(d, self.LoadPaperUI)
 
@@ -256,7 +269,7 @@ class ScrollToolView(ScrollView):
 
                 if linefeed_type == 1:
                     maint.linefeedCalType1(d, self.LoadPaperUI)
-                    
+
                 elif linefeed_type == 2:
                     maint.linefeedCalType2(d, self.LoadPaperUI)
 
@@ -282,8 +295,8 @@ class ScrollToolView(ScrollView):
         finally:
             d.close()
             QApplication.restoreOverrideCursor()
-            
-            
+
+
     def CheckDeviceUI(self):
         self.FailureUI(self.__tr("<b>Device is busy or in an error state.</b><p>Please check device and try again."))
 
@@ -373,7 +386,7 @@ class ScrollToolView(ScrollView):
 
                 elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
                     maint.AlignType11(d, self.LoadPaperUI, self.Align10and11UI, self.NotPhotoOnlyRequired) 
-                    
+
                 elif align_type == ALIGN_TYPE_OJ_PRO:
                     maint.AlignType12(d, self.LoadPaperUI)
 
@@ -444,8 +457,8 @@ class ScrollToolView(ScrollView):
 
                 elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
                     maint.colorCalType5(d, self.LoadPaperUI)
-                    
-                elif color_cal_type == COLOR_CAL_CARRIER:
+
+                elif color_cal_type == COLOR_CAL_TYPE_CARRIER:
                     maint.colorCalType6(d, self.LoadPaperUI)
 
             else:
@@ -457,44 +470,9 @@ class ScrollToolView(ScrollView):
 
 
     def PrintTestPageButton_clicked(self):
-        d = self.cur_device
-        printer_name = d.cups_printers[0]
+        self.form.SwitchMaintTab("testpage")
 
-        if len(d.cups_printers) > 1:
-            from chooseprinterdlg import ChoosePrinterDlg2
-            dlg = ChoosePrinterDlg2(d.cups_printers)
-
-            if dlg.exec_loop() == QDialog.Accepted:
-                printer_name = dlg.printer_name
-            else:
-                return
-
-        try:
-            QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
-
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-                d.close()
-
-                if self.LoadPaperUI():
-                    d.printTestPage(printer_name)
-
-                    QMessageBox.information(self,
-                                         self.caption(),
-                                         self.__tr("<p><b>A test page should be printing on your printer.</b><p>If the page fails to print, please visit http://hplip.sourceforge.net for troubleshooting and support."),
-                                          QMessageBox.Ok,
-                                          QMessageBox.NoButton,
-                                          QMessageBox.NoButton)
-
-            else:
-                d.close()
-                self.CheckDeviceUI()
-
-        finally:
-            QApplication.restoreOverrideCursor()
-
-
+        
     def CleanUI1(self):
         return CleaningForm(self, self.cur_device, 1).exec_loop() == QDialog.Accepted
 
@@ -550,10 +528,10 @@ class ScrollToolView(ScrollView):
 
     def OpenEmbeddedBrowserButton_clicked(self):
         utils.openURL("http://%s" % self.cur_device.host)
-            
+
     def faxAddressBookButton_clicked(self):
         self.RunCommand(self.cmd_fab)
-        
+
     def faxSettingsButton_clicked(self):
         try:
             self.cur_device.open()
@@ -584,7 +562,15 @@ class ScrollToolView(ScrollView):
 
     def addressBookButton_clicked(self):
         self.RunCommand(self.cmd_fab)
-        
+
+    def deviceSettingsButton_clicked(self):
+        try:
+            self.cur_device.open()
+            self.cur_device.device_settings_ui(self.cur_device, self)
+        finally:
+            self.cur_device.close()
+
+
     def RunCommand(self, cmd, macro_char='%'):
         QApplication.setOverrideCursor(QApplication.waitCursor)
 
@@ -610,14 +596,14 @@ class ScrollToolView(ScrollView):
 
         finally:
             QApplication.restoreOverrideCursor()
-        
+
     def CleanupChildren(self):
         log.debug("Cleaning up child processes.")
         try:
             os.waitpid(-1, os.WNOHANG)
         except OSError:
             pass
-        
+
 
     def FailureUI(self, error_text):
         QMessageBox.critical(self,
@@ -626,6 +612,290 @@ class ScrollToolView(ScrollView):
                               QMessageBox.Ok,
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)
-        
+
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollToolView",s,c)
+
+
+#
+#
+# ScrollDeviceInfoView (View Device Information)
+#
+#
+
+class ScrollDeviceInfoView(ScrollView):
+    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self,parent,name,fl)
+
+        self.form = form
+        self.toolbox_hosted = toolbox_hosted
+
+    def fillControls(self):
+        ScrollView.fillControls(self)
+
+        self.addDeviceInfo()
+
+        if self.toolbox_hosted:
+            self.navButton = self.addActionButton("bottom_nav", "", 
+                                    None, self.__tr("<< Tools"), self.navButton_clicked)
+        else:
+            self.navButton = self.addActionButton("bottom_nav", self.__tr("Close"), 
+                                    self.navButton_clicked, "", None)
+
+        self.maximizeControl()
+
+    def addDeviceInfo(self):
+        self.addGroupHeading("info_title", self.__tr("Device Information"))
+
+        widget = self.getWidget()
+
+        layout37 = QGridLayout(widget,1,1,5,10,"layout37")
+
+        self.infoListView = QListView(widget,"fileListView")
+        self.infoListView.addColumn(self.__tr("Static/Dynamic"))
+        self.infoListView.addColumn(self.__tr("Key"))
+        self.infoListView.addColumn(self.__tr("Value"))
+        self.infoListView.setAllColumnsShowFocus(1)
+        self.infoListView.setShowSortIndicator(1)
+        self.infoListView.setColumnWidth(0, 50)
+        self.infoListView.setColumnWidth(1, 150)
+        self.infoListView.setColumnWidth(2, 300)
+        self.infoListView.setItemMargin(2)
+        self.infoListView.setSorting(-1)
+
+        layout37.addMultiCellWidget(self.infoListView,1,1,0,3)
+
+        mq_keys = self.cur_device.mq.keys()
+        mq_keys.sort()
+        mq_keys.reverse()
+        for key,i in zip(mq_keys, range(len(mq_keys))):
+            QListViewItem(self.infoListView, self.__tr("Static"), key, str(self.cur_device.mq[key]))
+
+        dq_keys = self.cur_device.dq.keys()
+        dq_keys.sort()
+        dq_keys.reverse()
+        for key,i in zip(dq_keys, range(len(dq_keys))):
+            QListViewItem(self.infoListView, self.__tr("Dynamic"), key, str(self.cur_device.dq[key]))
+
+        self.addWidget(widget, "file_list", maximize=True)
+
+    def navButton_clicked(self):
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+
+    def __tr(self,s,c = None):
+        return qApp.translate("ScrollDeviceInfoView",s,c)
+
+
+        
+#
+#
+# ScrollTestpageView (Print Test Page)
+#
+#
+        
+class ScrollTestpageView(ScrollView):
+    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self,parent,name,fl)
+
+        self.form = form
+        self.toolbox_hosted = toolbox_hosted
+
+    def fillControls(self):
+        ScrollView.fillControls(self)
+
+        self.addPrinterFaxList()
+        
+        self.addTestpageType()
+        
+        self.addLoadPaper()
+        
+        if self.toolbox_hosted:
+            s = self.__tr("<< Tools")
+        else:
+            s = self.__tr("Close")
+            
+        self.printButton = self.addActionButton("bottom_nav", self.__tr("Print Test Page"), 
+                                self.printButton_clicked, s, self.navButton_clicked)
+                                
+
+    def addTestpageType(self):
+        self.addGroupHeading("testpage_type", self.__tr("Test Page Type"))
+        widget = self.getWidget()
+        
+        Form4Layout = QGridLayout(widget,1,1,5,10,"Form4Layout")
+
+        self.buttonGroup3 = QButtonGroup(widget,"buttonGroup3")
+        self.buttonGroup3.setLineWidth(0)
+        self.buttonGroup3.setColumnLayout(0,Qt.Vertical)
+        self.buttonGroup3.layout().setSpacing(5)
+        self.buttonGroup3.layout().setMargin(10)
+        
+        buttonGroup3Layout = QGridLayout(self.buttonGroup3.layout())
+        buttonGroup3Layout.setAlignment(Qt.AlignTop)
+
+        self.radioButton6 = QRadioButton(self.buttonGroup3,"radioButton6")
+        self.radioButton6.setEnabled(False)
+        buttonGroup3Layout.addWidget(self.radioButton6,1,0)
+
+        self.radioButton5 = QRadioButton(self.buttonGroup3,"radioButton5")
+        self.radioButton5.setChecked(1)
+        buttonGroup3Layout.addWidget(self.radioButton5,0,0)
+
+        Form4Layout.addWidget(self.buttonGroup3,0,0)
+        
+        self.radioButton6.setText(self.__tr("Printer diagnostic page (does not test print driver)"))
+        self.radioButton5.setText(self.__tr("HPLIP test page (tests print driver)"))
+        
+                                
+        self.addWidget(widget, "page_type")
+                                
+                                
+    def navButton_clicked(self):
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+            
+    def printButton_clicked(self):
+        d = self.cur_device
+        printer_name = self.cur_printer
+        printed = False
+        
+        try:
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+            d.open()
+
+            if d.isIdleAndNoError():
+                QApplication.restoreOverrideCursor()
+                d.close()
+
+                d.printTestPage(printer_name)
+                printed = True
+
+            else:
+                d.close()
+                self.CheckDeviceUI()
+
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        if printed:
+                QMessageBox.information(self,
+                                     self.caption(),
+                                     self.__tr("<p><b>A test page should be printing on your printer.</b><p>If the page fails to print, please visit http://hplip.sourceforge.net for troubleshooting and support."),
+                                      QMessageBox.Ok,
+                                      QMessageBox.NoButton,
+                                      QMessageBox.NoButton)
+        
+        
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+    
+
+    def __tr(self,s,c = None):
+        return qApp.translate("ScrollTestpageView",s,c)
+        
+        
+        
+        
+        
+
+
+#
+#
+# ScrollPrinterInfoView (View Device Information)
+#
+#
+
+class ScrollPrinterInfoView(ScrollView):
+    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self,parent,name,fl)
+
+        self.form = form
+        self.toolbox_hosted = toolbox_hosted
+
+    def fillControls(self):
+        ScrollView.fillControls(self)
+
+        printers = []
+        for p in self.printers:
+            if p.device_uri == self.cur_device.device_uri or \
+                p.device_uri.replace("hpfax:", "hp:") == self.cur_device.device_uri:
+                
+                printers.append(p)
+                
+        if not printers:
+            self.addGroupHeading("error_title", self.__tr("No printers found for this device."))
+        else:
+            for p in printers:
+                self.addPrinterInfo(p)
+                
+        if self.toolbox_hosted:
+            self.navButton = self.addActionButton("bottom_nav", "", 
+                                    None, self.__tr("<< Tools"), self.navButton_clicked)
+        else:
+            self.navButton = self.addActionButton("bottom_nav", self.__tr("Close"), 
+                                    self.navButton_clicked, "", None)
+
+        self.maximizeControl()
+
+    def addPrinterInfo(self, p):
+        self.addGroupHeading(p.name, p.name)
+        widget = self.getWidget()
+
+        layout1 = QVBoxLayout(widget,5,10,"layout1")
+
+        textLabel2 = QLabel(widget,"textLabel2")
+        
+        if p.device_uri.startswith("hpfax:"):
+            s = self.__tr("Fax")
+        else:
+            s = self.__tr("Printer")
+        textLabel2.setText(self.__tr("Type: %1").arg(s))
+        layout1.addWidget(textLabel2)
+
+        textLabel3 = QLabel(widget,"textLabel3")
+        textLabel3.setText(self.__tr("Location: %1").arg(p.location))
+        layout1.addWidget(textLabel3)
+
+        textLabel4 = QLabel(widget,"textLabel4")
+        textLabel4.setText(self.__tr("Description/Info: %1").arg(p.info))
+        layout1.addWidget(textLabel4)
+
+        textLabel5 = QLabel(widget,"textLabel5")
+        
+        if p.state == cups.IPP_PRINTER_STATE_IDLE:
+            s = self.__tr("Idle")
+        elif p.state == cups.IPP_PRINTER_STATE_PROCESSING:
+            s = self.__tr("Processing")
+        elif p.state == cups.IPP_PRINTER_STATE_STOPPED:
+            s = self.__tr("Stopped")
+        else:
+            s = self.__tr("Unknown")
+        
+        textLabel5.setText(self.__tr("State: %1").arg(s))
+        layout1.addWidget(textLabel5)
+
+        textLabel6 = QLabel(widget,"textLabel6")
+        textLabel6.setText(self.__tr("PPD/Driver: %1").arg(p.makemodel))
+        layout1.addWidget(textLabel6)
+
+        textLabel7 = QLabel(widget,"textLabel7")
+        textLabel7.setText(self.__tr("Printer URI: %1").arg(p.printer_uri))
+        layout1.addWidget(textLabel7)
+
+        self.addWidget(widget, p.name)
+
+    def navButton_clicked(self):
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+
+    def __tr(self,s,c = None):
+        return qApp.translate("ScrollPrinterInfoView",s,c)

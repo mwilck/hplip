@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '1.6'
+__version__ = '1.7'
 __title__ = 'Printer Cartridge Color Calibration Utility'
 __doc__ = "Perform color calibration on HPLIP supported inkjet printers. (Note: Not all printers require the use of this utility)."
 
@@ -137,7 +137,7 @@ def colorCal4():
     values = [0, 0, 0, 0]
     ok = True
     while True:
-        x = raw_input(utils.bold("""Enter the letter ('A' thru 'N') and number (1 thru 14) for the gray plot (eg, "C5") or "q" to quit: """))
+        x = raw_input(utils.bold("""Enter the letter ('A' thru 'N') and number (1 thru 14) for the GRAY plot (eg, "C5") or "q" to quit: """))
 
         if x.lower().strip() == 'q':
             ok = False
@@ -177,7 +177,7 @@ def colorCal4():
 
     if ok:
         while True:
-            x = raw_input(utils.bold("""Enter the letter ('P' thru 'V') and number (1 thru 7) for the color plot (eg, "R3") or "q" to quit: """))
+            x = raw_input(utils.bold("""Enter the letter ('P' thru 'V') and number (1 thru 7) for the COLOR plot (eg, "R3") or "q" to quit: """))
 
             if x.lower().strip() == 'q':
                 ok = False
@@ -345,7 +345,7 @@ try:
         elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU: # 5
             maint.colorCalType5(d, loadPlainPaper)
         
-        elif color_cal_type == COLOR_CAL_TYPE_CARRIER: # 5
+        elif color_cal_type == COLOR_CAL_TYPE_CARRIER: # 6
             maint.colorCalType6(d, loadPlainPaper)
         
         else:

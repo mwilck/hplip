@@ -31,10 +31,15 @@
     <script type="text/javascript">
     <!--
     function todoOnLoad() {
-        var depend = "";
-        depend = $turned_off_options;
-        document.getElementById("scrollTextArea").innerHTML = depend;
         generateHeader();
+        
+        var divText = "";
+        #for $d in $turned_off_options
+            divText += "$turned_off_options[$d]<br/>";
+        #end for
+        
+        document.getElementById("scrollTextArea").innerHTML = divText;
+        
     };
     -->
     </script>
@@ -54,10 +59,8 @@
     </div>
     
     
-    <div id="message_body">
-        <div id="scrollTextDiv">
-            <textarea cols="62" rows="11" wrap="off" name="scrollTextArea" id="scrollTextArea" onkeyup="sTextArea.innerText=scrollTextArea.innerText"></textarea>
-        </div>
+    <div id="scrollTextDiv">
+        <textarea cols="62" rows="11" wrap="off" name="scrollTextArea" id="scrollTextArea" onkeyup="sTextArea.innerText=scrollTextArea.innerText"></textarea>
     </div>
     
     <div id="message_footer">

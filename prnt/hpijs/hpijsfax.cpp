@@ -557,7 +557,7 @@ BUGOUT:
 	{
 		fclose (fpFax);
 	}
-    unlink (hpFileName);
+    //unlink (hpFileName);
 	if (pFaxStruct != NULL)
 	{
 		#ifdef CAPTURE

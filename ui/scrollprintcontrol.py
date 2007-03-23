@@ -42,7 +42,9 @@ class CancelJobPushButton(QPushButton):
 class ScrollPrintJobView(ScrollView):
     def __init__(self,parent = None,name = None,fl = 0):
         ScrollView.__init__(self,parent,name,fl)
-
+        
+        #self.heading_color = "#cccccc"
+        
         self.JOB_STATES = { cups.IPP_JOB_PENDING : self.__tr("Pending"),
                             cups.IPP_JOB_HELD : self.__tr("On hold"),
                             cups.IPP_JOB_PROCESSING : self.__tr("Printing"),
@@ -71,6 +73,8 @@ class ScrollPrintJobView(ScrollView):
 
     def fillControls(self):
         ScrollView.fillControls(self)
+        
+        self.addGroupHeading("print_control", self.__tr("Print Control"))
         
         self.addPrintController()
         self.updatePrintController()
@@ -102,7 +106,7 @@ class ScrollPrintJobView(ScrollView):
     def addPrintController(self):
         widget = self.getWidget()
 
-        layout1 = QGridLayout(widget,1,1,10,5,"layout1")
+        layout1 = QGridLayout(widget,1,1,5,10,"layout1")
 
         layout2 = QVBoxLayout(None,0,6,"layout2")
 
@@ -129,28 +133,17 @@ class ScrollPrintJobView(ScrollView):
         layout3.addWidget(self.defaultPushButton)
         layout1.addMultiCellLayout(layout3,2,3,2,2)
         
-        spacer1 = QSpacerItem(251,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        spacer1 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         layout1.addItem(spacer1,3,1)
         
-        spacer2 = QSpacerItem(251,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        spacer2 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         layout1.addItem(spacer2,2,1)
-
-        line1 = QFrame(widget,"line1")
-        line1.setFrameShape(QFrame.HLine)
-
-        layout1.addMultiCellWidget(line1,1,1,0,2)
-
-        titleLabel = QLabel(widget,"jobIDText_2")
-
-        layout1.addMultiCellWidget(titleLabel,0,0,0,2)
 
         self.connect(self.stopstartPushButton,SIGNAL("clicked()"),self.stopstartPushButton_clicked)
         self.connect(self.rejectacceptPushButton,SIGNAL("clicked()"),self.rejectacceptPushButton_clicked)
         self.connect(self.defaultPushButton,SIGNAL("clicked()"),self.defaultPushButton_clicked)
 
-        titleLabel.setText(self.__tr("<b>Printer Control</b>"))
-
-        self.addControl(widget, "print_control")
+        self.addWidget(widget, "print_control")
 
     def updatePrintController(self):
         # default printer
@@ -244,13 +237,13 @@ class ScrollPrintJobView(ScrollView):
         textLabel1 = QLabel(widget,"textLabel1")
         layout1.addWidget(textLabel1)
 
-        spacer1 = QSpacerItem(231,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        spacer1 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         layout1.addItem(spacer1)
 
         cancelPushButton = QPushButton(widget,"cancelPushButton")
         layout1.addWidget(cancelPushButton)
 
-        self.addControl(widget, "job_control")
+        self.addWidget(widget, "job_control")
 
         textLabel1.setText(self.__tr("Cancel all active print jobs"))
         cancelPushButton.setText(self.__tr("Cancel All Jobs"))
@@ -272,12 +265,12 @@ class ScrollPrintJobView(ScrollView):
     def addItem(self, dest, job_id, state, user, title):
         widget = self.getWidget()
 
-        layout1 = QGridLayout(widget,1,1,10,5,"layout1")
+        layout1 = QGridLayout(widget,1,1,5,10,"layout1")
 
-        line1 = QFrame(widget,"line1")
-        line1.setFrameShape(QFrame.HLine)
+        #line1 = QFrame(widget,"line1")
+        #line1.setFrameShape(QFrame.HLine)
 
-        layout1.addMultiCellWidget(line1,3,3,0,4)
+        #layout1.addMultiCellWidget(line1,3,3,0,4)
 
         cancelPushButton = CancelJobPushButton(widget,"cancelPushButton", job_id)
         layout1.addWidget(cancelPushButton,1,4)
@@ -321,7 +314,7 @@ class ScrollPrintJobView(ScrollView):
 
         self.connect(cancelPushButton, SIGNAL("clicked()"), self.cancelJob)
 
-        self.addControl(widget, dest+str(job_id))
+        self.addWidget(widget, dest+str(job_id))
 
 
     def cancelJob(self):

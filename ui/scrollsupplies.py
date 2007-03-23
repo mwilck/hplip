@@ -37,47 +37,42 @@ class ScrollSuppliesView(ScrollView):
     def __init__(self,parent = None,name = None,fl = 0):
         ScrollView.__init__(self,parent,name,fl)
 
-        self.pix_black = QPixmap(os.path.join(prop.image_dir, 'icon_black.png'))
-        self.pix_blue = QPixmap(os.path.join(prop.image_dir, 'icon_blue.png'))
-        self.pix_cyan = QPixmap(os.path.join(prop.image_dir, 'icon_cyan.png'))
-        self.pix_grey = QPixmap(os.path.join(prop.image_dir, 'icon_grey.png'))
-        self.pix_magenta = QPixmap(os.path.join(prop.image_dir, 'icon_magenta.png'))
-        self.pix_photo = QPixmap(os.path.join(prop.image_dir, 'icon_photo.png'))
-        self.pix_photo_cyan = QPixmap(os.path.join(prop.image_dir, 'icon_photo_cyan.png'))
-        self.pix_photo_magenta = QPixmap(os.path.join(prop.image_dir, 'icon_photo_magenta.png'))
-        self.pix_photo_yellow = QPixmap(os.path.join(prop.image_dir, 'icon_photo_yellow.png'))
-        self.pix_tricolor = QPixmap(os.path.join(prop.image_dir, 'icon_tricolor.png'))
-        self.pix_yellow = QPixmap(os.path.join(prop.image_dir, 'icon_yellow.png'))
         self.pix_battery = QPixmap(os.path.join(prop.image_dir, 'icon_battery.png'))
-        self.pix_photo_cyan_and_photo_magenta = QPixmap(os.path.join(prop.image_dir, 'icon_photo_magenta_and_photo_cyan.png'))
-        self.pix_magenta_and_yellow = QPixmap(os.path.join(prop.image_dir, 'icon_magenta_and_yellow.png'))
-        self.pix_black_and_cyan = QPixmap(os.path.join(prop.image_dir, 'icon_black_and_cyan.png'))
-        self.pix_black_and_yellow = QPixmap(os.path.join(prop.image_dir, 'icon_black_and_yellow.png'))
-        self.pix_light_gray_and_photo_black = QPixmap(os.path.join(prop.image_dir, 'icon_light_grey_and_photo_black.png'))
-        self.pix_light_gray = QPixmap(os.path.join(prop.image_dir, 'icon_light_grey.png'))
-        self.pix_photo_gray = QPixmap(os.path.join(prop.image_dir, 'icon_photo_black.png'))
 
-        self.TYPE_TO_PIX_MAP = {AGENT_TYPE_BLACK: self.pix_black,
-                               AGENT_TYPE_CMY: self.pix_tricolor,
-                               AGENT_TYPE_KCM: self.pix_photo,
-                               AGENT_TYPE_GGK: self.pix_grey,
-                               AGENT_TYPE_YELLOW: self.pix_yellow,
-                               AGENT_TYPE_MAGENTA: self.pix_magenta,
-                               AGENT_TYPE_CYAN: self.pix_cyan,
-                               AGENT_TYPE_CYAN_LOW: self.pix_photo_cyan,
-                               AGENT_TYPE_YELLOW_LOW: self.pix_photo_yellow,
-                               AGENT_TYPE_MAGENTA_LOW: self.pix_photo_magenta,
-                               AGENT_TYPE_BLUE: self.pix_blue,
-                               AGENT_TYPE_KCMY_CM: self.pix_grey,
-                               AGENT_TYPE_LC_LM: self.pix_photo_cyan_and_photo_magenta,
-                               AGENT_TYPE_Y_M: self.pix_magenta_and_yellow,
-                               AGENT_TYPE_C_K: self.pix_black_and_cyan,
-                               AGENT_TYPE_LG_PK: self.pix_light_gray_and_photo_black,
-                               AGENT_TYPE_LG: self.pix_light_gray,
-                               AGENT_TYPE_G: self.pix_grey,
-                               AGENT_TYPE_PG: self.pix_photo_gray,
-                               AGENT_TYPE_C_M: self.pix_photo_cyan_and_photo_magenta,
-                               AGENT_TYPE_K_Y: self.pix_black_and_yellow,
+        yellow = "#ffff00"
+        light_yellow = "#ffffcc"
+        cyan = "#00ffff"
+        light_cyan = "#ccffff"
+        magenta = "#ff00ff"
+        light_magenta = "#ffccff"
+        black = "#000000"
+        blue = "#0000ff"
+        dark_grey = "#808080"
+        light_grey = "#c0c0c0"
+        
+        self.TYPE_TO_PIX_MAP = {
+                               AGENT_TYPE_UNSPECIFIED : [black],
+                               AGENT_TYPE_BLACK: [black],
+                               AGENT_TYPE_CMY: [cyan, magenta, yellow],
+                               AGENT_TYPE_KCM: [light_cyan, light_magenta, light_yellow],
+                               AGENT_TYPE_GGK: [dark_grey],
+                               AGENT_TYPE_YELLOW: [yellow],
+                               AGENT_TYPE_MAGENTA: [magenta],
+                               AGENT_TYPE_CYAN : [cyan],
+                               AGENT_TYPE_CYAN_LOW: [light_cyan],
+                               AGENT_TYPE_YELLOW_LOW: [light_yellow],
+                               AGENT_TYPE_MAGENTA_LOW: [light_magenta],
+                               AGENT_TYPE_BLUE: [blue],
+                               AGENT_TYPE_KCMY_CM: [yellow, cyan, magenta],
+                               AGENT_TYPE_LC_LM: [light_cyan, light_magenta],
+                               #AGENT_TYPE_Y_M: [yellow, magenta],
+                               #AGENT_TYPE_C_K: [black, cyan],
+                               AGENT_TYPE_LG_PK: [light_grey, dark_grey],
+                               AGENT_TYPE_LG: [light_grey],
+                               AGENT_TYPE_G: [dark_grey],
+                               AGENT_TYPE_PG: [light_grey],
+                               AGENT_TYPE_C_M: [cyan, magenta],
+                               AGENT_TYPE_K_Y: [black, yellow],
                                }
 
     def fillControls(self):
@@ -85,7 +80,8 @@ class ScrollSuppliesView(ScrollView):
         
         if self.cur_device is not None and \
             self.cur_device.supported and \
-            self.cur_device.status_type != STATUS_TYPE_NONE:
+            self.cur_device.status_type != STATUS_TYPE_NONE and \
+            self.cur_device.device_state != DEVICE_STATE_NOT_FOUND:
 
             try:
                 self.cur_device.sorted_supplies
@@ -116,16 +112,70 @@ class ScrollSuppliesView(ScrollView):
 
                 self.addItem("agent %d" % a, "<b>"+agent_desc+"</b>",
                                           agent_sku, agent_health_desc, 
-                                          agent_kind, agent_type, agent_level)                                
+                                          agent_kind, agent_type, agent_level)
+                                          
 
+        else:
+            if not self.cur_device.supported:
+                
+                self.addGroupHeading("not_supported", self.__tr("ERROR: Device not supported."))
+            
+            elif self.cur_device.status_type == STATUS_TYPE_NONE:
+                
+                self.addGroupHeading("not_found", self.__tr("ERROR: Supplies status is not supported on this device."))
+                
+            else:
+                self.addGroupHeading("not_found", self.__tr("ERROR: Device not found. Please check connection and power-on device."))
 
+                
     def getIcon(self, agent_kind, agent_type):
         if agent_kind in (AGENT_KIND_SUPPLY,
                           AGENT_KIND_HEAD,
                           AGENT_KIND_HEAD_AND_SUPPLY,
                           AGENT_KIND_TONER_CARTRIDGE):
 
-            return self.TYPE_TO_PIX_MAP[agent_type] 
+            map = self.TYPE_TO_PIX_MAP[agent_type]
+            
+            if isinstance(map, list):
+                map_len = len(map)
+                pix = QPixmap(32, 32) #, -1, QPixmap.DefaultOptim)
+                pix.fill(qApp.palette().color(QPalette.Active, QColorGroup.Background))
+                p = QPainter()
+                p.begin(pix)
+                p.setBackgroundMode(Qt.OpaqueMode)
+                
+                if map_len == 1:
+                    p.setPen(QColor(map[0]))
+                    p.setBrush(QBrush(QColor(map[0]), Qt.SolidPattern))
+                    p.drawPie(8, 8, 16, 16, 0, 5760)
+                
+                elif map_len == 2:
+                    p.setPen(QColor(map[0]))
+                    p.setBrush(QBrush(QColor(map[0]), Qt.SolidPattern))
+                    p.drawPie(4, 8, 16, 16, 0, 5760)
+                    
+                    p.setPen(QColor(map[1]))
+                    p.setBrush(QBrush(QColor(map[1]), Qt.SolidPattern))
+                    p.drawPie(12, 8, 16, 16, 0, 5760)
+                
+                elif map_len == 3:
+                    p.setPen(QColor(map[2]))
+                    p.setBrush(QBrush(QColor(map[2]), Qt.SolidPattern))
+                    p.drawPie(12, 12, 16, 16, 0, 5760)
+                
+                    p.setPen(QColor(map[1]))
+                    p.setBrush(QBrush(QColor(map[1]), Qt.SolidPattern))
+                    p.drawPie(4, 12, 16, 16, 0, 5760)
+                    
+                    p.setPen(QColor(map[0]))
+                    p.setBrush(QBrush(QColor(map[0]), Qt.SolidPattern))
+                    p.drawPie(8, 4, 16, 16, 0, 5760)
+                
+                p.end()
+                return pix
+            
+            else:
+                return map
 
         elif agent_kind == AGENT_KIND_INT_BATTERY:
                 return self.pix_battery
@@ -134,78 +184,29 @@ class ScrollSuppliesView(ScrollView):
     def createBarGraph(self, percent, agent_type, w=100, h=18):
         fw = w/100*percent
         px = QPixmap(w, h)
+        px.fill(qApp.palette().color(QPalette.Active, QColorGroup.Background))
+        
         pp = QPainter(px)
-        pp.setBackgroundMode(Qt.OpaqueMode)
         pp.setPen(Qt.black)
+        pp.setBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Base))
 
-        pp.setBackgroundColor(Qt.white)
+        map = self.TYPE_TO_PIX_MAP[agent_type]
+        map_len = len(map)
+        
+        if map_len == 1 or map_len > 3:
+            pp.fillRect(0, 0, fw, h, QBrush(QColor(map[0])))
 
-        # erase the background
-        b = QBrush(QColor(Qt.white))
-        pp.fillRect(0, 0, w, h, b)
-
-        # fill in the bar
-        if agent_type in (AGENT_TYPE_BLACK, AGENT_TYPE_UNSPECIFIED):
-            b = QBrush(QColor(Qt.black))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_CMY:
-            h3 = h/3
-            b = QBrush(QColor(Qt.cyan))
-            pp.fillRect(0, 0, fw, h3, b)
-            b = QBrush(QColor(Qt.magenta))
-            pp.fillRect(0, h3, fw, 2*h3, b)
-            b = QBrush(QColor(Qt.yellow))
-            pp.fillRect(0, 2*h3, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_KCM:
-            h3 = h/3
-            b = QBrush(QColor(Qt.cyan).light())
-            pp.fillRect(0, 0, fw, h3, b)
-            b = QBrush(QColor(Qt.magenta).light())
-            pp.fillRect(0, h3, fw, 2*h3, b)
-            b = QBrush(QColor(Qt.yellow).light())
-            pp.fillRect(0, 2*h3, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_GGK:
-            b = QBrush(QColor(Qt.gray))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_YELLOW:
-            b = QBrush(QColor(Qt.yellow))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_MAGENTA:
-            b = QBrush(QColor(Qt.magenta))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_CYAN:
-            b = QBrush(QColor(Qt.cyan))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_CYAN_LOW:
-            b = QBrush(QColor(225, 246, 255))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_YELLOW_LOW:
-            b = QBrush(QColor(255, 253, 225))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_MAGENTA_LOW:
-            b = QBrush(QColor(255, 225, 240))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_BLUE:
-            b = QBrush(QColor(0, 0, 255))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_LG:
-            b = QBrush(QColor(192, 192, 192))
-            pp.fillRect(0, 0, fw, h, b)
-        
-        elif agent_type == AGENT_TYPE_PG:
-            b = QBrush(QColor(128, 128, 128))
-            pp.fillRect(0, 0, fw, h, b)
+        elif map_len == 2:
+            h2 = h / 2
+            pp.fillRect(0, 0, fw, h2, QBrush(QColor(map[0])))
+            pp.fillRect(0, h2, fw, h, QBrush(QColor(map[1])))
+            
+        elif map_len == 3:
+            h3 = h / 3
+            h23 = 2 * h3
+            pp.fillRect(0, 0, fw, h3, QBrush(QColor(map[0])))
+            pp.fillRect(0, h3, fw, h23, QBrush(QColor(map[1])))
+            pp.fillRect(0, h23, fw, h, QBrush(QColor(map[2])))
 
         # draw black frame
         pp.drawRect(0, 0, w, h)
@@ -215,8 +216,8 @@ class ScrollSuppliesView(ScrollView):
             pp.setPen(Qt.white)
 
         # 75% ticks
-        w1 = 3*w/4
-        h6 = h/6
+        w1 = 3 * w / 4
+        h6 = h / 6
         pp.drawLine(w1, 0, w1, h6)
         pp.drawLine(w1, h, w1, h-h6)
 
@@ -225,8 +226,8 @@ class ScrollSuppliesView(ScrollView):
             pp.setPen(Qt.white)
 
         # 50% ticks
-        w2 = w/2
-        h4 = h/4
+        w2 = w / 2
+        h4 = h / 4
         pp.drawLine(w2, 0, w2, h4)
         pp.drawLine(w2, h, w2, h-h4)
 
@@ -235,7 +236,7 @@ class ScrollSuppliesView(ScrollView):
             pp.setPen(Qt.white)
 
         # 25% ticks
-        w4 = w/4
+        w4 = w / 4
         pp.drawLine(w4, 0, w4, h6)
         pp.drawLine(w4, h, w4, h-h6)
 
@@ -245,10 +246,12 @@ class ScrollSuppliesView(ScrollView):
     def addItem(self, name, title_text, part_num_text, status_text, 
                 agent_kind, agent_type, percent):
 
+        self.addGroupHeading(title_text, title_text)
+        
         widget = self.getWidget()
-        layout1 = QGridLayout(widget,1,1,10,5,"layout1")
+        layout1 = QGridLayout(widget,1,1,5,10,"layout1")
 
-        spacer1 = QSpacerItem(31,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
+        spacer1 = QSpacerItem(20,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
         layout1.addItem(spacer1,0,3)
 
         barGraph = QLabel(widget,"barGraph")
@@ -260,17 +263,18 @@ class ScrollSuppliesView(ScrollView):
         barGraph.setScaledContents(1)
         layout1.addMultiCellWidget(barGraph,0,0,4,5)
 
-        titleText = QLabel(widget,"titleText")
-        layout1.addMultiCellWidget(titleText,0,0,0,2)
+        #titleText = QLabel(widget,"titleText")
+        #layout1.addMultiCellWidget(titleText,0,0,0,2)
 
-        line1 = QFrame(widget,"line1")
-        line1.setFrameShape(QFrame.HLine)
-        layout1.addMultiCellWidget(line1,2,2,0,5)
+        #line1 = QFrame(widget,"line1")
+        #line1.setFrameShape(QFrame.HLine)
+        #layout1.addMultiCellWidget(line1,2,2,0,5)
 
-        spacer2 = QSpacerItem(190,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
+        spacer2 = QSpacerItem(20,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
         layout1.addMultiCell(spacer2,1,1,2,4)
 
         statusText = QLabel(widget,"statusText")
+        statusText.setFrameShape(self.frame_shape)
         layout1.addWidget(statusText,1,5)
 
         icon = QLabel(widget,"icon")
@@ -280,17 +284,21 @@ class ScrollSuppliesView(ScrollView):
         icon.setMinimumSize(QSize(32,32))
         icon.setMaximumSize(QSize(32,32))
         icon.setScaledContents(1)
-        layout1.addWidget(icon,1,0)
+        layout1.addWidget(icon,0,0)
 
         partNumText = QLabel(widget,"partNumText")
+        partNumText.setFrameShape(self.frame_shape)
         partNumText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred,0,0,
             partNumText.sizePolicy().hasHeightForWidth()))
 
         partNumText.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
-        layout1.addWidget(partNumText,1,1)                
+        layout1.addWidget(partNumText,0,1)                
 
-        titleText.setText(title_text)
-        partNumText.setText(part_num_text)
+        #titleText.setText(title_text)
+        
+        if part_num_text:
+            partNumText.setText(self.__tr("Part No. %1").arg(part_num_text))
+        
         statusText.setText(status_text)
 
         # Bar graph level
@@ -322,7 +330,7 @@ class ScrollSuppliesView(ScrollView):
             if pix is not None:
                 icon.setPixmap(pix)
 
-        self.addControl(widget, name)
+        self.addWidget(widget, name)
 
 
     def __tr(self,s,c = None):

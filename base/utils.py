@@ -500,7 +500,7 @@ def log_title(program_name, version):
     log.info(bold("HP Linux Imaging and Printing System (ver. %s)" % prop.version))
     log.info(bold("%s ver. %s" % (program_name, version)))
     log.info("")
-    log.info("Copyright (c) 2003-6 Hewlett-Packard Development Company, LP")
+    log.info("Copyright (c) 2001-7 Hewlett-Packard Development Company, LP")
     log.info("This software comes with ABSOLUTELY NO WARRANTY.")
     log.info("This is free software, and you are welcome to distribute it")
     log.info("under certain conditions. See COPYING file for more details.")
@@ -1251,7 +1251,10 @@ def run(cmd, log_output=True, password_func=get_password, timeout=1):
                 output.write(child.before)
 
             if i == 0: # Password:
-                child.sendline(get_password())
+                if password_func is not None:
+                    child.sendline(password_func())
+                else:
+                    child.sendline(get_password())
 
             elif i == 1: # EOF
                 break
@@ -1269,5 +1272,72 @@ def run(cmd, log_output=True, password_func=get_password, timeout=1):
     return child.exitstatus, output.getvalue()
 
 
+def expand_range(ns): # ns -> string repr. of numeric range, e.g. "1-4, 7, 9-12"
+    """Credit: Jean Brouwers, comp.lang.python 16-7-2004
+       Convert a string representation of a set of ranges into a 
+       list of ints, e.g.
+       "1-4, 7, 9-12" --> [1,2,3,4,7,9,10,11,12]
+    """
+    fs = []
+    for n in ns.split(','):
+        n = n.strip()
+        r = n.split('-')
+        if len(r) == 2:  # expand name with range
+            h = r[0].rstrip('0123456789')  # header
+            r[0] = r[0][len(h):]
+             # range can't be empty
+            if not (r[0] and r[1]):
+                raise ValueError, 'empty range: ' + n
+             # handle leading zeros
+            if r[0] == '0' or r[0][0] != '0':
+                h += '%d'
+            else:
+                w = [len(i) for i in r]
+                if w[1] > w[0]:
+                   raise ValueError, 'wide range: ' + n
+                h += '%%0%dd' % max(w)
+             # check range
+            r = [int(i, 10) for i in r]
+            if r[0] > r[1]:
+               raise ValueError, 'bad range: ' + n
+            for i in range(r[0], r[1]+1):
+                fs.append(h % i)
+        else:  # simple name
+            fs.append(n)
 
+     # remove duplicates
+    fs = dict([(n, i) for i, n in enumerate(fs)]).keys()
+     # convert to ints and sort
+    fs = [int(x) for x in fs if x]
+    fs.sort()
+
+    return fs
+
+
+def collapse_range(x): # x --> sorted list of ints
+    """ Convert a list of integers into a string
+        range representation: 
+        [1,2,3,4,7,9,10,11,12] --> "1-4, 7, 9-12"
+    """
+    if not x:
+        return ""
+
+    s, c, r = [str(x[0])], x[0], False
+
+    for i in x[1:]:
+        if i == (c+1):
+            r = True
+        else:
+            if r:
+                s.append('-%s, %s' % (c,i))
+                r = False
+            else:
+                s.append(', %s' % i)
+
+        c = i
+
+    if r:
+        s.append('-%s' % i)
+
+    return ''.join(s)
 

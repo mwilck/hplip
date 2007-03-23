@@ -136,7 +136,7 @@ am__libsane_hpaio_la_SOURCES_DIST = scan/sane/hpaio.c \
 	scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
 	scan/sane/common.c scan/sane/common.h scan/sane/soap.h \
 	scan/sane/sanei_debug.h scan/sane/sanei.h \
-	scan/sane/soap_stub.c
+	scan/sane/soap_stub.c scan/sane/sanei_init_debug.c
 @SCAN_BUILD_TRUE@am_libsane_hpaio_la_OBJECTS =  \
 @SCAN_BUILD_TRUE@	libsane_hpaio_la-hpaio.lo \
 @SCAN_BUILD_TRUE@	libsane_hpaio_la-mfpdtf.lo \
@@ -144,7 +144,8 @@ am__libsane_hpaio_la_SOURCES_DIST = scan/sane/hpaio.c \
 @SCAN_BUILD_TRUE@	libsane_hpaio_la-scl.lo \
 @SCAN_BUILD_TRUE@	libsane_hpaio_la-io.lo \
 @SCAN_BUILD_TRUE@	libsane_hpaio_la-common.lo \
-@SCAN_BUILD_TRUE@	libsane_hpaio_la-soap_stub.lo
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-soap_stub.lo \
+@SCAN_BUILD_TRUE@	libsane_hpaio_la-sanei_init_debug.lo
 libsane_hpaio_la_OBJECTS = $(am_libsane_hpaio_la_OBJECTS)
 @SCAN_BUILD_TRUE@am_libsane_hpaio_la_rpath = -rpath $(libdir)
 cupsPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -369,6 +370,7 @@ build_alias = @build_alias@
 build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
+cups11_build = @cups11_build@
 datadir = @datadir@
 exec_prefix = @exec_prefix@
 fax_build = @fax_build@
@@ -573,7 +575,7 @@ libhpip_la_LDFLAGS = -version-info 0:1:0
 @SCAN_BUILD_TRUE@libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
 @SCAN_BUILD_TRUE@      scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
 @SCAN_BUILD_TRUE@      scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/sanei_debug.h scan/sane/sanei.h \
-@SCAN_BUILD_TRUE@      scan/sane/soap_stub.c 
+@SCAN_BUILD_TRUE@      scan/sane/soap_stub.c scan/sane/sanei_init_debug.c
 
 #      scan/sane/soap.c scan/sane/webScanC.c scan/sane/webScanClient.c scan/sane/stdsoap2.c \
 #      scan/sane/dime.c scan/sane/dime.h scan/sane/webScanStub.h scan/sane/webScanH.h scan/sane/stdsoap2.h scan/sane/webScan.nsmap
@@ -601,21 +603,20 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/colorcal4form_base.py ui/colorcal4form_base.ui ui/printerform.py ui/printerform_base.ui ui/printerform_base.py \
     ui/faxaddrbookgroupsform_base.py ui/faxaddrbookgroupeditform_base.py ui/faxaddrbookform_base.py \
     ui/faxaddrbookform.py ui/faxaddrbookeditform_base.py ui/align10form.py ui/align10form_base.py \
-    ui/informationform_base.py ui/informationform.py  \
     ui/faxsendjobform_base.py ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
-    ui/coverpageform_base.py ui/coverpageform.py ui/faxallowabletypesdlg_base.py ui/faxallowabletypesdlg.py \
+    ui/coverpageform_base.py ui/coverpageform.py ui/allowabletypesdlg_base.py ui/allowabletypesdlg.py \
     ui/makecopiesform_base.py ui/makecopiesform.py ui/setupform_base.py ui/setupform.py ui/setupmanualfind_base.py \
     ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py ui/scrollfunc.py ui/scrollstatus.py \
-    ui/scrollprintsettings.py ui/scrollprintcontrol.py ui/scrolltool.py ui/scrollsupplies.py 
+    ui/scrollprintsettings.py ui/scrollprintcontrol.py ui/scrolltool.py ui/scrollsupplies.py  ui/scrollprint.py ui/scrollfax.py
 
 dist_noinst_DATA = ui/unloadform_base.ui ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
     ui/nodevicesform_base.ui ui/cleaningform_base.ui ui/colorcalform_base.ui ui/devmgr4_base.ui ui/loadpaperform_base.ui \
     ui/cleaningform2_base.ui ui/waitform_base.ui ui/coloradjform_base.ui ui/faxaddrbookeditform_base.ui \
     ui/faxaddrbookform_base.ui ui/faxaddrbookgroupeditform_base.ui ui/faxaddrbookgroupsform_base.ui \
-    ui/align10form_base.ui ui/informationform_base.ui  \
+    ui/align10form_base.ui  \
     plugins/powersettingsdialog_base.ui ui/faxsendjobform_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
-    ui/faxallowabletypesdlg_base.ui ui/makecopiesform_base.ui ui/setupform_base.ui ui/setupmanualfind_base.ui \
+    ui/allowabletypesdlg_base.ui ui/makecopiesform_base.ui ui/setupform_base.ui ui/setupmanualfind_base.ui \
     ui/setupsettings_base.ui
 
 
@@ -1233,6 +1234,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-io.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-mfpdtf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-pml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-sanei_init_debug.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-scl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsane_hpaio_la-soap_stub.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mlc.Po@am__quote@
@@ -1568,6 +1570,13 @@ libsane_hpaio_la-soap_stub.lo: scan/sane/soap_stub.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/soap_stub.c' object='libsane_hpaio_la-soap_stub.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-soap_stub.lo `test -f 'scan/sane/soap_stub.c' || echo '$(srcdir)/'`scan/sane/soap_stub.c
+
+libsane_hpaio_la-sanei_init_debug.lo: scan/sane/sanei_init_debug.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -MT libsane_hpaio_la-sanei_init_debug.lo -MD -MP -MF "$(DEPDIR)/libsane_hpaio_la-sanei_init_debug.Tpo" -c -o libsane_hpaio_la-sanei_init_debug.lo `test -f 'scan/sane/sanei_init_debug.c' || echo '$(srcdir)/'`scan/sane/sanei_init_debug.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libsane_hpaio_la-sanei_init_debug.Tpo" "$(DEPDIR)/libsane_hpaio_la-sanei_init_debug.Plo"; else rm -f "$(DEPDIR)/libsane_hpaio_la-sanei_init_debug.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='scan/sane/sanei_init_debug.c' object='libsane_hpaio_la-sanei_init_debug.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsane_hpaio_la_CFLAGS) $(CFLAGS) -c -o libsane_hpaio_la-sanei_init_debug.lo `test -f 'scan/sane/sanei_init_debug.c' || echo '$(srcdir)/'`scan/sane/sanei_init_debug.c
 
 hp.o: backend/hp/hp.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT hp.o -MD -MP -MF "$(DEPDIR)/hp.Tpo" -c -o hp.o `test -f 'backend/hp/hp.c' || echo '$(srcdir)/'`backend/hp/hp.c; \
@@ -2963,6 +2972,11 @@ install-data-hook: install-pcardext install-cupsext
 	   echo -e "fax-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	else \
 	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	fi
+	if [ "$(cups11_build)" = "yes" ]; then \
+	   echo -e "cups11-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
+	else \
+	   echo -e "cups11-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
 	fi
 	echo -e "installinitd=$(INSTALLINITD)\nchkconfig=$(CHKCONFIG)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
 	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf

@@ -439,7 +439,7 @@ def addPrinter(printer_name, device_uri, location, ppd_file, model, info):
         ( printer_name, device_uri, location, ppd_file, model, info))
 
     if ppd_file and not os.path.exists(ppd_file):
-        log.error("PPD file %s not found.")
+        log.error("PPD file '%s' not found." % ppd_file)
         return (-1, "PPD file not found")
 
     return cupsext.addPrinter(printer_name, device_uri, location, ppd_file, model, info)
@@ -468,9 +468,9 @@ def getChoice(group, option, choice):
 def setOptions():
     return cupsext.setOptions()
 
-##def getPPDList(): # Use getSystemPPDs()
-##    return cupsext.getPPDList()
-
 def removeOption(option):
     return cupsext.removeOption(option)
 
+def setPasswordCallback(func):
+    return cupsext.setPasswordCallback(func)
+    

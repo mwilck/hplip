@@ -41,8 +41,6 @@ from setupform_base import SetupForm_base
 from setupsettings import SetupSettings
 from setupmanualfind import SetupManualFind
 
-#nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
-
 def restart_cups():
     if os.path.exists('/etc/init.d/cups'):
         return '/etc/init.d/cups restart'
@@ -73,7 +71,7 @@ class PrinterNameValidator(QValidator):
 
     def validate(self, input, pos):
         input = str(input)
-
+        
         if not input:
             return QValidator.Acceptable, pos
 
@@ -81,9 +79,6 @@ class PrinterNameValidator(QValidator):
             return QValidator.Invalid, pos
 
         elif input != utils.printable(input):
-            return QValidator.Invalid, pos
-
-        elif len(input) > 50:
             return QValidator.Invalid, pos
 
         else:
@@ -97,12 +92,13 @@ class PhoneNumValidator(QValidator):
 
     def validate(self, input, pos):
         input = str(input)
+        
         if not input:
             return QValidator.Acceptable, pos
+        
         elif input[pos-1] not in '0123456789-(+) ':
             return QValidator.Invalid, pos
-        elif len(input) > 50:
-            return QValidator.Invalid, pos
+        
         else:
             return QValidator.Acceptable, pos
 
@@ -177,6 +173,9 @@ class SetupForm(SetupForm_base):
         self.setHelpEnabled(self.PPDPage, False)
         self.setHelpEnabled(self.PrinterNamePage, False)
         self.setHelpEnabled(self.FinishedPage, False)
+        
+        self.faxNameLineEdit.setMaxLength(50)
+        self.printerNameLineEdit.setMaxLength(50)
 
         QToolTip.add(self.searchFiltersPushButton2,
             self.__tr('Current: Filter: "%2"  Search: "%3"  TTL: %4  Timeout: %5s').arg(self.filter).arg(self.search or '').arg(self.ttl).arg(self.timeout))
@@ -520,8 +519,8 @@ class SetupForm(SetupForm_base):
     #
 
     def setDefaultPrinterName(self):
-        installed_print_devices = device.getSupportedCUPSDevices(['hp'])
-        log.debug(installed_print_devices)
+        self.installed_print_devices = device.getSupportedCUPSDevices(['hp'])
+        log.debug(self.installed_print_devices)
 
         back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(self.device_uri)
         default_model = utils.xstrip(model.replace('series', '').replace('Series', ''), '_')
@@ -529,12 +528,12 @@ class SetupForm(SetupForm_base):
         printer_name = default_model
 
         # Check for duplicate names
-        if self.device_uri in installed_print_devices and \
-            printer_name in installed_print_devices[self.device_uri]:
+        if self.device_uri in self.installed_print_devices and \
+            printer_name in self.installed_print_devices[self.device_uri]:
                 i = 2
                 while True:
                     t = printer_name + "_%d" % i
-                    if t not in installed_print_devices[self.device_uri]:
+                    if t not in self.installed_print_devices[self.device_uri]:
                         printer_name += "_%d" % i
                         break
                     i += 1
@@ -549,10 +548,9 @@ class SetupForm(SetupForm_base):
     def printerNameLineEdit_textChanged(self,a0):
         self.printer_name = str(a0)
         self.defaultPrinterNamePushButton.setEnabled(True)
-        installed_print_devices = device.getSupportedCUPSDevices(['hp'])
 
-        if not self.printer_name or (self.device_uri in installed_print_devices and \
-            self.printer_name in installed_print_devices[self.device_uri]):
+        if not self.printer_name or (self.device_uri in self.installed_print_devices and \
+            self.printer_name in self.installed_print_devices[self.device_uri]):
                 self.setNextEnabled(self.PrinterNamePage, False)
                 self.printer_name_ok = False
 
@@ -593,8 +591,8 @@ class SetupForm(SetupForm_base):
         self.defaultPrinterNamePushButton.setEnabled(False)
 
     def setDefaultFaxName(self):
-        installed_fax_devices = device.getSupportedCUPSDevices(['hpfax'])
-        log.debug(installed_fax_devices)
+        self.installed_fax_devices = device.getSupportedCUPSDevices(['hpfax'])
+        log.debug(self.installed_fax_devices)
 
         self.fax_uri = self.device_uri.replace('hp:', 'hpfax:')
 
@@ -604,12 +602,12 @@ class SetupForm(SetupForm_base):
         fax_name = default_model + "_fax"
 
         # Check for duplicate names
-        if self.fax_uri in installed_fax_devices and \
-            fax_name in installed_fax_devices[self.fax_uri]:
+        if self.fax_uri in self.installed_fax_devices and \
+            fax_name in self.installed_fax_devices[self.fax_uri]:
                 i = 2
                 while True:
                     t = fax_name + "_%d" % i
-                    if t not in installed_fax_devices[self.fax_uri]:
+                    if t not in self.installed_fax_devices[self.fax_uri]:
                         fax_name += "_%d" % i
                         break
                     i += 1
@@ -624,10 +622,8 @@ class SetupForm(SetupForm_base):
         self.fax_name = str(a0)
         self.defaultFaxNamePushButton.setEnabled(True)
 
-        installed_fax_devices = device.getSupportedCUPSDevices(['hpfax'])
-
-        if not self.fax_name or (self.fax_uri in installed_fax_devices and \
-            self.fax_name in installed_fax_devices[self.fax_uri]):
+        if not self.fax_name or (self.fax_uri in self.installed_fax_devices and \
+            self.fax_name in self.installed_fax_devices[self.fax_uri]):
                 self.setNextEnabled(self.PrinterNamePage, False)
                 self.fax_name_ok = False
 
@@ -759,12 +755,12 @@ class SetupForm(SetupForm_base):
                 self.location, self.ppd_file, '', self.desc)
 
         log.debug("addPrinter() returned (%d, %s)" % (status, status_str))
-        installed_print_devices = device.getSupportedCUPSDevices(['hp'])
+        self.installed_print_devices = device.getSupportedCUPSDevices(['hp'])
 
-        log.debug(installed_print_devices)
+        log.debug(self.installed_print_devices)
 
-        if self.device_uri not in installed_print_devices or \
-            self.printer_name not in installed_print_devices[self.device_uri]:
+        if self.device_uri not in self.installed_print_devices or \
+            self.printer_name not in self.installed_print_devices[self.device_uri]:
 
             self.FailureUI(self.__tr("<b>Printer queue setup failed.</b><p>Please restart CUPS and try again."))
         else:
@@ -792,12 +788,12 @@ class SetupForm(SetupForm_base):
 
         status, status_str = cups.addPrinter(self.fax_name, self.fax_uri, self.fax_location, fax_ppd, '', self.fax_desc)
         log.debug("addPrinter() returned (%d, %s)" % (status, status_str))
-        installed_fax_devices = device.getSupportedCUPSDevices(['hpfax'])
+        self.installed_fax_devices = device.getSupportedCUPSDevices(['hpfax'])
 
-        log.debug(installed_fax_devices)
+        log.debug(self.installed_fax_devices)
 
-        if self.fax_uri not in installed_fax_devices or \
-            self.fax_name not in installed_fax_devices[self.fax_uri]:
+        if self.fax_uri not in self.installed_fax_devices or \
+            self.fax_name not in self.installed_fax_devices[self.fax_uri]:
 
             self.FailureUI(self.__tr("<b>Fax queue setup failed.</b><p>Please restart CUPS and try again."))
         else:

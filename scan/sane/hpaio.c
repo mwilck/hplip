@@ -946,11 +946,11 @@ static SANE_Status hpaioSetDefaultValue( hpaioScanner_t hpaio, int option )
                 hpaio->currentAdfMode = ADF_MODE_AUTO;
             }
             break;
-
+#if 0
         case OPTION_DUPLEX:
             hpaio->currentDuplex = SANE_FALSE;
             break;
-
+#endif
         case OPTION_LENGTH_MEASUREMENT:
             hpaio->currentLengthMeasurement = LENGTH_MEASUREMENT_PADDED;
             break;
@@ -1160,6 +1160,7 @@ static int hpaioUpdateDescriptors( hpaioScanner_t hpaio, int option )
         reload |= SANE_INFO_RELOAD_OPTIONS;
     }
 
+#if 0
     /* OPTION_DUPLEX: */
     if( initValues ||
         ( ( hpaio->supportsDuplex &&
@@ -1178,6 +1179,7 @@ static int hpaioUpdateDescriptors( hpaioScanner_t hpaio, int option )
         hpaioSetDefaultValue( hpaio, OPTION_DUPLEX );
         reload |= SANE_INFO_RELOAD_OPTIONS;
     }
+#endif
 
     /* OPTION_LENGTH_MEASUREMENT: */
     if( initValues )
@@ -1390,7 +1392,7 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
                                          SANE_CAP_ADVANCED;
     hpaio->option[OPTION_ADF_MODE].constraint_type = SANE_CONSTRAINT_STRING_LIST;
     hpaio->option[OPTION_ADF_MODE].constraint.string_list = hpaio->adfModeList;
-
+#if 0
     hpaio->option[OPTION_DUPLEX].name = STR_NAME_DUPLEX;
     hpaio->option[OPTION_DUPLEX].title = STR_TITLE_DUPLEX;
     hpaio->option[OPTION_DUPLEX].desc = STR_DESC_DUPLEX;
@@ -1401,7 +1403,7 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
                                        SANE_CAP_SOFT_DETECT |
                                        SANE_CAP_ADVANCED;
     hpaio->option[OPTION_DUPLEX].constraint_type = SANE_CONSTRAINT_NONE;
-
+#endif
     hpaio->option[GROUP_GEOMETRY].title = STR_TITLE_GEOMETRY;
     hpaio->option[GROUP_GEOMETRY].type = SANE_TYPE_GROUP;
     hpaio->option[GROUP_GEOMETRY].cap = SANE_CAP_ADVANCED;
@@ -1601,204 +1603,52 @@ static SANE_Status hpaioProgramOptions( hpaioScanner_t hpaio )
     return SANE_STATUS_GOOD;
 }
 
-static SANE_Status hpaioAdvanceDocument( hpaioScanner_t hpaio )
+static SANE_Status hpaioAdvanceDocument(hpaioScanner_t hpaio)
 {
-//BREAKPOINT;
-    
-    SANE_Status retcode;
+    SANE_Status retcode = SANE_STATUS_GOOD;
     int documentLoaded = 0;
 
-    DBG(8, "hpaioAdvanceDocument: beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, noDocsConditionPending=%d, "
-                    "currentPageNumber=%d, currentSideNumber=%d %s %d\n",
-                    hpaio->beforeScan, hpaio->alreadyPreAdvancedDocument, hpaio->alreadyPostAdvancedDocument, 
-                    hpaio->noDocsConditionPending, hpaio->currentPageNumber, hpaio->currentSideNumber, __FILE__, __LINE__);
+    DBG(8, "hpaioAdvanceDocument: papersource=%s batch=%d %s %d\n",
+              hpaio->currentAdfMode==ADF_MODE_FLATBED ? "FLATBED" : hpaio->currentAdfMode==ADF_MODE_AUTO ? "AUTO" : "ADF",
+              hpaio->currentBatchScan, __FILE__, __LINE__);
 
-    if( hpaio->beforeScan )
+    if (hpaio->currentAdfMode == ADF_MODE_FLATBED)
+       goto bugout;         /* nothing to do */
+
+    /* If there is an ADF see if paper is loaded. */
+    if (hpaio->supportedAdfModes & ADF_MODE_ADF)
     {
-        hpaio->alreadyPostAdvancedDocument = 0;
-        retcode = hpaioScannerToSaneStatus( hpaio );
-        if( retcode != SANE_STATUS_GOOD || hpaio->alreadyPreAdvancedDocument )
-        {
-            goto abort;
-        }
-        hpaio->alreadyPreAdvancedDocument = 1;
-    }
-    else
-    {
-        if( hpaio->alreadyPostAdvancedDocument )
-        {
-            retcode = SANE_STATUS_GOOD;
-            goto abort;
-        }
-        hpaio->alreadyPreAdvancedDocument = 0;
-        hpaio->alreadyPostAdvancedDocument = 1;
-    }
-
-    //    if( hpaio->scannerType == SCANNER_TYPE_SCL )
-    //    {
-
-        retcode = SclInquire( hpaio->deviceid, hpaio->scan_channelid,
-                              SCL_CMD_INQUIRE_DEVICE_PARAMETER,
-                              SCL_INQ_ADF_DOCUMENT_LOADED,
-                              &documentLoaded,
-                              0,
-                              0 );
+        retcode = SclInquire(hpaio->deviceid, hpaio->scan_channelid, SCL_CMD_INQUIRE_DEVICE_PARAMETER,
+                              SCL_INQ_ADF_DOCUMENT_LOADED, &documentLoaded, 0, 0);
                               
-        if( retcode != SANE_STATUS_GOOD && 
-            retcode != SANE_STATUS_UNSUPPORTED )
-        {
-            goto abort;
-        }
-
-        if( hpaio->currentSideNumber == 1 )
-        {
-            if( hpaio->currentDuplex )
-            {
-                /* Duplex change side. */
-                retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                    SCL_CMD_CHANGE_DOCUMENT,
-                                                    SCL_CHANGE_DOC_DUPLEX_SIDE );
-                                                    
-                if( retcode != SANE_STATUS_GOOD )
-                {
-                    goto abort;
-                }
-                
-                hpaio->alreadyPreAdvancedDocument = 1;
-                hpaio->currentSideNumber = 2;
-            }
-            else if( hpaio->scl.unloadAfterScan && !hpaio->beforeScan )
-            {
-                /* Unload document. */
-                retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                    SCL_CMD_UNLOAD_DOCUMENT,
-                                                    0 );
-                if( retcode != SANE_STATUS_GOOD )
-                {
-                    goto abort;
-                }
-                hpaio->currentSideNumber = 0;
-                if( !documentLoaded )
-                {
-                    goto noDocs;
-                }
-            }
-            else if( documentLoaded )
-            {
-                goto changeDoc;
-            }
-            else
-            {
-                unloadDoc:
-                /* Unload document. */
-                retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                    SCL_CMD_UNLOAD_DOCUMENT,
-                                                    0 );
-                if( retcode != SANE_STATUS_GOOD )
-                {
-                    goto abort;
-                }
-                goto noDocs;
-            }
-        }
-        else if( hpaio->currentSideNumber == 2 )
-        {
-            /* Duplex change side. */
-            retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                SCL_CMD_CHANGE_DOCUMENT,
-                                                SCL_CHANGE_DOC_DUPLEX_SIDE );
-            if( retcode != SANE_STATUS_GOOD )
-            {
-                goto abort;
-            }
-            if( documentLoaded )
-            {
-                goto changeDoc;
-            }
-            goto unloadDoc;
-        }
-        else /* if (!hpaio->currentSideNumber) */
-        {
-            if( documentLoaded &&
-                hpaio->beforeScan &&
-                hpaio->currentAdfMode != ADF_MODE_FLATBED )
-            {
-                changeDoc:
-                if( hpaio->currentDuplex )
-                {
-                    /* Duplex change document. */
-                    retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                        SCL_CMD_CHANGE_DOCUMENT,
-                                                        SCL_CHANGE_DOC_DUPLEX );
-                }
-                else
-                {
-                    /* Simplex change document. */
-                    retcode = hpaioSclSendCommandCheckError( hpaio,
-                                                        SCL_CMD_CHANGE_DOCUMENT,
-                                                        SCL_CHANGE_DOC_SIMPLEX );
-                }
-                if( retcode != SANE_STATUS_GOOD )
-                {
-                    goto abort;
-                }
-                hpaio->alreadyPreAdvancedDocument = 1;
-                hpaio->currentPageNumber++;
-                hpaio->currentSideNumber = 1;
-            }
-            else
-            {
-                noDocs:
-                hpaio->currentPageNumber = 0;
-                hpaio->currentSideNumber = 0;
-                if( hpaio->beforeScan )
-                {
-                    if( hpaio->currentAdfMode == ADF_MODE_ADF )
-                    {
-                        retcode = SANE_STATUS_NO_DOCS;
-                        goto abort;
-                    }
-                }
-                else if( hpaio->currentBatchScan )
-                {
-                    if( hpaio->endOfData )
-                    {
-                        hpaio->noDocsConditionPending = 1;
-                    }
-                    retcode = SANE_STATUS_NO_DOCS;
-                    goto abort;
-                }
-            }
-        }
-
-        if( !hpaio->beforeScan && !hpaio->currentPageNumber )
-        {
-            retcode = SANE_STATUS_NO_DOCS;
-            goto abort;
-        }
-
-    if( !hpaio->beforeScan && !hpaio->endOfData )
-    {
-        retcode = SANE_STATUS_NO_DOCS;
-        goto abort;
+        if (retcode != SANE_STATUS_GOOD)
+            goto bugout;
     }
 
-    retcode = SANE_STATUS_GOOD;
-    abort:
-    DBG(8, "hpaioAdvanceDocument returns %d: beforeScan=%d, already{Pre,Post}AdvancedDocument={%d,%d}, noDocsConditionPending=%d, "
-                    "currentPageNumber=%d, currentSideNumber=%d %s %d\n",
-                    retcode, hpaio->beforeScan, hpaio->alreadyPreAdvancedDocument, hpaio->alreadyPostAdvancedDocument,
-                    hpaio->noDocsConditionPending, hpaio->currentPageNumber, hpaio->currentSideNumber, __FILE__, __LINE__);
-
-    if( retcode != SANE_STATUS_GOOD )
+    /* If in Batch mode, by definition we are in ADF mode. */
+    if (hpaio->currentBatchScan && !documentLoaded)
     {
-        hpaio->alreadyPreAdvancedDocument = 0;
-        hpaio->alreadyPostAdvancedDocument = 0;
-        hpaio->currentPageNumber = 0;
-        hpaio->currentSideNumber = 0;
+       retcode = SANE_STATUS_NO_DOCS;
+       goto bugout;    /* no paper loaded */
     }
+
+    /* If in Auto mode and no paper loaded use flatbed. */
+    if (hpaio->currentAdfMode == ADF_MODE_AUTO && !documentLoaded)
+       goto bugout;    /* no paper loaded, use flatbed */
+    
+    /* Assume ADF mode. */
+    if (documentLoaded)
+       retcode = hpaioSclSendCommandCheckError(hpaio, SCL_CMD_CHANGE_DOCUMENT, SCL_CHANGE_DOC_SIMPLEX);
+    else
+       retcode = SANE_STATUS_NO_DOCS;
+
+bugout:
+
+    DBG(8, "hpaioAdvanceDocument returns %d ADF-loaded=%d: %s %d\n", retcode, documentLoaded, __FILE__, __LINE__);
+
     return retcode;
 }
+
 
 /******************************************************* SANE API *******************************************************/
 
@@ -2672,11 +2522,11 @@ extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option
                             break;
                     }
                     break;
-
+#if 0
                 case OPTION_DUPLEX:
                     *pIntValue = hpaio->currentDuplex;
                     break;
-
+#endif
                 case OPTION_LENGTH_MEASUREMENT:
                     switch( hpaio->currentLengthMeasurement )
                     {
@@ -2847,7 +2697,7 @@ extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option
                         break;
                     }
                     return SANE_STATUS_INVAL;
-
+#if 0
                 case OPTION_DUPLEX:
                     if( *pIntValue != SANE_FALSE && *pIntValue != SANE_TRUE )
                     {
@@ -2855,7 +2705,7 @@ extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option
                     }
                     hpaio->currentDuplex = *pIntValue;
                     break;
-
+#endif
                 case OPTION_LENGTH_MEASUREMENT:
                     if( !strcasecmp( pStrValue,
                                      STR_LENGTH_MEASUREMENT_UNKNOWN ) )
@@ -3451,7 +3301,7 @@ needMoreData:
         if( wResult & IP_DONE )
         {
             retcode = SANE_STATUS_EOF;
-            hpaioAdvanceDocument(hpaio);
+//            hpaioAdvanceDocument(hpaio);
             ipClose(hpaio->hJob);
             hpaio->hJob = 0;
             goto abort;

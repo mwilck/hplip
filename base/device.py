@@ -692,8 +692,8 @@ AGENT_types = { AGENT_TYPE_NONE        : 'invalid',
                 AGENT_TYPE_BLUE        : 'photo_blue',
                 AGENT_TYPE_KCMY_CM     : 'kcmy_cm',
                 AGENT_TYPE_LC_LM       : 'photo_cyan_and_photo_magenta',
-                AGENT_TYPE_Y_M         : 'yellow_and_magenta',
-                AGENT_TYPE_C_K         : 'cyan_and_black',
+                #AGENT_TYPE_Y_M         : 'yellow_and_magenta',
+                #AGENT_TYPE_C_K         : 'cyan_and_black',
                 AGENT_TYPE_LG_PK       : 'light_gray_and_photo_black',
                 AGENT_TYPE_LG          : 'light_gray',
                 AGENT_TYPE_G           : 'medium_gray',
@@ -1424,8 +1424,13 @@ class Device(object):
             if not quick:
                 # Make sure there is some valid agent data for this r_value
                 # If not, fall back to r_value == 0
-                if r_value > 0 and self.mq.get('r%d-agent1-kind', 0) == 0:
+                if r_value > 0 and self.mq.get('r%d-agent1-kind' % r_value, 0) == 0:
                     r_value = 0
+                    self.dq.update({'r'  : r_value,
+                                    'rs' : r_value_str,
+                                    'rg' : rg,
+                                    'rr' : rr,
+                                  })
 
                 a = 1
                 while True:
@@ -1448,7 +1453,10 @@ class Device(object):
                            found = True
                            break
 
+                    log.debug("r%d-kind%d-type%d" % (r_value, agent_kind, agent_type))
+                    
                     if found:
+                        log.debug("found")
                         agent_health = agent.get('health', AGENT_HEALTH_OK)
                         agent_level_trigger = agent.get('level-trigger',
                             AGENT_LEVEL_TRIGGER_SUFFICIENT_0)

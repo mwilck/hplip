@@ -36,7 +36,7 @@ def getPowerSettings(d):
     value = d.getDynamicCounter(256, False)
     log.debug("Current power settings: %s" % value)
     d.closePrint()
-    return value[5:8]
+    return value[6:9]
 
 def setPowerSettings(d, value):
     log.debug("Setting power setting to %s" % value)

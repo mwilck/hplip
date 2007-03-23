@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>627</width>
-            <height>481</height>
+            <width>548</width>
+            <height>618</height>
         </rect>
     </property>
     <property name="caption">
@@ -457,7 +457,7 @@
                     <cstring>FunctionCommands</cstring>
                 </property>
                 <attribute name="title">
-                    <string>Function Commands</string>
+                    <string>Functions (Advanced)</string>
                 </attribute>
                 <grid>
                     <property name="name">
@@ -485,95 +485,80 @@
                             <string>&lt;b&gt;Configure what commands to run for device functions&lt;/b&gt;</string>
                         </property>
                     </widget>
-                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                    <widget class="QButtonGroup" row="5" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>textLabel1_2</cstring>
+                            <cstring>pcardButtonGroup</cstring>
                         </property>
-                        <property name="text">
-                            <string>Print Command:</string>
+                        <property name="title">
+                            <string>Access Photo Cards</string>
                         </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="3" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>layout8</cstring>
-                        </property>
-                        <hbox>
+                        <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QLineEdit">
+			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+				    <property name="name">
+					    <cstring>radioButton19</cstring>
+				    </property>
+				    <property name="enabled">
+					    <bool>false</bool>
+				    </property>
+				    <property name="text">
+					    <string>Built-in access photo cards function</string>
+				    </property>
+			    </widget>
+                            <widget class="QRadioButton" row="1" column="0">
                                 <property name="name">
-                                    <cstring>PrintCommand</cstring>
+                                    <cstring>radioButton20</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>External command:</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
                                 </property>
                             </widget>
-                        </hbox>
-                    </widget>
-                    <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>textLabel1_2_2</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Scan Command:</string>
-                        </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>layout9</cstring>
-                        </property>
-                        <hbox>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>ScanCommand</cstring>
-                                </property>
-                            </widget>
-                        </hbox>
-                    </widget>
-                    <widget class="QLabel" row="6" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>textLabel1_2_3_3</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Access Photo Cards Command:</string>
-                        </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="7" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>layout10</cstring>
-                        </property>
-                        <hbox>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLineEdit">
+                            <widget class="QLineEdit" row="1" column="1">
                                 <property name="name">
                                     <cstring>AccessPCardCommand</cstring>
                                 </property>
                             </widget>
-                        </hbox>
+                        </grid>
                     </widget>
-                    <widget class="QLabel" row="8" column="0" rowspan="1" colspan="2">
+                    <widget class="QButtonGroup" row="4" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>textLabel1_2_3</cstring>
+                            <cstring>faxButtonGroup</cstring>
                         </property>
-                        <property name="enabled">
-                            <bool>true</bool>
+                        <property name="title">
+                            <string>Send PC Fax</string>
                         </property>
-                        <property name="text">
-                            <string>Send Fax Command:</string>
-                        </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="9" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>layout11</cstring>
-                        </property>
-                        <hbox>
+                        <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QLineEdit">
+                            <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>radioButton17</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Built-in send PC fax function</string>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>radioButton18</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>External command:</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="1" column="1">
                                 <property name="name">
                                     <cstring>SendFaxCommand</cstring>
                                 </property>
@@ -581,38 +566,89 @@
                                     <bool>true</bool>
                                 </property>
                             </widget>
-                        </hbox>
+                        </grid>
                     </widget>
-                    <widget class="QLabel" row="10" column="0" rowspan="1" colspan="2">
+                    <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>textLabel1_2_3_2</cstring>
+                            <cstring>scanButtonGroup</cstring>
                         </property>
-                        <property name="enabled">
-                            <bool>true</bool>
+                        <property name="title">
+                            <string>Scan</string>
                         </property>
-                        <property name="text">
-                            <string>Make Copies Command:</string>
-                        </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="11" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>layout12</cstring>
-                        </property>
-                        <hbox>
+                        <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QLineEdit">
+			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+				    <property name="name">
+					    <cstring>radioButton15</cstring>
+				    </property>
+				    <property name="enabled">
+					    <bool>false</bool>
+				    </property>
+				    <property name="text">
+					    <string>Built-in scan function</string>
+				    </property>
+			    </widget>
+                            <widget class="QRadioButton" row="1" column="0">
                                 <property name="name">
-                                    <cstring>MakeCopiesCommand</cstring>
+                                    <cstring>radioButton16</cstring>
                                 </property>
-                                <property name="enabled">
+                                <property name="text">
+                                    <string>External scan command:</string>
+                                </property>
+                                <property name="checked">
                                     <bool>true</bool>
                                 </property>
                             </widget>
-                        </hbox>
+                            <widget class="QLineEdit" row="1" column="1">
+                                <property name="name">
+                                    <cstring>ScanCommand</cstring>
+                                </property>
+                            </widget>
+                        </grid>
                     </widget>
-                    <widget class="QPushButton" row="13" column="0">
+                    <widget class="QButtonGroup" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>printButtonGroup</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Print</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+				    <property name="name">
+					    <cstring>radioButton13</cstring>
+				    </property>
+				    <property name="text">
+					    <string>Built-in print function</string>
+				    </property>
+				    <property name="checked">
+					    <bool>true</bool>
+				    </property>
+			    </widget>
+                            <widget class="QRadioButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>radioButton14</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>External command:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="1" column="1">
+                                <property name="name">
+                                    <cstring>PrintCommand</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QPushButton" row="8" column="0">
                         <property name="name">
                             <cstring>DefaultsButton</cstring>
                         </property>
@@ -623,7 +659,7 @@
                             <string>Set Defaults</string>
                         </property>
                     </widget>
-                    <spacer row="13" column="1">
+                    <spacer row="8" column="1">
                         <property name="name">
                             <cstring>spacer8_2</cstring>
                         </property>
@@ -635,14 +671,57 @@
                         </property>
                         <property name="sizeHint">
                             <size>
-                                <width>471</width>
+                                <width>20</width>
                                 <height>20</height>
                             </size>
                         </property>
                     </spacer>
-                    <spacer row="12" column="0">
+                    <widget class="QButtonGroup" row="6" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>spacer9</cstring>
+                            <cstring>copyButtonGroup</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Make Copies</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>radioButton21</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Built-inmake copies function</string>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton" row="1" column="0">
+                                <property name="name">
+                                    <cstring>radioButton22</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>External command:</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="1" column="1">
+                                <property name="name">
+                                    <cstring>MakeCopiesCommand</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <spacer row="7" column="0">
+                        <property name="name">
+                            <cstring>spacer49</cstring>
                         </property>
                         <property name="orientation">
                             <enum>Vertical</enum>
@@ -653,7 +732,7 @@
                         <property name="sizeHint">
                             <size>
                                 <width>20</width>
-                                <height>81</height>
+                                <height>51</height>
                             </size>
                         </property>
                     </spacer>
@@ -747,6 +826,36 @@
         <receiver>SettingsDialog_base</receiver>
         <slot>refreshScopeButtonGroup_clicked(int)</slot>
     </connection>
+    <connection>
+        <sender>printButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>printButtonGroup_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>scanButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>scanButtonGroup_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>faxButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>faxButtonGroup_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>pcardButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>pcardButtonGroup_clicked(int)</slot>
+    </connection>
+    <connection>
+        <sender>copyButtonGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>SettingsDialog_base</receiver>
+        <slot>copyButtonGroup_clicked(int)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>TabWidget</tabstop>
@@ -762,6 +871,9 @@
     <tabstop>MakeCopiesCommand</tabstop>
     <tabstop>DefaultsButton</tabstop>
 </tabstops>
+<includes>
+    <include location="local" impldecl="in implementation">settingsdialog_base.ui.h</include>
+</includes>
 <slots>
     <slot>PrintCmdChangeButton_clicked()</slot>
     <slot>ScanCmdChangeButton_clicked()</slot>
@@ -776,6 +888,11 @@
     <slot>EmailTestButton_clicked()</slot>
     <slot>autoRefreshCheckBox_clicked()</slot>
     <slot>refreshScopeButtonGroup_clicked( int )</slot>
+    <slot>printButtonGroup_clicked( int )</slot>
+    <slot>scanButtonGroup_clicked( int )</slot>
+    <slot>faxButtonGroup_clicked( int )</slot>
+    <slot>pcardButtonGroup_clicked( int )</slot>
+    <slot>copyButtonGroup_clicked( int )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

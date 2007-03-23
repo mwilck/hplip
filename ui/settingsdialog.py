@@ -31,6 +31,7 @@ class SettingsDialog(SettingsDialog_base):
         self.DefaultsButton.setEnabled(False)
         self.hpssd_sock = hpssd_sock
         self.sendmail = utils.which('sendmail')
+        
         if not self.sendmail:
             self.EmailTestButton.setEnabled(False)
 
@@ -54,10 +55,19 @@ class SettingsDialog(SettingsDialog_base):
         cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
 
         self.PrintCommand.setText(cmd_print)
+        self.printButtonGroup.setButton(0)
+        
         self.ScanCommand.setText(cmd_scan)
+        self.scanButtonGroup.setButton(1)
+        
         self.AccessPCardCommand.setText(cmd_pcard)
+        self.pcardButtonGroup.setButton(1)
+        
         self.SendFaxCommand.setText(cmd_fax)
+        self.faxButtonGroup.setButton(1)
+        
         self.MakeCopiesCommand.setText(cmd_copy)
+        self.copyButtonGroup.setButton(1)
 
     def TabWidget_currentChanged(self,a0):
         name = str(a0.name())
@@ -108,6 +118,22 @@ class SettingsDialog(SettingsDialog_base):
 
     def refreshScopeButtonGroup_clicked(self,a0):
         self.auto_refresh_type = int(a0)
+        
+    def printButtonGroup_clicked(self,a0):
+        self.PrintCommand.setEnabled(a0)
+
+    def scanButtonGroup_clicked(self,a0):
+        self.ScanCommand.setEnabled(a0)
+
+    def faxButtonGroup_clicked(self,a0):
+        self.SendFaxCommand.setEnabled(a0)
+
+    def pcardButtonGroup_clicked(self,a0):
+        self.AccessPCardCommand.setEnabled(a0)
+
+    def copyButtonGroup_clicked(self,a0):
+        self.MakeCopiesCommand.setEnabled(a0)
+        
 
 
     def __tr(self,s,c = None):

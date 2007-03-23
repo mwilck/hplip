@@ -1171,7 +1171,8 @@ def whatis(data):
      if m: return m
   # no matching, magic number. is it binary or text?
   for c in data:
-    if ord(c) > 128:
+    #if ord(c) > 128:
+    if ord(c) == 0:
       return 'data'
   # its ASCII, now do text tests
   if data.find('!/usr/bin/env python', 0, 256) > -1 or \

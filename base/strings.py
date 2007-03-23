@@ -475,6 +475,9 @@ string_table = {
 'agent_photo_blue_cartridge' :  (lambda : _('Photo blue cartridge'),
                                   ''),
 
+'agent_kcmy_cm_head' :          (lambda : _('Print head'),
+                                  ''),
+
 'agent_photo_cyan_and_photo_magenta_head' : (lambda : _('Photo magenta and photo cyan print head'),
                                             ''),
 

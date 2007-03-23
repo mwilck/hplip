@@ -20,7 +20,7 @@
 #
 
 # Std Lib
-import sys, os, os.path, getopt, re, socket, gzip
+import sys, os, os.path, getopt, re, socket, gzip, time
 
 # Local
 from base.g import *
@@ -44,7 +44,7 @@ selected_component = 'hplip'
 options = { 
     'base':     (True,  'Required HPLIP base components', []), # HPLIP
     'network' : (False, 'Network/JetDirect I/O', []),
-    'gui' :     (False, 'GUI', []),
+    'gui' :     (False, 'Graphical User Interfaces (GUIs)', []),
     'fax' :     (False, 'PC Send Fax', []),
     'scan':     (False, 'Scanning', []),
     'parallel': (False, 'Parallel I/O (LPT)', []),
@@ -252,8 +252,7 @@ def build_cmds():
             'make clean', 
             'make', 
             su_sudo() % 'make install',
-            su_sudo() % '/etc/init.d/hplip restart',
-            restart_cups()]
+            su_sudo() % '/etc/init.d/hplip restart',]
 
 def hpijs_build_cmds():
     #print("####>>>>hpijs_build_cmds")
@@ -372,4 +371,14 @@ def init(callback=None):
     log.debug("HPOJ = %s" % hpoj_present)
 
     hplip_present = dcheck.check_hplip()
-    log.debug("HPLIP (prev install) = %s" % hplip_present)    
+    log.debug("HPLIP (prev install) = %s" % hplip_present)
+
+    # Record the installation time/date and version.
+    # Also has the effect of making the .hplip.conf file user r/w
+    # on the 1st run so that running hp-setup as root doesn't lock
+    # the user out of owning the file
+    user_cfg.installation.date_time = time.strftime("%x %H:%M:%S", time.localtime())
+    user_cfg.installation.version = version_public
+    
+    
+    

@@ -102,87 +102,7 @@ class ScrollStatusView(ScrollView):
             self.addItem(x)
 
     def addItem(self, hist):
-        widget = self.getWidget()
-
         yr, mt, dy, hr, mi, sec, wd, yd, dst, job_id, user, ec, ess, esl = hist
-
-        layout1 = QGridLayout(widget, 1, 1, 5, 10, "layout1")
-        spacer1 = QSpacerItem(268, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-        layout1.addItem(spacer1, 1, 2)
-
-        icon = QLabel(widget, "icon")
-        icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
-            icon.sizePolicy().hasHeightForWidth()))
-
-        icon.setMinimumSize(QSize(32, 32))
-        icon.setMaximumSize(QSize(32, 32))
-        icon.setScaledContents(1)
-        #icon.setFrameShape(QLabel.Box)
-        layout1.addWidget(icon, 1, 0)
-
-        layout2 = QGridLayout(None, 1, 1, 0, 0, "layout2")
-
-        userTextLabel = QLabel(widget, "userTextLabel")
-        #userTextLabel.setFrameShape(QLabel.Box)
-        layout2.addWidget(userTextLabel, 0, 1)
-
-        jobIDTextLabel = QLabel(widget, "jobIDTextLabel")
-        #jobIDTextLabel.setFrameShape(QLabel.Box)
-        layout2.addWidget(jobIDTextLabel, 1, 1)
-
-        userText = QLabel(widget, "userText")
-        #userText.setFrameShape(QLabel.Box)
-        layout2.addWidget(userText, 0, 2)
-
-        codeTextLabel = QLabel(widget, "codeTextLabel")
-        #codeTextLabel.setFrameShape(QLabel.Box)
-        layout2.addWidget(codeTextLabel, 2, 1)
-
-        jobIDText = QLabel(widget, "jobIDText")
-        #jobIDText.setFrameShape(QLabel.Box)
-        layout2.addWidget(jobIDText, 1, 2)
-
-        codeText = QLabel(widget, "codeText")
-        #codeText.setFrameShape(QLabel.Box)
-        layout2.addWidget(codeText, 2, 2)
-
-        #line1 = QFrame(widget, "line6")
-        #line1.setFrameShape(QFrame.VLine)
-        #layout2.addMultiCellWidget(line1, 0, 2, 0, 0)
-
-        layout1.addMultiCellLayout(layout2, 0, 1, 3, 3)
-        layout3 = QVBoxLayout(None, 0, 6, "layout3")
-
-        essText = QLabel(widget, "essText")
-        essText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
-            essText.sizePolicy().hasHeightForWidth()))
-            
-        #essText.setFrameShape(QLabel.Box)
-        essText.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
-        layout3.addWidget(essText)
-
-        eslText = QLabel(widget, "eslText")
-        eslText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
-            eslText.sizePolicy().hasHeightForWidth()))
-        
-        eslText.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
-        #eslText.setFrameShape(QLabel.Box)
-        layout3.addWidget(eslText)
-        layout1.addLayout(layout3, 1, 1)
-
-        titleText = QLabel(widget, "titleText")
-        titleText.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
-            titleText.sizePolicy().hasHeightForWidth()))
-        
-        #titleText.setFrameShape(QLabel.Box)
-        #titleText.setAlignment(QLabel.WordBreak)
-        #titleText.setAlignment(QLabel.AlignVCenter)
-        
-        layout1.addMultiCellWidget(titleText, 0, 0, 0, 2)
-
-        line2 = QFrame(widget, "line1")
-        line2.setFrameShape(QFrame.HLine)
-        layout1.addMultiCellWidget(line2, 2, 2, 0, 3)
 
         if self.row == 0:
             desc = self.__tr("(most recent)")
@@ -192,8 +112,156 @@ class ScrollStatusView(ScrollView):
                 desc = self.getTimeDeltaDesc(hist[:9])
             else:
                 desc = ''
+        
+        #print repr(str(desc))
+        tt = QString("<b>%1 %2</b>").arg(time.strftime("%x %H:%M:%S", hist[:9])).arg(desc).stripWhiteSpace()
+        #tt = QString(desc)
+        self.addGroupHeading(str(tt), tt)
+        
+        widget = self.getWidget()
+        
+        layout38 = QGridLayout(widget,1,1,5,10,"layout38")
+        layout38.setColStretch(0, 1)
+        layout38.setColStretch(1, 10)
+        layout38.setColStretch(2, 2)
+        
+        spacer15 = QSpacerItem(30,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout38.addItem(spacer15,0,2)
 
-        titleText.setText(QString("<b>%1 %2</b>").arg(time.strftime("%x %H:%M:%S", hist[:9])).arg(desc))
+        icon = QLabel(widget,"icon")
+        icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,icon.sizePolicy().hasHeightForWidth()))
+        icon.setMinimumSize(QSize(32,32))
+        icon.setMaximumSize(QSize(32,32))
+        #self.icon.setFrameShape(QLabel.Box)
+        icon.setScaledContents(1)
+
+        layout38.addWidget(icon,0,0)
+
+        layout11_2 = QVBoxLayout(None,0,6,"layout11_2")
+
+        essText = QLabel(widget,"essTextLabel")
+        essText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred,0,0,essText.sizePolicy().hasHeightForWidth()))
+        essText.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
+        essText.setFrameShape(self.frame_shape)
+        layout11_2.addWidget(essText)
+
+        eslText = QLabel(widget,"eslTextLabel")
+        eslText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred,0,0,eslText.sizePolicy().hasHeightForWidth()))
+        eslText.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
+        eslText.setFrameShape(self.frame_shape)
+        layout11_2.addWidget(eslText)
+        
+        layout38.addLayout(layout11_2,0,1)
+
+        layout12_2 = QGridLayout(None,1,1,5,10,"layout12_2")
+
+        userTextLabel = QLabel(widget,"userLabel")
+        layout12_2.addWidget(userTextLabel,0,1)
+
+        jobIDTextLabel = QLabel(widget,"jobLabel")
+        layout12_2.addWidget(jobIDTextLabel,1,1)
+
+        userText = QLabel(widget,"user")
+        layout12_2.addWidget(userText,0,2)
+
+        codeTextLabel = QLabel(widget,"codeLabel")
+        layout12_2.addWidget(codeTextLabel,2,1)
+
+        jobIDText = QLabel(widget,"job")
+        layout12_2.addWidget(jobIDText,1,2)
+
+        codeText = QLabel(widget,"code")
+        layout12_2.addWidget(codeText,2,2)
+
+        line6 = QFrame(self,"line6")
+        line6.setFrameShape(QFrame.VLine)
+        #self.line6.setFrameShadow(QFrame.Sunken)
+        #self.line6.setFrameShape(QFrame.VLine)
+
+        layout12_2.addMultiCellWidget(line6,0,2,0,0)
+
+        layout38.addLayout(layout12_2,0,3)
+
+       
+##        layout1 = QGridLayout(widget, 1, 1, 5, 10, "layout1")
+##        spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+##        layout1.addItem(spacer1, 1, 2)
+##
+##        icon = QLabel(widget, "icon")
+##        icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
+##            icon.sizePolicy().hasHeightForWidth()))
+##
+##        icon.setMinimumSize(QSize(32, 32))
+##        icon.setMaximumSize(QSize(32, 32))
+##        icon.setScaledContents(1)
+##        layout1.addWidget(icon, 0, 0)
+##
+##        #layout2 = QGridLayout(None, 1, 1, 0, 0, "layout2")
+##        layout2 = QVBoxLayout(None, 0, 6, "layout2")
+##        
+##        userTextLabel = QLabel(widget, "userTextLabel")
+##        layout2.addWidget(userTextLabel, 0, 1)
+##
+##        jobIDTextLabel = QLabel(widget, "jobIDTextLabel")
+##        layout2.addWidget(jobIDTextLabel, 1, 1)
+##
+##        userText = QLabel(widget, "userText")
+##        layout2.addWidget(userText, 0, 2)
+##
+##        codeTextLabel = QLabel(widget, "codeTextLabel")
+##        layout2.addWidget(codeTextLabel, 2, 1)
+##
+##        jobIDText = QLabel(widget, "jobIDText")
+##        layout2.addWidget(jobIDText, 1, 2)
+##
+##        codeText = QLabel(widget, "codeText")
+##        layout2.addWidget(codeText, 2, 2)
+##
+##        layout1.addMultiCellLayout(layout2, 0, 1, 3, 3)
+##        
+##        layout3 = QVBoxLayout(None, 0, 6, "layout3")
+##
+##        essText = QLabel(widget, "essText")
+##        essText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
+##            essText.sizePolicy().hasHeightForWidth()))
+##            
+##        essText.setAlignment(QLabel.WordBreak) # | QLabel.AlignVCenter)
+##        essText.setFrameShape(self.frame_shape)
+##        
+##        layout3.addWidget(essText, 0, 1)
+##
+##        eslText = QLabel(widget, "eslText")
+##        eslText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
+##            eslText.sizePolicy().hasHeightForWidth()))
+##        eslText.setFrameShape(self.frame_shape)
+##        
+##        eslText.setAlignment(QLabel.WordBreak) # | QLabel.AlignVCenter)
+##        layout3.addWidget(eslText, 1, 1)
+##        
+##        layout1.addLayout(layout3, 0, 1)
+##        layout1.addLayout(layout2, 1, 1)
+##
+##        #titleText = QLabel(widget, "titleText")
+##        #titleText.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
+##        #    titleText.sizePolicy().hasHeightForWidth()))
+##        
+##        #layout1.addMultiCellWidget(titleText, 0, 0, 0, 2)
+##
+##        #line2 = QFrame(widget, "line1")
+##        #line2.setFrameShape(QFrame.HLine)
+##        #layout1.addMultiCellWidget(line2, 2, 2, 0, 3)
+##
+####        if self.row == 0:
+####            desc = self.__tr("(most recent)")
+####
+####        else:
+####            if have_datetime:
+####                desc = self.getTimeDeltaDesc(hist[:9])
+####            else:
+####                desc = ''
+##
+##        #titleText.setText(QString("<b>%1 %2</b>").arg(time.strftime("%x %H:%M:%S", hist[:9])).arg(desc))
+        
 
         essText.setText(ess)
         eslText.setText(esl)
@@ -226,7 +294,7 @@ class ScrollStatusView(ScrollView):
             icon.setPixmap(status_pix)
 
         self.row += 1
-        self.addControl(widget, str(self.row))
+        self.addWidget(widget, str(self.row))
 
 
 

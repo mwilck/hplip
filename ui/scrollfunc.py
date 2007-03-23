@@ -31,14 +31,32 @@ from scrollview import ScrollView
 import os.path, os
 
 class ScrollFunctionsView(ScrollView):
-    def __init__(self, cmd_print, cmd_scan, cmd_pcard, cmd_fax, cmd_copy, parent = None,name = None,fl = 0):
+    def __init__(self, cmd_print, cmd_print_int,
+                       cmd_scan, cmd_scan_int,
+                       cmd_pcard, cmd_pcard_int,
+                       cmd_fax, cmd_fax_int,
+                       cmd_copy, cmd_copy_int,
+                       parent = None,form=None, name = None,fl = 0):
+        
         ScrollView.__init__(self,parent,name,fl)
+        
         self.cmd_print = cmd_print
+        self.cmd_print_int = cmd_print_int
+        
         self.cmd_scan = cmd_scan
+        self.cmd_scan_int = cmd_scan_int
+        
         self.cmd_copy = cmd_copy
+        self.cmd_copy_int = cmd_copy_int
+        
         self.cmd_pcard = cmd_pcard
+        self.cmd_pcard_int = cmd_pcard_int
+        
         self.cmd_fax = cmd_fax
-
+        self.cmd_fax_int = cmd_fax_int
+        
+        self.form = form
+        
         self.ScanPixmap = QPixmap(os.path.join(prop.image_dir, "scan_icon.png"))
         self.PrintPixmap = QPixmap(os.path.join(prop.image_dir, "print_icon.png"))
         self.SendFaxPixmap =QPixmap(os.path.join(prop.image_dir, "fax_icon.png"))
@@ -55,44 +73,93 @@ class ScrollFunctionsView(ScrollView):
     def fillControls(self):
         ScrollView.fillControls(self)
         
-        self.addItem(self.__tr("<b>Print</b>"), self.__tr("Print a document using %1 (selected file types only).").arg('hp-print'), 
-            self.__tr("Print..."), self.PrintPixmap, self.PrintButton_clicked)
+        if self.cur_device is not None and \
+            self.cur_device.supported and \
+            self.cur_device.device_state != DEVICE_STATE_NOT_FOUND:
+        
+            if self.cmd_print_int:
+                s = self.__tr("Print >>")
+            else:
+                s = self.__tr("Print...")
+                
+            self.addItem(self.__tr("<b>Print</b>"), self.__tr("Print documents or files."), 
+                s, self.PrintPixmap, self.PrintButton_clicked)
+    
+            if self.cur_device.scan_type:
+                if self.cmd_scan_int:
+                    s = self.__tr("Scan >>")
+                else:
+                    s = self.__tr("Scan...")
+                    
+                self.addItem(self.__tr("<b>Scan</b>"), self.__tr("Scan a document or image."),
+                    s, self.ScanPixmap, self.ScanButton_clicked)
+    
+            if self.cur_device.fax_type:
+                if self.cmd_fax_int:
+                    s = self.__tr("Send PC Fax >>")
+                else:
+                    s = self.__tr("Send PC Fax...")
+                    
+                self.addItem(self.__tr("<b>Send PC Fax</b>"), self.__tr("Send a fax from the PC."),
+                    s, self.SendFaxPixmap, self.SendFaxButton_clicked)
+    
+            if self.cur_device.copy_type:
+                if self.cmd_copy_int:
+                    s = self.__tr("Make Copies >>")
+                else:
+                    s = self.__tr("Make Copies...")
+                    
+                self.addItem(self.__tr("<b>Make Copies</b>"), self.__tr("Make copies"),
+                    s, self.MakeCopiesPixmap, self.MakeCopiesButton_clicked)
+    
+            if self.cur_device.pcard_type:
+                if self.cmd_pcard_int:
+                    s = self.__tr("Unload Photo Card >>")
+                else:
+                    s = self.__tr("Unload Photo Card...")
+                    
+                self.addItem(self.__tr("<b>Unload Photo Card</b>"), self.__tr("Copy images the device to the PC."),
+                    s, self.PhotoCardPixmap, self.PCardButton_clicked)
 
-        if self.cur_device.scan_type:
-            self.addItem(self.__tr("<b>Scan</b>"), self.__tr("Scan a document or image using %1.").arg('xsane'),
-                self.__tr("Scan..."), self.ScanPixmap, self.ScanButton_clicked)
-
-        if self.cur_device.fax_type:
-            self.addItem(self.__tr("<b>Send PC Fax</b>"), self.__tr("Send a fax from the PC using %1.").arg('hp-sendfax'),
-                self.__tr("Send PC Fax..."), self.SendFaxPixmap, self.SendFaxButton_clicked)
-
-        if self.cur_device.copy_type:
-            self.addItem(self.__tr("<b>Make Copies</b>"), self.__tr("Initiate device copies from the PC using %1.").arg('hp-makecopies'),
-                self.__tr("Make Copies..."), self.MakeCopiesPixmap, self.MakeCopiesButton_clicked)
-
-        if self.cur_device.pcard_type:
-            self.addItem(self.__tr("<b>Unload Photo Card</b>"), self.__tr("Copy/move image files from the device to the PC using %1.").arg('hp-unload'),
-                self.__tr("Unload Photo Card..."), self.PhotoCardPixmap, self.PCardButton_clicked)
-
+        else:
+            if not self.cur_device.supported:
+                self.addGroupHeading("not_supported", self.__tr("ERROR: Device not supported."))
+            else:
+                self.addGroupHeading("not_found", self.__tr("ERROR: Device not found. Please check connection and power-on device."))
 
     def PrintButton_clicked(self):
-        self.RunCommand(self.cmd_print)
-
+        if self.cmd_print_int:
+            self.form.SwitchFunctionsTab("print")
+        else:
+            self.RunCommand(self.cmd_print)
+            
     def ScanButton_clicked(self):
-        self.RunCommand(self.cmd_scan)
+        if self.cmd_scan_int:
+            self.form.SwitchFunctionsTab("scan")
+        else:
+            self.RunCommand(self.cmd_scan)
 
     def PCardButton_clicked(self):
         if self.cur_device.pcard_type == PCARD_TYPE_MLC:
-            self.RunCommand(self.cmd_pcard)
+            if self.cmd_pcard_int:
+                self.form.SwitchFunctionsTab("pcard")
+            else:
+                self.RunCommand(self.cmd_pcard)
 
         elif self.cur_device.pcard_type == PCARD_TYPE_USB_MASS_STORAGE:
             self.FailureUI(self.__tr("<p><b>Photocards on your printer are only available by mounting them as drives using USB mass storage.</b><p>Please refer to your distribution's documentation for setup and usage instructions."))
 
     def SendFaxButton_clicked(self):
-        self.RunCommand(self.cmd_fax)
+        if self.cmd_fax_int:
+            self.form.SwitchFunctionsTab("fax")
+        else:
+            self.RunCommand(self.cmd_fax)
 
     def MakeCopiesButton_clicked(self):
-        self.RunCommand(self.cmd_copy)
+        if self.cmd_copy_int:
+            self.form.SwitchFunctionsTab("copy")
+        else:
+            self.RunCommand(self.cmd_copy)
 
     def RunCommand(self, cmd, macro_char='%'):
         QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -129,15 +196,20 @@ class ScrollFunctionsView(ScrollView):
 
     def addItem(self, title, text, button_text, pixmap, button_func):
         widget = self.getWidget()
-        vp = self.viewport()
-
-        layout1 = QGridLayout(widget, 1, 1, 10, 5,"layout1")
+                
+        self.addGroupHeading(title, title)
+        
+        layout1 = QGridLayout(widget, 1, 3, 5, 10,"layout1")
+        
+        layout1.setColStretch(0, 1)
+        layout1.setColStretch(1, 10)
+        layout1.setColStretch(2, 2)
 
         pushButton = QPushButton(widget, "pushButton")
         pushButton.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed, 0, 0,
             pushButton.sizePolicy().hasHeightForWidth()))
 
-        layout1.addWidget(pushButton, 1, 3)
+        layout1.addWidget(pushButton, 0, 3)
 
         icon = QLabel(widget, "icon")
         icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
@@ -146,34 +218,25 @@ class ScrollFunctionsView(ScrollView):
         icon.setMinimumSize(QSize(32, 32))
         icon.setMaximumSize(QSize(32, 32))
         icon.setScaledContents(1)
-        layout1.addWidget(icon, 1, 0)
+        layout1.addWidget(icon, 0, 0)
 
         textLabel = QLabel(widget, "textLabel")
-        #textLabel.setAlignment(QLabel.WordBreak | QLabel.AlignVCenter)
         textLabel.setAlignment(QLabel.WordBreak)
         textLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
             textLabel.sizePolicy().hasHeightForWidth()))        
+        textLabel.setFrameShape(self.frame_shape)
+        layout1.addWidget(textLabel, 0, 1)
 
-        layout1.addWidget(textLabel, 1, 1)
+        spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        layout1.addItem(spacer1, 0, 2)
 
-        titleLabel = QLabel(widget, "titleLabel")
-        layout1.addMultiCellWidget(titleLabel, 0, 0, 0, 3)
-
-        spacer1 = QSpacerItem(141, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-        layout1.addItem(spacer1, 1, 2)
-
-        line1 = QFrame(widget, "line1")
-        line1.setFrameShape(QFrame.HLine)
-        layout1.addMultiCellWidget(line1, 2, 2, 0, 3)
-
-        titleLabel.setText(title)
         textLabel.setText(text)
         pushButton.setText(button_text)
         icon.setPixmap(pixmap)
 
         self.connect(pushButton, SIGNAL("clicked()"), button_func)
 
-        self.addControl(widget, str(title))
+        self.addWidget(widget, str(title))
 
 
     def __tr(self,s,c = None):

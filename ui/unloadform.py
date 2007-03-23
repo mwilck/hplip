@@ -153,7 +153,13 @@ class UnloadForm(UnloadForm_base):
         if not self.pc.write_protect:
             log.info("DO NOT REMOVE PHOTO CARD UNTIL YOU EXIT THIS PROGRAM")
 
-        self.unload_dir = os.path.normpath(os.path.expanduser('~'))
+        if user_cfg.last_used.working_dir and \
+            os.path.exists(user_cfg.last_used.working_dir):
+            
+            self.unload_dir = user_cfg.last_used.working_dir
+        else:
+            self.unload_dir = os.path.normpath(os.path.expanduser('~'))
+        
         os.chdir(self.unload_dir)
         self.UnloadDirectoryEdit.setText(self.unload_dir)
 
@@ -386,12 +392,15 @@ class UnloadForm(UnloadForm_base):
 
         if not len(self.unload_dir):
             return
+        
         elif not utils.is_path_writable(self.unload_dir):
             self.failure(self.__tr("<p><b>The unload directory path you entered is not valid.</b><p>The directory must exist and you must have write permissions."))
             self.unload_dir = old_dir
+        
         else:
             self.UnloadDirectoryEdit.setText(self.unload_dir)
             os.chdir(self.unload_dir)
+            user_cfg.last_used.working_dir = self.unload_dir
 
     def UnloadButton_clicked(self):
         was_cancelled = False

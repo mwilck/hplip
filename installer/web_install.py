@@ -98,7 +98,7 @@ def run(cmd, callback=None, passwd='', timeout=0.5):
         while True:
             update_spinner()
             i = child.expect(["[pP]assword:", pexpect.EOF, pexpect.TIMEOUT])
-
+            #print "####>>>> i: ", i
             if child.before and callback is not None:
                 if callback(child.before): # cancel
                     break
@@ -116,7 +116,11 @@ def run(cmd, callback=None, passwd='', timeout=0.5):
         pass
 
     cleanup_spinner()
-    child.close()
+    
+    try: 
+        child.close()
+    except OSError:
+        pass
 
     return child.exitstatus
 
@@ -184,6 +188,12 @@ class Installer(object):
         return str(self.createTemplate("unsupported"))
 
     unsupported.exposed = True
+    
+    def unsupported_controller(self): # No pushing or pop required.. for this screen
+        #print("####>>>>unsupported")
+        return str(self.createTemplate("welcome"))
+
+    unsupported_controller.exposed = True
 
 
     def index(self): # No pushing or pop required.. for this screen
@@ -229,14 +239,23 @@ class Installer(object):
             self.next = None
             return nxt()
 
-        self.next = self.mode
-        return self.progress(ACTION_INIT)  # CHANGE - this need to reroute to <progress_init(0)>
+        if os.geteuid() == 0:
+            return self.warning()
+        else: 
+            self.next = self.password
+            return self.progress(ACTION_INIT)
+            #<#>return self.password()
 
     welcome_controller.exposed = True
+    
 
     #
     # PASSWORD
     #
+    
+    def password_callback(message):
+        #print "####>>>>password_callback: ", message
+        return False
 
     def set_password(self, passwd): # Collect root password from user - password?passwd=<passwd>
         #print("####>>>>set_password")
@@ -244,12 +263,14 @@ class Installer(object):
 
         if passwd:
             self.passwd = base64.decodestring(passwd)
+            
+            #print "Password: ", self.passwd
 
-            cmd = core.su_sudo() % "true"
+            cmd = core.su_sudo() % "echo test"
 
-            ##print "Cmd: ", cmd
+            #print "Cmd: ", cmd
 
-            status = run(cmd, None, self.passwd)
+            status = run(cmd, self.password_callback, self.passwd)
 
             rvalue = "Failed"
 
@@ -280,9 +301,36 @@ class Installer(object):
             self.next = None
             return nxt()
 
-        return self.dependency_controller1()  # CHANGE - this need to reroute to <dependency_controller1>
+        #return self.dependency_controller1()  # CHANGE - this need to reroute to <dependency_controller1>
+        return self.mode()
+        #return self.progress(ACTION_INIT)
 
     password_controller.exposed = True
+    
+    #
+    # WARNING
+    #
+
+    def warning(self): 
+        #print("####>>>>warning")
+        template = self.createTemplate("warning")
+        self.pushHistory(self.warning)
+        return str(template)
+
+    warning.exposed = True
+
+    def warning_controller(self):
+        #print("####>>>>warning_controller")
+        nxt = self.next
+        if nxt is not None:
+            self.next = None
+            return nxt()
+
+        self.next = self.password
+        return self.progress(ACTION_INIT)  # CHANGE - this need to reroute to <progress_init(0)>
+
+    warning_controller.exposed = True
+    
 
     #
     # MODE SELECTION
@@ -476,7 +524,8 @@ class Installer(object):
         if self.auto_mode:
             self.required_components_to_install()
             self.optional_components_to_install()
-            return self.password()        # CHANGE - this need to reroute to <password()>
+            #return self.password()        # CHANGE - this need to reroute to <password()>
+            return self.dependency_controller1()
         else:
             return self.options()
 
@@ -508,7 +557,8 @@ class Installer(object):
             self.next = None
             return nxt()
 
-        return self.password()    # CHANGE - this need to reroute to <password()>
+        #return self.password()    # CHANGE - this need to reroute to <password()>
+        return self.dependency_controller1()
 
     options_controller.exposed = True
 
@@ -641,7 +691,60 @@ class Installer(object):
                 return self.hplip_remove()
         else:
             return self.dependency_controller8()
+            
+    #       
+    # Network Ping test to verify if network access is available.
+    #
+    def network_unavailable(self):
+        #print("####>>>>network_unavailable")
+        template = self.createTemplate("network_unavailable")
+        self.pushHistory(self.network_unavailable)
+        return str(template)
+    
+    network_unavailable.exposed = True
+    
+    
+    def network_unavailable_controller(self):
+        pkg_mgr = core.check_pkg_mgr()
+        
+        if self.network_ping() != 0:
+            #print "####>>>>network unavailable"
+            return self.network_unavailable()
+        else:
+            if pkg_mgr:
+                self.next = self.install_required_controller()
+                return self.error_package_manager(pkg_mgr)
+            else:
+                self.next = self.dependency_controller4
+                return self.progress(ACTION_PRE_DEPENDENCY)
+    
+    network_unavailable_controller.exposed = True
+    
+    #
+    # CHECK FOR ACTIVE NETWORK CONNECTION
+    #
+    def network_ping(self):
+        status = 0
+        ping = utils.which("ping")
 
+        if ping:
+           ping = os.path.join(ping, "ping")
+           status = run(ping + " -c3 sf.net", self.ping_callback, self.passwd, 2.0)
+        #print "####>>>> Status: ", status
+        return status 
+        
+        
+        
+    #
+    # callback for network_ping
+    #
+    def ping_callback(message):
+        #print "####>>>>ping_callback: ", message
+        return False
+
+    #
+    # Various installer checks
+    #
     def check_required(self):
         #print("####>>>>check_required")
         self.num_req_missing = 0
@@ -668,7 +771,13 @@ class Installer(object):
         #print("####>>>>install_required")
         template = self.createTemplate("install_required")
         template.missing_required_dependencies = {}
-        self.required_components_to_install()
+        for opt in core.components[core.selected_component][1]:
+            if core.options[opt][0]: # required options
+                for d in core.options[opt][2]: # dependencies for option
+                    if not core.have_dependencies[d]: # missing
+                        log.error("Missing REQUIRED dependency: %s (%s)" % (d, core.dependencies[d][2]))
+                        template.missing_required_dependencies[d] = core.dependencies[d][2]
+                        self.depends_to_install.append(d)
 
         return str(template)
 
@@ -680,7 +789,7 @@ class Installer(object):
                 for d in core.options[opt][2]: # dependencies for option
                     if not core.have_dependencies[d]: # missing
                         log.error("Missing REQUIRED dependency: %s (%s)" % (d, core.dependencies[d][2]))
-                        template.missing_required_dependencies[d] = core.dependencies[d][2]
+                        #template.missing_required_dependencies[d] = core.dependencies[d][2]
                         self.depends_to_install.append(d)
                         
     def optional_components_to_install(self):
@@ -691,17 +800,19 @@ class Installer(object):
                          if not core.have_dependencies[d]: # missing dependency
                              if core.dependencies[d][0]: # dependency is required for this option
                                  log.warning("Missing OPTIONAL dependency: %s (%s) [Required for option '%s']" % (d, core.dependencies[d][2], core.options[opt][1]))
-                                 template.missing_optional_dependencies[d] = core.dependencies[d][2]
                                  self.depends_to_install.append(d)
                              else:
                                  log.warning("Missing OPTIONAL dependency: %s (%s) [Optional for option '%s']" % (d, core.dependencies[d][2], core.options[opt][1]))
-                                 template.missing_optional_dependencies[d] = core.dependencies[d][2]
                                  self.depends_to_install.append(d)
 
     def install_required_controller(self): # install_required_controller
         #print("####>>>>install_required_controller")
         pkg_mgr = core.check_pkg_mgr()
         #print "install_required_controller:pkg_mgr: ", pkg_mgr
+        if self.network_ping() != 0:
+            #print "network unavailable"
+            return self.network_unavailable()
+            
         if pkg_mgr:
             self.next = self.install_required_controller()
             return self.error_package_manager(pkg_mgr)
@@ -716,8 +827,20 @@ class Installer(object):
         self.depends_to_install = []
         template = self.createTemplate("install_optional")
         template.missing_optional_dependencies = {}
-        self.optional_components_to_install()
-
+        #self.optional_components_to_install()
+        for opt in core.components[core.selected_component][1]:
+             if not core.options[opt][0]: # not required
+                 if core.selected_options[opt]: # only for options that are ON
+                     for d in core.options[opt][2]: # dependencies
+                        if not core.have_dependencies[d]: # missing dependency
+                             if core.dependencies[d][0]: # dependency is required for this option
+                                 log.warning("Missing OPTIONAL dependency: %s (%s) [Required for option '%s']" % (d, core.dependencies[d][2], core.options[opt][1]))
+                                 template.missing_optional_dependencies[d] = core.dependencies[d][2]
+                                 self.depends_to_install.append(d)
+                             else:
+                                 log.warning("Missing OPTIONAL dependency: %s (%s) [Optional for option '%s']" % (d, core.dependencies[d][2], core.options[opt][1]))
+                                 template.missing_optional_dependencies[d] = core.dependencies[d][2]
+                                 self.depends_to_install.append(d)
         return str(template)
 
     install_optional.exposed = True
@@ -1229,13 +1352,13 @@ def start():
         'autoreload.on': False,
         'server.thread_pool': 1,
         'log_debug_info_filter.on': False,
-        'server.log_file_not_found': True,
-        'server.show_tracebacks': True,
-        'server.log_request_headers': True,
+        'server.log_file_not_found': False,
+        'server.show_tracebacks': False,
+        'server.log_request_headers': False,
         'server.socket_port': 8080,
         'server.socket_queue_size': 5,
         'server.protocol_version': 'HTTP/1.0',
-        'server.log_to_screen': True,
+        'server.log_to_screen': False,
         'server.log_file': 'hplip_log',
         'server.reverse_dns': False,
 
