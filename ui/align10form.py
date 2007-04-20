@@ -42,7 +42,10 @@ class Align10Form(Align10Form_Base):
 
     def getValues(self):
         ret = []
-        for line in self.controls:
+        controls = self.controls.keys()
+        controls.sort()
+        
+        for line in controls:
             if not self.controls[line][0]:
                 ret.append(0)
             else:

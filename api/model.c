@@ -341,7 +341,7 @@ static int ParseFile(char *datFile, char *model, char *attr, int attrSize)
          {
             /* Found model match. */
             ResolveAttributes(fp, attr, attrSize); 
-            found = 1; 
+            found = 1;
             break;
          }
       }
@@ -396,7 +396,7 @@ int hplip_GetModelAttributes(char *uri, char *attr, int attrSize)
 
       /* Search /data/models/unreleased/unreleased.dat file for specified model. */
       snprintf(sz, sizeof(sz), "%s/data/models/unreleased/unreleased.dat", homedir);
-      ParseFile(sz, model, attr, attrSize);   /* save any *.inc files */
+      found = ParseFile(sz, model, attr+n, attrSize-n);   /* save any *.inc files */
    }
 
    if (!found)

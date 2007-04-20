@@ -496,17 +496,20 @@
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
-				    <property name="name">
-					    <cstring>radioButton19</cstring>
-				    </property>
-				    <property name="enabled">
-					    <bool>false</bool>
-				    </property>
-				    <property name="text">
-					    <string>Built-in access photo cards function</string>
-				    </property>
-			    </widget>
+                            <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>radioButton19</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Built-in access photo cards function</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
                             <widget class="QRadioButton" row="1" column="0">
                                 <property name="name">
                                     <cstring>radioButton20</cstring>
@@ -515,12 +518,15 @@
                                     <string>External command:</string>
                                 </property>
                                 <property name="checked">
-                                    <bool>true</bool>
+                                    <bool>false</bool>
                                 </property>
                             </widget>
                             <widget class="QLineEdit" row="1" column="1">
                                 <property name="name">
                                     <cstring>AccessPCardCommand</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
                                 </property>
                             </widget>
                         </grid>
@@ -540,11 +546,11 @@
                                 <property name="name">
                                     <cstring>radioButton17</cstring>
                                 </property>
-                                <property name="enabled">
-                                    <bool>false</bool>
-                                </property>
                                 <property name="text">
                                     <string>Built-in send PC fax function</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
                                 </property>
                             </widget>
                             <widget class="QRadioButton" row="1" column="0">
@@ -555,7 +561,7 @@
                                     <string>External command:</string>
                                 </property>
                                 <property name="checked">
-                                    <bool>true</bool>
+                                    <bool>false</bool>
                                 </property>
                             </widget>
                             <widget class="QLineEdit" row="1" column="1">
@@ -563,7 +569,7 @@
                                     <cstring>SendFaxCommand</cstring>
                                 </property>
                                 <property name="enabled">
-                                    <bool>true</bool>
+                                    <bool>false</bool>
                                 </property>
                             </widget>
                         </grid>
@@ -579,17 +585,17 @@
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
-				    <property name="name">
-					    <cstring>radioButton15</cstring>
-				    </property>
-				    <property name="enabled">
-					    <bool>false</bool>
-				    </property>
-				    <property name="text">
-					    <string>Built-in scan function</string>
-				    </property>
-			    </widget>
+                            <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>radioButton15</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Built-in scan function</string>
+                                </property>
+                            </widget>
                             <widget class="QRadioButton" row="1" column="0">
                                 <property name="name">
                                     <cstring>radioButton16</cstring>
@@ -619,17 +625,17 @@
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-			    <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
-				    <property name="name">
-					    <cstring>radioButton13</cstring>
-				    </property>
-				    <property name="text">
-					    <string>Built-in print function</string>
-				    </property>
-				    <property name="checked">
-					    <bool>true</bool>
-				    </property>
-			    </widget>
+                            <widget class="QRadioButton" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>radioButton13</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Built-in print function</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
                             <widget class="QRadioButton" row="1" column="0">
                                 <property name="name">
                                     <cstring>radioButton14</cstring>
@@ -692,10 +698,13 @@
                                     <cstring>radioButton21</cstring>
                                 </property>
                                 <property name="enabled">
-                                    <bool>false</bool>
+                                    <bool>true</bool>
                                 </property>
                                 <property name="text">
                                     <string>Built-inmake copies function</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
                                 </property>
                             </widget>
                             <widget class="QRadioButton" row="1" column="0">
@@ -706,7 +715,7 @@
                                     <string>External command:</string>
                                 </property>
                                 <property name="checked">
-                                    <bool>true</bool>
+                                    <bool>false</bool>
                                 </property>
                             </widget>
                             <widget class="QLineEdit" row="1" column="1">

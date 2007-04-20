@@ -49,7 +49,8 @@ def createStandardCoverPage(page_size=PAGE_SIZE_LETTER,
                             sender_fax='', 
                             sender_email='', 
                             regarding='', 
-                            message=''):
+                            message='',
+                            preserve_formatting=False):
 
     s = getSampleStyleSheet()
 
@@ -115,7 +116,6 @@ def createStandardCoverPage(page_size=PAGE_SIZE_LETTER,
     story.append(t)
 
     if message:
-
         MSG_STYLE = TableStyle([('LINEABOVE', (0,0), (-1,0), 2, colors.black),
                                  ('LINEABOVE', (0,1), (-1,-1), 0.25, colors.black),
                                  ('LINEBELOW', (0,-1), (-1,-1), 2, colors.black),
@@ -126,9 +126,14 @@ def createStandardCoverPage(page_size=PAGE_SIZE_LETTER,
 
         story.append(Spacer(1, 0.5*inch))
 
-        data = [[Paragraph("Comments/Notes:", ps), ''],
-                [Paragraph(escape(message[:2048]), ps), ''],]
-                #[Preformatted(escape(message[:2048]), ps), ''],]
+        if preserve_formatting:
+            message = '\n'.join(message[:2048].splitlines()[:32])
+            
+            data = [[Paragraph("Comments/Notes:", ps), ''],
+                    [Preformatted(escape(message), ps), ''],]
+        else:
+            data = [[Paragraph("Comments/Notes:", ps), ''],
+                    [Paragraph(escape(message[:2048]), ps), ''],]
 
         t = Table(data, style=MSG_STYLE)
 

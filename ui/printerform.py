@@ -18,9 +18,11 @@
 #
 # Authors: Don Welch
 
-
+# Qt
 from qt import *
 from scrollprint import ScrollPrintView
+
+# Local
 from base.g import *
 from base.codes import *
 from base import utils, device
@@ -143,6 +145,7 @@ class PrinterForm(QMainWindow):
         
         
     def FailureUI(self, error_text):
+        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,
@@ -150,15 +153,6 @@ class PrinterForm(QMainWindow):
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)
 
-    def WarningUI(self, msg):
-        QMessageBox.warning(self,
-                             self.caption(),
-                             msg,
-                              QMessageBox.Ok,
-                              QMessageBox.NoButton,
-                              QMessageBox.NoButton)
-
-                              
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - Print"))
 

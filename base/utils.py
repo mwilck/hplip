@@ -463,7 +463,8 @@ def darkred(text):
     return codes["darkred"]+text+codes["reset"]
 
 
-def commafy(val):
+# TODO: Use locale.format("%d", val, grouping=True) ???
+def commafy(val): 
     return val < 0 and '-' + commafy(abs(val)) \
         or val < 1000 and str(val) \
         or '%s,%03d' % (commafy(val / 1000), (val % 1000))
@@ -535,91 +536,183 @@ def which(command, return_full_path=False):
         return found_path
 
 
-def deviceDefaultFunctions():
-    cmd_print, cmd_copy, cmd_fax, \
-        cmd_pcard, cmd_scan, cmd_fab = \
-        '', '', '', '', '', ''
-
-    # Print
-    path = which('hp-print')
-
-    if len(path) > 0:
-        cmd_print = 'hp-print -p%PRINTER%'
-    else:
-        path = which('kprinter')
-
+class UserSettings(object):
+    def __init__(self):
+        self.load()
+    
+    def loadDefaults(self):
+        # Print
+        path = which('hp-print')
+    
         if len(path) > 0:
-            cmd_print = 'kprinter -P%PRINTER% --system cups'
+            self.cmd_print = 'hp-print -p%PRINTER%'
         else:
-            path = which('gtklp')
-
+            path = which('kprinter')
+    
             if len(path) > 0:
-                cmd_print = 'gtklp -P%PRINTER%'
-
+                self.cmd_print = 'kprinter -P%PRINTER% --system cups'
             else:
-                path = which('xpp')
-
+                path = which('gtklp')
+    
                 if len(path) > 0:
-                    cmd_print = 'xpp -P%PRINTER%'
-
-    # Scan
-    path = which('xsane')
-
-    if len(path) > 0:
-        cmd_scan = 'xsane -V %SANE_URI%'
-    else:
-        path = which('kooka')
-
-        if len(path)>0:
-            #cmd_scan = 'kooka -d "%SANE_URI%"'
-            cmd_scan = 'kooka'
-
+                    self.cmd_print = 'gtklp -P%PRINTER%'
+    
+                else:
+                    path = which('xpp')
+    
+                    if len(path) > 0:
+                        self.cmd_print = 'xpp -P%PRINTER%'
+    
+        # Scan
+        path = which('xsane')
+    
+        if len(path) > 0:
+            self.cmd_scan = 'xsane -V %SANE_URI%'
         else:
-            path = which('xscanimage')
-
+            path = which('kooka')
+    
             if len(path)>0:
-                cmd_scan = 'xscanimage'
+                #cmd_scan = 'kooka -d "%SANE_URI%"'
+                self.cmd_scan = 'kooka'
+    
+            else:
+                path = which('xscanimage')
+    
+                if len(path)>0:
+                    self.cmd_scan = 'xscanimage'
+    
+        # Photo Card
+        path = which('hp-unload')
+    
+        if len(path):
+            self.cmd_pcard = 'hp-unload -d %DEVICE_URI%'
+    
+        else:
+            self.cmd_pcard = 'python %HOME%/unload.py -d %DEVICE_URI%'
+    
+        # Copy
+        path = which('hp-makecopies')
+    
+        if len(path):
+            self.cmd_copy = 'hp-makecopies -d %DEVICE_URI%'
+    
+        else:
+            self.cmd_copy = 'python %HOME%/makecopies.py -d %DEVICE_URI%'
+    
+        # Fax
+        path = which('hp-sendfax')
+    
+        if len(path):
+            self.cmd_fax = 'hp-sendfax -d %FAX_URI%'
+    
+        else:
+            self.cmd_fax = 'python %HOME%/sendfax.py -d %FAX_URI%'
+    
+        # Fax Address Book
+        path = which('hp-fab')
+    
+        if len(path):
+            self.cmd_fab = 'hp-fab'
+    
+        else:
+            self.cmd_fab = 'python %HOME%/fab.py'    
+    
+    def load(self):
+        self.loadDefaults()
+        
+        log.debug("Loading user settings...")
+        
+        self.email_alerts = to_bool(user_cfg.alerts.email_alerts, False)
+        self.email_to_addresses = user_cfg.alerts.email_to_addresses
+        self.email_from_address = user_cfg.alerts.email_from_address
+        self.auto_refresh = to_bool(user_cfg.refresh.enable, False)
 
-    # Photo Card
-    path = which('hp-unload')
+        try:
+            self.auto_refresh_rate = int(user_cfg.refresh.rate)
+        except ValueError:    
+            self.auto_refresh_rate = 30 # (secs)
 
-    if len(path):
-        cmd_pcard = 'hp-unload -d %DEVICE_URI%'
+        try:
+            self.auto_refresh_type = int(user_cfg.refresh.type)
+        except ValueError:
+            self.auto_refresh_type = 0 # refresh 1 (1=refresh all)
 
-    else:
-        cmd_pcard = 'python %HOME%/unload.py -d %DEVICE_URI%'
+        self.cmd_print = user_cfg.commands.prnt or self.cmd_print
+        self.cmd_print_int = to_bool(user_cfg.commands.prnt_int, True)
+        
+        self.cmd_scan = user_cfg.commands.scan or self.cmd_scan
+        self.cmd_scan_int = to_bool(user_cfg.commands.scan_int, False)
+        
+        self.cmd_pcard = user_cfg.commands.pcard or self.cmd_pcard
+        self.cmd_pcard_int = to_bool(user_cfg.commands.pcard_int, True)
+        
+        self.cmd_copy = user_cfg.commands.cpy or self.cmd_copy
+        self.cmd_copy_int = to_bool(user_cfg.commands.cpy_int, True)
+        
+        self.cmd_fax = user_cfg.commands.fax or self.cmd_fax
+        self.cmd_fax_int = to_bool(user_cfg.commands.fax_int, True)
+        
+        self.cmd_fab = user_cfg.commands.fab or self.cmd_fab
+        self.cmd_fab_int = to_bool(user_cfg.commands.fab_int, False)
+        
+        self.debug()
+    
+    def debug(self):
+        log.debug("Print command: %s" % self.cmd_print)
+        log.debug("Use Internal print command: %s" % self.cmd_print_int)
+        
+        log.debug("PCard command: %s" % self.cmd_pcard)
+        log.debug("Use internal PCard command: %s" % self.cmd_pcard_int)
+        
+        log.debug("Fax command: %s" % self.cmd_fax)
+        log.debug("Use internal fax command: %s" % self.cmd_fax_int)
+        
+        log.debug("FAB command: %s" % self.cmd_fab)
+        log.debug("Use internal FAB command: %s" % self.cmd_fab_int)
+        
+        log.debug("Copy command: %s " % self.cmd_copy)
+        log.debug("Use internal copy command: %s " % self.cmd_copy_int)
+        
+        log.debug("Scan command: %s" % self.cmd_scan)
+        log.debug("Use internal scan command: %s" % self.cmd_scan_int)
+        
+        log.debug("Email alerts: %s" % self.email_alerts)
+        log.debug("Email to address(es): %s" % self.email_to_addresses)
+        log.debug("Email from address: %s" % self.email_from_address)
+        log.debug("Auto refresh: %s" % self.auto_refresh)
+        log.debug("Auto refresh rate: %s" % self.auto_refresh_rate)
+        log.debug("Auto refresh type: %s" % self.auto_refresh_type)        
+    
+    def save(self):
+        log.debug("Saving user settings...")
+        
+        user_cfg.commands.prnt = self.cmd_print
+        user_cfg.commands.prnt_int = self.cmd_print_int
+        
+        user_cfg.commands.pcard = self.cmd_pcard
+        user_cfg.commands.pcard_int = self.cmd_pcard_int
+        
+        user_cfg.commands.fax = self.cmd_fax
+        user_cfg.commands.fax_int = self.cmd_fax_int
+        
+        user_cfg.commands.scan = self.cmd_scan
+        user_cfg.commands.scan_int = self.cmd_scan_int
+        
+        user_cfg.commands.cpy = self.cmd_copy
+        user_cfg.commands.cpy_int = self.cmd_copy_int
+        
+        user_cfg.alerts.email_to_addresses = self.email_to_addresses
+        user_cfg.alerts.email_from_address = self.email_from_address
+        user_cfg.alerts.email_alerts = self.email_alerts
+        
+        user_cfg.refresh.enable = self.auto_refresh
+        user_cfg.refresh.rate = self.auto_refresh_rate
+        user_cfg.refresh.type = self.auto_refresh_type
+        
+        self.debug()
+        
 
-    # Copy
-    path = which('hp-makecopies')
-
-    if len(path):
-        cmd_copy = 'hp-makecopies -d %DEVICE_URI%'
-
-    else:
-        cmd_copy = 'python %HOME%/makecopies.py -d %DEVICE_URI%'
-
-    # Fax
-    path = which('hp-sendfax')
-
-    if len(path):
-        cmd_fax = 'hp-sendfax -d %FAX_URI%'
-
-    else:
-        cmd_fax = 'python %HOME%/sendfax.py -d %FAX_URI%'
-
-    # Fax Address Book
-    path = which('hp-fab')
-
-    if len(path):
-        cmd_fab = 'hp-fab'
-
-    else:
-        cmd_fab = 'python %HOME%/fab.py'
-
-    return cmd_print, cmd_scan, cmd_pcard, \
-           cmd_copy, cmd_fax, cmd_fab
-
-
+          
 def no_qt_message_gtk():
     try:
         import gtk
@@ -905,13 +998,13 @@ def uniqueList(input):
 def list_move_up(l, m):
     for i in range(1, len(l)):
         if l[i] == m:
-            l[i-1],l[i] = l[i],l[i-1]
+            l[i-1], l[i] = l[i], l[i-1]
 
 
 def list_move_down(l, m):
-    for i in range(len(l) - 2, 0, -1):
+    for i in range(len(l)-2, -1, -1):
         if l[i] == m:
-            l[i],l[i+1] = l[i+1],l[i] 
+            l[i], l[i+1] = l[i+1], l[i] 
 
 
 

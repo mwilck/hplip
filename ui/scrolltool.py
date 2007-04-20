@@ -51,8 +51,6 @@ from cleaningform import CleaningForm
 from cleaningform2 import CleaningForm2
 from waitform import WaitForm
 from faxsettingsform import FaxSettingsForm
-#from informationform import InformationForm
-
 
 
 class ScrollToolView(ScrollView):
@@ -62,16 +60,9 @@ class ScrollToolView(ScrollView):
         self.form = form
         self.toolbox_hosted = toolbox_hosted
 
-        cmd_print, cmd_scan, cmd_pcard, \
-            cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
-
-        self.cmd_print = user_cfg.commands.prnt or cmd_print
-        self.cmd_scan = user_cfg.commands.scan or cmd_scan
-        self.cmd_pcard = user_cfg.commands.pcard or cmd_pcard
-        self.cmd_copy = user_cfg.commands.cpy or cmd_copy
-        self.cmd_fax = user_cfg.commands.fax or cmd_fax
-        self.cmd_fab = user_cfg.commands.fab or cmd_fab
-
+        user_settings = utils.UserSettings()
+        self.cmd_fab = user_settings.cmd_fab
+        log.debug("FAB command: %s" % self.cmd_fab)
 
     def fillControls(self):
         ScrollView.fillControls(self)
@@ -99,7 +90,6 @@ class ScrollToolView(ScrollView):
                     self.__tr("Setup fax phone numbers to use when sending faxes from the PC."), 
                     self.__tr("Fax Address Book..."), 
                     self.faxAddressBookButton_clicked)
-
 
             self.addItem( "testpage", self.__tr("<b>Print Test Page</b>"), 
                 QPixmap(os.path.join(prop.image_dir, 'icon_testpage.png')), 
@@ -222,7 +212,7 @@ class ScrollToolView(ScrollView):
 
     def viewInformation(self):
         self.form.SwitchMaintTab("device_info")
-        
+
     def viewPrinterInformation(self):
         self.form.SwitchMaintTab("printer_info")
 
@@ -237,19 +227,23 @@ class ScrollToolView(ScrollView):
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-
-                if pq_diag == 1:
-                    maint.printQualityDiagType1(d, self.LoadPaperUI)
-
-                elif pq_diag == 2:
-                    maint.printQualityDiagType2(d, self.LoadPaperUI)
-
-            else:
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+
+                    if pq_diag == 1:
+                        maint.printQualityDiagType1(d, self.LoadPaperUI)
+
+                    elif pq_diag == 2:
+                        maint.printQualityDiagType2(d, self.LoadPaperUI)
+
+                else:
+                    self.CheckDeviceUI()
 
         finally:
             d.close()
@@ -260,21 +254,25 @@ class ScrollToolView(ScrollView):
         d = self.cur_device
         linefeed_type = d.linefeed_cal_type
 
-        try:
+        try:    
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-
-                if linefeed_type == 1:
-                    maint.linefeedCalType1(d, self.LoadPaperUI)
-
-                elif linefeed_type == 2:
-                    maint.linefeedCalType2(d, self.LoadPaperUI)
-
-            else:
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+
+                    if linefeed_type == 1:
+                        maint.linefeedCalType1(d, self.LoadPaperUI)
+
+                    elif linefeed_type == 2:
+                        maint.linefeedCalType2(d, self.LoadPaperUI)
+
+                else:
+                    self.CheckDeviceUI()
 
         finally:
             d.close()
@@ -290,7 +288,7 @@ class ScrollToolView(ScrollView):
             if d.isIdleAndNoError():
                 d.downloadFirmware()
             else:
-                self.FailureUI(self.__tr("<b>An error occured downloading firmware file.</b><p>Please check your printer and try again."))
+                self.form.FailureUI(self.__tr("<b>An error occured downloading firmware file.</b><p>Please check your printer and try again."))
 
         finally:
             d.close()
@@ -298,7 +296,7 @@ class ScrollToolView(ScrollView):
 
 
     def CheckDeviceUI(self):
-        self.FailureUI(self.__tr("<b>Device is busy or in an error state.</b><p>Please check device and try again."))
+        self.form.FailureUI(self.__tr("<b>Device is busy or in an error state.</b><p>Please check device and try again."))
 
     def LoadPaperUI(self):
         if LoadPaperForm(self).exec_loop() == QDialog.Accepted:
@@ -320,19 +318,19 @@ class ScrollToolView(ScrollView):
             return False, 0
 
     def BothPensRequiredUI(self):
-        self.WarningUI(self.__tr("<p><b>Both cartridges are required for alignment.</b><p>Please install both cartridges and try again."))
+        self.form.WarningUI(self.__tr("<p><b>Both cartridges are required for alignment.</b><p>Please install both cartridges and try again."))
 
     def InvalidPenUI(self):
-        self.WarningUI(self.__tr("<p><b>One or more cartiridges are missing from the printer.</b><p>Please install cartridge(s) and try again."))
+        self.form.WarningUI(self.__tr("<p><b>One or more cartiridges are missing from the printer.</b><p>Please install cartridge(s) and try again."))
 
     def PhotoPenRequiredUI(self):
-        self.WarningUI(self.__tr("<p><b>Both the photo and color cartridges must be inserted into the printer to perform color calibration.</b><p>If you are planning on printing with the photo cartridge, please insert it and try again."))
+        self.form.WarningUI(self.__tr("<p><b>Both the photo and color cartridges must be inserted into the printer to perform color calibration.</b><p>If you are planning on printing with the photo cartridge, please insert it and try again."))
 
     def PhotoPenRequiredUI2(self):
-        self.WarningUI(self.__tr("<p><b>Both the photo (regular photo or photo blue) and color cartridges must be inserted into the printer to perform color calibration.</b><p>If you are planning on printing with the photo or photo blue cartridge, please insert it and try again."))
+        self.form.WarningUI(self.__tr("<p><b>Both the photo (regular photo or photo blue) and color cartridges must be inserted into the printer to perform color calibration.</b><p>If you are planning on printing with the photo or photo blue cartridge, please insert it and try again."))
 
     def NotPhotoOnlyRequired(self): # Type 11
-        self.WarningUI(self.__tr("<p><b>Cannot align with only the photo cartridge installed.</b><p>Please install other cartridges and try again."))
+        self.form.WarningUI(self.__tr("<p><b>Cannot align with only the photo cartridge installed.</b><p>Please install other cartridges and try again."))
 
     def AioUI1(self):
         dlg = AlignType6Form1(self)
@@ -355,49 +353,51 @@ class ScrollToolView(ScrollView):
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-
-                if align_type == ALIGN_TYPE_AUTO:
-                    maint.AlignType1(d, self.LoadPaperUI)
-
-                elif align_type == ALIGN_TYPE_8XX:
-                    maint.AlignType2(d, self.LoadPaperUI, self.AlignmentNumberUI,
-                                     self.BothPensRequiredUI)
-
-                elif align_type in (ALIGN_TYPE_9XX,ALIGN_TYPE_9XX_NO_EDGE_ALIGN):
-                     maint.AlignType3(d, self.LoadPaperUI, self.AlignmentNumberUI,
-                                      self.PaperEdgeUI, align_type)
-
-                elif align_type in (ALIGN_TYPE_LIDIL_0_3_8, ALIGN_TYPE_LIDIL_0_4_3, ALIGN_TYPE_LIDIL_VIP):
-                    maint.AlignxBow(d, align_type, self.LoadPaperUI, self.AlignmentNumberUI,
-                                    self.PaperEdgeUI, self.InvalidPenUI, self.ColorAdjUI)
-
-                elif align_type == ALIGN_TYPE_LIDIL_AIO:
-                    maint.AlignType6(d, self.AioUI1, self.AioUI2, self.LoadPaperUI)
-
-                elif align_type == ALIGN_TYPE_DESKJET_450:
-                    maint.AlignType8(d, self.LoadPaperUI, self.AlignmentNumberUI)
-
-                elif align_type == ALIGN_TYPE_LBOW:
-                    maint.AlignType10(d, self.LoadPaperUI, self.Align10and11UI) 
-
-                elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
-                    maint.AlignType11(d, self.LoadPaperUI, self.Align10and11UI, self.NotPhotoOnlyRequired) 
-
-                elif align_type == ALIGN_TYPE_OJ_PRO:
-                    maint.AlignType12(d, self.LoadPaperUI)
-
-            else:
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+
+                    if align_type == ALIGN_TYPE_AUTO:
+                        maint.AlignType1(d, self.LoadPaperUI)
+
+                    elif align_type == ALIGN_TYPE_8XX:
+                        maint.AlignType2(d, self.LoadPaperUI, self.AlignmentNumberUI,
+                                         self.BothPensRequiredUI)
+
+                    elif align_type in (ALIGN_TYPE_9XX,ALIGN_TYPE_9XX_NO_EDGE_ALIGN):
+                         maint.AlignType3(d, self.LoadPaperUI, self.AlignmentNumberUI,
+                                          self.PaperEdgeUI, align_type)
+
+                    elif align_type in (ALIGN_TYPE_LIDIL_0_3_8, ALIGN_TYPE_LIDIL_0_4_3, ALIGN_TYPE_LIDIL_VIP):
+                        maint.AlignxBow(d, align_type, self.LoadPaperUI, self.AlignmentNumberUI,
+                                        self.PaperEdgeUI, self.InvalidPenUI, self.ColorAdjUI)
+
+                    elif align_type == ALIGN_TYPE_LIDIL_AIO:
+                        maint.AlignType6(d, self.AioUI1, self.AioUI2, self.LoadPaperUI)
+
+                    elif align_type == ALIGN_TYPE_DESKJET_450:
+                        maint.AlignType8(d, self.LoadPaperUI, self.AlignmentNumberUI)
+
+                    elif align_type == ALIGN_TYPE_LBOW:
+                        maint.AlignType10(d, self.LoadPaperUI, self.Align10and11UI) 
+
+                    elif align_type == ALIGN_TYPE_LIDIL_0_5_4:
+                        maint.AlignType11(d, self.LoadPaperUI, self.Align10and11UI, self.NotPhotoOnlyRequired) 
+
+                    elif align_type == ALIGN_TYPE_OJ_PRO:
+                        maint.AlignType12(d, self.LoadPaperUI)
+
+                else:
+                    self.CheckDeviceUI()
 
         finally:
             d.close()
             QApplication.restoreOverrideCursor()
-
-
 
     def ColorAdjUI(self, line, maximum=0):
         dlg = ColorAdjForm(self, line)
@@ -434,35 +434,39 @@ class ScrollToolView(ScrollView):
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-
-                if color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
-                     maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
-                                         self.PhotoPenRequiredUI)
-
-                elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
-                    maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
-                                        self.InvalidPenUI)
-
-                elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
-                    maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
-                                        self.PhotoPenRequiredUI2)
-
-                elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
-                    maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
-                                        self.WaitUI)
-
-                elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
-                    maint.colorCalType5(d, self.LoadPaperUI)
-
-                elif color_cal_type == COLOR_CAL_TYPE_CARRIER:
-                    maint.colorCalType6(d, self.LoadPaperUI)
-
-            else:
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+
+                    if color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
+                         maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
+                                             self.PhotoPenRequiredUI)
+
+                    elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
+                        maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
+                                            self.InvalidPenUI)
+
+                    elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
+                        maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
+                                            self.PhotoPenRequiredUI2)
+
+                    elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
+                        maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
+                                            self.WaitUI)
+
+                    elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
+                        maint.colorCalType5(d, self.LoadPaperUI)
+
+                    elif color_cal_type == COLOR_CAL_TYPE_CARRIER:
+                        maint.colorCalType6(d, self.LoadPaperUI)
+
+                else:
+                    self.CheckDeviceUI()
 
         finally:
             d.close()
@@ -472,7 +476,7 @@ class ScrollToolView(ScrollView):
     def PrintTestPageButton_clicked(self):
         self.form.SwitchMaintTab("testpage")
 
-        
+
     def CleanUI1(self):
         return CleaningForm(self, self.cur_device, 1).exec_loop() == QDialog.Accepted
 
@@ -497,30 +501,34 @@ class ScrollToolView(ScrollView):
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-
-                if clean_type == CLEAN_TYPE_PCL:
-                    maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
-                                    maint.wipeAndSpitType1, self.LoadPaperUI,
-                                    self.CleanUI1, self.CleanUI2, self.CleanUI3,
-                                    self.WaitUI)
-
-                elif clean_type == CLEAN_TYPE_LIDIL:
-                    maint.cleaning(d, clean_type, maint.cleanType2, maint.primeType2,
-                                    maint.wipeAndSpitType2, self.LoadPaperUI,
-                                    self.CleanUI1, self.CleanUI2, self.CleanUI3,
-                                    self.WaitUI)
-
-                elif clean_type == CLEAN_TYPE_PCL_WITH_PRINTOUT:
-                    maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
-                                    maint.wipeAndSpitType1, self.LoadPaperUI,
-                                    self.CleanUI1, self.CleanUI2, self.CleanUI3,
-                                    self.WaitUI)
-            else:
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+
+                    if clean_type == CLEAN_TYPE_PCL:
+                        maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
+                                        maint.wipeAndSpitType1, self.LoadPaperUI,
+                                        self.CleanUI1, self.CleanUI2, self.CleanUI3,
+                                        self.WaitUI)
+
+                    elif clean_type == CLEAN_TYPE_LIDIL:
+                        maint.cleaning(d, clean_type, maint.cleanType2, maint.primeType2,
+                                        maint.wipeAndSpitType2, self.LoadPaperUI,
+                                        self.CleanUI1, self.CleanUI2, self.CleanUI3,
+                                        self.WaitUI)
+
+                    elif clean_type == CLEAN_TYPE_PCL_WITH_PRINTOUT:
+                        maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
+                                        maint.wipeAndSpitType1, self.LoadPaperUI,
+                                        self.CleanUI1, self.CleanUI2, self.CleanUI3,
+                                        self.WaitUI)
+                else:
+                    self.CheckDeviceUI()
 
         finally:
             d.close()
@@ -534,28 +542,32 @@ class ScrollToolView(ScrollView):
 
     def faxSettingsButton_clicked(self):
         try:
-            self.cur_device.open()
-
             try:
-                result_code, fax_num = self.cur_device.getPML(pml.OID_FAX_LOCAL_PHONE_NUM)
+                self.cur_device.open()
             except Error:
-                log.error("PML failure.")
-                self.FailureUI(self.__tr("<p><b>Operation failed. Device busy.</b>"))
-                return
+                self.CheckDeviceUI()
+            else:
+                try:
+                    result_code, fax_num = self.cur_device.getPML(pml.OID_FAX_LOCAL_PHONE_NUM)
+                except Error:
+                    log.error("PML failure.")
+                    self.form.FailureUI(self.__tr("<p><b>Operation failed. Device busy.</b>"))
+                    return
 
-            fax_num = str(fax_num)
+                fax_num = str(fax_num)
 
-            try:
-                result_code, name = self.cur_device.getPML(pml.OID_FAX_STATION_NAME)
-            except Error:
-                log.error("PML failure.")
-                self.FailureUI(self.__tr("<p><b>Operation failed. Device busy.</b>"))
-                return
+                try:
+                    result_code, name = self.cur_device.getPML(pml.OID_FAX_STATION_NAME)
+                except Error:
+                    log.error("PML failure.")
+                    self.form.FailureUI(self.__tr("<p><b>Operation failed. Device busy.</b>"))
+                    return
 
-            name = str(name)
+                name = str(name)
 
-            dlg = FaxSettingsForm(self.cur_device, fax_num, name, self)
-            dlg.exec_loop()
+                dlg = FaxSettingsForm(self.cur_device, fax_num, name, self)
+                dlg.exec_loop()
+
         finally:
             self.cur_device.close()
 
@@ -576,7 +588,7 @@ class ScrollToolView(ScrollView):
 
         try:
             if len(cmd) == 0:
-                self.FailureUI(self.__tr("<p><b>Unable to run command. No command specified.</b><p>Use <pre>Configure...</pre> to specify a command to run."))
+                self.form.FailureUI(self.__tr("<p><b>Unable to run command. No command specified.</b><p>Use <pre>Configure...</pre> to specify a command to run."))
                 log.error("No command specified. Use settings to configure commands.")
             else:
                 log.debug(utils.bold("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device.device_uri, "*"*20)))
@@ -635,12 +647,15 @@ class ScrollDeviceInfoView(ScrollView):
 
         self.addDeviceInfo()
 
+        # addActionButton(self, name, action_text, action_func, action_pixmap=None, disabled_action_pixmap=None,
+        #                 nav_text ='', nav_func=None):
+
         if self.toolbox_hosted:
             self.navButton = self.addActionButton("bottom_nav", "", 
-                                    None, self.__tr("<< Tools"), self.navButton_clicked)
+                                    None, None, None, self.__tr("<< Tools"), self.navButton_clicked)
         else:
             self.navButton = self.addActionButton("bottom_nav", self.__tr("Close"), 
-                                    self.navButton_clicked, "", None)
+                                    self.navButton_clicked, None, None, "", None)
 
         self.maximizeControl()
 
@@ -689,13 +704,13 @@ class ScrollDeviceInfoView(ScrollView):
         return qApp.translate("ScrollDeviceInfoView",s,c)
 
 
-        
+
 #
 #
 # ScrollTestpageView (Print Test Page)
 #
 #
-        
+
 class ScrollTestpageView(ScrollView):
     def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
         ScrollView.__init__(self,parent,name,fl)
@@ -707,24 +722,24 @@ class ScrollTestpageView(ScrollView):
         ScrollView.fillControls(self)
 
         self.addPrinterFaxList()
-        
+
         self.addTestpageType()
-        
+
         self.addLoadPaper()
-        
+
         if self.toolbox_hosted:
             s = self.__tr("<< Tools")
         else:
             s = self.__tr("Close")
-            
+
         self.printButton = self.addActionButton("bottom_nav", self.__tr("Print Test Page"), 
-                                self.printButton_clicked, s, self.navButton_clicked)
-                                
+                                self.printButton_clicked, 'print.png', None, s, self.navButton_clicked)
+
 
     def addTestpageType(self):
         self.addGroupHeading("testpage_type", self.__tr("Test Page Type"))
         widget = self.getWidget()
-        
+
         Form4Layout = QGridLayout(widget,1,1,5,10,"Form4Layout")
 
         self.buttonGroup3 = QButtonGroup(widget,"buttonGroup3")
@@ -732,7 +747,7 @@ class ScrollTestpageView(ScrollView):
         self.buttonGroup3.setColumnLayout(0,Qt.Vertical)
         self.buttonGroup3.layout().setSpacing(5)
         self.buttonGroup3.layout().setMargin(10)
-        
+
         buttonGroup3Layout = QGridLayout(self.buttonGroup3.layout())
         buttonGroup3Layout.setAlignment(Qt.AlignTop)
 
@@ -745,39 +760,43 @@ class ScrollTestpageView(ScrollView):
         buttonGroup3Layout.addWidget(self.radioButton5,0,0)
 
         Form4Layout.addWidget(self.buttonGroup3,0,0)
-        
+
         self.radioButton6.setText(self.__tr("Printer diagnostic page (does not test print driver)"))
         self.radioButton5.setText(self.__tr("HPLIP test page (tests print driver)"))
-        
-                                
+
+
         self.addWidget(widget, "page_type")
-                                
-                                
+
+
     def navButton_clicked(self):
         if self.toolbox_hosted:
             self.form.SwitchMaintTab("tools")
         else:
             self.form.close()
-            
+
     def printButton_clicked(self):
         d = self.cur_device
         printer_name = self.cur_printer
         printed = False
-        
+
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
-            d.open()
 
-            if d.isIdleAndNoError():
-                QApplication.restoreOverrideCursor()
-                d.close()
-
-                d.printTestPage(printer_name)
-                printed = True
-
-            else:
-                d.close()
+            try:
+                d.open()
+            except Error:
                 self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+                    d.close()
+
+                    d.printTestPage(printer_name)
+                    printed = True
+
+                else:
+                    d.close()
+                    self.CheckDeviceUI()
 
         finally:
             QApplication.restoreOverrideCursor()
@@ -789,21 +808,21 @@ class ScrollTestpageView(ScrollView):
                                       QMessageBox.Ok,
                                       QMessageBox.NoButton,
                                       QMessageBox.NoButton)
-        
-        
+
+
         if self.toolbox_hosted:
             self.form.SwitchMaintTab("tools")
         else:
             self.form.close()
-    
+
 
     def __tr(self,s,c = None):
         return qApp.translate("ScrollTestpageView",s,c)
-        
-        
-        
-        
-        
+
+
+
+
+
 
 
 #
@@ -826,21 +845,21 @@ class ScrollPrinterInfoView(ScrollView):
         for p in self.printers:
             if p.device_uri == self.cur_device.device_uri or \
                 p.device_uri.replace("hpfax:", "hp:") == self.cur_device.device_uri:
-                
+
                 printers.append(p)
-                
+
         if not printers:
             self.addGroupHeading("error_title", self.__tr("No printers found for this device."))
         else:
             for p in printers:
                 self.addPrinterInfo(p)
-                
+
         if self.toolbox_hosted:
             self.navButton = self.addActionButton("bottom_nav", "", 
-                                    None, self.__tr("<< Tools"), self.navButton_clicked)
+                                    None, None, None, self.__tr("<< Tools"), self.navButton_clicked)
         else:
             self.navButton = self.addActionButton("bottom_nav", self.__tr("Close"), 
-                                    self.navButton_clicked, "", None)
+                                    self.navButton_clicked, None, None, "", None)
 
         self.maximizeControl()
 
@@ -851,7 +870,7 @@ class ScrollPrinterInfoView(ScrollView):
         layout1 = QVBoxLayout(widget,5,10,"layout1")
 
         textLabel2 = QLabel(widget,"textLabel2")
-        
+
         if p.device_uri.startswith("hpfax:"):
             s = self.__tr("Fax")
         else:
@@ -868,7 +887,7 @@ class ScrollPrinterInfoView(ScrollView):
         layout1.addWidget(textLabel4)
 
         textLabel5 = QLabel(widget,"textLabel5")
-        
+
         if p.state == cups.IPP_PRINTER_STATE_IDLE:
             s = self.__tr("Idle")
         elif p.state == cups.IPP_PRINTER_STATE_PROCESSING:
@@ -877,7 +896,7 @@ class ScrollPrinterInfoView(ScrollView):
             s = self.__tr("Stopped")
         else:
             s = self.__tr("Unknown")
-        
+
         textLabel5.setText(self.__tr("State: %1").arg(s))
         layout1.addWidget(textLabel5)
 
@@ -886,7 +905,7 @@ class ScrollPrinterInfoView(ScrollView):
         layout1.addWidget(textLabel6)
 
         textLabel7 = QLabel(widget,"textLabel7")
-        textLabel7.setText(self.__tr("Printer URI: %1").arg(p.printer_uri))
+        textLabel7.setText(self.__tr("CUPS/IPP Printer URI: %1").arg(p.printer_uri))
         layout1.addWidget(textLabel7)
 
         self.addWidget(widget, p.name)

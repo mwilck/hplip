@@ -484,46 +484,54 @@ const char * UXServices::GetDriverMessage (DRIVER_ERROR err)
    return p;
 }
 
-int UXServices::MapPaperSize(float width, float height)
+int UXServices::MapPaperSize (float width, float height)
 {
-   int i, r, size;
-   float dx, dy;
+    int    i, r, size;
+    float  dx, dy;
 
-   /* Map gs paper sizes to APDK paper sizes, or do custom. */
-   size = CUSTOM_SIZE;
-   for (i=0; i<MAX_PAPER_SIZE; i++)
-   {
-      r = pPC->SetPaperSize((PAPER_SIZE)i);
+    /* Map gs paper sizes to APDK paper sizes, or do custom. */
+    size = CUSTOM_SIZE;
+    for (i=0; i<MAX_PAPER_SIZE; i++)
+    {
+        r = pPC->SetPaperSize ((PAPER_SIZE)i);
 
-      if (r != NO_ERROR)
-         continue;
+        if (r != NO_ERROR)
+            continue;
 
-      dx = width > pPC->PhysicalPageSizeX() ? width - pPC->PhysicalPageSizeX() : pPC->PhysicalPageSizeX() - width;
-      dy = height > pPC->PhysicalPageSizeY() ? height - pPC->PhysicalPageSizeY() :  pPC->PhysicalPageSizeY() - height;
+        dx = width  > pPC->PhysicalPageSizeX () ? width  - pPC->PhysicalPageSizeX () : pPC->PhysicalPageSizeX () - width;
+        dy = height > pPC->PhysicalPageSizeY () ? height - pPC->PhysicalPageSizeY () : pPC->PhysicalPageSizeY () - height;
 
-      if ((dx < 0.05) && (dy < 0.05))
-      {
-         size = i;   /* found standard paper size */
-         break;
-      }
-   }
+        if ((dx < 0.05) && (dy < 0.05))
+        {
+            size = i;   /* found standard paper size */
+            break;
+        }
+    }
 
-   if (size == CUSTOM_SIZE)
-      pPC->SetCustomSize(width, height);
+    if (size == CUSTOM_SIZE)
+        pPC->SetCustomSize (width, height);
 
-   PaperWidth = pPC->PhysicalPageSizeX ();
-   PaperHeight = pPC->PhysicalPageSizeY ();
+    PaperWidth  = pPC->PhysicalPageSizeX ();
+    PaperHeight = pPC->PhysicalPageSizeY ();
 
-   if ((r = pPC->SetPaperSize((PAPER_SIZE)size, FullBleed)) != NO_ERROR)
-   {
-      if (r > 0)
-         bug("unable to set paper size=%d, err=%d\n", size, r);
-      else 
-         bug("warning setting paper size=%d, err=%d\n", size, r);
-      return -1;
-   }
+    if ((r = pPC->SetPaperSize ((PAPER_SIZE)size, FullBleed)) != NO_ERROR)
+    {
+        if (r > 0)
+            bug("unable to set paper size=%d, err=%d\n", size, r);
+        else 
+            bug("warning setting paper size=%d, err=%d\n", size, r);
 
-   return 0; 
+/*
+ *      Call failed, reset our PaperWidth and PaperHeight values.
+ *      This ensures that we return correct values when gs queries for printable area.
+ */
+
+        PaperWidth  = pPC->PhysicalPageSizeX ();
+        PaperHeight = pPC->PhysicalPageSizeY ();
+        return -1;
+    }
+
+    return 0; 
 }
 
 void UXServices::ResetIOMode (BOOL bDevID, BOOL bStatus)

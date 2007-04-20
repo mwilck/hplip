@@ -46,6 +46,8 @@ from scrolltool import ScrollToolView, ScrollDeviceInfoView, ScrollTestpageView,
 from scrollsupplies import ScrollSuppliesView
 from scrollprint import ScrollPrintView
 from scrollfax import ScrollFaxView
+from scrollunload import ScrollUnloadView
+from scrollcopy import ScrollCopyView
 
 # Misc forms
 from nodevicesform import NoDevicesForm
@@ -63,12 +65,12 @@ class IconViewItem(QIconViewItem):
         QIconViewItem.__init__(self, parent, text, pixmap)
         self.device_uri = device_uri
         self.is_avail = is_avail
-        
-        
+
+
 class PasswordDialog(QDialog):
     def __init__(self,prompt, parent = None,name = None,modal = 0,fl = 0):
         QDialog.__init__(self,parent,name,modal,fl)
-        
+
         if not name:
             self.setName("PasswordDialog")
 
@@ -99,7 +101,7 @@ class PasswordDialog(QDialog):
         self.connect(self.okPushButton,SIGNAL("clicked()"),self.accept)
         self.connect(self.passwordLineEdit,SIGNAL("returnPressed()"),self.accept)
         self.promptTextLabel.setText(prompt)
-        
+
     def getPassword(self):
         return str(self.passwordLineEdit.text())
 
@@ -109,19 +111,19 @@ class PasswordDialog(QDialog):
 
     def __tr(self,s,c = None):
         return qApp.translate("PasswordDialog",s,c)
-        
+
 
 def PasswordUI(prompt):
     QApplication.restoreOverrideCursor()
-    
+
     dlg = PasswordDialog(prompt, None)
-    
+
     if dlg.exec_loop() == QDialog.Accepted:
         return dlg.getPassword()
-        
+
     QApplication.setOverrideCursor(QApplication.waitCursor)
     return ""
-        
+
 
 class DevMgr4(DevMgr4_base):
     def __init__(self, hpiod_sock, hpssd_sock, 
@@ -134,6 +136,8 @@ class DevMgr4(DevMgr4_base):
         self.setIcon(icon)
 
         log.debug("Initializing toolbox UI...")
+        log.debug("HPLIP Version: %s" % sys_cfg.hplip.version)
+
         self.cleanup = cleanup
         self.hpiod_sock = hpiod_sock
         self.hpssd_sock = hpssd_sock
@@ -145,70 +149,9 @@ class DevMgr4(DevMgr4_base):
         self.cur_device = None
         self.rescanning = False
 
-        self.email_alerts = utils.to_bool(user_cfg.alerts.email_alerts, False)
-        self.email_to_addresses = user_cfg.alerts.email_to_addresses
-        self.email_from_address = user_cfg.alerts.email_from_address
-        self.auto_refresh = utils.to_bool(user_cfg.refresh.enable, False)
+        self.user_settings = utils.UserSettings()
 
-        try:
-            self.auto_refresh_rate = int(user_cfg.refresh.rate)
-        except ValueError:    
-            self.auto_refresh_rate = DEF_AUTO_REFRESH_RATE
-
-        try:
-            self.auto_refresh_type = int(user_cfg.refresh.type)
-        except ValueError:
-            self.auto_refresh_type = 0 # refresh 1 (1=refresh all)
-
-        cmd_print, cmd_scan, cmd_pcard, \
-            cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
-
-        self.cmd_print = user_cfg.commands.prnt or cmd_print
-        self.cmd_print_int = utils.to_bool(user_cfg.commands.prnt_int, True)
-        
-        self.cmd_scan = user_cfg.commands.scan or cmd_scan
-        self.cmd_scan_int = utils.to_bool(user_cfg.commands.scan_int, False)
-        
-        self.cmd_pcard = user_cfg.commands.pcard or cmd_pcard
-        self.cmd_pcard_int = utils.to_bool(user_cfg.commands.pcard_int, False)
-        
-        self.cmd_copy = user_cfg.commands.cpy or cmd_copy
-        self.cmd_copy_int = utils.to_bool(user_cfg.commands.cpy_int, False)
-        
-        self.cmd_fax = user_cfg.commands.fax or cmd_fax
-        self.cmd_fax_int = utils.to_bool(user_cfg.commands.fax_int, False)
-        
-        self.cmd_fab = user_cfg.commands.fab or cmd_fab
-        self.cmd_fab_int = utils.to_bool(user_cfg.commands.fab_int, False)
-        
-        log.debug("HPLIP Version: %s" % sys_cfg.hplip.version)
-        
-        log.debug("Print command: %s" % self.cmd_print)
-        log.debug("Use Internal print command: %s" % self.cmd_print_int)
-        
-        log.debug("PCard command: %s" % self.cmd_pcard)
-        log.debug("Use internal PCard command: %s" % self.cmd_pcard_int)
-        
-        log.debug("Fax command: %s" % self.cmd_fax)
-        log.debug("Use internal fax command: %s" % self.cmd_fax_int)
-        
-        log.debug("FAB command: %s" % self.cmd_fab)
-        log.debug("Use internal FAB command: %s" % self.cmd_fab_int)
-        
-        log.debug("Copy command: %s " % self.cmd_copy)
-        log.debug("Use internal copy command: %s " % self.cmd_copy_int)
-        
-        log.debug("Scan command: %s" % self.cmd_scan)
-        log.debug("Use internal scan command: %s" % self.cmd_scan_int)
-        
-        log.debug("Email alerts: %s" % self.email_alerts)
-        log.debug("Email to address(es): %s" % self.email_to_addresses)
-        log.debug("Email from address: %s" % self.email_from_address)
-        log.debug("Auto refresh: %s" % self.auto_refresh)
-        log.debug("Auto refresh rate: %s" % self.auto_refresh_rate)
-        log.debug("Auto refresh type: %s" % self.auto_refresh_type)
-
-        if not self.auto_refresh:
+        if not self.user_settings.auto_refresh:
             self.autoRefresh.toggle()
 
         self.InitDeviceList()
@@ -228,7 +171,10 @@ class DevMgr4(DevMgr4_base):
                           self.PrintJobsTab: self.PrintJobsList,
                           self.MaintTab: self.ToolList
                         }
-                          
+
+        self.funcs_page = 'funcs'
+        self.maint_page = 'tools'
+
         cups.setPasswordCallback(PasswordUI)
 
         QTimer.singleShot(0, self.InitialUpdate)
@@ -240,9 +186,9 @@ class DevMgr4(DevMgr4_base):
         self.refresh_timer = QTimer(self, "RefreshTimer")
         self.connect(self.refresh_timer, SIGNAL('timeout()'), self.TimedRefresh)
 
-        if MIN_AUTO_REFRESH_RATE <= self.auto_refresh_rate <= MAX_AUTO_REFRESH_RATE:
-            self.refresh_timer.start(self.auto_refresh_rate * 1000)
-            
+        if MIN_AUTO_REFRESH_RATE <= self.user_settings.auto_refresh_rate <= MAX_AUTO_REFRESH_RATE:
+            self.refresh_timer.start(self.user_settings.auto_refresh_rate * 1000)
+
     def InitDeviceList(self):
         self.DeviceList.setAutoArrange(False)
         # Resize the splitter so that the device list starts as a single column
@@ -250,12 +196,7 @@ class DevMgr4(DevMgr4_base):
 
 
     def InitFunctionsTab(self):
-        self.FuncList = ScrollFunctionsView(self.cmd_print, self.cmd_print_int,
-                                            self.cmd_scan, self.cmd_scan_int,
-                                            self.cmd_pcard, self.cmd_pcard_int,
-                                            self.cmd_fax, self.cmd_fax_int,
-                                            self.cmd_copy, self.cmd_copy_int,
-                                            self.FunctionsTab, self, "FuncView")
+        self.FuncList = ScrollFunctionsView(self.FunctionsTab, self, "FuncView")
 
         self.FuncTabLayout = QGridLayout(self.FunctionsTab,1,1,11,6,"FuncTabLayout")
         self.FuncTabLayout.addWidget(self.FuncList,0,0)
@@ -263,41 +204,36 @@ class DevMgr4(DevMgr4_base):
     def SwitchFunctionsTab(self, page='funcs'):
         self.FuncTabLayout.remove(self.FuncList)
         self.FuncList.hide()
-        
-        if page == 'funcs':
+
+        if page  == 'funcs':
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions"))
-            self.FuncList = ScrollFunctionsView(self.cmd_print, self.cmd_print_int,
-                                                self.cmd_scan, self.cmd_scan_int,
-                                                self.cmd_pcard, self.cmd_pcard_int,
-                                                self.cmd_fax, self.cmd_fax_int,
-                                                self.cmd_copy, self.cmd_copy_int,
-                                                self.FunctionsTab, self, "FuncView")
+            self.FuncList = ScrollFunctionsView(self.FunctionsTab, self, "FuncView")
 
         elif page == 'print':
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Print"))
             self.FuncList = ScrollPrintView(True, self.FunctionsTab, self, "PrintView")
-            #current_printer = self.PrintSettingsPrinterCombo.currentText()
-            
-        
+
         elif page == 'scan':
             pass
-            
+
         elif page == 'copy':
-            pass
-            
+            self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Make Copies"))
+            self.FuncList = ScrollCopyView(self.hpssd_sock, True, parent=self.FunctionsTab, form=self, name="CopyView")
+
         elif page == 'fax':
-            self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Fax"))
-            self.FuncList = ScrollFaxView(True, self.FunctionsTab, self, "FaxView")
-            
+            self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Fax"))
+            self.FuncList = ScrollFaxView(self.hpssd_sock, True, self.FunctionsTab, self, "FaxView")
+
         elif page == 'pcard':
-            pass
-            
+            self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Unload Photo Card"))
+            self.FuncList = ScrollUnloadView(True, self.FunctionsTab, self, "UnloadView")
+
+        self.funcs_page = page
         self.FuncTabLayout.addWidget(self.FuncList, 0, 0)
         self.FuncList.show()
         self.TabIndex[self.FunctionsTab] = self.FuncList
         self.FuncList.onDeviceChange(self.cur_device)
-        #self.FuncList.onPrinterChange(self.current_printer)
-            
+
 
     def InitStatusTab(self):
         StatusTabLayout = QGridLayout(self.StatusTab,1,1,11,6,"StatusTabLayout")
@@ -309,9 +245,9 @@ class DevMgr4(DevMgr4_base):
         self.Panel_2.setScaledContents(1)
 
         StatusTabLayout.addWidget(self.Panel_2,0,1)
-        spacer21 = QSpacerItem(151,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        spacer21 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         StatusTabLayout.addItem(spacer21,0,2)
-        spacer22 = QSpacerItem(101,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
+        spacer22 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         StatusTabLayout.addItem(spacer22,0,0)
 
         self.StatusList = ScrollStatusView(self.StatusTab, "statuslist")
@@ -347,33 +283,34 @@ class DevMgr4(DevMgr4_base):
         self.ToolList = ScrollToolView(True, self.MaintTab, self, "ToolView")
         self.MaintTabLayout = QGridLayout(self.MaintTab,1,1,11,6,"MaintTabLayout")
         self.MaintTabLayout.addWidget(self.ToolList,0,0)
-        
+
     def SwitchMaintTab(self, page='tools'):
         self.MaintTabLayout.remove(self.ToolList)
         self.ToolList.hide()
-        
-        if page == 'tools':
+
+        if page  == 'tools':
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools"))
             self.ToolList = ScrollToolView(True, self.MaintTab, self, "ToolView")
 
         elif page == 'device_info':
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Device Information"))
             self.ToolList = ScrollDeviceInfoView(True, self.MaintTab, self, "DeviceInfoView")
-            
+
         elif page == 'printer_info':
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Printer Information"))
             self.ToolList = ScrollPrinterInfoView(True, self.MaintTab, self, "PrinterInfoView")
-            
+
         elif page == 'testpage':
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Print Test Page"))
-            
+
             self.ToolList = ScrollTestpageView(True, self.MaintTab, self, "ScrollTestpageView")
-            
+
+        self.maint_page = page
         self.MaintTabLayout.addWidget(self.ToolList, 0, 0)
         self.ToolList.show()
         self.TabIndex[self.MaintTab] = self.ToolList
         self.ToolList.onDeviceChange(self.cur_device)
-        
+
 
     def InitSuppliesTab(self): # Add Scrolling Supplies 
         self.SuppliesList = ScrollSuppliesView(self.SuppliesTab, "SuppliesView")
@@ -398,10 +335,10 @@ class DevMgr4(DevMgr4_base):
 
         textLabel12.setText(self.__tr("Printer Name:"))
 
-        spacer34 = QSpacerItem(171,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
+        spacer34 = QSpacerItem(20,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
         PrintJobsTabLayout.addMultiCell(spacer34,0,0,4,5)
 
-        spacer35 = QSpacerItem(71,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
+        spacer35 = QSpacerItem(20,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
         PrintJobsTabLayout.addItem(spacer35,0,0)
 
         self.connect(self.PrintSettingsPrinterCombo, SIGNAL("activated(const QString&)"), self.SettingsPrinterCombo_activated)
@@ -430,29 +367,26 @@ class DevMgr4(DevMgr4_base):
         spacer35 = QSpacerItem(71,20,QSizePolicy.Preferred,QSizePolicy.Minimum)
         PrintJobsTabLayout.addItem(spacer35,0,0)
 
-        #StartStopPrinterButton.setText(self.__tr("Stop Printer"))
-
         self.connect(self.PrintJobPrinterCombo, SIGNAL("activated(const QString&)"), self.JobsPrinterCombo_activated)
 
     def TimedRefresh(self):
-        if self.auto_refresh:
+        if self.user_settings.auto_refresh:
             log.debug("Refresh timer...")
             self.CleanupChildren()
 
-            if self.auto_refresh_type == 0:
+            if self.user_settings.auto_refresh_type == 0:
                 self.UpdateDevice()
             else:
                 self.RescanDevices()
 
     def autoRefresh_toggled(self,a0):
-        self.auto_refresh = bool(a0)
-        self.SaveConfig()
-
+        self.user_settings.auto_refresh = bool(a0)
+        #print self.sender
+        self.user_settings.save()
 
     def closeEvent(self, event):
         self.Cleanup()
         event.accept()
-
 
     def RescanDevices(self, init=False):
         if not self.rescanning:
@@ -511,31 +445,31 @@ class DevMgr4(DevMgr4_base):
 
         if item is not None:
             if self.cur_device.error_state != ERROR_STATE_ERROR:
-                if self.cmd_print_int:
+                if self.user_settings.cmd_print_int:
                     popup.insertItem(self.__tr("Print >>"), self.PrintButton_clicked)
                 else:
                     popup.insertItem(self.__tr("Print..."), self.PrintButton_clicked)
 
                 if self.cur_device.scan_type:
-                    if self.cmd_scan_int:
+                    if self.user_settings.cmd_scan_int:
                         popup.insertItem(self.__tr("Scan >>"), self.ScanButton_clicked)
                     else:
                         popup.insertItem(self.__tr("Scan..."), self.ScanButton_clicked)
 
                 if self.cur_device.pcard_type:
-                    if self.cmd_pcard_int:
+                    if self.user_settings.cmd_pcard_int:
                         popup.insertItem(self.__tr("Access Photo Cards >>"), self.PCardButton_clicked)
                     else:
                         popup.insertItem(self.__tr("Access Photo Cards..."), self.PCardButton_clicked)
 
                 if self.cur_device.fax_type:
-                    if self.cmd_fax_int:
+                    if self.user_settings.cmd_fax_int:
                         popup.insertItem(self.__tr("Send Fax >>"), self.SendFaxButton_clicked)
                     else:
                         popup.insertItem(self.__tr("Send Fax..."), self.SendFaxButton_clicked)
 
                 if self.cur_device.copy_type:
-                    if self.cmd_copy_int:
+                    if self.user_settings.cmd_copy_int:
                         popup.insertItem(self.__tr("Make Copies >>"), self.MakeCopiesButton_clicked)
                     else:
                         popup.insertItem(self.__tr("Make Copies..."), self.MakeCopiesButton_clicked)
@@ -591,37 +525,36 @@ class DevMgr4(DevMgr4_base):
                 icon = self.CreatePixmap()
                 self.DeviceList.currentItem().setPixmap(icon)
 
+            self.cur_device.hist = []
+
             if not self.rescanning: 
                 self.UpdateHistory()
-                self.Tabs_currentChanged(self.Tabs.currentPage())
+                self.Tabs_deviceChanged(self.Tabs.currentPage())
                 self.UpdatePrinterCombos()
                 self.UpdatePanel()
                 self.setupDevice.setEnabled(self.cur_device.device_settings_ui is not None)
 
     def UpdatePrinterCombos(self):
+        self.PrintSettingsPrinterCombo.clear()
+        self.PrintJobPrinterCombo.clear()
+
         if self.cur_device is not None and \
             self.cur_device.supported:
 
-            self.PrintSettingsPrinterCombo.clear()
-            self.PrintJobPrinterCombo.clear()
-
             printers = cups.getPrinters()
-            
-            #cur_printers = []
+
             self.cur_device.cups_printers = []
             cur_device_uri_tail = self.cur_device_uri.split(':')[1]
             for p in printers:
                 p_tail = p.device_uri.split(':')[1]
-                
+
                 if p_tail == cur_device_uri_tail:
-                    #cur_printers.append(p.name)
                     self.cur_device.cups_printers.append(p.name)
-                
+
             for c in self.cur_device.cups_printers:
-            #for c in cur_printers:
                 self.PrintSettingsPrinterCombo.insertItem(c)
                 self.PrintJobPrinterCombo.insertItem(c)
-                
+
             self.current_printer = str(self.PrintSettingsPrinterCombo.currentText())
 
     def SettingsPrinterCombo_activated(self, s):
@@ -640,10 +573,29 @@ class DevMgr4(DevMgr4_base):
         self.FuncList.onPrinterChange(printer)
 
     def Tabs_currentChanged(self, tab):
+        """ Called when the active tab changes. """
+        log.debug("Tabs_currentChanged()")
         try:
-            self.TabIndex[tab].onDeviceChange(self.cur_device)
+            self.TabIndex[tab].onUpdate(self.cur_device)
         except AttributeError:
-            self.TabIndex[tab]()
+            pass
+
+    def Tabs_deviceChanged(self, tab):
+        """ Called when the device changes. """
+        log.debug("Tabs_deviceChanged()")
+
+        if tab is self.FunctionsTab and self.funcs_page != 'funcs':
+            self.SwitchFunctionsTab('funcs')
+
+        elif tab is self.MaintTab and self.maint_page != 'tools':
+            self.SwitchMaintTab('tools')
+
+        else:
+            try:
+                self.TabIndex[tab].onDeviceChange(self.cur_device)
+            except AttributeError:
+                self.TabIndex[tab]()
+
 
     def CreatePixmap(self, dev=None):
         if dev is None:
@@ -837,6 +789,11 @@ class DevMgr4(DevMgr4_base):
                 self.deviceRemoveAction.setEnabled(False)
                 self.rescanning = False
                 self.statusBar().message(self.__tr("Press F6 to refresh."))
+                self.UpdatePrinterCombos()
+                self.UpdatePanel()
+                #self.Tabs_deviceChanged(self.Tabs.currentPage())
+                self.TabIndex[self.Tabs.currentPage()].onDeviceChange(None)
+                #self.onDeviceChange()
                 dlg = NoDevicesForm(self, "", True)
                 dlg.show()
                 return
@@ -896,7 +853,7 @@ class DevMgr4(DevMgr4_base):
 
     def UpdateHistory(self):
         try:
-            self.cur_device.hist = self.cur_device.queryHistory()
+            self.cur_device.queryHistory()
         except Error:
             log.error("History query failed.")
             self.cur_device.last_event = None
@@ -950,122 +907,26 @@ class DevMgr4(DevMgr4_base):
 
     def settingsConfigure_activated(self, tab_to_show=0):
         dlg = SettingsDialog(self.hpssd_sock, self)
-
-        dlg.autoRefreshCheckBox.setChecked(self.auto_refresh)
-        dlg.AutoRefreshRate.setValue(self.auto_refresh_rate) # min
-        dlg.refreshScopeButtonGroup.setButton(self.auto_refresh_type)
-        dlg.auto_refresh_type = self.auto_refresh_type
-
-        dlg.EmailCheckBox.setChecked(self.email_alerts)
-        dlg.EmailAddress.setText(self.email_to_addresses)
-        dlg.senderLineEdit.setText(self.email_from_address)
-
-        dlg.PrintCommand.setText(self.cmd_print)
-        dlg.PrintCommand.setEnabled(not self.cmd_print_int)
-        if self.cmd_print_int:
-            dlg.printButtonGroup.setButton(0)
-        else:
-            dlg.printButtonGroup.setButton(1)
-            
-        dlg.ScanCommand.setText(self.cmd_scan)
-        dlg.ScanCommand.setEnabled(not self.cmd_scan_int)
-        if self.cmd_scan_int:
-            dlg.scanButtonGroup.setButton(0)
-        else:
-            dlg.scanButtonGroup.setButton(1)
-        
-        dlg.AccessPCardCommand.setText(self.cmd_pcard)
-        dlg.AccessPCardCommand.setEnabled(not self.cmd_pcard_int)
-        if self.cmd_pcard_int:
-            dlg.pcardButtonGroup.setButton(0)
-        else:
-            dlg.pcardButtonGroup.setButton(1)
-
-        dlg.SendFaxCommand.setText(self.cmd_fax)
-        dlg.SendFaxCommand.setEnabled(not self.cmd_fax_int)
-        if self.cmd_fax_int:
-            dlg.faxButtonGroup.setButton(0)
-        else:
-            dlg.faxButtonGroup.setButton(1)
-        
-        dlg.MakeCopiesCommand.setText(self.cmd_copy)
-        dlg.MakeCopiesCommand.setEnabled(not self.cmd_copy_int)
-        if self.cmd_copy_int:
-            dlg.copyButtonGroup.setButton(0)
-        else:
-            dlg.copyButtonGroup.setButton(1)
-
         dlg.TabWidget.setCurrentPage(tab_to_show)
 
         if dlg.exec_loop() == QDialog.Accepted:
+            old_auto_refresh = self.user_settings.auto_refresh_rate
+            self.user_settings.load()
 
-            self.cmd_print = str(dlg.PrintCommand.text())
-            self.cmd_print_int = (dlg.printButtonGroup.selectedId() == 0)
-            
-            self.cmd_scan = str(dlg.ScanCommand.text())
-            self.cmd_scan_int = (dlg.scanButtonGroup.selectedId() == 0)
-            
-            self.cmd_pcard = str(dlg.AccessPCardCommand.text())
-            self.cmd_pcard_int = (dlg.pcardButtonGroup.selectedId() == 0)
-            
-            self.cmd_fax   = str(dlg.SendFaxCommand.text())
-            self.cmd_fax_int = (dlg.faxButtonGroup.selectedId() == 0)
-            
-            self.cmd_copy  = str(dlg.MakeCopiesCommand.text())
-            self.cmd_copy_int = (dlg.copyButtonGroup.selectedId() == 0)
+            if self.user_settings.auto_refresh and old_auto_refresh != self.user_settings.auto_refresh_rate:
+                self.refresh_timer.changeInterval(self.user_settings.auto_refresh_rate * 1000)
 
-            self.email_alerts = bool(dlg.EmailCheckBox.isChecked())
-            self.email_to_addresses = str(dlg.EmailAddress.text())
-            self.email_from_address = str(dlg.senderLineEdit.text())
-
-            old_auto_refresh = self.auto_refresh
-            self.auto_refresh = bool(dlg.autoRefreshCheckBox.isChecked())
-            new_refresh_value = int(dlg.AutoRefreshRate.value())
-            self.auto_refresh_type = dlg.auto_refresh_type
-
-            if self.auto_refresh and new_refresh_value != self.auto_refresh_rate:
-                self.auto_refresh_rate = new_refresh_value
-                self.refresh_timer.changeInterval(self.auto_refresh_rate * 1000)
-
-            if old_auto_refresh != self.auto_refresh:
+            if old_auto_refresh != self.user_settings.auto_refresh:
                 self.autoRefresh.toggle()
 
             self.SetAlerts()
-            self.SaveConfig()
 
-        self.SwitchFunctionsTab("funcs")
-        
-        
+
     def SetAlerts(self):
         service.setAlerts(self.hpssd_sock,
-                          self.email_alerts,
-                          self.email_to_addresses,
-                          self.email_from_address)
-
-
-    def SaveConfig(self):
-        user_cfg.commands.prnt = self.cmd_print
-        user_cfg.commands.prnt_int = self.cmd_print_int
-        
-        user_cfg.commands.pcard = self.cmd_pcard
-        user_cfg.commands.pcard_int = self.cmd_pcard_int
-        
-        user_cfg.commands.fax = self.cmd_fax
-        user_cfg.commands.fax_int = self.cmd_fax_int
-        
-        user_cfg.commands.scan = self.cmd_scan
-        user_cfg.commands.scan_int = self.cmd_scan_int
-        
-        user_cfg.commands.cpy = self.cmd_copy
-        user_cfg.commands.cpy_int = self.cmd_copy_int
-        
-        user_cfg.alerts.email_to_addresses = self.email_to_addresses
-        user_cfg.alerts.email_from_address = self.email_from_address
-        user_cfg.alerts.email_alerts = self.email_alerts
-        user_cfg.refresh.enable = self.auto_refresh
-        user_cfg.refresh.rate = self.auto_refresh_rate
-        user_cfg.refresh.type = self.auto_refresh_type
-
+                          self.user_settings.email_alerts,
+                          self.user_settings.email_to_addresses,
+                          self.user_settings.email_from_address)
 
     def deviceRescanAction_activated(self):
         self.deviceRescanAction.setEnabled(False)
@@ -1079,43 +940,43 @@ class DevMgr4(DevMgr4_base):
         pass
 
     def PrintButton_clicked(self):
-        if self.cmd_print_int:
+        if self.user_settings.cmd_print_int:
             self.Tabs.setCurrentPage(0)
             self.SwitchFunctionsTab("print")
         else:
-            self.RunCommand(self.cmd_print)
+            self.RunCommand(self.user_settings.cmd_print)
 
     def ScanButton_clicked(self):
-        if self.cmd_scan_int:
+        if self.user_settings.cmd_scan_int:
             self.Tabs.setCurrentPage(0)
             self.SwitchFunctionsTab("scan")
         else:
-            self.RunCommand(self.cmd_scan)
+            self.RunCommand(self.user_settings.cmd_scan)
 
     def PCardButton_clicked(self):
         if self.cur_device.pcard_type == PCARD_TYPE_MLC:
-            if self.cmd_pcard_int:
+            if self.user_settings.cmd_pcard_int:
                 self.Tabs.setCurrentPage(0)
                 self.SwitchFunctionsTab("pcard")
             else:
-                self.RunCommand(self.cmd_pcard)
-        
+                self.RunCommand(self.user_settings.cmd_pcard)
+
         elif self.cur_device.pcard_type == PCARD_TYPE_USB_MASS_STORAGE:
             self.FailureUI(self.__tr("<p><b>Photocards on your printer are only available by mounting them as drives using USB mass storage.</b><p>Please refer to your distribution's documentation for setup and usage instructions."))
 
     def SendFaxButton_clicked(self):
-        if self.cmd_fax_int:
+        if self.user_settings.cmd_fax_int:
             self.Tabs.setCurrentPage(0)
             self.SwitchFunctionsTab("fax")
         else:
-            self.RunCommand(self.cmd_fax)
+            self.RunCommand(self.user_settings.cmd_fax)
 
     def MakeCopiesButton_clicked(self):
-        if self.cmd_copy_int:
+        if self.user_settings.cmd_copy_int:
             self.Tabs.setCurrentPage(0)
             self.SwitchFunctionsTab("copy")
         else:
-            self.RunCommand(self.cmd_copy)
+            self.RunCommand(self.user_settings.cmd_copy)
 
     def ConfigureFeaturesButton_clicked(self):
         self.settingsConfigure_activated(2)
@@ -1165,7 +1026,7 @@ class DevMgr4(DevMgr4_base):
             self.cur_device.device_settings_ui(self.cur_device, self)
         finally:
             self.cur_device.close()
-        
+
         #self.cur_device.device_settings_ui(self.cur_device, self)
 
     def helpContents(self):
@@ -1217,45 +1078,36 @@ class DevMgr4(DevMgr4_base):
                 QApplication.setOverrideCursor(QApplication.waitCursor)
                 print_uri = self.cur_device.device_uri
                 fax_uri = print_uri.replace('hp:', 'hpfax:')
-    
+
                 log.debug(print_uri)
                 log.debug(fax_uri)
-    
+
                 self.cups_devices = device.getSupportedCUPSDevices(['hp', 'hpfax'])
-    
+
                 for d in self.cups_devices:
                     if d in (print_uri, fax_uri):
                         for p in self.cups_devices[d]:
                             log.debug("Removing %s" % p)
                             cups.delPrinter(p)
-    
+
                 self.cur_device = None
                 self.cur_device_uri = ''
                 user_cfg.last_used.device_uri = ''
-    
+
                 QApplication.restoreOverrideCursor()
-    
+
                 self.RescanDevices()
 
 
     def FailureUI(self, error_text):
+        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,
                               QMessageBox.Ok,
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)
-                              
-    def WarningUI(self, msg):
-        QMessageBox.warning(self,
-                             self.caption(),
-                             msg,
-                              QMessageBox.Ok,
-                              QMessageBox.NoButton,
-                              QMessageBox.NoButton)
-                              
 
 
-                              
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

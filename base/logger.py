@@ -128,18 +128,18 @@ class Logger(object):
             finally:
                 self._lock.release()
 
-        if self._log_file is not None and \
-            self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+##        if self._log_file is not None and \
+##            self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+##            return self.log_to_file(message)
+                
+    def log_to_file(self, message):
+        try:
+            self._lock.acquire()
+            self._log_file_f.write(message.replace('\x1b', ''))
+            self._log_file_f.write('\n')
 
-            try:
-                self._lock.acquire()
-                #self._log_file_f.write(printable(message))
-                self._log_file_f.write(message.replace('\x1b', ''))
-                self._log_file_f.write('\n')
-
-            finally:
-                self._lock.release()
-
+        finally:
+            self._lock.release()
 
     def stderr(self, message):
         try:
@@ -156,6 +156,11 @@ class Logger(object):
                 self.log("%s[%d]: debug: %s" % (self.module, self.pid, message), Logger.LOG_LEVEL_DEBUG)
 
             syslog.syslog(syslog.LOG_DEBUG, "%s[%d]: debug: %s" % (self.module, self.pid, message))
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: debug: %s" % (self.module, self.pid, message))
 
     dbg = debug
 
@@ -167,6 +172,12 @@ class Logger(object):
             else:
                 self.log("%s[%d]: debug: :%s" % (self.module, self.pid, title), Logger.LOG_LEVEL_DEBUG)
                 self.log(block, Logger.LOG_LEVEL_DEBUG)
+                
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: debug: :%s" % (self.module, self.pid, title))
+                self.log_to_file(block)
 
 
     printable = """ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~  """
@@ -187,6 +198,11 @@ class Logger(object):
     def info(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_INFO:
             self.log(message, Logger.LOG_LEVEL_INFO)
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: info: :%s" % (self.module, self.pid, message))
 
     information = info
 
@@ -198,6 +214,11 @@ class Logger(object):
                 self.log("warning: %s" % message, Logger.LOG_LEVEL_WARN)
 
             syslog.syslog(syslog.LOG_WARNING, "%s[%d]: warning: %s" % (self.module, self.pid, message))
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: warn: :%s" % (self.module, self.pid, message))
 
     warning = warn
 
@@ -209,6 +230,11 @@ class Logger(object):
                 self.log("note: %s" % message, Logger.LOG_LEVEL_WARN)
 
             syslog.syslog(syslog.LOG_WARNING, "%s[%d]: note: %s" % (self.module, self.pid, message))
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: note: :%s" % (self.module, self.pid, message))
 
     notice = note
 
@@ -220,6 +246,12 @@ class Logger(object):
                 self.log("error: %s" % message, Logger.LOG_LEVEL_ERROR)
 
             syslog.syslog(syslog.LOG_ALERT, "%s[%d] error: %s" % (self.module, self.pid, message))
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: error: :%s" % (self.module, self.pid, message))
+            
 
     def fatal(self, message, fmt=True):
         if self._level <= Logger.LOG_LEVEL_FATAL:
@@ -229,6 +261,12 @@ class Logger(object):
                 self.log("fatal error: %s" % message, Logger.LOG_LEVEL_DEBUG)
 
             syslog.syslog(syslog.LOG_ALERT, "%s[%d]: fatal: %s" % (self.module, self.pid, message))
+            
+            if self._log_file is not None and \
+                self._where in (Logger.LOG_TO_FILE, Logger.LOG_TO_CONSOLE_AND_FILE):
+                
+                self.log_to_file("%s[%d]: fatal: :%s" % (self.module, self.pid, message))
+            
 
     def exception(self):
         typ, value, tb = sys.exc_info()

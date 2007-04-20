@@ -1436,6 +1436,48 @@ get-foomatic:
 	bzr branch $(BZRSERVER)/foomatic-db
 	bzr branch $(BZRSERVER)/foomatic-db-hpijs
 
+# [WARNING SANDBOX OVERWRITE] Get latest hp specific foomatic db from linuxprinting.org into foo/...
+get-foo:
+	rm -fr foo-tmp
+	install -d foo-tmp
+	bzr branch $(BZRSERVER)/foomatic-db foo-tmp/foomatic-db
+	bzr branch $(BZRSERVER)/foomatic-db-hpijs foo-tmp/foomatic-db-hpijs
+	install -d foo/foomatic-db/db/source/printer
+	install -d foo/foomatic-db/db/source/driver
+	install -d foo/foomatic-db/db/source/opt
+	install -d foo/foomatic-db/db/source/PPD/HP
+	cp -r foo-tmp/foomatic-db-hpijs foo/foomatic-db-hpijs
+	cd foo/foomatic-db-hpijs; \
+	./make_configure; \
+	./configure; \
+	make inplace
+	./hpijs-cp foo-tmp/foomatic-db/db/source/printer foo/foomatic-db/db/source/printer
+	cp -r foo-tmp/foomatic-db/db/source/PPD/HP/all_in_one foo/foomatic-db/db/source/PPD/HP/
+	cp -r foo-tmp/foomatic-db/db/source/PPD/HP/business_inkjet foo/foomatic-db/db/source/PPD/HP/
+	cp -r foo-tmp/foomatic-db/db/source/PPD/HP/color_laser foo/foomatic-db/db/source/PPD/HP/
+	cp -r foo-tmp/foomatic-db/db/source/PPD/HP/mono_laser foo/foomatic-db/db/source/PPD/HP/
+
+# Create foomatic db driver and opt xml files for hpijs.
+build-foo:
+	cd foo/foomatic-db-hpijs; \
+	./make_configure; \
+	./configure; \
+	make clean; \
+	make inplace
+
+# Remove all foomatic build files.
+clean-foo:
+	cd foo/foomatic-db-hpijs; \
+	./make_configure; \
+	./configure; \
+	make clean; \
+	rm -f aclocal.m4 config.log config.status configure Makefile; \
+	rm -rf autom4te.cache
+	cd foo/foomatic-db-hpijs/data-generators/hpijs; \
+	rm -f hpijs-generator hpijs-remover
+	rm -f foo/foomatic-db/db/source/driver/*
+	rm -f foo/foomatic-db/db/source/opt/*
+
 test-ppd:
 	cd foomatic-db-hpijs; \
 	./make_configure; \

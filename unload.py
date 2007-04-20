@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.2'
+__version__ = '3.0'
 __title__ = 'Photo Card Access Utility'
 __doc__ = "Access inserted photo cards on supported HPLIP printers. This provides an alternative for older devices that do not support USB mass storage or for access to photo cards over a network."
 

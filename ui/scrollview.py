@@ -123,18 +123,17 @@ class ScrollView(QScrollView):
         
     def onDeviceChange(self, cur_device=None):
         if cur_device is not None:
-            log.debug("onDeviceChange(%s)" % cur_device.device_uri)
+            log.debug("ScrollView.onDeviceChange(%s)" % cur_device.device_uri)
         else:
-            log.debug("onDeviceChange(None)")
+            log.debug("ScrollView.onDeviceChange(None)")
             
-        if cur_device is not None:
-            self.cur_device = cur_device
+        self.cur_device = cur_device
 
         if self.cur_device is not None and self.cur_device.supported:
             try:
                 self.cur_printer = self.cur_device.cups_printers[0]
             except IndexError:
-                log.error("Printer list empty")
+                log.error("Printer list empty") # Shouldn't happen!
             else:
                 self.isFax()
                 
@@ -151,6 +150,12 @@ class ScrollView(QScrollView):
             log.debug("Unsupported device")
             self.y = 0
             self.clear()
+            
+            self.addGroupHeading("error", self.__tr("ERROR: No device found or unsupported device."))
+            
+    def onUpdate(self, cur_device=None):
+        log.debug("ScrollView.onUpdate()")
+        return self.onDeviceChange(cur_device)
 
     def fillControls(self):
         log.debug("fillControls(%s)" % str(self.name()))
@@ -198,7 +203,7 @@ class ScrollView(QScrollView):
             widget.adjustSize()
             self.addChild(widget, 0, self.y)
             self.y += (widget.size().height() + self.item_margin)
-            self.resizeContents(self.visibleWidth(), self.y)
+            self.resizeContents(self.visibleWidth(), self.y + self.item_margin)
             widget.show()
         else:
             log.debug("ERROR: Duplicate control name: %s" % key)
@@ -240,15 +245,18 @@ class ScrollView(QScrollView):
         self.addWidget(widget, "g:"+str(group))
         
         
-    def addActionButton(self, name, action_text, action_func, nav_text ='', nav_func=None):
+    def addActionButton(self, name, action_text, action_func, 
+                        action_pixmap=None, disabled_action_pixmap=None,
+                        nav_text ='', nav_func=None):
+        
         widget = self.getWidget()
         
-        widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Highlight))
+        #widget.setPaletteBackgroundColor(qApp.palette().color(QPalette.Active, QColorGroup.Highlight))
         self.actionPushButton = None
         self.navPushButton = None
         
         layout36 = QHBoxLayout(widget,5,10,"layout36")
-
+        
         if nav_func is not None:
             self.navPushButton = QPushButton(widget,"navPushButton")
             navPushButton_font = QFont(self.navPushButton.font())
@@ -263,7 +271,12 @@ class ScrollView(QScrollView):
         layout36.addItem(spacer35)
 
         if action_func is not None:
-            self.actionPushButton = QPushButton(widget,"actionPushButton")
+            if action_pixmap is None:
+                self.actionPushButton = QPushButton(widget, "actionPushButton")
+            else:
+                self.actionPushButton = PixmapLabelButton(widget, action_pixmap, 
+                    disabled_action_pixmap, 'actionPushButton')
+                
             actionPushButton_font = QFont(self.actionPushButton.font())
             actionPushButton_font.setBold(1)
             self.actionPushButton.setFont(actionPushButton_font)
@@ -277,8 +290,10 @@ class ScrollView(QScrollView):
         
         if self.actionPushButton is not None:
             return self.actionPushButton
+        
         elif self.navPushButton is not None:
             return self.navPushButton
+        
         else:
             return None
         
@@ -306,6 +321,7 @@ class ScrollView(QScrollView):
             self.addGroupHeading("printer_list_heading", self.__tr("Fax"))
             self.printernameTextLabel.setText(self.__tr("Fax Name:"))
             
+        self.cur_printer = None
         for p in self.printers:
             if p.device_uri == self.cur_device.device_uri or \
                 p.device_uri == self.cur_device.device_uri.replace("hp:", "hpfax:"):
@@ -314,6 +330,10 @@ class ScrollView(QScrollView):
                         
                         self.printerComboBox.insertItem(p.name)
                         
+                        if self.cur_printer is None:
+                            self.cur_printer = p.name
+                        
+        #self.cur_printer = 
         self.connect(self.printerComboBox, SIGNAL("activated(const QString&)"), self.printerComboBox_activated)
         
         self.addWidget(widget, "printer_list")
@@ -399,7 +419,7 @@ class PixmapLabelButton(QPushButton):
         combined_width_center = (self.pixmap_width + text_width + 10)/2
         
         
-        if self.isEnabled():
+        if self.isEnabled() or self.disabled_pixmap is None:
             painter.drawPixmap(button_width_center - combined_width_center + adj,
                 button_height_center - self.pixmap_height/2 + adj, self.pixmap)
         else:

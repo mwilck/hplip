@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '9.0'
+__version__ = '10.0'
 __title__ = 'HP Device Manager'
 __doc__ = "The HP Device Manager (aka Toolbox) for HPLIP supported devices. Provides status, tools, and supplies levels."
 

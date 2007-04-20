@@ -413,11 +413,12 @@ class FaxDevice(device.Device):
 
 
     def sendFaxes(self, phone_num_list, fax_file_list, cover_message='', cover_re='', 
-                  cover_func=None, printer_name='', update_queue=None, event_queue=None):
+                  cover_func=None, preserve_formatting=False, printer_name='', 
+                  update_queue=None, event_queue=None):
 
         if not self.isSendFaxActive():
             self.send_fax_thread = FaxSendThread(self, phone_num_list, fax_file_list, 
-                                                 cover_message, cover_re, cover_func, 
+                                                 cover_message, cover_re, cover_func, preserve_formatting, 
                                                  printer_name, update_queue, event_queue)
             self.send_fax_thread.start()
             return True
@@ -435,7 +436,10 @@ class FaxDevice(device.Device):
         if self.send_fax_thread is not None and \
             self.send_fax_thread.isAlive():
 
-            self.send_fax_thread.join()
+            try:
+                self.send_fax_thread.join()
+            except KeyboardInterrupt:
+                pass
 
 
 class UploadLogThread(threading.Thread):
@@ -526,7 +530,7 @@ class UploadLogThread(threading.Thread):
 
 class FaxSendThread(threading.Thread):
     def __init__(self, dev, phone_num_list, fax_file_list, 
-                 cover_message='', cover_re='', cover_func=None, 
+                 cover_message='', cover_re='', cover_func=None, preserve_formatting=False,
                  printer_name='', update_queue=None, event_queue=None):
 
         threading.Thread.__init__(self)
@@ -542,6 +546,7 @@ class FaxSendThread(threading.Thread):
         self.stream = StringIO()  
         self.prev_update = ''
         self.remove_temp_file = False
+        self.preserve_formatting = preserve_formatting
 
 
     def run(self):
@@ -1415,7 +1420,6 @@ class FaxSendThread(threading.Thread):
             if self.check_for_cancel():
                 log.error("Render canceled. Canceling job #%d..." % sent_job_id)
                 cups.cancelJob(sent_job_id)
-                os.close(fd)
                 sock.close()
                 return '', True
 
@@ -1486,7 +1490,8 @@ class FaxSendThread(threading.Thread):
                               sender_email=user_cfg.fax.email_address, 
 
                               regarding=self.cover_re, 
-                              message=self.cover_message)
+                              message=self.cover_message,
+                              preserve_formatting=self.preserve_formatting)
 
         log.debug("PDF File=%s" % pdf)
         fax_file, canceled = self.render_file(pdf, 'Cover Page', "application/pdf", force_single_page=True) 

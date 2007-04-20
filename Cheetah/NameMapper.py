@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# $Id: NameMapper.py,v 1.1 2006/12/18 23:06:54 dwelch Exp $
+# $Id: NameMapper.py,v 1.2 2007/04/16 20:33:04 pparks Exp $
 
 """This module supports Cheetah's optional NameMapper syntax.
 
@@ -135,15 +135,18 @@ Meta-Data
 ================================================================================
 Authors: Tavis Rudd <tavis@damnsimple.com>,
          Chuck Esterbrook <echuck@mindspring.com>
-Version: $Revision: 1.1 $
+Version: $Revision: 1.2 $
 Start Date: 2001/04/03
-Last Revision Date: $Date: 2006/12/18 23:06:54 $
+Last Revision Date: $Date: 2007/04/16 20:33:04 $
 """
-__author__ = "Tavis Rudd <tavis@damnsimple.com>," +\
-             "\nChuck Esterbrook <echuck@mindspring.com>"
-__revision__ = "$Revision: 1.1 $"[11:-2]
+
 
 from __future__ import generators
+
+__author__ = "Tavis Rudd <tavis@damnsimple.com>," +\
+             "\nChuck Esterbrook <echuck@mindspring.com>"
+__revision__ = "$Revision: 1.2 $"[11:-2]
+
 import types
 from types import StringType, InstanceType, ClassType, TypeType
 from pprint import pformat

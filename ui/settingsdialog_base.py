@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/settingsdialog_base.ui'
 #
-# Created: Tue Mar 13 11:36:27 2007
+# Created: Mon Apr 9 16:37:37 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
@@ -209,16 +209,18 @@ class SettingsDialog_base(QDialog):
         pcardButtonGroupLayout.setAlignment(Qt.AlignTop)
 
         self.radioButton19 = QRadioButton(self.pcardButtonGroup,"radioButton19")
-        self.radioButton19.setEnabled(0)
+        self.radioButton19.setEnabled(1)
+        self.radioButton19.setChecked(1)
 
         pcardButtonGroupLayout.addMultiCellWidget(self.radioButton19,0,0,0,1)
 
         self.radioButton20 = QRadioButton(self.pcardButtonGroup,"radioButton20")
-        self.radioButton20.setChecked(1)
+        self.radioButton20.setChecked(0)
 
         pcardButtonGroupLayout.addWidget(self.radioButton20,1,0)
 
         self.AccessPCardCommand = QLineEdit(self.pcardButtonGroup,"AccessPCardCommand")
+        self.AccessPCardCommand.setEnabled(0)
 
         pcardButtonGroupLayout.addWidget(self.AccessPCardCommand,1,1)
 
@@ -232,17 +234,17 @@ class SettingsDialog_base(QDialog):
         faxButtonGroupLayout.setAlignment(Qt.AlignTop)
 
         self.radioButton17 = QRadioButton(self.faxButtonGroup,"radioButton17")
-        self.radioButton17.setEnabled(0)
+        self.radioButton17.setChecked(1)
 
         faxButtonGroupLayout.addMultiCellWidget(self.radioButton17,0,0,0,1)
 
         self.radioButton18 = QRadioButton(self.faxButtonGroup,"radioButton18")
-        self.radioButton18.setChecked(1)
+        self.radioButton18.setChecked(0)
 
         faxButtonGroupLayout.addWidget(self.radioButton18,1,0)
 
         self.SendFaxCommand = QLineEdit(self.faxButtonGroup,"SendFaxCommand")
-        self.SendFaxCommand.setEnabled(1)
+        self.SendFaxCommand.setEnabled(0)
 
         faxButtonGroupLayout.addWidget(self.SendFaxCommand,1,1)
 
@@ -309,12 +311,13 @@ class SettingsDialog_base(QDialog):
         copyButtonGroupLayout.setAlignment(Qt.AlignTop)
 
         self.radioButton21 = QRadioButton(self.copyButtonGroup,"radioButton21")
-        self.radioButton21.setEnabled(0)
+        self.radioButton21.setEnabled(1)
+        self.radioButton21.setChecked(1)
 
         copyButtonGroupLayout.addMultiCellWidget(self.radioButton21,0,0,0,1)
 
         self.radioButton22 = QRadioButton(self.copyButtonGroup,"radioButton22")
-        self.radioButton22.setChecked(1)
+        self.radioButton22.setChecked(0)
 
         copyButtonGroupLayout.addWidget(self.radioButton22,1,0)
 

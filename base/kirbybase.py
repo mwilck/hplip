@@ -1,5 +1,7 @@
 """
-KirbyBase v1.8.1 (applied patch introduced in v1.8.2)
+KirbyBase v1.8.1 
+(Note: applied patch introduced in v1.8.2)
+(2007-04-05: Changed 'No Match' string exceptions into NoMatch exceptions)
 
 Contains classes for a plain-text, client-server dbms.
 
@@ -10,6 +12,7 @@ http://www.netpromi.com/kirbybase.html
 Classes:
     KirbyBase - database class
     KBError - exceptions
+    NoMatch - Former 'No Match' string exception
 
 Example:
     from db import *
@@ -1256,7 +1259,9 @@ class KirbyBase:
                 line = line[:-1].strip()
                 try:
                     # If blank line, skip this record.
-                    if line == "": raise 'No Match'
+                    if line == "": 
+                        raise NoMatch()
+                        
                     # Split the line up into fields.
                     record = line.split("|", maxfield)
 
@@ -1277,21 +1282,22 @@ class KirbyBase:
                                     if not pattern.search(
                                      self._unencodeString(record[fieldPos])
                                      ):
-                                        raise 'No Match'
+                                        raise NoMatch()
                                 else:
                                     if record[fieldPos] != pattern:
-                                        raise 'No Match'        
-                            except Exception:
+                                        raise NoMatch()
+                            except re.error:
                                 raise KBError(
                                  'Invalid match expression for %s'
                                  % self.field_names[fieldPos])
+                                 
                         # If the field type is boolean, then I will simply
                         # do an equality comparison.  See comments above
                         # about why I am actually doing a string compare
                         # here rather than a boolean compare.
                         elif self.field_types[fieldPos] == bool:
                             if record[fieldPos] != pattern:
-                                raise 'No Match'
+                                raise NoMatch()
                         # If it is not a string or a boolean, then it must 
                         # be a number or a date.
                         else:
@@ -1327,10 +1333,10 @@ class KirbyBase:
                             # they are trying to do and I do it directly.
                             # This sped up queries by 40%.     
                             if not pattern[0](tableValue, pattern[1]):
-                                raise 'No Match' 
+                                raise NoMatch()
                 # If a 'No Match' exception was raised, then go to the
                 # next record, otherwise, add it to the list of matches.
-                except 'No Match':
+                except NoMatch:
                     pass
                 else:
                     match_list.append([line, fpos])
@@ -1529,3 +1535,8 @@ class KBError(Exception):
     def __repr__(self):
         format = """KBError("%s")"""
         return format % (self.value)
+        
+class NoMatch(Exception):
+    pass
+    
+    

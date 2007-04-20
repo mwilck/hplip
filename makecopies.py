@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.0'
+__version__ = '3.0'
 __title__ = "Make Copies Utility"
 __doc__ = "PC initiated make copies on supported HP AiO and MFP devices."
 
@@ -72,7 +72,7 @@ def usage(typ='text'):
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'P:p:d:hl:gm:c:q:r:funb:',
                                ['printer=', 'device=', 'help', 'logging=',
-                                'num=', 'copies=', 'contrast=', 'quality='
+                                'num=', 'copies=', 'contrast=', 'quality=',
                                 'reduction=', 'enlargement=', 'fittopage', 
                                 'fit', 'gui', 'help-rest', 'help-man',
                                 'help-desc', 'non-interactive', 'bus='])
@@ -96,6 +96,7 @@ if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
 
 for o, a in opts:
+    print o, a
     if o in ('-h', '--help'):
         usage()
 

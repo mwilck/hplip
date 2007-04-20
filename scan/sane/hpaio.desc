@@ -22,7 +22,13 @@
 :model "hp_color_laserjet_2840"
 :status :good
 
+:model "deskjet_f2100_series"
+:status :good
+
 :model "deskjet_f300_series"
+:status :good
+
+:model "deskjet_f4100_series"
 :status :good
 
 :model "hp_laserjet_1100"

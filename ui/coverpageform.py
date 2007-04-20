@@ -25,8 +25,12 @@ from fax import coverpages
 from coverpageform_base import CoverpageForm_base
 
 class CoverpageForm(CoverpageForm_base):
-    def __init__(self, cover_page_name='', parent=None,name=None,modal=0,fl=0):
+    def __init__(self, cover_page_name='', preserve_formatting=False, parent=None,name=None,modal=0,fl=0):
         CoverpageForm_base.__init__(self,parent,name,modal,fl)
+        
+        self.preserve_formatting = preserve_formatting
+        self.preserveFormattingCheckBox.setChecked(preserve_formatting)
+        
         pix = QPixmap(os.path.join(prop.image_dir, 'prev.png'))
         self.prevCoverpageButton.setPixmap(pix)
         pix = QPixmap(os.path.join(prop.image_dir, 'next.png'))
@@ -39,6 +43,7 @@ class CoverpageForm(CoverpageForm_base):
             self.coverpage_index = 0
 
         self.setCoverpage()
+        
 
     def setCoverpage(self, inc=0):
         self.coverpage_index += inc
@@ -59,6 +64,9 @@ class CoverpageForm(CoverpageForm_base):
 
     def nextCoverpageButton_clicked(self):
         self.setCoverpage(1)
+        
+    def preserveFormattingCheckBox_toggled(self,a0):
+        self.preserve_formatting = bool(a0)
 
     def __tr(self,s,c = None):
         return qApp.translate("CoverpageForm_base",s,c)

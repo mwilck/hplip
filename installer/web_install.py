@@ -19,42 +19,8 @@
 # Author: Don Welch, Pete Parks
 #
 
-# ##############################################################################
-# TODOS:
-# Turn off caching in all pages [Done?]
-# Align cancel button in progress screen
-# Left align text in progress screen output box
-# Set (*) Automatic to be the default in mode.tmpl
-# Generic error page
-# Fix cheetah copy in sandbox/tarball
-# Switch to pre-compiled templates
-# Only add part of cheetah needed for pre-compiled templates to tarball
-# Fix wording on confirm_distro page
-# Use POST not GET in AJAX calls[Done]
-# Turn off status bar in browser
-# Every page should have a Quit or Cancel button
-# Set browser page title 
-
-# Password page: test su password for validity
-# Select_distro page: Set initial combos to starting values
-# Close browser window on quit, error exit, and at end
-# Install page: Set core.install_location into widget at start
-# error_package_manager: Add package manager name and instructions
-# error_unsupported_distro: Add instructions and choice buttons
-# Handle multiple run() in dependency code [done]
-# Hook up HPOJ and HPLIP uninstall check screens and run()
-# turn_off_options debug (remove dependencies from depends_to_install list)
-# notes: make sure text stays inside screen area
-# pages with dynamic data: make sure data stays inside screen area
-# dependencies recheck after req and opt installs
-# add printer setup at end using hp-setup (if gui==1)
-# hpijs flow check
-# close browser and load "stop" on quit
-# 
-# ##############################################################################
-
 # Std Lib
-import time, thread #,threading
+import time, thread
 import Queue
 import base64
 
@@ -99,9 +65,13 @@ def run(cmd, callback=None, passwd='', timeout=0.5):
             update_spinner()
             i = child.expect(["[pP]assword:", pexpect.EOF, pexpect.TIMEOUT])
             #print "####>>>> i: ", i
-            if child.before and callback is not None:
-                if callback(child.before): # cancel
-                    break
+            
+            if child.before:
+                log.log_to_file(child.before)
+            
+                if callback is not None:
+                    if callback(child.before): # cancel
+                        break
 
             if i == 0: # Password:
                 child.sendline(passwd)
@@ -915,9 +885,10 @@ class Installer(object):
     #
 
     # Reusable progress screen
+    
     def progress(self, action): # progress?action=0|1|2|3|4|5|6|7|8
         #print("####>>>>progress")
-        action = int(action)
+        self.action = int(action)
         assert action in range(ACTION_MAX)
         template = self.createTemplate("progress")
         self.action_lock.acquire()
@@ -928,12 +899,12 @@ class Installer(object):
         self.fail_ok = False
 
 
-        if action == ACTION_INIT: # 0
+        if self.action == ACTION_INIT: # 0
             self.action_thread = thread.start_new_thread(self.run_core_init_thread, ())
             return str(template)
 
         else:
-            if action in (ACTION_INSTALL_REQUIRED, ACTION_INSTALL_OPTIONAL): # 1 & 2
+            if self.action in (ACTION_INSTALL_REQUIRED, ACTION_INSTALL_OPTIONAL): # 1 & 2
                 log.debug(self.depends_to_install)
                 packages_to_install = []
                 commands_to_run = []
@@ -953,17 +924,19 @@ class Installer(object):
 
                     if command:
                         log.debug("Command '%s' will be run to satisfy dependency '%s'." % (command, d))
-                        commands_to_run.append(command)
+                        if type(command) == type(""):
+                            commands_to_run.append(command)
+                        
+                        elif type(command) == type([]):
+                            commands_to_run.extend(command)
+                            
+                        else:
+                            pass
 
-                packages_to_install = ' '.join(packages_to_install)
-                #t = utils.cat(package_mgr_cmd)
-                t = cat(package_mgr_cmd, packages_to_install)
-                self.cmds.append(t)
+                self.cmds.append(cat(package_mgr_cmd, ' '.join(packages_to_install)))
+                self.cmds.extend(commands_to_run)
 
-                for c in commands_to_run:
-                    self.cmds.append(c)
-
-            elif action == ACTION_PRE_DEPENDENCY: # 3
+            elif self.action == ACTION_PRE_DEPENDENCY: # 3
                 self.pre_has_run = True
                 try:
                     self.cmds.extend(core.distros[core.distro_name]['versions'][core.distro_version]['pre_depend_cmd'] or core.distros[core.distro_name]['pre_depend_cmd'])
@@ -972,9 +945,9 @@ class Installer(object):
 
                 self.fail_ok = True
 
-            elif action == ACTION_POST_DEPENDENCY: # 4
+            elif self.action == ACTION_POST_DEPENDENCY: # 4
                 self.post_has_run = True
-                #print "Action here: ", action
+                #print "Action here: ", self.action
                 try:
                     ##print "Action 4: ", core.distros[core.distro_name]['versions'][core.distro_version]['post_depend_cmd']
                     ##print "Sction 4:2: ", core.distros[core.distro_name]['post_depend_cmd']
@@ -985,7 +958,7 @@ class Installer(object):
 
                 self.fail_ok = True
 
-            elif action == ACTION_BUILD_AND_INSTALL: # 5
+            elif self.action == ACTION_BUILD_AND_INSTALL: # 5
                 if core.selected_component == 'hplip':
                     self.cmds = core.build_cmds()
                     #print "core.build_cmds() ", self.cmds
@@ -993,16 +966,16 @@ class Installer(object):
                     self.cmds = core.hpijs_build_cmds()
                     #print "core.hpijs_build_cmds() ", self.cmds
 
-            elif action == ACTION_REMOVE_HPOJ: # 6
+            elif self.action == ACTION_REMOVE_HPOJ: # 6
                 self.cmds.append(core.distros[core.distro_name]['hpoj_remove_cmd'])
                 self.fail_ok = True
 
-            elif action == ACTION_REMOVE_HPLIP: # 7
+            elif self.action == ACTION_REMOVE_HPLIP: # 7
                 self.cmds.append(core.su_sudo() % '/etc/init.d/hplip stop')
                 self.cmds.append(core.distros[core.distro_name]['hplip_remove_cmd'])
                 self.fail_ok = True
             #else:
-                #print "We have and unchecked action here: ", action
+                #print "We have and unchecked action here: ", self.action
 
             if self.cmds:
                 log.debug(self.cmds)
@@ -1031,6 +1004,24 @@ class Installer(object):
         return str(t)
 
     progress_status.exposed = True
+    
+    
+    def operation_number(self):
+        #print("####>>>>operation_number")
+        self.action_lock.acquire()
+        t = self.action
+        self.action_lock.release()
+        #print "####>>>>operation_number code:", t
+        return str(t)
+
+    operation_number.exposed = True
+    
+    def retry_progress(self):
+        #print("####>>>>retry_progress")
+        return self.progress(self.action)
+
+    retry_progress.exposed = True
+        
 
     def progress_cancel(self): # AJAX method to cancel current operation.
         #print("####>>>>progress_cancel")

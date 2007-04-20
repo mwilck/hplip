@@ -43,22 +43,29 @@ class RangeValidator(QValidator):
                 return QValidator.Invalid, pos
 
         return QValidator.Acceptable, pos
+        
+
+class FileListViewItem(QListViewItem):
+    def __init__(self, parent, order, filename, mime_type_desc, path):
+        QListViewItem.__init__(self, parent, order, filename, mime_type_desc, path)
+        self.path = path
 
 
 class ScrollPrintView(ScrollView):
     def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
         ScrollView.__init__(self,parent,name,fl)
-        
+
         self.toolbox_hosted = toolbox_hosted
         self.form = form
         self.file_list = []
         self.pages_button_group = 0
-        
+        self.prev_selected_file_path = ''
+
         self.allowable_mime_types = cups.getAllowableMIMETypes()
         self.allowable_mime_types.append("application/x-python")
 
         log.debug(self.allowable_mime_types)
-        
+
         self.MIME_TYPES_DESC = \
         {
             "application/pdf" : (self.__tr("PDF Document"), '.pdf'),
@@ -88,145 +95,189 @@ class ScrollPrintView(ScrollView):
             "image/x-xpixmap" : (self.__tr("X11 Pixmap (XPM)"), '.xpm'),
             "image/x-sun-raster" : (self.__tr("Sun Raster Format"), '.ras'),
         }
-        
+
 
     def fillControls(self):
         ScrollView.fillControls(self)
-        
+
         self.addPrinterFaxList()
-        self.addGroupHeading("files_to_print", "File(s) to Print")
+        self.addGroupHeading("files_to_print", self.__tr("File(s) to Print"))
         self.addFileList()
-        self.addGroupHeading("options", "Print Options")
+        self.addGroupHeading("options", self.__tr("Print Options"))
         self.addCopies()
         self.addPageRange()
         self.addPageSet()
         self.addGroupHeading("space1", "")
-        
+
         if self.toolbox_hosted:
             s = self.__tr("<< Functions")
         else:
             s = self.__tr("Close")
-            
+
         self.printButton = self.addActionButton("bottom_nav", self.__tr("Print File(s)"), 
-                                self.printButton_clicked, s, self.funcButton_clicked)
-                                
+                                self.printButton_clicked, 'print.png', 'print-disabled.png', 
+                                s, self.funcButton_clicked)
+
         self.printButton.setEnabled(False)
-        
+
         self.maximizeControl()
         
+    def onUpdate(self, cur_device=None):
+        log.debug("ScrollPrintView.onUpdate()")
+        self.updateFileList()
         
+    def onDeviceChange(self, cur_device=None):
+        #print "ScrollPrintView.onDeviceChange()"
+        self.file_list = []
+        ScrollView.onDeviceChange(self, cur_device)
+
     def addFileList(self):
         widget = self.getWidget()
-        
-        
-##        layout20 = QGridLayout(LayoutWidget_8,1,1,11,6,"layout20")
-##
-##        self.moveUpPushButton = QPushButton(LayoutWidget_8,"moveUpPushButton")
-##
-##        layout20.addWidget(self.moveUpPushButton,1,2)
-##
-##        self.listView2 = QListView(LayoutWidget_8,"listView2")
-##        self.listView2.addColumn(self.__tr("Name"))
-##        self.listView2.addColumn(self.__tr("Type"))
-##        self.listView2.addColumn(self.__tr("Path"))
-##        self.listView2.setAllColumnsShowFocus(1)
-##        self.listView2.setShowSortIndicator(1)
-##
-##        layout20.addMultiCellWidget(self.listView2,0,0,0,5)
-##
-##        self.removeFilePushButton = QPushButton(LayoutWidget_8,"removeFilePushButton")
-##
-##        layout20.addWidget(self.removeFilePushButton,1,1)
-##
-##        self.moveDownPushButton = QPushButton(LayoutWidget_8,"moveDownPushButton")
-##
-##        layout20.addWidget(self.moveDownPushButton,1,3)
-##        spacer20_3 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-##        layout20.addItem(spacer20_3,1,4)
-##
-##        self.showTypesPushButton = QPushButton(LayoutWidget_8,"showTypesPushButton")
-##
-##        layout20.addWidget(self.showTypesPushButton,1,5)
-##
-##        self.addFilePushButton = QPushButton(LayoutWidget_8,"addFilePushButton")
-##
-##        layout20.addWidget(self.addFilePushButton,1,0)
-
-
-        
-        
         layout37 = QGridLayout(widget,1,1,5,10,"layout37")
-        
+
         self.addFilePushButton = PixmapLabelButton(widget, 
             "list-add.png", "list-add-disabled.png")
 
         layout37.addWidget(self.addFilePushButton,2,0)
-        
-        #self.showTypesPushButton = QPushButton(widget,"showTypesPushButton")
-        
-        self.showTypesPushButton = PixmapLabelButton(widget, "mimetypes.png", 
-            None, name='addFilePushButton')
-        
-        layout37.addWidget(self.showTypesPushButton,2,3)
-        
+
         self.removeFilePushButton = PixmapLabelButton(widget, 
             "list-remove.png", "list-remove-disabled.png")
-        
+
         layout37.addWidget(self.removeFilePushButton,2,1)
-        
+
+        self.moveFileUpPushButton = PixmapLabelButton(widget, "up.png", 
+            "up-disabled.png", name='moveFileUpPushButton')
+
+        layout37.addWidget(self.moveFileUpPushButton,2,2)
+
+        self.moveFileDownPushButton = PixmapLabelButton(widget, "down.png", 
+            "down-disabled.png", name='moveFileDownPushButton')
+
+        layout37.addWidget(self.moveFileDownPushButton,2,3)
+
+        self.showTypesPushButton = PixmapLabelButton(widget, "mimetypes.png", 
+            None, name='addFilePushButton')
+
+        layout37.addWidget(self.showTypesPushButton,2,5)
+
+
         self.fileListView = QListView(widget,"fileListView")
+        self.fileListView.addColumn(self.__tr("Order"))
         self.fileListView.addColumn(self.__tr("Name"))
         self.fileListView.addColumn(self.__tr("Type"))
         self.fileListView.addColumn(self.__tr("Path"))
         self.fileListView.setAllColumnsShowFocus(1)
         self.fileListView.setShowSortIndicator(1)
-        self.fileListView.setColumnWidth(0, 150)
-        self.fileListView.setColumnWidth(1, 75)
-        self.fileListView.setColumnWidth(2, 300)
+        self.fileListView.setColumnWidth(0, 100)
+        self.fileListView.setColumnWidth(1, 150)
+        self.fileListView.setColumnWidth(2, 75)
+        self.fileListView.setColumnWidth(3, 300)
         self.fileListView.setItemMargin(2)
         self.fileListView.setSorting(-1)
-        
-        layout37.addMultiCellWidget(self.fileListView,1,1,0,3)
-        
+
+        layout37.addMultiCellWidget(self.fileListView,1,1,0,5)
+
         spacer26 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        layout37.addItem(spacer26,2,2)
-        
+        layout37.addItem(spacer26,2,4)
+
         self.addFilePushButton.setText(self.__tr("Add File..."))
         self.showTypesPushButton.setText(self.__tr("Show Types..."))
         self.removeFilePushButton.setText(self.__tr("Remove File"))
-        
+        self.moveFileDownPushButton.setText(self.__tr("Move Down"))
+        self.moveFileUpPushButton.setText(self.__tr("Move Up"))
+
         self.removeFilePushButton.setEnabled(False)
-        
+
         self.connect(self.addFilePushButton, SIGNAL("clicked()"), self.addFile_clicked)
         self.connect(self.removeFilePushButton, SIGNAL("clicked()"), self.removeFile_clicked)
         self.connect(self.showTypesPushButton, SIGNAL("clicked()"), self.showFileTypes_clicked)
         self.connect(self.fileListView,SIGNAL("rightButtonClicked(QListViewItem*,const QPoint&, int)"),self.fileListView_rightButtonClicked)
 
+        self.connect(self.moveFileUpPushButton, SIGNAL("clicked()"), self.moveFileUp_clicked)
+        self.connect(self.moveFileDownPushButton, SIGNAL("clicked()"), self.moveFileDown_clicked)
+        self.connect(self.fileListView, SIGNAL("selectionChanged(QListViewItem*)"), 
+            self.fileListView_selectionChanged)
+
         self.addWidget(widget, "file_list", maximize=True)
-        
-        
+
+    def fileListView_selectionChanged(self, i):
+        try:
+            self.prev_selected_file_path = i.path
+        except AttributeError:
+            pass
+        else:
+            flv = self.fileListView
+            selected_item = flv.selectedItem()
+            file_count = flv.childCount()
+            last_item = flv.firstChild()
+            while last_item.nextSibling():
+                last_item = last_item.nextSibling()
+
+            self.moveFileDownPushButton.setEnabled(file_count > 1 and selected_item is not last_item)
+            self.moveFileUpPushButton.setEnabled(file_count > 1 and selected_item is not flv.firstChild())        
+
+
     def fileListView_rightButtonClicked(self, item, pos, col):
         popup = QPopupMenu(self)
         popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir, 'list-add.png'))),
             self.__tr("Add File..."), self.addFile_clicked)
-    
+
         if item is not None:
             popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
                 'list-remove.png'))), self.__tr("Remove File"), self.removeFile_clicked)
-            
+                
+            if self.fileListView.childCount() > 1:
+                last_item = self.fileListView.firstChild()
+                while last_item is not None and last_item.nextSibling():
+                    last_item = last_item.nextSibling()
+                    
+                if item is not self.fileListView.firstChild():
+                    popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
+                        'up.png'))), self.__tr("Move Up"), self.moveFileUp_clicked)
+    
+                if item is not last_item:
+                    popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
+                        'down.png'))), self.__tr("Move Down"), self.moveFileDown_clicked)
+
         popup.insertSeparator(-1)
         popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
                 'mimetypes.png'))), self.__tr("Show File Types..."), self.showFileTypes_clicked)
+
         popup.popup(pos)
-        
-        
+
+
+    def moveFileUp_clicked(self):
+        try:
+            path = self.fileListView.selectedItem().path
+        except AttributeError:
+            return
+        else:
+            for i in range(1, len(self.file_list)):
+                if self.file_list[i][0] == path:
+                    self.file_list[i-1],self.file_list[i] = self.file_list[i], self.file_list[i-1]
+
+            self.updateFileList()
+
+    def moveFileDown_clicked(self):
+        try:
+            path = self.fileListView.selectedItem().path
+        except AttributeError:
+            return
+        else:
+            for i in range(len(self.file_list) - 2, -1, -1):
+                if self.file_list[i][0] == path:
+                    self.file_list[i], self.file_list[i+1] = self.file_list[i+1], self.file_list[i] 
+
+            self.updateFileList()
+
+
     def addFile(self, path):
         path = os.path.realpath(path)
         if os.path.exists(path):
             mime_type = magic.mime_type(path)
             mime_type_desc = mime_type
             log.debug(mime_type)
-            
+
             try:
                 mime_type_desc = self.MIME_TYPES_DESC[mime_type][0]
             except KeyError:
@@ -234,33 +285,46 @@ class ScrollPrintView(ScrollView):
             else:
                 log.debug("Adding file %s (%s,%s)" % (path, mime_type, mime_type_desc))
                 self.file_list.append((path, mime_type, mime_type_desc))
+                self.prev_selected_file_path = path
         else:
             self.form.FailureUI(self.__tr("<b>Unable to add file '%s' to file list.</b><p>Check the file name and try again." % path))
 
-        self.UpdateFileList()
-        
-    def UpdateFileList(self):
+        self.updateFileList()
+
+    def updateFileList(self):
         self.fileListView.clear()
         temp = self.file_list[:]
         temp.reverse()
-        x = True
+        last_item = None
+        selected_item = None
+        order = len(temp)
 
-        for p, t, d in temp:
-            i = QListViewItem(self.fileListView, os.path.basename(p), d, p)
-            if x:
+        for path, mime_type, desc in temp:
+            i = FileListViewItem(self.fileListView, str(order), os.path.basename(path), desc, path)
+            
+            if not self.prev_selected_file_path or self.prev_selected_file_path == path:
                 self.fileListView.setSelected(i, True)
-                x = False
+                self.prev_selected_file_path = path
+                selected_item = i
+                
+            order -= 1
 
-        non_empty_file_list = self.fileListView.childCount() > 0
-        self.printButton.setEnabled(non_empty_file_list)
-        self.removeFilePushButton.setEnabled(non_empty_file_list)
         
-        
-        
-    
+        last_item = self.fileListView.firstChild()
+        while last_item is not None and last_item.nextSibling():
+            last_item = last_item.nextSibling()
+
+        file_count = self.fileListView.childCount()
+        self.moveFileDownPushButton.setEnabled(file_count > 1 and selected_item is not last_item)
+        self.moveFileUpPushButton.setEnabled(file_count > 1 and selected_item is not self.fileListView.firstChild())
+        self.removeFilePushButton.setEnabled(file_count > 0)
+        self.printButton.setEnabled(file_count > 0)
+
+
+
     def addFile_clicked(self):
         workingDirectory = user_cfg.last_used.working_dir
-       
+
         if not workingDirectory or not os.path.exists(workingDirectory):
             workingDirectory = os.path.expanduser("~")
 
@@ -277,16 +341,16 @@ class ScrollPrintView(ScrollView):
                 workingDirectory = str(dlg.dir().absPath())
                 log.debug("results: %s" % results)
                 log.debug("workingDirectory: %s" % workingDirectory)
-                
+
                 user_cfg.last_used.working_dir = workingDirectory
 
                 if results:
                     self.addFile(str(results))
-                    
-        
+
+
     def removeFile_clicked(self):
         try:
-            path = self.fileListView.currentItem().text(2)
+            path = self.fileListView.selectedItem().path
         except AttributeError:
             return
         else:
@@ -295,11 +359,12 @@ class ScrollPrintView(ScrollView):
             for p, t, d in temp:
                 if p == path:
                     del self.file_list[index]
+                    self.prev_selected_file_path = ''
                     break
                 index += 1
 
-            self.UpdateFileList()
-            
+            self.updateFileList()
+
     def showFileTypes_clicked(self):
         x = {}
         for a in self.allowable_mime_types:
@@ -308,11 +373,11 @@ class ScrollPrintView(ScrollView):
         log.debug(x)
         dlg = AllowableTypesDlg(x, self)
         dlg.exec_loop()
-        
-        
+
+
     def addCopies(self):
         widget = self.getWidget()
-        
+
         layout12 = QHBoxLayout(widget,5,10,"layout12")
 
         self.textLabel5 = QLabel(widget,"textLabel5")
@@ -328,34 +393,34 @@ class ScrollPrintView(ScrollView):
 
         self.textLabel5.setText(self.__tr("Number of copies:"))
         self.copiesDefaultPushButton.setText(self.__tr("Default"))
-        
+
         self.copiesSpinBox.setMaxValue(99)
         self.copiesSpinBox.setMinValue(1)
         self.copiesSpinBox.setValue(1)
-        
+
         self.copiesDefaultPushButton.setEnabled(False)
-        
+
         self.connect(self.copiesDefaultPushButton, SIGNAL("clicked()"), self.copiesDefaultPushButton_clicked)
         self.connect(self.copiesSpinBox, SIGNAL("valueChanged(int)"), self.copiesSpinBox_valueChanged)
-        
+
         self.addWidget(widget, "copies")
-        
+
     def copiesDefaultPushButton_clicked(self):
         self.copiesSpinBox.setValue(1)
         self.copiesDefaultPushButton.setEnabled(False)
-        
+
     def copiesSpinBox_valueChanged(self, i):
         self.copiesDefaultPushButton.setEnabled(i != 1)
-    
+
     def addPageRange(self):
         widget = self.getWidget()
-        
+
         layout39 = QGridLayout(widget,1,1,5,10,"layout39")
 
         self.pageRangeEdit = QLineEdit(widget,"self.pageRangeEdit")
         self.pageRangeEdit.setEnabled(0)
         layout39.addWidget(self.pageRangeEdit,0,3)
-        
+
         spacer20_2 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         layout39.addItem(spacer20_2,0,1)
 
@@ -381,39 +446,39 @@ class ScrollPrintView(ScrollView):
         radioButton4_2 = QRadioButton(self.rangeButtonGroup,"radioButton4_2")
         self.rangeButtonGroup.insert( radioButton4_2,1)
         self.rangeButtonGroupLayout.addWidget(radioButton4_2,0,1)
-        
+
         layout39.addWidget(self.rangeButtonGroup,0,2)
-        
+
         self.bg = self.pageRangeEdit.paletteBackgroundColor()
         self.invalid_page_range = False
-        
+
         self.pageRangeEdit.setValidator(RangeValidator(self.pageRangeEdit))
-        
+
         textLabel5_2.setText(self.__tr("Page Range:"))
         radioButton3_2.setText(self.__tr("All pages"))
         radioButton4_2.setText(self.__tr("Page range:"))
-        
+
         self.pagerangeDefaultPushButton.setText(self.__tr("Default"))
-        
+
         self.pagerangeDefaultPushButton.setEnabled(False)
-        
+
         self.connect(self.rangeButtonGroup, SIGNAL("clicked(int)"), self.rangeButtonGroup_clicked)
         self.connect(self.pageRangeEdit,SIGNAL("lostFocus()"),self.pageRangeEdit_lostFocus)
         self.connect(self.pageRangeEdit,SIGNAL("textChanged(const QString&)"),self.pageRangeEdit_textChanged)
         self.connect(self.pagerangeDefaultPushButton, SIGNAL("clicked()"), self.pagerangeDefaultPushButton_clicked)
-        
+
         self.addWidget(widget, "range")
-        
+
     def pagerangeDefaultPushButton_clicked(self):
         self.rangeButtonGroup.setButton(0)
         self.pagerangeDefaultPushButton.setEnabled(False)
         self.pageRangeEdit.setEnabled(False)
-        
+
     def rangeButtonGroup_clicked(self, a0):
         self.pages_button_group = a0
         self.pageRangeEdit.setEnabled(a0 == 1)
         self.pagerangeDefaultPushButton.setEnabled(a0 == 1)
-        
+
     def pageRangeEdit_lostFocus(self):
         x = []
         try:
@@ -439,10 +504,10 @@ class ScrollPrintView(ScrollView):
         else:
             self.pageRangeEdit.setPaletteBackgroundColor(self.bg)
             self.invalid_page_range = False
-        
+
     def addPageSet(self):
         widget = self.getWidget()
-        
+
         layout34 = QHBoxLayout(widget,5,10,"layout34")
 
         self.textLabel5_4 = QLabel(widget,"textLabel5_4")
@@ -455,25 +520,25 @@ class ScrollPrintView(ScrollView):
 
         self.pagesetDefaultPushButton = QPushButton(widget,"pagesetDefaultPushButton")
         layout34.addWidget(self.pagesetDefaultPushButton)
-        
+
         self.textLabel5_4.setText(self.__tr("Page set:"))
         self.pageSetComboBox.clear()
         self.pageSetComboBox.insertItem(self.__tr("All pages"))
         self.pageSetComboBox.insertItem(self.__tr("Even pages"))
         self.pageSetComboBox.insertItem(self.__tr("Odd pages"))
         self.pagesetDefaultPushButton.setText(self.__tr("Default"))
-        
+
         self.pagesetDefaultPushButton.setEnabled(False)
-        
+
         self.connect(self.pageSetComboBox, SIGNAL("activated(int)"), self.pageSetComboBox_activated)
         self.connect(self.pagesetDefaultPushButton, SIGNAL("clicked()"), self.pagesetDefaultPushButton_clicked)
-        
+
         self.addWidget(widget, "set")
-        
+
     def pagesetDefaultPushButton_clicked(self):
         self.pagesetDefaultPushButton.setEnabled(False)
         self.pageSetComboBox.setCurrentItem(0)
-        
+
     def pageSetComboBox_activated(self, i):
         self.pagesetDefaultPushButton.setEnabled(i != 0)
 
@@ -481,84 +546,97 @@ class ScrollPrintView(ScrollView):
         if self.invalid_page_range:
             self.form.FailureUI(self.__tr("<b>Cannot print: Invalid page range: %1</b><p>A valid page range is a list of pages or ranges of pages separated by commas (e.g., 1-2,4,6-7)").arg(self.pageRangeEdit.text()))
             return
-            
+
         try:
             try:
                 self.cur_device.open()
             except Error:
-                self.form.FailureUI(self.__tr("<b>Cannot print: Device is busy or not available.</b><p>Please check device and try again."))
+                self.form.FailureUI(self.__tr("<b>Cannot print: Device is busy or not available.</b><p>Please check device and try again. [1]"))
                 return
-            
-            if self.cur_device.isIdleAndNoError():
+
+            if 1: # Go ahead and allow - print will be queued in CUPS if not rejecting
+                printers = cups.getPrinters()
+                for p in printers:
+                    if p.name == self.cur_printer:
+                        break
+                
+                if p.state == cups.IPP_PRINTER_STATE_STOPPED:
+                    self.form.FailureUI(self.__tr("<b>Cannot print: Printer is stopped.</b><p>Please START the printer to continue this print. Job will begin printing once printer is started."))
+
+                if not p.accepting:
+                    self.form.FailureUI(self.__tr("<b>Cannot print: Printer is not accepting jobs.</b><p>Please set the printer to ACCEPTING JOBS to continue printing."))
+                    return
+                
                 copies = int(self.copiesSpinBox.value())
                 all_pages = self.pages_button_group == 0
                 page_range = str(self.pageRangeEdit.text())
                 page_set = int(self.pageSetComboBox.currentItem())
-            
+
                 cups.resetOptions()
                 cups.openPPD(self.cur_printer)
                 current_options = dict(cups.getOptions())
                 cups.closePPD()
-                
+
                 nup = int(current_options.get("number-up", 1))
-                    
+
                 for p, t, d in self.file_list:
-        
+
                     alt_nup = (nup > 1 and t == 'application/postscript' and utils.which('psnup'))
-        
+
                     if utils.which('lpr'):
                         if alt_nup:
                             cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lpr -P', self.cur_printer])
                         else:
                             cmd = ' '.join(['lpr -P', self.cur_printer])
-        
+
                         if copies > 1:
                             cmd = ' '.join([cmd, '-#%d' % copies])
-        
+
                     else:
                         if alt_nup:
                             cmd = ' '.join(['psnup', '-%d' % nup, ''.join(['"', p, '"']), '| lp -c -d', self.cur_printer])
                         else:
                             cmd = ' '.join(['lp -c -d', self.cur_printer])
-        
+
                         if copies > 1:
                             cmd = ' '.join([cmd, '-n%d' % copies])
-        
-        
+
+
                     if not all_pages and len(page_range) > 0:
                         cmd = ' '.join([cmd, '-o page-ranges=%s' % page_range])
-        
+
                     if page_set > 0:
                         if page_set == 1:
                             cmd = ' '.join([cmd, '-o page-set=even'])
                         else:
                             cmd = ' '.join([cmd, '-o page-set=odd'])
-        
+
                     if not alt_nup:
                         cmd = ''.join([cmd, ' "', p, '"'])
-        
+
                     log.debug("Printing: %s" % cmd)
-        
-                    if os.system(cmd) != 0:
+
+                    code = os.system(cmd)
+                    if code != 0:
                         log.error("Print command failed.")
-                        self.FailureUI(self.__tr("Print command failed."))
-            
+                        self.form.FailureUI(self.__tr("Print command failed with error code %1").arg(code))
+
                 if self.toolbox_hosted:
                     self.form.SwitchFunctionsTab("funcs")
                 else:
                     self.form.close()
-                    
-            else:
-                self.form.FailureUI(self.__tr("<b>Cannot print: Device is busy or not available.</b><p>Please check device and try again."))
-        
+
+##            else:
+##                self.form.FailureUI(self.__tr("<b>Cannot print: Device is busy or not available.</b><p>Please check device and try again. [2]"))
+
         finally:
             self.cur_device.close()
-        
+
     def funcButton_clicked(self):
         if self.toolbox_hosted:
             self.form.SwitchFunctionsTab("funcs")
         else:
             self.form.close()
-        
+
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

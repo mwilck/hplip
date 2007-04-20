@@ -157,6 +157,9 @@
         <property name="toolTip">
             <string>Help Contents (F1)</string>
         </property>
+        <property name="accel">
+            <string>F1</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -454,9 +457,6 @@
         <slot>Tabs_currentChanged(QWidget*)</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">devmgr4_base.ui.h</include>
-</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>

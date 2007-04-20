@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="../../../styles/default.css" type="text/css" /> 
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
 <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT" />
+<META NAME="DESCRIPTION" CONTENT="HP Linux Imaging and Printing - HPLIP is an HP developed solution for printing, scanning, and faxing with HP inkjet and laser based printers in Linux.">
+<META NAME="KEYWORDS" CONTENT="HPLIP, HP, Linux, Printing, HPIJS">
 </head>
 <body>
 <div id="page"><!-- start page -->
@@ -93,16 +95,16 @@ Xandros
 <p>You will need to add the debian repositories to the Xandros '/etc/apt/sources.list' file so that you can install the correct dependencies for HPLIP.</p>
 <p>Open the /etc/apt/sources.list file as root and add this section:</p>
 <div class="compound">
-<p># Standard Debian package sources
-deb <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib
-deb-src <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib
-deb <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free
-deb-src <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free</p>
+<p class="compound-first"># Standard Debian package sources</p>
+<p class="compound-middle">deb <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib</p>
+<p class="compound-middle">deb-src <a class="reference" href="http://ftp.us.debian.org/debian/">http://ftp.us.debian.org/debian/</a> stable main non-free contrib</p>
+<p class="compound-middle">deb <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free</p>
+<p class="compound-last">deb-src <a class="reference" href="http://non-us.debian.org/debian-non-US">http://non-us.debian.org/debian-non-US</a> stable/non-US main contrib non-free</p>
 </div>
 <p>Then run:</p>
 <div class="compound">
-<p>su
-apt-get update</p>
+<p class="compound-first">su</p>
+<p class="compound-last">apt-get update</p>
 </div>
 <p>Finally run:</p>
 <div class="compound">
@@ -122,7 +124,7 @@ apt-get update</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Fri Jan  5 09:59:34 2007; HPLIP Version: 1.7.3</small></center>
+<center><small>Page last updated: Thu Apr 12 09:33:49 2007; HPLIP Version: 1.7.4</small></center>
 </div>
 </td></tr></table>
 </div>
@@ -145,19 +147,21 @@ apt-get update</p>
 _uacct = "UA-1543832-1";
 urchinTracker();
 </script>
+<!-- start google analytics from hplip.marketing -->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1543832-7";
+urchinTracker();
+</script>
 <!-- end google analytics -->
+
 
 <!-- START OF ACTIVEMETER CODE -->
 <script type="text/javascript" language="javascript">
 var __pid=30231;
 var __am_invisible=1;
 </script>
-<script type="text/javascript" language="javascript" src="http://www.activemeter.com/counter.js"></script>
-<noscript>
-   <a href="http://www.activemeter.com/" target="_blank">
-      <img  src="http://am1.activemeter.com/webtracker/track.html?method=track&pid=30231&java=0" alt="Free Web Counter" border="0">
-   </a> 
-</noscript>
 <!-- END OF ACTIVEMETER CODE -->
 
 </body>

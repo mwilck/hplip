@@ -46,7 +46,7 @@ DISTRO_REDFLAG = 11 # (RPM based)
 DISTRO_UBUNTU = 12 # (Debian based)
 DISTRO_XANDROS = 13 # (Debian based)
 DISTRO_FREEBSD = 14 #
-DISTRO_LINSPIRE = 15 # (Debian baseD)
+DISTRO_LINSPIRE = 15 # (Debian based)
 DISTRO_ARK = 16 # (RPM based)
 DISTRO_PCLINUXOS = 17 # (PCLinuxOS/RPM based)
 DISTRO_ASIANUX = 18 # Red Flag+MIRACLE+Haansoft (based on RHEL)
@@ -63,6 +63,9 @@ DISTRO_OPENBSD = 28 #
 DISTRO_NETBSD = 29 #
 DISTRO_DRAGONFLYBSD = 30 # (FreeBSD based)
 DISTRO_YELLOWDOG = 31 # PPC
+DISTRO_IGOS = 32 # (Fedora based)
+DISTRO_FREESPIRE = 33
+
 
 
 def getDistro():
@@ -151,34 +154,6 @@ def __update_ver_cmd(distro, ver, dependency, cmd):
     """ Update an existing dependency cmd. """
     distros[distro]['versions'][ver]['dependency_cmds'][dependency] = cmd
 
-
-    
-##def enableRepositoriesUbuntu(distro, distro_version, password_func):
-##    sources_list = '/etc/apt/sources.list'
-##    
-##    if os.path.exists(sources_list):
-##        if distro == DISTRO_UBUNTU:
-##            try:
-##                code_name = distros[distros_index[distro]]['versions'][distro_version]['code_name'].lower()
-##            except KeyError:
-##                return 0
-##        
-##            for l in file(sources_list, 'r'):
-##                print l
-##            
-##            status, output = utils.run(core.su_sudo() % "true", True, password_func)
-##            
-##            line = "deb http://us.archive.ubuntu.com/ubuntu/ %s main universe multiverse" % code_name
-##            tee = "tee -a %s" % sources_list
-##            cmd = "echo %s | " % line + core.su_sudo() % tee
-##            log.info("Running '%s'\nPlease wait, this may take several minutes..." % cmd)
-##            #status, output = utils.run(cmd)
-##            status = os.system(cmd)
-##            print status
-##            #print status, output
-##        
-##    return 0
-
 # distros:
 #
 # { '<distro_name>' : { 
@@ -219,7 +194,7 @@ distros = \
         'display_name': 'Ubuntu',
         'display': True,
         'notes': '',
-        'index': 12,
+        'index': DISTRO_UBUNTU,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
         'package_mgr_cmd' : 'sudo apt-get install --yes --force-yes $packages_to_install',
         'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get install --yes --force-yes -f ', 'sudo apt-get update', 'xterm -e sudo apt-get install --yes --force-yes postfix'],
@@ -229,7 +204,7 @@ distros = \
         'su_sudo' : 'sudo',
         'versions': {
             '5.04': {
-                'code_name': 'Hoary', 
+                'code_name': 'Hoary Hedgehog', 
                 'release_date': '5/2004', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -238,7 +213,7 @@ distros = \
                 'post_depend_cmd':  [],
             },
             '5.1': {
-                'code_name': 'Breezy', 
+                'code_name': 'Breezy Badger', 
                 'release_date': '10/2005', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -247,7 +222,7 @@ distros = \
                 'post_depend_cmd': [],
             },
             '6.06': {
-                'code_name': 'Dapper', 
+                'code_name': 'Dapper Duck', 
                 'release_date': '6/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -256,7 +231,7 @@ distros = \
                 'post_depend_cmd': [],
             },
             '6.10': {
-                'code_name': 'Edgy', 
+                'code_name': 'Edgy Eft', 
                 'release_date': '10/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -265,7 +240,7 @@ distros = \
                 'post_depend_cmd': [],
             },
             '7.04': {
-                'code_name': 'Feisty', 
+                'code_name': 'Feisty Fawn', 
                 'release_date': '', 
                 'supported': True, 
                 'dependency_cmds': {}, 
@@ -282,7 +257,7 @@ distros = \
         'display_name': 'Debian',
         'display': True,
         'notes': '',
-        'index': 2,
+        'index': DISTRO_DEBIAN,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],            
         'package_mgr_cmd' : 'su -c "apt-get install --yes $packages_to_install"',
         'pre_depend_cmd': ['su -c "dpkg --configure -a"', 'su -c "apt-get install -f"', 'su -c "apt-get update"', 'gnome-terminal -x su -c "apt-get install --yes cupsys-bsd"'],
@@ -326,7 +301,7 @@ distros = \
         'display_name': 'SUSE Linux',
         'display': True,
         'notes': '',
-        'index': 3,
+        'index': DISTRO_SUSE,
         'package_mgrs': ["yast", "yast2"],
         'package_mgr_cmd': 'xterm -e su -c "yast --install $packages_to_install"',
         'pre_depend_cmd': [],
@@ -376,7 +351,7 @@ distros = \
                 'release_date': '5/10/2005', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': [],
+                'notes': '',
                 'pre_depend_cmd': ['xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/"', 'xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://mirrors.kernel.org/suse/i386/10.0/SUSE-Linux10.0-GM-Extra/"',],  
                 'post_depend_cmd': [],
             },
@@ -385,7 +360,7 @@ distros = \
                 'release_date': '11/5/2006', 
                 'supported': True, 
                 'dependency_cmds': {}, 
-                'notes': [], 
+                'notes': '', 
                 'pre_depend_cmd': ['xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/"', 'xterm -T "Enter your root/superuser password:" -e su -c "installation_sources -a http://mirrors.kernel.org/suse/i386/10.1/SUSE-Linux10.1-GM-Extra"',],  
                 'post_depend_cmd': [],
             },
@@ -406,7 +381,7 @@ distros = \
         'display_name': 'Mandriva Linux',
         'display': True,
         'notes': '',
-        'index': 4,
+        'index': DISTRO_MANDRIVA,
         'package_mgrs': ["urpmi"],
         'package_mgr_cmd': 'su - -c "urpmi --auto $packages_to_install"',
         'pre_depend_cmd': [],
@@ -482,7 +457,7 @@ distros = \
         'display': True,
         'display_name': 'Fedora',
         'notes': 'SELinux must be disabled for HPLIP to function properly. Please disable SELinux before continuing.',
-        'index': 5,
+        'index': DISTRO_FEDORA,
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'su -c "yum -y -d 10 -e 1 install $packages_to_install"',
         'pre_depend_cmd': ['su -c "yum clean all"'],
@@ -571,7 +546,7 @@ distros = \
         'display_name': 'Red Hat',
         'display': True,
         'notes': '',
-        'index': 6,
+        'index': DISTRO_REDHAT,
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'rpm install $packages_to_install',
         'su_sudo' : 'su',
@@ -606,7 +581,7 @@ distros = \
         'display_name': 'Red Hat Enterprise Linux',
         'display': True,
         'notes': '',
-        'index': 7,
+        'index': DISTRO_RHEL,
         'su_sudo' : 'su',
         'package_mgrs': ["yum", "rpm", "up2date"],
         'package_mgr_cmd': 'rpm install $packages_to_install',
@@ -640,7 +615,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Slackware Linux',
         'notes': '',
-        'index': 8,
+        'index': DISTRO_SLACKWARE,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -702,7 +677,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Gentoo Linux',
         'notes': '',
-        'index': 9,
+        'index': DISTRO_GENTOO,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -728,7 +703,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Turbolinux',
         'notes': '',
-        'index': 10,
+        'index': DISTRO_TURBO,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -754,7 +729,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Red Flag Linux',
         'notes': '',
-        'index': 11,
+        'index': DISTRO_REDFLAG,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -781,7 +756,7 @@ distros = \
         'display_name': 'Mepis',
         'display': True,
         'notes': '',
-        'index': 1,
+        'index': DISTRO_MEPIS,
         'package_mgrs': ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier", "aptitude"],
         'package_mgr_cmd' : 'sudo apt-get install --yes $packages_to_install',
         'pre_depend_cmd': ['sudo dpkg --configure -a', 'sudo apt-get update'],
@@ -806,7 +781,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Xandros',
         'notes': '',
-        'index': 13,
+        'index': DISTRO_XANDROS,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -832,7 +807,7 @@ distros = \
         'alt_names': '',
         'display_name': 'FreeBSD',
         'notes': '',
-        'index': 14,
+        'index': DISTRO_FREEBSD,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -858,7 +833,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Linspire',
         'notes': 'The installer will uncomment out several Debian repositories to complete the installation.  This may pull in packages that are incompatible with Linspire and may cause CNR to stop working.',
-        'index': 15,
+        'index': DISTRO_LINSPIRE,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", ],
@@ -884,7 +859,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Ark Linux',
         'notes': '',
-        'index': 16,
+        'index': DISTRO_ARK,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -910,7 +885,7 @@ distros = \
         'alt_names': '',
         'display_name': 'PCLinuxOS',
         'notes': '',
-        'index': 17,
+        'index': DISTRO_PCLINUXOS,
         'display': True,
         'su_sudo' : 'su',
         'package_mgrs': ["apt-get", "synaptic"],
@@ -929,6 +904,15 @@ distros = \
                 'pre_depend_cmd': [], 
                 'post_depend_cmd': [],
             },
+            '2007.0': {
+                'code_name': '', 
+                'release_date': '', 
+                'supported': True, 
+                'dependency_cmds': {}, 
+                'notes': '', 
+                'pre_depend_cmd': [], 
+                'post_depend_cmd': [],
+            },
         },
     },
 
@@ -936,7 +920,7 @@ distros = \
         'alt_names': '',
         'display_name': 'AsianUX',
         'notes': '',
-        'index': 18,
+        'index': DISTRO_ASIANUX,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -962,7 +946,7 @@ distros = \
         'alt_names': '',
         'display_name': 'PC-BSD',
         'notes': '',
-        'index': 19,
+        'index': DISTRO_PCBSD,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -988,7 +972,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Sun Wah RAYS LX',
         'notes': '',
-        'index': 20,
+        'index': DISTRO_SUNWAH,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -1014,7 +998,7 @@ distros = \
         'alt_names': '',
         'display_name': 'Miracle Linux',
         'notes': '',
-        'index': 21,
+        'index': DISTRO_MIRACLE,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -1036,11 +1020,11 @@ distros = \
         },
     },
 
-         'centos': {
+    'centos': {
         'alt_names': '',
         'display_name': 'CentOS',
         'notes': '',
-        'index': 23,
+        'index': DISTRO_CENTOS,
         'display': False,
         'su_sudo' : 'su',
         'package_mgrs': [],
@@ -1062,8 +1046,34 @@ distros = \
         },
     },
 
+    'igos': {
+        'alt_names': 'IGOS',
+        'display': True,
+        'display_name': 'IGOS',
+        'notes': 'SELinux must be disabled for HPLIP to function properly. Please disable SELinux before continuing.',
+        'index': DISTRO_IGOS,
+        'package_mgrs': ["yum", "rpm", "up2date"],
+        'package_mgr_cmd': 'su -c "yum -y -d 10 -e 1 install $packages_to_install"',
+        'pre_depend_cmd': ['su -c "yum clean all"'],
+        'post_depend_cmd': [],
+        'su_sudo' : 'su',
+        'hpoj_remove_cmd': 'su -c "yum -y -d 10 -e 1 remove hplip hpijs"',
+        'hplip_remove_cmd': 'su -c "yum -y -d 10 -e 1 remove hplip hpijs"',
+        'versions': {
+            '0.0': {
+                'code_name': 'Nusantara',
+                'release_date': '',
+                'supported': True,
+                'dependency_cmds': {},
+                'notes': '',
+                'pre_depend_cmd': [],
+                'post_depend_cmd': [],
+            },
+        },
+    },
+    
      'unknown' : {
-        'index': 0,
+        'index': DISTRO_UNKNOWN,
         'display': True, # Must be 'True' 
         'notes': '',
         'display_name' : 'Unknown or not listed',
@@ -1117,7 +1127,7 @@ __set_ver_cmds('ubuntu', '5.04',
 'xsane': ('xsane', ''),
 'scanimage': ('sane-utils', ''),
 'reportlab': ('python-reportlab', ''), 
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['sudo modprobe ppdev', 'sudo cp -f /etc/modules /etc/modules.hplip',  'echo ppdev | sudo tee -a /etc/modules']),
 'pyqt': ('python-qt3', ''),
 'python23': ('python', ''),
 'libnetsnmp-devel': ('libsnmp9-dev', ''),
@@ -1135,11 +1145,15 @@ __update_ver_cmd('ubuntu', '5.1', 'libnetsnmp-devel', ('libsnmp5-dev', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups', ('libcupsys2', ''))
 __update_ver_cmd('ubuntu', '6.10', 'cups', ('libcupsys2', ''))
 __update_ver_cmd('ubuntu', '7.04', 'cups', ('libcupsys2', ''))
+__update_ver_cmd('ubuntu', '7.04', 'python-devel', ('python2.5-dev', ''))
 __update_ver_cmd('ubuntu', '6.06', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '6.10', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '7.04', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'cups-devel', ('libcupsys2-dev', ''))
 __update_ver_cmd('ubuntu', '5.1', 'pyqt', ('python2.4-qt3', ''))
+
+
+
 
 ################### DEBIAN (2) ###################
 __set_ver_cmds('debian', '2.2',
@@ -1158,7 +1172,7 @@ __set_ver_cmds('debian', '2.2',
 'xsane' : ('sane', ''),
 'scanimage' : ('sane-utils', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['su -c "modprobe ppdev"', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt' : ('python-qt3', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('libsnmp5-dev', ''),
@@ -1187,7 +1201,7 @@ __set_ver_cmds('suse', '9.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane', ''),
 'reportlab' : ('', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/init.d/boot.local /etc/init.d/boot.hplip && echo modprobe ppdev | sudo tee -a /etc/init.d/boot.local'),
+'ppdev': ('', ['su -c "modprobe ppdev"']),
 'pyqt' : ('python-qt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1220,7 +1234,7 @@ __set_ver_cmds('mandriva', '10.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-utils', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev'),
+'ppdev': ('', ['su -c "modprobe ppdev"']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('libsnmp0-devel', ''),
@@ -1252,7 +1266,7 @@ __set_ver_cmds('fedora', '3.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'su -c "/sbin/modprobe ppdev"'),
+'ppdev': ('', ['su -c "/sbin/modprobe ppdev"']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1285,7 +1299,7 @@ __set_ver_cmds('redhat', '8.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['su -c "modprobe ppdev"', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1312,7 +1326,7 @@ __set_ver_cmds('rhel', '3.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['modprobe ppdev', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1339,7 +1353,7 @@ __set_ver_cmds('slackware', '10.0',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['modprobe ppdev', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1357,7 +1371,7 @@ __copy_cmds('slackware', '9.0', '9.1')
 __set_ver_cmds('gentoo', 'any',
 { 
 'cups' : ('cups', ''),
-'cups-devel' : ('cups-devel && yum -y -d 10 -e 1 remove hplip hpijs', ''),
+'cups-devel' : ('cups-devel', ''),
 'gcc' : ('gcc-c++', ''),
 'make' : ('make', ''),
 'python-devel' : ('python-devel', ''),
@@ -1370,7 +1384,7 @@ __set_ver_cmds('gentoo', 'any',
 'xsane' : ('xsane', ''),
 'scanimage' : ('sane-frontends', ''),
 'reportlab' : ('python-reportlab', ''),
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['modprobe ppdev', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt' : ('PyQt', ''),
 'python23' : ('python', ''),
 'libnetsnmp-devel' : ('net-snmp-devel', ''),
@@ -1401,7 +1415,7 @@ __set_ver_cmds('mepis', '6.0',
 'xsane': ('xsane', ''),
 'scanimage': ('sane-utils', ''),
 'reportlab': ('python-reportlab', ''), 
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['su -c "modprobe ppdev"', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt': ('python-qt3', ''),
 'python23': ('python', ''),
 'libnetsnmp-devel': ('libsnmp9-dev', ''),
@@ -1431,7 +1445,7 @@ __set_ver_cmds('linspire', '5.0',
 'xsane': ('xsane', ''),
 'scanimage': ('sane-utils', ''),
 'reportlab': ('python-reportlab', ''), 
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['su -c "modprobe ppdev"', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt': ('python-qt3', ''),
 'python23': ('python', ''),
 'libnetsnmp-devel': ('libnet1-dev', ''),
@@ -1458,13 +1472,17 @@ __set_ver_cmds('pclinuxos', '2006.0',
 'xsane': ('xsane', ''),
 'scanimage': ('sane-frontends', ''),
 'reportlab': ('python-reportlab', ''), 
-'ppdev': ('', 'modprobe ppdev && cp -f /etc/modules /etc/modules.hplip && echo ppdev | sudo tee -a /etc/modules'),
+'ppdev': ('', ['su -c "modprobe ppdev"', 'su -c cp -f /etc/modules /etc/modules.hplip', 'echo ppdev | su -c tee -a /etc/modules']),
 'pyqt': ('pyqt', ''),
 'python23': ('python', ''),
 'libnetsnmp-devel': ('libnet-snmp5-devel', ''),
 'libcrypto': ('openssl', ''),
 'libjpeg': ('libjpeg62-devel', ''),
 })
+__copy_cmds('pclinuxos', '2006.0', '2007.0') 
+__update_ver_cmd('pclinuxos', '2007.0', 'python-devel', ('libpython2.4-devel',''))
+__update_ver_cmd('pclinuxos', '2007.0', 'libnetsnmp-devel', ('libnet-snmp10-devel',''))
+
 ################### ASIANUX (18) ###################
 
 ################### PCBSD (19) ###################
@@ -1473,4 +1491,27 @@ __set_ver_cmds('pclinuxos', '2006.0',
 
 ################### MIRACLE (21) ###################
 
-
+##################### IGOS (32) ##########################
+__set_ver_cmds('igos', '0.0',
+{
+'cups' : ('cups', ''),
+'cups-devel' : ('cups-devel', ''),
+'gcc' : ('gcc-c++', ''),
+'make' : ('make', ''),
+'python-devel' : ('python-devel', ''),
+'libpthread' : ('glibc-headers', ''),
+'python2x' : ('python', ''),
+'gs' : ('ghostscript', ''),
+'libusb' : ('libusb-devel', ''),
+'lsb' : ('redhat-lsb', ''),
+'sane' : ('sane-backends', ''),
+'xsane' : ('xsane', ''),
+'scanimage' : ('sane-frontends', ''),
+'reportlab' : ('python-reportlab', ''),
+'ppdev': ('', ['su -c "/sbin/modprobe ppdev"']),
+'pyqt' : ('PyQt', ''),
+'python23' : ('python', ''),
+'libnetsnmp-devel' : ('net-snmp-devel', ''),
+'libcrypto' : ('net-snmp-devel', ''),
+'libjpeg' : ('libjpeg-devel', ''),
+})

@@ -271,7 +271,7 @@ class FaxAddrBookEditForm(FaxAddrBookEditForm_base):
         self.editing = editing
         self.faxEdit.setValidator(PhoneNumValidator(self.faxEdit))
         self.initial_nickname = ''
-        self.OKButton.setEnabled(True)
+        self.OKButton.setEnabled(self.editing)
 
     def setDlgData(self, abe):
         self.initial_nickname = abe.name
@@ -502,18 +502,10 @@ class FaxAddrBookForm(FaxAddrBookForm_base):
 
 
     def FailureUI(self, error_text):
+        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,
-                              QMessageBox.Ok,
-                              QMessageBox.NoButton,
-                              QMessageBox.NoButton)
-
-
-    def WarningUI(self, msg):
-        QMessageBox.warning(self,
-                             self.caption(),
-                             msg,
                               QMessageBox.Ok,
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)

@@ -352,7 +352,7 @@ class ScrollPrintSettingsView(ScrollView):
                 current = current_options.get('fitplot', 'false')
                 
                 self.addItem("image", "fitplot", 
-                    self.__tr("Fit to page"), 
+                    self.__tr("Fit to Page"), 
                     cups.PPD_UI_BOOLEAN, current, 
                     [], 0)
 

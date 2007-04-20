@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>592</width>
-            <height>359</height>
+            <width>675</width>
+            <height>558</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,12 +19,45 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QGroupBox" row="2" column="0">
+        <spacer row="5" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>spacer7</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>590</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QPushButton" row="5" column="2">
+            <property name="name">
+                <cstring>pushButton10</cstring>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="3">
+            <property name="name">
+                <cstring>pushButton9</cstring>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="2" column="0" rowspan="2" colspan="1">
             <property name="name">
                 <cstring>groupBox2</cstring>
             </property>
             <property name="title">
-                <string>Choose Coverpage</string>
+                <string>Coverpage Design</string>
             </property>
             <grid>
                 <property name="name">
@@ -125,56 +158,6 @@
                 </widget>
             </grid>
         </widget>
-        <spacer row="3" column="0">
-            <property name="name">
-                <cstring>spacer4</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>50</height>
-                </size>
-            </property>
-        </spacer>
-        <spacer row="4" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>spacer7</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>590</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
-        <widget class="QPushButton" row="4" column="2">
-            <property name="name">
-                <cstring>pushButton10</cstring>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="3">
-            <property name="name">
-                <cstring>pushButton9</cstring>
-            </property>
-            <property name="text">
-                <string>OK</string>
-            </property>
-        </widget>
         <widget class="QLabel" row="0" column="0" rowspan="1" colspan="4">
             <property name="name">
                 <cstring>textLabel5</cstring>
@@ -205,37 +188,54 @@
                 <enum>Horizontal</enum>
             </property>
         </widget>
-        <widget class="QLayoutWidget" row="2" column="1" rowspan="2" colspan="3">
+        <widget class="QLayoutWidget" row="2" column="1" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>layout7</cstring>
+                <cstring>layout6</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel6</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Regarding:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>regardingTextEdit</cstring>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <spacer row="4" column="0">
+            <property name="name">
+                <cstring>spacer5</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>141</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QLayoutWidget" row="3" column="1" rowspan="2" colspan="3">
+            <property name="name">
+                <cstring>layout5</cstring>
             </property>
             <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLayoutWidget">
-                    <property name="name">
-                        <cstring>layout6</cstring>
-                    </property>
-                    <hbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel6</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Regarding:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>regardingTextEdit</cstring>
-                            </property>
-                        </widget>
-                    </hbox>
-                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>textLabel3</cstring>
@@ -249,7 +249,7 @@
                         </sizepolicy>
                     </property>
                     <property name="text">
-                        <string>Optional Message &lt;i&gt;(Maximum 2000 characters)&lt;/i&gt;:</string>
+                        <string>Optional Message &lt;i&gt;(Maximum 2048 characters or 32 lines preformatted)&lt;/i&gt;:</string>
                     </property>
                 </widget>
                 <widget class="QTextEdit">
@@ -263,6 +263,14 @@
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                         </sizepolicy>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>preserveFormattingCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Preformatted (preserve formatting)</string>
                     </property>
                 </widget>
             </vbox>
@@ -294,6 +302,12 @@
         <receiver>CoverpageForm_base</receiver>
         <slot>nextCoverpageButton_clicked()</slot>
     </connection>
+    <connection>
+        <sender>preserveFormattingCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CoverpageForm_base</receiver>
+        <slot>preserveFormattingCheckBox_toggled(bool)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>regardingTextEdit</tabstop>
@@ -301,10 +315,14 @@
     <tabstop>pushButton10</tabstop>
     <tabstop>pushButton9</tabstop>
 </tabstops>
+<includes>
+    <include location="local" impldecl="in implementation">coverpageform_base.ui.h</include>
+</includes>
 <slots>
     <slot>coverpageListBox_currentChanged( QListBoxItem * )</slot>
     <slot>prevCoverpageButton_clicked()</slot>
     <slot>nextCoverpageButton_clicked()</slot>
+    <slot>preserveFormattingCheckBox_toggled( bool )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

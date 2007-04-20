@@ -129,6 +129,14 @@ class Config(dict):
 prop.sys_config_file = '/etc/hp/hplip.conf'
 prop.user_config_file = os.path.expanduser('~/.hplip.conf')
 
+if not os.path.exists(prop.user_config_file):
+    try:
+        file(prop.user_config_file, 'w').close()
+        s = os.stat(os.path.dirname(prop.user_config_file))
+        os.chown(prop.user_config_file, s[stat.ST_UID], s[stat.ST_GID])
+    except IOError:
+        pass
+    
 sys_cfg = Config(prop.sys_config_file, True)
 user_cfg = Config(prop.user_config_file)
 

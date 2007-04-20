@@ -19,7 +19,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [1.7.3], [1.7.3.14], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [1.7.4], [1.7.4.10], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -59,6 +59,11 @@ AC_CHECK_HEADERS(linux/compiler.h)
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_BIGENDIAN
+
+AC_MSG_CHECKING([for path to Python.h])
+PYTHONINCLUDEDIR=`$PYTHON -c "from distutils.sysconfig import get_python_inc; print get_python_inc();"`
+AC_MSG_RESULT("using $PYTHONINCLUDEDIR")
+AC_ARG_VAR(PYTHONINCLUDEDIR, [path to Python.h C header file])
 
 AC_MSG_CHECKING([for network build])
 AC_ARG_ENABLE(network_build,

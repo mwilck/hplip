@@ -31,9 +31,85 @@ class SettingsDialog(SettingsDialog_base):
         self.DefaultsButton.setEnabled(False)
         self.hpssd_sock = hpssd_sock
         self.sendmail = utils.which('sendmail')
-        
+
         if not self.sendmail:
             self.EmailTestButton.setEnabled(False)
+
+        self.user_settings = utils.UserSettings()
+        self.updateControls()
+
+    def updateControls(self):
+        self.autoRefreshCheckBox.setChecked(self.user_settings.auto_refresh)
+        self.AutoRefreshRate.setValue(self.user_settings.auto_refresh_rate) # min
+        self.refreshScopeButtonGroup.setButton(self.user_settings.auto_refresh_type)
+
+        self.EmailCheckBox.setChecked(self.user_settings.email_alerts)
+        self.EmailAddress.setText(self.user_settings.email_to_addresses)
+        self.senderLineEdit.setText(self.user_settings.email_from_address)
+
+        self.PrintCommand.setText(self.user_settings.cmd_print)
+        self.PrintCommand.setEnabled(not self.user_settings.cmd_print_int)
+
+        if self.user_settings.cmd_print_int:
+            self.printButtonGroup.setButton(0)
+        else:
+            self.printButtonGroup.setButton(1)
+
+        self.ScanCommand.setText(self.user_settings.cmd_scan)
+        self.ScanCommand.setEnabled(not self.user_settings.cmd_scan_int)
+
+        if self.user_settings.cmd_scan_int:
+            self.scanButtonGroup.setButton(0)
+        else:
+            self.scanButtonGroup.setButton(1)
+
+        self.AccessPCardCommand.setText(self.user_settings.cmd_pcard)
+        self.AccessPCardCommand.setEnabled(not self.user_settings.cmd_pcard_int)
+
+        if self.user_settings.cmd_pcard_int:
+            self.pcardButtonGroup.setButton(0)
+        else:
+            self.pcardButtonGroup.setButton(1)
+
+        self.SendFaxCommand.setText(self.user_settings.cmd_fax)
+        self.SendFaxCommand.setEnabled(not self.user_settings.cmd_fax_int)
+
+        if self.user_settings.cmd_fax_int:
+            self.faxButtonGroup.setButton(0)
+        else:
+            self.faxButtonGroup.setButton(1)
+
+        self.MakeCopiesCommand.setText(self.user_settings.cmd_copy)
+        self.MakeCopiesCommand.setEnabled(not self.user_settings.cmd_copy_int)
+
+        if self.user_settings.cmd_copy_int:
+            self.copyButtonGroup.setButton(0)
+        else:
+            self.copyButtonGroup.setButton(1)    
+
+    def updateData(self):
+        self.user_settings.cmd_print = str(self.PrintCommand.text())
+        self.user_settings.cmd_print_int = (self.printButtonGroup.selectedId() == 0)
+
+        self.user_settings.cmd_scan = str(self.ScanCommand.text())
+        self.user_settings.cmd_scan_int = (self.scanButtonGroup.selectedId() == 0)
+
+        self.user_settings.cmd_pcard = str(self.AccessPCardCommand.text())
+        self.user_settings.cmd_pcard_int = (self.pcardButtonGroup.selectedId() == 0)
+
+        self.user_settings.cmd_fax   = str(self.SendFaxCommand.text())
+        self.user_settings.cmd_fax_int = (self.faxButtonGroup.selectedId() == 0)
+
+        self.user_settings.cmd_copy  = str(self.MakeCopiesCommand.text())
+        self.user_settings.cmd_copy_int = (self.copyButtonGroup.selectedId() == 0)
+
+        self.user_settings.email_alerts = bool(self.EmailCheckBox.isChecked())
+        self.user_settings.email_to_addresses = str(self.EmailAddress.text())
+        self.user_settings.email_from_address = str(self.senderLineEdit.text())
+
+        self.user_settings.auto_refresh = bool(self.autoRefreshCheckBox.isChecked())
+        self.user_settings.auto_refresh_type = self.refreshScopeButtonGroup.selectedId()
+        self.user_settings.auto_refresh_rate = self.AutoRefreshRate.value()
 
     def PrintCmdChangeButton_clicked(self):
         pass
@@ -51,23 +127,8 @@ class SettingsDialog(SettingsDialog_base):
         pass
 
     def DefaultsButton_clicked(self):
-        cmd_print, cmd_scan, cmd_pcard, \
-        cmd_copy, cmd_fax, cmd_fab = utils.deviceDefaultFunctions()
-
-        self.PrintCommand.setText(cmd_print)
-        self.printButtonGroup.setButton(0)
-        
-        self.ScanCommand.setText(cmd_scan)
-        self.scanButtonGroup.setButton(1)
-        
-        self.AccessPCardCommand.setText(cmd_pcard)
-        self.pcardButtonGroup.setButton(1)
-        
-        self.SendFaxCommand.setText(cmd_fax)
-        self.faxButtonGroup.setButton(1)
-        
-        self.MakeCopiesCommand.setText(cmd_copy)
-        self.copyButtonGroup.setButton(1)
+        self.user_settings.loadDefaults()
+        self.updateControls()
 
     def TabWidget_currentChanged(self,a0):
         name = str(a0.name())
@@ -89,10 +150,6 @@ class SettingsDialog(SettingsDialog_base):
                                   QMessageBox.NoButton,
                                   QMessageBox.NoButton)
             return
-
-        user_cfg.alerts.email_to_addresses = email_to_addresses
-        user_cfg.alerts.email_from_address = email_from_address
-        user_cfg.alerts.email_alerts = True
 
         service.setAlerts(self.hpssd_sock, 
                           True,
@@ -118,7 +175,7 @@ class SettingsDialog(SettingsDialog_base):
 
     def refreshScopeButtonGroup_clicked(self,a0):
         self.auto_refresh_type = int(a0)
-        
+
     def printButtonGroup_clicked(self,a0):
         self.PrintCommand.setEnabled(a0)
 
@@ -133,8 +190,11 @@ class SettingsDialog(SettingsDialog_base):
 
     def copyButtonGroup_clicked(self,a0):
         self.MakeCopiesCommand.setEnabled(a0)
-        
 
+    def accept(self):
+        self.updateData()
+        self.user_settings.save()
+        SettingsDialog_base.accept(self)
 
     def __tr(self,s,c = None):
         return qApp.translate("SettingsDialog",s,c)

@@ -98,6 +98,7 @@ class ScrollStatusView(ScrollView):
     def fillControls(self):
         ScrollView.fillControls(self)
         self.row = 0
+        
         for x in self.cur_device.hist:
             self.addItem(x)
 

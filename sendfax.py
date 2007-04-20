@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '5.1'
+__version__ = '6.1'
 __title__ = 'PC Sendfax Utility'
 __doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers." 
 
@@ -52,7 +52,7 @@ USAGE = [(__doc__, "", "name", True),
          ("Specify the fax number(s):", "-f<number(s)> or --faxnum=<number(s)> (-n only)", "option", False),
          ("Specify the recipient(s):", "-r<recipient(s)> or --recipient=<recipient(s)> (-n only)", "option", False), 
          ("Specify the groups(s):", "-g<group(s)> or --group=<group(s)> (-n only)", "option", False), 
-         ("Use pretty printing for text files:", "-t or --prettyprint (-n only)", "option", False),
+         #("Use pretty printing for text files:", "-t or --prettyprint (-n only)", "option", False),
          utils.USAGE_BUS1, utils.USAGE_BUS2,         
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2,# utils.USAGE_LOGGING3,
          ("Run in debug mode:", "--gg (same as option: -ldebug)", "option", False),
@@ -96,9 +96,9 @@ try:
         ['device=', 'printer=', 'level=', 
          'help', 'help-rest', 
          'help-man', 'logfile=', 'bus=',
-         'gui', 'non-interactive',
+         'gui', 'non-interactive', 'logging=',
          'faxnum=', 'recipients=',
-         'gg', 'groups', 'help-desc', 'prettyprint'])
+         'gg', 'group=', 'help-desc'])
 
 except getopt.GetoptError, e:
     log.error(e)
@@ -170,8 +170,6 @@ for o, a in opts:
     elif o in ('-g', '--group'):
         group_list.extend(a.split(','))
 
-    elif o in ('-t', '--prettyprint'):
-        prettyprint = True
 
 
 utils.log_title(__title__, __version__)
@@ -671,8 +669,9 @@ else: # NON_INTERACTIVE_MODE
         event_queue = Queue.Queue()
 
         log.info("\nSending fax...")
+        
         if not dev.sendFaxes(phone_num_list, file_list, "", 
-                             "", None, printer_name,
+                             "", None, False, printer_name,
                              update_queue, event_queue):
 
             log.error("Send fax is active. Please wait for operation to complete.")
@@ -731,9 +730,10 @@ else: # NON_INTERACTIVE_MODE
             service.sendEvent(hpssd_sock, EVENT_FAX_JOB_CANCELED, device_uri=device_uri)
             log.error("Cancelling...")
 
-        dev.waitForSendFaxThread()
-
     finally:
+        log.debug("Waiting for send fax thread to exit...")
+        dev.waitForSendFaxThread()
+        log.debug("Closing device...")
         dev.close()
         service.sendEvent(hpssd_sock, EVENT_END_FAX_JOB, device_uri=device_uri)
         hpssd_sock.close()

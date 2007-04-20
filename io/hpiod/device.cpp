@@ -737,7 +737,7 @@ struct usb_device * Device::GetDevice(char *uri)
 int Device::DeviceID(char *buffer, int size)
 {
    usb_dev_handle *hd;
-   int interface;
+   int config,interface,alt;
    int len=0, rlen, maxSize;
 
    if (OpenFD < 0)
@@ -747,7 +747,9 @@ int Device::DeviceID(char *buffer, int size)
    }
 
    hd = FD[OpenFD].pHD;
+   config = FD[OpenFD].Config;
    interface = FD[OpenFD].Interface;
+   alt = FD[OpenFD].AltSetting;
 
    if (hd == NULL)
    {
@@ -762,14 +764,25 @@ int Device::DeviceID(char *buffer, int size)
    rlen = usb_control_msg(hd, 
              USB_ENDPOINT_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE, /* bmRequestType */
              USB_REQ_GET_STATUS,        /* bRequest */
-             0,        /* wValue */
-             interface, /* wIndex */
+             config,        /* wValue */
+             interface, /* wIndex */    /* note firmware does not follow the USB Printer Class specification for wIndex */
              buffer, maxSize, LIBUSB_CONTROL_REQ_TIMEOUT);
 
    if (rlen < 0)
    {
-      syslog(LOG_ERR, "invalid Device::DeviceID: %m %s %s %d\n", URI,__FILE__, __LINE__);
-      goto bugout;
+      /* Following retry is necessary for a firmware problem with PS A420 products. DES 4/17/07 */
+      syslog(LOG_ERR, "invalid DeviceID wIndex=%x, retrying wIndex=%x: %s %s %d\n", interface, interface << 8, URI,__FILE__, __LINE__);
+      rlen = usb_control_msg(hd, 
+             USB_ENDPOINT_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE, /* bmRequestType */
+             USB_REQ_GET_STATUS,        /* bRequest */
+             config,        /* wValue */
+             interface << 8, /* wIndex */ 
+             buffer, maxSize, LIBUSB_CONTROL_REQ_TIMEOUT);
+      if (rlen < 0)
+      {
+         syslog(LOG_ERR, "invalid DeviceID retry ret=%d: %s %s %d\n", rlen, URI,__FILE__, __LINE__);
+         goto bugout;
+      }
    }
 
    len = ntohs(*(short *)buffer);

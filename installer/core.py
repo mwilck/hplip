@@ -361,7 +361,7 @@ def init(callback=None):
     log.debug("Distro = %s Distro Name = %s Display Name= %s Version = %s Supported = %s" % 
         (distro, distro_name, distros[distro_name]['display_name'], distro_version, distro_version_supported))
 
-    install_location = sys_cfg.dirs.home.replace("/share/hplip", '') or '/usr' # --prefix
+    # TODO - determine what is needed here >>> install_location = sys_cfg.dirs.home.replace("/share/hplip", '') or '/usr' # --prefix
     #print "Core::spot2:: install_location: ", install_location
 
     if callback is not None:

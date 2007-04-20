@@ -26,7 +26,7 @@ __doc__ = "Installer for HPLIP tarball."
 
 
 # Std Lib
-import getopt, os, os.path, sys
+import getopt, os, os.path, sys, time
 
 # Local
 from base.g import *
@@ -107,7 +107,8 @@ for o, a in opts:
         mode = BROWSER_MODE
 
 
-log_file = os.path.normpath('./install.log')
+log_file = os.path.normpath('./hplip-install_%s.log' % time.strftime("%a-%d-%b-%Y_%H:%M:%S"))
+print log_file
 if os.path.exists(log_file):
     os.remove(log_file)
 

@@ -307,13 +307,13 @@ def probeDevices(hpiod_sock=None, bus='cups,usb,par', timeout=10,
             if net_search == 'slp':
                 try:
                     detected_devices = slp.detectNetworkDevices(ttl, timeout)
-                except Error:
+                except Error, socket.error:
                     log.error("An error occured during network probe.")
                     raise ERROR_INTERNAL
             else:
                 try:
                     detected_devices = mdns.detectNetworkDevices(ttl, timeout)
-                except Error:
+                except Error, socket.error:
                     log.error("An error occured during network probe.")
                     raise ERROR_INTERNAL
 
@@ -1452,10 +1452,10 @@ class Device(object):
                            agent_type == mq_agent_type:
                            found = True
                            break
-
-                    log.debug("r%d-kind%d-type%d" % (r_value, agent_kind, agent_type))
                     
                     if found:
+                        log.debug("r%d-kind%d-type%d" % (r_value, agent_kind, agent_type))
+                        
                         log.debug("found")
                         agent_health = agent.get('health', AGENT_HEALTH_OK)
                         agent_level_trigger = agent.get('level-trigger',
@@ -1991,6 +1991,7 @@ class Device(object):
             result.append((int(yr), int(mt), int(dy), int(hr), int(mi), int(sec), int(wd),
                              int(yd), int(dst), int(job), user, ec, ess, esl))
 
+        self.hist = result
         return result
 
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/devmgr4_base.ui'
+# Form implementation generated from reading ui file 'devmgr4_base.ui'
 #
-# Created: Tue Feb 13 13:46:50 2007
-#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
+# Created: Mon Apr 16 16:03:21 2007
+#      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -142,6 +142,7 @@ class DevMgr4_base(QMainWindow):
         self.helpContentsAction.setText(self.__tr("Contents"))
         self.helpContentsAction.setMenuText(self.__tr("&Contents..."))
         self.helpContentsAction.setToolTip(self.__tr("Help Contents (F1)"))
+        self.helpContentsAction.setAccel(self.__tr("F1"))
         self.helpIndexAction.setText(self.__tr("Index"))
         self.helpIndexAction.setMenuText(self.__tr("&Index..."))
         self.helpIndexAction.setAccel(QString.null)
