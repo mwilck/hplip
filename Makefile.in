@@ -52,19 +52,19 @@ DIST_COMMON = $(am__configure_deps) $(dist_base_SCRIPTS) \
 	$(dist_cmd_SCRIPTS) $(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
 	$(dist_faxppd_DATA) $(dist_firm_DATA) $(dist_hpfax_SCRIPTS) \
 	$(dist_hplip_DATA) $(dist_hplip_SCRIPTS) $(dist_images_DATA) \
-	$(dist_ldl_DATA) $(dist_models_DATA) $(dist_noinst_DATA) \
-	$(dist_noinst_SCRIPTS) $(dist_pcard_SCRIPTS) $(dist_pcl_DATA) \
-	$(dist_plugins_SCRIPTS) $(dist_prnt_SCRIPTS) $(dist_ps_DATA) \
-	$(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS) $(dist_www0_DATA) \
-	$(dist_www1_DATA) $(dist_www21_DATA) $(dist_www22_DATA) \
-	$(dist_www23_DATA) $(dist_www241_DATA) $(dist_www242_DATA) \
-	$(dist_www243_DATA) $(dist_www24_DATA) $(dist_www251_DATA) \
-	$(dist_www252_DATA) $(dist_www261_DATA) $(dist_www2_DATA) \
-	$(dist_www3_DATA) $(dist_www4_DATA) $(dist_www5_DATA) \
-	$(dist_www61_DATA) $(dist_www6_DATA) $(dist_www7_DATA) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/configure COPYING compile config.guess \
-	config.sub depcomp install-sh ltmain.sh missing
+	$(dist_install_SCRIPTS) $(dist_ldl_DATA) $(dist_models_DATA) \
+	$(dist_noinst_DATA) $(dist_noinst_SCRIPTS) \
+	$(dist_pcard_SCRIPTS) $(dist_pcl_DATA) $(dist_plugins_SCRIPTS) \
+	$(dist_prnt_SCRIPTS) $(dist_ps_DATA) $(dist_scan_SCRIPTS) \
+	$(dist_ui_SCRIPTS) $(dist_www0_DATA) $(dist_www1_DATA) \
+	$(dist_www21_DATA) $(dist_www22_DATA) $(dist_www23_DATA) \
+	$(dist_www241_DATA) $(dist_www242_DATA) $(dist_www243_DATA) \
+	$(dist_www24_DATA) $(dist_www251_DATA) $(dist_www252_DATA) \
+	$(dist_www261_DATA) $(dist_www2_DATA) $(dist_www3_DATA) \
+	$(dist_www4_DATA) $(dist_www5_DATA) $(dist_www61_DATA) \
+	$(dist_www6_DATA) $(dist_www7_DATA) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(top_srcdir)/configure COPYING compile \
+	config.guess config.sub depcomp install-sh ltmain.sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
@@ -85,23 +85,24 @@ am__installdirs = "$(DESTDIR)$(cupsextdir)" "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" \
 	"$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" \
 	"$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" \
-	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" \
-	"$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" \
-	"$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" \
-	"$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" \
-	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" \
-	"$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" \
-	"$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" \
-	"$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" \
-	"$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" \
-	"$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" \
-	"$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" \
-	"$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" \
-	"$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" \
-	"$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" \
-	"$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" \
-	"$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" \
-	"$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installdir)" \
+	"$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" \
+	"$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" \
+	"$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" \
+	"$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" \
+	"$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" \
+	"$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" \
+	"$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" \
+	"$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" \
+	"$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" \
+	"$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" \
+	"$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" \
+	"$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" \
+	"$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" \
+	"$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" \
+	"$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" \
+	"$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" \
+	"$(DESTDIR)$(docdir)"
 cupsextLTLIBRARIES_INSTALL = $(INSTALL)
 libLTLIBRARIES_INSTALL = $(INSTALL)
 pcardextLTLIBRARIES_INSTALL = $(INSTALL)
@@ -169,6 +170,7 @@ dist_copierSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_faxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hpfaxSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_hplipSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+dist_installSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_pcardSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_pluginsSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 dist_prntSCRIPT_INSTALL = $(INSTALL_SCRIPT)
@@ -177,9 +179,9 @@ dist_uiSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 SCRIPTS = $(dist_base_SCRIPTS) $(dist_cmd_SCRIPTS) \
 	$(dist_copier_SCRIPTS) $(dist_fax_SCRIPTS) \
 	$(dist_hpfax_SCRIPTS) $(dist_hplip_SCRIPTS) \
-	$(dist_noinst_SCRIPTS) $(dist_pcard_SCRIPTS) \
-	$(dist_plugins_SCRIPTS) $(dist_prnt_SCRIPTS) \
-	$(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS)
+	$(dist_install_SCRIPTS) $(dist_noinst_SCRIPTS) \
+	$(dist_pcard_SCRIPTS) $(dist_plugins_SCRIPTS) \
+	$(dist_prnt_SCRIPTS) $(dist_scan_SCRIPTS) $(dist_ui_SCRIPTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -395,15 +397,11 @@ rundir = /var/run
 docdir = $(datadir)/doc/$(distdir)
 doc_DATA = COPYING scan/sane/hpaio.desc
 
-# installer
-
 # cheetah
 
 # cherrypy
-dist_noinst_SCRIPTS = installer/__init__.py installer/core.py \
-	installer/text_install.py installer/dcheck.py \
-	installer/distros.py installer/web_install.py \
-	installer/pages/__init__.py \
+dist_noinst_SCRIPTS = installer/core.py installer/text_install.py \
+	installer/web_install.py installer/pages/__init__.py \
 	installer/pages/install_required.tmpl \
 	installer/pages/installation_path.tmpl \
 	installer/pages/component.tmpl installer/pages/mode.tmpl \
@@ -549,6 +547,10 @@ dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/statu
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
     base/imagesize.py base/pexpect.py base/models.py base/mdns.py
 
+
+# installer
+installdir = $(hplipdir)/installer
+dist_install_SCRIPTS = installer/__init__.py installer/dcheck.py installer/distros.py
 
 # makecopies
 copierdir = $(hplipdir)/copier
@@ -997,6 +999,25 @@ uninstall-dist_hplipSCRIPTS:
 	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
 	  echo " rm -f '$(DESTDIR)$(hplipdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(hplipdir)/$$f"; \
+	done
+install-dist_installSCRIPTS: $(dist_install_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(installdir)" || $(mkdir_p) "$(DESTDIR)$(installdir)"
+	@list='$(dist_install_SCRIPTS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f $$d$$p; then \
+	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	    echo " $(dist_installSCRIPT_INSTALL) '$$d$$p' '$(DESTDIR)$(installdir)/$$f'"; \
+	    $(dist_installSCRIPT_INSTALL) "$$d$$p" "$(DESTDIR)$(installdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-dist_installSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_install_SCRIPTS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+	  echo " rm -f '$(DESTDIR)$(installdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(installdir)/$$f"; \
 	done
 install-dist_pcardSCRIPTS: $(dist_pcard_SCRIPTS)
 	@$(NORMAL_INSTALL)
@@ -2525,7 +2546,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(cupsextdir)" "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pcardextdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(cupsextdir)" "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pcardextdir)" "$(DESTDIR)$(cupsdir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(basedir)" "$(DESTDIR)$(cmddir)" "$(DESTDIR)$(copierdir)" "$(DESTDIR)$(faxdir)" "$(DESTDIR)$(hpfaxdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(installdir)" "$(DESTDIR)$(pcarddir)" "$(DESTDIR)$(pluginsdir)" "$(DESTDIR)$(prntdir)" "$(DESTDIR)$(scandir)" "$(DESTDIR)$(uidir)" "$(DESTDIR)$(faxppddir)" "$(DESTDIR)$(firmdir)" "$(DESTDIR)$(hplipdir)" "$(DESTDIR)$(imagesdir)" "$(DESTDIR)$(ldldir)" "$(DESTDIR)$(modelsdir)" "$(DESTDIR)$(pcldir)" "$(DESTDIR)$(psdir)" "$(DESTDIR)$(www0dir)" "$(DESTDIR)$(www1dir)" "$(DESTDIR)$(www2dir)" "$(DESTDIR)$(www21dir)" "$(DESTDIR)$(www22dir)" "$(DESTDIR)$(www23dir)" "$(DESTDIR)$(www24dir)" "$(DESTDIR)$(www241dir)" "$(DESTDIR)$(www242dir)" "$(DESTDIR)$(www243dir)" "$(DESTDIR)$(www251dir)" "$(DESTDIR)$(www252dir)" "$(DESTDIR)$(www261dir)" "$(DESTDIR)$(www3dir)" "$(DESTDIR)$(www4dir)" "$(DESTDIR)$(www5dir)" "$(DESTDIR)$(www6dir)" "$(DESTDIR)$(www61dir)" "$(DESTDIR)$(www7dir)" "$(DESTDIR)$(docdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -2582,20 +2603,21 @@ install-data-am: install-cupsPROGRAMS install-cupsextLTLIBRARIES \
 	install-dist_faxppdDATA install-dist_firmDATA \
 	install-dist_hpfaxSCRIPTS install-dist_hplipDATA \
 	install-dist_hplipSCRIPTS install-dist_imagesDATA \
-	install-dist_ldlDATA install-dist_modelsDATA \
-	install-dist_pcardSCRIPTS install-dist_pclDATA \
-	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
-	install-dist_psDATA install-dist_scanSCRIPTS \
-	install-dist_uiSCRIPTS install-dist_www0DATA \
-	install-dist_www1DATA install-dist_www21DATA \
-	install-dist_www22DATA install-dist_www23DATA \
-	install-dist_www241DATA install-dist_www242DATA \
-	install-dist_www243DATA install-dist_www24DATA \
-	install-dist_www251DATA install-dist_www252DATA \
-	install-dist_www261DATA install-dist_www2DATA \
-	install-dist_www3DATA install-dist_www4DATA \
-	install-dist_www5DATA install-dist_www61DATA \
-	install-dist_www6DATA install-dist_www7DATA install-docDATA \
+	install-dist_installSCRIPTS install-dist_ldlDATA \
+	install-dist_modelsDATA install-dist_pcardSCRIPTS \
+	install-dist_pclDATA install-dist_pluginsSCRIPTS \
+	install-dist_prntSCRIPTS install-dist_psDATA \
+	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
+	install-dist_www0DATA install-dist_www1DATA \
+	install-dist_www21DATA install-dist_www22DATA \
+	install-dist_www23DATA install-dist_www241DATA \
+	install-dist_www242DATA install-dist_www243DATA \
+	install-dist_www24DATA install-dist_www251DATA \
+	install-dist_www252DATA install-dist_www261DATA \
+	install-dist_www2DATA install-dist_www3DATA \
+	install-dist_www4DATA install-dist_www5DATA \
+	install-dist_www61DATA install-dist_www6DATA \
+	install-dist_www7DATA install-docDATA \
 	install-pcardextLTLIBRARIES
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
@@ -2636,22 +2658,23 @@ uninstall-am: uninstall-cupsPROGRAMS uninstall-cupsextLTLIBRARIES \
 	uninstall-dist_faxppdDATA uninstall-dist_firmDATA \
 	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
 	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
-	uninstall-dist_ldlDATA uninstall-dist_modelsDATA \
-	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
-	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
-	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
-	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
-	uninstall-dist_www1DATA uninstall-dist_www21DATA \
-	uninstall-dist_www22DATA uninstall-dist_www23DATA \
-	uninstall-dist_www241DATA uninstall-dist_www242DATA \
-	uninstall-dist_www243DATA uninstall-dist_www24DATA \
-	uninstall-dist_www251DATA uninstall-dist_www252DATA \
-	uninstall-dist_www261DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-docDATA uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-pcardextLTLIBRARIES uninstall-sbinPROGRAMS
+	uninstall-dist_installSCRIPTS uninstall-dist_ldlDATA \
+	uninstall-dist_modelsDATA uninstall-dist_pcardSCRIPTS \
+	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
+	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
+	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www251DATA \
+	uninstall-dist_www252DATA uninstall-dist_www261DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-pcardextLTLIBRARIES \
+	uninstall-sbinPROGRAMS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
@@ -2674,52 +2697,52 @@ uninstall-info: uninstall-info-recursive
 	install-dist_faxSCRIPTS install-dist_faxppdDATA \
 	install-dist_firmDATA install-dist_hpfaxSCRIPTS \
 	install-dist_hplipDATA install-dist_hplipSCRIPTS \
-	install-dist_imagesDATA install-dist_ldlDATA \
-	install-dist_modelsDATA install-dist_pcardSCRIPTS \
-	install-dist_pclDATA install-dist_pluginsSCRIPTS \
-	install-dist_prntSCRIPTS install-dist_psDATA \
-	install-dist_scanSCRIPTS install-dist_uiSCRIPTS \
-	install-dist_www0DATA install-dist_www1DATA \
-	install-dist_www21DATA install-dist_www22DATA \
-	install-dist_www23DATA install-dist_www241DATA \
-	install-dist_www242DATA install-dist_www243DATA \
-	install-dist_www24DATA install-dist_www251DATA \
-	install-dist_www252DATA install-dist_www261DATA \
-	install-dist_www2DATA install-dist_www3DATA \
-	install-dist_www4DATA install-dist_www5DATA \
-	install-dist_www61DATA install-dist_www6DATA \
-	install-dist_www7DATA install-docDATA install-exec \
-	install-exec-am install-exec-hook install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pcardextLTLIBRARIES \
-	install-sbinPROGRAMS install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
+	install-dist_imagesDATA install-dist_installSCRIPTS \
+	install-dist_ldlDATA install-dist_modelsDATA \
+	install-dist_pcardSCRIPTS install-dist_pclDATA \
+	install-dist_pluginsSCRIPTS install-dist_prntSCRIPTS \
+	install-dist_psDATA install-dist_scanSCRIPTS \
+	install-dist_uiSCRIPTS install-dist_www0DATA \
+	install-dist_www1DATA install-dist_www21DATA \
+	install-dist_www22DATA install-dist_www23DATA \
+	install-dist_www241DATA install-dist_www242DATA \
+	install-dist_www243DATA install-dist_www24DATA \
+	install-dist_www251DATA install-dist_www252DATA \
+	install-dist_www261DATA install-dist_www2DATA \
+	install-dist_www3DATA install-dist_www4DATA \
+	install-dist_www5DATA install-dist_www61DATA \
+	install-dist_www6DATA install-dist_www7DATA install-docDATA \
+	install-exec install-exec-am install-exec-hook install-info \
+	install-info-am install-libLTLIBRARIES install-man \
+	install-pcardextLTLIBRARIES install-sbinPROGRAMS install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
 	uninstall-cupsPROGRAMS uninstall-cupsextLTLIBRARIES \
 	uninstall-dist_baseSCRIPTS uninstall-dist_cmdSCRIPTS \
 	uninstall-dist_copierSCRIPTS uninstall-dist_faxSCRIPTS \
 	uninstall-dist_faxppdDATA uninstall-dist_firmDATA \
 	uninstall-dist_hpfaxSCRIPTS uninstall-dist_hplipDATA \
 	uninstall-dist_hplipSCRIPTS uninstall-dist_imagesDATA \
-	uninstall-dist_ldlDATA uninstall-dist_modelsDATA \
-	uninstall-dist_pcardSCRIPTS uninstall-dist_pclDATA \
-	uninstall-dist_pluginsSCRIPTS uninstall-dist_prntSCRIPTS \
-	uninstall-dist_psDATA uninstall-dist_scanSCRIPTS \
-	uninstall-dist_uiSCRIPTS uninstall-dist_www0DATA \
-	uninstall-dist_www1DATA uninstall-dist_www21DATA \
-	uninstall-dist_www22DATA uninstall-dist_www23DATA \
-	uninstall-dist_www241DATA uninstall-dist_www242DATA \
-	uninstall-dist_www243DATA uninstall-dist_www24DATA \
-	uninstall-dist_www251DATA uninstall-dist_www252DATA \
-	uninstall-dist_www261DATA uninstall-dist_www2DATA \
-	uninstall-dist_www3DATA uninstall-dist_www4DATA \
-	uninstall-dist_www5DATA uninstall-dist_www61DATA \
-	uninstall-dist_www6DATA uninstall-dist_www7DATA \
-	uninstall-docDATA uninstall-hook uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-pcardextLTLIBRARIES \
-	uninstall-sbinPROGRAMS
+	uninstall-dist_installSCRIPTS uninstall-dist_ldlDATA \
+	uninstall-dist_modelsDATA uninstall-dist_pcardSCRIPTS \
+	uninstall-dist_pclDATA uninstall-dist_pluginsSCRIPTS \
+	uninstall-dist_prntSCRIPTS uninstall-dist_psDATA \
+	uninstall-dist_scanSCRIPTS uninstall-dist_uiSCRIPTS \
+	uninstall-dist_www0DATA uninstall-dist_www1DATA \
+	uninstall-dist_www21DATA uninstall-dist_www22DATA \
+	uninstall-dist_www23DATA uninstall-dist_www241DATA \
+	uninstall-dist_www242DATA uninstall-dist_www243DATA \
+	uninstall-dist_www24DATA uninstall-dist_www251DATA \
+	uninstall-dist_www252DATA uninstall-dist_www261DATA \
+	uninstall-dist_www2DATA uninstall-dist_www3DATA \
+	uninstall-dist_www4DATA uninstall-dist_www5DATA \
+	uninstall-dist_www61DATA uninstall-dist_www6DATA \
+	uninstall-dist_www7DATA uninstall-docDATA uninstall-hook \
+	uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-pcardextLTLIBRARIES uninstall-sbinPROGRAMS
 
 
 install-exec-hook:

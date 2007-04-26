@@ -90,8 +90,9 @@ dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/statu
     base/imagesize.py base/pexpect.py base/models.py base/mdns.py
 
 # installer
-dist_noinst_SCRIPTS += installer/__init__.py installer/core.py installer/text_install.py installer/dcheck.py \
-    installer/distros.py installer/web_install.py
+installdir = $(hplipdir)/installer
+dist_install_SCRIPTS = installer/__init__.py installer/dcheck.py installer/distros.py
+dist_noinst_SCRIPTS += installer/core.py installer/text_install.py installer/web_install.py
 dist_noinst_SCRIPTS += installer/pages/__init__.py installer/pages/install_required.tmpl installer/pages/installation_path.tmpl installer/pages/component.tmpl \
     installer/pages/mode.tmpl installer/pages/confirm_distro.tmpl installer/pages/notes.tmpl installer/pages/error.tmpl installer/pages/options.tmpl \
     installer/pages/error_package_manager.tmpl installer/pages/password.tmpl installer/pages/error_required_missing.tmpl installer/pages/progress.tmpl \
