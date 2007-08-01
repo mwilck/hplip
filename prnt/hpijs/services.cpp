@@ -188,7 +188,7 @@ int UXServices::ProcessRaster(char *raster, char *k_raster)
 BOOL UXServices::CanDoBiDi ()
 {
     char            *hpDev;
-    HplipMsgAttributes   ma;
+    struct hpmud_model_attributes ma;
     char            strDevID[512];
 
     // Check for CUPS environment
@@ -204,16 +204,16 @@ BOOL UXServices::CanDoBiDi ()
     {
         return FALSE;
     }
-    hplip_Init (&hplip_session);
 
     // Check io-mode in models.xml for this device
 
-    hplip_ModelQuery (hpDev, &ma);
-    if (ma.prt_mode == UNI_MODE)
+    hpmud_query_model(hpDev, &ma);
+
+    if (ma.prt_mode == HPMUD_UNI_MODE)
     {
         return FALSE;
     }
-    if ((hpFD = hplip_OpenHP (hplip_session, hpDev, &ma)) < 0)
+    if (hpmud_open_device(hpDev, ma.prt_mode, &hpFD) != HPMUD_R_OK)
     {
         return FALSE;
     }
@@ -315,8 +315,7 @@ UXServices::~UXServices()
       delete [] KRastersOnPage;
 #ifdef HAVE_LIBHPIP
    if (hpFD >= 0)
-      hplip_CloseHP(hplip_session, hpFD);  
-   hplip_Exit(hplip_session); 
+      hpmud_close_device(hpFD);  
 #endif
 }
 
@@ -343,8 +342,12 @@ DRIVER_ERROR UXServices::ToDevice(const BYTE * pBuffer, DWORD * Count)
 BOOL UXServices::GetStatusInfo (BYTE * bStatReg)
 {
 #ifdef HAVE_LIBHPIP
-   if (hplip_GetStatus(hplip_session, hpFD, (char *)bStatReg, 1) == 1)
+   unsigned int s;
+   if (hpmud_get_device_status(hpFD, &s) == HPMUD_R_OK)
+   {
+      *bStatReg = (BYTE)s;
       return TRUE;
+   }
 #endif
    return FALSE;
 }
@@ -352,7 +355,9 @@ BOOL UXServices::GetStatusInfo (BYTE * bStatReg)
 DRIVER_ERROR UXServices::ReadDeviceID (BYTE * strID, int iSize)
 {
 #ifdef HAVE_LIBHPIP
-   if (hplip_GetID(hplip_session, hpFD, (char *)strID, iSize) < 3)
+   int len;
+   hpmud_get_device_id(hpFD, (char *)strID, iSize, &len);
+   if (len < 3)
       return IO_ERROR;
 #endif
    return NO_ERROR;
@@ -370,7 +375,7 @@ BOOL UXServices::GetVerticalAlignmentValue(BYTE* cVertAlignVal)
 BOOL UXServices::GetVertAlignFromDevice()
 {
 #ifdef HAVE_LIBHPIP
-   if ((VertAlign = ReadHPVertAlign(hplip_session, hpFD)) == -1)
+   if ((VertAlign = ReadHPVertAlign(hpFD)) == -1)
       return FALSE;
 #endif
    return TRUE;

@@ -141,10 +141,6 @@ public:
   DISPLAY_STATUS DisplayStatus; /* current DisplayPrinterStatus */
   int VertAlign;    /* for Crossbow/Spear */
 
-#ifdef HAVE_LIBHPIP
-  HplipSession *hplip_session;
-#endif
-
   PrintContext *pPC;
   Job *pJob;
 

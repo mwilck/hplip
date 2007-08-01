@@ -176,24 +176,8 @@
 //#define LEN_SCL_BUFFER 1024
 #define LEN_SCL_BUFFER    256 /* Increase if reading binary data. */
 
- 
-SANE_Status SclSendCommand( int deviceid,
-                            int channelid,
-                            int cmd,
-                            int param );
-                            
-SANE_Status SclInquire( int deviceid,
-                        int channelid,
-                        int cmd,
-                        int param,
-                        int * pValue,
-                        char * buffer,
-                        int maxlen );
+SANE_Status  __attribute__ ((visibility ("hidden"))) SclSendCommand(int deviceid, int channelid, int cmd, int param);
+SANE_Status __attribute__ ((visibility ("hidden"))) SclInquire(int deviceid, int channelid, int cmd, int param, int *pValue, char *buffer, int maxlen);
 
-/*SANE_Status SclSendCommandCheckError( int deviceid,
-                              int channelid,
-                              int cmd,
-                              int param );
-*/
 #endif
 

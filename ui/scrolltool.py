@@ -78,7 +78,7 @@ class ScrollToolView(ScrollView):
                     self.__tr("Device Settings..."), 
                     self.deviceSettingsButton_clicked)
 
-            if self.cur_device.fax_type:
+            if self.cur_device.fax_type and prop.fax_build:
                 self.addItem( "fax_settings", self.__tr("<b>Fax Setup</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_fax.png')), 
                     self.__tr("Fax support must be setup before you can send faxes."), 
@@ -151,7 +151,7 @@ class ScrollToolView(ScrollView):
                     self.__tr("Line Feed Calibration..."), 
                     self.linefeedCalibration) 
 
-            if self.cur_device.embedded_server_type and self.cur_device.bus == 'net':
+            if self.cur_device.embedded_server_type and self.cur_device.bus == 'net' and prop.net_build:
                 self.addItem( "ews", self.__tr("<b>Access Embedded Web Page</b>"), 
                     QPixmap(os.path.join(prop.image_dir, 'icon_ews.png')), 
                     self.__tr("You can use your printer's embedded web server to configure, maintain, and monitor the device from a web browser."),
@@ -208,7 +208,7 @@ class ScrollToolView(ScrollView):
 
         self.connect(pushButton, SIGNAL("clicked()"), button_func)
 
-        self.addWidget(widget, str(title))
+        self.addWidget(widget, unicode(title))
 
     def viewInformation(self):
         self.form.SwitchMaintTab("device_info")
@@ -217,7 +217,13 @@ class ScrollToolView(ScrollView):
         self.form.SwitchMaintTab("printer_info")
 
     def viewSupport(self):
-        f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
+        f = "http://hplip.sf.net"
+        
+        if prop.doc_build:
+            g = os.path.join(sys_cfg.dirs.doc, 'index.html')
+            if os.path.exists(g):
+                f = "file://%s" % g
+            
         log.debug(f)
         utils.openURL(f)
 
@@ -349,7 +355,7 @@ class ScrollToolView(ScrollView):
         d = self.cur_device
         align_type = d.align_type
 
-        log.debug(utils.bold("Align: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, align_type, "*"*20)))
+        log.debug("Align: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, align_type, "*"*20))
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -430,7 +436,7 @@ class ScrollToolView(ScrollView):
     def ColorCalibrationButton_clicked(self):
         d = self.cur_device
         color_cal_type = d.color_cal_type
-        log.debug(utils.bold("Color-cal: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, color_cal_type, "*"*20)))
+        log.debug("Color-cal: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, color_cal_type, "*"*20))
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -497,7 +503,7 @@ class ScrollToolView(ScrollView):
     def CleanPensButton_clicked(self):
         d = self.cur_device
         clean_type = d.clean_type
-        log.debug(utils.bold("Clean: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, clean_type, "*"*20)))
+        log.debug("Clean: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, clean_type, "*"*20))
 
         try:
             QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -591,7 +597,7 @@ class ScrollToolView(ScrollView):
                 self.form.FailureUI(self.__tr("<p><b>Unable to run command. No command specified.</b><p>Use <pre>Configure...</pre> to specify a command to run."))
                 log.error("No command specified. Use settings to configure commands.")
             else:
-                log.debug(utils.bold("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device.device_uri, "*"*20)))
+                log.debug("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device.device_uri, "*"*20))
                 log.debug(cmd)
                 cmd = ''.join([self.cur_device.device_vars.get(x, x) \
                                  for x in cmd.split(macro_char)])
@@ -814,6 +820,9 @@ class ScrollTestpageView(ScrollView):
             self.form.SwitchMaintTab("tools")
         else:
             self.form.close()
+            
+    def CheckDeviceUI(self):
+            self.form.FailureUI(self.__tr("<b>Device is busy or in an error state.</b><p>Please check device and try again."))            
 
 
     def __tr(self,s,c = None):

@@ -194,7 +194,7 @@ int EncodeCommand
    return 0;
 }
 
-int Synch(HplipSession *session, int hd, int chan)
+int Synch(int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -214,12 +214,12 @@ int Synch(HplipSession *session, int hd, int chan)
                      , gwSynchRefNum
                      );
 
-    bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+    hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &bRet);
 
     return( bRet );
 }
 
-int SynchComplete(HplipSession *session, int hd, int chan)
+int SynchComplete(int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -239,12 +239,12 @@ int SynchComplete(HplipSession *session, int hd, int chan)
                      , gwSynchCompleteRefNum
                      );
 
-    bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+    hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &bRet);
 
     return( bRet );
 }
 
-int Reset(HplipSession *session, int hd, int chan)
+int Reset(int hd, int chan)
 {
     int bRet = 0;
     int dPacketSize = 0;
@@ -265,12 +265,12 @@ int Reset(HplipSession *session, int hd, int chan)
                      , gwResetRefNum
                      );
 
-        bRet = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+    hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &bRet);
 
     return( bRet );
 }
 
-int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAlign *pG)
+int RetrieveAlignmentValues038(int hd, int chan, LDLGenAlign *pG)
 {
    int n;
    int dPacketSize = 0;
@@ -289,7 +289,7 @@ int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Write alignment query. */
    EncodeCommand(buf, sizeof(buf)
@@ -303,7 +303,7 @@ int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -317,10 +317,10 @@ int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
  
    /* Read query response. */
-   n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
+   hpmud_read_channel(hd, chan, buf, sizeof(buf), EXCEPTION_TIMEOUT, &n);
    pA = (LDLResponseAlign038 *)buf;
    memset(pG, 0, sizeof(LDLGenAlign));
    if (pA->h.packet_type == 16)
@@ -340,7 +340,7 @@ int RetrieveAlignmentValues038(HplipSession *session, int hd, int chan, LDLGenAl
    return 0;
 }
 
-int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAlign *pG)
+int RetrieveAlignmentValues043(int hd, int chan, LDLGenAlign *pG)
 {
    int n=0;
    int dPacketSize = 0;
@@ -359,7 +359,7 @@ int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Write alignment query. */
    EncodeCommand(buf, sizeof(buf)
@@ -373,7 +373,7 @@ int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -387,9 +387,9 @@ int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAl
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
-   n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
+   hpmud_read_channel(hd, chan, buf, sizeof(buf), EXCEPTION_TIMEOUT, &n);
    pA = (LDLResponseAlign043 *)buf;
    memset(pG, 0, sizeof(LDLGenAlign));
    if (pA->h.packet_type == 16)
@@ -400,7 +400,7 @@ int RetrieveAlignmentValues043(HplipSession *session, int hd, int chan, LDLGenAl
    return 0;
 }
 
-uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
+uint32_t RetrieveVersion(int hd, int chan)
 {
    int n, version=0;
    int dPacketSize = 0;
@@ -419,7 +419,7 @@ uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Write lidil version query. */
    EncodeCommand(buf, sizeof(buf)
@@ -433,7 +433,7 @@ uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
                      , &dPacketSize
                      , gwAlignmentQueryRefNum
                      );
-   n = hplip_WriteHP(session, hd, chan,(char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
    /* Disable responses. */
    EncodeCommand(buf, sizeof(buf)
@@ -447,17 +447,17 @@ uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
                      , &dPacketSize
                      , 0
                      );
-   n = hplip_WriteHP(session, hd, chan, (char *)buf, dPacketSize );
+   hpmud_write_channel(hd, chan, buf, dPacketSize, EXCEPTION_TIMEOUT, &n);
 
-        n = hplip_ReadHP(session, hd, chan, (char *)buf, sizeof(buf), HPLIP_EXCEPTION_TIMEOUT);
-        pV = (LDLResponseVersion *)buf;
-        if (pV->h.packet_type == 16)
-        {
-           version = ntohl(pV->ldlversion);
-           fprintf(stdout, "lidil version = %x\n", version);
-        }
+   hpmud_read_channel(hd, chan, buf, sizeof(buf), EXCEPTION_TIMEOUT, &n);
+   pV = (LDLResponseVersion *)buf;
+   if (pV->h.packet_type == 16)
+   {
+      version = ntohl(pV->ldlversion);
+      fprintf(stdout, "lidil version = %x\n", version);
+   }
 
-    return(version);
+   return(version);
 }
 
 /*
@@ -466,46 +466,46 @@ uint32_t RetrieveVersion(HplipSession *session, int hd, int chan)
  * All alignment values may be zero if pen(s) were never aligned. Valid values
  * may range from -30 to +30.
  */
-int ReadHPVertAlign(HplipSession *session, int hd)
+int ReadHPVertAlign(int hd)
 {
    int channel, n, i, x2colorVert=-1;
    uint32_t ver;
    LDLGenAlign ga;
 
-   if ((channel = hplip_OpenChannel(session, hd, "PRINT")) < 0)
+   if (hpmud_open_channel(hd, "PRINT", &channel) != HPMUD_R_OK)
    {
       bug("unable to open print channel ReadHPVertAlign\n");
       goto bugout;
    }
 
-   if (Synch(session, hd, channel)==0)
+   if (Synch(hd, channel)==0)
    {  
       bug("unable to write sync ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if (SynchComplete(session, hd, channel)==0)
+   if (SynchComplete(hd, channel)==0)
    {  
       bug("unable to write sync complete ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if (Reset(session, hd, channel)==0)
+   if (Reset(hd, channel)==0)
    {  
       bug("unable to write reset ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
-   if ((ver = RetrieveVersion(session, hd, channel))==0)
+   if ((ver = RetrieveVersion(hd, channel))==0)
    {  
       bug("unable to read version ReadHPVertAlign\n");  
       goto bugout;  
    }  
 
    if (ver > 0x308)
-      RetrieveAlignmentValues043(session, hd, channel, &ga);
+      RetrieveAlignmentValues043(hd, channel, &ga);
    else 
-      RetrieveAlignmentValues038(session, hd, channel, &ga);
+      RetrieveAlignmentValues038(hd, channel, &ga);
 
    if (!(n = ga.nPens))
       goto bugout;
@@ -519,11 +519,11 @@ int ReadHPVertAlign(HplipSession *session, int hd)
       }
    }
 
-   Reset(session, hd, channel);
+   Reset(hd, channel);
 
 bugout: 
    if (channel >= 0)
-      hplip_CloseChannel(session, hd, channel);
+      hpmud_close_channel(hd, channel);
 
    return x2colorVert;
 }

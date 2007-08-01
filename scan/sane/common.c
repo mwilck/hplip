@@ -35,7 +35,7 @@
 #define DEBUG_NOT_STATIC
 #include "sanei_debug.h"
 
-int bug(const char *fmt, ...)
+int __attribute__ ((visibility ("hidden"))) bug(const char *fmt, ...)
 {
    char buf[256];
    va_list args;
@@ -50,7 +50,7 @@ int bug(const char *fmt, ...)
    return n;
 }
 
-void sysdump(const void *data, int size)
+void __attribute__ ((visibility ("hidden"))) sysdump(const void *data, int size)
 {
     /* Dump size bytes of *data. Output looks like:
      * [0000] 75 6E 6B 6E 6F 77 6E 20 30 FF 00 00 00 00 39 00 unknown 0.....9.
@@ -97,7 +97,54 @@ void sysdump(const void *data, int size)
     }
 }
 
-char *psnprintf(char *buf, int bufSize, const char *fmt, ...)
+void __attribute__ ((visibility ("hidden"))) bugdump(const void *data, int size)
+{
+    /* Dump size bytes of *data. Output looks like:
+     * [0000] 75 6E 6B 6E 6F 77 6E 20 30 FF 00 00 00 00 39 00 unknown 0.....9.
+     */
+
+    unsigned char *p = (unsigned char *)data;
+    unsigned char c;
+    int n;
+    char bytestr[4] = {0};
+    char addrstr[10] = {0};
+    char hexstr[16*3 + 5] = {0};
+    char charstr[16*1 + 5] = {0};
+    for(n=1;n<=size;n++) {
+        if (n%16 == 1) {
+            /* store address for this line */
+            snprintf(addrstr, sizeof(addrstr), "%.4x", (p-(unsigned char *)data) && 0xffff);
+        }
+            
+        c = *p;
+        if (isprint(c) == 0) {
+            c = '.';
+        }
+
+        /* store hex str (for left side) */
+        snprintf(bytestr, sizeof(bytestr), "%02X ", *p);
+        strncat(hexstr, bytestr, sizeof(hexstr)-strlen(hexstr)-1);
+
+        /* store char str (for right side) */
+        snprintf(bytestr, sizeof(bytestr), "%c", c);
+        strncat(charstr, bytestr, sizeof(charstr)-strlen(charstr)-1);
+
+        if(n%16 == 0) { 
+            /* line completed */
+            bug("[%4.4s]   %-50.50s  %s\n", addrstr, hexstr, charstr);
+            hexstr[0] = 0;
+            charstr[0] = 0;
+        }
+        p++; /* next byte */
+    }
+
+    if (strlen(hexstr) > 0) {
+        /* print rest of buffer if not empty */
+        bug("[%4.4s]   %-50.50s  %s\n", addrstr, hexstr, charstr);
+    }
+}
+
+char __attribute__ ((visibility ("hidden"))) *psnprintf(char *buf, int bufSize, const char *fmt, ...)
 {
    va_list args;
    int n;
@@ -112,7 +159,7 @@ char *psnprintf(char *buf, int bufSize, const char *fmt, ...)
    return buf;
 }
 
-unsigned long DivideAndShift( int line,
+unsigned long __attribute__ ((visibility ("hidden"))) DivideAndShift( int line,
                               unsigned long numerator1,
                               unsigned long numerator2,
                               unsigned long denominator,
@@ -135,12 +182,12 @@ unsigned long DivideAndShift( int line,
     return result;
 }
 
-void NumListClear( int * list )
+void __attribute__ ((visibility ("hidden"))) NumListClear( int * list )
 {
     memset( list, 0, sizeof( int ) * MAX_LIST_SIZE );
 }
 
-int NumListIsInList( int * list, int n )
+int __attribute__ ((visibility ("hidden"))) NumListIsInList( int * list, int n )
 {
     int i;
     for( i = 1; i < MAX_LIST_SIZE; i++ )
@@ -153,7 +200,7 @@ int NumListIsInList( int * list, int n )
     return 0;
 }
 
-int NumListAdd( int * list, int n )
+int __attribute__ ((visibility ("hidden"))) NumListAdd( int * list, int n )
 {
     if( NumListIsInList( list, n ) )
     {
@@ -168,12 +215,12 @@ int NumListAdd( int * list, int n )
     return 1;
 }
 
-int NumListGetCount( int * list )
+int __attribute__ ((visibility ("hidden"))) NumListGetCount( int * list )
 {
     return list[0];
 }
 
-int NumListGetFirst( int * list )
+int __attribute__ ((visibility ("hidden"))) NumListGetFirst( int * list )
 {
     int n = list[0];
     if( n > 0 )
@@ -183,12 +230,12 @@ int NumListGetFirst( int * list )
     return n;
 }
 
-void StrListClear( const char ** list )
+void __attribute__ ((visibility ("hidden"))) StrListClear( const char ** list )
 {
     memset( list, 0, sizeof( char * ) * MAX_LIST_SIZE );
 }
 
-int StrListIsInList( const char ** list, char * s )
+int __attribute__ ((visibility ("hidden"))) StrListIsInList( const char ** list, char * s )
 {
     while( *list )
     {
@@ -201,7 +248,7 @@ int StrListIsInList( const char ** list, char * s )
     return 0;
 }
 
-int StrListAdd( const char ** list, char * s )
+int __attribute__ ((visibility ("hidden"))) StrListAdd( const char ** list, char * s )
 {
     int i;
     for( i = 0; i < MAX_LIST_SIZE - 1; i++ )

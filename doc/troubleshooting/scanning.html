@@ -91,33 +91,33 @@ Scanning
 <p>1.Make sure the line &quot;hpaio&quot; appears in /etc/sane/dll.conf and is not commented out (i.e., no &quot;#&quot; before &quot;hpaio&quot; on the line). Also, note that the &quot;hp&quot; SANE backend (which works with HP Scanjets) is not the same as the &quot;hpaio&quot; SANE backend provided by HPLIP.</p>
 <p>2.Try using scanimage to debug the problem:
 <em>(Note: you may want to comment out SANE backends that you are not using with a &quot;#&quot; character in /etc/sane/dll.conf to make debugging easier)</em></p>
-<div class="compound">
-<p>$ export SANE_DEBUG_DLL=128
-$ scanimage -L</p>
-</div>
+<pre class="literal-block">
+$ export SANE_DEBUG_DLL=128
+$ scanimage -L
+</pre>
 <p>Check the output for errors and report them to the HPLIP forum.</p>
 <p><strong>Issue 2: OpenOffice or 'xsane' cannot &quot;see&quot; my network connected scanner.</strong></p>
 <p>Solution:</p>
 <p>For network scanning, the &quot;hp:/net/...&quot; URI must be configured in the CUPS queue for auto-discovery by OpenOffice and xsane. You can manually specify the URI with xsane using the following format:</p>
-<div class="compound">
-<p>xsane &lt;&quot;hpaio&quot; device uri&gt;</p>
-</div>
+<pre class="literal-block">
+xsane &lt;&quot;hpaio&quot; device uri&gt;
+</pre>
 <p>For example:</p>
-<div class="compound">
-<p>xsane hpaio:/net/PSC_750?ip=12.25.63.142</p>
-</div>
+<pre class="literal-block">
+xsane hpaio:/net/PSC_750?ip=12.25.63.142
+</pre>
 <p><em>(Where the CUPS installed device URI is: hp:/net/PSC_750?ip=12.25.63.142, and the hp: was replaced with hpaio:)</em></p>
 <p><strong>Issue 3: When scanning multiple sheets with my scanner's ADF, I get an error message.</strong></p>
 <p>Solution:</p>
 <p>When scanning with the ADF, you must use &quot;batch mode&quot;. In 'scanimage', use a command line such as:</p>
-<div class="compound">
-<p>$ scanimage -b --batch-scan=yes &gt; output.pnm</p>
-</div>
+<pre class="literal-block">
+$ scanimage -b --batch-scan=yes &gt; output.pnm
+</pre>
 <p>In 'xsane', use the provided batch scan mode.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Dec  5 14:27:43 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'devmgr4_base.ui'
+# Form implementation generated from reading ui file 'ui/devmgr4_base.ui'
 #
-# Created: Mon Apr 16 16:03:21 2007
-#      by: The PyQt User Interface Compiler (pyuic) 3.16
+# Created: Mon May 21 16:06:42 2007
+#      by: The PyQt User Interface Compiler (pyuic) 3.17
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -129,6 +129,7 @@ class DevMgr4_base(QMainWindow):
         self.connect(self.deviceInstallAction,SIGNAL("activated()"),self.deviceInstallAction_activated)
         self.connect(self.deviceRemoveAction,SIGNAL("activated()"),self.deviceRemoveAction_activated)
         self.connect(self.Tabs,SIGNAL("currentChanged(QWidget*)"),self.Tabs_currentChanged)
+        self.connect(self.DeviceList,SIGNAL("onItem(QIconViewItem*)"),self.DeviceList_onItem)
 
 
     def languageChange(self):
@@ -332,6 +333,9 @@ class DevMgr4_base(QMainWindow):
 
     def Tabs_currentChanged(self,a0):
         print "DevMgr4_base.Tabs_currentChanged(QWidget*): Not implemented yet"
+
+    def DeviceList_onItem(self,a0):
+        print "DevMgr4_base.DeviceList_onItem(QIconViewItem*): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4_base",s,c)

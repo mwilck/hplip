@@ -396,12 +396,12 @@ MARKER_SUPPLES_TYPE_TO_AGENT_KIND_MAP = {
 def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
     try:
         dev.openPML()
-        result_code, on_off_line = dev.getPML( pml.OID_ON_OFF_LINE, pml.INT_SIZE_BYTE )
-        result_code, sleep_mode = dev.getPML( pml.OID_SLEEP_MODE, pml.INT_SIZE_BYTE )
+        #result_code, on_off_line = dev.getPML( pml.OID_ON_OFF_LINE, pml.INT_SIZE_BYTE )
+        #result_code, sleep_mode = dev.getPML( pml.OID_SLEEP_MODE, pml.INT_SIZE_BYTE )
         result_code, printer_status = dev.getPML( pml.OID_PRINTER_STATUS, pml.INT_SIZE_BYTE )
         result_code, device_status = dev.getPML( pml.OID_DEVICE_STATUS, pml.INT_SIZE_BYTE )
         result_code, cover_status = dev.getPML( pml.OID_COVER_STATUS, pml.INT_SIZE_BYTE )
-        result_code,  value = dev.getPML( pml.OID_DETECTED_ERROR_STATE )
+        result_code, value = dev.getPML( pml.OID_DETECTED_ERROR_STATE )
     except Error:
        dev.closePML()
 
@@ -415,11 +415,11 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                  'in-tray1' :    0,
                  'in-tray2' :    0,
                  'media-path' :  0,
-               }        
+               }
 
     try:
         detected_error_state = struct.unpack( 'B', value[0])[0]
-    except IndexError:
+    except (IndexError, TypeError):
         detected_error_state = pml.DETECTED_ERROR_STATE_OFFLINE_MASK
 
     agents, x = [], 1
@@ -564,13 +564,18 @@ def StatusType3( dev, parsedID ): # LaserJet Status (PML/SNMP)
                        'level-trigger' : agent_trigger,})
 
         x += 1
+        
+        if x > 20:
+            break
 
 
-    log.debug("on_off_line=%d" % on_off_line)
-    log.debug("sleep_mode=%d" % sleep_mode)
+    printer_status = printer_status or STATUS_PRINTER_IDLE
     log.debug("printer_status=%d" % printer_status)
+    device_status = device_status or pml.DEVICE_STATUS_RUNNING
     log.debug("device_status=%d" % device_status)
+    cover_status = cover_status or pml.COVER_STATUS_CLOSED
     log.debug("cover_status=%d" % cover_status)
+    detected_error_state = detected_error_state or pml.DETECTED_ERROR_STATE_NO_ERROR
     log.debug("detected_error_state=%d (0x%x)" % (detected_error_state, detected_error_state))
 
     stat = LaserJetDeviceStatusToPrinterStatus(device_status, printer_status, detected_error_state)

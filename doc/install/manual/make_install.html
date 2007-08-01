@@ -93,31 +93,14 @@ Make Install
 <p>This step will install HPLIP.</p>
 <p><em>Note</em>: You will need to run 'make install' as root or with root access.</p>
 <p>If your distro uses '<strong>su</strong>' follow these steps:</p>
-<div class="compound">
-<p class="compound-first">su</p>
-<p class="compound-last">make install</p>
-</div>
+<pre class="literal-block">
+su
+make install
+</pre>
 <p>If your distro uses '<strong>sudo</strong>' follow these steps:</p>
-<div class="compound">
-<p>sudo make install</p>
-</div>
-<p>If you don't know which su/sudo to use or what the difference is--please refer to your distro documentation.</p>
-</div>
-<div class="section">
-<h1><a id="once-the-install-is-completed" name="once-the-install-is-completed">Once the Install is Completed</a></h1>
-<p>After make install is completed you will need to restart hplip and cups to ensure that the proper daemons are running.</p>
-<p><strong>Note</strong>: Some distros use 'cups' while others use 'cupsys' if you get an error running '/etc/init.d/cupsys' restart try running '/etc/init.d/cups restart' or check your distro documentation and/or other resources for specific information.</p>
-<p>If your distro uses '<strong>su</strong>' follow these steps:</p>
-<div class="compound">
-<p class="compound-first">su</p>
-<p class="compound-middle">/etc/init.d/cupsys restart</p>
-<p class="compound-last">/etc/init.d/hplip restart</p>
-</div>
-<p>If your distro uses '<strong>sudo</strong>' follow these steps:</p>
-<div class="compound">
-<p class="compound-first">sudo /etc/init.d/cupsys restart</p>
-<p class="compound-last">sudo /etc/init.d/hplip restart</p>
-</div>
+<pre class="literal-block">
+sudo make install
+</pre>
 <p>If you don't know which su/sudo to use or what the difference is--please refer to your distro documentation.</p>
 </div>
 <div class="section">
@@ -127,7 +110,7 @@ Make Install
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Wed Mar 28 14:23:06 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Mon Jun 11 15:45:57 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

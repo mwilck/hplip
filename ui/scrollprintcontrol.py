@@ -89,8 +89,7 @@ class ScrollPrintJobView(ScrollView):
         if num_jobs > 1:
             self.addGroupHeading("job_control", self.__tr("Job Control"))
             self.addCancelAllJobsController()
-
-
+        
         if num_jobs:
             if num_jobs == 1:
                 self.addGroupHeading("jobs", self.__tr("1 Active Print Job"))
@@ -101,22 +100,24 @@ class ScrollPrintJobView(ScrollView):
             for j in jobs:
                 if j.dest == self.cur_printer: 
                     self.addItem(j.dest, j.id, j.state, j.user, j.title)
-
-
+            
     def addPrintController(self):
         widget = self.getWidget()
 
         layout1 = QGridLayout(widget,1,1,5,10,"layout1")
 
-        layout2 = QVBoxLayout(None,0,6,"layout2")
+        layout2 = QVBoxLayout(None,10,10,"layout2")
 
         self.stopstartTextLabel = QLabel(widget,"stopstartTextLabel")
+        self.stopstartTextLabel.setFrameShape(self.frame_shape)
         layout2.addWidget(self.stopstartTextLabel)
 
         self.acceptrejectTextLabel = QLabel(widget,"acceptrejectTextLabel")
+        self.acceptrejectTextLabel.setFrameShape(self.frame_shape)
         layout2.addWidget(self.acceptrejectTextLabel)
 
         self.defaultTextLabel = QLabel(widget,"defaultTextLabel")
+        self.defaultTextLabel.setFrameShape(self.frame_shape)
         layout2.addWidget(self.defaultTextLabel)
 
         layout1.addMultiCellLayout(layout2,2,3,0,0)
@@ -332,5 +333,5 @@ class ScrollPrintJobView(ScrollView):
         self.fillControls()
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollPrintJobView",s,c)
         

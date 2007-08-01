@@ -97,19 +97,20 @@ Overview
 <p>HPLIP provides a &quot;hpaio&quot; sane backend for scanning. Both flatbed and ADF scanning is supported via xsane/sane applications.</p>
 <p>A photo-card application allows the user to download and delete pictures from printers that support photo-cards.</p>
 <p>PC fax send is supported, no PC fax receive. PC fax send will look like a CUPS printer spool queue.</p>
-<p>A distribution can mix and match the HPLIP package in order to support a bi-di or uni-di solution. HPIJS is part of the HPLIP package, but HPIJS can still be installed separately. The HPLIP package includes two makefiles one for HPLIP and one for HPIJS.</p>
-<p>HPLIP is intended to replace HPOJ. They both support USB, parallel and JetDirect connectivity. HPLIP is similar to HPOJ, but different. HPLIP has persistent daemons (hpiod, hpssd) like HPOJ, but is more friendly. HPLIP does not require a &quot;ptal-init setup&quot;. The &quot;hp&quot; backend will look like any other CUPS backend that can install printers as needed. The daemons use a standard init.d start/stop script.</p>
+<p>A distribution can mix and match the HPLIP package in order to support a bi-di or uni-di solution. HPIJS is part of the HPLIP package, but HPIJS can still be installed separately. The HPLIP package includes one makefile for both HPLIP and HPIJS.</p>
+<p>HPLIP is intended to replace HPOJ. They both support USB, parallel and JetDirect connectivity. HPLIP is similar to HPOJ, but different. HPLIP has no persistent daemons like HPOJ, this make HPLIP more friendly and easy to install. HPLIP does not require a &quot;ptal-init setup&quot; or boot time start/stop script. The &quot;hp&quot; backend will look like any other CUPS backend that can install printers as needed.</p>
 <p>HPLIP provides a MLC/1284.4 transport for talking to Multi-Function Peripherals (MFPs), but HPLIP does not dedicate the port to MLC/1284.4 like HPOJ does. HPLIP brings MLC/1284.4 up and down as needed. This means a MFP can use raw I/O for printing and MLC/1284.4 for scanning.</p>
 <p>HPOJ performs all parallel I/O directly to the hardware port in User Mode. This is problematic with other Linux/Unix platforms. Many kernels do not allow direct communication to the parallel port from User Mode. HPLIP also performs parallel I/O in User Mode, but HPLIP uses the ppdev/parport kernel modules. Which provides kernel management and a better sharing mechanism for other applications.</p>
-<p>All IEEE 1284 functions needed for HPLIP are performed with low-level ppdev ioctl(s). This includes data reads and writes. For MLC/1284.4, hardware ECP Mode is not always available so only software ECP Mode is supported.</p>
-<p>In most cases USB I/O will be faster than parallel I/O. The reason for this is all USB I/O takes place in Kernel mode via the USB hardware controller. Where most parallel I/O takes place in User Mode via software control. If your peripheral supports both USB or parallel use USB.</p>
+<p>All parallel IEEE 1284 functions needed for HPLIP are performed with low-level ppdev ioctl(s). This includes data reads and writes. For MLC/1284.4, hardware ECP Mode is not always available so only software ECP Mode is supported.</p>
+<p>In most cases USB I/O will be faster than parallel I/O. The reason for this is all USB I/O takes place in Kernel mode via the USB hardware controller. Where most parallel I/O takes place in User Mode via software control. USB also provides better process sharing and simultaneous I/O than parallel. If your peripheral supports both USB or parallel use USB.</p>
 <p>Generally HPOJ and HPLIP cannot co-exist on the same PC. The parport kernel module will conflict with HPOJ. Use &quot;ptal-init setup&quot; to remove HPOJ devices.</p>
 <p>With HPLIP 0.9.9 all USB I/O takes place with libusb. Libusb allows USB drivers to be written in user mode instead of kernel mode. Kernel modules &quot;printer&quot; and &quot;usblp&quot; are no longer required. Libusb allows unique low level control that was not available in the kernel modules. Without libusb full I/O support is not available for many HP devices.</p>
-<p>In order to support device exceptions (ie: paperout), libusb extensions have been added in order to support I/O retries. Without the extensions recovering from a timeout condition in not possible without losing bytes. Although libusb is platform independent, the current extensions are Linux specific.</p>
+<p>With HPLIP 2.7.6 the old hpiod daemon was replaced with the new HP Multi-Point Transport Driver (hpmud). Hpmud is a shared library that provides direct I/O for each process. Before all I/O was serialized through hpiod, a monolithic I/O processor. The new hpmud direct I/O is faster. Hpmud supports parallel, USB and JetDirect connectivity.</p>
+<p>With hpmud, HPLIP no longer has Linux specific libusb extensions. This means any UNIX/Linux derivative that supports libusb may work with HPLIP. A public HPLIP &quot;C&quot; API is exposed through hpmud. See hpmud.h for documentation. A python wrapper for hpmud, called hpmudext, is also available.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Fri Apr 28 17:38:54 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Tue Jun 12 11:22:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

@@ -456,7 +456,16 @@
         <receiver>DevMgr4_base</receiver>
         <slot>Tabs_currentChanged(QWidget*)</slot>
     </connection>
+    <connection>
+        <sender>DeviceList</sender>
+        <signal>onItem(QIconViewItem*)</signal>
+        <receiver>DevMgr4_base</receiver>
+        <slot>DeviceList_onItem(QIconViewItem*)</slot>
+    </connection>
 </connections>
+<includes>
+    <include location="local" impldecl="in implementation">devmgr4_base.ui.h</include>
+</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>
@@ -506,6 +515,7 @@
     <slot>deviceInstallAction_activated()</slot>
     <slot>deviceRemoveAction_activated()</slot>
     <slot>Tabs_currentChanged( QWidget * )</slot>
+    <slot>DeviceList_onItem( QIconViewItem * )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

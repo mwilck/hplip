@@ -90,16 +90,16 @@ Connection
 <ol class="arabic simple">
 <li>Unplug the printer from your computer, open a terminal/console window and enter this command. This will display the syslog.</li>
 </ol>
-<div class="compound">
-<p>tail -f /var/log/messages</p>
-</div>
+<pre class="literal-block">
+tail -f /var/log/messages
+</pre>
 <p>for Ubuntu:</p>
-<div class="compound">
-<p>sudo tail -f /var/log/syslog</p>
-</div>
+<pre class="literal-block">
+sudo tail -f /var/log/syslog
+</pre>
 <p>then reconnect the printer.  You should see the system display something like:</p>
-<div class="compound">
-<p>Mar 16 11:45:43 localhost kernel: [4298892.030000] hub 2-1.2:1.0: USB hub found
+<pre class="literal-block">
+Mar 16 11:45:43 localhost kernel: [4298892.030000] hub 2-1.2:1.0: USB hub found
 Mar 16 11:45:43 localhost kernel: [4298892.033000] hub 2-1.2:1.0: 4 ports detected
 Mar 16 11:45:44 localhost kernel: [4298892.316000] usb 2-1.3: new full speed USB device using uhci_hcd and address 11
 Mar 16 11:45:44 localhost kernel: [4298892.409000] hub 2-1.3:1.0: USB hub found
@@ -117,15 +117,15 @@ Mar 16 11:45:45 localhost kernel: [4298893.360000] scsi7 : SCSI emulation for US
 Mar 16 11:45:45 localhost kernel: [4298893.539000] usb 2-1.3.3: new full speed USB device using uhci_hcd and address 15
 Mar 16 11:45:45 localhost kernel: [4298893.624000] usb 2-1.3.3: not running at top speed; connect to a high speed hub
 Mar 16 11:45:45 localhost kernel: [4298893.638000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 15 if 1 alt 0 proto 2 vid 0x03F0 pid 0x5711
-Mar 16 11:45:45 localhost kernel: [4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices</p>
-</div>
+Mar 16 11:45:45 localhost kernel: [4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices
+</pre>
 <p>Then enter this command:</p>
-<div class="compound">
-<p>dmesg</p>
-</div>
+<pre class="literal-block">
+dmesg
+</pre>
 <p>You should see something like this displayed:</p>
-<div class="compound">
-<p>[4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices
+<pre class="literal-block">
+[4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices
 [4298893.638000] usb-storage: device found at 15
 [4298893.638000] usb-storage: waiting for device to settle before scanning
 [4298897.802000]   Vendor: HP        Model: Officejet 74xx S  Rev: 1.00
@@ -142,24 +142,23 @@ Mar 16 11:45:45 localhost kernel: [4298893.638000] scsi8 : SCSI emulation for US
 [4298898.642000]   Type:   Direct-Access                      ANSI SCSI revision: 02
 [4298898.657000] sd 8:0:0:0: Attached scsi removable disk sdd
 [4298898.657000] sd 8:0:0:0: Attached scsi generic sg3 type 0
-[4298898.660000] usb-storage: device scan complete</p>
-</div>
+[4298898.660000] usb-storage: device scan complete
+</pre>
 <p>enter this command:</p>
-<div class="compound">
-<p>/usr/lib/cups/backend/hp</p>
-</div>
+<pre class="literal-block">
+/usr/lib/cups/backend/hp
+</pre>
 <p>You should see something like this displayed:</p>
-<div class="compound">
-<p>direct hp:/usb/Photosmart_series?serial=XXXXXXXXXXXXXX &quot;HP Photosmart_series&quot; &quot;hp:/usb/Photosmart_series?serial=XXXXXXXXXXXXXX&quot;
+<pre class="literal-block">
+direct hp:/usb/Photosmart_series?serial=XXXXXXXXXXXXXX &quot;HP Photosmart_series&quot; &quot;hp:/usb/Photosmart_series?serial=XXXXXXXXXXXXXX&quot;
 direct hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX &quot;HP HP_Color_LaserJet_2840&quot; &quot;hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX&quot;
 direct hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX &quot;HP Deskjet_6980_series&quot; &quot;hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX&quot;
-direct hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX &quot;HP Officejet_7400_series&quot; &quot;hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX&quot;</p>
-</div>
-<p>These are several ways to confirm that the printer is connected and working with your system.</p>
+direct hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX &quot;HP Officejet_7400_series&quot; &quot;hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX&quot;
+</pre>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Dec  5 14:27:42 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:41 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

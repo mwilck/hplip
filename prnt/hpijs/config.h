@@ -76,7 +76,13 @@ Define this if build is for a little endian processor
 
 
 /*!
-Compiles in code that allows for auto duplex on printers that support a duplexer
+Compiles in code that allows for auto duplex on printers that support a duplexer.
+On most inkjet printers, when the duplexer refeeds the paper, the back side will be
+rotated 180 degrees with respect to the front side, resulting in tabelt mode duplexing
+(stapled on the short edge). To print duplexed in booklet mode (stapled on the long edge),
+the application must rotate the whole page image by 180 degrees before sending the rasters.
+Call PrintContext::RoateteImageForBackPage () to determine if the selected printer needs
+back page rotated.
 */
 #define APDK_AUTODUPLEX
 

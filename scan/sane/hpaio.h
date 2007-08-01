@@ -101,9 +101,9 @@ struct  hpaioScanner_s
 {
         char *tag;   /* handle identifier */
         char deviceuri[128];
-        int deviceid;
-        int scan_channelid;
-        int cmd_channelid;
+        HPMUD_DEVICE deviceid;
+        HPMUD_CHANNEL scan_channelid;
+        HPMUD_CHANNEL cmd_channelid;
         
         struct hpaioScanner_s * prev;
         struct hpaioScanner_s * next;
@@ -267,8 +267,8 @@ typedef struct hpaioScanner_s * hpaioScanner_t;
     } \
   } while(0)
 
-SANE_Status hpaioScannerToSaneStatus( hpaioScanner_t hpaio );
-SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio );
-void sane_hpaio_cancel( SANE_Handle handle );
+SANE_Status __attribute__ ((visibility ("hidden"))) hpaioScannerToSaneStatus( hpaioScanner_t hpaio );
+SANE_Status __attribute__ ((visibility ("hidden"))) hpaioScannerToSaneError( hpaioScanner_t hpaio );
+void sane_hpaio_cancel(SANE_Handle handle);
 
 #endif

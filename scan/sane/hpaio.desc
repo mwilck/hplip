@@ -10,6 +10,9 @@
 :devicetype :scanner                    ; start of a list of devices....
 :mfg "Hewlett-Packard"                  ; name a manufacturer
 :url "http://www.hp.com/united-states/consumer/gateway/printing_multifunction.html"
+:model "915"
+:status :good
+
 :model "hp_color_laserjet_2800"
 :status :good
 
@@ -382,7 +385,13 @@
 :model "photosmart_c4100_series"
 :status :good
 
+:model "photosmart_c4200_series"
+:status :good
+
 :model "photosmart_c5100_series"
+:status :good
+
+:model "photosmart_c5200_series"
 :status :good
 
 :model "photosmart_c6100_series"

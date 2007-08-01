@@ -64,7 +64,13 @@ public:
         "Deskjet 3845\0"
         "Deskjet F300\0"
         "Deskjet D2360\0"
+        "Deskjet d24\0"
+        "Deskjet f41\0"
 		"officejet 4200\0"
+        "910\0"
+        "HP 910\0"
+        "915\0"
+        "HP 915\0"
 #ifdef APDK_MLC_PRINTER
         "Officejet 4300\0"
 		"officejet 5500\0"

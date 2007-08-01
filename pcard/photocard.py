@@ -29,8 +29,12 @@ from base.g import *
 from base.codes import *
 from base import device, utils, exif
 
-# Extensions
-import pcardext
+try:
+    import pcardext
+except ImportError:
+    if not os.getenv("HPLIP_BUILD"):
+        log.error("PCARDEXT could not be loaded. Please check HPLIP installation.")
+        sys.exit(1)
 
 # Photocard command codes
 ACK = 0x0100
@@ -158,6 +162,7 @@ class PhotoCard:
                     if self.callback is not None:
                         self.callback()
 
+                #log.log_data(buffer)
                 return buffer
 
         if self.callback is not None:
@@ -169,7 +174,8 @@ class PhotoCard:
         log.debug("Normal sector read sector=%d count=%d" % (sector, nsector))
         sectors_to_read = range(sector, sector+nsector)
         request = struct.pack('!HH' + 'I'*nsector, READ_CMD, nsector, *sectors_to_read)
-
+        #log.log_data(request)
+        
         if self.callback is not None:
             self.callback()
 
@@ -179,6 +185,7 @@ class PhotoCard:
 
         # read return code
         data = self.device.readPCard(2)
+        #log.log_data(data)
         code = struct.unpack('!H', data)[0]
 
         log.debug("Return code: %x" % code)
@@ -207,7 +214,7 @@ class PhotoCard:
 
                 for s in range(sector, sector + nsector_read):
                     self.sector_buffer[s] = buffer[i : i+SECTOR_SIZE]
-                    log.debug("Sector %d data=\n%s" % (s, repr(self.sector_buffer[s])))
+                    #log.debug("Sector %d data=\n%s" % (s, repr(self.sector_buffer[s])))
                     count = self.sector_buffer_counts.get(s, 0)
                     self.sector_buffer_counts[s] = count+1
                     i += SECTOR_SIZE
@@ -217,6 +224,7 @@ class PhotoCard:
 
                 self._check_cache(nsector)
 
+            #log.log_data(buffer)
             return buffer
         else:
             log.error("Error code: %d" % code)
@@ -224,8 +232,9 @@ class PhotoCard:
 
     def _write(self, sector, nsector, buffer):
 
-        log.debug("write pcard sector: sector=%d count=%d len=%d data=\n%s" % (sector, nsector, len(buffer), repr(buffer)))
-
+        #log.debug("write pcard sector: sector=%d count=%d len=%d data=\n%s" % (sector, nsector, len(buffer), repr(buffer)))
+        log.debug("write pcard sector: sector=%d count=%d len=%d" % (sector, nsector, len(buffer)))
+        
         if not self.channel_opened:
             self.open_channel()
 
@@ -474,7 +483,7 @@ class PhotoCard:
 
                 if cp_status_callback is not None:
                     if cp_status_callback(os.path.join(self.pwd(), filename), 
-                                            os.path.join(os.getcwd(), filename), 1):
+                                            os.path.join(os.getcwd(), filename), 0):
                         was_cancelled = True
                         break
 

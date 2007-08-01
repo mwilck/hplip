@@ -99,39 +99,37 @@ More information on the IJS interface can be found at <a class="reference" href=
 <p>HPIJS provides no I/O. HPIJS emits standard file output. The output can be directed to a file or to the actual device via the parallel or USB port. This &quot;raw&quot; printing does not require bi-directional I/O. Some all-in-one devices do not support &quot;raw&quot; I/O and must use HPLIP for printing (ie: OfficeJet K80). In this case HPIJS output is sent to the &quot;hp&quot; CUPS backend, the backend opens an 1284.4/MLC print channel, then the data is passed to the actual device.</p>
 <p>HPIJS supports all the current HP printer models with different Ghostscript command line parameters. Different printer models are selected with the IEEE 1284 Manufacturer and Model strings. This information can come from the query of a printer over the parallel or usb port. Common printer models are divided into different device classes. Each device class share common printer attributes such as print modes and paper sizes. HPIJS will automatically map the printer model to a specific device class.</p>
 <p>The following Ghostscript commands are required when using HPIJS.</p>
-<div class="compound">
-<p>-sDEVICE=ijs
+<pre class="literal-block">
+-sDEVICE=ijs
 -sIjsServer=hpijs
 -dIjsUseOutputFD
 -sDeviceManufacturer=x   (x equals: &quot;HEWLETT-PACKARD&quot;, &quot;HP&quot;, &quot;APOLLO&quot;)
--sDeviceModel=x          (x equals: &quot;DESKJET 990&quot;, &quot;DESKJET 670&quot;, etc...)</p>
-</div>
+-sDeviceModel=x          (x equals: &quot;DESKJET 990&quot;, &quot;DESKJET 670&quot;, etc...)
+</pre>
 <p>The following Ghostscript commands are optional when using HPIJS.</p>
-<div class="compound">
-<p class="compound-first">-dDuplex=false -dTumble=false (none)
+<pre class="literal-block">
+-dDuplex=false -dTumble=false (none)
 -dDuplex=true  -dTumble=false (book)
--dDuplex=true  -dTumble=true  (tablet)</p>
-<dl class="compound-last docutils">
-<dt>-sIjsParams=&quot;Quality:Quality=n,Quality:ColorMode=n,Quality:MediaType=n,</dt>
-<dd><blockquote class="first">
-Quality:PenSet=n,Quality:FullBleed=n,PS:MediaPosition=n&quot;</blockquote>
-<p class="last">Quality equals: 0=normal (default), 1=draft, 2=best, 3=hires, 4=fastdraft
-ColorMode equals: 0=grey_k, 1=grey_cmy, 2=color (default)
-MediaType equals: 0=plain (default), 1=premium, 2=photo
-PenSet equals: 0=black_pen, 1=color_pen, 2=both_pens, 3=mdl_pen, 4=mdl_both
-FullBleed equals: 0=no (default), 1=yes
-MediaPosition equals: 1=upper_tray, 4=lower_tray, 7=autoselect (default)</p>
-</dd>
-</dl>
-</div>
+-dDuplex=true  -dTumble=true  (tablet)
+
+-sIjsParams=&quot;Quality:Quality=n,Quality:ColorMode=n,Quality:MediaType=n,
+             Quality:PenSet=n,Quality:FullBleed=n,PS:MediaPosition=n&quot;
+
+    Quality equals: 0=normal (default), 1=draft, 2=best, 3=hires, 4=fastdraft
+    ColorMode equals: 0=grey_k, 1=grey_cmy, 2=color (default)
+    MediaType equals: 0=plain (default), 1=premium, 2=photo
+    PenSet equals: 0=black_pen, 1=color_pen, 2=both_pens, 3=mdl_pen, 4=mdl_both
+    FullBleed equals: 0=no (default), 1=yes
+    MediaPosition equals: 1=upper_tray, 4=lower_tray, 7=autoselect (default)
+</pre>
 <p>PenSet Definitions</p>
-<div class="compound">
-<p>black_pen: only black pen in the printer
+<pre class="literal-block">
+black_pen: only black pen in the printer
 color_pen: only color pen in the printer
 both_pens: black &amp; color pens in printer
 mdl_pen: photo pen in the printer
-mdl_both: color pen and photo pen in printer</p>
-</div>
+mdl_both: color pen and photo pen in printer
+</pre>
 <p><strong>Caveats</strong></p>
 <ol class="arabic simple">
 <li>Note, there are defaults for all optional commands. PenSet default is defined by each device class.</li>
@@ -143,7 +141,7 @@ mdl_both: color pen and photo pen in printer</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Dec  5 14:27:43 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:43 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

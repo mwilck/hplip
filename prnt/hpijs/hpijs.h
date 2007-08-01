@@ -33,12 +33,12 @@
 #define hpijs_INCLUDED
 
 #define IJS_MAX_PARAM 256
+#define EXCEPTION_TIMEOUT 45  /* seconds */
 
 #ifdef HAVE_LIBHPIP
-#include "hplip_api.h"
+#include "hpmud.h"
 #include "hpiom.h"
-
-#else
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,7 +47,5 @@ extern int bug(const char *fmt, ...);
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // HAVE_LIBHPIP
 
 #endif        /* hpijs_INCLUDED */

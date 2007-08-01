@@ -701,7 +701,7 @@
                                     <bool>true</bool>
                                 </property>
                                 <property name="text">
-                                    <string>Built-inmake copies function</string>
+                                    <string>Built-in make copies function</string>
                                 </property>
                                 <property name="checked">
                                     <bool>true</bool>

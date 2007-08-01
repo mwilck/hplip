@@ -946,13 +946,12 @@ def AlignType12(dev, loadpaper_ui):
 def cleaning(dev, clean_type, level1, level2, level3,
               loadpaper_ui, dlg1, dlg2, dlg3, wait_ui):
 
-    CLEAN_SLEEP_TIMER = 60
     state = 0
 
     while state != -1:
         if state == 0: # Initial level1 print
             state = 1
-            if clean_type == 3:
+            if clean_type == CLEAN_TYPE_PCL_WITH_PRINTOUT:
                 ok = loadpaper_ui()
                 if not ok:
                     state = -1
@@ -1022,7 +1021,6 @@ def print_clean_test_page(dev):
     dev.closePrint()
     dev.printGzipFile(os.path.join(prop.home_dir, 'data',
                       'ps', 'clean_page.pdf.gz'), raw=False)
-
 
 def cleanType1(dev): # PCL, Level 1
     dev.writeEmbeddedPML(pml.OID_CLEAN, pml.CLEAN_CLEAN)

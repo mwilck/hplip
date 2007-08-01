@@ -160,15 +160,7 @@ if 'localhost' in param.lower():
     log.error("Invalid hostname")
     usage()
 
-hpiod_sock = None
-try:
-    hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-except socket.error:
-    log.error("Unable to connect to hpiod.")
-    sys.exit(1)
-
-cups_uri, sane_uri, fax_uri = device.makeURI(hpiod_sock, param, jd_port)
+cups_uri, sane_uri, fax_uri = device.makeURI(param, jd_port)
 
 if not cups_uri:
     log.error("Device not found")
@@ -194,7 +186,5 @@ if fax_uri:
         print "HP Fax URI:", fax_uri
 elif not fax_uri and fax_quiet_mode:
     log.error("Device does not support fax.")
-
-hpiod_sock.close()
 
 sys.exit(0)

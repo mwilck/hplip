@@ -47,8 +47,6 @@
 extern  int hpijsFaxServer (int argc, char **argv);
 #endif
 
-extern int hpijs97();
-
 int bug(const char *fmt, ...)
 {
    char buf[256];

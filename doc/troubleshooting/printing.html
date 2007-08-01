@@ -92,17 +92,17 @@ Printing
 <p><strong>Issue 2: I'd like to view the CUPS error log for debugging and troubleshooting purposes.</strong></p>
 <p>Solution:</p>
 <p>Edit the /etc/cups/cupsd.conf file, find the section &quot;loglevel&quot; change &quot;info&quot; to &quot;debug&quot; save and exit then restart cups</p>
-<div class="compound">
-<p># /etc/init.d/cups restart</p>
-</div>
+<pre class="literal-block">
+# /etc/init.d/cups restart
+</pre>
 <p>or for Ubuntu</p>
-<div class="compound">
-<p>$ sudo /etc/init.d/cupsys restart</p>
-</div>
+<pre class="literal-block">
+$ sudo /etc/init.d/cupsys restart
+</pre>
 <p>then enter this command to view the log</p>
-<div class="compound">
-<p>tail -f /var/log/cups/error_log</p>
-</div>
+<pre class="literal-block">
+tail -f /var/log/cups/error_log
+</pre>
 <p>With the CUPS LogLevel set to debug, the CUPS error_log will show all programs that are executed during the print job. Generally there are two data paths taken during a print job; 1) HPIJS driver path 2) Postscript driver path. Both data paths will use the &quot;hp&quot; backend.</p>
 <p>For the HPIJS path, look for errors near the ghostscript command (gs) command. The gs command will invoke the HPIJS driver.</p>
 <p>For the Postscript path, there will be no gs command. Postscript will be passed directly to the &quot;hp&quot; backend and then to the printer.</p>
@@ -110,17 +110,17 @@ Printing
 <p>Solution:</p>
 <p>Some applications use enscript for printing, make the following changes to /etc/enscript.conf. This tip came from Patricio Paez.</p>
 <p>From:</p>
-<div class="compound">
-<p>DefaultMedia = Letter</p>
-</div>
+<pre class="literal-block">
+DefaultMedia = Letter
+</pre>
 <p>To:</p>
-<div class="compound">
-<p>DefaultMedia = Letterdj</p>
-</div>
+<pre class="literal-block">
+DefaultMedia = Letterdj
+</pre>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Dec  5 14:27:43 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

@@ -22,19 +22,18 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '6.1'
+__version__ = '7.0'
 __title__ = 'PC Sendfax Utility'
 __doc__ = "Allows for sending faxes from the PC using HPLIP supported multifunction printers." 
 
 # Std Lib
-import sys, socket, os, os.path, getopt, signal, atexit
-import ConfigParser, pwd, socket, time
+import sys, os, os.path, getopt, signal, time
 
 # Local
 from base.g import *
 from base.msg import *
 import base.utils as utils
-from base import device, service
+from base import device, service, tui
 
 log.set_module('hp-sendfax')
 
@@ -52,9 +51,8 @@ USAGE = [(__doc__, "", "name", True),
          ("Specify the fax number(s):", "-f<number(s)> or --faxnum=<number(s)> (-n only)", "option", False),
          ("Specify the recipient(s):", "-r<recipient(s)> or --recipient=<recipient(s)> (-n only)", "option", False), 
          ("Specify the groups(s):", "-g<group(s)> or --group=<group(s)> (-n only)", "option", False), 
-         #("Use pretty printing for text files:", "-t or --prettyprint (-n only)", "option", False),
          utils.USAGE_BUS1, utils.USAGE_BUS2,         
-         utils.USAGE_LOGGING1, utils.USAGE_LOGGING2,# utils.USAGE_LOGGING3,
+         utils.USAGE_LOGGING1, utils.USAGE_LOGGING2,
          ("Run in debug mode:", "--gg (same as option: -ldebug)", "option", False),
          utils.USAGE_HELP,
          ("[FILES]", "", "header", False),
@@ -101,7 +99,7 @@ try:
          'gg', 'group=', 'help-desc'])
 
 except getopt.GetoptError, e:
-    log.error(e)
+    log.error(e.msg)
     sys.exit(1)
 
 
@@ -175,13 +173,23 @@ for o, a in opts:
 utils.log_title(__title__, __version__)
 
 # Security: Do *not* create files that other users can muck around with
-os.umask (0077)
+os.umask (0037)
+
+if not prop.fax_build:
+    log.error("Fax disabled in build. Exiting")
+    sys.exit(1)
 
 if mode == GUI_MODE:
-    if not os.getenv('DISPLAY'):
+    if not prop.gui_build:
+        log.warn("GUI mode disabled in build. Reverting to non-interactive mode.")
+        mode = NON_INTERACTIVE_MODE
+
+    elif not os.getenv('DISPLAY'):
+        log.warn("No display found. Reverting to non-interactive mode.")
         mode = NON_INTERACTIVE_MODE
 
     elif not utils.checkPyQtImport():
+        log.warn("PyQt init failed. Reverting to non-interactive mode.")
         mode = NON_INTERACTIVE_MODE
 
 if mode == GUI_MODE:
@@ -193,17 +201,40 @@ if mode == GUI_MODE:
     # UI Forms
     from ui.faxsendjobform import FaxSendJobForm
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
+        hpssd_sock = service.startup()
+    except Error:
         log.error("Unable to connect to HPLIP I/O (hpssd).")
         sys.exit(1)
 
     # create the main application object
     app = QApplication(sys.argv)
 
-    sendfax = FaxSendJobForm(sock,
+    loc = user_cfg.ui.get("loc", "system")
+    if loc.lower() == 'system':
+        loc = str(QTextCodec.locale())
+        log.debug("Using system locale: %s" % loc)
+
+    if loc.lower() != 'c':
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+        qm_file = 'hplip_%s.qm' % loc
+        log.debug("Name of .qm file: %s" % qm_file)
+        loaded = trans.load(qm_file, prop.localization_dir)
+
+        if loaded:
+            app.installTranslator(trans)
+        else:
+            loc = 'c'
+    else:
+        loc = 'c'
+
+    if loc == 'c':
+        log.debug("Using default 'C' locale")
+    else:
+        log.debug("Using locale: %s" % loc)
+
+    sendfax = FaxSendJobForm(hpssd_sock,
                              device_uri,  
                              printer_name, 
                              args) 
@@ -216,9 +247,6 @@ if mode == GUI_MODE:
     sendfax.show()
 
     signal.signal(signal.SIGPIPE, signal.SIG_IGN)
-
-    user_config = os.path.expanduser('~/.hplip.conf')
-    loc = utils.loadTranslators(app, user_config)
 
     try:
         log.debug("Starting GUI loop...")
@@ -241,7 +269,7 @@ else: # NON_INTERACTIVE_MODE
         log.error("Fax address book disabled - Python 2.3+ required.")
         sys.exit(1)    
 
-    db =  fax.FaxAddressBook() # kirbybase instance
+    db =  fax.FaxAddressBook2() # FAB instance
 
     phone_num_list = []
 
@@ -260,35 +288,39 @@ else: # NON_INTERACTIVE_MODE
     log.debug("Unique list=%s" % group_list)
 
     for g in group_list:
-        entries = db.GroupEntries(g)
-        for e in entries:
-            recipient_list.append(e)
+        #entries = db.GroupEntries(g)
+        entries = db.group_members(g)
+        if not entries:
+            log.warn("Unknown group name: %s" % g)
+        else:
+            for e in entries:
+                recipient_list.append(e)
 
     log.debug("Recipient list = %s" % recipient_list)
     recipient_list = utils.uniqueList(recipient_list)
     log.debug("Unique list=%s" % recipient_list)
 
     for r in recipient_list:
-        if not db.select(['name'], [r]):
+        if db.get(r) is None:
             log.error("Unknown fax recipient '%s' in the recipient list." % r)
-            all_entries = db.AllRecordEntries()
-            log.info(utils.bold("\nKnown recipients (entries):"))
+            all_entries = db.get_all_records()
+            log.info(log.bold("\nKnown recipients (entries):"))
 
             for a in all_entries:
-                log.info(a.name)
+                aa = db.get(a)
+                print "%s (fax number: %s)" % (a, aa['fax'])
 
             print
             sys.exit(1)
 
     for p in recipient_list:
-        a = fax.AddressBookEntry(db.select(['name'], [p])[0])
+        a = db.get(p)
         phone_num_list.append(a)
-        log.debug("Name=%s Number=%s" % (a.name, a.fax))
+        log.debug("Name=%s Number=%s" % (a['name'], a['fax']))
 
     for p in faxnum_list:
-        a = fax.AddressBookEntry((-1, "Unknown", "Unknown", "Unknown", "Unknown", p, "", ""))
-        phone_num_list.append(a)
-        log.debug("Name=%s Number=%s" % (a.name, a.fax))
+        phone_num_list.append({'fax': p, 'name': u'Unknown'})
+        log.debug("Number=%s" % p)
 
     log.debug("Phone num list = %s" % phone_num_list)
 
@@ -356,7 +388,7 @@ else: # NON_INTERACTIVE_MODE
             printer_name = printers[0][0]
 
         else:
-            log.info(utils.bold("\nChoose printer (fax queue) from installed printers in CUPS:\n"))
+            log.info(log.bold("\nChoose printer (fax queue) from installed printers in CUPS:\n"))
 
             formatter = utils.TextFormatter(
                     (
@@ -373,28 +405,8 @@ else: # NON_INTERACTIVE_MODE
                 log.info(formatter.compose((str(i), p[0])))
                 i += 1
 
-            while 1:
-                user_input = raw_input(utils.bold("\nEnter number 0...%d for printer (q=quit) ?" % (i-1)))
-
-                if user_input == '':
-                    log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                    continue
-
-                if user_input.strip()[0] in ('q', 'Q'):
-                    sys.exit(1)
-
-                try:
-                    x = int(user_input)
-                except ValueError:
-                    log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                    continue
-
-                if x < 0 or x > (i-1):
-                    log.warn("Invalid input - enter a value between 0 and %d or 'q' to quit." % (i-1))
-                    continue
-
-                break
-
+            ok, x = tui.enter_range("\nEnter number 0...%d for printer (q=quit) ?" % (i-1), 0, (i-1))
+            if not ok: sys.exit(0)
             print printers[x]
             printer_name = printers[x][0]
 
@@ -422,7 +434,7 @@ else: # NON_INTERACTIVE_MODE
             printer_name, device_uri = printers[0]
 
         else:
-            log.info(utils.bold("\nChoose printer (fax queue) from installed printers in CUPS:\n"))
+            log.info(log.bold("\nChoose printer (fax queue) from installed printers in CUPS:\n"))
 
             formatter = utils.TextFormatter(
                     (
@@ -440,33 +452,13 @@ else: # NON_INTERACTIVE_MODE
                 log.info(formatter.compose((str(i), p[0], p[1])))
                 i += 1
 
-            while 1:
-                user_input = raw_input(utils.bold("\nEnter number 0...%d for printer (q=quit) ?" % (i-1)))
-
-                if user_input == '':
-                    log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                    continue
-
-                if user_input.strip()[0] in ('q', 'Q'):
-                    sys.exit(1)
-
-                try:
-                    x = int(user_input)
-                except ValueError:
-                    log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                    continue
-
-                if x < 0 or x > (i-1):
-                    log.warn("Invalid input - enter a value between 0 and %d or 'q' to quit." % (i-1))
-                    continue
-
-                break
-
+            ok, x = tui.enter_range("\nEnter number 0...%d for printer (q=quit) ?" % (i-1), 0, (i-1))
+            if not ok: sys.exit(0)
             print printers[x]
             printer_name, device_uri = printers[x]
 
 
-    log.info(utils.bold("Using printer %s (%s)" % (printer_name, device_uri)))
+    log.info(log.bold("Using printer %s (%s)" % (printer_name, device_uri)))
 
     ppd_file = cups.getPPD(printer_name)
 
@@ -475,12 +467,11 @@ else: # NON_INTERACTIVE_MODE
             log.error("Fax configuration error. The CUPS fax queue for '%s' is incorrectly configured. Please make sure that the CUPS fax queue is configured with the 'HP Fax' Model/Driver." % printer_name)
             sys.exit(1)
 
-    hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
-        log.error("Unable to contact HPLIP I/O (hpssd).")
-        sys.exit(1) 
+        hpssd_sock = service.startup()
+    except Error:
+        log.error("Unable to connect to HPLIP I/O (hpssd).")
+        sys.exit(1)
 
     out_buffer = buildMessage("RegisterGUIEvent", None, 
                               {'type': 'fax', 
@@ -591,7 +582,7 @@ else: # NON_INTERACTIVE_MODE
             #
             log.info("\nTransfering fax data...")
 
-            fax_dir = os.path.expanduser("~/hpfax")
+            fax_dir = prop.user_dir
 
             if not os.path.exists(fax_dir):
                 os.mkdir(fax_dir)
@@ -652,10 +643,12 @@ else: # NON_INTERACTIVE_MODE
             log.error("Query device error (%s)." % e.msg)
             dev.error_state = ERROR_STATE_ERROR
 
-        if dev.error_state > ERROR_STATE_MAX_OK:
+        if dev.error_state > ERROR_STATE_MAX_OK and \
+            dev.error_state not in (ERROR_STATE_LOW_SUPPLIES, ERROR_STATE_LOW_PAPER):
+
             log.error("Device is busy or in an error state (code=%d). Please wait for the device to become idle or clear the error and try again." % dev.error_state)
             sys.exit(1)
-            
+
         user_cfg.last_used.device_uri = dev.device_uri
 
         log.debug("File list:")
@@ -669,7 +662,7 @@ else: # NON_INTERACTIVE_MODE
         event_queue = Queue.Queue()
 
         log.info("\nSending fax...")
-        
+
         if not dev.sendFaxes(phone_num_list, file_list, "", 
                              "", None, False, printer_name,
                              update_queue, event_queue):

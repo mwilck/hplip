@@ -28,7 +28,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "hplip_api.h"
+#include "hpmud.h"
 #include "io.h"
 #include "common.h"
 #include "pml.h"
@@ -36,7 +36,7 @@
 #define DEBUG_DECLARE_ONLY
 #include "sanei_debug.h"
 
-int PmlSetID( PmlObject_t obj, char * oid )
+int __attribute__ ((visibility ("hidden"))) PmlSetID( PmlObject_t obj, char * oid )
 {
     int len = 0;    /* TODO: Do we need this parameter? */
 
@@ -68,63 +68,7 @@ int PmlSetID( PmlObject_t obj, char * oid )
     return OK;
 }
 
-int PmlSetAsciiID( PmlObject_t obj, char * s )
-{
-    char oid[PML_MAX_OID_LEN + 1];
-    int len = 0, c;
-
-    while( 1 )
-    {
-        while( *s == '.' )
-        {
-            s++;
-        }
-        if( !*s )
-        {
-            break;
-        }
-        if( *s<'0' || *s>'9' )
-        {
-            return ERROR;
-        }
-        c = atoi( s );
-        if( c<0 || c>255 )
-        {
-            return ERROR;
-        }
-        if( len >= PML_MAX_OID_LEN )
-        {
-            return ERROR;
-        }
-        oid[len++] = c;
-        while( *s >= '0' && *s <= '9' )
-        {
-            s++;
-        }
-    }
-    oid[len] = 0;
-
-    return PmlSetID( obj, oid );
-}
-
-int PmlGetID( PmlObject_t obj, char * buffer, int maxlen )
-{
-    if( maxlen <= 1 )
-    {
-        return ERROR;
-    }
-    buffer[maxlen - 1] = 0;
-    strncpy( buffer, obj->oid, maxlen );
-    
-    if( buffer[maxlen - 1] )
-    {
-        return ERROR;
-    }
-
-    return OK;
-}
-
-PmlValue_t PmlGetLastValue( PmlObject_t obj )
+static PmlValue_t PmlGetLastValue( PmlObject_t obj )
 {
     if( obj->numberOfValidValues <= 0 )
     {
@@ -133,17 +77,7 @@ PmlValue_t PmlGetLastValue( PmlObject_t obj )
     return &obj->value[obj->indexOfLastValue];
 }
 
-PmlValue_t PmlGetPreviousLastValue( PmlObject_t obj )
-{
-    if( obj->numberOfValidValues <= 1 )
-    {
-        return 0;
-    }
-
-    return &obj->value[( PML_MAX_OID_VALUES + obj->indexOfLastValue - 1 ) % PML_MAX_OID_VALUES];
-}
-
-PmlValue_t PmlPrepareNextValue( PmlObject_t obj )
+static PmlValue_t PmlPrepareNextValue( PmlObject_t obj )
 {
     obj->indexOfLastValue = ( obj->indexOfLastValue + 1 ) %
                             PML_MAX_OID_VALUES;
@@ -154,15 +88,7 @@ PmlValue_t PmlPrepareNextValue( PmlObject_t obj )
     return &obj->value[obj->indexOfLastValue];
 }
 
-void PmlClearOldValues( PmlObject_t obj )
-{
-    if( obj->numberOfValidValues )
-    {
-        obj->numberOfValidValues = 1;
-    }
-}
-
-int PmlSetPrefixValue( PmlObject_t obj,
+static int PmlSetPrefixValue( PmlObject_t obj,
                            int type,
                            char * prefix,
                            int lenPrefix,
@@ -211,33 +137,12 @@ abort:
     return r;
 }
 
-int PmlSetValue( PmlObject_t obj, int type, char * value, int len )
+int __attribute__ ((visibility ("hidden"))) PmlSetValue( PmlObject_t obj, int type, char * value, int len )
 {
     return PmlSetPrefixValue( obj, type, 0, 0, value, len );
 }
 
-int PmlSetStringValue( PmlObject_t obj,
-                           int symbolSet,
-                           char * value,
-                           int len )
-{
-    char prefix[2];
-    prefix[0] = ( symbolSet >> 8 ) & 0xFF;
-    prefix[1] = ( symbolSet ) & 0xFF;
-
-    if( !len )
-    {
-        len = strlen( value );
-    }
-    return PmlSetPrefixValue( obj,
-                                  PML_TYPE_STRING,
-                                  prefix,
-                                  2,
-                                  value,
-                                  len );
-}
-
-int PmlSetIntegerValue( PmlObject_t obj, int type, int value )
+int __attribute__ ((visibility ("hidden"))) PmlSetIntegerValue( PmlObject_t obj, int type, int value )
 {
     char buffer[sizeof( int )];
     int len = sizeof( int ), i = len - 1;
@@ -258,17 +163,7 @@ int PmlSetIntegerValue( PmlObject_t obj, int type, int value )
     return PmlSetPrefixValue( obj, type, buffer + i, len - i, 0, 0 );
 }
 
-int PmlGetType( PmlObject_t obj )
-{
-    PmlValue_t v = PmlGetLastValue( obj );
-    if( !v )
-    {
-        return ERROR;
-    }
-    return v->type;
-}
-
-int PmlGetPrefixValue( PmlObject_t obj,
+static int PmlGetPrefixValue( PmlObject_t obj,
                            int * pType,
                            char * prefix,
                            int lenPrefix,
@@ -322,15 +217,12 @@ int PmlGetPrefixValue( PmlObject_t obj,
     return len;
 }
 
-int PmlGetValue( PmlObject_t obj,
-                     int * pType,
-                     char * buffer,
-                     int maxlen )
+int __attribute__ ((visibility ("hidden"))) PmlGetValue(PmlObject_t obj, int *pType, char *buffer, int maxlen)
 {
     return PmlGetPrefixValue( obj, pType, 0, 0, buffer, maxlen );
 }
 
-int PmlGetStringValue( PmlObject_t obj,
+int __attribute__ ((visibility ("hidden"))) PmlGetStringValue( PmlObject_t obj,
                            int * pSymbolSet,
                            char * buffer,
                            int maxlen )
@@ -356,7 +248,7 @@ int PmlGetStringValue( PmlObject_t obj,
     return len;
 }
 
-int PmlGetIntegerValue( PmlObject_t obj, int * pType, int * pValue )
+int __attribute__ ((visibility ("hidden"))) PmlGetIntegerValue( PmlObject_t obj, int * pType, int * pValue )
 {
     int type;
     unsigned char svalue[sizeof( int )];
@@ -385,48 +277,19 @@ int PmlGetIntegerValue( PmlObject_t obj, int * pType, int * pValue )
     return OK;
 }
 
-int PmlDoLastValuesDiffer( PmlObject_t obj )
-{
-    PmlValue_t vNew = PmlGetLastValue( obj );
-    PmlValue_t vOld = PmlGetPreviousLastValue( obj );
-
-    return ( vNew &&
-             vOld &&
-             ( vOld->type !=
-               vNew->type ||
-               vOld->len !=
-               vNew->len ||
-               memcmp( vOld->value,
-                       vNew->value,
-                       vOld->len ) ) );
-}
-
-int PmlSetStatus( PmlObject_t obj, int status )
+static int PmlSetStatus( PmlObject_t obj, int status )
 {
     obj->status = status;
 
     return status;
 }
 
-int PmlGetStatus( PmlObject_t obj )
+static int PmlGetStatus( PmlObject_t obj )
 {
     return obj->status;
 }
 
-int PmlReadReply( /*ptalDevice_t dev,*/
-                  int deviceid,
-                  int channelid,
-                  unsigned char * data,
-                  int maxDatalen,
-                  int request )
-{
-    //return ptalChannelRead( dev->pmlChannel, data, maxDatalen );
-  return hplip_ReadHP(hplip_session, deviceid, channelid, (char *)data, maxDatalen, HPLIP_EXCEPTION_TIMEOUT );
-
-    /* TODO: Check for and handle traps. */
-}
-
-int PmlRequestSet( int deviceid, int channelid, PmlObject_t obj )
+int __attribute__ ((visibility ("hidden"))) PmlRequestSet( int deviceid, int channelid, PmlObject_t obj )
 {
     unsigned char data[PML_MAX_DATALEN];
     int datalen=0, status=ERROR, type, result, pml_result;
@@ -435,17 +298,17 @@ int PmlRequestSet( int deviceid, int channelid, PmlObject_t obj )
                 
     datalen = PmlGetValue(obj, &type, (char *)data, sizeof(data));
 
-    datalen = SetPml(deviceid, channelid, obj->oid, type, (char *)data, datalen, &result, &pml_result); 
+    result = hpmud_set_pml(deviceid, channelid, obj->oid, type, data, datalen, &pml_result); 
 
     PmlSetStatus(obj, pml_result);
 
-    if (result == OK)
+    if (result == HPMUD_R_OK)
         status = OK;
 
     return status;  /* OK = valid I/O result */
 }
 
-int PmlRequestSetRetry( int deviceid, int channelid, PmlObject_t obj, int count, int delay )
+int __attribute__ ((visibility ("hidden"))) PmlRequestSetRetry( int deviceid, int channelid, PmlObject_t obj, int count, int delay )
 {
    int stat=ERROR, r;
 
@@ -472,7 +335,10 @@ int PmlRequestSetRetry( int deviceid, int channelid, PmlObject_t obj, int count,
 
    /* Check PML result. */
    if (PmlGetStatus(obj) & PML_ERROR)
+   {
+      DBG(6, "PML set failed: oid=%s count=%d delay=%d %s %d\n", obj->oid, count, delay, __FILE__, __LINE__);
       goto bugout;
+   }
 
    stat = OK; 
 
@@ -480,29 +346,30 @@ bugout:
    return stat;  /* OK = valid I/O result AND PML result */
 }
 
-int PmlRequestGet( int deviceid, int channelid, PmlObject_t obj ) 
+int __attribute__ ((visibility ("hidden"))) PmlRequestGet( int deviceid, int channelid, PmlObject_t obj ) 
 {
     unsigned char data[PML_MAX_DATALEN];
-    int datalen=0, stat=ERROR, result, type, pml_result;
+    int datalen=0, stat=ERROR, type, pml_result;
+    enum HPMUD_RESULT result;
 
-    datalen = GetPml(deviceid, channelid, obj->oid, (char *)data, sizeof(data), &result, &type, &pml_result); 
+    result = hpmud_get_pml(deviceid, channelid, obj->oid, data, sizeof(data), &datalen, &type, &pml_result); 
 
     PmlSetStatus(obj, pml_result);
 
-    if (result == OK)
+    if (result == HPMUD_R_OK)
     {
-      PmlSetValue(obj, type, (char *)data, datalen);
+       PmlSetValue(obj, type, (char *)data, datalen);
        stat = OK;
     }
 
-    return stat;  /* OK = valid I/O result */
+    return stat; 
 }
 
 /*
  * Phase 2 rewrite. des
  */
 
-int is_zero(char *buf, int size)
+static int is_zero(char *buf, int size)
 {
    int i;
 
@@ -515,7 +382,7 @@ int is_zero(char *buf, int size)
 }
 
 /* Unlock Scanner. */
-int clr_scan_token(HPAIO_RECORD *hpaio)
+static int clr_scan_token(HPAIO_RECORD *hpaio)
 {
    int len, i, stat=ERROR;
    int max = sizeof(hpaio->pml.scanToken);
@@ -545,7 +412,7 @@ bugout:
 }
 
 /* Lock Scanner. */
-int set_scan_token(HPAIO_RECORD *hpaio)
+static int set_scan_token(HPAIO_RECORD *hpaio)
 {
    int stat=ERROR;
 
@@ -567,7 +434,7 @@ bugout:
    return stat;
 }
 
-int set_scan_parameters(HPAIO_RECORD *hpaio)
+static int set_scan_parameters(HPAIO_RECORD *hpaio)
 {
    int pixelDataType, stat=ERROR;
    struct PmlResolution resolution;
@@ -648,7 +515,7 @@ bugout:
    return stat;
 }
 
-int pml_to_sane_status(HPAIO_RECORD *hpaio)
+static int pml_to_sane_status(HPAIO_RECORD *hpaio)
 {
    int stat=SANE_STATUS_IO_ERROR, status;
 
@@ -694,7 +561,7 @@ bugout:
     return stat;
 }
 
-int check_pml_done(HPAIO_RECORD *hpaio)
+static int check_pml_done(HPAIO_RECORD *hpaio)
 {
    int stat=ERROR, state;
 
@@ -725,7 +592,7 @@ bugout:
    return stat;
 }
 
-int pml_start(HPAIO_RECORD *hpaio)
+int __attribute__ ((visibility ("hidden"))) pml_start(HPAIO_RECORD *hpaio)
 {
    MFPDTF_FIXED_HEADER *ph;
    MFPDTF_START_PAGE *ps;
@@ -737,7 +604,7 @@ int pml_start(HPAIO_RECORD *hpaio)
 
    if (hpaio->cmd_channelid < 0)
    {
-      if ((hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE")) < 0)
+      if (hpmud_open_channel(hpaio->deviceid, "HP-MESSAGE", &hpaio->cmd_channelid) != HPMUD_R_OK)
       {
          bug("failed to open pml channel: %s %d\n", __FILE__, __LINE__);
          goto bugout;
@@ -748,7 +615,7 @@ int pml_start(HPAIO_RECORD *hpaio)
    {
       if (hpaio->scan_channelid < 0)
       {
-         if ((hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN")) < 0)
+         if (hpmud_open_channel(hpaio->deviceid, "HP-SCAN", &hpaio->scan_channelid) != HPMUD_R_OK)
          {
             bug("failed to open scan channel: %s %d\n", __FILE__, __LINE__);
             goto bugout;
@@ -865,7 +732,7 @@ int pml_start(HPAIO_RECORD *hpaio)
    {
       if (hpaio->scan_channelid < 0)
       {
-         if ((hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN")) < 0)
+         if (hpmud_open_channel(hpaio->deviceid, "HP-SCAN", &hpaio->scan_channelid) != HPMUD_R_OK)
             goto bugout;
       }
    }
@@ -1010,7 +877,7 @@ bugout:
    return stat;
 }
 
-int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int *pLength)
+int __attribute__ ((visibility ("hidden"))) pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int *pLength)
 {
    MFPDTF_RASTER *pd;
    int stat=SANE_STATUS_IO_ERROR;
@@ -1140,7 +1007,7 @@ int pml_read(HPAIO_RECORD *hpaio, SANE_Byte *data, SANE_Int maxLength, SANE_Int 
     return stat;
 }
 
-int pml_cancel(HPAIO_RECORD *hpaio)
+int __attribute__ ((visibility ("hidden"))) pml_cancel(HPAIO_RECORD *hpaio)
 {
    int oldStuff = (hpaio->preDenali || hpaio->fromDenali || hpaio->denali) ? 1 : 0;
 
@@ -1164,12 +1031,12 @@ int pml_cancel(HPAIO_RECORD *hpaio)
 
    if (hpaio->scan_channelid >= 0)
    {
-      hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->scan_channelid);
+      hpmud_close_channel(hpaio->deviceid, hpaio->scan_channelid);
       hpaio->scan_channelid = -1;
    }
    if (hpaio->cmd_channelid >= 0)
    {
-      hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->cmd_channelid);
+      hpmud_close_channel(hpaio->deviceid, hpaio->cmd_channelid);
       hpaio->cmd_channelid = -1;
       SendScanEvent(hpaio->deviceuri, 2001, "event");  /* hpssd message scan done */
    }

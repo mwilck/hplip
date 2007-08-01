@@ -56,7 +56,7 @@ class UnloadForm(QMainWindow):
             self.device_uri, self.printer_name = None, None
 
         if not self.device_uri and not self.printer_name:
-            probed_devices = device.probeDevices(None, bus=bus, filter='pcard')
+            probed_devices = device.probeDevices(bus=bus, filter='pcard')
             cups_printers = cups.getPrinters()
             log.debug(probed_devices)
             log.debug(cups_printers)
@@ -74,11 +74,11 @@ class UnloadForm(QMainWindow):
 
             if x == 0:
                 from nodevicesform import NoDevicesForm
-                self.failure(self.__tr("<p><b>No devices found that support photo card access.</b><p>Please make sure your device is properly installed and try again."))
+                self.FailureUI(self.__tr("<p><b>No devices found that support photo card access.</b><p>Please make sure your device is properly installed and try again."))
                 self.init_failed = True
 
             elif x == 1:
-                log.info(utils.bold("Using device: %s" % devices[0][0]))
+                log.info(log.bold("Using device: %s" % devices[0][0]))
                 self.device_uri = devices[0][0]
 
             else:
@@ -93,22 +93,23 @@ class UnloadForm(QMainWindow):
         self.FormLayout.addWidget(self.UnloadView,0,0)
 
 
-        try:
-            self.cur_device = device.Device(device_uri=self.device_uri, 
-                                             printer_name=self.printer_name, 
-                                             hpssd_sock=None)
-        except Error, e:
-            log.error("Invalid device URI or printer name.")
-            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
-            self.init_failed = True
-
-        else:
-            self.device_uri = self.cur_device.device_uri
-            user_cfg.last_used.device_uri = self.device_uri
-
-            log.debug(self.device_uri)
-
-            self.statusBar().message(self.device_uri)
+        if not self.init_failed:
+            try:
+                self.cur_device = device.Device(device_uri=self.device_uri, 
+                                                 printer_name=self.printer_name, 
+                                                 hpssd_sock=None)
+            except Error, e:
+                log.error("Invalid device URI or printer name.")
+                self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
+                self.init_failed = True
+    
+            else:
+                self.device_uri = self.cur_device.device_uri
+                user_cfg.last_used.device_uri = self.device_uri
+    
+                log.debug(self.device_uri)
+    
+                self.statusBar().message(self.device_uri)
 
 
         QTimer.singleShot(0, self.initialUpdate)
@@ -119,11 +120,10 @@ class UnloadForm(QMainWindow):
             self.close()
             return
 
-
         self.UnloadView.onDeviceChange(self.cur_device)
 
     def FailureUI(self, error_text):
-        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
+        log.error(unicode(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", " "))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,

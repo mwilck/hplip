@@ -973,6 +973,18 @@ public:
     void SetMediaSource(MediaSource msource);
 }; //HeaderDJ990
 
+//ClassName
+/*
+******************************************************************************/
+class HeaderDJGenericVIP : public HeaderDJ990
+{
+public:
+    HeaderDJGenericVIP (Printer *p, PrintContext *pc);
+protected:
+    unsigned int m_uiCAPy;
+    DRIVER_ERROR SendCAPy (unsigned int iAbsY);
+    DRIVER_ERROR FormFeed ();
+}; // HeaderDJGenericVIP
 
 //ClassName
 /*

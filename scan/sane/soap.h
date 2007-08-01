@@ -28,7 +28,7 @@
 
 //#define HAVE_SOAP
 
-#include "hplip_api.h"
+#include "hpmud.h"
 
 #ifdef HAVE_SOAP
 #include "webScanH.h"
@@ -77,8 +77,8 @@ enum THREAD_STATE
 typedef struct
 {
    char *tag;  /* handle identifier */
-   int dd;  /* hpiod device descriptor */
-   int sd;  /* hpiod soap channel descriptor */
+   HPMUD_DEVICE dd;  /* hpiod device descriptor */
+   HPMUD_CHANNEL sd;  /* hpiod soap channel descriptor */
    char uri[HPLIP_LINE_SIZE];
    char model[HPLIP_LINE_SIZE];
    char ip[128];

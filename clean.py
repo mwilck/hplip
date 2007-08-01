@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '1.7'
+__version__ = '3.0'
 __title__ = 'Printer Cartridge Cleaning Utility'
 __doc__ = "Cartridge cleaning utility for HPLIP supported inkjet printers."
 
@@ -28,12 +28,64 @@ __doc__ = "Cartridge cleaning utility for HPLIP supported inkjet printers."
 import sys
 import re
 import getopt
+import time
 
 # Local
 from base.g import *
-from base import device, utils, maint
+from base import device, utils, maint, tui
 from prnt import cups
 
+d = None
+
+def CleanUIx(level):
+    global d
+    ok = tui.continue_prompt("Ready to perform level %d cleaning (Note: Wait for previous print to finish)." % level)
+    timeout = 0
+    time.sleep(5)
+    
+    try:
+        while True:
+            update_spinner()
+            try:
+                d.open()
+            except Error:
+                time.sleep(2)
+                timeout += 2
+                continue
+            
+            if d.isIdleAndNoError():
+                break
+            
+            time.sleep(1)
+            timeout += 1
+            
+            if timeout > 45:
+                log.error("Timeout waiting for print to finish.")
+                sys.exit(0)
+        
+        
+    finally:
+        cleanup_spinner()
+        d.close()
+    
+    return True
+
+def CleanUI1():
+    log.note("Please wait for page to complete printing before continuing.")
+    log.info("\nLevel 1 cleaning complete. If the printout looks OK, enter 'q' to quit or <enter> to do a level 2 cleaning.")
+    return CleanUIx(2)
+    
+    
+def CleanUI2():
+    log.note("Please wait for page to complete printing before continuing.")
+    log.info("\nLevel 2 cleaning complete. If the printout looks OK, enter 'q' to quit or <enter> to do a level 3 cleaning.")
+    log.warn("Level 3 uses a lot of ink.")
+    return CleanUIx(3)
+
+def CleanUI3():
+    log.info("\nLevel 3 cleaning complete. Check this page to see if the problem was fixed. If the test page was not printed OK, replace the print cartridge(s).")
+    
+    
 USAGE = [(__doc__, "", "name", True),
          ("Usage: hp-clean [PRINTER|DEVICE-URI] [OPTIONS]", "", "summary", True),
          utils.USAGE_ARGS,
@@ -41,8 +93,6 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_PRINTER,
          utils.USAGE_SPACE,
          utils.USAGE_OPTIONS,
-         ("Cleaning level:", "-v<level> or --level=<level>", "option", False),
-         ("", "<level>: 1\*, 2, or 3 (\*default)", "option", False),
          utils.USAGE_BUS1, utils.USAGE_BUS2,
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
@@ -57,6 +107,8 @@ USAGE = [(__doc__, "", "name", True),
          ("hp-colorcal", "", "seealso", False),
          ]
 
+    
+         
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
@@ -67,9 +119,9 @@ def usage(typ='text'):
 log.set_module("hp-clean")
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:v:g',
+    opts, args = getopt.getopt(sys.argv[1:], 'p:d:hl:b:g',
                                 ['printer=', 'device=', 'help', 'help-rest', 'help-man', 
-                                 'logging=', 'bus=', 'level=', 'help-desc'])
+                                 'logging=', 'bus=', 'help-desc'])
 except getopt.GetoptError:
     usage()
 
@@ -77,11 +129,9 @@ bus = device.DEFAULT_PROBE_BUS
 log_level = logger.DEFAULT_LOG_LEVEL
 printer_name = None
 device_uri = None
-level = 1
 
 if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
-
 
 for o, a in opts:
     if o in ('-h', '--help'):
@@ -117,17 +167,6 @@ for o, a in opts:
     elif o == '-g':
         log.set_level('debug')
 
-    elif o in ('-v', '--level'):
-        try:
-            level = int(a)
-        except ValueError:
-            log.error("Invalid cleaning level, setting level to 1.")
-            level = 1
-
-
-if level < 1 or level > 3:
-    log.error("Invalid cleaning level, setting level to 1.")
-    level = 1
 
 if not device.validateBusList(bus):
     usage()
@@ -163,6 +202,10 @@ if d.device_uri is None and device_uri:
 
 user_cfg.last_used.device_uri = d.device_uri
 
+if not d.cups_printers:
+    log.error("No appropriate printer queue found for device. Please setup printer with hp-setup and try again.")
+    sys.exit(1)
+
 try:
     try:
         d.open()
@@ -172,26 +215,33 @@ try:
 
     if d.isIdleAndNoError():
         clean_type = d.mq.get('clean-type', 0)
-        log.info("Performing type %d, level %d cleaning..." % (clean_type, level))
+        log.debug("Clean type=%d" % clean_type)
+        d.close()
 
-        if clean_type in (CLEAN_TYPE_PCL,CLEAN_TYPE_PCL_WITH_PRINTOUT):
-            if level == 3:
-                maint.wipeAndSpitType1(d)
-            elif level == 2:
-                maint.primeType1(d)
+        try:
+            if clean_type == CLEAN_TYPE_PCL:
+                maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
+                                maint.wipeAndSpitType1, tui.load_paper_prompt,
+                                CleanUI1, CleanUI2, CleanUI3,
+                                None)
+    
+            elif clean_type == CLEAN_TYPE_LIDIL:
+                maint.cleaning(d, clean_type, maint.cleanType2, maint.primeType2,
+                                maint.wipeAndSpitType2, tui.load_paper_prompt,
+                                CleanUI1, CleanUI2, CleanUI3,
+                                None)
+    
+            elif clean_type == CLEAN_TYPE_PCL_WITH_PRINTOUT:
+                maint.cleaning(d, clean_type, maint.cleanType1, maint.primeType1,
+                                maint.wipeAndSpitType1, tui.load_paper_prompt,
+                                CleanUI1, CleanUI2, CleanUI3,
+                                None)
+        
             else:
-                maint.cleanType1(d)
-
-        elif clean_type == CLEAN_TYPE_LIDIL:
-            if level == 3:
-                maint.wipeAndSpitType2(d)
-            elif level == 2:
-                maint.primeType2(d)
-            else:
-                maint.cleanType2(d)
-
-        else:
-            log.error("Cleaning not needed or supported on this device.")
+                log.error("Cleaning not needed or supported on this device.")
+        
+        except Error, e:
+            log.error("An error occured: %s" % e[0])
 
     else:
         log.error("Device is busy or in an error state. Please check device and try again.")

@@ -70,12 +70,12 @@ class PrinterNameValidator(QValidator):
         QValidator.__init__(self, parent, name)
 
     def validate(self, input, pos):
-        input = str(input)
+        input = unicode(input)
         
         if not input:
             return QValidator.Acceptable, pos
 
-        elif input[pos-1] in ' #/%':
+        elif input[pos-1] in u"""~`!@#$%^&*()-=+[]{}()\\/,.<>?'\";:|""":     
             return QValidator.Invalid, pos
 
         elif input != utils.printable(input):
@@ -91,12 +91,12 @@ class PhoneNumValidator(QValidator):
         QValidator.__init__(self, parent, name)
 
     def validate(self, input, pos):
-        input = str(input)
+        input = unicode(input)
         
         if not input:
             return QValidator.Acceptable, pos
         
-        elif input[pos-1] not in '0123456789-(+) ':
+        elif input[pos-1] not in u'0123456789-(+) ':
             return QValidator.Invalid, pos
         
         else:
@@ -117,6 +117,16 @@ class SetupForm(SetupForm_base):
         else:
             self.bus = bus
             self.start_page = self.ProbedDevicesPage
+            
+        if not prop.par_build:
+            self.parRadioButton.setEnabled(False)
+            
+        if not prop.net_build:
+            self.netRadioButton.setEnabled(False)
+            
+        if not prop.par_build and not prop.net_build:
+            self.bus = 'usb'
+            self.start_page = self.ProbedDevicesPage
 
         self.param = param
         self.jd_port = jd_port
@@ -127,19 +137,10 @@ class SetupForm(SetupForm_base):
         icon = QPixmap(os.path.join(prop.image_dir, 'HPmenu.png'))
         self.setIcon(icon)
 
-        self.hpiod_sock = None
         try:
-            self.hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-        except socket.error:
-            log.error("Unable to connect to hpiod.")
-            raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
-
-        self.hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            self.hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-        except socket.error:
-            print "Unable to connect to HPLIP I/O (hpssd)."
+            self.hpssd_sock = service.startup()
+        except Error:
+            log.error("Unable to connect to HPLIP I/O (hpssd).")
             raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
 
         self.connectionTypeButtonGroup.setButton(0)
@@ -203,7 +204,7 @@ class SetupForm(SetupForm_base):
 
         elif page is self.PPDPage: # ProbedDevicesPage --> PPDPage
             if self.param:
-                device_uri, sane_uri, fax_uri = device.makeURI(self.hpiod_sock, self.param, self.jd_port)
+                device_uri, sane_uri, fax_uri = device.makeURI(self.param, self.jd_port)
 
                 if device_uri:
                     self.device_uri = device_uri
@@ -365,7 +366,7 @@ class SetupForm(SetupForm_base):
         self.probedDevicesListView.addColumn(self.__tr("Device URI"))
 
         if devices is None:
-            devices = device.probeDevices(self.hpiod_sock, self.bus, self.timeout, self.ttl, self.filter, self.search) # net_search='slp'
+            devices = device.probeDevices(self.bus, self.timeout, self.ttl, self.filter, self.search) # net_search='slp'
             self.probeHeadingTextLabel.setText(self.__tr("%1 device(s) found on the %1:").arg(len(devices)).arg(io_str))
 
         else:
@@ -442,7 +443,7 @@ class SetupForm(SetupForm_base):
         if dlg.exec_loop() == QDialog.Accepted:
             QApplication.setOverrideCursor(QApplication.waitCursor)
 
-            cups_uri, sane_uri, fax_uri = device.makeURI(self.hpiod_sock, dlg.param)
+            cups_uri, sane_uri, fax_uri = device.makeURI(dlg.param)
 
             if cups_uri:
                 back_end, is_hp, bus, model, serial, dev_file, host, port = device.parseDeviceURI(cups_uri)
@@ -575,16 +576,16 @@ class SetupForm(SetupForm_base):
             self.setNextEnabled(self.PrinterNamePage, False)
 
     def printerLocationLineEdit_textChanged(self, a0):
-        self.location = str(a0)
+        self.location = unicode(a0)
 
     def printerDescriptionLineEdit_textChanged(self,a0):
-        self.desc = str(a0)
+        self.desc = unicode(a0)
 
     def faxLocationLineEdit_textChanged(self,a0):
-        self.fax_location = str(a0)
+        self.fax_location = unicode(a0)
 
     def faxDescriptionLineEdit_textChanged(self,a0):
-        self.fax_desc = str(a0)
+        self.fax_desc = unicode(a0)
 
     def defaultPrinterNamePushButton_clicked(self):
         self.setDefaultPrinterName()
@@ -619,7 +620,7 @@ class SetupForm(SetupForm_base):
         self.fax_name = fax_name
 
     def faxNameLineEdit_textChanged(self, a0):
-        self.fax_name = str(a0)
+        self.fax_name = unicode(a0)
         self.defaultFaxNamePushButton.setEnabled(True)
 
         if not self.fax_name or (self.fax_uri in self.installed_fax_devices and \
@@ -647,10 +648,10 @@ class SetupForm(SetupForm_base):
             self.setNextEnabled(self.PrinterNamePage, False)
 
     def faxNumberLineEdit_textChanged(self, a0):
-        self.fax_number = str(a0)
+        self.fax_number = unicode(a0)
 
     def faxNameCoLineEdit_textChanged(self, a0):
-        self.fax_name_company = str(a0)
+        self.fax_name_company = unicode(a0)
 
     def faxCheckBox_clicked(self):
         pass
@@ -679,7 +680,7 @@ class SetupForm(SetupForm_base):
                     d.open()
                 except Error:
                     error_text = self.__tr("Unable to communicate with the device. Please check the device and try again.")
-                    log.error(str(error_text))
+                    log.error(unicode(error_text))
                     if QMessageBox.critical(self,
                                            self.caption(),
                                            error_text,
@@ -706,7 +707,7 @@ class SetupForm(SetupForm_base):
 
                             except Error:
                                 error_text = self.__tr("<b>Device I/O Error</b><p>Could not communicate with device. Device may be busy.")
-                                log.error(str(error_text))
+                                log.error(unicode(error_text))
 
                                 if QMessageBox.critical(self,
                                                        self.caption(),
@@ -828,7 +829,6 @@ class SetupForm(SetupForm_base):
                         self.FailureUI(self.__tr("<b>Printer Error.</b><p>Printer is busy, offline, or in an error state. Please check the device and try again."))
                         d.close()
 
-        self.hpiod_sock.close()
         self.hpssd_sock.close()
 
         if self.username:
@@ -844,13 +844,12 @@ class SetupForm(SetupForm_base):
 
 
     def reject(self):
-        self.hpiod_sock.close()
         self.hpssd_sock.close()
 
         QWizard.reject(self)
 
     def FailureUI(self, error_text):
-        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
+        log.error(unicode(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,

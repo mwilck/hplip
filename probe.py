@@ -175,9 +175,9 @@ utils.log_title(__title__, __version__)
 buses = bus
 for bus in buses.split(','):
     if bus == 'net':
-        log.info(utils.bold("Probing network for printers. Please wait, this will take approx. %d seconds...\n" % timeout))
+        log.info(log.bold("Probing network for printers. Please wait, this will take approx. %d seconds...\n" % timeout))
 
-    devices = device.probeDevices(None, bus, timeout, ttl, filter, search, method)
+    devices = device.probeDevices(bus, timeout, ttl, filter, search, method)
     cleanup_spinner()
 
     max_c1, max_c2, max_c3, max_c4 = 0, 0, 0, 0

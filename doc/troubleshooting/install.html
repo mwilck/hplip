@@ -92,26 +92,26 @@ Installation
 <li>Determine the IP address of your printer by printing out the network configuration page (or if you know it or can determine it in another way)</li>
 <li>Run:</li>
 </ol>
-<div class="compound">
-<p>$ hp-makeuri &lt;ip-address&gt;</p>
-</div>
+<pre class="literal-block">
+$ hp-makeuri &lt;ip-address&gt;
+</pre>
 <p>For example:</p>
-<div class="compound">
-<p>$ hp-makeuri 192.168.1.1</p>
-</div>
+<pre class="literal-block">
+$ hp-makeuri 192.168.1.1
+</pre>
 <ol class="arabic simple" start="3">
 <li>This will result in a device URI printed to the console. For example:</li>
 </ol>
-<div class="compound">
-<p>hp:/net/Officejet_9100_series?ip=192.168.1.1</p>
-</div>
+<pre class="literal-block">
+hp:/net/Officejet_9100_series?ip=192.168.1.1
+</pre>
 <ol class="arabic simple" start="4">
 <li>Copy this device URI</li>
 <li>Open the CUPS UI:</li>
 </ol>
-<div class="compound">
-<p><a class="reference" href="http://localhost:631">http://localhost:631</a></p>
-</div>
+<pre class="literal-block">
+<a class="reference" href="http://localhost:631">http://localhost:631</a>
+</pre>
 <p>(or YasT, etc) and install the printer by pasting the generated URI.</p>
 <p><strong>Issue 2: There is no listing in CUPS or my printer installation tool for the exact model number of my printer.</strong></p>
 <p>Solution:</p>
@@ -122,13 +122,13 @@ Installation
 <p><strong>Issue 3: I've plugged in my USB printer, but it doesn't show up in the CUPS interface.</strong></p>
 <p>Solution:</p>
 <p>Restart CUPS. There are two basic methods: (Note: You must be root to execute these commands)</p>
-<div class="compound">
-<p># /etc/init.d/cupsd restart</p>
-</div>
+<pre class="literal-block">
+# /etc/init.d/cupsd restart
+</pre>
 <p>or:</p>
-<div class="compound">
-<p># killall -HUP cupsd</p>
-</div>
+<pre class="literal-block">
+# killall -HUP cupsd
+</pre>
 <p><strong>Issue 4: I can 'ping' my network printer but 'hp-makeuri' won't generate a device URI for it.</strong></p>
 <p>Solution:</p>
 <ol class="arabic simple">
@@ -148,7 +148,7 @@ Installation
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Dec  5 14:27:43 2006; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

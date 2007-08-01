@@ -98,67 +98,67 @@ General Connection
 <li>Check and make sure that the printer is connected to your system and powered on with no printer errors.</li>
 <li>Unplug the printer from your computer, open a terminal/console window and enter this command.</li>
 </ol>
-<div class="compound">
-<p>tail -f /var/log/messages</p>
-</div>
+<pre class="literal-block">
+tail -f /var/log/messages
+</pre>
 <p>then reconnect the printer.  You should see the system display something like:</p>
-<div class="compound">
-<p class="compound-first">Mar 16 11:45:43 localhost kernel: [4298892.030000] hub 2-1.2:1.0: USB hub found</p>
-<p class="compound-middle">Mar 16 11:45:43 localhost kernel: [4298892.033000] hub 2-1.2:1.0: 4 ports detected</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.316000] usb 2-1.3: new full speed USB device using uhci_hcd and address 11</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.409000] hub 2-1.3:1.0: USB hub found</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.412000] hub 2-1.3:1.0: 4 ports detected</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.697000] usb 2-1.2.1: new full speed USB device using uhci_hcd and address 12</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.798000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 12 if 1 alt 0 proto 2 vid 0x03F0 pid 0x4311</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.798000] scsi6 : SCSI emulation for USB Mass Storage devices</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298892.975000] usb 2-1.2.2: new full speed USB device using uhci_hcd and address 13</p>
-<p class="compound-middle">Mar 16 11:45:44 localhost kernel: [4298893.063000] usb 2-1.2.2: not running at top speed; connect to a high speed hub</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.077000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 13 if 0 alt 0 proto 2 vid 0x03F0 pid 0x8804</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.255000] usb 2-1.3.1: new full speed USB device using uhci_hcd and address 14</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.342000] usb 2-1.3.1: not running at top speed; connect to a high speed hub</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.356000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 14 if 0 alt 1 proto 2 vid 0x03F0 pid 0x2817</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.360000] scsi7 : SCSI emulation for USB Mass Storage devices</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.539000] usb 2-1.3.3: new full speed USB device using uhci_hcd and address 15</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.624000] usb 2-1.3.3: not running at top speed; connect to a high speed hub</p>
-<p class="compound-middle">Mar 16 11:45:45 localhost kernel: [4298893.638000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 15 if 1 alt 0 proto 2 vid 0x03F0 pid 0x5711</p>
-<p class="compound-last">Mar 16 11:45:45 localhost kernel: [4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices</p>
-</div>
+<pre class="literal-block">
+Mar 16 11:45:43 localhost kernel: [4298892.030000] hub 2-1.2:1.0: USB hub found
+Mar 16 11:45:43 localhost kernel: [4298892.033000] hub 2-1.2:1.0: 4 ports detected
+Mar 16 11:45:44 localhost kernel: [4298892.316000] usb 2-1.3: new full speed USB device using uhci_hcd and address 11
+Mar 16 11:45:44 localhost kernel: [4298892.409000] hub 2-1.3:1.0: USB hub found
+Mar 16 11:45:44 localhost kernel: [4298892.412000] hub 2-1.3:1.0: 4 ports detected
+Mar 16 11:45:44 localhost kernel: [4298892.697000] usb 2-1.2.1: new full speed USB device using uhci_hcd and address 12
+Mar 16 11:45:44 localhost kernel: [4298892.798000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 12 if 1 alt 0 proto 2 vid 0x03F0 pid 0x4311
+Mar 16 11:45:44 localhost kernel: [4298892.798000] scsi6 : SCSI emulation for USB Mass Storage devices
+Mar 16 11:45:44 localhost kernel: [4298892.975000] usb 2-1.2.2: new full speed USB device using uhci_hcd and address 13
+Mar 16 11:45:44 localhost kernel: [4298893.063000] usb 2-1.2.2: not running at top speed; connect to a high speed hub
+Mar 16 11:45:45 localhost kernel: [4298893.077000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 13 if 0 alt 0 proto 2 vid 0x03F0 pid 0x8804
+Mar 16 11:45:45 localhost kernel: [4298893.255000] usb 2-1.3.1: new full speed USB device using uhci_hcd and address 14
+Mar 16 11:45:45 localhost kernel: [4298893.342000] usb 2-1.3.1: not running at top speed; connect to a high speed hub
+Mar 16 11:45:45 localhost kernel: [4298893.356000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 14 if 0 alt 1 proto 2 vid 0x03F0 pid 0x2817
+Mar 16 11:45:45 localhost kernel: [4298893.360000] scsi7 : SCSI emulation for USB Mass Storage devices
+Mar 16 11:45:45 localhost kernel: [4298893.539000] usb 2-1.3.3: new full speed USB device using uhci_hcd and address 15
+Mar 16 11:45:45 localhost kernel: [4298893.624000] usb 2-1.3.3: not running at top speed; connect to a high speed hub
+Mar 16 11:45:45 localhost kernel: [4298893.638000] drivers/usb/class/usblp.c: usblp0: USB Bidirectional printer dev 15 if 1 alt 0 proto 2 vid 0x03F0 pid 0x5711
+Mar 16 11:45:45 localhost kernel: [4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices
+</pre>
 <p>Then enter this command:</p>
-<div class="compound">
-<p>dmesg</p>
-</div>
+<pre class="literal-block">
+dmesg
+</pre>
 <p>You should see something like this displayed:</p>
-<div class="compound">
-<p class="compound-first">[4298893.638000] scsi8 : SCSI emulation for USB Mass Storage devices</p>
-<p class="compound-middle">[4298893.638000] usb-storage: device found at 15</p>
-<p class="compound-middle">[4298893.638000] usb-storage: waiting for device to settle before scanning</p>
-<p class="compound-middle">[4298897.802000]   Vendor: HP        Model: Officejet 74xx S  Rev: 1.00</p>
-<p class="compound-middle">[4298897.802000]   Type:   Direct-Access                      ANSI SCSI revision: 02</p>
-<p class="compound-middle">[4298897.816000] sd 6:0:0:0: Attached scsi removable disk sdb</p>
-<p class="compound-middle">[4298897.816000] sd 6:0:0:0: Attached scsi generic sg1 type 0</p>
-<p class="compound-middle">[4298897.817000] usb-storage: device scan complete</p>
-<p class="compound-middle">[4298898.366000]   Vendor: HP        Model: LaserJet 2840     Rev: 1.00</p>
-<p class="compound-middle">[4298898.366000]   Type:   Direct-Access                      ANSI SCSI revision: 02</p>
-<p class="compound-middle">[4298898.381000] sd 7:0:0:0: Attached scsi removable disk sdc</p>
-<p class="compound-middle">[4298898.381000] sd 7:0:0:0: Attached scsi generic sg2 type 0</p>
-<p class="compound-middle">[4298898.384000] usb-storage: device scan complete</p>
-<p class="compound-middle">[4298898.642000]   Vendor: HP        Model: Photosmart C4180  Rev: 1.00</p>
-<p class="compound-middle">[4298898.642000]   Type:   Direct-Access                      ANSI SCSI revision: 02</p>
-<p class="compound-middle">[4298898.657000] sd 8:0:0:0: Attached scsi removable disk sdd</p>
-<p class="compound-middle">[4298898.657000] sd 8:0:0:0: Attached scsi generic sg3 type 0</p>
-<p class="compound-last">[4298898.660000] usb-storage: device scan complete</p>
-</div>
+<pre class="literal-block">
+[4298893.638000] scsi8 : SCSI emulation for USB Mass Storage device
+[4298893.638000] usb-storage: device found at 15
+[4298893.638000] usb-storage: waiting for device to settle before scanning
+[4298897.802000]   Vendor: HP        Model: Officejet 74xx S  Rev: 1.00
+[4298897.802000]   Type:   Direct-Access                      ANSI SCSI revision: 02
+[4298897.816000] sd 6:0:0:0: Attached scsi removable disk sdb
+[4298897.816000] sd 6:0:0:0: Attached scsi generic sg1 type 0
+[4298897.817000] usb-storage: device scan complete
+[4298898.366000]   Vendor: HP        Model: LaserJet 2840     Rev: 1.00
+[4298898.366000]   Type:   Direct-Access                      ANSI SCSI revision: 02
+[4298898.381000] sd 7:0:0:0: Attached scsi removable disk sdc
+[4298898.381000] sd 7:0:0:0: Attached scsi generic sg2 type 0
+[4298898.384000] usb-storage: device scan complete
+[4298898.642000]   Vendor: HP        Model: Photosmart C4180  Rev: 1.00
+[4298898.642000]   Type:   Direct-Access                      ANSI SCSI revision: 02
+[4298898.657000] sd 8:0:0:0: Attached scsi removable disk sdd
+[4298898.657000] sd 8:0:0:0: Attached scsi generic sg3 type 0
+[4298898.660000] usb-storage: device scan complete
+</pre>
 <p>Enter this command:</p>
-<div class="compound">
-<p>/usr/lib/cups/backend/hp</p>
-</div>
+<pre class="literal-block">
+/usr/lib/cups/backend/hp
+</pre>
 <p>You should see something like this displayed:</p>
-<div class="compound">
-<p class="compound-first">direct hp:/usb/Photosmart_C4100_series?serial=XXXXXXXXXXXXXX &quot;HP Photosmart_C4100_series&quot; &quot;hp:/usb/Photosmart_C4100_series?serial=XXXXXXXXXXXXXX&quot;</p>
-<p class="compound-middle">direct hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX &quot;HP HP_Color_LaserJet_2840&quot; &quot;hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX&quot;</p>
-<p class="compound-middle">direct hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX &quot;HP Deskjet_6980_series&quot; &quot;hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX&quot;</p>
-<p class="compound-last">direct hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX &quot;HP Officejet_7400_series&quot; &quot;hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX&quot;</p>
-</div>
+<pre class="literal-block">
+direct hp:/usb/Photosmart_C4100_series?serial=XXXXXXXXXXXXXX &quot;HP Photosmart_C4100_series&quot; &quot;hp:/usb/Photosmart_C4100_series?serial=XXXXXXXXXXXXXX&quot;
+direct hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX &quot;HP HP_Color_LaserJet_2840&quot; &quot;hp:/usb/HP_Color_LaserJet_2840?serial=XXXXXXXXXXXX&quot;
+direct hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX &quot;HP Deskjet_6980_series&quot; &quot;hp:/usb/Deskjet_6980_series?serial=XXXXXXXXXXXXXX&quot;
+direct hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX &quot;HP Officejet_7400_series&quot; &quot;hp:/usb/Officejet_7400_series?serial=XXXXXXXXXXXXXX&quot;
+</pre>
 <p>These are several ways to confirm that the printer is connected and working with your system.</p>
 <ol class="arabic simple" start="3">
 <li>If any of the above steps failed try replacing the USB cable or there could be a hardware issue.</li>
@@ -166,7 +166,7 @@ General Connection
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Fri Jan 19 12:50:50 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

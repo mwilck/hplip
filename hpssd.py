@@ -46,15 +46,14 @@
 #
 
 
-__version__ = '9.1'
+__version__ = '9.2'
 __title__ = "Services and Status Daemon"
 __doc__ = "Provides persistent data and event services to HPLIP client applications."
 
 
 # Std Lib
-import sys, socket, os, os.path, signal, getopt, glob, time, select
-import popen2, threading, re, fcntl, pwd, tempfile
-#from asyncore import dispatcher, loop
+import sys, socket, os, os.path, signal, getopt, time, select
+import popen2, threading, tempfile
 
 from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, \
      ENOTCONN, ESHUTDOWN, EINTR, EISCONN
@@ -94,12 +93,10 @@ class hpssd_server(dispatcher):
     def __init__(self, ip, port):
         self.ip = ip
         self.send_events = False
-
-
-        if port != 0:
-            self.port = port
-        else:
-            self.port = socket.htons(0)
+        self.port = port
+        
+        if port == 0:
+            raise Error(ERROR_INVALID_PORT_NUMBER)
 
         dispatcher.__init__(self)
         self.typ = 'server'
@@ -164,7 +161,7 @@ class hpssd_handler(dispatcher):
             'event'                : self.handle_event,
             'registerguievent'     : self.handle_registerguievent, # register for events
             'unregisterguievent'   : self.handle_unregisterguievent,
-            'exitevent'            : self.handle_exit,
+            'exit'                 : self.handle_exit,
 
             # Fax
             # hpfax: -> hpssd
@@ -535,6 +532,7 @@ class hpssd_handler(dispatcher):
     # EVENT
     def handle_exit(self):
         self.signal_exit = True
+        sys.exit(0)
 
     def handle_messageerror(self):
         pass
@@ -584,20 +582,6 @@ class MailThread(threading.Thread):
 
         log.debug("Exiting mail thread")
 
-
-def reInit():
-    pass
-
-
-def handleSIGHUP(signo, frame):
-    log.info("SIGHUP")
-    reInit()
-
-
-def exitAllGUIs():
-    pass
-
-
 USAGE = [(__doc__, "", "name", True),
          ("Usage: hpssd.py [OPTIONS]", "", "summary", True),
          utils.USAGE_OPTIONS,
@@ -616,7 +600,11 @@ def usage(typ='text'):
     utils.format_text(USAGE, typ, __title__, 'hpssd.py', __version__)
     sys.exit(0)
 
+def handleSIGUSR1(num, frame):
+    log.debug("Signal USR1 received.")
 
+def handleSIGHUP(signo, frame):
+    log.info("SIGHUP")
 
 def main(args):
     log.set_module('hpssd')
@@ -662,7 +650,7 @@ def main(args):
 
         elif o in ('-p', '--port'):
             try:
-                prop.hpssd_cfg_port = int(a)
+                prop.hpssd_port = int(a)
             except ValueError:
                 log.error('Port must be a numeric value')
                 usage()
@@ -670,33 +658,23 @@ def main(args):
 
     utils.log_title(__title__, __version__)
 
-    prop.history_size = 32
+    prop.history_size = 100
 
-    # Lock pidfile before we muck around with system state
-    # Patch by Henrique M. Holschuh <hmh@debian.org>
-    utils.get_pidfile_lock(os.path.join(prop.run_dir, 'hpssd.pid'))
-
-    # Spawn child right away so that boot up sequence
-    # is as fast as possible
     if prop.daemonize:
         utils.daemonize()
 
-    reInit()
-
     # hpssd server dispatcher object
     try:
-        server = hpssd_server(prop.hpssd_host, prop.hpssd_cfg_port)
+        server = hpssd_server(prop.hpssd_host, prop.hpssd_port)
     except Error, e:
         log.error("Server exited with error: %s" % e.msg)
         sys.exit(1)
 
-    os.umask(0133)
-    file(os.path.join(prop.run_dir, 'hpssd.port'), 'w').write('%d\n' % prop.hpssd_port)
     os.umask (0077)
-    log.debug('port=%d' % prop.hpssd_port)
+    log.debug('host=%s port=%d' % (prop.hpssd_host, prop.hpssd_port))
     log.info("Listening on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
 
-    signal.signal(signal.SIGHUP, handleSIGHUP)
+    signal.signal(signal.SIGUSR1, handleSIGUSR1)
 
     try:
         log.debug("Starting async loop...")
@@ -709,8 +687,6 @@ def main(args):
 
         log.debug("Cleaning up...")
     finally:
-        os.remove(os.path.join(prop.run_dir, 'hpssd.pid'))
-        os.remove(os.path.join(prop.run_dir, 'hpssd.port'))
         server.close()
         return 0
 

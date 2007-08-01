@@ -88,49 +88,194 @@
 Mandriva
 
 <hr size="1"/>
-        <div class="document" id="mandriva">
-<h1 class="title">Mandriva</h1>
-<p><em>Note</em>: You will need root access to complete this step.</p>
-<p><em>Note</em>: There may already be an updated RPM from Mandriva, you may want to check the current Mandriva repositories or resources for additional information.</p>
-<ol class="arabic simple">
-<li>Open a terminal shell.</li>
-<li>Invoke the 'su' command.</li>
-<li>Ensure that you are accessing the most up to date repositories for urpmi. (See your distro documentation and/or other resources to verify this step.)</li>
-</ol>
-<p><em>Note</em>: It's recommended to configure URPMI using <a class="reference" href="http://easyurpmi.zarb.org">EasyURPMI</a> . If you do not you may have problems installing HPLIP.</p>
-<ol class="arabic simple" start="4">
-<li>To Ensure you are installing the most up to date dependencies you may want to disable your CD Sources.</li>
-</ol>
-<div class="compound">
-<p class="compound-first">Click &quot;K-Menu&quot;</p>
-<p class="compound-middle">Click System</p>
-<p class="compound-middle">Click Configuration</p>
-<p class="compound-middle">Click Packaging</p>
-<p class="compound-middle">Click Software Media Manager</p>
-<p class="compound-last">Remove the check marks next to the CD Sources.</p>
-</div>
-<p>If using Mandriva 2007.0:</p>
-<div class="compound">
-<p class="compound-first">Click &quot;Install, Remove &amp; Update Software&quot;</p>
-<p class="compound-middle">Click &quot;Settings&quot;</p>
-<p class="compound-middle">Click &quot;Media Manager&quot;</p>
-<p class="compound-last">Remove the check marks next to the CD Sources.</p>
-</div>
-<ol class="arabic simple" start="5">
-<li>Execute:</li>
-</ol>
-<div class="compound">
-<p>urpmi gcc-c++ cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane</p>
-</div>
-<p><a class="reference" href="../../../release_notes.html">View the current Release Notes</a> for additional information on this release.</p>
+        <div class="document" id="manual-build-and-install-instructions-for-mandriva">
+<h1 class="title">Manual Build and Install Instructions for Mandriva</h1>
 <div class="section">
-<h1><a id="next" name="next">Next</a></h1>
-<p><a class="reference" href="../download.html">Download HPLIP</a></p>
+<h1><a id="step-1-installation-prerequisite-steps" name="step-1-installation-prerequisite-steps">Step 1: Installation Prerequisite Steps</a></h1>
+<p><a class="reference" href="../../../release_notes.html">View the current Release Notes</a> for additional information on this release.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need root access to complete many of the steps while installing HPLIP. If you do not have root access contact your system admin for assistance.</p>
+</div>
+<hr></div>
+<div class="section">
+<h1><a id="step-2-install-dependency-packages" name="step-2-install-dependency-packages">Step 2: Install Dependency Packages</a></h1>
+<p><strong>A.</strong> Open a terminal shell.</p>
+<p><strong>B.</strong> Configure repositories for URPMI.</p>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">First configure your system using <a class="reference" href="http://easyurpmi.zarb.org/">EasyURPMI</a> .</p>
+</div>
+<p><strong>C.</strong> To Ensure you are installing the most up to date dependencies you may want to disable your CD Sources.</p>
+<pre class="literal-block">
+Click &quot;K-Menu&quot;
+Click System
+Click Configuration
+Click Packaging
+Click Software Media Manager
+Remove the check marks next to the CD Sources.
+</pre>
+<p>If using Mandriva 2007.0:</p>
+<pre class="literal-block">
+Click &quot;Install, Remove &amp; Update Software&quot;
+Click &quot;Settings&quot;
+Click &quot;Media Manager&quot;
+Remove the check marks next to the CD Sources.
+</pre>
+<p><strong>D.</strong> Install the required depencencies for HPLIP:</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will be prompted for your root password.</p>
+</div>
+<pre class="literal-block">
+su -c &quot;urpmi gcc-c++ cups cups-devel python-devel PyQt net-snmp-mib net-snmp-devel libjpeg-devel xsane sane-devel make python-imaging&quot;
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-3-download-hplip" name="step-3-download-hplip">Step 3: Download HPLIP</a></h1>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">We recommend that you download the HPLIP tarball to your home or desktop directory.</p>
+</div>
+<p><strong>A.</strong> Click here to <a class="reference" href="http://prdownloads.sourceforge.net/hplip/hplip-2.7.7.tar.gz">Download the Regular Tarball</a></p>
+<p><strong>B.</strong> Go to the directory where you downloaded the HPLIP tarball.</p>
+<p>Example:</p>
+<pre class="literal-block">
+cd ~/Desktop
+</pre>
+<p><strong>C.</strong> Uncompress the tarball.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+tar xvfz hplip-2.7.7.tar.gz
+</pre>
+<p>This will create a directory with the same name as the tarball file.</p>
+<p><strong>D.</strong> Change your working directory to the hplip-2.7.7 directory.</p>
+<p>Example:</p>
+<pre class="literal-block">
+cd hplip-2.7.7
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-4-configure-hplip-for-installation" name="step-4-configure-hplip-for-installation">Step 4: Configure HPLIP for installation</a></h1>
+<p><strong>A.</strong> This step configures the development environment and checks that your system is ready to install HPLIP.</p>
+For specific information on using ./configure and the different options <a href="#" onClick="MyWindow=window.open('../configure.html','MyWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=400'); return false;">please go here</a>. Also reference your distro documentation and configuration for additional information on which tags are relevant.<p>Enter this command (select the appropriate command depending on your system configuration):</p>
+<p>32 bit distro users (most users will use this command):</p>
+<pre class="literal-block">
+./configure --prefix=/usr --disable-xml-install --enable-foomatic-ppd-install --with-hpppddir=/usr/share/cups/model/manufacturer-PPDs/hp
+</pre>
+<p>64 bit distro users</p>
+<pre class="literal-block">
+./configure --prefix=/usr --libdir=/usr/lib64 --disable-xml-install --enable-foomatic-ppd-install --with-hpppddir=/usr/share/cups/model/manufacturer-PPDs/hp
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-5-run-make" name="step-5-run-make">Step 5: Run Make</a></h1>
+<p><strong>A.</strong> This step will compile the HPLIP source.</p>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">You want to run make as a regular user, NOT as root.</p>
+</div>
+<p>Enter this command:</p>
+<pre class="literal-block">
+make
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-6-run-make-install" name="step-6-run-make-install">Step 6: Run Make Install</a></h1>
+<p><strong>A.</strong> This step will install HPLIP.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;make install&quot;
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-7-post-installation-steps" name="step-7-post-installation-steps">Step 7: Post Installation Steps</a></h1>
+<p><strong>A.</strong> Verify cups is configured correctly.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;kate /etc/cups/cupsd.conf&quot;
+</pre>
+<p>Find the line:</p>
+<pre class="literal-block">
+&quot;Group sys&quot;
+</pre>
+<p>change to:</p>
+<pre class="literal-block">
+&quot;Group lp&quot;
+</pre>
+<p>Save and exit the file.</p>
+<p><strong>B.</strong> Change the permissions in the mandriva.perms file.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;kate /etc/security/console.perms.d/50-mandriva.perms
+</pre>
+<p>Change:</p>
+<pre class="literal-block">
+&lt;usb&gt;=/dev/usb/dabusb* /dev/usb/mdc800* /dev/usb/rio500 /dev/ttyUSB* /proc/bus/usb/[0-9][0-9][0-9]/[0-9][0-9][0-9] dev/bus/usb/[0-9][0-9][0-9]/[0-9][0-9][0-9]
+</pre>
+<p>To:</p>
+<pre class="literal-block">
+&lt;usb&gt;=/dev/usb/dabusb* /dev/usb/mdc800* /dev/usb/rio500 /dev/ttyUSB*
+</pre>
+<p>Save and exit the file.</p>
+<p><strong>C.</strong> Check USB Port Permissions.</p>
+<p>Run the following script to verify that your USB ports are configured with the correct permissions.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;./installer/permissions.py&quot;
+</pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alternatively you can manually check your USB port permissions by following the instructions for the Manual Permissions Process link below.</p>
+</div>
+<a href="#" onClick="MyWindow=window.open('../permissions.html','MyWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=400'); return false;">Manual Permissions Process</a><p><strong>D.</strong> Trigger your USB devices.</p>
+<p>Run the following script to trigger your USB devices.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;./installer/trigger.py&quot;
+</pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alternatively you can manually trigger your USB devices by unplugging and reconnecting your USB printer's from your computer.</p>
+</div>
+<hr><p><strong>E.</strong> Verify your user is part of the lp group</p>
+<p><strong>a</strong>. Open a terminal shell.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+groups
+</pre>
+<p>You should get a result similar to:</p>
+<pre class="literal-block">
+aaron adm dialout cdrom floppy audio dip video plugdev scanner netdev lpadmin powerdev admin
+</pre>
+<p><strong>b.</strong> If you do not see the &quot;lp&quot; group in the list.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+su -c &quot;usermod -a -G lp aaron&quot;
+</pre>
+<p>Replace &quot;aaron&quot; with your username.</p>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">Logout and back onto your system to apply the changes.</p>
+</div>
+<hr></div>
+<div class="section">
+<h1><a id="step-8-configuring-your-printer-using-hp-setup" name="step-8-configuring-your-printer-using-hp-setup">Step 8: Configuring your printer using hp-setup</a></h1>
+<p><strong>A.</strong> Run hp-check to verify that your system is configure correctly.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+hp-check
+</pre>
+<p>If any failures try and resolve them depending on the error.  Contact the mailing list for support as needed.</p>
+<hr></div>
+<div class="section">
+<h1><a id="step-9-configuring-your-printer-using-hp-setup" name="step-9-configuring-your-printer-using-hp-setup">Step 9: Configuring your printer using hp-setup</a></h1>
+<p><a class="reference" href="../hp_setup.html">Continue to hp-setup</a></p>
 </div>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Jan  9 10:22:07 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Mon Jun 18 16:07:54 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

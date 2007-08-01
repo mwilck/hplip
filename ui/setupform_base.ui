@@ -39,7 +39,7 @@
                     </property>
                     <widget class="QRadioButton" row="0" column="0">
                         <property name="name">
-                            <cstring>radioButton1</cstring>
+                            <cstring>usbRadioButton</cstring>
                         </property>
                         <property name="text">
                             <string>Universal Serial Bus (USB)</string>
@@ -47,7 +47,7 @@
                     </widget>
                     <widget class="QRadioButton" row="1" column="0">
                         <property name="name">
-                            <cstring>radioButton2</cstring>
+                            <cstring>netRadioButton</cstring>
                         </property>
                         <property name="text">
                             <string>Network/Ethernet/Wireless (direct connection or JetDirect)</string>
@@ -55,7 +55,7 @@
                     </widget>
                     <widget class="QRadioButton" row="2" column="0">
                         <property name="name">
-                            <cstring>radioButton3</cstring>
+                            <cstring>parRadioButton</cstring>
                         </property>
                         <property name="text">
                             <string>Parallel Port (LPT)</string>
@@ -910,9 +910,9 @@
     <tabstop>faxNameCoLineEdit</tabstop>
     <tabstop>faxLocationLineEdit</tabstop>
     <tabstop>faxDescriptionLineEdit</tabstop>
-    <tabstop>radioButton1</tabstop>
-    <tabstop>radioButton2</tabstop>
-    <tabstop>radioButton3</tabstop>
+    <tabstop>usbRadioButton</tabstop>
+    <tabstop>netRadioButton</tabstop>
+    <tabstop>parRadioButton</tabstop>
     <tabstop>searchFiltersPushButton2</tabstop>
     <tabstop>probedDevicesListView</tabstop>
     <tabstop>searchFiltersPushButton</tabstop>
@@ -934,9 +934,6 @@
     <tabstop>lineEdit8</tabstop>
     <tabstop>lineEdit9</tabstop>
 </tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">setupform_base.ui.h</include>
-</includes>
 <slots>
     <slot>connectionTypeButtonGroup_clicked( int )</slot>
     <slot>probedDevicesListView_currentChanged( QListViewItem * )</slot>

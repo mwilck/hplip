@@ -29,17 +29,10 @@
 #define _IO_H
 
 #include "sane.h"
-#include "hplip_api.h"
+#include "hpmud.h"
 
-int ResetDevices( SANE_Device *** devices );
-int SendScanEvent( char * device_uri, int event, char * type );
-int GetScannerType( SANE_String model );
-int ProbeDevices( SANE_Device *** devices );
-int GetPml(int hd, int channel, char *oid, char *buf, int size, int *result, int *type, int *pml_result);
-int SetPml(int hd, int channel, char *oid, int type, char *buf, int size, int *result, int *pml_result);
-int ReadChannelEx(int deviceid, int channelid, unsigned char * buffer, int length, int timeout);
-
-extern HplipSession *hplip_session;
+int __attribute__ ((visibility ("hidden"))) SendScanEvent(char * device_uri, int event, char * type);
+int __attribute__ ((visibility ("hidden"))) ReadChannelEx(int deviceid, int channelid, unsigned char * buffer, int length, int timeout);
 
 #endif
 

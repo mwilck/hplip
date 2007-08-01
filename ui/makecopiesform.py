@@ -43,7 +43,6 @@ class MakeCopiesForm(QMainWindow):
         self.cur_deviceice_uri = device_uri
         self.printer_name = printer_name
         self.init_failed = False
-        self.waitdlg = None
         self.num_copies = num_copies
         self.contrast = contrast
         self.quality = quality
@@ -66,7 +65,7 @@ class MakeCopiesForm(QMainWindow):
         log.debug(self.cups_printers)
 
         if not self.cur_deviceice_uri and not self.printer_name:
-            t = device.probeDevices(None, bus=bus, filter='copy')
+            t = device.probeDevices(bus=bus, filter='copy')
             probed_devices = []
 
             for d in t:
@@ -92,7 +91,7 @@ class MakeCopiesForm(QMainWindow):
                 self.init_failed = True
 
             elif x == 1:
-                log.info(utils.bold("Using device: %s" % devices[0][0]))
+                log.info(log.bold("Using device: %s" % devices[0][0]))
                 self.cur_deviceice_uri = devices[0][0]
 
 
@@ -114,28 +113,29 @@ class MakeCopiesForm(QMainWindow):
         
         self.cur_device = self.cur_deviceice_uri
         
-        try:
-            self.cur_device = copier.PMLCopyDevice(device_uri=self.cur_deviceice_uri, 
-                                        printer_name=self.printer_name, 
-                                        hpssd_sock=self.sock)
-        except Error:
-            log.error("Invalid device URI or printer name.")
-            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
-            self.init_failed = True
-        
-        else:
-
-            if self.cur_device.copy_type == COPY_TYPE_NONE:
-                self.FailureUI(self.__tr("<b>Sorry, make copies functionality is not implemented for this device.</b>"))
-                self.close()
-                return
+        if not self.init_failed:
+            try:
+                self.cur_device = copier.PMLCopyDevice(device_uri=self.cur_deviceice_uri, 
+                                            printer_name=self.printer_name, 
+                                            hpssd_sock=self.sock)
+            except Error:
+                log.error("Invalid device URI or printer name.")
+                self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
+                self.init_failed = True
             
-            self.cur_deviceice_uri = self.cur_device.device_uri
-            user_cfg.last_used.device_uri = self.cur_deviceice_uri
-
-            log.debug(self.cur_deviceice_uri)
-        
-            self.statusBar().message(self.cur_device.device_uri)        
+            else:
+    
+                if self.cur_device.copy_type == COPY_TYPE_NONE:
+                    self.FailureUI(self.__tr("<b>Sorry, make copies functionality is not implemented for this device.</b>"))
+                    self.close()
+                    return
+                
+                self.cur_deviceice_uri = self.cur_device.device_uri
+                user_cfg.last_used.device_uri = self.cur_deviceice_uri
+    
+                log.debug(self.cur_deviceice_uri)
+            
+                self.statusBar().message(self.cur_device.device_uri)        
         
         
         QTimer.singleShot(0, self.InitialUpdate)
@@ -149,6 +149,23 @@ class MakeCopiesForm(QMainWindow):
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - Make Copies"))
+        
+    def FailureUI(self, error_text):
+        QMessageBox.critical(self,
+                             self.caption(),
+                             error_text,
+                              QMessageBox.Ok,
+                              QMessageBox.NoButton,
+                              QMessageBox.NoButton)
+
+    def WarningUI(self, msg):
+        QMessageBox.warning(self,
+                             self.caption(),
+                             msg,
+                              QMessageBox.Ok,
+                              QMessageBox.NoButton,
+                              QMessageBox.NoButton)        
+        
         
     def __tr(self,s,c = None):
         return qApp.translate("MakeCopiesForm",s,c)

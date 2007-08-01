@@ -21,12 +21,47 @@
 
 #Std Lib
 import socket
+import time
+import os.path
 
 # Local
 from g import *
 from codes import *
 import msg
 
+
+def startup(startup_if_not_running=True):
+    log.debug("Startup: Trying to connect to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
+    hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    try:
+        hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
+    except socket.error:
+        if startup_if_not_running:
+            log.debug("Cannot connect to hpssd. Launching...")
+            os.system("python " + os.path.join(prop.home_dir, "hpssd.py"))
+            time.sleep(0.5)
+            time_left = 10
+            start_time = time.time()
+            
+            while time_left:
+                try:
+                    hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
+                except socket.error:
+                    time.sleep(0.5)
+                    time_left -= (time.time() - start_time)
+                else:
+                    break
+            else:
+                log.error("Unable to connect to HPLIP I/O (hpssd).")
+                raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
+        else:
+            log.debug("Cannot connect to hpssd.")
+            raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
+    
+    log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
+    return hpssd_sock
+    
 
 def registerGUI(sock, username, host, port, pid, typ):
     msg.sendEvent(sock,

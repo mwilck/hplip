@@ -28,16 +28,23 @@ import time
 import urllib
 import StringIO
 import httplib
-import gettext
 
 # Local
 from g import *
 from codes import *
 from msg import *
-import utils, status, pml, service
+import utils, status, pml, service, tui
 from prnt import pcl, ldl, cups
 import models, mdns, slp
-from strings import string_table
+from strings import StringTable
+
+try:
+    import hpmudext
+except ImportError:
+    if not os.getenv("HPLIP_BUILD"):
+        log.error("HPMUDEXT could not be loaded. Please check HPLIP installation.")
+        sys.exit(1)
+
 
 DEFAULT_PROBE_BUS = 'usb,par,cups'
 VALID_BUSES = ('par', 'net', 'cups', 'usb') #, 'bt', 'fw')
@@ -58,7 +65,7 @@ MAX_BUFFER = 8192
 # Cache for model data
 model_dat = models.ModelData()
 
-def makeURI(hpiod_sock, param, port=1):  
+def makeURI(param, port=1):  
     ip_pat = re.compile(r"""\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""", re.IGNORECASE)
     dev_pat = re.compile(r"""/dev/.+""", re.IGNORECASE)
     usb_pat = re.compile(r"""(\d+):(\d+)""", re.IGNORECASE)
@@ -70,60 +77,40 @@ def makeURI(hpiod_sock, param, port=1):
     try:
         param = socket.gethostbyname(param)
     except socket.gaierror:
-        log.debug("Gethostbyname() failed.")
-        pass
+        log.debug("Gethostbyname() failed. Trying other patterns...")
 
     if dev_pat.search(param) is not None: # parallel
-        log.debug("Trying parallel")
-        try:
-            fields, data, result_code = \
-                xmitMessage(hpiod_sock, "MakeURI", None, 
-                                {'device-file' : param, 'bus' : 'par',})
-        except Error:
-            result_code = ERROR_INTERNAL
+        log.debug("Trying parallel with %s" % param)
 
-        if result_code == ERROR_SUCCESS:
-            cups_uri = fields.get( 'device-uri', '' )
+        result_code, uri = hpmudext.make_par_uri(param)
+        if result_code == hpmudext.HPMUD_R_OK: 
             found = True
-
+            cups_uri = uri
 
     elif usb_pat.search(param) is not None: # USB
-        log.debug("Trying USB")
         match_obj = usb_pat.search(param)
         usb_bus_id = match_obj.group(1)
         usb_dev_id = match_obj.group(2)
 
-        try:
-            fields, data, result_code = \
-                xmitMessage(hpiod_sock, "MakeURI", None, 
-                                {'usb-bus' : usb_bus_id, 
-                                 'usb-dev': usb_dev_id, 
-                                 'bus' : 'usb',})
-        except Error:
-            result_code = ERROR_INTERNAL
+        log.debug("Trying USB with bus=%s dev=%s..." % (usb_bus_id, usb_dev_id))
+        result_code, uri = hpmudext.make_usb_uri(usb_bus_id, usb_dev_id)
 
         if result_code == ERROR_SUCCESS:
-            cups_uri = fields.get( 'device-uri', '' )
             found = True
+            cups_uri = uri
 
     elif ip_pat.search(param) is not None: # IPv4 dotted quad
-        log.debug("Trying IP address")
-        try:
-            fields, data, result_code = \
-                xmitMessage(hpiod_sock, "MakeURI", None, 
-                                {'hostname' : param, 
-                                 'port': port, 
-                                 'bus' : 'net',})
-        except Error:
-            result_code = ERROR_INTERNAL
+        log.debug("Trying IP address %s" % param)
 
-        if result_code == ERROR_SUCCESS:
-            cups_uri = fields.get( 'device-uri', '' )
+        result_code, uri = hpmudext.make_net_uri(param, port)
+
+        if result_code == hpmudext.HPMUD_R_OK:
             found = True
+            cups_uri = uri
 
     else: # serial
-        log.debug("Trying serial number")
-        devices = probeDevices(None, bus="usb,par")
+        log.debug("Trying serial number %s" % param)
+        devices = probeDevices(bus="usb,par")
 
         for d in devices:
             log.debug(d)
@@ -135,43 +122,38 @@ def makeURI(hpiod_sock, param, port=1):
             if bus == 'par': # ...parallel does not. Must get Device ID to obtain it...
                 mq = queryModelByURI(d)
 
-                fields, data, result_code = \
-                    xmitMessage(hpiod_sock, "DeviceOpen", None,
-                                    {'device-uri':    d,
-                                      'io-mode' :     mq.get('io-mode', '0'),
-                                      'io-mfp-mode' : mq.get('io-mfp-mode', '2'),
-                                      'io-control' :  mq.get('io-control', '0'),
-                                      'io-scan-port': mq.get('io-scan-port', '0'),
-                                    })
+                result_code, device_id = \
+                    hpmudext.device_open(d, mq.get('io-mode', hpmudext.HPMUD_UNI_MODE))
 
-                if result_code == ERROR_SUCCESS:
-                    device_id = fields['device-id']
-
-                    fields, data, result_code = \
-                        xmitMessage(hpiod_sock, 'DeviceID', None, {'device-id' : device_id,})
-
+                if result_code == hpmudext.HPMUD_R_OK:
+                    result_code, data = hpmudext.get_device_id(device_id)
                     serial = parseDeviceID(data).get('SN', '')
-
-                fields, data, result_code = \
-                    xmitMessage(hpiod_sock, "DeviceClose", None, {'device-id': device_id,})
+                    hpmudext.close_device(device_id)
 
             if serial.lower() == param.lower():
+                log.debug("Match")
                 found = True
                 cups_uri = d
                 break
+            else:
+                log.debug("No match")
 
     if found:
-        mq = queryModelByURI(cups_uri)
+        try:
+            mq = queryModelByURI(cups_uri)
+        except Error, e:
+            log.error("Error: %s" % e.msg)
+            cups_uri, sane_uri, fax_uri = '', '', ''
+        else:
+            if mq.get('scan-type', 0):
+                sane_uri = cups_uri.replace("hp:", "hpaio:")
 
-        if mq.get('scan-type', 0):
-            sane_uri = cups_uri.replace("hp:", "hpaio:")
-
-        if mq.get('fax-type', 0):
-            fax_uri = cups_uri.replace("hp:", "hpfax:")
+            if mq.get('fax-type', 0):
+                fax_uri = cups_uri.replace("hp:", "hpfax:")
 
     else:
         scan_uri, fax_uri = '', ''
-        
+
     if cups_uri:
         user_cfg.last_used.device_uri = cups_uri
 
@@ -188,13 +170,13 @@ def queryModelByURI(device_uri):
             serial, dev_file, host, port = \
             parseDeviceURI(device_uri)
     except Error:
-        raise ERROR_INVALID_DEVICE_URI
+        raise Error(ERROR_INVALID_DEVICE_URI)
     else:
         return queryModelByModel(model)
 
 
 def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=('hp',)):
-    probed_devices = probeDevices(None, bus.lower(), filter=filter)
+    probed_devices = probeDevices(bus.lower(), filter=filter)
     cups_printers = cups.getPrinters()
     log.debug(probed_devices)
     log.debug(cups_printers)
@@ -220,18 +202,18 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=(
         raise Error(ERROR_NO_PROBED_DEVICES_FOUND)
 
     elif x == 1:
-        log.info(utils.bold("Using device: %s" % devices[0][0]))
-        #user_cfg.last_used.device_uri = devices[0][0]
+        log.info(log.bold("Using device: %s" % devices[0][0]))
+        user_cfg.last_used.device_uri = devices[0][0]
         return devices[0][0]
 
     else:
         last_used_device_uri = user_cfg.last_used.device_uri
         last_used_index = None
-        
+
         rows, cols = utils.ttysize()
         if cols > 100: cols = 100
 
-        log.info(utils.bold("\nChoose device from probed devices connected on bus(es): %s:\n" % bus))
+        log.info(log.bold("\nChoose device from probed devices connected on bus(es): %s:\n" % bus))
         formatter = utils.TextFormatter(
                 (
                     {'width': 4},
@@ -244,49 +226,33 @@ def getInteractiveDeviceURI(bus='cups,usb,par', filter='none', back_end_filter=(
 
         for y in range(x):
             log.info(formatter.compose((str(y), devices[y][0], ', '.join(devices[y][1]))))
-            
+
             if last_used_device_uri == devices[y][0]:
                 last_used_index = y
 
-        while 1:
-            if last_used_index is not None:
-                user_input = raw_input(utils.bold("\nEnter number 0...%d for device (q=quit, enter=last used device: %s) ?" % ((x-1), last_used_device_uri))).strip()
-            
-            else:
-                user_input = raw_input(utils.bold("\nEnter number 0...%d for device (q=quit) ?" % (x-1))).strip()
+        if last_used_index is not None:
+            ok, i = tui.enter_range("\nEnter number 0...%d for device (q=quit, enter=last used device: %s) ?" % 
+                ((x-1), last_used_device_uri), 0, (x-1), -1)
 
-            if last_used_index is not None and not user_input:
-                user_input = str(last_used_index)
-            else:
-                if not user_input:
-                    log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                    continue
+        else:
+            ok, i = tui.enter_range("\nEnter number 0...%d for device (q=quit) ?" % 
+                (x-1), 0, (x-1), -1)
 
-            if user_input.lower() == 'q':
-                return
+        if not ok:
+            sys.exit(0) 
 
-            try:
-                i = int(user_input)
-            except ValueError:
-                log.warn("Invalid input - enter a numeric value or 'q' to quit.")
-                continue
+        if last_used_index is not None and i == -1:
+            i = last_used_index
 
-            if i < 0 or i > (x-1):
-                log.warn("Invalid input - enter a value between 0 and %d or 'q' to quit." % (x-1))
-                continue
-
-            break
-
-        #user_cfg.last_used.device_uri = devices[i][0]
-
+        user_cfg.last_used.device_uri = devices[i][0]
         return devices[i][0]
 
 
-def probeDevices(hpiod_sock=None, bus='cups,usb,par', timeout=10,
+def probeDevices(bus='cups,usb,par', timeout=10,
                  ttl=4, filter='none',  search='', net_search='slp', 
                  back_end_filter=('hp',)):
 
-    close_sock, num_devices, ret_devices = False, 0, {}
+    num_devices, ret_devices = 0, {}
 
     if search:
         try:
@@ -360,25 +326,14 @@ def probeDevices(hpiod_sock=None, bus='cups,usb,par', timeout=10,
                                 ret_devices[device_uri] = (model, model, hn)
 
         elif bus in ('usb', 'par'):
+            if bus == 'par':
+                b = hpmudext.HPMUD_BUS_PARALLEL
+            else:
+                b = hpmudext.HPMUD_BUS_USB
 
-            if hpiod_sock is None:
-                close_sock = True
-                hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            result_code, data = hpmudext.probe_devices(b)
 
-                try:
-                    prop.hpiod_port = int(file(os.path.join(prop.run_dir, 'hpiod.port'), 'r').read())
-                except:
-                    pass
-
-                try:
-                    hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-                except socket.error:
-                    raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
-
-            fields, data, result_code = \
-                xmitMessage(hpiod_sock, "ProbeDevices", None, {'bus' : bus,})
-
-            if result_code == ERROR_SUCCESS:
+            if result_code == hpmudext.HPMUD_R_OK:
                 for x in data.splitlines():
                     m = direct_pat.match(x)
 
@@ -478,10 +433,6 @@ def probeDevices(hpiod_sock=None, bus='cups,usb,par', timeout=10,
 
         if include:
             probed_devices[uri] = ret_devices[uri]
-
-
-    if close_sock and hpiod_sock is not None:
-        hpiod_sock.close()
 
     return probed_devices
 
@@ -611,22 +562,19 @@ def validateFilterList(filter):
 
 
 inter_pat = re.compile(r"""%(.*)%""", re.IGNORECASE)
-
+st = StringTable()
 strings_init = False
 
 def initStrings():
-    global strings_init
+    global strings_init, st
     strings_init = True
-
-    gettext.install('hplip')
     cycles = 0
 
     while True:
-
         found = False
 
-        for s in string_table:
-            short_string, long_string = string_table[s]
+        for s in st.string_table:
+            short_string, long_string = st.string_table[s]
             short_replace, long_replace = short_string, long_string
 
             try:
@@ -638,7 +586,7 @@ def initStrings():
                 found = True
 
                 try:
-                    short_replace, dummy = string_table[short_match]
+                    short_replace, dummy = st.string_table[short_match]
                 except KeyError:
                     log.error("String interpolation error: %s" % short_match)
 
@@ -651,26 +599,26 @@ def initStrings():
                 found = True
 
                 try:
-                    dummy, long_replace = string_table[long_match]
+                    dummy, long_replace = st.string_table[long_match]
                 except KeyError:
                     log.error("String interpolation error: %s" % long_match)
 
             if found:
-                string_table[s] = (short_replace, long_replace)
+                st.string_table[s] = (short_replace, long_replace)
 
         if not found:
             break
         else:
             cycles +=1
             if cycles > 1000:
-                break    
+                break
 
 
 def queryString(string_id, typ=0):
     if not strings_init:
         initStrings()
 
-    s = string_table.get(str(string_id), ('', ''))[typ]
+    s = st.string_table.get(str(string_id), ('', ''))[typ]
 
     if type(s) == type(''):
         return s
@@ -777,12 +725,15 @@ string_cache = {}
 
 class Device(object):
     def __init__(self, device_uri, printer_name=None,
-                hpssd_sock=None, hpiod_sock=None,
+                hpssd_sock=None,
                 callback=None):
 
+        log.debug("Device URI: %s" % device_uri)
+        log.debug("Printer: %s" % printer_name)
+
         printers = cups.getPrinters()
-        
-        if device_uri is None:
+
+        if device_uri is None and printer_name is not None:
             for p in printers:
                 if p.name.lower() == printer_name.lower():
                     device_uri = p.device_uri
@@ -812,25 +763,8 @@ class Device(object):
 
         log.debug("Model/UI model: %s/%s" % (self.model, self.model_ui))
 
-        if hpiod_sock is None:
-            self.hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            try:
-                self.hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-                self.close_hpiod_socket = True
-            except socket.error:
-                raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
-        else:
-            self.hpiod_sock = hpiod_sock
-
-        log.debug("hpiod socket: %d" % self.hpiod_sock.fileno())
-
         if hpssd_sock is None:
-            self.hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            try:
-                self.hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-                self.close_hpssd_socket = True
-            except socket.error:
-                raise Error(ERROR_UNABLE_TO_CONTACT_SERVICE)
+            self.hpssd_sock = service.startup()
         else:
             self.hpssd_sock = hpssd_sock
 
@@ -866,7 +800,6 @@ class Device(object):
         self.device_state = DEVICE_STATE_NOT_FOUND
         self.status_code = EVENT_ERROR_DEVICE_NOT_FOUND
 
-        #printers = cups.getPrinters()
         for p in printers:
             if self.device_uri == p.device_uri:
                 self.cups_printers.append(p.name)
@@ -900,8 +833,6 @@ class Device(object):
             'panel'            : 0,
             'panel-line1'      : '',
             'panel-line2'      : '',
-            '3bit-status-code' : 0,
-            '3bit-status-name' : 'IOTrap',
             'device-state'     : self.device_state,
             'error-state'      : self.error_state,
             'device-uri'       : self.device_uri,
@@ -918,13 +849,6 @@ class Device(object):
             'HOME'       : prop.home_dir,
                            }            
 
-
-    def xmitHpiodMessage(self, msg_type, other_fields={},
-                         payload=None, timeout=prop.read_timeout):
-
-        return xmitMessage(self.hpiod_sock, msg_type,
-                                payload, other_fields, timeout)
-
     def xmitHpssdMessage(self, msg_type, other_fields={},
                          payload=None, timeout=prop.read_timeout):
 
@@ -932,9 +856,6 @@ class Device(object):
                                 payload, other_fields, timeout)
 
     def quit(self):
-        if self.close_hpiod_socket:
-            self.hpiod_sock.close()                
-
         if self.close_hpssd_socket:
             self.hpssd_sock.close()                
 
@@ -951,37 +872,44 @@ class Device(object):
     def queryString(self, string_id):
         return queryString(string_id)
 
-    def open(self, network_timeout=3):
+    def open(self, open_for_printing=False):
         if self.supported and self.io_state in (IO_STATE_HP_READY, IO_STATE_HP_NOT_AVAIL):
-            log.debug("Opening device: %s" % self.device_uri)
             prev_device_state = self.device_state
             self.io_state = IO_STATE_HP_NOT_AVAIL
             self.device_state = DEVICE_STATE_NOT_FOUND
             self.error_state = ERROR_STATE_ERROR
             self.status_code = EVENT_ERROR_DEVICE_NOT_FOUND
             self.device_id = -1
+            self.open_for_printing = open_for_printing
 
-            fields, data, result_code = \
-                self.xmitHpiodMessage("DeviceOpen",
-                                        {'device-uri':   self.device_uri,
-                                          'io-mode' :     self.mq.get('io-mode', '0'),
-                                          'io-mfp-mode' : self.mq.get('io-mfp-mode', '2'),
-                                          'io-control' :  self.mq.get('io-control', '0'),
-                                          'io-scan-port': self.mq.get('io-scan-port', '0'),
-                                        }
-                                      )
-
-            if result_code != ERROR_SUCCESS:
-                self.sendEvent(EVENT_ERROR_DEVICE_NOT_FOUND, typ='error')
-                log.error("Unable to communicate with device: %s" % self.device_uri)
-                raise Error(ERROR_DEVICE_NOT_FOUND)
+            if open_for_printing:
+                log.debug("Opening device: %s (for printing)" % self.device_uri)
+                self.io_mode = self.mq.get('io-mode', hpmudext.HPMUD_UNI_MODE)
             else:
-                self.device_id = fields['device-id']
+                log.debug("Opening device: %s (not for printing)" % self.device_uri)
+                self.io_mode = self.mq.get('io-mfp-mode', hpmudext.HPMUD_UNI_MODE)
+
+            log.debug("I/O mode=%d" % self.io_mode)
+            result_code, self.device_id = \
+                hpmudext.open_device(self.device_uri, self.io_mode)
+
+            if result_code != hpmudext.HPMUD_R_OK:
+                self.sendEvent(result_code + ERROR_CODE_BASE, typ='error')
+
+                if result_code == hpmudext.HPMUD_R_DEVICE_BUSY:
+                    log.error("Device busy: %s" % self.device_uri)
+                else:
+                    log.error("Unable to communicate with device (code=%d): %s" % (result_code, self.device_uri))
+
+                raise Error(ERROR_DEVICE_NOT_FOUND)
+
+            else:
                 log.debug("device-id=%d" % self.device_id)
                 self.io_state = IO_STATE_HP_OPEN
                 self.error_state = ERROR_STATE_CLEAR
-                log.debug("Opened device: %s (backend=%s,is_hp=%s,bus=%s,model=%s,dev=%s,serial=%s,host=%s,port=%d)" %
-                    (self.back_end, self.device_uri, self.is_hp, self.bus, self.model, self.dev_file, self.serial, self.host, self.port))
+                log.debug("Opened device: %s (backend=%s, is_hp=%s, bus=%s, model=%s, dev=%s, serial=%s, host=%s, port=%d)" %
+                    (self.back_end, self.device_uri, self.is_hp, self.bus, self.model, 
+                     self.dev_file, self.serial, self.host, self.port))
 
                 if prev_device_state == DEVICE_STATE_NOT_FOUND:
                     self.device_state = DEVICE_STATE_JUST_FOUND
@@ -1003,15 +931,23 @@ class Device(object):
                 for c in self.channels.keys():
                     self.__closeChannel(c)
 
-            fields, data, result_code = \
-                self.xmitHpiodMessage("DeviceClose", {'device-id': self.device_id,})
+            result_code = hpmudext.close_device(self.device_id)
+            log.debug("Result-code = %d" % result_code)
 
             self.channels.clear()
             self.io_state = IO_STATE_HP_READY
 
 
     def __openChannel(self, service_name):
-        self.open()
+        if self.io_state == IO_STATE_HP_OPEN:
+            if service_name == hpmudext.HPMUD_S_PRINT_CHANNEL and not self.open_for_printing:
+                self.close()
+                self.open(True)
+            elif service_name != hpmudext.HPMUD_S_PRINT_CHANNEL and self.open_for_printing:
+                self.close()
+                self.open(False)
+        else:    
+            self.open(service_name == hpmudext.HPMUD_S_PRINT_CHANNEL)
 
         #if not self.mq['io-mode'] == IO_MODE_UNI:
         if 1:
@@ -1020,16 +956,7 @@ class Device(object):
             if service_name not in self.channels:
                 log.debug("Opening %s channel..." % service_name)
 
-                fields, data, result_code = \
-                    self.xmitHpiodMessage("ChannelOpen",
-                                          {'device-id':  self.device_id,
-                                            'service-name' : service_name,
-                                          }
-                                        )
-                try:
-                    channel_id = fields['channel-id']
-                except KeyError:
-                    raise Error(ERROR_INTERNAL)
+                result_code, channel_id = hpmudext.open_channel(self.device_id, service_name)
 
                 self.channels[service_name] = channel_id
                 log.debug("channel-id=%d" % channel_id)
@@ -1044,67 +971,59 @@ class Device(object):
         return self.__openChannel(service_name)
 
     def openPrint(self):
-        return self.__openChannel('PRINT')
+        return self.__openChannel(hpmudext.HPMUD_S_PRINT_CHANNEL)
 
     def openFax(self):
-        return self.__openChannel('HP-FAX-SEND')
+        return self.__openChannel(hpmudext.HPMUD_S_FAX_SEND_CHANNEL)
 
     def openPCard(self):
-        return self.__openChannel('HP-CARD-ACCESS')
-
-    def openFax(self):
-        return self.__openChannel('HP-FAX-SEND')
+        return self.__openChannel(hpmudext.HPMUD_S_MEMORY_CARD_CHANNEL)
 
     def openEWS(self):
-        return self.__openChannel('HP-EWS')
+        return self.__openChannel(hpmudext.HPMUD_S_EWS_CHANNEL)
 
     def closePrint(self):
-        return self.__closeChannel('PRINT')
+        return self.__closeChannel(hpmudext.HPMUD_S_PRINT_CHANNEL)
 
     def closePCard(self):
-        return self.__closeChannel('HP-CARD-ACCESS')
+        return self.__closeChannel(hpmudext.HPMUD_S_MEMORY_CARD_CHANNEL)
 
     def closeFax(self):
-        return self.__closeChannel('HP-FAX')
+        return self.__closeChannel(hpmudext.HPMUD_S_FAX_SEND_CHANNEL)
 
     def openPML(self):
-        return self.__openChannel('HP-MESSAGE')
+        return self.__openChannel(hpmudext.HPMUD_S_PML_CHANNEL)
 
     def closePML(self):
-        return self.__closeChannel('HP-MESSAGE')
+        return self.__closeChannel(hpmudext.HPMUD_S_PML_CHANNEL)
 
     def closeEWS(self):
-        return self.__closeChannel('HP-EWS')
+        return self.__closeChannel(hpmudext.HPMUD_S_EWS_CHANNEL)
 
     def openCfgUpload(self):
-        return self.__openChannel('HP-CONFIGURATION-UPLOAD')
+        return self.__openChannel(hpmudext.HPMUD_S_CONFIG_UPLOAD_CHANNEL)
 
     def closeCfgUpload(self):
-        return self.__closeChannel('HP-CONFIGURATION-UPLOAD')
+        return self.__closeChannel(hpmudext.HPMUD_S_CONFIG_UPLOAD_CHANNEL)
 
     def openCfgDownload(self):
-        return self.__openChannel('HP-CONFIGURATION-DOWNLOAD')
+        return self.__openChannel(hpmudext.HPMUD_S_CONFIG_DOWNLOAD_CHANNEL)
 
     def closeCfgDownload(self):
-        return self.__closeChannel('HP-CONFIGURATION-DOWNLOAD')
+        return self.__closeChannel(hpmudext.HPMUD_S_CONFIG_DOWNLOAD_CHANNEL)
 
 
     def __closeChannel(self, service_name):
-        if not self.mq['io-mode'] == IO_MODE_UNI and \
-            self.io_state == IO_STATE_HP_OPEN:
+        #if not self.mq['io-mode'] == IO_MODE_UNI and \
+        if self.io_state == IO_STATE_HP_OPEN:
 
             service_name = service_name.upper()
 
             if service_name in self.channels:
                 log.debug("Closing %s channel..." % service_name)
 
-                fields, data, result_code = \
-                    self.xmitHpiodMessage('ChannelClose',
-                                          {
-                                            'device-id': self.device_id,
-                                            'channel-id' : self.channels[service_name],
-                                          }
-                                        )
+                result_code = hpmudext.close_channel(self.device_id, 
+                    self.channels[service_name])
 
                 del self.channels[service_name]
 
@@ -1114,15 +1033,22 @@ class Device(object):
 
 
     def getDeviceID(self):
-        fields, data, result_code = \
-            self.xmitHpiodMessage('DeviceID', {'device-id' : self.device_id,})
+        needs_close = False
+        if self.io_state != IO_STATE_HP_OPEN:
+           self.open()
+           needs_close = True
 
-        if result_code != ERROR_SUCCESS:
+        result_code, data = hpmudext.get_device_id(self.device_id) 
+
+        if result_code != hpmudext.HPMUD_R_OK:
             self.raw_deviceID = ''
             self.deviceID = {}
         else:
             self.raw_deviceID = data
             self.deviceID = parseDeviceID(data)
+        
+        if needs_close:
+            self.close()
 
         return self.deviceID
 
@@ -1139,8 +1065,8 @@ class Device(object):
             if self.serial:
                 return
 
-        if self.mq.get('status-type', STATUS_TYPE_NONE) != STATUS_TYPE_NONE and \
-            not self.mq.get('io-mode', IO_MODE_UNI) == IO_MODE_UNI:
+        if self.mq.get('status-type', STATUS_TYPE_NONE) != STATUS_TYPE_NONE: # and \
+            #not self.mq.get('io-mode', IO_MODE_UNI) == IO_MODE_UNI:
 
             try:
                 try:
@@ -1155,15 +1081,7 @@ class Device(object):
 
 
     def getThreeBitStatus(self):
-        fields, data, result_code = \
-            self.xmitHpiodMessage('DeviceStatus', {'device-id' : self.device_id,})
-
-        if result_code != ERROR_SUCCESS:
-            self.three_bit_status_code = 0
-            self.three_bit_status_name = 'IOTrap'
-        else:
-            self.three_bit_status_code = fields['status-code']
-            self.three_bit_status_name = fields['status-name']
+        pass
 
 
     def getStatusFromDeviceID(self):
@@ -1264,21 +1182,16 @@ class Device(object):
         status_type = self.mq.get('status-type', STATUS_TYPE_NONE)
         battery_check = self.mq.get('status-battery-check', STATUS_BATTERY_CHECK_NONE)
         dynamic_counters = self.mq.get('status-dynamic-counters', STATUS_DYNAMIC_COUNTERS_NONE)
-        io_mode = self.mq.get('io-mode', IO_MODE_UNI)
+        #io_mode = self.mq.get('io-mode', IO_MODE_UNI)
+        #io_mfp_mode = self.mq.get('io-mfp-mode', IO_MODE_UNI)
 
         # Turn off status if local connection and bi-di not avail.
-        if io_mode  == IO_MODE_UNI and self.back_end != 'net':
-            status_type = STATUS_TYPE_NONE
+        #if io_mode  == IO_MODE_UNI and self.back_end != 'net':
+        #    status_type = STATUS_TYPE_NONE
 
         agents = []
 
         if self.device_state != DEVICE_STATE_NOT_FOUND:
-            try:
-                self.getThreeBitStatus()
-            except Error, e:
-                log.error("Error getting 3-bit status.")
-                raise Error(ERROR_DEVICE_IO_ERROR)
-
             if self.tech_type in (TECH_TYPE_MONO_INK, TECH_TYPE_COLOR_INK):
                 try:
                     self.getDeviceID()
@@ -1297,8 +1210,6 @@ class Device(object):
                 'panel'            : 0,
                 'panel-line1'      : '',
                 'panel-line2'      : '',
-                '3bit-status-code' : self.three_bit_status_code,
-                '3bit-status-name' : self.three_bit_status_name,
                 'device-state'     : self.device_state,
                 'error-state'      : self.error_state,
                 })
@@ -1358,6 +1269,7 @@ class Device(object):
 
             typ = 'event'
             self.error_state = STATUS_TO_ERROR_STATE_MAP.get(status_code, ERROR_STATE_CLEAR)
+
             if self.error_state == ERROR_STATE_ERROR:
                 typ = 'error'
 
@@ -1452,10 +1364,10 @@ class Device(object):
                            agent_type == mq_agent_type:
                            found = True
                            break
-                    
+
                     if found:
                         log.debug("r%d-kind%d-type%d" % (r_value, agent_kind, agent_type))
-                        
+
                         log.debug("found")
                         agent_health = agent.get('health', AGENT_HEALTH_OK)
                         agent_level_trigger = agent.get('level-trigger',
@@ -1602,22 +1514,14 @@ class Device(object):
 
     def isIdleAndNoError(self):
         self.queryDevice(quick=True)
+        #print self.error_state
         return self.error_state <= ERROR_STATE_MAX_OK
 
     def getPML(self, oid, desired_int_size=pml.INT_SIZE_INT): # oid => ( 'dotted oid value', pml type )
         channel_id = self.openPML()
 
-        fields, data, result_code = \
-            self.xmitHpiodMessage("GetPML",
-                                  {
-                                    'device-id' :  self.device_id,
-                                    'channel-id' : channel_id,
-                                    'oid' :        pml.PMLToSNMP(oid[0]),
-                                    'type' :       oid[1],
-                                   }
-                                )
-
-        pml_result_code = fields.get('pml-result-code', pml.ERROR_OK)
+        result_code, data, typ, pml_result_code = \
+            hpmudext.get_pml(self.device_id, channel_id, pml.PMLToSNMP(oid[0]), oid[1])
 
         log.debug("Result code = 0x%x" % pml_result_code)
 
@@ -1632,18 +1536,9 @@ class Device(object):
 
         value = pml.ConvertToPMLDataFormat(value, oid[1])
 
-        fields, data, result_code = \
-            self.xmitHpiodMessage("SetPML",
-                                  {
-                                    'device-id' :  self.device_id,
-                                    'channel-id' : channel_id,
-                                    'oid' :        pml.PMLToSNMP(oid[0]),
-                                    'type' :      oid[1],
-                                  },
-                                 value,
-                                )
+        result_code, pml_result_code = \
+            hpmudext.set_pml(self.device_id, channel_id, pml.PMLToSNMP(oid[0]), oid[1], value)
 
-        pml_result_code = fields.get('pml-result-code', pml.ERROR_OK)
         log.debug("Result code = 0x%x" % pml_result_code)
         return pml_result_code
 
@@ -1732,18 +1627,16 @@ class Device(object):
             buffer = ''
 
         while True:
-            fields, data, result_code = \
-                self.xmitHpiodMessage('ChannelDataIn',
-                                        {'device-id': self.device_id,
-                                          'channel-id' : channel_id,
-                                          'bytes-to-read' : bytes_to_read,
-                                          'timeout' : timeout,
-                                        }, 
-                                      )
+            #print self.device_id, channel_id, bytes_to_read, timeout
+            result_code, data = \
+                hpmudext.read_channel(self.device_id, channel_id, bytes_to_read, timeout)
+
+            #result_code, data = read_channel(dd, cd, bytes_to_read, [timeout])
 
             l = len(data)
+            #log.log_data(data)
 
-            if result_code != ERROR_SUCCESS:
+            if result_code != hpmudext.HPMUD_R_OK: 
                 log.error("Channel read error")
                 raise Error(ERROR_DEVICE_IO_ERROR)
 
@@ -1795,21 +1688,16 @@ class Device(object):
         buffer, bytes_out, total_bytes_to_write = data, 0, len(data)
 
         while len(buffer) > 0:
-            fields, data, result_code =\
-                self.xmitHpiodMessage('ChannelDataOut',
-                                        {
-                                            'device-id': self.device_id,
-                                            'channel-id' : channel_id,
-                                        },
-                                        buffer[:prop.max_message_len],
-                                      )
+            result_code, bytes_written = \
+                hpmudext.write_channel(self.device_id, channel_id, 
+                    buffer[:prop.max_message_len])
 
-            if result_code != ERROR_SUCCESS:
+            if result_code != hpmudext.HPMUD_R_OK:
                 log.error("Channel write error")
                 raise Error(ERROR_DEVICE_IO_ERROR)
 
             buffer = buffer[prop.max_message_len:]
-            bytes_out += fields['bytes-written']
+            bytes_out += bytes_written 
 
             if self.callback is not None:
                 self.callback()
@@ -1946,6 +1834,7 @@ class Device(object):
 
 
     def printData(self, data, printer_name=None, direct=True, raw=True):
+        #log.log_data(data)
         if direct:
             self.writePrint(data)
         else:

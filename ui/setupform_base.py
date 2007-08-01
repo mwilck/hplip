@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/setupform_base.ui'
+# Form implementation generated from reading ui file 'setupform_base.ui'
 #
-# Created: Wed Sep 27 09:51:56 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
+# Created: Mon May 21 13:43:50 2007
+#      by: The PyQt User Interface Compiler (pyuic) 3.17
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,17 +30,17 @@ class SetupForm_base(QWizard):
         connectionTypeButtonGroupLayout = QGridLayout(self.connectionTypeButtonGroup.layout())
         connectionTypeButtonGroupLayout.setAlignment(Qt.AlignTop)
 
-        self.radioButton1 = QRadioButton(self.connectionTypeButtonGroup,"radioButton1")
+        self.usbRadioButton = QRadioButton(self.connectionTypeButtonGroup,"usbRadioButton")
 
-        connectionTypeButtonGroupLayout.addWidget(self.radioButton1,0,0)
+        connectionTypeButtonGroupLayout.addWidget(self.usbRadioButton,0,0)
 
-        self.radioButton2 = QRadioButton(self.connectionTypeButtonGroup,"radioButton2")
+        self.netRadioButton = QRadioButton(self.connectionTypeButtonGroup,"netRadioButton")
 
-        connectionTypeButtonGroupLayout.addWidget(self.radioButton2,1,0)
+        connectionTypeButtonGroupLayout.addWidget(self.netRadioButton,1,0)
 
-        self.radioButton3 = QRadioButton(self.connectionTypeButtonGroup,"radioButton3")
+        self.parRadioButton = QRadioButton(self.connectionTypeButtonGroup,"parRadioButton")
 
-        connectionTypeButtonGroupLayout.addWidget(self.radioButton3,2,0)
+        connectionTypeButtonGroupLayout.addWidget(self.parRadioButton,2,0)
 
         ConnectionPageLayout.addMultiCellWidget(self.connectionTypeButtonGroup,1,1,0,1)
         spacer12 = QSpacerItem(20,120,QSizePolicy.Minimum,QSizePolicy.Expanding)
@@ -386,10 +386,10 @@ class SetupForm_base(QWizard):
         self.setTabOrder(self.faxNumberLineEdit,self.faxNameCoLineEdit)
         self.setTabOrder(self.faxNameCoLineEdit,self.faxLocationLineEdit)
         self.setTabOrder(self.faxLocationLineEdit,self.faxDescriptionLineEdit)
-        self.setTabOrder(self.faxDescriptionLineEdit,self.radioButton1)
-        self.setTabOrder(self.radioButton1,self.radioButton2)
-        self.setTabOrder(self.radioButton2,self.radioButton3)
-        self.setTabOrder(self.radioButton3,self.searchFiltersPushButton2)
+        self.setTabOrder(self.faxDescriptionLineEdit,self.usbRadioButton)
+        self.setTabOrder(self.usbRadioButton,self.netRadioButton)
+        self.setTabOrder(self.netRadioButton,self.parRadioButton)
+        self.setTabOrder(self.parRadioButton,self.searchFiltersPushButton2)
         self.setTabOrder(self.searchFiltersPushButton2,self.probedDevicesListView)
         self.setTabOrder(self.probedDevicesListView,self.searchFiltersPushButton)
         self.setTabOrder(self.searchFiltersPushButton,self.manualFindPushButton)
@@ -414,9 +414,9 @@ class SetupForm_base(QWizard):
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manger - Printer Setup Wizard"))
         self.connectionTypeButtonGroup.setTitle(self.__tr("Connection (I/O) Type"))
-        self.radioButton1.setText(self.__tr("Universal Serial Bus (USB)"))
-        self.radioButton2.setText(self.__tr("Network/Ethernet/Wireless (direct connection or JetDirect)"))
-        self.radioButton3.setText(self.__tr("Parallel Port (LPT)"))
+        self.usbRadioButton.setText(self.__tr("Universal Serial Bus (USB)"))
+        self.netRadioButton.setText(self.__tr("Network/Ethernet/Wireless (direct connection or JetDirect)"))
+        self.parRadioButton.setText(self.__tr("Parallel Port (LPT)"))
         self.searchFiltersPushButton2.setText(self.__tr("Advanced..."))
         self.setTitle(self.ConnectionPage,self.__tr("Choose Connection Type"))
         self.searchFiltersPushButton.setText(self.__tr("Advanced..."))

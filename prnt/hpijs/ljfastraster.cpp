@@ -444,7 +444,6 @@ typedef enum
 {
 	eDelta32,
 	eDeltaPlus = 24,
-	eJBIG,
 	eFX = 18,
 	eRAW = 2
 } CompressionMethod;

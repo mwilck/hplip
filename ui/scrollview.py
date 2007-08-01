@@ -49,6 +49,7 @@ class ScrollView(QScrollView):
         self.printers = []
         self.maximize = None
         self.orig_height = 0
+        self.content_padding = 20
         
         if log.get_level() == log.LOG_LEVEL_DEBUG:
             self.heading_color = qApp.palette().color(QPalette.Active, QColorGroup.Base)
@@ -83,7 +84,7 @@ class ScrollView(QScrollView):
         if self.maximize is not None:
             self.maximizeControl(total_height)
         
-        self.resizeContents(e.size().width(), total_height)
+        self.resizeContents(e.size().width(), total_height + self.content_padding)
             
     def maximizeControl(self, total_height=0):
         if self.maximize is not None:
@@ -103,7 +104,7 @@ class ScrollView(QScrollView):
             
             if delta:
                 self.items[self.maximize].resize(width, new_height)
-                self.resizeContents(width, self.contentsHeight()+delta)
+                self.resizeContents(width, self.contentsHeight()+delta+self.content_padding)
                 m_y = self.childY(self.items[self.maximize])
                 
                 for w in self.items:
@@ -121,7 +122,7 @@ class ScrollView(QScrollView):
                 
                 break
         
-    def onDeviceChange(self, cur_device=None):
+    def onDeviceChange(self, cur_device=None, updating=False):
         if cur_device is not None:
             log.debug("ScrollView.onDeviceChange(%s)" % cur_device.device_uri)
         else:
@@ -130,21 +131,22 @@ class ScrollView(QScrollView):
         self.cur_device = cur_device
 
         if self.cur_device is not None and self.cur_device.supported:
-            try:
-                self.cur_printer = self.cur_device.cups_printers[0]
-            except IndexError:
-                log.error("Printer list empty") # Shouldn't happen!
-            else:
-                self.isFax()
-                
-                QApplication.setOverrideCursor(QApplication.waitCursor)
+            if not updating or not self.cur_printer:
                 try:
-                    try:
-                        self.fillControls()
-                    except Exception, e:
-                        log.exception()
-                finally:
-                    QApplication.restoreOverrideCursor()
+                    self.cur_printer = self.cur_device.cups_printers[0]
+                except IndexError:
+                    log.error("Printer list empty") # Shouldn't happen!
+                else:
+                    self.isFax()
+                
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+            try:
+                try:
+                    self.fillControls()
+                except Exception, e:
+                    log.exception()
+            finally:
+                QApplication.restoreOverrideCursor()
         
         else:
             log.debug("Unsupported device")
@@ -155,7 +157,7 @@ class ScrollView(QScrollView):
             
     def onUpdate(self, cur_device=None):
         log.debug("ScrollView.onUpdate()")
-        return self.onDeviceChange(cur_device)
+        return self.onDeviceChange(cur_device, True)
 
     def fillControls(self):
         log.debug("fillControls(%s)" % str(self.name()))
@@ -203,7 +205,7 @@ class ScrollView(QScrollView):
             widget.adjustSize()
             self.addChild(widget, 0, self.y)
             self.y += (widget.size().height() + self.item_margin)
-            self.resizeContents(self.visibleWidth(), self.y + self.item_margin)
+            self.resizeContents(self.visibleWidth(), self.y + self.content_padding)
             widget.show()
         else:
             log.debug("ERROR: Duplicate control name: %s" % key)
@@ -242,7 +244,7 @@ class ScrollView(QScrollView):
         else:
             textLabel2.setText(QString("<b>%1</b>").arg(heading))
 
-        self.addWidget(widget, "g:"+str(group))
+        self.addWidget(widget, "g:"+unicode(group))
         
         
     def addActionButton(self, name, action_text, action_func, 
@@ -373,7 +375,7 @@ class ScrollView(QScrollView):
         
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollView",s,c)
         
         
         

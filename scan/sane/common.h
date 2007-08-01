@@ -25,7 +25,7 @@
 
 \************************************************************************************/
 
-#if !defined(_COMMON_H)
+#ifndef _COMMON_H
 #define _COMMON_H
 
 // Uncomment the following line to get verbose debugging output
@@ -38,6 +38,7 @@
 #define OK 1
 #define ERROR 0
 #define MAX_LIST_SIZE 32
+#define EXCEPTION_TIMEOUT 45 /* seconds */
 
 #define STR_COMPRESSION_NONE  SANE_I18N("None")
 #define STR_COMPRESSION_MH  SANE_I18N("MH")
@@ -148,22 +149,19 @@
     pXform++; \
   } while(0)
 
-int bug(const char *fmt, ...);
-void sysdump(const void *data, int size);
-char *psnprintf(char *buf, int bufSize, const char *fmt, ...);
-
-unsigned long DivideAndShift( int line,
-                              unsigned long numerator1,
-                              unsigned long numerator2,
-                              unsigned long denominator,
-                              int shift );
-void NumListClear( int * list );
-int NumListIsInList( int * list, int n );
-int NumListAdd( int * list, int n );
-int NumListGetCount( int * list );
-int NumListGetFirst( int * list );
-void StrListClear( const char ** list );
-int StrListIsInList( const char ** list, char * s );
-int StrListAdd( const char ** list, char * s );
+int __attribute__ ((visibility ("hidden"))) bug(const char *fmt, ...);
+void __attribute__ ((visibility ("hidden"))) sysdump(const void *data, int size);
+void __attribute__ ((visibility ("hidden"))) bugdump(const void *data, int size);
+char __attribute__ ((visibility ("hidden"))) *psnprintf(char *buf, int bufSize, const char *fmt, ...);
+unsigned long __attribute__ ((visibility ("hidden"))) DivideAndShift(int line, unsigned long numerator1, unsigned long numerator2,
+                              unsigned long denominator, int shift);
+void __attribute__ ((visibility ("hidden"))) NumListClear( int * list );
+int __attribute__ ((visibility ("hidden"))) NumListIsInList( int * list, int n );
+int __attribute__ ((visibility ("hidden"))) NumListAdd( int * list, int n );
+int __attribute__ ((visibility ("hidden"))) NumListGetCount( int * list );
+int __attribute__ ((visibility ("hidden"))) NumListGetFirst( int * list );
+void __attribute__ ((visibility ("hidden"))) StrListClear( const char ** list );
+int __attribute__ ((visibility ("hidden"))) StrListIsInList( const char ** list, char * s );
+int __attribute__ ((visibility ("hidden"))) StrListAdd( const char ** list, char * s );
 
 #endif

@@ -43,7 +43,7 @@ class DJGenericVIP : public DJ9xxVIP
 {
 public:
     DJGenericVIP (SystemServices* pSS, BOOL proto = FALSE);
-
+    Header *SelectHeader (PrintContext *pc);
     DRIVER_ERROR VerifyPenInfo ();
     virtual BOOL FullBleedCapable (PAPER_SIZE ps, FullbleedType  *fbType, float *xOverSpray, float *yOverSpray,
                                    float *fLeftOverSpray, float *fTopOverSpray);
@@ -52,6 +52,7 @@ public:
     virtual PHOTOTRAY_STATE PhotoTrayEngaged (BOOL bQueryPrinter);
     //! Returns TRUE if a hagaki feed is present in printer.
     virtual BOOL HagakiFeedPresent(BOOL bQueryPrinter);
+	virtual DATA_FORMAT GetDataFormat () { return RASTER_STRIP; }
 
 #ifdef APDK_AUTODUPLEX
     //!Returns TRUE if duplexer and hagaki feed (combined) unit is present in printer.
@@ -147,6 +148,7 @@ public:
         "Photosmart 420\0"
         "Photosmart A430\0"
         "Photosmart A510\0"
+        "Photosmart A520\0"
 #ifdef APDK_MLC_PRINTER
 		"PSC 1500\0"
 		"PSC 1600\0"
@@ -172,9 +174,13 @@ public:
         "Photosmart 3300\0"
 #endif
         "Photosmart A310\0"
+        "Photosmart A320\0"
+        "Photosmart A440\0"
         "Photosmart C31\0"
         "Photosmart C41\0"
+        "Photosmart C42\0"
         "Photosmart C51\0"
+        "Photosmart C52\0"
         "Photosmart C61\0"
         "Photosmart C71\0"
         "Photosmart Pro B8300\0"

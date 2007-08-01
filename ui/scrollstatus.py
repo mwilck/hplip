@@ -114,10 +114,9 @@ class ScrollStatusView(ScrollView):
             else:
                 desc = ''
         
-        #print repr(str(desc))
         tt = QString("<b>%1 %2</b>").arg(time.strftime("%x %H:%M:%S", hist[:9])).arg(desc).stripWhiteSpace()
-        #tt = QString(desc)
-        self.addGroupHeading(str(tt), tt)
+        
+        self.addGroupHeading(unicode(tt), tt)
         
         widget = self.getWidget()
         
@@ -133,7 +132,6 @@ class ScrollStatusView(ScrollView):
         icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,icon.sizePolicy().hasHeightForWidth()))
         icon.setMinimumSize(QSize(32,32))
         icon.setMaximumSize(QSize(32,32))
-        #self.icon.setFrameShape(QLabel.Box)
         icon.setScaledContents(1)
 
         layout38.addWidget(icon,0,0)
@@ -176,95 +174,14 @@ class ScrollStatusView(ScrollView):
 
         line6 = QFrame(self,"line6")
         line6.setFrameShape(QFrame.VLine)
-        #self.line6.setFrameShadow(QFrame.Sunken)
-        #self.line6.setFrameShape(QFrame.VLine)
-
         layout12_2.addMultiCellWidget(line6,0,2,0,0)
 
         layout38.addLayout(layout12_2,0,3)
 
-       
-##        layout1 = QGridLayout(widget, 1, 1, 5, 10, "layout1")
-##        spacer1 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-##        layout1.addItem(spacer1, 1, 2)
-##
-##        icon = QLabel(widget, "icon")
-##        icon.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, 0, 0,
-##            icon.sizePolicy().hasHeightForWidth()))
-##
-##        icon.setMinimumSize(QSize(32, 32))
-##        icon.setMaximumSize(QSize(32, 32))
-##        icon.setScaledContents(1)
-##        layout1.addWidget(icon, 0, 0)
-##
-##        #layout2 = QGridLayout(None, 1, 1, 0, 0, "layout2")
-##        layout2 = QVBoxLayout(None, 0, 6, "layout2")
-##        
-##        userTextLabel = QLabel(widget, "userTextLabel")
-##        layout2.addWidget(userTextLabel, 0, 1)
-##
-##        jobIDTextLabel = QLabel(widget, "jobIDTextLabel")
-##        layout2.addWidget(jobIDTextLabel, 1, 1)
-##
-##        userText = QLabel(widget, "userText")
-##        layout2.addWidget(userText, 0, 2)
-##
-##        codeTextLabel = QLabel(widget, "codeTextLabel")
-##        layout2.addWidget(codeTextLabel, 2, 1)
-##
-##        jobIDText = QLabel(widget, "jobIDText")
-##        layout2.addWidget(jobIDText, 1, 2)
-##
-##        codeText = QLabel(widget, "codeText")
-##        layout2.addWidget(codeText, 2, 2)
-##
-##        layout1.addMultiCellLayout(layout2, 0, 1, 3, 3)
-##        
-##        layout3 = QVBoxLayout(None, 0, 6, "layout3")
-##
-##        essText = QLabel(widget, "essText")
-##        essText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
-##            essText.sizePolicy().hasHeightForWidth()))
-##            
-##        essText.setAlignment(QLabel.WordBreak) # | QLabel.AlignVCenter)
-##        essText.setFrameShape(self.frame_shape)
-##        
-##        layout3.addWidget(essText, 0, 1)
-##
-##        eslText = QLabel(widget, "eslText")
-##        eslText.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum,0,0,
-##            eslText.sizePolicy().hasHeightForWidth()))
-##        eslText.setFrameShape(self.frame_shape)
-##        
-##        eslText.setAlignment(QLabel.WordBreak) # | QLabel.AlignVCenter)
-##        layout3.addWidget(eslText, 1, 1)
-##        
-##        layout1.addLayout(layout3, 0, 1)
-##        layout1.addLayout(layout2, 1, 1)
-##
-##        #titleText = QLabel(widget, "titleText")
-##        #titleText.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred, 0, 0,
-##        #    titleText.sizePolicy().hasHeightForWidth()))
-##        
-##        #layout1.addMultiCellWidget(titleText, 0, 0, 0, 2)
-##
-##        #line2 = QFrame(widget, "line1")
-##        #line2.setFrameShape(QFrame.HLine)
-##        #layout1.addMultiCellWidget(line2, 2, 2, 0, 3)
-##
-####        if self.row == 0:
-####            desc = self.__tr("(most recent)")
-####
-####        else:
-####            if have_datetime:
-####                desc = self.getTimeDeltaDesc(hist[:9])
-####            else:
-####                desc = ''
-##
-##        #titleText.setText(QString("<b>%1 %2</b>").arg(time.strftime("%x %H:%M:%S", hist[:9])).arg(desc))
-        
-
+        ess = qApp.translate("StringTable", ess)
         essText.setText(ess)
+        
+        esl = qApp.translate("StringTable", esl)
         eslText.setText(esl)
 
         userTextLabel.setText(self.__tr("User:"))
@@ -277,10 +194,10 @@ class ScrollStatusView(ScrollView):
             jobIDText.setText(str(job_id))
 
         codeTextLabel.setText(self.__tr("Code:"))
-        codeText.setText(str(ec))
+        codeText.setText(unicode(ec))
 
         error_state = STATUS_TO_ERROR_STATE_MAP.get(ec, ERROR_STATE_CLEAR)
-
+        
         try:
             tech_type = self.cur_device.tech_type
         except AttributeError:
@@ -331,7 +248,7 @@ class ScrollStatusView(ScrollView):
         try:
             i18n_amount = self.num_repr[amount]
         except KeyError:
-            i18n_amount = str(amount)
+            i18n_amount = unicode(amount)
 
         if amount == 1:
             i18n_unit = self.unit_names[unit_name][0]
@@ -342,5 +259,5 @@ class ScrollStatusView(ScrollView):
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollStatusView",s,c)
         

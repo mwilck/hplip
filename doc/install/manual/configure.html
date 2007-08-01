@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
-<title>Configure HPLIP</title>
+<title>Configure Information</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="../../styles/default.css" type="text/css" /> 
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
@@ -13,155 +13,132 @@
 <body>
 <div id="page"><!-- start page -->
 <div id="container"><!-- start main container -->
-<!-- start banner -->
-
-<div id="banner">
-<div id="banner_graphics">
-        <div id="floatleft">
-        <img src="../../images/hplogo2.png" alt="HP Logo" border="0" />
-        </div>
-        <div id="floatcenter">
-        <a href="../../index.html">
-        <img src="../../images/hpliplogo.png" alt="HP Logo" border="0" />
-        </a>
-        </div>
-        <div id="floatright">
-        <img src="../../images/tuxlogo2.png" alt="Tux" border="0" />
-        </div>
-    </div>
-</div>
-<!-- end banner -->
-
-<div id="navbar">
-<table>
-    <tr>
-        <td valign="top">
-<div id="sidebar-a">
-<ul id="sidebar-a-list">
-    <menu compact="compact">
-        <div class="menuheader"><a href="../../index.html" title="">Home</a></div>
-    </menu>
-
-<div class="menuheader">About</div>
-    <menu compact="compact">
-        <li><a href="../../features.html" title="">Features</a></li> 
-        <li><a href="../../screenshots.html" title="">Screenshots</a></li> 
-        <li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
-        <li><a a href="../../about.html" title="About">About HPLIP</a></li>
-    </menu>
-<div class="menuheader">Setup and Installation</div>
-    <menu compact="compact">
-        <li><a href="../../downloads.html" title="Downloads">Download HPLIP</a></li>
-        <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
-        <li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
-        <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
-    </menu>
-<div class="menuheader">Usage and Support</div>
-    <menu compact="compact">
-        <li><a href="../../mailing_lists.html" title="Mailing Lists">Mailing Lists</a></li>
-        <li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
-        <li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
-        <li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
-    </menu>
-<div class="menuheader">Resources</div>
-    <menu compact="compact">
-        <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
-        <li><a href="http://sourceforge.net/projects/hplip/" title="Our project page on Sourceforge.net">Sourceforge Project Page</a></li> 
-        <li><a href="../../license.html" title="Software License">Software License</a></li>
-        <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
-        <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
-    </menu>
-</ul>
-</div>
-<!-- end sidebar --></td>
-</div>
-<td width=100%>
+<td width=80%>
 <div id="content"><!-- start content -->
-        <a href="../../index.html">Home</a>
-&gt;
-<a href="../index.html">Installation</a>
-&gt;
-<a href="index.html">Manual Install</a>
-&gt;
-Configure HPLIP
+<div class="document" id="configure-information">
+<h1 class="title">Configure Information</h1>
+<p>configure - configures HP Linux Imaging and Printing to adapt to many kinds of systems.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also run ./configure --help from the hplip source directory for this information.</p>
+</div>
+<p>Usage: ./configure [OPTION]... [VAR=VALUE]...</p>
+<p>To assign environment variables (e.g., CC, CFLAGS...), specify them as
+VAR=VALUE.  See below for descriptions of some of the useful variables.</p>
+<p>Defaults for the options are specified in brackets.</p>
+<p>Configuration:</p>
+<pre class="literal-block">
+-h, --help              display this help and exit
+    --help=short        display options specific to this package
+    --help=recursive    display the short help of all the included packages
+-V, --version           display version information and exit
+-q, --quiet, --silent   do not print checking... messages
+    --cache-file=FILE   cache test results in FILE [disabled]
+-C, --config-cache      alias for --cache-file=config.cache
+-n, --no-create         do not create output files
+    --srcdir=DIR        find the sources in DIR [configure dir or ..]
+</pre>
+<p>Installation directories:</p>
+<pre class="literal-block">
+--prefix=PREFIX         install architecture-independent files in PREFIX
+                        [/usr/local]
+--exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+                        [PREFIX]
+</pre>
+<p>By default, make install will install all the files in
+/usr/local/bin, /usr/local/lib etc.  You can specify
+an installation prefix other than /usr/local using --prefix,
+for instance --prefix=$HOME.</p>
+<p>For better control, use the options below.</p>
+<p>Fine tuning of the installation directories:</p>
+<pre class="literal-block">
+--bindir=DIR           user executables [EPREFIX/bin]
+--sbindir=DIR          system admin executables [EPREFIX/sbin]
+--libexecdir=DIR       program executables [EPREFIX/libexec]
+--sysconfdir=DIR       read-only single-machine data [PREFIX/etc]
+--sharedstatedir=DIR   modifiable architecture-independent data [PREFIX/com]
+--localstatedir=DIR    modifiable single-machine data [PREFIX/var]
+--libdir=DIR           object code libraries [EPREFIX/lib]
+--includedir=DIR       C header files [PREFIX/include]
+--oldincludedir=DIR    C header files for non-gcc [/usr/include]
+--datarootdir=DIR      read-only arch.-independent data root [PREFIX/share]
+--datadir=DIR          read-only architecture-independent data [DATAROOTDIR]
+--infodir=DIR          info documentation [DATAROOTDIR/info]
+--localedir=DIR        locale-dependent data [DATAROOTDIR/locale]
+--mandir=DIR           man documentation [DATAROOTDIR/man]
+--docdir=DIR           documentation root [DATAROOTDIR/doc/hplip]
+--htmldir=DIR          html documentation [DOCDIR]
+--dvidir=DIR           dvi documentation [DOCDIR]
+--pdfdir=DIR           pdf documentation [DOCDIR]
+--psdir=DIR            ps documentation [DOCDIR]
+</pre>
+<p>Program names:</p>
+<pre class="literal-block">
+--program-prefix=PREFIX            prepend PREFIX to installed program names
+--program-suffix=SUFFIX            append SUFFIX to installed program names
+--program-transform-name=PROGRAM   run sed PROGRAM on installed program names
+</pre>
+<p>System types:</p>
+<pre class="literal-block">
+--build=BUILD     configure for building on BUILD [guessed]
+--host=HOST       cross-compile to build programs to run on HOST [BUILD]
+</pre>
+<p>Optional Features:</p>
+<pre class="literal-block">
+--disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+--enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+--enable-static[=PKGS]  build static libraries [default=no]
+--enable-shared[=PKGS]  build shared libraries [default=yes]
+--enable-fast-install[=PKGS] optimize for fast installation [default=yes]
+--disable-dependency-tracking  speeds up one-time build
+--enable-dependency-tracking   do not reject slow dependency extractors
+--disable-libtool-lock  avoid locking (might break parallel builds)
+--enable-doc-build     enable documentation build (default=yes)
+--enable-hpijs-only-build     enable hpijs only build (default=no)
+--enable-network-build    enable network build (default=yes)
+--enable-pp-build    enable parallel port build (default=yes)
+--enable-scan-build    enable scanner build (default=yes)
+--enable-gui-build    enable gui build (default=yes)
+--enable-fax-build    enable fax build (default=yes)
+--enable-cups11-build    enable cups 1.1.x build (default=no)
+--enable-shadow-build    enable shadow build (default=no)
+--enable-foomatic-ppd-install         enable foomatic ppd install, uses hpppddir default=no
+--enable-foomatic-xml-install         enable foomatic xml install, uses foomaticdir default=yes
+</pre>
+<p>Optional Packages:</p>
+<pre class="literal-block">
+--with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+--without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+--with-gnu-ld           assume the C compiler uses GNU ld [default=no]
+--with-pic              try to use only PIC/non-PIC objects [default=use both]
+--with-tags[=TAGS]      include additional configurations [automatic]
+--with-cupsbackenddir=DIR set cups backend install directory default=/usr/lib/cups/backend
+--with-icondir=DIR      set icon install directory default=/usr/share/applications
+--with-hpppddir=DIR     set hp ppd install directory default=datadir/ppd/HP
+--with-foomaticdir=DIR  set foomatic db install directory default=datadir/foomatic
+</pre>
+<p>Some influential environment variables:</p>
+<pre class="literal-block">
+CC          C compiler command
+CFLAGS      C compiler flags
+LDFLAGS     linker flags, e.g. -L&lt;lib dir&gt; if you have libraries in a nonstandard directory &lt;lib dir&gt;
+LIBS        libraries to pass to the linker, e.g. -l&lt;library&gt;
+CPPFLAGS    C/C++/Objective C preprocessor flags, e.g. -I&lt;include dir&gt; if you have headers in a nonstandard directory &lt;include dir&gt;
+CPP         C preprocessor
+CXX         C++ compiler command
+CXXFLAGS    C++ compiler flags
+CXXCPP      C++ preprocessor
+F77         Fortran 77 compiler command
+FFLAGS      Fortran 77 compiler flags
+PYTHON      Python interpreter/compiler command
+PYTHONINCLUDEDIR path to Python.h C header file
+</pre>
+<p>Use these variables to override the choices made by configure or to help
+it to find libraries and programs with nonstandard names/locations.</p>
+<center><a href="JavaScript:window.close()">Close</a> this window to continue.</center></div>
 
 <hr size="1"/>
-        <div class="document" id="configure-the-hplip-install">
-<h1 class="title">Configure the HPLIP Install</h1>
-<div class="section">
-<h1><a id="configure-hplip-most-users-do-this" name="configure-hplip-most-users-do-this">Configure HPLIP (most users do this)</a></h1>
-<p><em>Note</em>: If you want to customize your install please refer to the './configure options' section below.</p>
-<p><em>Note</em>: Run this in the extracted HPLIP tarball directory.</p>
-<p><strong>32 bit distro users</strong> (most users will use this command):</p>
-<div class="compound">
-<p>./configure --prefix=/usr</p>
-</div>
-<p><strong>64 bit distro users</strong></p>
-<p>You will need to run this configure option:</p>
-<div class="compound">
-<p>./configure --prefix=/usr --libdir=/usr/lib64</p>
-</div>
-</div>
-<div class="section">
-<h1><a id="configure-hpijs-only-server-minimal-install" name="configure-hpijs-only-server-minimal-install">Configure HPIJS Only (Server/Minimal Install)</a></h1>
-<p>Go <a class="reference" href="../../tech_docs/tarball_install.html">here</a> for steps on installing a server or minimal install of HPLIP.</p>
-</div>
-<div class="section">
-<h1><a id="configure-options" name="configure-options">Configure options</a></h1>
-<p>The configure step of HPLIP does several things,</p>
-<ol class="arabic simple">
-<li>Checks your system to ensure that all dependencies are installed and that HPLIP can be compiled.</li>
-<li>Configures the HPLIP for which options will be enabled and/or disabled.</li>
-</ol>
-<p>configure variables:</p>
-<p><em>Note</em>: We recommended to install in the /usr directory.</p>
-<ol class="arabic simple">
-<li><em>--prefix=/usr</em> (This is where HPLIP will be installed.)</li>
-</ol>
-<p><strong>Note</strong>: If you are using a <strong>64 bit</strong> distro you need to use this additional configure variable:</p>
-<ol class="arabic simple">
-<li><em>--libdir=/usr/lib64</em> (Configures HPLIP to work on 64 bit systems.)</li>
-</ol>
-<p>Default enabled options if you run &quot;./configure --prefix=/usr&quot;:</p>
-<ol class="arabic simple">
-<li><em>--enable-network-build</em>  (enable network build (default=yes))</li>
-<li><em>--enable-pp-build</em>  (enable parallel port build (default=yes))</li>
-<li><em>--enable-scan-build</em>  (enable scanner build (default=yes))</li>
-<li><em>--enable-gui-build</em>  (enable gui build (default=yes))</li>
-<li><em>--enable-fax-build</em>  (enable fax build (default=yes))</li>
-</ol>
-<p>Options to disable HPLIP features:</p>
-<ol class="arabic simple">
-<li><em>--disable-network-build</em> (disables HPLIP network support)</li>
-<li><em>--disable-pp-build</em> (disables HPLIP parallel port support)</li>
-<li><em>--disable-scan-build</em> (disables HPLIP scan support)</li>
-<li><em>--disable-gui-build</em> (disables HPLIP GUI support)</li>
-<li><em>--disable-fax-build</em> (disables HPLIP fax support)</li>
-</ol>
-<p><strong>How to</strong> use the configure options:</p>
-<p>If you wanted to disable network support, (for example)--you would run: (see the section './configure options' below for more specific information--however you probably do not need to do this.)</p>
-<div class="compound">
-<p>./configure --prefix=/usr --disable-network-build</p>
-</div>
-</div>
-<div class="section">
-<h1><a id="troubleshooting-errors-produced-after-running-configure-prefix-usr" name="troubleshooting-errors-produced-after-running-configure-prefix-usr">Troubleshooting errors produced after running './configure --prefix=/usr'</a></h1>
-<p>If you receive any errors after running ./configure, such as missing libsnmp, missing gcc-c++, etc these are not complicated to troubleshooting.</p>
-<ol class="arabic simple">
-<li>Make sure you have all of the HPLIP dependencies installed. (This is the most common problem.)</li>
-<li>Search the internet for the error.  Usually someone may have already encoutered and resolved your problem.</li>
-<li>Search the mailing list <a class="reference" href="http://sourceforge.net/mailarchive/forum.php?forum_id=48102">archives</a>.</li>
-<li>Ask your question to the <a class="reference" href="../../mailing_lists.html">mailing list</a>.</li>
-</ol>
-</div>
-<div class="section">
-<h1><a id="next" name="next">Next</a></h1>
-<p><a class="reference" href="make.html">Continue to make</a></p>
-</div>
-</div>
-
-<hr size="1"/>
-<center><small>Page last updated: Tue Mar 20 09:10:48 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Thu Jun 14 16:07:55 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

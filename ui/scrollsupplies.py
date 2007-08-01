@@ -255,7 +255,7 @@ class ScrollSuppliesView(ScrollView):
         layout1.addItem(spacer1,0,3)
 
         barGraph = QLabel(widget,"barGraph")
-        barGraph.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed,0,0,
+        barGraph.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred,0,0,
             barGraph.sizePolicy().hasHeightForWidth()))
 
         barGraph.setMinimumSize(QSize(100,18))
@@ -334,5 +334,5 @@ class ScrollSuppliesView(ScrollView):
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollSuppliesView",s,c)
 

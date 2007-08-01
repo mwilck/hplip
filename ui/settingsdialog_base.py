@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/settingsdialog_base.ui'
 #
-# Created: Mon Apr 9 16:37:37 2007
+# Created: Tue Apr 24 08:08:38 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
@@ -409,7 +409,7 @@ class SettingsDialog_base(QDialog):
         self.radioButton14.setText(self.__tr("External command:"))
         self.DefaultsButton.setText(self.__tr("Set Defaults"))
         self.copyButtonGroup.setTitle(self.__tr("Make Copies"))
-        self.radioButton21.setText(self.__tr("Built-inmake copies function"))
+        self.radioButton21.setText(self.__tr("Built-in make copies function"))
         self.radioButton22.setText(self.__tr("External command:"))
         self.TabWidget.changeTab(self.FunctionCommands,self.__tr("Functions (Advanced)"))
 

@@ -454,19 +454,21 @@ class ScrollCopyView(ScrollView):
             if status == copier.STATUS_IDLE:
                 self.copy_timer.stop()
 
-                self.pb.hide()
-                self.form.statusBar().removeWidget(self.pb)
+                #self.pb.hide()
+                #self.form.statusBar().removeWidget(self.pb)
 
             elif status in (copier.STATUS_SETTING_UP, copier.STATUS_WARMING_UP):
-                self.pb.setProgress(self.pb.progress()+1)
+                #self.pb.setProgress(self.pb.progress()+1)
+                pass
 
             elif status == copier.STATUS_ACTIVE:
-                self.pb.setProgress(self.pb.progress()+1)
+                #self.pb.setProgress(self.pb.progress()+1)
+                pass
 
             elif status in (copier.STATUS_ERROR, copier.STATUS_DONE):
                 self.copy_timer.stop()
-                self.pb.hide()
-                self.form.statusBar().removeWidget(self.pb)
+                #self.pb.hide()
+                #self.form.statusBar().removeWidget(self.pb)
 
                 if status == copier.STATUS_ERROR:
                     self.form.FailureUI(self.__tr("<b>Copier error.</b><p>"))
@@ -495,26 +497,27 @@ class ScrollCopyView(ScrollView):
 
             service.sendEvent(self.sock, EVENT_START_COPY_JOB, device_uri=self.cur_device.device_uri)
 
-            self.pb = QProgressBar()
-            self.pb.setTotalSteps(2)
-            self.form.statusBar().addWidget(self.pb)
-            self.pb.show()
+            #self.pb = QProgressBar()
+            #self.pb.setTotalSteps(2)
+            #self.form.statusBar().addWidget(self.pb)
+            #self.pb.show()
 
             log.debug("Num copies: %d" % self.num_copies)
             log.debug("Contrast: %d" % self.contrast)
             log.debug("Reduction: %d" % self.reduction)
 
-            if self.quality == 0:
+            s = 'Normal'
+            if self.quality == pml.COPIER_QUALITY_FAST:
                 s = 'Fast'
-            elif self.quality == 1:
+            elif self.quality == pml.COPIER_QUALITY_DRAFT:
                 s = 'Draft'
-            elif self.quality == 2:
+            elif self.quality == pml.COPIER_QUALITY_NORMAL:
                 s = 'Normal'
-            elif self.quality == 3:
+            elif self.quality == pml.COPIER_QUALITY_PRESENTATION:
                 s = 'Presentation'
-            elif self.quality == 4:
+            elif self.quality == pml.COPIER_QUALITY_BEST:
                 s = 'Best'
-
+            
             log.debug("Quality: %d (%s)" % (self.quality, s))
 
             if self.fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED:
@@ -539,6 +542,7 @@ class ScrollCopyView(ScrollView):
             pass
 
     def funcButton_clicked(self):
+        self.dev.close()
         if self.toolbox_hosted:
             self.form.SwitchFunctionsTab("funcs")
         else:

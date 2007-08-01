@@ -1,23 +1,27 @@
 #
 #  Makefile.am - hplip automake input file
 #
-#  (c) 2004-2005 Copyright Hewlett-Packard Development Company, LP
+#  (c) 2004-2007 Copyright Hewlett-Packard Development Company, LP
 #
 
-SUBDIRS = . prnt/hpijs
-INCLUDES = -Iip -Iapi
+INCLUDES = -Iip -Iio/hpmud -Iscan/sane
+
+BZRSERVER=http://bzr.linuxprinting.org/devel
+#BZRSERVER=http://dsufflnx/bzr
 
 hplipdir = $(datadir)/hplip
-rundir = /var/run
 
-docdir = $(datadir)/doc/$(distdir)
-doc_DATA = COPYING scan/sane/hpaio.desc
+docdir = $(hpdocdir)
+doc_DATA = COPYING prnt/hpijs/README_LIBJPG
+EXTRA_DIST = prnt/hpijs/gdevijs-krgb-1.3-gs8.54.patch prnt/hpijs/README_LIBJPG
 
 dist_noinst_SCRIPTS = 
 dist_noinst_DATA =
+noinst_PROGRAMS =
+lib_LTLIBRARIES = 
 
+if DOC_BUILD
 wwwsrc = doc
-
 www0dir = $(docdir)
 dist_www0_DATA = $(wwwsrc)/contacts.html $(wwwsrc)/faqs.html $(wwwsrc)/features.html $(wwwsrc)/index.html $(wwwsrc)/legal.html $(wwwsrc)/license.html $(wwwsrc)/mailing_lists.html \
    $(wwwsrc)/release_notes.html $(wwwsrc)/screenshots.html $(wwwsrc)/support_statement.html $(wwwsrc)/system_requirements.html $(wwwsrc)/about.html \
@@ -58,48 +62,41 @@ www61dir = $(docdir)/tech_docs/man_pages
 dist_www61_DATA = $(wwwsrc)/tech_docs/man_pages/*
 www7dir = $(docdir)/troubleshooting
 dist_www7_DATA = $(wwwsrc)/troubleshooting/*
+endif
 
-dist_hplip_DATA = $(doc_DATA) hplip.conf
-dist_hplip_SCRIPTS = hpssd.py __init__.py hplip.sh install.py hplip-install
+if HPLIP_BUILD
+
+dist_hplip_DATA = scan/sane/hpaio.desc
+dist_hplip_SCRIPTS = hpssd.py __init__.py install.py hplip-install
 
 cmddir = $(hplipdir)
 dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-    sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py
-
-cupsdir = $(CUPS_BACKEND_PATH)
-cupsppddir = $(CUPS_PPD_PATH)
-ppddir = $(datadir)/ppd
-hpppddir = $(datadir)/ppd/HP
+    sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py scan.py
 
 # hp backend.
-cups_PROGRAMS = hp
-hp_SOURCES = backend/hp/hp.c 
-hp_LDADD = libhplip-api.la
-
-# hpiod
-sbin_PROGRAMS = hpiod
-hpiod_SOURCES = io/hpiod/hpiod.cpp io/hpiod/channel.cpp io/hpiod/device.cpp io/hpiod/mlc.cpp io/hpiod/system.cpp io/hpiod/jddevice.cpp io/hpiod/jetdirect.cpp \
-    io/hpiod/udevice.cpp io/hpiod/uppdevice.cpp io/hpiod/ppdevice.cpp io/hpiod/pp.cpp io/hpiod/channel.h io/hpiod/device.h io/hpiod/hpiod.h io/hpiod/mlc.h \
-    io/hpiod/system.h io/hpiod/dot4.cpp io/hpiod/ppdot4.cpp io/hpiod/dot4.h io/hpiod/usbext.c io/hpiod/usbext.h io/hpiod/comp.cpp
+hpdir = $(cupsbackenddir)
+hp_PROGRAMS = hp
+hp_SOURCES = prnt/backend/hp.c
+hp_LDADD = libhpmud.la
 
 # base
 basedir = $(hplipdir)/base
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  base/async.py \
     base/__init__.py base/mfpdtf.py base/utils.py base/async_qt.py base/kirbybase.py base/service.py \
     base/device.py base/logger.py base/msg.py base/slp.py base/exif.py base/strings.py base/magic.py \
-    base/imagesize.py base/pexpect.py base/models.py base/mdns.py
+    base/imagesize.py base/pexpect.py base/models.py base/mdns.py base/tui.py
 
 # installer
 installdir = $(hplipdir)/installer
-dist_install_SCRIPTS = installer/__init__.py installer/dcheck.py installer/distros.py
-dist_noinst_SCRIPTS += installer/core.py installer/text_install.py installer/web_install.py
+dist_install_SCRIPTS = installer/__init__.py installer/dcheck.py installer/distros.dat installer/core_install.py
+dist_noinst_SCRIPTS += installer/text_install.py installer/web_install.py installer/trigger.py installer/permissions.py installer/fix_symlink.py installer/mdk_usb_fix.py
 dist_noinst_SCRIPTS += installer/pages/__init__.py installer/pages/install_required.tmpl installer/pages/installation_path.tmpl installer/pages/component.tmpl \
     installer/pages/mode.tmpl installer/pages/confirm_distro.tmpl installer/pages/notes.tmpl installer/pages/error.tmpl installer/pages/options.tmpl \
     installer/pages/error_package_manager.tmpl installer/pages/password.tmpl installer/pages/error_required_missing.tmpl installer/pages/progress.tmpl \
     installer/pages/error_unsupported_distro.tmpl installer/pages/ready_to_build.tmpl installer/pages/finished.tmpl installer/pages/select_distro.tmpl \
-    installer/pages/hplip_remove.tmpl installer/pages/hpoj_remove.tmpl installer/pages/turn_off_options.tmpl \
-    installer/pages/index.tmpl installer/pages/welcome.tmpl installer/pages/install_optional.tmpl installer/pages/quit.tmpl
-dist_noinst_SCRIPTS += installer/scripts/hplip.js installer/scripts/xml_loader.js
+    installer/pages/hplip_remove.tmpl installer/pages/hpoj_remove.tmpl installer/pages/unsupported.tmpl installer/pages/turn_off_options.tmpl \
+    installer/pages/index.tmpl installer/pages/welcome.tmpl installer/pages/install_optional.tmpl installer/pages/quit.tmpl installer/pages/install_required.tmpl
+dist_noinst_SCRIPTS += installer/scripts/hplip.js installer/scripts/xml_loader.js 
 dist_noinst_DATA += installer/images/button.png installer/images/favicon.ico installer/images/topbar.png installer/images/view.png \
     installer/images/back.png installer/images/circular.gif installer/images/hplogo.png installer/images/tux.png \
     installer/images/button1.png  installer/images/button1d.png
@@ -110,27 +107,29 @@ copierdir = $(hplipdir)/copier
 dist_copier_SCRIPTS = copier/copier.py copier/__init__.py
 
 # fax
+if FAX_BUILD
 faxdir = $(hplipdir)/fax
 dist_fax_SCRIPTS = fax/fax.py fax/__init__.py fax/coverpages.py
-hpfaxdir = $(hplipdir)/fax/backend
+hpfaxdir = $(cupsbackenddir)
 dist_hpfax_SCRIPTS = fax/backend/hpfax.py
-faxppddir = $(hplipdir)/fax/ppd
+faxppddir = $(hpppddir)
 dist_faxppd_DATA = fax/ppd/HP-Fax-hplip.ppd
+endif
 
 # ptest
-noinst_PROGRAMS = ptest
+noinst_PROGRAMS += ptest
 ptest_SOURCES = pcard/ptest.c pcard/ptest.h pcard/fat.c pcard/fat.h 
-ptest_LDADD = libhplip-api.la
+ptest_LDADD = libhpmud.la
 
 # data
 modelsdir = $(hplipdir)/data/models
 imagesdir = $(hplipdir)/data/images
 pcldir = $(hplipdir)/data/pcl
 ldldir = $(hplipdir)/data/ldl
-psdir = $(hplipdir)/data/ps
+postscriptdir = $(hplipdir)/data/ps
 firmdir = $(hplipdir)/data/firmware
-icondir = $(hplipdir)/data
-dist_ps_DATA = data/ps/testpage.ps.gz data/ps/clean_page.pdf.gz
+localzdir = $(hplipdir)/data/localization
+dist_postscript_DATA = data/ps/testpage.ps.gz data/ps/clean_page.pdf.gz
 dist_models_DATA = data/models/models.dat
 dist_images_DATA = data/images/*
 dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/align2_8xx.pcl.gz data/pcl/align3_8xx.pcl.gz data/pcl/align4_8xx.pcl.gz \
@@ -140,6 +139,16 @@ dist_pcl_DATA = data/pcl/align1_8xx.pcl.gz data/pcl/align1_9xx.pcl.gz data/pcl/a
 dist_ldl_DATA = data/ldl/cb2pcal.ldl.gz data/ldl/cb2pcal_done.ldl.gz data/ldl/cbbcal.ldl.gz data/ldl/cbccal.ldl.gz data/ldl/cbccal_done.ldl.gz data/ldl/cbcpcal.ldl.gz \
     data/ldl/cbpcal.ldl.gz
 dist_firm_DATA = data/firmware/HP_LaserJet_1018.fw.gz data/firmware/HP_LaserJet_1020.fw.gz
+dist_localz_DATA = data/localization/hplip_de.qm data/localization/hplip_es.qm data/localization/hplip_fr.qm data/localization/hplip_it.qm \
+    data/localization/hplip_pt.qm data/localization/hplip_ru.qm data/localization/hplip_zh.qm
+dist_noinst_DATA += data/localization/hplip_de.ts data/localization/hplip_es.ts data/localization/hplip_fr.ts data/localization/hplip_it.ts \
+    data/localization/hplip_pt.ts data/localization/hplip_ru.ts data/localization/hplip_zh.ts
+
+# unreleased data
+if SHADOW_BUILD
+unreldir = $(hplipdir)/data/models/unreleased
+dist_unrel_DATA = data/models/unreleased/unreleased.dat
+endif
 
 # pcard 
 pcarddir = $(hplipdir)/pcard
@@ -163,54 +172,70 @@ cupsext_la_LDFLAGS = -module -avoid-version
 cupsext_la_SOURCES =  prnt/cupsext/cupsext.c 
 cupsext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
 
-# scan
-scandir = $(hplipdir)/scan
-dist_scan_SCRIPTS = scan/__init__.py
-
-if SCAN_BUILD
-lib_LTLIBRARIES = libhpip.la libsane-hpaio.la
-else
-lib_LTLIBRARIES = libhpip.la
-endif
-
 # ip library
+lib_LTLIBRARIES += libhpip.la
+libhpip_la_LDFLAGS = -version-info 0:1:0
 libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
     ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
     ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
     ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h 
-libhpip_la_LDFLAGS = -version-info 0:1:0
-
-if SCAN_BUILD
 
 # hpaio sane backend
-MAJORVER=1
-MINORVER=0
-AGEVER=0
-BASENAME=sane-hpaio
-SONOVER=lib$(BASENAME).so
-SOSHORT=$(SONOVER).$(MAJORVER)
-SOLONG=$(SOSHORT).$(MINORVER).$(AGEVER)
-sanedir = $(libdir)/sane
-#lib_LTLIBRARIES = libsane-hpaio.la
+if SCAN_BUILD
+libsane_hpaiodir = $(libdir)/sane
+libsane_hpaio_LTLIBRARIES = libsane-hpaio.la
 libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
       scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
       scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/sanei_debug.h scan/sane/sanei.h \
       scan/sane/soap_stub.c scan/sane/sanei_init_debug.c
 #      scan/sane/soap.c scan/sane/webScanC.c scan/sane/webScanClient.c scan/sane/stdsoap2.c \
 #      scan/sane/dime.c scan/sane/dime.h scan/sane/webScanStub.h scan/sane/webScanH.h scan/sane/stdsoap2.h scan/sane/webScan.nsmap
-libsane_hpaio_la_LDFLAGS = -version-info $(MAJORVER):$(MINORVER):$(AGEVER) 
+if DARWIN_BUILD
+libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation -version-info 1:0:0
+else
+libsane_hpaio_la_LDFLAGS = -version-info 1:0:0
+endif
 # The following is a interlibrary dependency that must be compiled first.
-libsane_hpaio_la_LIBADD = libhpip.la libhplip-api.la
+libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la
 #libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
 libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DWITH_LEAN
 
+# scan
+scandir = $(hplipdir)/scan
+dist_scan_SCRIPTS = scan/__init__.py scan/sane.py
+
+# scanext
+scanextdir = $(pyexecdir)
+scanext_LTLIBRARIES = scanext.la
+#scanext_la_LDFLAGS = -module -avoid-version -lsane
+scanext_la_LDFLAGS = -module -avoid-version
+scanext_la_SOURCES =  scan/scanext/scanext.c 
+scanext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
 endif
 
-# api library
-noinst_LTLIBRARIES = libhplip-api.la
-libhplip_api_la_SOURCES = api/hplip_api.c api/hplip_api.h api/model.c api/list.h
+# hpmud library
+MUDNAME=hpmud
+lib_LTLIBRARIES += libhpmud.la
+libhpmud_la_SOURCES = io/hpmud/hpmud.c io/hpmud/mlc.c io/hpmud/model.c io/hpmud/musb.c io/hpmud/pml.c \
+      io/hpmud/hpmud.h io/hpmud/hpmudi.h io/hpmud/list.h io/hpmud/mlc.h io/hpmud/musb.h io/hpmud/pml.h io/hpmud/dot4.c \
+      io/hpmud/dot4.h io/hpmud/jd.c io/hpmud/jd.h io/hpmud/pp.c io/hpmud/pp.h 
+libhpmud_la_LDFLAGS = -version-info 0:0:0
+libhpmud_la_CFLAGS = -DMUDNAME=\"$(MUDNAME)\" -DCONFDIR=\"$(hplip_confdir)\"
+
+# hpmudext
+hpmudextdir = $(pyexecdir)
+hpmudext_LTLIBRARIES = hpmudext.la
+hpmudext_la_LDFLAGS = -module -avoid-version
+hpmudext_la_SOURCES = io/mudext/hpmudext.c
+hpmudext_la_LIBADD = libhpmud.la
+hpmudext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
+
+# hpmud.rules
+rulesdir = /etc/udev/rules.d
+dist_rules_DATA = 55-hpmud.rules
 
 # ui
+if GUI_BUILD
 uidir = $(hplipdir)/ui
 dist_ui_SCRIPTS = ui/alignform.py \
     ui/colorcalform_base.py ui/colorcalform.py ui/coloradjform_base.py ui/coloradjform.py ui/devmgr4_base.py ui/devmgr4.py \
@@ -230,7 +255,6 @@ dist_ui_SCRIPTS = ui/alignform.py \
     ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py ui/scrollfunc.py ui/scrollstatus.py \
     ui/scrollprintsettings.py ui/scrollprintcontrol.py ui/scrolltool.py ui/scrollsupplies.py  ui/scrollprint.py ui/scrollfax.py \
     ui/scrollunload.py ui/scrollcopy.py
-
 dist_noinst_DATA += ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
     ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
     ui/nodevicesform_base.ui ui/cleaningform_base.ui ui/colorcalform_base.ui ui/devmgr4_base.ui ui/loadpaperform_base.ui \
@@ -240,11 +264,14 @@ dist_noinst_DATA += ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/alignt
     plugins/powersettingsdialog_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
     ui/allowabletypesdlg_base.ui ui/setupform_base.ui ui/setupmanualfind_base.ui \
     ui/setupsettings_base.ui
+endif
 
 # ui plugins
+if GUI_BUILD
 pluginsdir = $(hplipdir)/plugins
 dist_plugins_SCRIPTS = plugins/dj450.py plugins/__init__.py plugins/powersettings.py plugins/powersettingsdialog.py \
     plugins/powersettingsdialog_base.py plugins/Deskjet_460.py
+endif
 
 # cheetah
 dist_noinst_SCRIPTS += Cheetah/Filters.py Cheetah/SettingsManager.py Cheetah/CheetahWrapper.py Cheetah/ImportHooks.py \
@@ -270,169 +297,216 @@ dist_noinst_SCRIPTS += cherrypy/filters/nsgmlsfilter.py cherrypy/filters/__init_
     cherrypy/filters/virtualhostfilter.py cherrypy/filters/gzipfilter.py cherrypy/filters/wsgiappfilter.py \
     cherrypy/filters/logdebuginfofilter.py cherrypy/filters/xmlrpcfilter.py
 
-install-exec-hook:
-#
-#       If scanner build, install sane backend.
+# hppgsz
+noinst_PROGRAMS += hppgsz
+hppgsz_SOURCES = $(apdk_SOURCES) prnt/hpijs/PrinterProperties.cpp prnt/hpijs/PrinterProperties.h
+hppgsz_CXXFLAGS = $(hpijs_CXXFLAGS)
+hppgsz_CFLAGS = $(hpijs_CXXFLAGS) -Iprnt/hpijs
+
+# icon file
+hplip_desktopdir = $(icondir)
+hplip_desktop_DATA = hplip.desktop
+
+# hplip.conf
+hplip_confdir = /etc/hp
+hplip_conf_DATA = hplip.conf
+
+endif    # if HPLIP_BUILD
+
+# foomatic db
+src_db_dir = foomatic-db
+src_dbdir = foomatic-db/db/source
+src_cmddir = foomatic-db-engine
+src_hpijsdir = foomatic-db-hpijs
+include foomatic_db.inc
+foomatic_hpijs_options =  $(src_dbdir)/opt/hpijs-Duplex.xml $(src_dbdir)/opt/hpijs-InputSlot.xml $(src_dbdir)/opt/hpijs-Model.xml \
+    $(src_dbdir)/opt/hpijs-PageSize.xml $(src_dbdir)/opt/hpijs-PrintoutMode.xml $(src_dbdir)/opt/hpijs-Quality.xml
+foomatic_db_runtime = $(src_db_dir)/db/oldprinterids
+foomatic_db_engine_runtime =  $(src_cmddir)/configure.ac $(src_cmddir)/extract_pjl $(src_cmddir)/foomatic-addpjloptions.8.in \
+    $(src_cmddir)/foomatic-addpjloptions.in $(src_cmddir)/foomatic-cleanupdrivers.in $(src_cmddir)/foomatic-combo-xml.1.in \
+    $(src_cmddir)/foomatic-combo-xml.c $(src_cmddir)/foomatic-compiledb.1.in $(src_cmddir)/foomatic-compiledb.in \
+    $(src_cmddir)/foomatic-configure.1.in $(src_cmddir)/foomatic-configure.in $(src_cmddir)/Foomatic-Devel-Ideas.txt \
+    $(src_cmddir)/foomatic-extract-text.in $(src_cmddir)/foomatic-filters-ppds-install $(src_cmddir)/foomatic-fix-xml.in \
+    $(src_cmddir)/foomatic-getpjloptions.8.in $(src_cmddir)/foomatic-getpjloptions.in $(src_cmddir)/foomatic-kitload.8.in \
+    $(src_cmddir)/foomatic-kitload.in $(src_cmddir)/foomatic-nonumericalids.in $(src_cmddir)/foomatic-perl-data.1.in \
+    $(src_cmddir)/foomatic-perl-data.c $(src_cmddir)/foomatic-ppdfile.1.in $(src_cmddir)/foomatic-ppdfile.in \
+    $(src_cmddir)/foomatic-ppd-options.1.in $(src_cmddir)/foomatic-ppd-options.in $(src_cmddir)/foomatic-preferred-driver.8.in \
+    $(src_cmddir)/foomatic-preferred-driver.in $(src_cmddir)/foomatic-printermap-to-gimp-print-xml.in $(src_cmddir)/foomatic-printjob.1.in \
+    $(src_cmddir)/foomatic-printjob.in $(src_cmddir)/foomatic-replaceoldprinterids.in $(src_cmddir)/foomatic-searchprinter.in \
+    $(src_cmddir)/gsPrint $(src_cmddir)/gsQuit $(src_cmddir)/gsTest $(src_cmddir)/make_configure $(src_cmddir)/makeDefaults.in \
+    $(src_cmddir)/Makefile.in $(src_cmddir)/makeMan.in $(src_cmddir)/README $(src_cmddir)/lib/Makefile.PL \
+    $(src_cmddir)/lib/Foomatic/DB.pm $(src_cmddir)/lib/Foomatic/PPD.pm $(src_cmddir)/lib/Foomatic/UIElem.pm \
+    $(src_cmddir)/acinclude.m4
+foomatic_db_hpijs_runtime = $(src_hpijsdir)/acinclude.m4 $(src_hpijsdir)/configure.ac $(src_hpijsdir)/install-sh \
+    $(src_hpijsdir)/make_configure $(src_hpijsdir)/Makefile.in $(src_hpijsdir)/README \
+    $(src_hpijsdir)/data-generators/hpijs/hpijs-generator.in $(src_hpijsdir)/data-generators/hpijs/hpijs-printermap \
+    $(src_hpijsdir)/data-generators/hpijs/hpijs-remover.in
+dist_noinst_DATA += $(foomatic_xml_printers) $(foomatic_ps_printers) $(foomatic_ppd_printers) $(foomatic_hpijs_options) $(src_dbdir)/driver/hpijs.xml
+dist_noinst_SCRIPTS += $(foomatic_db_hpijs_runtime)
+
+# hpijs
+bin_PROGRAMS = hpijs
+apdk_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
+    prnt/hpijs/dj9xxvip.cpp prnt/hpijs/dj9xx.cpp prnt/hpijs/capture.cpp prnt/hpijs/colormatch.cpp prnt/hpijs/colormatcher_open.cpp \
+    prnt/hpijs/compression.cpp prnt/hpijs/context.cpp prnt/hpijs/create_so.cpp prnt/hpijs/creator.cpp \
+    prnt/hpijs/dj600.cpp prnt/hpijs/dj630.cpp prnt/hpijs/dj660.cpp prnt/hpijs/dj690.cpp prnt/hpijs/dj6xx.cpp prnt/hpijs/dj8xx.cpp prnt/hpijs/dj600_maps.cpp \
+    prnt/hpijs/dj660_maps.cpp prnt/hpijs/dj690_maps.cpp prnt/hpijs/dj895_maps.cpp prnt/hpijs/dj895_maps2.cpp prnt/hpijs/dj970_maps.cpp \
+    prnt/hpijs/dj970_maps2.cpp prnt/hpijs/dj970_maps3.cpp prnt/hpijs/filterhpa.cpp prnt/hpijs/apollo21xx.cpp prnt/hpijs/apollo2560.cpp prnt/hpijs/apollo2xxx.cpp \
+    prnt/hpijs/dj8x5.cpp prnt/hpijs/psp100.cpp prnt/hpijs/phobos_cmaps.cpp prnt/hpijs/dj350.cpp prnt/hpijs/halftoner.cpp prnt/hpijs/halftoner_open.cpp \
+    prnt/hpijs/globals.cpp prnt/hpijs/header.cpp prnt/hpijs/htmtxhi.cpp prnt/hpijs/pmselect.cpp \
+    prnt/hpijs/job.cpp prnt/hpijs/printer.cpp prnt/hpijs/registry.cpp prnt/hpijs/scaler.cpp \
+    prnt/hpijs/scaler_open.cpp prnt/hpijs/script.cpp prnt/hpijs/systemservices.cpp \
+    prnt/hpijs/translator.cpp prnt/hpijs/version.cpp prnt/hpijs/versioncode.cpp \
+    prnt/hpijs/djgenericvip.cpp prnt/hpijs/dj540.cpp prnt/hpijs/dj850.cpp prnt/hpijs/dj850_maps.cpp prnt/hpijs/dj890.cpp \
+    prnt/hpijs/apollo21xx.h prnt/hpijs/apollo2560.h prnt/hpijs/apollo2xxx.h prnt/hpijs/colormatch.h prnt/hpijs/colormatcher_open.h \
+    prnt/hpijs/compression.h prnt/hpijs/config.h prnt/hpijs/context.h prnt/hpijs/dj350.h prnt/hpijs/dj400.h prnt/hpijs/dj540.h \
+    prnt/hpijs/dj600.h prnt/hpijs/dj630.h prnt/hpijs/dj660.h prnt/hpijs/dj690.h prnt/hpijs/dj6xx.h prnt/hpijs/dj8x5.h prnt/hpijs/dj8xx.h \
+    prnt/hpijs/dj850.h prnt/hpijs/dj890.h prnt/hpijs/dj9xx.h prnt/hpijs/dj9xxvip.h \
+    prnt/hpijs/ernieplatform.h prnt/hpijs/filterhpa.h prnt/hpijs/global_types.h prnt/hpijs/halftoner.h prnt/hpijs/font.h prnt/hpijs/debug.h \
+    prnt/hpijs/halftoner_open.h prnt/hpijs/header.h prnt/hpijs/hpprint_c_api.h \
+    prnt/hpijs/hpprintapi.h prnt/hpijs/hptypes.h prnt/hpijs/htfed.h prnt/hpijs/internal.h \
+    prnt/hpijs/interp.h prnt/hpijs/interp_data_50.h prnt/hpijs/io_defs.h prnt/hpijs/job.h prnt/hpijs/models.h prnt/hpijs/modes.h prnt/hpijs/pmselect.h \
+    prnt/hpijs/printer.h prnt/hpijs/psp100.h prnt/hpijs/psp470.h prnt/hpijs/resources.h prnt/hpijs/scaler_open.h prnt/hpijs/scaler_prop.h prnt/hpijs/script.h \
+    prnt/hpijs/systemservices.h prnt/hpijs/unistd_.h prnt/hpijs/djgenericvip.h prnt/hpijs/ljmono.h prnt/hpijs/ljmono.cpp \
+    prnt/hpijs/dj3320.cpp prnt/hpijs/dj3320.h prnt/hpijs/dj3320_cmap.cpp prnt/hpijs/dj3600.cpp prnt/hpijs/dj3600.h prnt/hpijs/dj3600_cmap.cpp prnt/hpijs/dj4100.h \
+    prnt/hpijs/dj4100_cmap.cpp prnt/hpijs/ldlencap.h prnt/hpijs/ljcolor.cpp prnt/hpijs/ljcolor.h prnt/hpijs/pscript.h \
+    prnt/hpijs/printerproxy.cpp prnt/hpijs/printerfactory.cpp prnt/hpijs/printerproxy.h prnt/hpijs/printerfactory.h \
+    prnt/hpijs/ljjetready.cpp prnt/hpijs/ljjetready.h prnt/hpijs/jdatadbf.c prnt/hpijs/jccolor.c prnt/hpijs/ljfastraster.cpp prnt/hpijs/ljfastraster.h \
+    prnt/hpijs/jinclude.h prnt/hpijs/jpegint.h prnt/hpijs/dj55xx.h prnt/hpijs/hpijsfax.h prnt/hpijs/ojprokx50.h 
+hpijs_SOURCES = $(apdk_SOURCES) prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c prnt/hpijs/hpijsfax.cpp prnt/hpijs/services.cpp \
+    prnt/hpijs/hpijs.h prnt/hpijs/ijs.h prnt/hpijs/ijs_server.h prnt/hpijs/services.h prnt/hpijs/ijs_client.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h 
+hpijs_CXXFLAGS = -DAPDK_DJ660 -DAPDK_DJ6xx -DAPDK_DJ6xxPhoto -DAPDK_DJ8xx -DAPDK_DJ9xx -DAPDK_DJ9xxVIP -DAPDK_DJ630 \
+    -DAPDK_APOLLO2XXX -DAPDK_APOLLO21XX -DAPDK_APOLLO2560 -DAPDK_DJ600 -DAPDK_DJ350 -DAPDK_DJ8x5 -DAPDK_PSP100 -DAPDK_AUTODUPLEX \
+    -DAPDK_HIGH_RES_MODES -DAPDK_LJMONO -DAPDK_DJ540 -DAPDK_DJ850 -DAPDK_DJ890 -DAPDK_DJ3320 -DAPDK_LJCOLOR -DAPDK_DJGENERICVIP \
+    -DAPDK_LJJETREADY  -DAPDK_LJFASTRASTER -DAPDK_BUFFER_SEND -DAPDK_LDL_COMPRESS -DAPDK_EXTENDED_MEDIASIZE \
+    -DAPDK_MLC_PRINTER -DAPDK_DJ3600 $(APDK_ENDIAN_FLAG) $(APDK_AUTO_INCLUDE_FLAG) -DAPDK_LINUX -DNDEBUG
+hpijs_CFLAGS = $(hpijs_CXXFLAGS) -Iprnt/hpijs
+if HPLIP_BUILD
+hpijs_LDADD = libhpip.la libhpmud.la
+endif
+
+install-data-hook: install-foo 
+if HPLIP_BUILD
+#       If scanner build, add hpaio entry to sane dll.conf.
 	if [ "$(scan_build)" = "yes" ]; then \
 	   $(mkinstalldirs) $(DESTDIR)/etc/sane.d; \
 	   if [ ! -f $(DESTDIR)/etc/sane.d/dll.conf ]; then \
 	      touch $(DESTDIR)/etc/sane.d/dll.conf; \
 	   fi; \
-	   $(mkinstalldirs) $(DESTDIR)$(sanedir); \
-	   ln -sf ../$(SOLONG) $(DESTDIR)$(sanedir)/$(SONOVER); \
-	   ln -sf ../$(SOLONG) $(DESTDIR)$(sanedir)/$(SOSHORT); \
-	   ln -sf ../$(SOLONG) $(DESTDIR)$(sanedir)/$(SOLONG); \
-	   if [ -f $(DESTDIR)/etc/sane.d/dll.conf ]; then \
-	      if ! grep ^hpaio $(DESTDIR)/etc/sane.d/dll.conf >/dev/null 2>/dev/null ; then \
-	         echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
-	         echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
-	      fi \
+	   if ! grep ^hpaio $(DESTDIR)/etc/sane.d/dll.conf >/dev/null 2>/dev/null ; then \
+	      echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
+	      echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
 	   fi \
 	fi
-
-install-data-hook: 
-#
-#       Create ICON file in srcdir.
-	if [ "$(ICON_FILE)" = "hplip.desktop" ]; then \
-	   echo -e "[Desktop Entry]" > $(srcdir)/$(ICON_FILE); \
-	   echo -e "Version=0.6" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Type=Application" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Name=HP Device Manager" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "GenericName=HP Device Manager" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Comment=View device status, ink levels and perform maintenance." >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Exec=$(datadir)/hplip/toolbox" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Icon=$(imagesdir)/HPmenu.png" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Terminal=false" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "Categories=Application;Utility;" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "X-KDE-StartupNotify=false" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "StartupNotify=false" >> $(srcdir)/$(ICON_FILE); \
-	fi
-	if [ "$(ICON_FILE)" = "hplip" ]; then \
-	   echo -e "?package(xbase):command=\"$(datadir)/hplip/toolbox\" icon=\"$(imagesdir)/HPmenu.png\" \\" > $(srcdir)/$(ICON_FILE); \
-	   echo -e "                needs=\"X11\" section=\"Application/Utility\" title=\"HPLIP\" \\" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "                longtitle=\"HPLIP Device Manager\" \\" >> $(srcdir)/$(ICON_FILE); \
-	   echo -e "                mimetypes=\"\" accept_url=\"false\" multiple_files=\"true\"" >> $(srcdir)/$(ICON_FILE); \
-	fi
-	if [ "$(ICON_FILE)" != "" ]; then \
-	   $(INSTALL_DATA)  $(srcdir)/$(ICON_FILE) $(DESTDIR)$(icondir); \
-	   rm -f $(srcdir)/$(ICON_FILE); \
-	fi
-#
-#       Install ICON file in destdir.
-	if [ "$(ICON_FILE)" != "" ]; then \
-	   $(mkinstalldirs) $(DESTDIR)$(ICON_PATH); \
-	   ln -sf $(icondir)/$(ICON_FILE) $(DESTDIR)$(ICON_PATH)/$(ICON_FILE); \
-	fi 
-#
-#       Remove .py extensions in destdir and create hp-xxx commands in bindir.
+#       Create hp-xxx commands in bindir.
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	for i in $(dist_cmd_SCRIPTS); do \
-	   newname=$${i%.*}; \
-	   mv $(DESTDIR)$(hplipdir)/$$i $(DESTDIR)$(hplipdir)/$$newname; \
-	   if [ ! \( "$$newname" = "toolbox" -a "$(gui_build)" = "no" \) ]; then \
-	      ln -sf ../share/$(PACKAGE)/$$newname $(DESTDIR)$(bindir)/hp-$$newname; \
+	   cmd=`basename $$i .py`; \
+	   if [ ! \( "$$cmd" = "toolbox" -a "$(gui_build)" = "no" \) ]; then \
+	      ln -sf ../share/$(PACKAGE)/$$i $(DESTDIR)$(bindir)/hp-$$cmd; \
 	   fi \
 	done
 #
-#       Edit hpiod.conf in destdir.
-	echo -e "\n[$(PACKAGE)]\nversion=$(VERSION)\njdprobe=0\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -e "[dirs]\nhome=$(hplipdir)\nrun=$(rundir)\nppd=$(hpppddir)\nppdbase=$(ppddir)\ndoc=$(docdir)\n" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -e "# Following values are determined at configure time and cannot be changed.\n[configure]" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	if [ "$(network_build)" = "yes" ]; then \
-	   echo -e "network-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "network-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	if [ "$(pp_build)" = "yes" ]; then \
-	   echo -e "pp-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "pp-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	if [ "$(gui_build)" = "yes" ]; then \
-	   echo -e "gui-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "gui-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	if [ "$(scan_build)" = "yes" ]; then \
-	   echo -e "scanner-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "scanner-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	if [ "$(fax_build)" = "yes" ]; then \
-	   echo -e "fax-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "fax-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	if [ "$(cups11_build)" = "yes" ]; then \
-	   echo -e "cups11-build=1" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	else \
-	   echo -e "cups11-build=0" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf; \
-	fi
-	echo -e "installinitd=$(INSTALLINITD)\nchkconfig=$(CHKCONFIG)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-	echo -e "internal-tag=$(PACKAGE_BUGREPORT)" >> $(DESTDIR)$(hplipdir)/$(PACKAGE).conf
-#
-#       Install hpiod.conf. 
-	$(mkinstalldirs) $(DESTDIR)/etc/hp
-	$(INSTALL_DATA) $(DESTDIR)$(hplipdir)/$(PACKAGE).conf $(DESTDIR)/etc/hp
-#
-#       Create hpiod start/stop script from hpiod.sh in destdir.
-	sed 's:HPIODDIR=:HPIODDIR=$(sbindir):' < $(DESTDIR)$(hplipdir)/$(PACKAGE).sh > $(DESTDIR)$(hplipdir)/$(PACKAGE).tmp; \
-	sed 's:HPSSDDIR=:HPSSDDIR=$(hplipdir):' < $(DESTDIR)$(hplipdir)/$(PACKAGE).tmp > $(DESTDIR)$(hplipdir)/$(PACKAGE); \
-	rm -f $(DESTDIR)$(hplipdir)/$(PACKAGE).tmp
-#
-#       Install hpiod start/stop script.
-	$(mkinstalldirs) $(DESTDIR)/etc/init.d
-	$(INSTALL_SCRIPT) $(DESTDIR)$(hplipdir)/$(PACKAGE) $(DESTDIR)/etc/init.d
-#
-#       Run chkconfig/install_initd if DESTDIR="". 
-	if [ "$(DESTDIR)" = "" ]; then \
-	   if [ "$(INSTALLINITD)" != "" ]; then \
-	      $(INSTALLINITD) $(PACKAGE); \
-	   elif [ "$(CHKCONFIG)" != "" ]; then  \
-	      $(CHKCONFIG) $(PACKAGE) reset; \
-	   fi \
-	fi
-#
-#       Install fax support. Let hpijs symlink hpppddir to cupsppddir.
+#       Install fax support. 
 	if [ "$(fax_build)" = "yes" ]; then \
 	   mv $(DESTDIR)$(hpfaxdir)/hpfax.py $(DESTDIR)$(hpfaxdir)/hpfax; \
-	   $(mkinstalldirs) $(DESTDIR)$(cupsdir); \
-	   $(INSTALL_SCRIPT) $(DESTDIR)$(hpfaxdir)/hpfax $(DESTDIR)$(cupsdir); \
-	   $(mkinstalldirs) $(DESTDIR)$(hpppddir)/fax; \
-	   $(INSTALL_DATA) $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd $(DESTDIR)$(hpppddir)/fax; \
-	   gzip -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd; \
+	   gzip -f $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd; \
 	fi
-#
-#       For internal testing.
-	if [ "$(SHADOW)" != "" ]; then \
-	$(mkinstalldirs) $(DESTDIR)$(modelsdir)/unreleased; \
-	$(INSTALL_DATA) $(srcdir)/data/models/unreleased.dat $(DESTDIR)$(modelsdir)/unreleased; \
+endif # if HPLIP_BUILD
+
+install-foo:
+	if [ "$(foomatic_ppd_install)" = "yes" ]; then \
+	   $(mkinstalldirs) $(DESTDIR)$(hpppddir); \
+	   $(INSTALL_DATA) $(foomatic_ppd_printers) $(DESTDIR)$(hpppddir); \
+	   $(INSTALL_DATA) $(foomatic_ps_printers) $(DESTDIR)$(hpppddir); \
+	   for i in $(foomatic_ppd_printers); do \
+	      id=`basename $$i`; \
+	      gzip -f $(DESTDIR)$(hpppddir)/$$id; \
+	   done; \
+	   for i in $(foomatic_ps_printers); do \
+	      id=`basename $$i`; \
+	      gzip -f $(DESTDIR)$(hpppddir)/$$id; \
+	   done; \
+	fi
+	if [ "$(foomatic_xml_install)" = "yes" ]; then \
+	   $(mkinstalldirs) $(DESTDIR)$(foomaticdir)/db/source/printer; \
+	   $(INSTALL_DATA) $(foomatic_xml_printers) $(DESTDIR)$(foomaticdir)/db/source/printer; \
+	   $(mkinstalldirs) $(DESTDIR)$(foomaticdir)/db/source/opt; \
+	   $(INSTALL_DATA) $(foomatic_hpijs_options) $(DESTDIR)$(foomaticdir)/db/source/opt; \
+	   $(mkinstalldirs) $(DESTDIR)$(foomaticdir)/db/source/driver; \
+	   $(INSTALL_DATA) $(src_dbdir)/driver/hpijs.xml $(DESTDIR)$(foomaticdir)/db/source/driver; \
+	   $(mkinstalldirs) $(DESTDIR)$(foomaticdir)/db/source/PPD/HP; \
+	   $(INSTALL_DATA) $(foomatic_ps_printers) $(DESTDIR)$(foomaticdir)/db/source/PPD/HP; \
+	   for i in $(foomatic_ps_printers); do \
+	      id=`basename $$i`; \
+	      gzip -f $(DESTDIR)$(foomaticdir)/db/source/PPD/HP/$$id; \
+	   done; \
 	fi
 
-uninstall-hook:
-#       Remove Icon file. 
-	rm -f $(DESTDIR)$(icondir)/$(ICON_FILE)
-	rm -f $(DESTDIR)$(ICON_PATH)/$(ICON_FILE)
-#
+uninstall-foo: 
+	if [ "$(FOOMATIC_PPD_INSTALL)" = "yes" ]; then \
+	   for i in $(foomatic_ppd_printers); do \
+	      id=`basename $$i`; \
+	      rm -f $(DESTDIR)$(hpppddir)/$$id.gz; \
+	   done; \
+	   for i in $(foomatic_ps_printers); do \
+	      id=`basename $$i`; \
+	      rm -f $(DESTDIR)$(hpppddir)/$$id.gz; \
+	   done; \
+	fi
+	if [ "$(FOOMATIC_XML_INSTALL)" = "yes" ]; then \
+	   for i in $(foomatic_xml_printers); do \
+	      rm -f $(DESTDIR)$(foomaticdir)/db/source/printer/$$i; \
+	   done; \
+	   for i in $(foomatic_ps_printers); do \
+	      id=`basename $$i`; \
+	      rm -f $(DESTDIR)$(foomaticdir)/db/source/PPD/HP/$$id.gz; \
+	   done; \
+	fi
+
+uninstall-hook: uninstall-foo
+if HPLIP_BUILD
 #       Remove hp-xxx commands.
 	for i in $(dist_cmd_SCRIPTS); do \
-	    newname=$${i%.*}; \
-	    rm -f $(DESTDIR)$(hplipdir)/$$newname; \
-	    rm -f $(DESTDIR)$(bindir)/hp-$$newname; \
+	    cmd=`basename $$i .py`; \
+	    rm -f $(DESTDIR)$(bindir)/hp-$$cmd; \
 	done
-#
-#       Remove hplip.conf and hplip start/stop script.
-	rm -f $(DESTDIR)/etc/hp/$(PACKAGE).conf
-	rm -f $(DESTDIR)/etc/init.d/$(PACKAGE)
 #
 #       Remove fax support.
 	rm -f $(DESTDIR)$(hpfaxdir)/hpfax 
-	rm -f $(DESTDIR)$(cupsdir)/hpfax
-	rm -f $(DESTDIR)$(hpppddir)/fax/HP-Fax-hplip.ppd.gz
+	rm -f $(DESTDIR)$(faxppddir)/HP-Fax-hplip.ppd.gz
+endif
 
-dist-hook:
-	if [ "$(SHADOW)" != "" ]; then \
-	   cp -f data/models/unreleased/unreleased.dat $(distdir)/data/models/; \
-	fi
+# [WARNING SANDBOX OVERWRITE] Get latest hp specific foomatic db from linuxprinting.org
+get-foo:
+	rm -fr foo-tmp
+	install -d foo-tmp
+	bzr branch $(BZRSERVER)/foomatic-db foo-tmp/foomatic-db
+	bzr branch $(BZRSERVER)/foomatic-db-hpijs foo-tmp/foomatic-db-hpijs
+	bzr branch $(BZRSERVER)/foomatic-db-engine foo-tmp/foomatic-db-engine
+#       Copy foomatic db runtimes into sandbox.
+	for i in $(foomatic_db_runtime) $(foomatic_db_engine_runtime) $(foomatic_db_hpijs_runtime); do \
+	   $(INSTALL_SCRIPT) foo-tmp/$$i $$i; \
+	done;
+#       Copy hp specific printer xml files to sandbox.
+	for i in $(foomatic_xml_printers); do \
+	   $(INSTALL_SCRIPT) foo-tmp/$$i $$i; \
+	done;
+#       Copy hp postscript ppd files to sandbox.
+	for i in $(foomatic_ps_printers); do \
+	   $(INSTALL_SCRIPT) foo-tmp/$$i $$i; \
+	done;
 
-
+# Remove all foomatic build files.
+clean-foo:
+	cd foomatic-db-hpijs; \
+	./make_configure; \
+	./configure; \
+	make distclean; \
+	rm -f aclocal.m4 configure Makefile
+	rm -f foo/foomatic-db/db/source/driver/*
+	rm -f foo/foomatic-db/db/source/opt/*
+	cd foomatic-db-engine; \
+	./make_configure; \
+	./configure; \
+	make distclean

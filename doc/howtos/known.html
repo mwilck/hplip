@@ -94,17 +94,17 @@ Known Issues/Workarounds
 <p><strong>NOTE</strong>: This has been fixed in HPLIP 1.7.1.</p>
 <p>Problem:  There is a possible problem with HPLIP and PyQT 3.16 which may cause faxing (and other functionality of HPLIP) to stop working.</p>
 <p>Workaround: Faxing should work from the command line.  Example:</p>
-<div class="compound">
-<p>hp-sendfax -n -p &lt;fax queue&gt; -f &lt;fax number&gt; &lt;files&gt;</p>
-</div>
+<pre class="literal-block">
+hp-sendfax -n -p &lt;fax queue&gt; -f &lt;fax number&gt; &lt;files&gt;
+</pre>
 <p>Workaround 2: KDEprintfax users can follow this guideline:</p>
-<div class="compound">
-<p class="compound-first">Settings</p>
-<p class="compound-middle">Configure kdeprintfax</p>
-<p class="compound-middle">System</p>
-<p class="compound-middle">Fax System: &quot;other&quot;</p>
-<p class="compound-last">Command: &quot;hp-sendfax -pPRINTERNAME -f%number -n %files&quot;</p>
-</div>
+<pre class="literal-block">
+Settings
+Configure kdeprintfax
+System
+Fax System: &quot;other&quot;
+Command: &quot;hp-sendfax -pPRINTERNAME -f%number -n %files&quot;
+</pre>
 </div>
 <div class="section">
 <h1><a id="id2" name="id2"><span id="suse"></span><strong>HP-Setup on Suse 10.1 - Error: Unable to create print queue, please restart cups and try again.</strong></a></h1>
@@ -119,7 +119,7 @@ Known Issues/Workarounds
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Tue Jan 23 15:15:21 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:41 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

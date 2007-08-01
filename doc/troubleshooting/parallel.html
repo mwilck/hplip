@@ -89,43 +89,43 @@ Installation
 <p><strong>Did you install using the automatic installer?</strong></p>
 <p>If you installed using the automatic installer and not select custom install then your system was not configure to use the parallel port.  Please un-install hplip.</p>
 <p>In the source directory:</p>
-<div class="compound">
-<p class="compound-first">su (or sudo then the command below)</p>
-<p class="compound-middle">make uninstall</p>
-<p class="compound-middle">rm -rf /usr/share/hplip</p>
-<p class="compound-last">./install.py</p>
-</div>
+<pre class="literal-block">
+su (or sudo then the command below)
+make uninstall
+rm -rf /usr/share/hplip
+./install.py
+</pre>
 <p>Then choose custom and complete the install procedure making sure that parallel port is selected to be supported.</p>
 <p><strong>Is the ppdev module loaded?</strong></p>
 <p>Run:</p>
-<div class="compound">
-<p>lsmod | grep ppdev</p>
-</div>
+<pre class="literal-block">
+lsmod | grep ppdev
+</pre>
 <p>You should see something like:</p>
-<div class="compound">
-<p class="compound-first">ppdev                  10500  0</p>
-<p class="compound-last">parport                39496  3 ppdev,lp,parport_pc</p>
-</div>
+<pre class="literal-block">
+ppdev                  10500  0
+parport                39496  3 ppdev,lp,parport_pc
+</pre>
 <p>If you do not see the above--run:</p>
-<div class="compound">
-<p>modprobe ppdev</p>
-</div>
+<pre class="literal-block">
+modprobe ppdev
+</pre>
 <p>and then re-run the above command. and try configuring the printer again.</p>
 <p>If you want to have the ppdev module loaded on boot add it to your /etc/modules file.  Although this may be different depending on your linux distro.</p>
 <p><strong>What is your parallel port configured as in your BIOS?</strong></p>
 <p>Go into your system BIOS (follow your system documentation) and check that your parallel port is configure for ECP mode.</p>
 <p><strong>If you are still having problems.</strong></p>
 <p>Run:</p>
-<div class="compound">
-<p>/usr/lib/cups/backend/hp</p>
-</div>
+<pre class="literal-block">
+/usr/lib/cups/backend/hp
+</pre>
 <p>This command displays the devices that HPLIP detects.</p>
 <p>If your printer does not show up there may be some other system problem and/or HPLIP problem.</p>
 <p>Make sure HPLIP is running and try hp-setup again.  You may want to consider posting your problem to the HPLIP-Help mailing list.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Wed Apr 18 15:47:24 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

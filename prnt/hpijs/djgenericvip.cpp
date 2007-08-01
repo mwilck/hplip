@@ -608,6 +608,36 @@ DRIVER_ERROR DJGenericVIP::SendPerPageHeader (BOOL bLastPage)
 }
 #endif // APDK_LINUX
 
+Header *DJGenericVIP::SelectHeader (PrintContext *pc)
+{
+    return new HeaderDJGenericVIP (this, pc);
+}
+
+HeaderDJGenericVIP::HeaderDJGenericVIP (Printer *p, PrintContext *pc) : HeaderDJ990 (p, pc)
+{
+    m_uiCAPy = 0;
+}
+
+DRIVER_ERROR HeaderDJGenericVIP::SendCAPy (unsigned int iAbsY)
+{
+    char    str[16];
+    DRIVER_ERROR err = NO_ERROR;
+    if (m_uiCAPy == 0)
+    {
+        sprintf (str, "\x1B*p%dY", iAbsY);
+        err = thePrinter->Send ((const BYTE *) str, strlen (str));
+        m_uiCAPy = iAbsY;
+    }
+    return err;
+}
+
+DRIVER_ERROR HeaderDJGenericVIP::FormFeed ()
+{
+    BYTE FF = 12;
+    m_uiCAPy = 0;
+    return thePrinter->Send ((const BYTE *) &FF, 1);
+}
+
 APDK_END_NAMESPACE
 
 

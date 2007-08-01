@@ -243,41 +243,18 @@ union MfpdtfVariantHeader_u
         } __attribute__(( packed) ) array;
 } __attribute__(( packed) );
 
-Mfpdtf_t        MfpdtfAllocate( /*ptalChannel_t chan */int deviceid, int channelid );
-int             MfpdtfDeallocate( Mfpdtf_t mfpdtf );
-int             MfpdtfSetChannel( Mfpdtf_t mfpdtf, /*ptalChannel_t chan */ int channelid );
-int             MfpdtfLogToFile( Mfpdtf_t mfpdtf, char * filename );
-int             MfpdtfReadGetTimeout( Mfpdtf_t mfpdtf );
-int             MfpdtfReadSetTimeout( Mfpdtf_t mfpdtf, int seconds );
-int             MfpdtfReadGetSimulateImageHeaders( Mfpdtf_t mfpdtf );
-int             MfpdtfReadSetSimulateImageHeaders( Mfpdtf_t mfpdtf,
-                                                   int simulateImageHeaders );
-int             MfpdtfReadStart( Mfpdtf_t mfpdtf );
-int             MfpdtfReadService( Mfpdtf_t mfpdtf );
-int             MfpdtfReadGetDataType( Mfpdtf_t mfpdtf );
-int             MfpdtfReadIsImageData( Mfpdtf_t mfpdtf );
-int             MfpdtfReadIsArrayData( Mfpdtf_t mfpdtf );
-int             MfpdtfReadGetArrayRecordCountSize( Mfpdtf_t mfpdtf,
-                                                   int * pCount,
-                                                   int * pSize );
-int             MfpdtfReadGetFixedBlockBytesRemaining( Mfpdtf_t mfpdtf );
-int             MfpdtfReadGetInnerBlockBytesRemaining( Mfpdtf_t mfpdtf );
-int             MfpdtfReadGetLastServiceResult( Mfpdtf_t mfpdtf );
-int             MfpdtfReadGetVariantHeader( Mfpdtf_t mfpdtf,
-                                            union MfpdtfVariantHeader_u * buffer,
-                                            int maxlen );
-int             MfpdtfReadGetStartPageRecord( Mfpdtf_t mfpdtf,
-                                              struct MfpdtfImageStartPageRecord_s * buffer,
-                                              int maxlen );
-int             MfpdtfReadGetEndPageRecord( Mfpdtf_t mfpdtf,
-                                            struct MfpdtfImageEndPageRecord_s * buffer,
-                                            int maxlen );
-int             MfpdtfReadGeneric( Mfpdtf_t mfpdtf,
-                                   unsigned char * buffer,
-                                   int datalen );
-int             MfpdtfReadInnerBlock( Mfpdtf_t mfpdtf,
-                                      unsigned char * buffer,
-                                      int countdown );
+Mfpdtf_t __attribute__ ((visibility ("hidden"))) MfpdtfAllocate(int deviceid, int channelid);
+int __attribute__ ((visibility ("hidden"))) MfpdtfDeallocate(Mfpdtf_t mfpdtf);
+int __attribute__ ((visibility ("hidden"))) MfpdtfSetChannel(Mfpdtf_t mfpdtf, int channelid);
+int __attribute__ ((visibility ("hidden"))) MfpdtfLogToFile(Mfpdtf_t mfpdtf, char * filename);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadGetSimulateImageHeaders(Mfpdtf_t mfpdtf);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadSetSimulateImageHeaders(Mfpdtf_t mfpdtf, int simulateImageHeaders);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadStart(Mfpdtf_t mfpdtf);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadService(Mfpdtf_t mfpdtf);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadGetLastServiceResult(Mfpdtf_t mfpdtf);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadGetVariantHeader(Mfpdtf_t mfpdtf, union MfpdtfVariantHeader_u * buffer, int maxlen);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadGetStartPageRecord(Mfpdtf_t mfpdtf, struct MfpdtfImageStartPageRecord_s * buffer, int maxlen);
+int __attribute__ ((visibility ("hidden"))) MfpdtfReadInnerBlock(Mfpdtf_t mfpdtf, unsigned char * buffer, int countdown);
 
 /* 
  * Phase 2 rewrite. des
@@ -357,6 +334,6 @@ typedef struct
 #define htole32(A) (A)
 #endif
 
-int read_mfpdtf_block(int device, int channel, char *buf, int bufSize, int timeout);
+int __attribute__ ((visibility ("hidden"))) read_mfpdtf_block(int device, int channel, char *buf, int bufSize, int timeout);
 
 #endif  // _MFPDTF_H

@@ -92,97 +92,46 @@ General/Other
 <p><strong>Issue 2: How do I check the syslog for HPLIP system errors?</strong></p>
 <p>Solution:</p>
 <p>With superuser (su/sudo) privileges, use the following command to view the syslog. Look for any errors during the time of the failure.</p>
-<div class="compound">
-<p># tail -f /var/log/messages</p>
-</div>
-<p><strong>Issue 3: How to debug HPLIP.</strong></p>
+<pre class="literal-block">
+# tail -f /var/log/messages
+</pre>
+<p><strong>Issue 3:  When I go to login to the CUPS web interface (http://localhost:631) it asks for my root password--and my root password doesn't give me access.</strong></p>
 <p>Solution:</p>
-<p>Debugging HPLIP is a several step process.  Use su/sudo as applicable for your configuration and step.</p>
-<p>The HPSSD process provides various services to HPLIP client applications. Maintains persistant device status.  Putting hpssd in debug mode will assist in troubleshooting connection problems.</p>
-<p>This will restart HPLIP and CUPS:</p>
-<div class="compound">
-<p># /etc/init.d/hplip restart</p>
-</div>
-<div class="compound">
-<p># /etc/init.d/cups restart</p>
-</div>
-<p>for Ubuntu</p>
-<div class="compound">
-<p>$ /etc/init.d/cupsys restart</p>
-</div>
-<p>Go to the hplip working directory:</p>
-<div class="compound">
-<p>cd /usr/share/hplip</p>
-</div>
-<p>Find the hpssd.py process number:</p>
-<div class="compound">
-<p># ps ax | grep hp</p>
-</div>
-<p>Find the line that looks like:</p>
-<div class="compound">
-<p>4193 ?        S      0:00 python ./hpssd.py</p>
-</div>
-<p>Kill the hpssd.py process:</p>
-<div class="compound">
-<p># kill 4193</p>
-</div>
-<p>for Ubuntu</p>
-<div class="compound">
-<p>$ sudo kill 4193</p>
-</div>
-<p>Start the hpssd.py process in debug mode:</p>
-<div class="compound">
-<p># python ./hpssd.py -g</p>
-</div>
-<p>You should see something like this:</p>
-<div class="compound">
-<p class="compound-first">hpssd [DEBUG]: port=36181</p>
-<p class="compound-middle">hpssd Listening on localhost:36181</p>
-<p class="compound-last">hpssd [DEBUG]: Starting async loop...</p>
-</div>
-<p>Then open a new terminal/console window: (Shift-Control-T if you are using Terminal)</p>
-<p>Run the hp-toolbox in debug mode:</p>
-<div class="compound">
-<p># hp-toolbox -g</p>
-</div>
-<p>Attempt to do the function you are having issues with, when the error occurs, note the information displayed for both the hp-toolbox and for hpssd.</p>
-<p><strong>Issue 4:  When I go to login to the CUPS web interface (http://localhost:631) it asks for my root password--and my root password doesn't give me access.</strong></p>
-<p>Solution:</p>
-<p>First verify with your distribution the proper way in each to install a printer for your system.</p>
+<p>First verify with your distribution the best way to install your printer.</p>
 <p>To enable the CUPS web interface follow these directions.</p>
 <p>Edit the cupsd.conf file.</p>
-<div class="compound">
-<p># gedit /etc/cups/cupsd.conf</p>
-</div>
+<pre class="literal-block">
+# gedit /etc/cups/cupsd.conf
+</pre>
 <p>Find this section:</p>
-<div class="compound">
-<p class="compound-first"># Restrict access to the admin pages...</p>
-<p class="compound-middle">&lt;Location /admin&gt;</p>
-<p class="compound-middle">#Order allow,deny</p>
-<p class="compound-middle">#Allow localhost</p>
-<p class="compound-last">&lt;/Location&gt;</p>
-</div>
+<pre class="literal-block">
+# Restrict access to the admin pages...
+&lt;Location /admin&gt;
+#Order allow,deny
+#Allow localhost
+&lt;/Location&gt;
+</pre>
 <p>Change it to:</p>
-<div class="compound">
-<p class="compound-first"># Restrict access to the admin pages...</p>
-<p class="compound-middle">&lt;Location /admin&gt;</p>
-<p class="compound-middle">Order allow,deny</p>
-<p class="compound-middle">Allow localhost</p>
-<p class="compound-last">&lt;/Location&gt;</p>
-</div>
+<pre class="literal-block">
+# Restrict access to the admin pages...
+&lt;Location /admin&gt;
+Order allow,deny
+Allow localhost
+&lt;/Location&gt;
+</pre>
 <p>Save/Exit, restart CUPS:</p>
-<div class="compound">
-<p># /etc/init.d/cups restart</p>
-</div>
+<pre class="literal-block">
+# /etc/init.d/cups restart
+</pre>
 <p>for Ubuntu</p>
-<div class="compound">
-<p>$ /etc/init.d/cupsys restart</p>
-</div>
+<pre class="literal-block">
+$ /etc/init.d/cupsys restart
+</pre>
 <p>Open your web browser, go to <a class="reference" href="http://localhost:631">http://localhost:631</a>.  Complete the administrative tasks you need to complete.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Fri Jan 19 12:50:50 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Mon Jun 11 15:45:59 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

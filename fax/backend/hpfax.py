@@ -65,7 +65,7 @@ sys.path.insert( 0, home_dir )
 try:
     from base.g import *
     from base.codes import *
-    from base import device, utils, msg
+    from base import device, utils, msg, service
     from base.service import sendEvent
     from prnt import cups
 except ImportError:
@@ -118,7 +118,7 @@ if len( args ) == 0:
     cups11 = utils.to_bool(sys_cfg.configure.cups11, False)
     
     try:
-        probed_devices = device.probeDevices(None, 'usb,par', filter='fax')
+        probed_devices = device.probeDevices('usb,par', filter='fax')
     except Error:
         log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
         sys.exit(CUPS_BACKEND_FAILED)
@@ -166,11 +166,10 @@ else:
     except IndexError:
         input_fd = 0
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
-        log.stderr("hpfax[%d]: error: Unable to contact HPLIP I/O (hpssd)." % pid)
+        sock = service.startup()
+    except Error:
+        log.stderr("hpfax[%d]: error: Unable to start hpssd." % pid)
         sys.exit(CUPS_BACKEND_FAILED)
 
     fax_data = os.read(input_fd, prop.max_message_len)

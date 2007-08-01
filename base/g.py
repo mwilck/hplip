@@ -42,6 +42,17 @@ MINIMUM_PYQT_MINOR_VER = 14
 MINIMUM_QT_MAJOR_VER = 3
 MINIMUM_QT_MINOR_VER = 0
 
+def to_bool(s, default=False):
+    if isinstance(s, str) and s:
+        if s[0].lower() in ['1', 't', 'y']:
+            return True
+        elif s[0].lower() in ['0', 'f', 'n']:
+            return False
+    elif isinstance(s, bool):
+        return s
+
+    return default
+
 # System wide properties
 class Properties(dict):
 
@@ -77,9 +88,13 @@ class ConfigSection(dict):
             self.config_obj.add_section(self.section_name)
 
         self.config_obj.set(self.section_name, option, val)
-        f = file(self.filename, 'w')
-        self.config_obj.write(f)
-        f.close()
+        
+        try:
+            f = file(self.filename, 'w')
+            self.config_obj.write(f)
+            f.close()
+        except IOError:
+            pass
 
 
 class Config(dict):
@@ -88,26 +103,17 @@ class Config(dict):
         dict.__setattr__(self, "config_obj", ConfigParser.ConfigParser())
         dict.__setattr__(self, "filename", filename)
 
-        try:
-            pathmode = os.stat(filename)[stat.ST_MODE]
-            if pathmode & 0022 != 0:
-                return
-        except (IOError,OSError):
-            if error_if_not_found:
-                log.warn("Config file %s not found or not readable." % filename)
-
-            return
-
         log.debug("Reading config file %s" % filename)
 
-        f = file(filename, 'r')
         try:
+            f = file(filename, 'r')
             self.config_obj.readfp(f)
-        except:
+            f.close()
+        except ConfigParser.Error:
             log.error("There is an error in the config file: %s" % filename)
             sys.exit(1)
-
-        f.close()
+        except IOError:
+            pass
 
         for s in self.config_obj.sections():
             opts = []
@@ -127,7 +133,16 @@ class Config(dict):
 
 # Config file: directories and ports
 prop.sys_config_file = '/etc/hp/hplip.conf'
-prop.user_config_file = os.path.expanduser('~/.hplip.conf')
+prop.user_dir = os.path.expanduser('~/.hplip')
+
+os.umask(0037)
+try:
+    if not os.path.exists(prop.user_dir):
+        os.makedirs(prop.user_dir)
+except OSError:
+    pass # This is sometimes OK, if running hpfax: for example
+    
+prop.user_config_file = os.path.join(prop.user_dir, 'hplip.conf')
 
 if not os.path.exists(prop.user_config_file):
     try:
@@ -146,7 +161,7 @@ try:
     locale.setlocale(locale.LC_ALL, '') # fails on Ubuntu 5.04
 except locale.Error:
     # TODO: Is this the right thing to do?
-    log.error("Unable to set locale.")
+    log.warn("Unable to set locale.")
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 try:
@@ -159,28 +174,14 @@ try:
     prop.lang_code = t[:2].lower()
 except TypeError:
     prop.lang_code = 'en'
-
-try:
-    prop.hpssd_cfg_port = int(sys_cfg.hpssd.port)
-except ValueError:
-    prop.hpssd_cfg_port = 0
-
+    
 prop.version = sys_cfg.hplip.version or 'x.x.x'
 prop.home_dir = sys_cfg.dirs.home or os.path.realpath(os.path.normpath(os.getcwd()))
-prop.run_dir = sys_cfg.dirs.run or '/var/run'
-
 try:
-    prop.hpiod_port = int(file(os.path.join(prop.run_dir, 'hpiod.port'), 'r').read())
-except:
-    prop.hpiod_port = 0
-
-try:
-    prop.hpssd_port = int(file(os.path.join(prop.run_dir, 'hpssd.port'), 'r').read())
-except:
-    prop.hpssd_port = 0
-
-
-prop.hpiod_host = 'localhost'
+    prop.hpssd_port = int(sys_cfg.hpssd.port)
+except ValueError:
+    prop.hpssd_port = 2207
+    
 prop.hpssd_host = 'localhost'
 
 prop.username = pwd.getpwuid(os.getuid())[0]
@@ -191,6 +192,7 @@ prop.data_dir = os.path.join(prop.home_dir, 'data')
 prop.image_dir = os.path.join(prop.home_dir, 'data', 'images')
 prop.xml_dir = os.path.join(prop.home_dir, 'data', 'xml')
 prop.models_dir = os.path.join(prop.home_dir, 'data', 'models')
+prop.localization_dir = os.path.join(prop.home_dir, 'data', 'localization')
 
 prop.max_message_len = 8192
 prop.max_message_read = 65536
@@ -200,6 +202,18 @@ prop.ppd_search_path = '/usr/share;/usr/local/share;/usr/lib;/usr/local/lib;/usr
 prop.ppd_search_pattern = 'HP-*.ppd.*'
 prop.ppd_download_url = 'http://www.linuxprinting.org/ppd-o-matic.cgi'
 prop.ppd_file_suffix = '-hpijs.ppd'
+
+# Build and install configurations
+prop.gui_build = to_bool(sys_cfg.configure.get('gui-build', '0'))
+prop.net_build = to_bool(sys_cfg.configure.get('network-build', '0'))
+prop.par_build = to_bool(sys_cfg.configure.get('pp-build', '0'))
+prop.usb_build = True 
+prop.scan_build = to_bool(sys_cfg.configure.get('scanner-build', '0'))
+prop.fax_build = to_bool(sys_cfg.configure.get('fax-build', '0'))
+prop.doc_build = to_bool(sys_cfg.configure.get('doc-build', '0'))
+prop.foomatic_xml_install = to_bool(sys_cfg.configure.get('foomatic-xml-install', '0'))
+prop.foomatic_ppd_install = to_bool(sys_cfg.configure.get('foomatic-ppd-install', '0'))
+prop.shadow_build = to_bool(sys_cfg.configure.get('shadow-build', '0'))
 
 # Spinner, ala Gentoo Portage
 spinner = "\|/-\|/-"
@@ -255,19 +269,30 @@ ERROR_STRINGS = {
                 ERROR_CHANNEL_CLOSE_FAILED : 'ChannelClose failed. Channel not open',
                 ERROR_UNSUPPORTED_BUS_TYPE : 'Unsupported bus type',
                 ERROR_DEVICE_DOES_NOT_SUPPORT_OPERATION : 'Device does not support operation',
-                ERROR_INTERNAL : 'Unknown internal error',
                 ERROR_DEVICE_NOT_OPEN : 'Device not open',
                 ERROR_UNABLE_TO_CONTACT_SERVICE : 'Unable to contact service',
                 ERROR_UNABLE_TO_BIND_SOCKET : 'Unable to bind to socket',
-                ERROR_DEVICEOPEN_FAILED_ONE_DEVICE_ONLY : 'Device open failed - 1 open per session allowed',
-                ERROR_DEVICEOPEN_FAILED_DEV_NODE_MOVED : 'Device open failed - device node moved',
+                ERROR_DEVICEOPEN_FAILED : 'Device open failed',
+                ERROR_INVALID_DEVNODE : 'Invalid device node',
                 ERROR_TEST_EMAIL_FAILED : "Email test failed",
                 ERROR_INVALID_HOSTNAME : "Invalid hostname ip address",
                 ERROR_INVALID_PORT_NUMBER : "Invalid JetDirect port number",
                 ERROR_INTERFACE_BUSY : "Interface busy",
                 ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE : "No CUPS queue found for device.",
                 ERROR_UNSUPPORTED_MODEL : "Unsupported printer model.",
+                ERROR_INVALID_GUI_NAME: "Invalid GUI",
+                ERROR_DATFILE_ERROR: "DAT file error",
+                ERROR_INVALID_TIMEOUT: "Invalid timeout",
+                ERROR_IO_TIMEOUT: "I/O timeout",
+                ERROR_FAX_INCOMPATIBLE_OPTIONS: "Incompatible fax options",
+                ERROR_FAX_INVALID_FAX_FILE: "Invalid fax file",
+                ERROR_FAX_MUST_RUN_SENDFAX_FIRST: "Run sendfax first",
+                ERROR_FAX_PROCESSING: "Fax processing",
+                ERROR_FAX_READY: "Fax ready",
+                ERROR_FAX_FILE_NOT_FOUND: "Fax file not found",
+                ERROR_INTERNAL : 'Unknown internal error',
                }
+               
 
 class Error(Exception):
     def __init__(self, opt=ERROR_INTERNAL):

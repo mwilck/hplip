@@ -57,7 +57,6 @@ class FaxSendJobForm(QMainWindow):
         self.printer_name = printer_name
         bus = 'cups'
         self.filename = ''
-        self.waitdlg = None
         self.username = prop.username
         self.args = args
         self.setCentralWidget(QWidget(self,"qt_central_widget"))
@@ -91,7 +90,7 @@ class FaxSendJobForm(QMainWindow):
                 self.init_failed = True
         
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(None, bus=bus, filter='fax')
+            t = device.probeDevices(bus=bus, filter='fax')
             probed_devices = []
 
             for d in t:
@@ -117,7 +116,7 @@ class FaxSendJobForm(QMainWindow):
                 self.init_failed = True
 
             elif x == 1:
-                log.info(utils.bold("Using device: %s" % devices[0][0]))
+                log.info(log.bold("Using device: %s" % devices[0][0]))
                 self.device_uri = devices[0][0]
 
             else:
@@ -131,22 +130,23 @@ class FaxSendJobForm(QMainWindow):
         self.FaxView = ScrollFaxView(self.sock, False, self.centralWidget(), self)
         self.FormLayout.addWidget(self.FaxView,0,0)
         
-        try:
-            self.cur_device = device.Device(device_uri=self.device_uri, 
-                                             printer_name=self.printer_name, 
-                                             hpssd_sock=self.sock)
-        except Error, e:
-            log.error("Invalid device URI or printer name.")
-            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
-            self.init_failed = True
-
-        else:
-            self.device_uri = self.cur_device.device_uri
-            user_cfg.last_used.device_uri = self.device_uri
-
-            log.debug(self.device_uri)
-        
-            self.statusBar().message(self.device_uri)        
+        if not self.init_failed:
+            try:
+                self.cur_device = device.Device(device_uri=self.device_uri, 
+                                                 printer_name=self.printer_name, 
+                                                 hpssd_sock=self.sock)
+            except Error, e:
+                log.error("Invalid device URI or printer name.")
+                self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
+                self.init_failed = True
+    
+            else:
+                self.device_uri = self.cur_device.device_uri
+                user_cfg.last_used.device_uri = self.device_uri
+    
+                log.debug(self.device_uri)
+            
+                self.statusBar().message(self.device_uri)        
         
         QTimer.singleShot(0, self.InitialUpdate)
 
@@ -195,6 +195,3 @@ class FaxSendJobForm(QMainWindow):
 
     def __tr(self,s,c = None):
         return qApp.translate("FaxSendJobForm", s, c)
-
-##    def __trUtf8(self,s,c = None):
-##        return qApp.translate("FaxSendJobForm", s, c, QApplication.UnicodeUTF8)

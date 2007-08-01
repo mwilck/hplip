@@ -62,7 +62,7 @@
 #define BACKEND_NAME sanei_debug
 #include "sanei_debug.h"
 
-void
+void 
 sanei_init_debug (const char * backend, int * var)
 {
   char ch, buf[256] = "SANE_DEBUG_";

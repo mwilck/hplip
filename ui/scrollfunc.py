@@ -59,7 +59,7 @@ class ScrollFunctionsView(ScrollView):
             self.addItem(self.__tr("<b>Print</b>"), self.__tr("Print documents or files."), 
                 s, self.PrintPixmap, self.PrintButton_clicked)
 
-            if self.cur_device.scan_type:
+            if self.cur_device.scan_type and prop.scan_build:
                 if self.user_settings.cmd_scan_int:
                     s = self.__tr("Scan >>")
                 else:
@@ -68,7 +68,7 @@ class ScrollFunctionsView(ScrollView):
                 self.addItem(self.__tr("<b>Scan</b>"), self.__tr("Scan a document, image, or photograph."),
                     s, self.ScanPixmap, self.ScanButton_clicked)
 
-            if self.cur_device.fax_type:
+            if self.cur_device.fax_type and prop.fax_build:
                 if self.user_settings.cmd_fax_int:
                     s = self.__tr("Send PC Fax >>")
                 else:
@@ -143,7 +143,7 @@ class ScrollFunctionsView(ScrollView):
                 self.form.FailureUI(self.__tr("<p><b>Unable to run command. No command specified.</b><p>Use <pre>Configure...</pre> to specify a command to run."))
                 log.error("No command specified. Use settings to configure commands.")
             else:
-                log.debug(utils.bold("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device.device_uri, "*"*20)))
+                log.debug("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device.device_uri, "*"*20))
                 log.debug(cmd)
                 cmd = ''.join([self.cur_device.device_vars.get(x, x) \
                                  for x in cmd.split(macro_char)])
@@ -210,8 +210,8 @@ class ScrollFunctionsView(ScrollView):
 
         self.connect(pushButton, SIGNAL("clicked()"), button_func)
 
-        self.addWidget(widget, str(title))
+        self.addWidget(widget, unicode(title))
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollFunctionsView",s,c)

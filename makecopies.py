@@ -96,7 +96,7 @@ if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
 
 for o, a in opts:
-    print o, a
+    #print o, a
     if o in ('-h', '--help'):
         usage()
 
@@ -226,15 +226,21 @@ if fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED and reduction_spec:
 utils.log_title(__title__, __version__)
 
 # Security: Do *not* create files that other users can muck around with
-os.umask (0077)
+os.umask (0037)
 
 if mode == GUI_MODE:
-    if not os.getenv('DISPLAY'):
+    if not prop.gui_build:
+        log.warn("GUI mode disabled in build. Reverting to non-interactive mode.")
+        mode = NON_INTERACTIVE_MODE
+    
+    elif not os.getenv('DISPLAY'):
+        log.warn("No display found. Reverting to non-interactive mode.")
         mode = NON_INTERACTIVE_MODE
 
     elif not utils.checkPyQtImport():
+        log.warn("PyQt init failed. Reverting to non-interactive mode.")
         mode = NON_INTERACTIVE_MODE
-
+        
 if mode == GUI_MODE:
     app = None
     makecopiesdlg = None
@@ -242,26 +248,53 @@ if mode == GUI_MODE:
     from qt import *
     from ui.makecopiesform import MakeCopiesForm
 
-    hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
+        hpssd_sock = service.startup()
+    except Error:
         log.error("Unable to connect to HPLIP I/O (hpssd).")
         sys.exit(1)
 
     log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
+    
+   
 
     # create the main application object
     app = QApplication(sys.argv)
+    
+    #loc = utils.loadTranslators(app, prop.user_config_file)
 
+    ### Load localized strings...begin
+    loc = user_cfg.ui.get("loc", "system")
+    if loc.lower() == 'system':
+        loc = str(QTextCodec.locale())
+        log.debug("Using system locale: %s" % loc)
+
+    if loc.lower() != 'c':
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+        qm_file = 'hplip_%s.qm' % loc
+        log.debug("Name of .qm file: %s" % qm_file)
+        loaded = trans.load(qm_file, prop.localization_dir)
+
+        if loaded:
+            app.installTranslator(trans)
+        else:
+            #log.error("File failed to load.")
+            loc = 'c'
+    else:
+        loc = 'c'
+
+    if loc == 'c':
+        log.debug("Using default 'C' locale")
+    else:
+        log.debug("Using locale: %s" % loc)
+    ### Load localized strings...end
+    
     makecopiesdlg = MakeCopiesForm(hpssd_sock, bus, device_uri, printer_name, 
                                    num_copies, contrast, quality, reduction, fit_to_page)
 
     makecopiesdlg.show()
     app.setMainWidget(makecopiesdlg)
-
-    user_config = os.path.expanduser('~/.hplip.conf')
-    loc = utils.loadTranslators(app, user_config)
 
     try:
         log.debug("Starting GUI loop...")
@@ -283,15 +316,14 @@ else: # NON_INTERACTIVE_MODE
             log.error("Error occured during interactive mode. Exiting.")
             sys.exit(1)
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        sock.connect((prop.hpssd_host, prop.hpssd_port))
-    except socket.error:
+        hpssd_sock = service.startup()
+    except Error:
         log.error("Unable to connect to HPLIP I/O (hpssd).")
         sys.exit(1)
 
     dev = copier.PMLCopyDevice(device_uri, printer_name, 
-                               sock)
+                               hpssd_sock)
 
 
     if dev.copy_type == COPY_TYPE_NONE:
@@ -374,7 +406,7 @@ else: # NON_INTERACTIVE_MODE
 
                     if status == copier.STATUS_ERROR:
                         log.error("Copier error!")
-                        service.sendEvent(sock, EVENT_COPY_JOB_FAIL, device_uri=device_uri)
+                        service.sendEvent(hpssd_sock, EVENT_COPY_JOB_FAIL, device_uri=device_uri)
                         cont = False
                         break
 
@@ -386,13 +418,14 @@ else: # NON_INTERACTIVE_MODE
 
     except KeyboardInterrupt:
         event_queue.put(copier.COPY_CANCELED)
-        service.sendEvent(sock, EVENT_COPY_JOB_CANCELED, device_uri=device_uri)            
+        service.sendEvent(hpssd_sock, EVENT_COPY_JOB_CANCELED, device_uri=device_uri)            
         log.error("Cancelling...")
 
     dev.close()
 
     dev.waitForCopyThread()
-    service.sendEvent(sock, EVENT_END_COPY_JOB, device_uri=device_uri)
+    service.sendEvent(hpssd_sock, EVENT_END_COPY_JOB, device_uri=device_uri)
+    hpssd_sock.close()
     log.info("Done.")
 
 sys.exit(0)

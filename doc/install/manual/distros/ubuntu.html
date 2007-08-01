@@ -88,41 +88,160 @@
 Ubuntu
 
 <hr size="1"/>
-        <div class="document" id="ubuntu">
-<h1 class="title">Ubuntu</h1>
-<p><em>Note</em>: You will need root access to complete this step.</p>
-<ol class="arabic simple">
-<li>Open a terminal shell.</li>
-<li>Ensure that you are accessing the most up to date repositories for apt. (See your distro documentation and/or other resources to verify this step.)</li>
-<li>Enable the universe and multiverse repositories.</li>
-</ol>
-<p><em>Note</em>: For help on enabling the universe and multiverse repositories go <a class="reference" href="https://help.ubuntu.com/community/Repositories/Ubuntu">here</a>.</p>
-<ol class="arabic simple" start="4">
-<li>Execute 'apt-get update'.</li>
-<li><em>Note</em>: Execute the next step for your distro version.</li>
-</ol>
-<p><strong>Ubuntu 5.10 Breezy</strong></p>
-<div class="compound">
-<p>sudo apt-get install build-essential python2.4-dev python2.4-qt3 libcupsys2-dev libsnmp5-dev libjpeg62-dev lsb libtool automake libusb-dev</p>
-</div>
-<p><strong>Ubuntu 6.06 Dapper</strong></p>
-<div class="compound">
-<p>sudo apt-get install build-essential python2.4-dev python2.4-qt3 libcupsys2-dev libsnmp9-dev libjpeg62-dev lsb libtool automake1.9 libusb-dev</p>
-</div>
-<p><strong>Ubuntu 6.10 Edgy</strong></p>
-<div class="compound">
-<p>sudo apt-get install build-essential python2.4-dev python2.4-qt3 libcupsys2-dev libsnmp9-dev libjpeg62-dev lsb libtool automake1.9 libusb-dev</p>
-</div>
-<p><em>Note</em>: If prompted to configure postfix select the appropriate configuration for your system.  Most systems will select &quot;No Configuration&quot;.  You'll need to use the tab and enter key to navigate the postfix configuration.</p>
-<p><a class="reference" href="../../../release_notes.html">View the current Release Notes</a> for additional information on this release.</p>
+        <div class="document" id="manual-build-and-install-instructions-for-ubuntu">
+<h1 class="title">Manual Build and Install Instructions for Ubuntu</h1>
 <div class="section">
-<h1><a id="next" name="next">Next</a></h1>
-<p><a class="reference" href="../download.html">Download HPLIP</a></p>
+<h1><a id="step-1-installation-prerequisite-steps" name="step-1-installation-prerequisite-steps">Step 1: Installation Prerequisite Steps</a></h1>
+<p><a class="reference" href="../../../release_notes.html">View the current Release Notes</a> for additional information on this release.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need root access to complete many of the steps while installing HPLIP. If you do not have root access contact your system admin for assistance.</p>
+</div>
+<hr></div>
+<div class="section">
+<h1><a id="step-2-install-dependency-packages" name="step-2-install-dependency-packages">Step 2: Install Dependency Packages</a></h1>
+<p><strong>A.</strong> Open a terminal shell.</p>
+<p><strong>B.</strong> Update your apt repositories.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+sudo apt-get update
+</pre>
+<p><strong>C.</strong> Install the required dependency packages.</p>
+<p>Enter this command: (choose the appropriate command depending on your version)</p>
+<p>Ubuntu 5.04 (Hoary) / 5.10 (Breezy)</p>
+<pre class="literal-block">
+sudo apt-get install libcupsys libcupsys-dev build-essential python-dev python gs libusb-dev sane xsane sane-utils python-reportlab python2.4-qt3 libsnmp5-dev openssl libjpeg62-dev libsane-dev libtool python-imaging
+</pre>
+<p>Ubuntu 6.06 (Dapper) / 6.10 (Edgy) / 7.04 (Feisty)</p>
+<pre class="literal-block">
+sudo apt-get install libcupsys2 libcupsys2-dev build-essential python-dev python-dev python gs-esp libusb-dev xsane libsane python-reportlab python-qt3 libsnmp9-dev openssl libjpeg62-dev libsane-dev libtool python-imaging
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-3-download-hplip" name="step-3-download-hplip">Step 3: Download HPLIP</a></h1>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">We recommend that you download the HPLIP tarball to your home or desktop directory.</p>
+</div>
+<p><strong>A.</strong> Click here to <a class="reference" href="http://prdownloads.sourceforge.net/hplip/hplip-2.7.7.tar.gz">Download the Regular Tarball</a></p>
+<p><strong>B.</strong> Go to the directory where you downloaded the HPLIP tarball.</p>
+<p>Example:</p>
+<pre class="literal-block">
+cd ~/Desktop
+</pre>
+<p><strong>C.</strong> Uncompress the tarball.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+tar xvfz hplip-2.7.7.tar.gz
+</pre>
+<p>This will create a directory with the same name as the tarball file.</p>
+<p><strong>D.</strong> Change your working directory to the hplip-2.7.7 directory.</p>
+<p>Example:</p>
+<pre class="literal-block">
+cd hplip-2.7.7
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-4-configure-hplip-for-installation" name="step-4-configure-hplip-for-installation">Step 4: Configure HPLIP for installation</a></h1>
+<p><strong>A.</strong> This step configures the development environment and checks that your system is ready to install HPLIP.</p>
+For specific information on using ./configure and the different options <a href="#" onClick="MyWindow=window.open('../configure.html','MyWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=400'); return false;">please go here</a>. Also reference your distro documentation and configuration for additional information on which tags are relevant.<p>Enter this command (select the appropriate command depending on your system configuration):</p>
+<p>32 bit distro users (most users will use this command):</p>
+<pre class="literal-block">
+./configure --prefix=/usr
+</pre>
+<p>64 bit distro users</p>
+<pre class="literal-block">
+./configure --prefix=/usr --libdir=/usr/lib64
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-5-run-make" name="step-5-run-make">Step 5: Run Make</a></h1>
+<p><strong>A.</strong> This step will compile the HPLIP source.</p>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">You want to run make as a regular user, NOT as root.</p>
+</div>
+<p>Enter this command:</p>
+<pre class="literal-block">
+make
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-6-run-make-install" name="step-6-run-make-install">Step 6: Run Make Install</a></h1>
+<p><strong>A.</strong> Run the symlink fix script.</p>
+<pre class="literal-block">
+sudo python ./installer/fix_symlink.py
+</pre>
+<p>Or to run the script manually run:</p>
+<pre class="literal-block">
+cat /installer/fix_symlink.py
+</pre>
+<p><strong>B.</strong> This step will install HPLIP.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+sudo make install
+</pre>
+<hr></div>
+<div class="section">
+<h1><a id="step-7-post-installation-steps" name="step-7-post-installation-steps">Step 7: Post Installation Steps</a></h1>
+<p><strong>A.</strong> Check USB Port Permissions.</p>
+<p>Run the following script to verify that your USB ports are configured with the correct permissions.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+sudo python ./installer/permissions.py
+</pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alternatively you can manually check your USB port permissions by following the instructions for the Manual Permissions Process link below.</p>
+</div>
+<a href="#" onClick="MyWindow=window.open('../permissions.html','MyWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=400'); return false;">Manual Permissions Process</a><p><strong>B.</strong> Trigger your USB devices.</p>
+<p>Run the following script to trigger your USB devices.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+sudo python ./installer/trigger.py
+</pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alternatively you can manually trigger your USB devices by unplugging and reconnecting your USB printer's from your computer.</p>
+</div>
+<hr><p><strong>C.</strong> Verify your user is part of the lp group</p>
+<p><strong>a</strong>. Open a terminal shell.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+groups
+</pre>
+<p>You should get a result similar to:</p>
+<pre class="literal-block">
+aaron adm dialout cdrom floppy audio dip video plugdev scanner netdev lpadmin powerdev admin
+</pre>
+<p><strong>b.</strong> If you do not see the &quot;lp&quot; group in the list.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+sudo usermod -a -G lp aaron
+</pre>
+<p>Replace &quot;aaron&quot; with your username.</p>
+<div class="important">
+<p class="first admonition-title">Important</p>
+<p class="last">Logout and back onto your system to apply the changes.</p>
+</div>
+<hr></div>
+<div class="section">
+<h1><a id="step-8-configuring-your-printer-using-hp-setup" name="step-8-configuring-your-printer-using-hp-setup">Step 8: Configuring your printer using hp-setup</a></h1>
+<p><strong>A.</strong> Run hp-check to verify that your system is configure correctly.</p>
+<p>Enter this command:</p>
+<pre class="literal-block">
+hp-check
+</pre>
+<p>If any failures try and resolve them depending on the error.  Contact the mailing list for support as needed.</p>
+<hr></div>
+<div class="section">
+<h1><a id="step-9-configuring-your-printer-using-hp-setup" name="step-9-configuring-your-printer-using-hp-setup">Step 9: Configuring your printer using hp-setup</a></h1>
+<p><a class="reference" href="../hp_setup.html">Continue to hp-setup</a></p>
 </div>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Fri Feb 16 10:40:15 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Mon Jun 18 16:07:54 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

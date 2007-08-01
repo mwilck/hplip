@@ -47,7 +47,13 @@ class SetupSettings(SetupSettings_base):
 
         self.ttlSpinBox.setValue(self.ttl)
         self.timeoutSpinBox.setValue(self.timeout)
-
+        
+        if not prop.net_build:
+            self.ttlSpinBox.setEnabled(False)
+            self.timeoutSpinBox.setEnabled(False)
+            self.groupBox3.setEnabled(False)
+            self.textLabel7.setEnabled(False)
+            self.textLabel8.setEnabled(False)
 
     def faxCheckBox_toggled(self,a0):
         self.updateFilter()
@@ -65,7 +71,7 @@ class SetupSettings(SetupSettings_base):
         self.updateFilter(a0)
 
     def searchTermLineEdit_textChanged(self, a0):
-        self.search = str(a0)
+        self.search = unicode(a0)
 
     def ttlSpinBox_valueChanged(self, a0):
         self.ttl = a0

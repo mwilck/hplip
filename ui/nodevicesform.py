@@ -66,7 +66,15 @@ class NoDevicesForm(NoDevicesForm_base):
             log.debug(cmd)
             utils.run(cmd, log_output=True, password_func=None, timeout=1)
 
-            self.parent().RescanDevices()
+            try:
+                self.parent().RescanDevices()
+            except Error:
+                QMessageBox.critical(self,
+                                    self.caption(),
+                                    self.__tr("<b>An I/O error occurred.</b><p>Please re-start the Device Manager and try again."),
+                                    QMessageBox.Ok,
+                                    QMessageBox.NoButton,
+                                    QMessageBox.NoButton)
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("NoDevicesForm",s,c)

@@ -68,7 +68,7 @@ class PrinterForm(QMainWindow):
         log.debug(self.cups_printers)
 
         if not self.device_uri and not self.printer_name:
-            t = device.probeDevices(None, bus=bus, filter='none')
+            t = device.probeDevices(bus=bus, filter='none')
             probed_devices = []
 
             for d in t:
@@ -94,37 +94,38 @@ class PrinterForm(QMainWindow):
                 self.init_failed = True
 
             elif x == 1:
-                log.info(utils.bold("Using device: %s" % devices[0][0]))
+                log.info(log.bold("Using device: %s" % devices[0][0]))
                 self.device_uri = devices[0][0]
 
             else:
                 from choosedevicedlg import ChooseDeviceDlg
                 dlg = ChooseDeviceDlg(devices)
+                
                 if dlg.exec_loop() == QDialog.Accepted:
                     self.device_uri = dlg.device_uri
                 else:
                     self.init_failed = True
 
-        self.PrintView = ScrollPrintView(False, self.centralWidget(), self, "PrintView")
-
-        self.FormLayout.addWidget(self.PrintView,0,0)
-        
-        try:
-            self.cur_device = device.Device(device_uri=self.device_uri, 
-                                             printer_name=self.printer_name, 
-                                             hpssd_sock=self.sock)
-        except Error, e:
-            log.error("Invalid device URI or printer name.")
-            self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
-            self.init_failed = True
-
-        else:
-            self.device_uri = self.cur_device.device_uri
-            user_cfg.last_used.device_uri = self.device_uri
-
-            log.debug(self.device_uri)
-        
-            self.statusBar().message(self.device_uri)
+        if not self.init_failed:
+            self.PrintView = ScrollPrintView(False, self.centralWidget(), self, "PrintView")
+            self.FormLayout.addWidget(self.PrintView,0,0)
+            
+            try:
+                self.cur_device = device.Device(device_uri=self.device_uri, 
+                                                 printer_name=self.printer_name, 
+                                                 hpssd_sock=self.sock)
+            except Error, e:
+                log.error("Invalid device URI or printer name.")
+                self.FailureUI("<b>Invalid device URI or printer name.</b><p>Please check the parameters to hp-print and try again.")
+                self.init_failed = True
+    
+            else:
+                self.device_uri = self.cur_device.device_uri
+                user_cfg.last_used.device_uri = self.device_uri
+    
+                log.debug(self.device_uri)
+            
+                self.statusBar().message(self.device_uri)
 
         QTimer.singleShot(0, self.InitialUpdate)
 
@@ -145,7 +146,7 @@ class PrinterForm(QMainWindow):
         
         
     def FailureUI(self, error_text):
-        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
+        log.error(unicode(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,

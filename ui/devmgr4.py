@@ -103,7 +103,7 @@ class PasswordDialog(QDialog):
         self.promptTextLabel.setText(prompt)
 
     def getPassword(self):
-        return str(self.passwordLineEdit.text())
+        return unicode(self.passwordLineEdit.text())
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - Enter Password"))
@@ -126,7 +126,7 @@ def PasswordUI(prompt):
 
 
 class DevMgr4(DevMgr4_base):
-    def __init__(self, hpiod_sock, hpssd_sock, 
+    def __init__(self, hpssd_sock, 
                  cleanup=None, toolbox_version='0.0',
                  parent=None, name=None, fl = 0):
 
@@ -139,7 +139,6 @@ class DevMgr4(DevMgr4_base):
         log.debug("HPLIP Version: %s" % sys_cfg.hplip.version)
 
         self.cleanup = cleanup
-        self.hpiod_sock = hpiod_sock
         self.hpssd_sock = hpssd_sock
         self.toolbox_version = toolbox_version
         self.cur_device_uri = user_cfg.last_used.device_uri # Device URI
@@ -176,6 +175,11 @@ class DevMgr4(DevMgr4_base):
         self.maint_page = 'tools'
 
         cups.setPasswordCallback(PasswordUI)
+        
+        #if not prop.doc_build:
+        #    self.helpContentsAction.setEnabled(False)
+            
+        self.allow_auto_refresh = True
 
         QTimer.singleShot(0, self.InitialUpdate)
 
@@ -206,25 +210,31 @@ class DevMgr4(DevMgr4_base):
         self.FuncList.hide()
 
         if page  == 'funcs':
+            self.allow_auto_refresh = True
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions"))
             self.FuncList = ScrollFunctionsView(self.FunctionsTab, self, "FuncView")
 
         elif page == 'print':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Print"))
             self.FuncList = ScrollPrintView(True, self.FunctionsTab, self, "PrintView")
 
         elif page == 'scan':
-            pass
+             self.allow_auto_refresh = False
+             pass
 
         elif page == 'copy':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Make Copies"))
             self.FuncList = ScrollCopyView(self.hpssd_sock, True, parent=self.FunctionsTab, form=self, name="CopyView")
 
         elif page == 'fax':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Fax"))
             self.FuncList = ScrollFaxView(self.hpssd_sock, True, self.FunctionsTab, self, "FaxView")
 
         elif page == 'pcard':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Unload Photo Card"))
             self.FuncList = ScrollUnloadView(True, self.FunctionsTab, self, "UnloadView")
 
@@ -289,18 +299,22 @@ class DevMgr4(DevMgr4_base):
         self.ToolList.hide()
 
         if page  == 'tools':
+            self.allow_auto_refresh = True
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools"))
             self.ToolList = ScrollToolView(True, self.MaintTab, self, "ToolView")
 
         elif page == 'device_info':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Device Information"))
             self.ToolList = ScrollDeviceInfoView(True, self.MaintTab, self, "DeviceInfoView")
 
         elif page == 'printer_info':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Printer Information"))
             self.ToolList = ScrollPrinterInfoView(True, self.MaintTab, self, "PrinterInfoView")
 
         elif page == 'testpage':
+            self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Print Test Page"))
 
             self.ToolList = ScrollTestpageView(True, self.MaintTab, self, "ScrollTestpageView")
@@ -370,7 +384,7 @@ class DevMgr4(DevMgr4_base):
         self.connect(self.PrintJobPrinterCombo, SIGNAL("activated(const QString&)"), self.JobsPrinterCombo_activated)
 
     def TimedRefresh(self):
-        if self.user_settings.auto_refresh:
+        if self.user_settings.auto_refresh and self.allow_auto_refresh:
             log.debug("Refresh timer...")
             self.CleanupChildren()
 
@@ -381,8 +395,7 @@ class DevMgr4(DevMgr4_base):
 
     def autoRefresh_toggled(self,a0):
         self.user_settings.auto_refresh = bool(a0)
-        #print self.sender
-        self.user_settings.save()
+        #self.user_settings.save()
 
     def closeEvent(self, event):
         self.Cleanup()
@@ -398,7 +411,7 @@ class DevMgr4(DevMgr4_base):
                 self.UpdateDevice()
 
     def ActivateDevice(self, device_uri):
-        log.debug(utils.bold("Activate: %s %s %s" % ("*"*20, device_uri, "*"*20)))
+        log.debug(log.bold("Activate: %s %s %s" % ("*"*20, device_uri, "*"*20)))
         d = self.DeviceList.firstItem()
         found = False
 
@@ -488,11 +501,13 @@ class DevMgr4(DevMgr4_base):
 
     def UpdateDevice(self, check_state=True):
         if self.cur_device is not None:
-            log.debug(utils.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
+            log.debug(log.bold("Update: %s %s %s" % ("*"*20, self.cur_device_uri, "*"*20)))
             self.setCaption(self.__tr("HP Device Manager - %1").arg(self.cur_device.model_ui))
 
+            self.updatePrinterList()
+            
             if not self.rescanning:
-                self.statusBar().message(self.cur_device_uri)
+                self.statusBar().message(QString("%1 (%2)").arg(self.cur_device_uri).arg(', '.join(self.cur_device.cups_printers)))
 
             if self.cur_device.supported and check_state and not self.rescanning:
                 QApplication.setOverrideCursor(QApplication.waitCursor)
@@ -529,27 +544,37 @@ class DevMgr4(DevMgr4_base):
 
             if not self.rescanning: 
                 self.UpdateHistory()
-                self.Tabs_deviceChanged(self.Tabs.currentPage())
+                
+                if self.allow_auto_refresh:
+                    self.Tabs_deviceChanged(self.Tabs.currentPage())
+                
                 self.UpdatePrinterCombos()
                 self.UpdatePanel()
                 self.setupDevice.setEnabled(self.cur_device.device_settings_ui is not None)
 
+    def updatePrinterList(self):
+        if self.cur_device is not None and \
+            self.cur_device.supported:
+
+            printers = cups.getPrinters()
+            self.cur_device.cups_printers = []
+            cur_device_uri_tail = self.cur_device_uri.split(':')[1]
+
+            for p in printers:
+                try:
+                    p_tail = p.device_uri.split(':')[1]
+                except IndexError:
+                    continue
+
+                if p_tail == cur_device_uri_tail:
+                    self.cur_device.cups_printers.append(p.name)
+    
     def UpdatePrinterCombos(self):
         self.PrintSettingsPrinterCombo.clear()
         self.PrintJobPrinterCombo.clear()
 
         if self.cur_device is not None and \
             self.cur_device.supported:
-
-            printers = cups.getPrinters()
-
-            self.cur_device.cups_printers = []
-            cur_device_uri_tail = self.cur_device_uri.split(':')[1]
-            for p in printers:
-                p_tail = p.device_uri.split(':')[1]
-
-                if p_tail == cur_device_uri_tail:
-                    self.cur_device.cups_printers.append(p.name)
 
             for c in self.cur_device.cups_printers:
                 self.PrintSettingsPrinterCombo.insertItem(c)
@@ -595,7 +620,10 @@ class DevMgr4(DevMgr4_base):
                 self.TabIndex[tab].onDeviceChange(self.cur_device)
             except AttributeError:
                 self.TabIndex[tab]()
-
+                
+    
+    def DeviceList_onItem(self, a0):
+        pass
 
     def CreatePixmap(self, dev=None):
         if dev is None:
@@ -686,13 +714,11 @@ class DevMgr4(DevMgr4_base):
                         step_num += 1
                         qApp.processEvents()
 
-                        log.debug(utils.bold("Refresh: %s %s %s" % \
+                        log.debug(log.bold("Refresh: %s %s %s" % \
                             ("*"*20, d, "*"*20)))
 
                         try:
-                            dev = device.Device(d,
-                                                hpiod_sock=self.hpiod_sock,
-                                                hpssd_sock=self.hpssd_sock,
+                            dev = device.Device(d, hpssd_sock=self.hpssd_sock,
                                                 callback=self.callback)
                         except Error:
                             log.error("Unexpected error in Device class.")
@@ -989,7 +1015,7 @@ class DevMgr4(DevMgr4_base):
                 self.FailureUI(self.__tr("<p><b>Unable to run command. No command specified.</b><p>Use <pre>Configure...</pre> to specify a command to run."))
                 log.error("No command specified. Use settings to configure commands.")
             else:
-                log.debug(utils.bold("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device_uri, "*"*20)))
+                log.debug("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device_uri, "*"*20))
                 log.debug(cmd)
                 cmd = ''.join([self.cur_device.device_vars.get(x, x) \
                                  for x in cmd.split(macro_char)])
@@ -1030,7 +1056,13 @@ class DevMgr4(DevMgr4_base):
         #self.cur_device.device_settings_ui(self.cur_device, self)
 
     def helpContents(self):
-        f = "file://%s" % os.path.join(sys_cfg.dirs.doc, 'index.html')
+        f = "http://hplip.sf.net"
+        
+        if prop.doc_build:
+            g = os.path.join(sys_cfg.dirs.doc, 'index.html')
+            if os.path.exists(g):
+                f = "file://%s" % g
+            
         log.debug(f)
         utils.openURL(f)
 
@@ -1058,11 +1090,7 @@ class DevMgr4(DevMgr4_base):
                 cmd = su_sudo % c
 
             log.debug(cmd)
-            #status, output = utils.run(cmd, log_output=True, password_func=None, timeout=1)
             os.system(cmd)
-
-            #self.cur_device_uri = user_cfg.last_used.device_uri
-
             self.RescanDevices()
 
 
@@ -1100,7 +1128,7 @@ class DevMgr4(DevMgr4_base):
 
 
     def FailureUI(self, error_text):
-        log.error(str(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
+        log.error(unicode(error_text).replace("<b>", "").replace("</b>", "").replace("<p>", ""))
         QMessageBox.critical(self,
                              self.caption(),
                              error_text,
@@ -1108,6 +1136,13 @@ class DevMgr4(DevMgr4_base):
                               QMessageBox.NoButton,
                               QMessageBox.NoButton)
 
+    def WarningUI(self, msg):
+        QMessageBox.warning(self,
+                             self.caption(),
+                             msg,
+                              QMessageBox.Ok,
+                              QMessageBox.NoButton,
+                              QMessageBox.NoButton)
 
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr4",s,c)

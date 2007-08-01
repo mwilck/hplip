@@ -93,23 +93,23 @@ Network (Ethernet and Wifi) Connection
 <p>Open a terminal window and run &quot;ping ip.address.of.printer&quot;.  If you don't get a response there could be a network configuration problem.  If you can't ping the printer HPLIP will not function correctly.</p>
 <p><strong>Does running snmpwalk get a response from the printer?</strong></p>
 <p>Run:</p>
-<div class="compound">
-<p>snmpwalk -Os -c public -v 1 ip.address.of.printer 1.3.6.1.4.1.11.2.3.9.1.1.7.0</p>
-</div>
+<pre class="literal-block">
+snmpwalk -Os -c public -v 1 ip.address.of.printer 1.3.6.1.4.1.11.2.3.9.1.1.7.0
+</pre>
 <p>You should get a response like (varies depending on the printer model):</p>
-<div class="compound">
-<p class="compound-first">enterprises.11.2.3.9.1.1.7.0 = STRING:</p>
-<p class="compound-middle">&quot;MFG:Hewlett-Packard;CMD:PJL,MLC,BIDI-ECP,PCL,POSTSCRIPT,PCLXL;MDL:hp</p>
-<p class="compound-middle">LaserJet 3380;CLS:PRINTER;DES:Hewlett-Packard LaserJet</p>
-<p class="compound-last">3380;MEM:23MB;COMMENT:RES=1200x1;&quot;</p>
-</div>
+<pre class="literal-block">
+enterprises.11.2.3.9.1.1.7.0 = STRING:
+&quot;MFG:Hewlett-Packard;CMD:PJL,MLC,BIDI-ECP,PCL,POSTSCRIPT,PCLXL;MDL:hp
+LaserJet 3380;CLS:PRINTER;DES:Hewlett-Packard LaserJet
+3380;MEM:23MB;COMMENT:RES=1200x1;&quot;
+</pre>
 <p>If you do not get this sort of response then there is a problem with your snmp configuration. Ensure that the required dependencies for snmp are installed and/or refer to your distro documentation.</p>
 <p><strong>Ensure that the correct ports are open.</strong></p>
 <p>Make sure that udp port 161 and tcp port 9100 are open through your firewall.  If these are not open then HPLIP will not function.</p>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Mon Feb 26 09:06:03 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:44 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

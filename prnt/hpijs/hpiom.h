@@ -128,7 +128,7 @@ typedef struct
 extern "C" {
 #endif
 
-extern int ReadHPVertAlign(HplipSession *session, int hd);
+extern int ReadHPVertAlign(int hd);
 
 #ifdef __cplusplus
 }

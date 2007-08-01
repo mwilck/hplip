@@ -29,6 +29,7 @@ import fcntl, errno, stat, string, commands
 import cStringIO, re
 import xml.parsers.expat as expat
 import getpass
+import locale
 
 # Local
 from g import *
@@ -53,63 +54,11 @@ def Translator(frm='', to='', delete='', keep=None):
 
     return callable
 
-# For pidfile locking (must be "static" and global to the whole app)
-prv_pidfile = None
-prv_pidfile_name = ""
-
-
-def get_pidfile_lock (a_pidfile_name=""):
-    """ Call this to either lock the pidfile, or to update it after a fork()
-        Credit: Henrique M. Holschuh <hmh@debian.org>
-    """
-    global prv_pidfile
-    global prv_pidfile_name
-    if prv_pidfile_name == "":
-        try:
-            prv_pidfile_name = a_pidfile_name
-            prv_pidfile = os.fdopen(os.open(prv_pidfile_name, os.O_RDWR | os.O_CREAT, 0644), 'r+')
-            fcntl.fcntl(prv_pidfile.fileno(), fcntl.F_SETFD, fcntl.FD_CLOEXEC)
-            while 1:
-                try:
-                    fcntl.flock(prv_pidfile.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                except (OSError, IOError), e:
-                    if e.errno == errno.EINTR:
-                        continue
-                    elif e.errno == errno.EWOULDBLOCK:
-                        try:
-                            prv_pidfile.seek(0)
-                            otherpid = int(prv_pidfile.readline(), 10)
-                            sys.stderr.write ("can't lock %s, running daemon's pid may be %d\n" % (prv_pidfile_name, otherpid))
-                        except (OSError, IOError), e:
-                            sys.stderr.write ("error reading pidfile %s: (%d) %s\n" % (prv_pidfile_name, e.errno, e.strerror))
-
-                        sys.exit(1)
-                    sys.stderr.write ("can't lock %s: (%d) %s\n" % (prv_pidfile_name, e.errno, e.strerror))
-                    sys.exit(1)
-                break
-        except (OSError, IOError), e:
-            sys.stderr.write ("can't open pidfile %s: (%d) %s\n" % (prv_pidfile_name, e.errno, e.strerror))
-            sys.exit(1)
-    try:
-        prv_pidfile.seek(0)
-        prv_pidfile.write("%d\n" % (os.getpid()))
-        prv_pidfile.flush()
-        prv_pidfile.truncate()
-    except (OSError, IOError), e:
-        log.error("can't update pidfile %s: (%d) %s\n" % (prv_pidfile_name, e.errno, e.strerror))
-
-
-
 def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
     """
     Credit: Jürgen Hermann, Andy Gimblett, and Noah Spurrier
             http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
-
-    Proper pidfile support: Henrique M. Holschuh <hmh@debian.org>
     """
-    # Try to lock pidfile if not locked already
-    if prv_pidfile_name != '' or prv_pidfile_name != "":
-        get_pidfile_lock(prv_pidfile_name)
 
     # Do first fork.
     try:
@@ -134,11 +83,7 @@ def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
         sys.stderr.write ("fork #2 failed: (%d) %s\n" % (e.errno, e.strerror))
         sys.exit(1)
 
-    if prv_pidfile_name != "":
-        get_pidfile_lock()
-
     # Now I am a daemon!
-
     # Redirect standard file descriptors.
     si = file(stdin, 'r')
     so = file(stdout, 'a+')
@@ -157,9 +102,9 @@ def to_bool_str(s, default='0'):
     """ Convert an arbitrary 0/1/T/F/Y/N string to a normalized string 0/1."""
     if isinstance(s, str) and s:
         if s[0].lower() in ['1', 't', 'y']:
-            return '1'
+            return u'1'
         elif s[0].lower() in ['0', 'f', 'n']:
-            return '0'
+            return u'0'
 
     return default
 
@@ -195,7 +140,7 @@ def walkFiles(root, recurse=True, abs_paths=False, return_folders=False, pattern
         names = os.listdir(root)
     except os.error:
         raise StopIteration
-
+        
     pattern = pattern or '*'
     pat_list = pattern.split(';')
 
@@ -213,10 +158,10 @@ def walkFiles(root, recurse=True, abs_paths=False, return_folders=False, pattern
                         except ValueError:
                             yield fullname
 
-        if os.path.islink(fullname):
-            fullname = os.path.realpath(os.readlink(fullname))
+        #if os.path.islink(fullname):
+        #    fullname = os.path.realpath(os.readlink(fullname))
 
-        if recurse and os.path.isdir(fullname) or os.path.islink(fullname):
+        if recurse and os.path.isdir(fullname): # or os.path.islink(fullname):
             for f in walkFiles(fullname, recurse, abs_paths, return_folders, pattern, path):
                 yield f
 
@@ -267,12 +212,6 @@ class TextFormatter:
             return '\n'.join(complines) + '\n'
         else:
             return '\n'.join(complines)
-
-    def bold(text):
-        return ''.join(["\033[1m", text, "\033[0m"])
-
-    bold = staticmethod(bold)
-
 
 class Column:
 
@@ -386,88 +325,8 @@ def sort_dict_by_value(d):
     backitems.sort()
     return [backitems[i][1] for i in range(0,len(backitems))]
 
-
-# Copied from Gentoo Portage output.py
-# Copyright 1998-2003 Daniel Robbins, Gentoo Technologies, Inc.
-# Distributed under the GNU Public License v2
-
-codes={}
-codes["reset"]="\x1b[0m"
-codes["bold"]="\x1b[01m"
-
-codes["teal"]="\x1b[36;06m"
-codes["turquoise"]="\x1b[36;01m"
-
-codes["fuscia"]="\x1b[35;01m"
-codes["purple"]="\x1b[35;06m"
-
-codes["blue"]="\x1b[34;01m"
-codes["darkblue"]="\x1b[34;06m"
-
-codes["green"]="\x1b[32;01m"
-codes["darkgreen"]="\x1b[32;06m"
-
-codes["yellow"]="\x1b[33;01m"
-codes["brown"]="\x1b[33;06m"
-
-codes["red"]="\x1b[31;01m"
-codes["darkred"]="\x1b[31;06m"
-
-
-def bold(text):
-    return codes["bold"]+text+codes["reset"]
-
-def white(text):
-    return bold(text)
-
-def teal(text):
-    return codes["teal"]+text+codes["reset"]
-
-def turquoise(text):
-    return codes["turquoise"]+text+codes["reset"]
-
-def darkteal(text):
-    return turquoise(text)
-
-def fuscia(text):
-    return codes["fuscia"]+text+codes["reset"]
-
-def purple(text):
-    return codes["purple"]+text+codes["reset"]
-
-def blue(text):
-    return codes["blue"]+text+codes["reset"]
-
-def darkblue(text):
-    return codes["darkblue"]+text+codes["reset"]
-
-def green(text):
-    return codes["green"]+text+codes["reset"]
-
-def darkgreen(text):
-    return codes["darkgreen"]+text+codes["reset"]
-
-def yellow(text):
-    return codes["yellow"]+text+codes["reset"]
-
-def brown(text):
-    return codes["brown"]+text+codes["reset"]
-
-def darkyellow(text):
-    return brown(text)
-
-def red(text):
-    return codes["red"]+text+codes["reset"]
-
-def darkred(text):
-    return codes["darkred"]+text+codes["reset"]
-
-
-# TODO: Use locale.format("%d", val, grouping=True) ???
 def commafy(val): 
-    return val < 0 and '-' + commafy(abs(val)) \
-        or val < 1000 and str(val) \
-        or '%s,%03d' % (commafy(val / 1000), (val % 1000))
+    return unicode(locale.format("%d", val, grouping=True))
 
 
 def format_bytes(s, show_bytes=False):
@@ -475,15 +334,20 @@ def format_bytes(s, show_bytes=False):
         return ''.join([commafy(s), ' B'])
     elif 1024 < s < 1048576:
         if show_bytes:
-            return ''.join([str(round(s/1024.0, 1)) , ' KB (',  commafy(s), ')'])
+            return ''.join([unicode(round(s/1024.0, 1)) , u' KB (',  commafy(s), ')'])
         else:
-            return ''.join([str(round(s/1024.0, 1)) , ' KB'])
+            return ''.join([unicode(round(s/1024.0, 1)) , u' KB'])
+    elif 1048576 < s < 1073741824:
+        if show_bytes:
+            return ''.join([unicode(round(s/1048576.0, 1)), u' MB (',  commafy(s), ')'])
+        else:
+            return ''.join([unicode(round(s/1048576.0, 1)), u' MB'])
     else:
         if show_bytes:
-            return ''.join([str(round(s/1048576.0, 1)), ' MB (',  commafy(s), ')'])
+            return ''.join([unicode(round(s/1073741824.0, 1)), u' GB (',  commafy(s), ')'])
         else:
-            return ''.join([str(round(s/1048576.0, 1)), ' MB'])
-
+            return ''.join([unicode(round(s/1073741824.0, 1)), u' GB'])
+        
 
 
 try:
@@ -492,14 +356,17 @@ except AttributeError:
     def make_temp_file(suffix='', prefix='', dir='', text=False): # pre-2.3
         path = tempfile.mktemp(suffix)
         fd = os.open(path, os.O_RDWR|os.O_CREAT|os.O_EXCL, 0700)
-        #os.unlink( path ) # TODO... make this secure
         return ( os.fdopen( fd, 'w+b' ), path )
-        #return (fd, path)
 
-def log_title(program_name, version):
+def log_title(program_name, version, show_ver=True):
     log.info("")
-    log.info(bold("HP Linux Imaging and Printing System (ver. %s)" % prop.version))
-    log.info(bold("%s ver. %s" % (program_name, version)))
+    
+    if show_ver:
+        log.info(log.bold("HP Linux Imaging and Printing System (ver. %s)" % prop.version))
+    else:    
+        log.info(log.bold("HP Linux Imaging and Printing System"))
+        
+    log.info(log.bold("%s ver. %s" % (program_name, version)))
     log.info("")
     log.info("Copyright (c) 2001-7 Hewlett-Packard Development Company, LP")
     log.info("This software comes with ABSOLUTELY NO WARRANTY.")
@@ -542,6 +409,7 @@ class UserSettings(object):
     
     def loadDefaults(self):
         # Print
+        self.cmd_print = ''
         path = which('hp-print')
     
         if len(path) > 0:
@@ -564,6 +432,7 @@ class UserSettings(object):
                         self.cmd_print = 'xpp -P%PRINTER%'
     
         # Scan
+        self.cmd_scan = ''
         path = which('xsane')
     
         if len(path) > 0:
@@ -571,14 +440,13 @@ class UserSettings(object):
         else:
             path = which('kooka')
     
-            if len(path)>0:
-                #cmd_scan = 'kooka -d "%SANE_URI%"'
+            if len(path) > 0:
                 self.cmd_scan = 'kooka'
     
             else:
                 path = which('xscanimage')
     
-                if len(path)>0:
+                if len(path) > 0:
                     self.cmd_scan = 'xscanimage'
     
         # Photo Card
@@ -775,58 +643,6 @@ def checkPyQtImport():
 
     return True
 
-
-def loadTranslators(app, user_config):
-    #from qt import *
-    import qt
-    loc = None
-
-    if os.path.exists(user_config):
-        # user_config contains executables we will run, so we
-        # must make sure it is a safe file, and refuse to run
-        # otherwise.
-        if not path_exists_safely(user_config):
-            log.warning("File %s has insecure permissions! File ignored." % user_config)
-        else:
-            config = ConfigParser.ConfigParser()
-            config.read(user_config)
-
-            if config.has_section("ui"):
-                loc = config.get("ui", "loc")
-
-                if not loc:
-                    loc = None
-
-    if loc is not None:
-
-        if loc.lower() == 'system':
-            loc = str(qt.QTextCodec.locale())
-
-        if loc.lower() != 'c':
-
-            log.debug("Trying to load .qm file for %s locale." % loc)
-
-            dirs = [prop.home_dir, prop.data_dir, prop.i18n_dir]
-
-            trans = qt.QTranslator(None)
-
-            for dir in dirs:
-                qm_file = 'hplip_%s' % loc
-                loaded = trans.load(qm_file, dir)
-
-                if loaded:
-                    app.installTranslator(trans)
-                    break
-        else:
-            loc = None
-
-    if loc is None:
-        log.debug("Using default 'C' locale")
-    else:
-        log.debug("Using locale: %s" % loc)
-
-    return loc
-
 try:
     from string import Template # will fail in Python <= 2.3
 except ImportError:
@@ -883,7 +699,6 @@ except ImportError:
             self.template = template
 
         # Search for $$, $identifier, ${identifier}, and any bare $'s
-
         def _invalid(self, mo):
             i = mo.start('invalid')
             lines = self.template[:i].splitlines(True)
@@ -1073,11 +888,11 @@ class XMLToDictParser:
 
 
  # ------------------------- Usage Help
-
 USAGE_OPTIONS = ("[OPTIONS]", "", "heading", False)
 USAGE_LOGGING1 = ("Set the logging level:", "-l<level> or --logging=<level>", 'option', False)
 USAGE_LOGGING2 = ("", "<level>: none, info\*, error, warn, debug (\*default)", "option", False)
 USAGE_LOGGING3 = ("Run in debug mode:", "-g (same as option: -ldebug)", "option", False)
+USAGE_LOGGING_PLAIN = ("Output plain text only:", "-t", "option", False)
 USAGE_ARGS = ("[PRINTER|DEVICE-URI] (See Notes)", "", "heading", False)
 USAGE_DEVICE = ("To specify a device-URI:", "-d<device-uri> or --device=<device-uri>", "option", False)
 USAGE_PRINTER = ("To specify a CUPS printer:", "-p<printer> or --printer=<printer>", "option", False)
@@ -1139,7 +954,7 @@ def format_text(text_list, typ='text', title='', crumb='', version=''):
             text2 = text2.replace("\\", "")
 
             if format == 'summary':
-                log.info(bold(text1))
+                log.info(log.bold(text1))
                 log.info("")
 
             elif format in ('para', 'name', 'seealso'):
@@ -1149,7 +964,7 @@ def format_text(text_list, typ='text', title='', crumb='', version=''):
                     log.info("")
 
             elif format in ('heading', 'header'):
-                log.info(bold(text1))
+                log.info(log.bold(text1))
 
             elif format in ('option', 'example'):
                 log.info(formatter.compose((text1, text2), trailing_space))
@@ -1433,4 +1248,31 @@ def collapse_range(x): # x --> sorted list of ints
         s.append('-%s' % i)
 
     return ''.join(s)
+    
+def createSequencedFilename(basename, ext, dir=None, digits=3):
+    if dir is None:
+        dir = os.getcwd()
+        
+    m = 0
+    for f in walkFiles(dir, recurse=False, abs_paths=False, return_folders=False, pattern='*', path=None):
+        r, e = os.path.splitext(f)
+        
+        if r.startswith(basename) and ext == e:
+            try:
+                i = int(r[len(basename):])
+            except ValueError:
+                continue
+            else:
+                m = max(m, i)
+                
+    return os.path.join(dir, "%s%0*d%s" % (basename, digits, m+1, ext))
+    
+            
+        
+        
+        
+        
+
+        
+
 

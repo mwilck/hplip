@@ -91,19 +91,19 @@ Compiling/Build
 <p><strong>How to install an HPLIP software patch.</strong></p>
 <p>Patches may only be applied to the tarball version of the HPLIP software (not an RPM, DEB, TGZ, or other pre-build package).</p>
 <p>How to apply a patch:</p>
-<div class="compound">
-<p class="compound-first">$ cd hplip-&lt;version&gt;</p>
-<p class="compound-middle">$ patch -p1 &lt; hplip-&lt;version&gt;.patch</p>
-<p class="compound-middle">$ ./configure --prefix=/usr</p>
-<p class="compound-middle">$ make clean</p>
-<p class="compound-middle">$ make</p>
-<p class="compound-middle">$ su   (or use 'sudo make install')</p>
-<p class="compound-last"># make install   (as root)</p>
-</div>
+<pre class="literal-block">
+$ cd hplip-&lt;version&gt;
+$ patch -p1 &lt; hplip-&lt;version&gt;.patch
+$ ./configure --prefix=/usr
+$ make clean
+$ make
+$ su   (or use 'sudo make install')
+# make install   (as root)
+</pre>
 </div>
 
 <hr size="1"/>
-<center><small>Page last updated: Wed Mar 21 13:43:53 2007; HPLIP Version: 1.7.4a</small></center>
+<center><small>Page last updated: Wed May  2 13:09:41 2007; HPLIP Version: 2.7.7</small></center>
 </div>
 </td></tr></table>
 </div>

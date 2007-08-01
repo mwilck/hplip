@@ -2,7 +2,7 @@
 
   hpaio.c - HP SANE backend for multi-function peripherals (libsane-hpaio)
 
-  (c) 2001-2006 Copyright Hewlett-Packard Development Company, LP
+  (c) 2001-2007 Copyright Hewlett-Packard Development Company, LP
 
   Permission is hereby granted, free of charge, to any person obtaining a copy 
   of this software and associated documentation files (the "Software"), to deal 
@@ -48,7 +48,7 @@
 #include "scl.h"
 #include "tables.h"
 #include "hpip.h"
-#include "hplip_api.h"
+#include "hpmud.h"
 #include "pml.h"
 #include "soap.h"
 #include "hpaio.h"
@@ -160,7 +160,7 @@ bugout:
 static int GetUriLine(char *buf, char *uri, char **tail)
 {
    int i=0, j;
-   int maxBuf = HPLIP_LINE_SIZE*64;
+   int maxBuf = HPMUD_LINE_SIZE*64;
 
    uri[0] = 0;
    
@@ -169,7 +169,7 @@ static int GetUriLine(char *buf, char *uri, char **tail)
       i = 7;
       j = 0;
       for (; buf[i] == ' ' && i < maxBuf; i++);  /* eat white space before string */
-      while ((buf[i] != ' ') && (i < maxBuf) && (j < HPLIP_LINE_SIZE))
+      while ((buf[i] != ' ') && (i < maxBuf) && (j < HPMUD_LINE_SIZE))
          uri[j++] = buf[i++];
       uri[j] = 0;
 
@@ -242,69 +242,50 @@ static int GetCupsPrinters(char ***printer)
 
 static int DevDiscovery(int localOnly)
 {
-   char message[HPLIP_LINE_SIZE*64];
-   char uri[HPLIP_LINE_SIZE];
-   char model[HPLIP_LINE_SIZE];
+   struct hpmud_model_attributes ma;
+   char message[HPMUD_LINE_SIZE*64];
+   char uri[HPMUD_LINE_SIZE];
+   char model[HPMUD_LINE_SIZE];
    char *tail;
-   int i, scan_type, len=0, cnt=0, total=0;  
-   HplipMsgAttributes ma, ma2;
+   int i, scan_type, cnt=0, total=0, bytes_read;  
    char **cups_printer=NULL;     /* list of printers */
- 
-   len = sprintf(message, "msg=ProbeDevices\n");
- 
-   if (send(hplip_session->hpiod_socket, message, len, 0) == -1) 
-   {  
-      bug("unable to send ProbeDevices: %m %s %d\n", __FILE__, __LINE__);  
-      goto bugout;  
-   }  
+   enum HPMUD_RESULT stat;
 
-   if ((len = recv(hplip_session->hpiod_socket, message, sizeof(message), 0)) == -1) 
-   {  
-      bug("unable to receive ProbeDevicesResult: %m %s %d\n", __FILE__, __LINE__);  
+   stat = hpmud_probe_devices(HPMUD_BUS_ALL, message, sizeof(message), &cnt, &bytes_read);
+ 
+   if (stat != HPMUD_R_OK)
       goto bugout;
-   }  
 
-   message[len] = 0;
-
-   hplip_ParseMsg(message, len, &ma);
-
-   if (ma.result == R_AOK && ma.length)
+   /* Look for local all-in-one scan devices (defined by hpmud). */
+   tail = message;
+   for (i=0; i<cnt; i++)
    {
-      cnt = ma.ndevice;
-
-      /* Look for scanning devices only. */
-      tail = (char *)ma.data;
-      for (i=0; i<cnt; i++)
+      scan_type = 0;
+      GetUriLine(tail, uri, &tail);
+      hpmud_query_model(uri, &ma);
+      if (ma.scantype > 0)
       {
-         scan_type = 0;
-         GetUriLine(tail, uri, &tail);
-         hplip_ModelQuery(uri, &ma2);
-         if (ma2.scantype > 0)
-         {
-            hplip_GetURIModel(uri, model, sizeof(model));
-            AddDeviceList(uri, model, &DeviceList);
-            total++;
-         }
+         hpmud_get_uri_model(uri, model, sizeof(model));
+         AddDeviceList(uri, model, &DeviceList);
+         total++;
       }
    }
 
-   if (!localOnly)
+   /* Ignore localOnly flag (used by saned) and always look for network all-in-one scan devices (defined by cups). */
+   cnt = GetCupsPrinters(&cups_printer);
+   for (i=0; i<cnt; i++)
    {
-      cnt = GetCupsPrinters(&cups_printer);
-      for (i=0; i<cnt; i++)
+      hpmud_query_model(cups_printer[i], &ma);
+      if (ma.scantype > 0)
       {
-         hplip_ModelQuery(cups_printer[i], &ma2);
-         if (ma2.scantype > 0)
-         {
-            hplip_GetURIModel(cups_printer[i], model, sizeof(model));
-            AddDeviceList(cups_printer[i], model, &DeviceList);
-            total++;
-         }
-         free(cups_printer[i]);
+         hpmud_get_uri_model(cups_printer[i], model, sizeof(model));
+         AddDeviceList(cups_printer[i], model, &DeviceList);
+         total++;
       }
-      if (cups_printer)
-         free(cups_printer);
+      free(cups_printer[i]);
    }
+   if (cups_printer)
+      free(cups_printer);
 
 bugout:
    return total;
@@ -340,7 +321,7 @@ static hpaioScanner_t hpaioFindScanner( SANE_String_Const name )
     return NULL;
 }
 
-SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio )
+SANE_Status __attribute__ ((visibility ("hidden"))) hpaioScannerToSaneError( hpaioScanner_t hpaio )
 {
     SANE_Status retcode;
 
@@ -454,7 +435,7 @@ SANE_Status hpaioScannerToSaneError( hpaioScanner_t hpaio )
 }
 
 
-SANE_Status hpaioScannerToSaneStatus( hpaioScanner_t hpaio )
+SANE_Status __attribute__ ((visibility ("hidden"))) hpaioScannerToSaneStatus( hpaioScanner_t hpaio )
 {
 //BREAKPOINT;
     
@@ -527,8 +508,6 @@ static int hpaioScannerIsUninterruptible( hpaioScanner_t hpaio,
 
 static SANE_Status hpaioResetScanner( hpaioScanner_t hpaio )
 {
-//BREAKPOINT;
-    
     SANE_Status retcode;
 
     if( hpaio->scannerType == SCANNER_TYPE_SCL )
@@ -538,6 +517,7 @@ static SANE_Status hpaioResetScanner( hpaioScanner_t hpaio )
         {
             return retcode;
         }
+        sleep(1);       /* delay for embeded jetdirect scl scanners (ie: PS 3300, PS C7280, PS C6100) */
     }
     else /* if (hpaio->scannerType==SCANNER_TYPE_PML) */
     {
@@ -622,13 +602,9 @@ static void hpaioPmlDeallocateObjects( hpaioScanner_t hpaio )
     }
 }
 
-static SANE_Status hpaioPmlAllocateObjects( hpaioScanner_t hpaio )
+static SANE_Status hpaioPmlAllocateObjects(hpaioScanner_t hpaio)
 {
-    if( hpaio->scannerType == SCANNER_TYPE_PML && !hpaio->pml.objScanToken )
-    {
-        int len;
-
-        /* SNMP oids for PML. */
+        /* SNMP oids for PML scanners. */
         hpaio->pml.objScannerStatus = hpaioPmlAllocateID( hpaio,          "1.3.6.1.4.1.11.2.3.9.4.2.1.2.2.2.1.0" );
         hpaio->pml.objResolutionRange = hpaioPmlAllocateID( hpaio,        "1.3.6.1.4.1.11.2.3.9.4.2.1.2.2.2.3.0" );
         hpaio->pml.objUploadTimeout = hpaioPmlAllocateID( hpaio,          "1.3.6.1.4.1.11.2.3.9.4.2.1.1.1.18.0" );
@@ -647,65 +623,19 @@ static SANE_Status hpaioPmlAllocateObjects( hpaioScanner_t hpaio )
         hpaio->pml.objScanToken = hpaioPmlAllocateID( hpaio,              "1.3.6.1.4.1.11.2.3.9.4.2.1.1.1.25.0" );
         hpaio->pml.objModularHardware = hpaioPmlAllocateID( hpaio,        "1.3.6.1.4.1.11.2.3.9.4.2.1.2.2.1.75.0" );
 
-//BREAKPOINT;
-
-        if( PmlRequestGet( hpaio->deviceid, hpaio->cmd_channelid, 
-                           hpaio->pml.objScanToken ) != ERROR &&
-            
-            ( len = PmlGetValue( hpaio->pml.objScanToken,
-                                 0,
-                                 hpaio->pml.scanToken,
-                                 PML_MAX_VALUE_LEN ) ) > 0 )
-        {
-            int i;
-            hpaio->pml.lenScanToken = len;
-            for( i = 0; i < len; i++ )
-            {
-                hpaio->pml.scanToken[i] = 0;
-                hpaio->pml.zeroScanToken[i] = 0;
-            }
-            gettimeofday( ( struct timeval * ) hpaio->pml.scanToken, 0 );
-            i = sizeof( struct timeval );
-            *( ( pid_t * ) ( hpaio->pml.scanToken + i ) ) = getpid();
-            i += sizeof( pid_t );
-            *( ( pid_t * ) ( hpaio->pml.scanToken + i ) ) = getppid();
-
-#if 0
-            if( getenv( "SANE_HPAIO_RESET_SCAN_TOKEN" ) )
-            {
-                PmlSetValue( hpaio->pml.objScanToken,
-                             PML_TYPE_BINARY,
-                             hpaio->pml.zeroScanToken,
-                             hpaio->pml.lenScanToken );
-                             
-                PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                    hpaio->pml.objScanToken, 0, 0 );
-            }
-#endif
-        }
-    }
+        /* Some PML objects for SCL scanners. */
+        hpaio->scl.objSupportedFunctions = hpaioPmlAllocateID( hpaio, "1.3.6.1.4.1.11.2.3.9.4.2.1.1.2.67.0" );
 
     return SANE_STATUS_GOOD;
 }
 
 static int hpaioConnClose( hpaioScanner_t hpaio )
 {
-    if( hpaio->pml.scanTokenIsSet )
-    {
-        PmlSetValue( hpaio->pml.objScanToken,
-                     PML_TYPE_BINARY,
-                     hpaio->pml.zeroScanToken,
-                     hpaio->pml.lenScanToken );
-                     
-        PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, hpaio->pml.objScanToken, 0, 0 );
-        hpaio->pml.scanTokenIsSet = 0;
-    }
-
     if (hpaio->cmd_channelid > 0)
-       hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->cmd_channelid);
+       hpmud_close_channel(hpaio->deviceid, hpaio->cmd_channelid);
     hpaio->cmd_channelid = -1;
     if (hpaio->scan_channelid > 0)
-       hplip_CloseChannel(hplip_session, hpaio->deviceid, hpaio->scan_channelid);
+       hpmud_close_channel(hpaio->deviceid, hpaio->scan_channelid);
     hpaio->scan_channelid = -1;
 
     return 0;
@@ -714,11 +644,12 @@ static int hpaioConnClose( hpaioScanner_t hpaio )
 static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
 {
     SANE_Status retcode;
+    enum HPMUD_RESULT stat;
 
     if (hpaio->scannerType==SCANNER_TYPE_SCL) 
     {
-       hpaio->scan_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-SCAN");
-       if(hpaio->scan_channelid < 0)
+       stat = hpmud_open_channel(hpaio->deviceid, "HP-SCAN", &hpaio->scan_channelid);
+       if(stat != HPMUD_R_OK)
        {
           bug("failed to open scan channel: %s %d\n", __FILE__, __LINE__);
           retcode = SANE_STATUS_DEVICE_BUSY;
@@ -726,40 +657,16 @@ static SANE_Status hpaioConnOpen( hpaioScanner_t hpaio )
        }
     }
 
-    hpaio->cmd_channelid = hplip_OpenChannel(hplip_session, hpaio->deviceid, "HP-MESSAGE");
-    if(hpaio->cmd_channelid < 0)
+    stat = hpmud_open_channel(hpaio->deviceid, "HP-MESSAGE", &hpaio->cmd_channelid);
+    if(stat != HPMUD_R_OK)
     {
        bug("failed to open pml channel: %s %d\n", __FILE__, __LINE__);
        retcode = SANE_STATUS_IO_ERROR;
        goto abort;
     }
-
-    if (hpaio->scannerType==SCANNER_TYPE_PML)
-    {
-        hpaioPmlAllocateObjects( hpaio ); // sets up scan token
-
-        if( !hpaio->pml.openFirst )
-        {
-        }
-        else if( hpaio->pml.lenScanToken )
-        {
-            PmlSetValue( hpaio->pml.objScanToken,
-                         PML_TYPE_BINARY,
-                         hpaio->pml.scanToken,
-                         hpaio->pml.lenScanToken );
-            
-            if( PmlRequestSetRetry( hpaio->deviceid, hpaio->cmd_channelid, 
-                                    hpaio->pml.objScanToken, 0, 0 ) == ERROR )
-            {
-                retcode = SANE_STATUS_DEVICE_BUSY;
-                goto abort;
-            }
-            hpaio->pml.scanTokenIsSet = 1;
-        }
-    }
-
-    retcode = hpaioResetScanner( hpaio );
     
+    retcode = SANE_STATUS_GOOD;
+
 abort:
     if( retcode != SANE_STATUS_GOOD )
     {
@@ -784,8 +691,7 @@ static SANE_Status hpaioConnPrepareScan( hpaioScanner_t hpaio )
        }
     }
 
-    //    if( hpaio->scannerType == SCANNER_TYPE_SCL )
-    //    {
+    retcode = hpaioResetScanner( hpaio );
 
         /* Reserve scanner and make sure it got reserved. */
         SclSendCommand( hpaio->deviceid, hpaio->scan_channelid, SCL_CMD_SET_DEVICE_LOCK, 1 );
@@ -807,7 +713,8 @@ static SANE_Status hpaioConnPrepareScan( hpaioScanner_t hpaio )
                             buffer,
                             LEN_SCL_BUFFER ) != SANE_STATUS_GOOD )
             {
-                break;
+//                break;
+                return SANE_STATUS_IO_ERROR;
             }
             
             gettimeofday( &tv2, 0 );
@@ -1473,7 +1380,7 @@ static void hpaioSetupOptions( hpaioScanner_t hpaio )
     hpaio->bryRange.quant = 0;
 }
 
-int hpaioSclSendCommandCheckError( hpaioScanner_t hpaio, int cmd, int param )
+static int hpaioSclSendCommandCheckError( hpaioScanner_t hpaio, int cmd, int param )
 {
     SANE_Status retcode;
 
@@ -1493,6 +1400,8 @@ int hpaioSclSendCommandCheckError( hpaioScanner_t hpaio, int cmd, int param )
 
 static SANE_Status hpaioProgramOptions( hpaioScanner_t hpaio )
 {
+    int bytes_wrote;
+
     hpaio->effectiveScanMode = hpaio->currentScanMode;
     hpaio->effectiveResolution = hpaio->currentResolution;
 
@@ -1586,9 +1495,8 @@ static SANE_Status hpaioProgramOptions( hpaioScanner_t hpaio )
                             SCL_CMD_DOWNLOAD_BINARY_DATA,
                             sizeof( hp11xxSeriesColorMap ) );
             
-            hplip_WriteHP(hplip_session, hpaio->deviceid, hpaio->scan_channelid,
-                          (char *)hp11xxSeriesColorMap,
-                          sizeof(hp11xxSeriesColorMap));
+            hpmud_write_channel(hpaio->deviceid, hpaio->scan_channelid, hp11xxSeriesColorMap, sizeof(hp11xxSeriesColorMap),
+                        EXCEPTION_TIMEOUT, &bytes_wrote);
         }
 
         /* For OfficeJet R and PSC 500 series, set CCD resolution to 600
@@ -1659,18 +1567,12 @@ extern SANE_Status sane_hpaio_init(SANE_Int * pVersionCode, SANE_Auth_Callback a
     DBG_INIT();
     DBG(8, "sane_hpaio_init(): %s %d\n", __FILE__, __LINE__);
 
-    if (hplip_Init(&hplip_session))
-    {
-       stat = SANE_STATUS_DEVICE_BUSY;
-       goto bugout;
-    }
     if( pVersionCode )
     {
-       *pVersionCode = SANE_VERSION_CODE( 1, 0, 6 );
+       *pVersionCode = SANE_VERSION_CODE( 1, 0, 0 );
     }
     stat = SANE_STATUS_GOOD;
 
-bugout:
     return stat;
 }  /* sane_hpaio_init() */
 
@@ -1678,7 +1580,6 @@ extern void sane_hpaio_exit(void)
 {
    DBG(8, "sane_hpaio_exit(): %s %d\n", __FILE__, __LINE__);
    ResetDeviceList(&DeviceList);
-   hplip_Exit(hplip_session);
 }
 
 extern SANE_Status sane_hpaio_get_devices(const SANE_Device ***deviceList, SANE_Bool localOnly)
@@ -1692,9 +1593,10 @@ extern SANE_Status sane_hpaio_get_devices(const SANE_Device ***deviceList, SANE_
 
 extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * pHandle)
 {
+    struct hpmud_model_attributes ma;
     SANE_Status retcode = SANE_STATUS_INVAL;
     hpaioScanner_t hpaio = 0;
-    int r;
+    int r, bytes_read;
     char deviceIDString[LEN_DEVICE_ID_STRING];
     char model[256];
     int forceJpegForGrayAndColor = 0;
@@ -1703,11 +1605,11 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     int supportsMfpdtf = 1;
     int modularHardware = 0;
     char devname[256];
-    HplipMsgAttributes ma;
+    enum HPMUD_RESULT stat;
 
     /* Get device attributes and determine what backend to call. */
     snprintf(devname, sizeof(devname)-1, "hp:%s", devicename);   /* prepend "hp:" */
-    hplip_ModelQuery(devname, &ma);
+    hpmud_query_model(devname, &ma);
     if (ma.scantype == 3)
        return soap_open(devicename, pHandle);
 
@@ -1739,10 +1641,10 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     
     hpaio->tag = "SCL-PML";
 
-    hpaio->deviceid = hplip_OpenHP(hplip_session, (char *)devname, &ma);
-    strncpy( hpaio->deviceuri, devname, sizeof(hpaio->deviceuri) );
+    stat = hpmud_open_device(devname, ma.mfp_mode, &hpaio->deviceid);
+    strncpy(hpaio->deviceuri, devname, sizeof(hpaio->deviceuri));
     
-    if( hpaio->deviceid == -1 )
+    if(stat != HPMUD_R_OK)
     {
         retcode = SANE_STATUS_IO_ERROR;
         goto abort;
@@ -1752,9 +1654,9 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     hpaio->cmd_channelid = -1;
 
     /* Get the device ID string and initialize the SANE_Device structure. */
-    memset( deviceIDString, 0, LEN_DEVICE_ID_STRING );
+    memset(deviceIDString, 0, sizeof(deviceIDString));
     
-    if(hplip_GetID(hplip_session, hpaio->deviceid, deviceIDString, sizeof(deviceIDString)) == 0)
+    if(hpmud_get_device_id(hpaio->deviceid, deviceIDString, sizeof(deviceIDString), &bytes_read) != HPMUD_R_OK)
     {
         retcode = SANE_STATUS_INVAL;
         goto abort;
@@ -1766,11 +1668,11 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     
     hpaio->saneDevice.vendor = "Hewlett-Packard"; 
     
-    hplip_GetModel(deviceIDString, model, sizeof(model));
+    hpmud_get_model(deviceIDString, model, sizeof(model));
     
     DBG(6, "Model = %s: %s %d\n", model, __FILE__, __LINE__);
     
-    hpaio->saneDevice.model = strdup( model );
+    hpaio->saneDevice.model = strdup(model);
     hpaio->saneDevice.type = "multi-function peripheral";
 
     /* Initialize option descriptors. */
@@ -1851,15 +1753,15 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     }
 
     DBG(6, "Scanner type=%s: %s %d\n", hpaio->scannerType==0 ? "SCL" : "PML", __FILE__, __LINE__);
+
+    hpaioPmlAllocateObjects(hpaio);   /* used by pml scanners and scl scanners */
     
-    /* Open and reset scanner command channel.
-     * This also allocates the PML objects if necessary. */
-    
-//BREAKPOINT;
-    
-    retcode = hpaioConnOpen( hpaio );
-    
-    if( retcode != SANE_STATUS_GOOD )
+    if ((retcode = hpaioConnOpen(hpaio)) != SANE_STATUS_GOOD)
+    {
+        goto abort;
+    }
+
+    if ((retcode = hpaioResetScanner(hpaio)) != SANE_STATUS_GOOD)
     {
         goto abort;
     }
@@ -1867,11 +1769,7 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     /* Probing and setup for SCL scanners... */
     if( hpaio->scannerType == SCANNER_TYPE_SCL )
     {
-        /* Even though this isn't SCANNER_TYPE_PML, there are still a few
-         * interesting PML objects. */
-        
         SclSendCommand( hpaio->deviceid, hpaio->scan_channelid, SCL_CMD_CLEAR_ERROR_STACK, 0 );
-        hpaio->scl.objSupportedFunctions = hpaioPmlAllocateID( hpaio, "1.3.6.1.4.1.11.2.3.9.4.2.1.1.2.67.0" );
 
         /* Probe the SCL model. */
         retcode = SclInquire( hpaio->deviceid, 
@@ -2397,7 +2295,7 @@ extern void sane_hpaio_close(SANE_Handle handle)
     
     if (hpaio->deviceid > 0)
     {
-       hplip_CloseHP(hplip_session, hpaio->deviceid);
+       hpmud_close_device(hpaio->deviceid);
        hpaio->deviceid = -1;
     }
     
@@ -3209,11 +3107,11 @@ needMoreData:
                     len = LEN_BUFFER;
                 }
                 
-                r = ReadChannelEx( hpaio->deviceid, 
+                r = ReadChannelEx(hpaio->deviceid, 
                                    hpaio->scan_channelid, 
                                    hpaio->inBuffer, 
                                    len,
-                                   HPLIP_EXCEPTION_TIMEOUT );
+                                   EXCEPTION_TIMEOUT);
                 
                 if( r < 0 )
                 {

@@ -36,19 +36,12 @@ import atexit
 
 # Local
 from base.g import *
-
 import base.utils as utils
+from base import service
 from base.msg import *
 
 log.set_module('hp-toolbox')
 
-# UI Forms and PyQt
-if not utils.checkPyQtImport():
-    log.error("PyQt/Qt initialization error. Please check install of PyQt/Qt and try again.")
-    sys.exit(1)
-
-from qt import *
-from ui.devmgr4 import DevMgr4
 
 
 app = None
@@ -81,9 +74,6 @@ def toolboxCleanup():
     pass
 
 def handleEXIT():
-    if hpiod_sock is not None:
-        hpiod_sock.close()
-
     if hpssd_sock is not None:
         hpssd_sock.close()
 
@@ -132,40 +122,67 @@ for o, a in opts:
 
 utils.log_title(__title__, __version__)
 
+# UI Forms and PyQt
+if not prop.gui_build:
+    log.error("GUI mode disabled in build. Exiting.")
+    sys.exit(1)
+    
+elif not os.getenv('DISPLAY'):
+    log.error("No display found. Exiting.")
+    sys.exit(1)
+
+elif not utils.checkPyQtImport():
+    log.error("PyQt init failed. Exiting.")
+    sys.exit(1)
+
+from qt import *
+from ui.devmgr4 import DevMgr4
+
 # Security: Do *not* create files that other users can muck around with
-os.umask (0077)
+os.umask (0037)
 
 # create the main application object
 app = QApplication(sys.argv)
 
-hpiod_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-try:
-    hpiod_sock.connect((prop.hpiod_host, prop.hpiod_port))
-except socket.error:
-    log.error("Unable to connect to HPLIP I/O (hpiod).")
-    sys.exit(1)
+loc = user_cfg.ui.get("loc", "system")
+if loc.lower() == 'system':
+    loc = str(QTextCodec.locale())
+    log.debug("Using system locale: %s" % loc)
 
-log.debug("Connected to hpiod on %s:%d" % (prop.hpiod_host, prop.hpiod_port))
+if loc.lower() != 'c':
+    log.debug("Trying to load .qm file for %s locale." % loc)
+    trans = QTranslator(None)
+    qm_file = 'hplip_%s.qm' % loc
+    log.debug("Name of .qm file: %s" % qm_file)
+    loaded = trans.load(qm_file, prop.localization_dir)
+    
+    if loaded:
+        app.installTranslator(trans)
+    else:
+        loc = 'c'
+else:
+    loc = 'c'
 
-hpssd_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+if loc == 'c':
+    log.debug("Using default 'C' locale")
+else:
+    log.debug("Using locale: %s" % loc)
+
 try:
-    hpssd_sock.connect((prop.hpssd_host, prop.hpssd_port))
-except socket.error:
+    hpssd_sock = service.startup()
+except Error:
     log.error("Unable to connect to HPLIP I/O (hpssd).")
     sys.exit(1)
 
 log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
 
-toolbox = DevMgr4(hpiod_sock, hpssd_sock, toolboxCleanup, __version__)
+toolbox = DevMgr4(hpssd_sock, toolboxCleanup, __version__)
 app.setMainWidget(toolbox)
 
 toolbox.show()
 
 atexit.register(handleEXIT)
 signal.signal(signal.SIGPIPE, signal.SIG_IGN)
-
-user_config = os.path.expanduser('~/.hplip.conf')
-loc = utils.loadTranslators(app, user_config)
 
 try:
     log.debug("Starting GUI loop...")

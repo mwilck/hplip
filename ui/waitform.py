@@ -61,4 +61,3 @@ class WaitForm(WaitForm_base):
         if self.cancel_func is not None:
             self.cancel_func()
         self.cancelPushButton.setEnabled(False)
-

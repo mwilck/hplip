@@ -45,10 +45,10 @@ STATUS_ERROR = 5
 # PML Copier Only
 class PMLCopyDevice(device.Device):
     def __init__(self, device_uri=None, printer_name=None,
-                 hpssd_sock=None, hpiod_sock=None, callback=None):
+                 hpssd_sock=None, callback=None):
 
         device.Device.__init__(self, device_uri, printer_name,
-                               hpssd_sock, hpiod_sock, callback)
+                               hpssd_sock, callback)
 
         self.copy_thread = None
 

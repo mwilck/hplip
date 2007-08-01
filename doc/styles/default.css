@@ -210,8 +210,8 @@ color: #fff;
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
-:Date: $Date: 2007/01/20 00:07:22 $
-:Version: $Revision: 1.12 $
+:Date: $Date: 2007/05/02 20:33:29 $
+:Version: $Revision: 1.13 $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -443,6 +443,7 @@ pre.literal-block, pre.doctest-block {
   background-color: #eeeeee;
   border: thin black solid;
   padding: 2px;
+  overflow: auto;
 }
 
 div.compound {

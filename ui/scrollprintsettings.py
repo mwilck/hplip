@@ -204,7 +204,10 @@ class ScrollPrintSettingsView(ScrollView):
 
                             choice_text, marked = cups.getChoice(g, o, c)
 
-                            choice_text = choice_text.decode('utf-8')
+                            try:
+                                choice_text = choice_text.decode('utf-8')
+                            except UnicodeDecodeError:
+                                pass
                             
                             log.debug("      Text: %s" % choice_text)
 
@@ -943,5 +946,5 @@ class ScrollPrintSettingsView(ScrollView):
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("DevMgr4",s,c)
+        return qApp.translate("ScrollPrintSettingsView",s,c)
 

@@ -29,11 +29,14 @@ from base import utils
 
 # Handle case where cups.py (via device.py) is loaded
 # and cupsext doesn't exist yet. This happens in the
-# installer...
+# installer and in a fresh sandbox if the Python extensions
+# aren't installed yet.
 try:
     import cupsext
 except ImportError:
-    pass
+    if not os.getenv("HPLIP_BUILD"):
+        log.error("CUPSEXT could not be loaded. Please check HPLIP installation.")
+        sys.exit(1)
 
 nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
 
