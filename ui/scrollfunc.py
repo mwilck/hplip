@@ -22,6 +22,7 @@
 # Local
 from base.g import *
 from base import utils
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -31,18 +32,17 @@ from scrollview import ScrollView
 import os.path, os
 
 class ScrollFunctionsView(ScrollView):
-    def __init__(self, parent = None,form=None, name = None,fl = 0):
-
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, parent=None, form=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
         self.user_settings = utils.UserSettings()
         self.form = form
 
-        self.ScanPixmap = QPixmap(os.path.join(prop.image_dir, "scan_icon.png"))
-        self.PrintPixmap = QPixmap(os.path.join(prop.image_dir, "print_icon.png"))
-        self.SendFaxPixmap =QPixmap(os.path.join(prop.image_dir, "fax_icon.png"))
-        self.PhotoCardPixmap = QPixmap(os.path.join(prop.image_dir, "pcard_icon.png"))
-        self.MakeCopiesPixmap = QPixmap(os.path.join(prop.image_dir, "makecopies_icon.png"))
+        self.ScanPixmap = load_pixmap("scan", '32x32')
+        self.PrintPixmap = load_pixmap("print", '32x32')
+        self.SendFaxPixmap =load_pixmap("fax", '32x32')
+        self.PhotoCardPixmap = load_pixmap("pcard", '32x32')
+        self.MakeCopiesPixmap = load_pixmap("makecopies", '32x32')
 
     def fillControls(self):
         ScrollView.fillControls(self)

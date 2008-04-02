@@ -130,7 +130,11 @@ def header(text):
     
 def load_paper_prompt():
     return continue_prompt("A page will be printed.\nPlease load plain paper into the printer.")
+    
+def load_photo_paper_prompt():
+    return continue_prompt("A page will be printed.\nPlease load HP Advanced Photo Paper - Glossy into the printer.")
 
+    
 def continue_prompt(prompt=''):
     while True:
         x = raw_input(log.bold(prompt + " Press <enter> to continue or 'q' to quit: ")).lower().strip()
@@ -338,4 +342,12 @@ def format_paragraph(paragraph, width=None, alignment=ALIGN_LEFT):
     result.append(align(current, width, alignment))
     #print result
     return result
+    
+def show_languages():
+    f = Formatter()
+    f.header = ("Language Code", "Alternate Name(s)")
+    for loc, ll in supported_locales.items():
+        f.add((ll[0], ', '.join(ll[1:])))
+
+    f.output()
 

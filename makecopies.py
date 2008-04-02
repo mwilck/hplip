@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '3.2'
+__version__ = '3.3'
 __title__ = "Make Copies Utility"
 __doc__ = "PC initiated make copies on supported HP AiO and MFP devices."
 
@@ -29,17 +29,16 @@ import sys
 import os
 import getopt
 import re
-import socket
 import Queue
 import time
 import operator
 
 # Local
 from base.g import *
-from base.msg import *
-from base import utils, device, pml, service
+from base import utils, device, pml, tui
 from copier import copier
 from prnt import cups
+
 
 log.set_module('hp-makecopies')
 
@@ -92,7 +91,7 @@ except getopt.GetoptError, e:
 printer_name = None
 device_uri = None
 log_level = logger.DEFAULT_LOG_LEVEL
-bus = 'cups'
+bus = ['cups']
 num_copies = None
 reduction = None
 reduction_spec = False
@@ -223,13 +222,13 @@ for o, a in opts:
         mode_specified = True
 
     elif o in ('-b', '--bus'):
-        bus = a.lower().strip()
+        bus = [x.lower().strip() for x in a.split(',')]
         if not device.validateBusList(bus):
             usage()
             
     elif o == '--lang':
         if a.strip() == '?':
-            utils.show_languages()
+            tui.show_languages()
             sys.exit(0)
             
         loc = utils.validate_language(a.lower())
@@ -241,6 +240,9 @@ if fit_to_page == pml.COPIER_FIT_TO_PAGE_ENABLED and reduction_spec:
 
 
 utils.log_title(__title__, __version__)
+
+if os.getuid() == 0:
+    log.error("hp-makecopies should not be run as root.")
 
 # Security: Do *not* create files that other users can muck around with
 os.umask (0037)
@@ -255,14 +257,6 @@ if mode == GUI_MODE:
 
     from qt import *
     from ui.makecopiesform import MakeCopiesForm
-
-    try:
-        hpssd_sock = service.startup()
-    except Error:
-        log.error("Unable to connect to HPLIP I/O (hpssd).")
-        sys.exit(1)
-
-    log.debug("Connected to hpssd on %s:%d" % (prop.hpssd_host, prop.hpssd_port))
     
     # create the main application object
     app = QApplication(sys.argv)
@@ -303,8 +297,9 @@ if mode == GUI_MODE:
         except locale.Error:
             pass
     
-    makecopiesdlg = MakeCopiesForm(hpssd_sock, bus, device_uri, printer_name, 
-                                   num_copies, contrast, quality, reduction, fit_to_page)
+    makecopiesdlg = MakeCopiesForm(bus, device_uri, printer_name, 
+                                   num_copies, contrast, quality, 
+                                   reduction, fit_to_page)
 
     makecopiesdlg.show()
     app.setMainWidget(makecopiesdlg)
@@ -314,134 +309,127 @@ if mode == GUI_MODE:
         app.exec_loop()
     except KeyboardInterrupt:
         pass
-    except:
-        log.exception()
 
-    hpssd_sock.close()
-
-else: # NON_INTERACTIVE_MODE
-    if not device_uri and not printer_name:
-        try:
-            device_uri = device.getInteractiveDeviceURI(bus, 
-                filter={'copy-type': (operator.gt, 0)})
-                
-            if device_uri is None:
-                sys.exit(1)
-        except Error:
-            log.error("Error occured during interactive mode. Exiting.")
-            sys.exit(1)
-
-    try:
-        hpssd_sock = service.startup()
-    except Error:
-        log.error("Unable to connect to HPLIP I/O (hpssd).")
-        sys.exit(1)
-
-    dev = copier.PMLCopyDevice(device_uri, printer_name, 
-                               hpssd_sock)
-
-
-    if dev.copy_type == COPY_TYPE_NONE:
-        log.error("Sorry, make copies functionality is not supported on this device.")
-        sys.exit(1)
         
-    user_cfg.last_used.device_uri = dev.device_uri
-
+        
+        
+        
+else: # NON_INTERACTIVE_MODE
     try:
-        dev.open()
+        if not device_uri and not printer_name:
+            try:
+                device_uri = device.getInteractiveDeviceURI(bus, 
+                    filter={'copy-type': (operator.gt, 0)})
+                    
+                if device_uri is None:
+                    sys.exit(1)
+            except Error:
+                log.error("Error occured during interactive mode. Exiting.")
+                sys.exit(1)
 
-        if num_copies is None:
-            result_code, num_copies = dev.getPML(pml.OID_COPIER_NUM_COPIES)
+        dev = copier.PMLCopyDevice(device_uri, printer_name)
 
-        if contrast is None:
-            result_code, contrast = dev.getPML(pml.OID_COPIER_CONTRAST)
+        if dev.copy_type == COPY_TYPE_NONE:
+            log.error("Sorry, make copies functionality is not supported on this device.")
+            sys.exit(1)
+            
+        user_cfg.last_used.device_uri = dev.device_uri
 
-        if reduction is None:
-            result_code, reduction = dev.getPML(pml.OID_COPIER_REDUCTION)
+        try:
+            try:
+                dev.open()
 
-        if quality is None:
-            result_code, quality = dev.getPML(pml.OID_COPIER_QUALITY)
+                if num_copies is None:
+                    result_code, num_copies = dev.getPML(pml.OID_COPIER_NUM_COPIES)
 
-        if fit_to_page is None and dev.copy_type == COPY_TYPE_DEVICE:
-            result_code, fit_to_page = dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
-        else:
-            fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
+                if contrast is None:
+                    result_code, contrast = dev.getPML(pml.OID_COPIER_CONTRAST)
 
-        result_code, max_reduction = dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
-        result_code, max_enlargement = dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
+                if reduction is None:
+                    result_code, reduction = dev.getPML(pml.OID_COPIER_REDUCTION)
 
-    except Error, e:
-        log.error(e.msg)
-        sys.exit(1)
+                if quality is None:
+                    result_code, quality = dev.getPML(pml.OID_COPIER_QUALITY)
 
-    scan_style = dev.mq.get('scan-style', SCAN_STYLE_FLATBED)
-    log.debug(scan_style)
+                if fit_to_page is None and dev.copy_type == COPY_TYPE_DEVICE:
+                    result_code, fit_to_page = dev.getPML(pml.OID_COPIER_FIT_TO_PAGE)
+                else:
+                    fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
 
-    if scan_style == SCAN_STYLE_SCROLLFED:
-        fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
+                result_code, max_reduction = dev.getPML(pml.OID_COPIER_REDUCTION_MAXIMUM)
+                result_code, max_enlargement = dev.getPML(pml.OID_COPIER_ENLARGEMENT_MAXIMUM)
 
-    log.debug("num_copies = %d" % num_copies)
-    log.debug("contrast= %d" % contrast)
-    log.debug("reduction = %d" % reduction)
-    log.debug("quality = %d" % quality)
-    log.debug("fit_to_page = %d" % fit_to_page)
-    log.debug("max_reduction = %d" % max_reduction)
-    log.debug("max_enlargement = %d" % max_enlargement)
-    log.debug("scan_style = %d" % scan_style)
+            except Error, e:
+                log.error(e.msg)
+                sys.exit(1)
 
-    update_queue = Queue.Queue()
-    event_queue = Queue.Queue()
+            scan_style = dev.mq.get('scan-style', SCAN_STYLE_FLATBED)
+            log.debug(scan_style)
 
-    dev.copy(num_copies, contrast, reduction,
-             quality, fit_to_page, scan_style,
-             update_queue, event_queue)
+            if scan_style == SCAN_STYLE_SCROLLFED:
+                fit_to_page = pml.COPIER_FIT_TO_PAGE_DISABLED
 
-    try:
-        cont = True
-        while cont:
-            while update_queue.qsize():
-                try:
-                    status = update_queue.get(0)
-                except Queue.Empty:
-                    break
+            log.debug("num_copies = %d" % num_copies)
+            log.debug("contrast= %d" % contrast)
+            log.debug("reduction = %d" % reduction)
+            log.debug("quality = %d" % quality)
+            log.debug("fit_to_page = %d" % fit_to_page)
+            log.debug("max_reduction = %d" % max_reduction)
+            log.debug("max_enlargement = %d" % max_enlargement)
+            log.debug("scan_style = %d" % scan_style)
 
-                if status == copier.STATUS_IDLE:
-                    log.debug("Idle")
-                    continue
+            update_queue = Queue.Queue()
+            event_queue = Queue.Queue()
 
-                elif status in (copier.STATUS_SETTING_UP, copier.STATUS_WARMING_UP):
-                    log.info("Warming up...")
-                    continue
+            dev.copy(num_copies, contrast, reduction,
+                     quality, fit_to_page, scan_style,
+                     update_queue, event_queue)
 
-                elif status == copier.STATUS_ACTIVE:
-                    log.info("Copying...")
-                    continue
-
-                elif status in (copier.STATUS_ERROR, copier.STATUS_DONE):
-
-                    if status == copier.STATUS_ERROR:
-                        log.error("Copier error!")
-                        service.sendEvent(hpssd_sock, EVENT_COPY_JOB_FAIL, device_uri=device_uri)
-                        cont = False
+        
+            cont = True
+            while cont:
+                while update_queue.qsize():
+                    try:
+                        status = update_queue.get(0)
+                    except Queue.Empty:
                         break
 
-                    elif status == copier.STATUS_DONE:
-                        cont = False
-                        break
+                    if status == copier.STATUS_IDLE:
+                        log.debug("Idle")
+                        continue
 
-            time.sleep(2)
+                    elif status in (copier.STATUS_SETTING_UP, copier.STATUS_WARMING_UP):
+                        log.info("Warming up...")
+                        continue
 
+                    elif status == copier.STATUS_ACTIVE:
+                        log.info("Copying...")
+                        continue
+
+                    elif status in (copier.STATUS_ERROR, copier.STATUS_DONE):
+
+                        if status == copier.STATUS_ERROR:
+                            log.error("Copier error!")
+                            dev.sendEvent(EVENT_COPY_JOB_FAIL)
+                            cont = False
+                            break
+
+                        elif status == copier.STATUS_DONE:
+                            cont = False
+                            break
+
+                time.sleep(2)
+        
+        finally:
+            dev.close()
+            
     except KeyboardInterrupt:
+        log.error("User interrupt. Canceling...")
         event_queue.put(copier.COPY_CANCELED)
-        service.sendEvent(hpssd_sock, EVENT_COPY_JOB_CANCELED, device_uri=device_uri)            
-        log.error("Cancelling...")
-
-    dev.close()
+        dev.sendEvent(EVENT_COPY_JOB_CANCELED)
 
     dev.waitForCopyThread()
-    service.sendEvent(hpssd_sock, EVENT_END_COPY_JOB, device_uri=device_uri)
-    hpssd_sock.close()
+    dev.sendEvent(EVENT_END_COPY_JOB)
+    log.info("")
     log.info("Done.")
-
-sys.exit(0)
 

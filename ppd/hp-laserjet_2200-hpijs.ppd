@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.2.10"
+*FileVersion: "hpijs 2.8.4.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_2200-hpijs.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 2200 Foomatic/hpijs"
 *ShortNickName: "HP LaserJet 2200 Foomatic/hpijs"
-*NickName: "HP LaserJet 2200 Foomatic/hpijs, hpijs 2.8.2.10"
+*NickName: "HP LaserJet 2200 Foomatic/hpijs, hpijs 2.8.4.2"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -333,4 +333,4 @@ t=0"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_2200-hpijs.ppd, 17022 bytes.
+*% End of hp-laserjet_2200-hpijs.ppd, 17020 bytes.

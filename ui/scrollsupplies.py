@@ -23,6 +23,7 @@
 from base.g import *
 from base import utils
 from prnt import cups
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -34,10 +35,10 @@ import os.path, os
 
 
 class ScrollSuppliesView(ScrollView):
-    def __init__(self,parent = None,name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, parent=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
-        self.pix_battery = QPixmap(os.path.join(prop.image_dir, 'icon_battery.png'))
+        self.pix_battery = load_pixmap('battery', '32x32')
 
         yellow = "#ffff00"
         light_yellow = "#ffffcc"

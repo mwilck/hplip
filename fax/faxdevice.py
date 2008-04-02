@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ from soapfax import SOAPFaxDevice
 from pmlfax import PMLFaxDevice
 
 def FaxDevice(device_uri=None, printer_name=None,
-              hpssd_sock=None, callback=None, 
+              callback=None, 
               fax_type=FAX_TYPE_NONE):
                  
     if fax_type == FAX_TYPE_NONE:
@@ -48,10 +48,10 @@ def FaxDevice(device_uri=None, printer_name=None,
     log.debug("fax-type=%d" % fax_type)
                     
     if fax_type in (FAX_TYPE_BLACK_SEND_EARLY_OPEN, FAX_TYPE_BLACK_SEND_LATE_OPEN):
-        return PMLFaxDevice(device_uri, printer_name, hpssd_sock, callback, fax_type)
+        return PMLFaxDevice(device_uri, printer_name, callback, fax_type)
 
     elif fax_type == FAX_TYPE_SOAP:
-        return SOAPFaxDevice(device_uri, printer_name, hpssd_sock, callback, fax_type)
+        return SOAPFaxDevice(device_uri, printer_name, callback, fax_type)
 
     else:
         raise Error(ERROR_DEVICE_DOES_NOT_SUPPORT_OPERATION)

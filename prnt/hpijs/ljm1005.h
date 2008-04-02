@@ -94,8 +94,11 @@ public:
         "LJM1005",
         "LaserJet M1005\0"
         "HP LaserJet M1005\0"
+        "HP LaserJet M1120\0"
         "HP LaserJet P1005\0"
         "HP LaserJet P1006\0"
+        "HP LaserJet P1007\0"
+        "HP LaserJet P1008\0"
         "HP LaserJet P1505\0"
         "HP LaserJet P201\0"
         "M1005\0"

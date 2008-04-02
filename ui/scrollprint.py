@@ -23,6 +23,7 @@
 from base.g import *
 from base import utils, magic
 from prnt import cups
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -53,9 +54,9 @@ class FileListViewItem(QListViewItem):
 
 
 class ScrollPrintView(ScrollView):
-    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
-
+    def __init__(self, service, toolbox_hosted=True, parent=None, form=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
+        
         self.toolbox_hosted = toolbox_hosted
         self.form = form
         self.file_list = []
@@ -142,12 +143,12 @@ class ScrollPrintView(ScrollView):
         layout37 = QGridLayout(widget,1,1,5,10,"layout37")
 
         self.addFilePushButton = PixmapLabelButton(widget, 
-            "list-add.png", "list-add-disabled.png")
+            "list_add.png", "list_add-disabled.png")
 
         layout37.addWidget(self.addFilePushButton,2,0)
 
         self.removeFilePushButton = PixmapLabelButton(widget, 
-            "list-remove.png", "list-remove-disabled.png")
+            "list_remove.png", "list_remove-disabled.png")
 
         layout37.addWidget(self.removeFilePushButton,2,1)
 
@@ -224,12 +225,12 @@ class ScrollPrintView(ScrollView):
 
     def fileListView_rightButtonClicked(self, item, pos, col):
         popup = QPopupMenu(self)
-        popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir, 'list-add.png'))),
+        popup.insertItem(QIconSet(load_pixmap('list_add', '16x16')),
             self.__tr("Add File..."), self.addFile_clicked)
 
         if item is not None:
-            popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
-                'list-remove.png'))), self.__tr("Remove File"), self.removeFile_clicked)
+            popup.insertItem(QIconSet(load_pixmap('list_remove', '16x16')),
+                self.__tr("Remove File"), self.removeFile_clicked)
                 
             if self.fileListView.childCount() > 1:
                 last_item = self.fileListView.firstChild()
@@ -237,16 +238,16 @@ class ScrollPrintView(ScrollView):
                     last_item = last_item.nextSibling()
                     
                 if item is not self.fileListView.firstChild():
-                    popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
-                        'up.png'))), self.__tr("Move Up"), self.moveFileUp_clicked)
+                    popup.insertItem(QIconSet(load_pixmap('up', '16x16')),
+                        self.__tr("Move Up"), self.moveFileUp_clicked)
     
                 if item is not last_item:
-                    popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
-                        'down.png'))), self.__tr("Move Down"), self.moveFileDown_clicked)
+                    popup.insertItem(QIconSet(load_pixmap('down', '16x16')),
+                        self.__tr("Move Down"), self.moveFileDown_clicked)
 
         popup.insertSeparator(-1)
-        popup.insertItem(QIconSet(QPixmap(os.path.join(prop.image_dir,
-                'mimetypes.png'))), self.__tr("Show File Types..."), self.showFileTypes_clicked)
+        popup.insertItem(QIconSet(load_pixmap('mimetypes', '16x16')),
+            self.__tr("Show File Types..."), self.showFileTypes_clicked)
 
         popup.popup(pos)
 
@@ -280,7 +281,7 @@ class ScrollPrintView(ScrollView):
 
     def addFile(self, path):
         path = os.path.realpath(path)
-        if os.path.exists(path):
+        if os.path.exists(path) and os.access(path, os.R_OK):
             mime_type = magic.mime_type(path)
             mime_type_desc = mime_type
             log.debug(mime_type)
@@ -293,7 +294,7 @@ class ScrollPrintView(ScrollView):
                 log.debug("Adding file %s (%s,%s)" % (path, mime_type, mime_type_desc))
                 self.file_list.append((path, mime_type, mime_type_desc))
         else:
-            self.form.FailureUI(self.__tr("<b>Unable to add file '%s' to file list (file not found).</b><p>Check the file name and try again." % path))
+            self.form.FailureUI(self.__tr("<b>Unable to add file '%1' to file list (file not found or insufficient permissions).</b><p>Check the file name and try again.").arg(path))
 
         self.updateFileList()
 

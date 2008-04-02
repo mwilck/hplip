@@ -832,6 +832,10 @@ DRIVER_ERROR DJ9xxVIP::ParsePenInfo(PEN_TYPE& ePen, BOOL QueryPrinter)
     {
         num_pens = 10 + (str[0] - 'A');
     }
+    else if ((str[0] >= 'a') && (str[0] <= 'f'))
+    {
+        num_pens = 10 + (str[0] - 'a');
+    }
     else
     {
         return BAD_DEVICE_ID;

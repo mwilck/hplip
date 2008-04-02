@@ -54,7 +54,11 @@ DJGenericVIP::DJGenericVIP (SystemServices* pSS, BOOL proto)
     {
         bCheckForCancelButton = TRUE;
         constructor_error = VerifyPenInfo ();
-        CERRCHECK;
+        if (constructor_error != NO_ERROR)
+        {
+            constructor_error = NO_ERROR;
+            ePen = BOTH_PENS;
+        }
     }
     else
         ePen = BOTH_PENS;
@@ -213,7 +217,7 @@ PAPER_SIZE DJGenericVIP::MandatoryPaperSize ()
  *      100 - 13 X 19 size
  */
 
-    if ((pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
+    if (pSS->IOMode.bDevID && (pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
     {
         if ((pStr = strstr ((char *) sDevIdStr, ";S:")) && (pSS->GetVIPVersion ()) >= 3)
         {
@@ -251,7 +255,7 @@ BOOL DJGenericVIP::FullBleedCapable (PAPER_SIZE ps, FullbleedType  *fbType, floa
     char    *pStr;
     sDevIdStr[0] = 0;
 
-    if ((pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
+    if (pSS->IOMode.bDevID && (pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
     {
         if ((pStr = strstr ((char *) sDevIdStr, ";S:")) && (pSS->GetVIPVersion ()) >= 3)
         {

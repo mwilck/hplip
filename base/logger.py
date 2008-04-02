@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2002-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2002-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -125,7 +125,8 @@ class Logger(object):
 
     def set_module(self, module):
         self.module = module
-
+        self.pid = os.getpid()
+        
     def no_formatting(self):
         self.fmt = False
 
@@ -250,7 +251,7 @@ class Logger(object):
                 self.log(self.color("%s[%d]: debug: %s" % (self.module,  self.pid, "0000: (no data)"), 'blue'), 
                         Logger.LOG_LEVEL_DEBUG)
 
-    def info(self, message):
+    def info(self, message=''):
         if self._level <= Logger.LOG_LEVEL_INFO:
             self.log(message, Logger.LOG_LEVEL_INFO)
 

@@ -809,7 +809,8 @@ int __attribute__ ((visibility ("hidden"))) power_up(mud_device *pd, int fd)
    }
    else if ((pSf = strstr(pd->id, "VSTATUS:")) != NULL)
    {
-      if ((pSf = strstr(pSf+8, "OFFF")) == NULL)
+      /* DJ895C returns $XB0$XC0 (unknown pens) when powered off. */
+      if (!(strstr(pSf+8, "OFFF") || strstr(pSf+8, "PWDN") || strstr(pSf+8, "$X")))
          return 0;   /* already powered up */
    }
    else

@@ -33,7 +33,6 @@ class StringTable:
         
             '0' :      (self.__tr('Unknown'),
                         ''),
-            
             'unknown'   :       (self.__tr('Unknown'),
                                  ''),
             
@@ -305,6 +304,9 @@ class StringTable:
                                  ''),
             
             '5002' :            (self.__tr('Device is powered down or unplugged.'),
+                                 '%5012%'),
+                                 
+            '5004' :            (self.__tr('Invalid device URI.'),
                                  '%5012%'),
             
             '5012' :            (self.__tr('Device communication error.'),

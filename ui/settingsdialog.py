@@ -21,15 +21,14 @@
 
 from base.g import *
 from base.codes import *
-from base import utils, service
+from base import utils
 from qt import *
 from settingsdialog_base import SettingsDialog_base
 
 class SettingsDialog(SettingsDialog_base):
-    def __init__(self, hpssd_sock, parent = None,name = None,modal = 0,fl = 0):
+    def __init__(self, parent = None,name = None,modal = 0,fl = 0):
         SettingsDialog_base.__init__(self,parent,name,modal,fl)
         self.DefaultsButton.setEnabled(False)
-        self.hpssd_sock = hpssd_sock
         self.sendmail = utils.which('sendmail')
 
         if not self.sendmail:
@@ -150,13 +149,14 @@ class SettingsDialog(SettingsDialog_base):
                                   QMessageBox.NoButton,
                                   QMessageBox.NoButton)
             return
+        
+        # TODO:
+##        service.setAlerts(self.hpssd_sock, 
+##                          True,
+##                          email_from_address,
+##                          email_to_addresses)
 
-        service.setAlerts(self.hpssd_sock, 
-                          True,
-                          email_from_address,
-                          email_to_addresses)
-
-        result_code = service.testEmail(self.hpssd_sock, prop.username)
+        #result_code = service.testEmail(self.hpssd_sock, prop.username)
         log.debug(result_code)
 
         QMessageBox.information(self,

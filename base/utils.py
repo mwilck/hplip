@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,13 +30,56 @@ import cStringIO, re
 import xml.parsers.expat as expat
 import getpass
 import locale
-import platform
 
+try:
+    import platform
+    platform_avail = True
+except ImportError:
+    platform_avail = False
+    
 # Local
 from g import *
 from codes import *
 import pexpect
-import tui
+
+
+
+def lock(f):
+    try:
+        fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return True
+    except IOError:
+        return False
+
+        
+def unlock(f):
+    try:
+        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+    except IOError:
+        pass
+        
+        
+def lock_app(application, suppress_error=False):
+    if not os.path.exists(prop.user_dir):
+        os.makedirs(prop.user_dir)
+        
+    lock_file = os.path.join(prop.user_dir, '.'.join([application, 'lock']))
+    try:
+        lock_file_f = open(lock_file, "w")
+    except IOError:
+        if not suppress_error:
+            log.error("Unable to open %s lock file." % lock_file) 
+        return False, None
+
+    log.debug("Locking file: %s" % lock_file)
+    
+    if not lock(lock_file_f):
+        if not suppress_error:
+            log.error("Unable to lock %s. Is %s already running?" % (lock_file, application))
+        return False, None
+    
+    return True, lock_file_f
+
 
 xml_basename_pat = re.compile(r"""HPLIP-(\d*)_(\d*)_(\d*).xml""", re.IGNORECASE)
 
@@ -56,49 +99,49 @@ def Translator(frm='', to='', delete='', keep=None):
 
     return callable
 
-def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
-    """
-    Credit: Jürgen Hermann, Andy Gimblett, and Noah Spurrier
-            http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
-    """
+##def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
+##    """
+##    Credit: Jürgen Hermann, Andy Gimblett, and Noah Spurrier
+##            http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
+##    """
+##
+##    # Do first fork.
+##    try:
+##        pid = os.fork()
+##        if pid > 0:
+##            sys.exit(0) # Exit first parent.
+##    except OSError, e:
+##        sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror))
+##        sys.exit(1)
+##
+##    # Decouple from parent environment.
+##    os.chdir("/")
+##    os.umask(0)
+##    os.setsid()
+##
+##    # Do second fork.
+##    try:
+##        pid = os.fork()
+##        if pid > 0:
+##            sys.exit(0) # Exit second parent.
+##    except OSError, e:
+##        sys.stderr.write ("fork #2 failed: (%d) %s\n" % (e.errno, e.strerror))
+##        sys.exit(1)
+##
+##    # Now I am a daemon!
+##    # Redirect standard file descriptors.
+##    si = file(stdin, 'r')
+##    so = file(stdout, 'a+')
+##    se = file(stderr, 'a+', 0)
+##    os.dup2(si.fileno(), sys.stdin.fileno())
+##    os.dup2(so.fileno(), sys.stdout.fileno())
+##    os.dup2(se.fileno(), sys.stderr.fileno())
 
-    # Do first fork.
-    try:
-        pid = os.fork()
-        if pid > 0:
-            sys.exit(0) # Exit first parent.
-    except OSError, e:
-        sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror))
-        sys.exit(1)
-
-    # Decouple from parent environment.
-    os.chdir("/")
-    os.umask(0)
-    os.setsid()
-
-    # Do second fork.
-    try:
-        pid = os.fork()
-        if pid > 0:
-            sys.exit(0) # Exit second parent.
-    except OSError, e:
-        sys.stderr.write ("fork #2 failed: (%d) %s\n" % (e.errno, e.strerror))
-        sys.exit(1)
-
-    # Now I am a daemon!
-    # Redirect standard file descriptors.
-    si = file(stdin, 'r')
-    so = file(stdout, 'a+')
-    se = file(stderr, 'a+', 0)
-    os.dup2(si.fileno(), sys.stdin.fileno())
-    os.dup2(so.fileno(), sys.stdout.fileno())
-    os.dup2(se.fileno(), sys.stderr.fileno())
 
 
-
-def ifelse(cond, t, f):
-    if cond: return t
-    else: return f
+##def ifelse(cond, t, f):
+##    if cond: return t
+##    else: return f
 
 def to_bool_str(s, default='0'):
     """ Convert an arbitrary 0/1/T/F/Y/N string to a normalized string 0/1."""
@@ -122,16 +165,16 @@ def to_bool(s, default=False):
 
     return default
 
-def path_exists_safely(path):
-    """ Returns True if path exists, and points to a file with permissions at least as strict as 0755.
-        Credit: Contributed by Henrique M. Holschuh <hmh@debian.org>"""
-    try:
-        pathmode = os.stat(path)[stat.ST_MODE]
-        if pathmode & 0022 != 0:
-            return False
-    except (IOError,OSError):
-        return False
-    return True
+##def path_exists_safely(path):
+##    """ Returns True if path exists, and points to a file with permissions at least as strict as 0755.
+##        Credit: Contributed by Henrique M. Holschuh <hmh@debian.org>"""
+##    try:
+##        pathmode = os.stat(path)[stat.ST_MODE]
+##        if pathmode & 0022 != 0:
+##            return False
+##    except (IOError,OSError):
+##        return False
+##    return True
 
 
 def walkFiles(root, recurse=True, abs_paths=False, return_folders=False, pattern='*', path=None):
@@ -258,6 +301,7 @@ class Column:
             return ' ' * (self.margin + self.width)
 
 
+            
 class Stack:
     def __init__(self):
         self.stack = []
@@ -267,12 +311,29 @@ class Stack:
 
     def push(self, value):
         self.stack.append(value)
-
+        
     def as_list(self):
         return self.stack
 
     def clear(self):
         self.stack = []
+        
+    def __len__(self):
+        return len(self.stack)
+        
+        
+        
+class Queue(Stack):
+    def __init__(self):
+        Stack.__init__(self)
+
+    def get(self):
+        return self.stack.pop(0)
+        
+    def put(self, value):
+        Stack.push(self, value)
+
+   
 
 
 # RingBuffer class
@@ -325,7 +386,7 @@ def sort_dict_by_value(d):
     items=d.items()
     backitems=[[v[1],v[0]] for v in items]
     backitems.sort()
-    return [backitems[i][1] for i in range(0,len(backitems))]
+    return [backitems[i][1] for i in range(0, len(backitems))]
 
 def commafy(val): 
     return unicode(locale.format("%d", val, grouping=True))
@@ -370,7 +431,7 @@ def log_title(program_name, version, show_ver=True):
 
     log.info(log.bold("%s ver. %s" % (program_name, version)))
     log.info("")
-    log.info("Copyright (c) 2001-7 Hewlett-Packard Development Company, LP")
+    log.info("Copyright (c) 2001-8 Hewlett-Packard Development Company, LP")
     log.info("This software comes with ABSOLUTELY NO WARRANTY.")
     log.info("This is free software, and you are welcome to distribute it")
     log.info("under certain conditions. See COPYING file for more details.")
@@ -389,7 +450,7 @@ def which(command, return_full_path=False):
     for p in path:
         try:
             files = os.listdir(p)
-        except:
+        except OSError:
             continue
         else:
             if command in files:
@@ -634,7 +695,7 @@ def checkPyQtImport():
     #check version of PyQt
     try:
         pyqtVersion = qt.PYQT_VERSION_STR
-    except:
+    except AttributeError:
         pyqtVersion = qt.PYQT_VERSION
 
     while pyqtVersion.count('.') < 2:
@@ -824,7 +885,7 @@ BROWSERS = ['firefox', 'mozilla', 'konqueror', 'galeon', 'skipstone'] # in prefe
 BROWSER_OPTS = {'firefox': '-new-window', 'mozilla' : '', 'konqueror': '', 'galeon': '-w', 'skipstone': ''}
 
 def find_browser():
-    if platform.system() == 'Darwin':
+    if platform_avail and platform.system() == 'Darwin':
         return "open"
     else:
         for b in BROWSERS:
@@ -834,7 +895,7 @@ def find_browser():
             return None
     
 def openURL(url):
-    if platform.system() == 'Darwin':
+    if platform_avail and platform.system() == 'Darwin':
         cmd = 'open "%s"' % url
         log.debug(cmd)
         os.system(cmd)
@@ -1167,21 +1228,17 @@ def xstrip(s, chars=' '):
     return xreverse(xlstrip(xreverse(xlstrip(s, chars)), chars))
 
 def getBitness():
-    try:
-        import platform
-    except ImportError:
-        return struct.calcsize("P") << 3
-    else:
+    if platform_avail:
         return int(platform.architecture()[0][:-3])
+    else:
+        return struct.calcsize("P") << 3
 
 def getProcessor():
-    try:
-        import platform
-    except ImportError:
-        return "i686" # TODO: Need a fix here
-    else:
+    if platform_avail:
         return platform.machine().replace(' ', '_').lower() # i386, i686, power_macintosh, etc.
-
+    else:
+        return "i686" # TODO: Need a fix here
+    
 
 BIG_ENDIAN = 0
 LITTLE_ENDIAN = 1
@@ -1195,6 +1252,7 @@ def getEndian():
 
 def get_password():
     return getpass.getpass("Enter password: ")
+    
 
 def run(cmd, log_output=True, password_func=get_password, timeout=1):
     output = cStringIO.StringIO()
@@ -1337,15 +1395,6 @@ def validate_language(lang, default='en_US'):
 
     return loc
 
-
-def show_languages():
-    f = tui.Formatter()
-    f.header = ("Language Code", "Alternate Name(s)")
-    for loc, ll in supported_locales.items():
-        f.add((ll[0], ', '.join(ll[1:])))
-
-    f.output()
-
    
 def gen_random_uuid():
     try:
@@ -1359,4 +1408,75 @@ def gen_random_uuid():
             return commands.getoutput(uuidgen)
         else:
             return ''
+            
+            
+class RestTableFormatter(object):
+    def __init__(self, header=None):
+        self.header = header # tuple of strings
+        self.rows = [] # list of tuples
+
+    def add(self, row_data): # tuple of strings
+        self.rows.append(row_data)
+
+    def output(self, w):
+        if self.rows:
+            num_cols = len(self.rows[0])
+            for r in self.rows:
+                if len(r) != num_cols:
+                    log.error("Invalid number of items in row: %s" % r)
+                    return
+
+            if len(self.header) != num_cols:
+                log.error("Invalid number of items in header.")
+
+            col_widths = []
+            for x, c in enumerate(self.header):
+                max_width = len(c)
+                for r in self.rows:
+                    max_width = max(max_width, len(r[x]))
+
+                col_widths.append(max_width+2)
+
+            x = '+'
+            for c in col_widths:
+                x = ''.join([x, '-' * (c+2), '+'])
+
+            x = ''.join([x, '\n'])
+            w.write(x)
+
+            # header
+            if self.header:
+                x = '|'
+                for i, c in enumerate(col_widths):
+                    x = ''.join([x, ' ', self.header[i], ' ' * (c+1-len(self.header[i])), '|'])
+
+                x = ''.join([x, '\n'])
+                w.write(x)
+
+                x = '+'
+                for c in col_widths:
+                    x = ''.join([x, '=' * (c+2), '+'])
+
+                x = ''.join([x, '\n'])
+                w.write(x)
+
+            # data rows
+            for j, r in enumerate(self.rows):
+                x = '|'
+                for i, c in enumerate(col_widths):
+                    x = ''.join([x, ' ', self.rows[j][i], ' ' * (c+1-len(self.rows[j][i])), '|'])
+
+                x = ''.join([x, '\n'])
+                w.write(x)
+
+                x = '+'
+                for c in col_widths:
+                    x = ''.join([x, '-' * (c+2), '+'])
+
+                x = ''.join([x, '\n'])
+                w.write(x)
+
+        else:
+            log.error("No data rows")
+
     

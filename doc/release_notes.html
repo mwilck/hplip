@@ -38,10 +38,10 @@
         <td valign="top">
 <div id="sidebar-a">
 <ul id="sidebar-a-list">
+<div class="menuheader"><a href="index.html" title="">Home</a></div>
     <menu compact="compact">
-        <div class="menuheader"><a href="index.html" title="">Home</a></div>
     </menu>
-
+<br />
 <div class="menuheader">About</div>
     <menu compact="compact">
         <li><a href="features.html" title="">Features</a></li> 
@@ -49,20 +49,23 @@
         <li><a href="faqs.html" title="FAQs">FAQs</a></li> 
         <li><a a href="about.html" title="About">About HPLIP</a></li>
     </menu>
+<br />
 <div class="menuheader">Setup and Installation</div>
     <menu compact="compact">
-        <li><a href="downloads.html" title="Downloads">Download HPLIP</a></li>
-        <li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+        <li><a href="downloads.html" title="Downloads">Download and Install</a></li>
+        <!-- <li><a href="install/index.html" title="Installation Instructions">Installation Instructions</a></li> -->
         <li><a href="system_requirements.html" title="System Requirements">System Requirements</a></li> 
-        <li><a href="supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+        <li><a href="supported_devices/index.html" title="Supported Devices">Supported Printers</a></li> 
     </menu>
+<br />
 <div class="menuheader">Usage and Support</div>
     <menu compact="compact">
-        <li><a href="mailing_lists.html" title="Mailing Lists">Support</a></li>
+        <li><a href="mailing_lists.html" title="Mailing Lists">Contact Support</a></li>
         <li><a href="howtos/index.html" title="How-Tos">How-Tos</a></li> 
         <li><a href="troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
         <li><a href="release_notes.html" title="Release Notes">Release Notes</a></li>
     </menu>
+<br />
 <div class="menuheader">Resources</div>
     <menu compact="compact">
         <li><a href="tech_docs/index.html" title="">Technical Documentation</a></li> 
@@ -71,6 +74,7 @@
         <li><a a href="other_support.html" title="Other Support Information">Other Support Information</a></li>
         <li><a href="contacts.html" title="Contacts">Contacts</a></li>
     </menu>
+<br />
 </ul>
 </div>
 <!-- end sidebar --></td>
@@ -85,6 +89,96 @@ Release Notes
         <div class="document">
 <div class="section">
 <h1><a id="release-notes" name="release-notes">Release Notes</a></h1>
+<p><strong>HPLIP 2.8.4 - This release has the following changes:</strong></p>
+<div class="section">
+<h2><a id="significant-changes" name="significant-changes">Significant Changes</a></h2>
+<p>1. dbus communication support.
+All interprocess communication now occurs using the dbus message bus. python-dbus version 0.80 or greater is required.</p>
+<p>2. Elimination of all persistent startup daemons.
+hpssd has been replaced with hp-systray that loads as a user startup item in the system tray in each user's desktop environment. When no HPLIP tools are running (e.g., hp-toolbox), and the user closes or disables hp-systray, there will be no HPLIP processes running whatsoever. Consequently, there is no longer an /etc/init.d/hplip startup script, and no processes need be run at system startup time.</p>
+<p>3. PC send fax requires dbus support and a running hp-systray to operate.
+Only Linux distributions that have python-dbus 0.80 or greater support PC send fax as of this release.</p>
+</div>
+<div class="section">
+<h2><a id="added-support-for-the-following-new-printers" name="added-support-for-the-following-new-printers">Added Support for the Following New Printers:</a></h2>
+<ul class="simple">
+<li>HP LaserJet M1120 MFP (LJZjsMono w/plug-in)</li>
+<li>HP LaserJet M1120n MFP (LJZjsMono w/plug-in)</li>
+<li>HP OfficeJet J6400 Series (DJGenericVIP)</li>
+<li>HP Photosmart C4340 Series (DJGenericVIP)</li>
+<li>HP Photosmart Pro B8800 Series (PSB9100)</li>
+</ul>
+</div>
+<div class="section">
+<h2><a id="detailed-change-log" name="detailed-change-log">Detailed Change Log</a></h2>
+<ol class="arabic simple">
+<li>Hpssd has be converted to a systray application. Both hpssd and hp-fax are now dbus based.</li>
+<li>Added closed loop color calibration for PS Pro B8800</li>
+<li>Added parallel support question in automatic text installer</li>
+<li>Change to installer so it uses support tags from distro.dat to turn on/off options</li>
+<li>Added dbus conditional compile for io.c and hp.c. This is triggered by --disable-fax-build at configure time.</li>
+<li>Fixed Best Grayscale entry in LJ 35xx plugin PPDs</li>
+<li>Added LJ M1120 plugin PPD</li>
+<li>Fixed Best Grasycale code in ljjetready.cpp</li>
+<li>Fixed fax parameter that caused traceback on Ubuntu</li>
+<li>Changed J6400 fax-type from 2 to 1</li>
+<li>Fixed defect (Traceback displays in terminal when running command &quot;hp-setup -bcups&quot;.)</li>
+<li>Fixed defect (Traceback information displays in terminal when running command &quot;hp-check&quot; via common user.)</li>
+<li>Fixed defect (The option &quot;--bus&quot; for command &quot;hp-levels&quot; is not recognized in terminal.)</li>
+<li>Fixed defect (ppd_dir and drv_dir values are invalid on FC6)</li>
+<li>Fixed defect (systray not working on ubuntu hardy 8.04)</li>
+<li>Fixed defect (All the &quot;hp-*&quot; commands are invalid on Redhat9.0 on build hplip-2.8.2.)</li>
+<li>Modified dbus detection so that only 0.80+ would satisfy dependency for fax</li>
+<li>Fix defectin cups/getSystemPPDs() that was tracing on some systems</li>
+<li>Disallow spaces in CUPS printer queue names</li>
+<li>Added better debugging in hp-setup -i during printer queue adds</li>
+<li>xterm based package installation (SUSE) installs all packages in single command</li>
+<li>Added non-file path handling to fax setup (lsb/, foomatic:, etc)</li>
+<li>Added cups error_log loglevel detection to hp-check</li>
+<li>Added dbus and python-dbus checks to hp-check</li>
+<li>Now ignoring error returned by VerifyPenInfo in DJGenericvip, this is supposed to work for any installed pen set</li>
+<li>Num pens nibble in the device id can be lower case hex value also, was only checking for upper case letter</li>
+<li>Made the dbus configure check conditional on fax-build.</li>
+<li>Added more technical documentation about different PPD installs in the portability reference.</li>
+<li>Fixed defect (Traceback information displays in terminal when running command &quot;hp-makecopies --lang=?&quot;.)</li>
+<li>Temporarily removed &quot;Options...&quot; menu item in hp-systrays</li>
+<li>Fixed defect (Traceback information display in terminal when import .vcf file from hp-fab window.)</li>
+<li>Fixed defect (The &quot;Invalid bus&quot; error information displays in terminal when using command &quot;hp-check&quot;)</li>
+<li>Fixed DJ895C power_up issue in hpmud.</li>
+<li>Fixed defect (The &quot;Invalid bus&quot; error information displays in terminal when using command &quot;hp-setup -i serial number&quot;.)</li>
+<li>Fixed defect (Traceback information displays in terminal when close toolbox by normal way.)</li>
+<li>Changed the psuedo device ID for HP-Fax2-hplip.ppd from &quot;HP Fax&quot; to &quot;HP Fax 2&quot;</li>
+<li>Fixed defect (Traceback information displays in terminal when running &quot;hp-unload -q?&quot;, &quot;hp-toolbox -q?&quot; and &quot;hp-print -q?&quot;.)</li>
+<li>Fixed defect (The process of adding fax file hung up when add file in &quot;files to Fax&quot;.)</li>
+<li>Fixed defect (Traceback information displays in terminal when click &quot;OK&quot; button on pop-up)</li>
+<li>Fixed defect (The drv PPD for LaserJet P1505n cannot be found automatically during hp-setup process.)</li>
+<li>Fixed dbus error while running hp-setup (as root)</li>
+<li>Changed hpfax: device discovery output as requested by Till in Launchpad bug 59409</li>
+<li>Added handlers to hp-print and hp-sendfax to disallow adding files to listbox that the user doesn't have read access to</li>
+<li>Fixed defect (Traceback information displays when click &quot;Functions&quot; or &quot;make copies&quot; buttons on pop-up window by running &quot;hp-makecopies&quot;.)</li>
+<li>Fixed defect (Error &quot;Pixmap 'ok_small.png' not found &quot; appears and traceback information displays in terminal when using command &quot;hp-unload&quot;.)</li>
+<li>Fixed defect (Traceback error displays when using command &quot;hp-scan -n --adf&quot; for printers that do not support ADF scanning.)</li>
+<li>Fixed defectin hp-timedate (traceback when fax option not installed).</li>
+<li>Added hplip-systray.desktop configure/Makefile.</li>
+<li>Installer now will install each package individually instead of in one command</li>
+<li>Fixed custom paper size bug in MapPaperSize</li>
+<li>Query device id only if bi-di is enabled in djgenericvip.cpp and dj3600.cpp for fullbleed</li>
+<li>The functions return button in the toolbox make copies dialog would not respond.</li>
+<li>Fixed a bug in devmgr4.py where ScrollCopyView form parameter was defaulting to None.</li>
+<li>vCard import into fax address book</li>
+<li>Single instance locking for hp-toolbox and hp-systray</li>
+<li>dbus based eventing system</li>
+<li>hp-systray added</li>
+<li>dbus based fax</li>
+<li>remove kirbybase deprecated hp-fab</li>
+<li>images directory re-org and load_pixmap()</li>
+<li>LDIF import into fax address book</li>
+</ol>
+</div>
+<div class="section">
+<h2><a id="bugs-defects" name="bugs-defects">Bugs/Defects</a></h2>
+<p>Please report bugs/defects to our Launchpad support site at: <a class="reference" href="https://launchpad.net/hplip">https://launchpad.net/hplip</a></p>
+<hr class="docutils" />
 <p><strong>HPLIP 2.8.2 - This release has the following changes:</strong></p>
 <ol class="arabic simple">
 <li>Corrected the IPP printer-state error messages in hp.c as requested by Tim Waugh.</li>
@@ -223,9 +317,9 @@ dynamic ppd install with foomatic-rip
 - HP Photosmart C4380 Series (DJGenericVP)
 - HP LaserJet 1018 (LJZjsMono w/plug-in)
 - HP LaserJet 1020 (LJZjsMono w/plug-in)
-- HP LaserJet 1022 (LJZjsMono w/plug-in)
-- HP LaserJet 1022n (LJZjsMono w/plug-in)
-- HP LaserJet 1022nw (LJZjsMono w/plug-in)
+- HP LaserJet 1022 (LJZjsMono w/optional plug-in)
+- HP LaserJet 1022n (LJZjsMono w/optional plug-in)
+- HP LaserJet 1022nw (LJZjsMono w/optional plug-in)
 - HP Deskjet 550C (DJ540)
 </pre>
 <p><strong>HPLIP 2.7.10 - Known Issues with Localization (L10N) and Internationalization (I18N):</strong></p>
@@ -1610,6 +1704,7 @@ KRGB definition:
 <li>Validate big-endian support.</li>
 </ol>
 </div>
+</div>
 <div class="section">
 <h1><a id="previous-hpijs-release-notes" name="previous-hpijs-release-notes">Previous HPIJS Release Notes</a></h1>
 <p><strong>HPIJS 2.1.6 - This release has the following changes:</strong></p>
@@ -2144,13 +2239,12 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP
 </div>
 </div>
 
-<hr size="1"/>
-<center><small>Page last updated: Fri Feb  8 18:05:14 2008; HPLIP Version: 2.8.2</small></center>
 </div>
 </td></tr></table>
 </div>
 <!-- end content -->
 <!-- end container -->
+<center><small>Page last updated: Wed Apr  2 15:18:10 2008; HPLIP Version: 2.8.4</small></center>
 <div id="footer"><!-- start footer -->
         <hr size="1"/>
         <a href="legal.html">Legal Notices</a>
@@ -2161,7 +2255,7 @@ where x equals: DJ630, DJ6xx, DJ6xxP, DJ8xx, DJ9xx or DJ9xxVIP
 <!-- end footer -->
 </div><!-- end page -->
 
-<!-- google analytics -->
+<!-- google analytics from aaron's account-->
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">
@@ -2177,13 +2271,19 @@ urchinTracker();
 </script>
 <!-- end google analytics -->
 
+<!-- end google analytics from hplip.marketing@gmail.com-->
 
-<!-- START OF ACTIVEMETER CODE -->
-<script type="text/javascript" language="javascript">
-var __pid=30231;
-var __am_invisible=1;
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-<!-- END OF ACTIVEMETER CODE -->
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1543832-10");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+<!-- end google analytics from hplip.marketing@gmail.com -->
 
 </body>
 </html>

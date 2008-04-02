@@ -38,10 +38,10 @@
         <td valign="top">
 <div id="sidebar-a">
 <ul id="sidebar-a-list">
+<div class="menuheader"><a href="../../index.html" title="">Home</a></div>
     <menu compact="compact">
-        <div class="menuheader"><a href="../../index.html" title="">Home</a></div>
     </menu>
-
+<br />
 <div class="menuheader">About</div>
     <menu compact="compact">
         <li><a href="../../features.html" title="">Features</a></li> 
@@ -49,20 +49,23 @@
         <li><a href="../../faqs.html" title="FAQs">FAQs</a></li> 
         <li><a a href="../../about.html" title="About">About HPLIP</a></li>
     </menu>
+<br />
 <div class="menuheader">Setup and Installation</div>
     <menu compact="compact">
-        <li><a href="../../downloads.html" title="Downloads">Download HPLIP</a></li>
-        <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> 
+        <li><a href="../../downloads.html" title="Downloads">Download and Install</a></li>
+        <!-- <li><a href="../../install/index.html" title="Installation Instructions">Installation Instructions</a></li> -->
         <li><a href="../../system_requirements.html" title="System Requirements">System Requirements</a></li> 
-        <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Devices</a></li> 
+        <li><a href="../../supported_devices/index.html" title="Supported Devices">Supported Printers</a></li> 
     </menu>
+<br />
 <div class="menuheader">Usage and Support</div>
     <menu compact="compact">
-        <li><a href="../../mailing_lists.html" title="Mailing Lists">Support</a></li>
+        <li><a href="../../mailing_lists.html" title="Mailing Lists">Contact Support</a></li>
         <li><a href="../../howtos/index.html" title="How-Tos">How-Tos</a></li> 
         <li><a href="../../troubleshooting/index.html" title="Troubleshooting">Troubleshooting</a></li>
         <li><a href="../../release_notes.html" title="Release Notes">Release Notes</a></li>
     </menu>
+<br />
 <div class="menuheader">Resources</div>
     <menu compact="compact">
         <li><a href="../../tech_docs/index.html" title="">Technical Documentation</a></li> 
@@ -71,6 +74,7 @@
         <li><a a href="../../other_support.html" title="Other Support Information">Other Support Information</a></li>
         <li><a href="../../contacts.html" title="Contacts">Contacts</a></li>
     </menu>
+<br />
 </ul>
 </div>
 <!-- end sidebar --></td>
@@ -86,17 +90,26 @@
 hp-toolbox
 
 <hr size="1"/>
-        <div class="document" id="hp-toolbox-hp-device-manager-ver-11-0">
-<h1 class="title">hp-toolbox: HP Device Manager (ver. 11.0)</h1>
+        <div class="document" id="hp-toolbox-hp-device-manager-ver-13-1">
+<h1 class="title">hp-toolbox: HP Device Manager (ver. 13.1)</h1>
 <p>The HP Device Manager (aka Toolbox) for HPLIP supported devices. Provides status, tools, and supplies levels.</p>
 <p><strong>Usage: hp-toolbox [OPTIONS]</strong></p>
 <p><strong>[OPTIONS]</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="22%" />
-<col width="78%" />
+<col width="26%" />
+<col width="74%" />
 </colgroup>
 <tbody valign="top">
+<tr><td><em>Activate device on startup:</em></td>
+<td>-d&lt;device_uri&gt; or --device=&lt;device_uri&gt;</td>
+</tr>
+<tr><td><em>Activate function on startup:</em></td>
+<td>-f&lt;function&gt; or --function=&lt;function&gt;</td>
+</tr>
+<tr><td><em>Disable dbus:</em></td>
+<td>-x or --disable-dbus</td>
+</tr>
 <tr><td><em>Set the language:</em></td>
 <td>-q &lt;lang&gt; or --lang=&lt;lang&gt;. Use -q? or --lang=? to see a list of available language codes.</td>
 </tr>
@@ -117,8 +130,8 @@ hp-toolbox
 <p><strong>See Also:</strong></p>
 <table border="1" class="borderless docutils">
 <colgroup>
-<col width="22%" />
-<col width="78%" />
+<col width="26%" />
+<col width="74%" />
 </colgroup>
 <tbody valign="top">
 <tr><td><a class="reference" href="info.html">hp-info</a></td>
@@ -149,13 +162,12 @@ hp-toolbox
 </table>
 </div>
 
-<hr size="1"/>
-<center><small>Page last updated: Fri Feb  8 18:07:18 2008; HPLIP Version: 2.8.2</small></center>
 </div>
 </td></tr></table>
 </div>
 <!-- end content -->
 <!-- end container -->
+<center><small>Page last updated: Wed Apr  2 15:20:33 2008; HPLIP Version: 2.8.4</small></center>
 <div id="footer"><!-- start footer -->
         <hr size="1"/>
         <a href="../../legal.html">Legal Notices</a>
@@ -166,7 +178,7 @@ hp-toolbox
 <!-- end footer -->
 </div><!-- end page -->
 
-<!-- google analytics -->
+<!-- google analytics from aaron's account-->
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">
@@ -182,13 +194,19 @@ urchinTracker();
 </script>
 <!-- end google analytics -->
 
+<!-- end google analytics from hplip.marketing@gmail.com-->
 
-<!-- START OF ACTIVEMETER CODE -->
-<script type="text/javascript" language="javascript">
-var __pid=30231;
-var __am_invisible=1;
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-<!-- END OF ACTIVEMETER CODE -->
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1543832-10");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+<!-- end google analytics from hplip.marketing@gmail.com -->
 
 </body>
 </html>

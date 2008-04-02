@@ -10,7 +10,1840 @@
 :devicetype :scanner                    ; start of a list of devices....
 :mfg "Hewlett-Packard"                  ; name a manufacturer
 :url "http://www.hp.com/united-states/consumer/gateway/printing_multifunction.html"
+:model "hp_deskjet_plus"
+:status :good
+
+:model "officejet"
+:status :good
+
+:model "officejet_lx"
+:status :good
+
+:model "hp_photosmart"
+:status :good
+
+:model "hp_laserjet_4_plus"
+:status :good
+
+:model "hp_laserjet_4si"
+:status :good
+
+:model "hp_laserjet_4l"
+:status :good
+
+:model "hp_laserjet_4si"
+:status :good
+
+:model "hp_laserjet_4l"
+:status :good
+
+:model "hp_laserjet_4_plus"
+:status :good
+
+:model "hp_laserjet_4l"
+:status :good
+
+:model "hp_laserjet_4_plus"
+:status :good
+
+:model "hp_laserjet_4l"
+:status :good
+
+:model "hp_laserjet_4si"
+:status :good
+
+:model "hp_laserjet_5si"
+:status :good
+
+:model "hp_color_laserjet_5m"
+:status :good
+
+:model "hp_laserjet_5si"
+:status :good
+
+:model "hp_laserjet_5si"
+:status :good
+
+:model "hp_laserjet_5l"
+:status :good
+
+:model "hp_color_laserjet_5"
+:status :good
+
+:model "hp_laserjet_5mp"
+:status :good
+
+:model "hp_laserjet_5si"
+:status :good
+
+:model "hp_laserjet_5si"
+:status :good
+
+:model "hp_laserjet_5p"
+:status :good
+
+:model "hp_laserjet_6mp"
+:status :good
+
+:model "hp_laserjet_6p"
+:status :good
+
+:model "hp_laserjet_6l"
+:status :good
+
+:model "hp_laserjet_6mp"
+:status :good
+
+:model "hp_laserjet_6mp"
+:status :good
+
+:model "hp_laserjet_6l"
+:status :good
+
+:model "hp_laserjet_6l"
+:status :good
+
+:model "officejet_v30"
+:status :good
+
+:model "officejet_v40"
+:status :good
+
+:model "officejet_v40"
+:status :good
+
+:model "officejet_v40xi"
+:status :good
+
+:model "officejet_r40xi"
+:status :good
+
+:model "officejet_r40"
+:status :good
+
+:model "officejet_v45"
+:status :good
+
+:model "officejet_r45"
+:status :good
+
+:model "officejet_t_series"
+:status :good
+
+:model "officejet_t_series"
+:status :good
+
+:model "officejet_g55xi"
+:status :good
+
+:model "officejet_g55"
+:status :good
+
+:model "officejet_k60"
+:status :good
+
+:model "officejet_r60"
+:status :good
+
+:model "officejet_k60xi"
+:status :good
+
+:model "officejet_r65"
+:status :good
+
+:model "officejet_t_series"
+:status :good
+
+:model "officejet_t_series"
+:status :good
+
+:model "officejet_r80"
+:status :good
+
+:model "officejet_r80xi"
+:status :good
+
+:model "officejet_k80"
+:status :good
+
+:model "officejet_k80xi"
+:status :good
+
+:model "officejet_g85"
+:status :good
+
+:model "officejet_g85xi"
+:status :good
+
+:model "officejet_g95"
+:status :good
+
+:model "photosmart_100"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "photosmart_130"
+:status :good
+
+:model "photosmart_130"
+:status :good
+
+:model "photosmart_130"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "photosmart_140_series"
+:status :good
+
+:model "photosmart_140_series"
+:status :good
+
+:model "photosmart_140_series"
+:status :good
+
+:model "photosmart_140_series"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "photosmart_140_series"
+:status :good
+
+:model "officejet_d_series"
+:status :good
+
+:model "hp_deskjet_200"
+:status :good
+
+:model "photosmart_230"
+:status :good
+
+:model "photosmart_230"
+:status :good
+
+:model "photosmart_230"
+:status :good
+
+:model "photosmart_240_series"
+:status :good
+
+:model "hp_mopier_320"
+:status :good
+
+:model "photosmart_240_series"
+:status :good
+
+:model "photosmart_240_series"
+:status :good
+
+:model "photosmart_240_series"
+:status :good
+
+:model "officejet_series_300"
+:status :good
+
+:model "printer_scanner_copier_300"
+:status :good
+
+:model "officejet_series_310"
+:status :good
+
+:model "photosmart_a310_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "hp_mopier_320"
+:status :good
+
+:model "photosmart_a320_series"
+:status :good
+
+:model "photosmart_320_series"
+:status :good
+
+:model "hp_deskjet_320"
+:status :good
+
+:model "officejet_series_320"
+:status :good
+
+:model "photosmart_320_series"
+:status :good
+
+:model "photosmart_320_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_320_series"
+:status :good
+
+:model "photosmart_320_series"
+:status :good
+
+:model "officejet_series_330"
+:status :good
+
+:model "photosmart_330_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_330_series"
+:status :good
+
+:model "photosmart_330_series"
+:status :good
+
+:model "photosmart_330_series"
+:status :good
+
+:model "photosmart_330_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "hp_deskjet_340c"
+:status :good
+
+:model "dj350"
+:status :good
+
+:model "officejet_series_350"
+:status :good
+
+:model "dj350"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "photosmart_370_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "photosmart_380_series"
+:status :good
+
+:model "photosmart_380_series"
+:status :good
+
+:model "photosmart_380_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "deskjet_f300_series"
+:status :good
+
+:model "hp_deskjet_400l"
+:status :good
+
+:model "hp_deskjet_400"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_420_series"
+:status :good
+
+:model "photosmart_a430_series"
+:status :good
+
+:model "photosmart_a430_series"
+:status :good
+
+:model "photosmart_a430_series"
+:status :good
+
+:model "photosmart_a430_series"
+:status :good
+
+:model "photosmart_a430_series"
+:status :good
+
+:model "photosmart_a440_series"
+:status :good
+
+:model "photosmart_a440_series"
+:status :good
+
+:model "photosmart_a440_series"
+:status :good
+
+:model "dj450"
+:status :good
+
+:model "dj450"
+:status :good
+
+:model "dj450"
+:status :good
+
+:model "dj450"
+:status :good
+
+:model "deskjet_460"
+:status :good
+
+:model "deskjet_460"
+:status :good
+
+:model "deskjet_460"
+:status :good
+
+:model "deskjet_460"
+:status :good
+
+:model "officejet_h470"
+:status :good
+
+:model "officejet_h470"
+:status :good
+
+:model "officejet_h470"
+:status :good
+
+:model "photosmart_470_series"
+:status :good
+
+:model "officejet_h470"
+:status :good
+
+:model "photosmart_470_series"
+:status :good
+
+:model "photosmart_470_series"
+:status :good
+
+:model "photosmart_470_series"
+:status :good
+
+:model "psc_500"
+:status :good
+
+:model "psc_500"
+:status :good
+
+:model "deskjet_500"
+:status :good
+
+:model "officejet_series_500"
+:status :good
+
+:model "deskjet_500c"
+:status :good
+
+:model "deskjet_505j"
+:status :good
+
+:model "deskjet_510"
+:status :good
+
+:model "photosmart_a510_series"
+:status :good
+
+:model "photosmart_a510_series"
+:status :good
+
+:model "photosmart_a510_series"
+:status :good
+
+:model "officejet_series_520"
+:status :good
+
+:model "deskjet_520"
+:status :good
+
+:model "photosmart_a520_series"
+:status :good
+
+:model "photosmart_a520_series"
+:status :good
+
+:model "photosmart_a520_series"
+:status :good
+
+:model "deskjet_540"
+:status :good
+
+:model "hp_deskjet_550c"
+:status :good
+
+:model "officejet_pro_k550"
+:status :good
+
+:model "officejet_pro_k550"
+:status :good
+
+:model "officejet_pro_k550"
+:status :good
+
+:model "officejet_series_570"
+:status :good
+
+:model "officejet_series_580"
+:status :good
+
+:model "officejet_series_590"
+:status :good
+
+:model "deskjet_600"
+:status :good
+
+:model "deskjet_600"
+:status :good
+
+:model "officejet_series_600"
+:status :good
+
+:model "deskjet_600"
+:status :good
+
+:model "deskjet_610cl"
+:status :good
+
+:model "officejet_series_610"
+:status :good
+
+:model "deskjet_610c"
+:status :good
+
+:model "photosmart_a610_series"
+:status :good
+
+:model "deskjet_612c"
+:status :good
+
+:model "photosmart_a610_series"
+:status :good
+
+:model "photosmart_a610_series"
+:status :good
+
+:model "photosmart_a610_series"
+:status :good
+
+:model "photosmart_a620_series"
+:status :good
+
+:model "officejet_series_630"
+:status :good
+
+:model "deskjet_630c"
+:status :good
+
+:model "deskjet_632c"
+:status :good
+
+:model "officejet_series_630"
+:status :good
+
+:model "deskjet_640c"
+:status :good
+
+:model "deskjet_640c"
+:status :good
+
+:model "deskjet_640c"
+:status :good
+
+:model "deskjet_648c"
+:status :good
+
+:model "deskjet_656c"
+:status :good
+
+:model "deskjet_660"
+:status :good
+
+:model "deskjet_660"
+:status :good
+
+:model "deskjet_660"
+:status :good
+
+:model "deskjet_670tv"
+:status :good
+
+:model "deskjet_670"
+:status :good
+
+:model "deskjet_670"
+:status :good
+
+:model "deskjet_672c"
+:status :good
+
+:model "deskjet_680"
+:status :good
+
+:model "deskjet_682"
+:status :good
+
+:model "deskjet_690"
+:status :good
+
+:model "deskjet_690"
+:status :good
+
+:model "deskjet_692"
+:status :good
+
+:model "deskjet_692"
+:status :good
+
+:model "deskjet_693"
+:status :good
+
+:model "deskjet_694"
+:status :good
+
+:model "deskjet_695"
+:status :good
+
+:model "deskjet_695"
+:status :good
+
+:model "deskjet_697"
+:status :good
+
+:model "officejet_series_700"
+:status :good
+
+:model "hp_deskjet_710c"
+:status :good
+
+:model "photosmart_a710_series"
+:status :good
+
+:model "officejet_series_710"
+:status :good
+
+:model "photosmart_a710_series"
+:status :good
+
+:model "hp_deskjet_712c"
+:status :good
+
+:model "photosmart_a710_series"
+:status :good
+
+:model "photosmart_a710_series"
+:status :good
+
+:model "psc_720"
+:status :good
+
+:model "hp_deskjet_720c"
+:status :good
+
+:model "officejet_series_720"
+:status :good
+
+:model "hp_deskjet_722c"
+:status :good
+
+:model "officejet_series_725"
+:status :good
+
+:model "psc_750xi"
+:status :good
+
+:model "psc_750"
+:status :good
+
+:model "psc_760"
+:status :good
+
+:model "deskjet_810c"
+:status :good
+
+:model "deskjet_812c"
+:status :good
+
+:model "deskjet_815c"
+:status :good
+
+:model "deskjet_816c"
+:status :good
+
+:model "hp_deskjet_820c"
+:status :good
+
+:model "deskjet_825c"
+:status :good
+
+:model "deskjet_825c"
+:status :good
+
+:model "photosmart_a820_series"
+:status :good
+
+:model "photosmart_a820_series"
+:status :good
+
+:model "deskjet_830c"
+:status :good
+
+:model "deskjet_832c"
+:status :good
+
+:model "deskjet_840c"
+:status :good
+
+:model "deskjet_841c"
+:status :good
+
+:model "deskjet_842c"
+:status :good
+
+:model "deskjet_843c"
+:status :good
+
+:model "deskjet_843c"
+:status :good
+
+:model "deskjet_845c"
+:status :good
+
+:model "deskjet_845c"
+:status :good
+
+:model "deskjet_850c"
+:status :good
+
+:model "deskjet_850c"
+:status :good
+
+:model "officejet_pro_k850"
+:status :good
+
+:model "officejet_pro_k850"
+:status :good
+
+:model "deskjet_855c"
+:status :good
+
+:model "deskjet_855c"
+:status :good
+
+:model "deskjet_855c"
+:status :good
+
+:model "deskjet_870c"
+:status :good
+
+:model "deskjet_870c"
+:status :good
+
+:model "deskjet_870c"
+:status :good
+
+:model "deskjet_870c"
+:status :good
+
+:model "deskjet_880c"
+:status :good
+
+:model "deskjet_882c"
+:status :good
+
+:model "deskjet_890c"
+:status :good
+
+:model "deskjet_890c"
+:status :good
+
+:model "deskjet_895c"
+:status :good
+
+:model "deskjet_895c"
+:status :good
+
+:model "deskjet_895c"
+:status :good
+
+:model "psc_900_series"
+:status :good
+
+:model "910"
+:status :good
+
 :model "915"
+:status :good
+
+:model "deskjet_916c"
+:status :good
+
+:model "deskjet_920c"
+:status :good
+
+:model "psc_920"
+:status :good
+
+:model "deskjet_920c"
+:status :good
+
+:model "deskjet_920c"
+:status :good
+
+:model "deskjet_920c"
+:status :good
+
+:model "deskjet_930c"
+:status :good
+
+:model "deskjet_930c"
+:status :good
+
+:model "deskjet_932c"
+:status :good
+
+:model "deskjet_933c"
+:status :good
+
+:model "deskjet_934c"
+:status :good
+
+:model "deskjet_935c"
+:status :good
+
+:model "deskjet_940c"
+:status :good
+
+:model "deskjet_940c"
+:status :good
+
+:model "deskjet_940c"
+:status :good
+
+:model "deskjet_940c"
+:status :good
+
+:model "deskjet_948c"
+:status :good
+
+:model "psc_950xi"
+:status :good
+
+:model "psc_950vr"
+:status :good
+
+:model "deskjet_950c"
+:status :good
+
+:model "psc_950"
+:status :good
+
+:model "deskjet_952c"
+:status :good
+
+:model "deskjet_955c"
+:status :good
+
+:model "deskjet_957c"
+:status :good
+
+:model "deskjet_959c"
+:status :good
+
+:model "deskjet_960c"
+:status :good
+
+:model "deskjet_960c"
+:status :good
+
+:model "deskjet_960c"
+:status :good
+
+:model "deskjet_970c"
+:status :good
+
+:model "deskjet_970c"
+:status :good
+
+:model "deskjet_970c"
+:status :good
+
+:model "deskjet_975c"
+:status :good
+
+:model "deskjet_975c"
+:status :good
+
+:model "deskjet_975c"
+:status :good
+
+:model "deskjet_980c"
+:status :good
+
+:model "deskjet_980c"
+:status :good
+
+:model "deskjet_990c"
+:status :good
+
+:model "deskjet_990c"
+:status :good
+
+:model "deskjet_990c"
+:status :good
+
+:model "deskjet_990c"
+:status :good
+
+:model "deskjet_995c"
+:status :good
+
+:model "deskjet_995c"
+:status :good
+
+:model "business_inkjet_1000"
+:status :good
+
+:model "hp_laserjet_1000"
+:status :good
+
+:model "hp_deskjet_1000c"
+:status :good
+
+:model "photosmart_p1000"
+:status :good
+
+:model "hp_laserjet_1005_series"
+:status :good
+
+:model "hp_laserjet_m1005"
+:status :good
+
+:model "hp_laserjet_p1005"
+:status :good
+
+:model "hp_laserjet_p1006"
+:status :good
+
+:model "hp_laserjet_1010"
+:status :good
+
+:model "hp_laserjet_1012"
+:status :good
+
+:model "hp_color_laserjet_cm1015"
+:status :good
+
+:model "hp_laserjet_1015"
+:status :good
+
+:model "hp_color_laserjet_cm1017"
+:status :good
+
+:model "hp_laserjet_1018"
+:status :good
+
+:model "hp_laserjet_1018"
+:status :good
+
+:model "hp_laserjet_1020"
+:status :good
+
+:model "hp_laserjet_1022nw"
+:status :good
+
+:model "hp_laserjet_1022n"
+:status :good
+
+:model "hp_laserjet_1022"
+:status :good
+
+:model "photosmart_p1100"
+:status :good
+
+:model "hp_laserjet_1100a"
+:status :good
+
+:model "hp_laserjet_1100"
+:status :good
+
+:model "hp_business_inkjet_1100"
+:status :good
+
+:model "hp_business_inkjet_1100"
+:status :good
+
+:model "hp_laserjet_1100"
+:status :good
+
+:model "hp_laserjet_1100xi"
+:status :good
+
+:model "deskjet_1100"
+:status :good
+
+:model "hp_business_inkjet_1100"
+:status :good
+
+:model "hp_laserjet_1100a"
+:status :good
+
+:model "psc_1100_series"
+:status :good
+
+:model "psc_1100_series"
+:status :good
+
+:model "photosmart_1115"
+:status :good
+
+:model "psc_1100_series"
+:status :good
+
+:model "hp_laserjet_m1120n_mfp"
+:status :good
+
+:model "deskjet_1120"
+:status :good
+
+:model "deskjet_1120"
+:status :good
+
+:model "deskjet_1120"
+:status :good
+
+:model "deskjet_1125"
+:status :good
+
+:model "hp_laserjet_1150"
+:status :good
+
+:model "officejet_pro_1150c"
+:status :good
+
+:model "officejet_pro_1150c"
+:status :good
+
+:model "hp_laserjet_1160"
+:status :good
+
+:model "cp1160"
+:status :good
+
+:model "cp1160"
+:status :good
+
+:model "hp_laserjet_1160"
+:status :good
+
+:model "hp_laserjet_1160_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "officejet_pro_1170c_series"
+:status :good
+
+:model "business_inkjet_1200"
+:status :good
+
+:model "hp_laserjet_1200n"
+:status :good
+
+:model "hp_laserjet_1200"
+:status :good
+
+:model "business_inkjet_1200"
+:status :good
+
+:model "business_inkjet_1200"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "hp_laserjet_1200"
+:status :good
+
+:model "business_inkjet_1200"
+:status :good
+
+:model "business_inkjet_1200"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "photosmart_1215"
+:status :good
+
+:model "photosmart_1215"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "photosmart_1218"
+:status :good
+
+:model "photosmart_1218"
+:status :good
+
+:model "psc_1200_series"
+:status :good
+
+:model "deskjet_1220c"
+:status :good
+
+:model "deskjet_1220c"
+:status :good
+
+:model "hp_laserjet_1220se"
+:status :good
+
+:model "hp_laserjet_1220"
+:status :good
+
+:model "deskjet_1220c"
+:status :good
+
+:model "deskjet_1280"
+:status :good
+
+:model "hp_laserjet_1300n"
+:status :good
+
+:model "hp_laserjet_1300"
+:status :good
+
+:model "hp_laserjet_1300xi"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "hp_laserjet_1300"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "deskjet_d1300_series"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "photosmart_1315"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "psc_1310_series"
+:status :good
+
+:model "hp_laserjet_1320_series"
+:status :good
+
+:model "hp_laserjet_1320n"
+:status :good
+
+:model "hp_laserjet_1320nw"
+:status :good
+
+:model "hp_laserjet_1320"
+:status :good
+
+:model "hp_laserjet_1320tn"
+:status :good
+
+:model "deskjet_d1300_series"
+:status :good
+
+:model "deskjet_d1300_series"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "deskjet_d1300_series"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "psc_1300_series"
+:status :good
+
+:model "deskjet_d1300_series"
+:status :good
+
+:model "deskjet_d1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "psc_1400_series"
+:status :good
+
+:model "deskjet_d1400_series"
+:status :good
+
+:model "deskjet_d1400_series"
+:status :good
+
+:model "hp_color_laserjet_1500"
+:status :good
+
+:model "psc_1500_series"
+:status :good
+
+:model "psc_1500_series"
+:status :good
+
+:model "hp_laserjet_p1505"
+:status :good
+
+:model "hp_laserjet_p1505n"
+:status :good
+
+:model "psc_1500_series"
+:status :good
+
+:model "psc_1500_series"
+:status :good
+
+:model "psc_1510_series"
+:status :good
+
+:model "psc_1510_series"
+:status :good
+
+:model "psc_1510_series"
+:status :good
+
+:model "psc_1510_series"
+:status :good
+
+:model "psc_1510_series"
+:status :good
+
+:model "hp_laserjet_m1522_mfp"
+:status :good
+
+:model "hp_laserjet_m1522nf_mfp"
+:status :good
+
+:model "hp_laserjet_m1522n_mfp"
+:status :good
+
+:model "psc_1600_series"
+:status :good
+
+:model "hp_color_laserjet_1600"
+:status :good
+
+:model "psc_1600_series"
+:status :good
+
+:model "psc_1600_series"
+:status :good
+
+:model "psc_1600_series"
+:status :good
+
+:model "psc_1600_series"
+:status :good
+
+:model "hp_color_inkjet_cp1700"
+:status :good
+
+:model "color_inkjet_printer_cp1700"
+:status :good
+
+:model "color_inkjet_printer_cp1700"
+:status :good
+
+:model "hp_2000c"
+:status :good
+
+:model "hp_2000c"
+:status :good
+
+:model "hp_2000c"
+:status :good
+
+:model "apollo_p2000-u"
+:status :good
+
+:model "hp_2000c"
+:status :good
+
+:model "hp_laserjet_p2010_series"
+:status :good
+
+:model "hp_laserjet_p2010_series"
+:status :good
+
+:model "hp_laserjet_p2010_series"
+:status :good
+
+:model "hp_laserjet_p2014n"
+:status :good
+
+:model "hp_laserjet_p2015d_series"
+:status :good
+
+:model "hp_laserjet_p2015dn_series"
+:status :good
+
+:model "hp_laserjet_p2015_series"
+:status :good
+
+:model "hp_laserjet_p2015x_series"
+:status :good
+
+:model "hp_laserjet_p2015n_series"
+:status :good
+
+:model "hp_laserjet_2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "hp_laserjet_2100"
+:status :good
+
+:model "hp_laserjet_2100"
+:status :good
+
+:model "apollo_2100"
+:status :good
+
+:model "hp_laserjet_2100"
+:status :good
+
+:model "hp_laserjet_2100"
+:status :good
+
+:model "hp_laserjet_2100"
+:status :good
+
+:model "psc_2100_series"
+:status :good
+
+:model "psc_2100_series"
+:status :good
+
+:model "psc_2100_series"
+:status :good
+
+:model "psc_2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "psc_2150_series"
+:status :good
+
+:model "apollo_2150"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "psc_2170_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "deskjet_f2100_series"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "hp_business_inkjet_2200"
+:status :good
+
+:model "psc_2200_series"
+:status :good
+
+:model "hp_business_inkjet_2200"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "hp_business_inkjet_2200"
+:status :good
+
+:model "hp_laserjet_2200_series"
+:status :good
+
+:model "apollo_2200"
+:status :good
+
+:model "hp_laserjet_2200"
+:status :good
+
+:model "psc_2210_series"
+:status :good
+
+:model "psc_2210_series"
+:status :good
+
+:model "psc_2210_series"
+:status :good
+
+:model "hp_business_inkjet_2230"
+:status :good
+
+:model "hp_business_inkjet_2250"
+:status :good
+
+:model "hp_business_inkjet_2250"
+:status :good
+
+:model "apollo_p2250"
+:status :good
+
+:model "hp_business_inkjet_2280"
+:status :good
+
+:model "hp_business_inkjet_2280"
+:status :good
+
+:model "hp_business_inkjet_2300"
+:status :good
+
+:model "psc_2300_series"
+:status :good
+
+:model "hp_business_inkjet_2300"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_laserjet_2300_series"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_laserjet_2300"
+:status :good
+
+:model "hp_business_inkjet_2300"
+:status :good
+
+:model "deskjet_d2300_series"
+:status :good
+
+:model "deskjet_d2300_series"
+:status :good
+
+:model "deskjet_d2300_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "psc_2350_series"
+:status :good
+
+:model "deskjet_d2300_series"
+:status :good
+
+:model "psc_2400_series"
+:status :good
+
+:model "deskjet_d2400_series"
+:status :good
+
+:model "psc_2400_series"
+:status :good
+
+:model "hp_laserjet_2410"
+:status :good
+
+:model "psc_2400_series"
+:status :good
+
+:model "psc_2400_series"
+:status :good
+
+:model "hp_laserjet_2420"
+:status :good
+
+:model "hp_laserjet_2420"
+:status :good
+
+:model "hp_laserjet_2420"
+:status :good
+
+:model "hp_laserjet_2420"
+:status :good
+
+:model "hp_laserjet_2430"
+:status :good
+
+:model "hp_laserjet_2430"
+:status :good
+
+:model "deskjet_d2400_series"
+:status :good
+
+:model "hp_laserjet_2430"
+:status :good
+
+:model "hp_laserjet_2430"
+:status :good
+
+:model "hp_laserjet_2430"
+:status :good
+
+:model "deskjet_d2400_series"
+:status :good
+
+:model "deskjet_d2400_series"
+:status :good
+
+:model "hp_2500c"
+:status :good
+
+:model "hp_2500c"
+:status :good
+
+:model "hp_color_laserjet_2500_series"
+:status :good
+
+:model "hp_color_laserjet_2500"
+:status :good
+
+:model "hp_color_laserjet_2500_series"
+:status :good
+
+:model "psc_2500_series"
+:status :good
+
+:model "hp_2500c"
+:status :good
+
+:model "hp_2500c"
+:status :good
+
+:model "hp_color_laserjet_2500_series"
+:status :good
+
+:model "hp_2500c"
+:status :good
+
+:model "hp_color_laserjet_2500_series"
+:status :good
+
+:model "apollo_2500"
+:status :good
+
+:model "psc_2500_series"
+:status :good
+
+:model "psc_2500_series"
+:status :good
+
+:model "hp_color_laserjet_2550"
+:status :good
+
+:model "hp_color_laserjet_2550_series"
+:status :good
+
+:model "hp_color_laserjet_2550_series"
+:status :good
+
+:model "psc_2500_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "photosmart_2570_series"
+:status :good
+
+:model "apollo_2600"
+:status :good
+
+:model "hp_color_laserjet_2600"
+:status :good
+
+:model "hp_business_inkjet_2600"
+:status :good
+
+:model "hp_business_inkjet_2600"
+:status :good
+
+:model "hp_color_laserjet_2605"
+:status :good
+
+:model "hp_color_laserjet_2605dtn"
+:status :good
+
+:model "hp_color_laserjet_2605dn"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "photosmart_2600_series"
+:status :good
+
+:model "apollo_2650"
+:status :good
+
+:model "hp_color_laserjet_2700n"
+:status :good
+
+:model "hp_color_laserjet_2700"
+:status :good
+
+:model "photosmart_2700_series"
+:status :good
+
+:model "photosmart_2700_series"
+:status :good
+
+:model "photosmart_2700_series"
+:status :good
+
+:model "hp_laserjet_m2727nf_mfp"
+:status :good
+
+:model "hp_laserjet_m2727_mfp"
+:status :good
+
+:model "hp_laserjet_m2727nfs_mfp"
+:status :good
+
+:model "hp_business_inkjet_2800"
+:status :good
+
+:model "hp_business_inkjet_2800"
+:status :good
+
+:model "hp_business_inkjet_2800"
 :status :good
 
 :model "hp_color_laserjet_2800"
@@ -25,28 +1858,46 @@
 :model "hp_color_laserjet_2840"
 :status :good
 
-:model "deskjet_f2100_series"
+:model "hp_business_inkjet_3000"
 :status :good
 
-:model "deskjet_f300_series"
+:model "hp_color_laserjet_3000"
 :status :good
 
-:model "deskjet_f4100_series"
+:model "hp_business_inkjet_3000"
 :status :good
 
-:model "hp_laserjet_1100"
+:model "hp_business_inkjet_3000"
 :status :good
 
-:model "hp_laserjet_1100a"
+:model "hp_color_laserjet_3000"
 :status :good
 
-:model "hp_laserjet_1100xi"
+:model "hp_color_laserjet_3000"
 :status :good
 
-:model "hp_laserjet_1220"
+:model "hp_color_laserjet_3000"
 :status :good
 
-:model "hp_laserjet_1220se"
+:model "hp_laserjet_p3004"
+:status :good
+
+:model "hp_laserjet_p3005"
+:status :good
+
+:model "hp_laserjet_p3005"
+:status :good
+
+:model "hp_laserjet_p3005"
+:status :good
+
+:model "hp_laserjet_p3005"
+:status :good
+
+:model "hp_laserjet_p3005"
+:status :good
+
+:model "hp_laserjet_p3005"
 :status :good
 
 :model "hp_laserjet_3015"
@@ -55,7 +1906,19 @@
 :model "hp_laserjet_3020"
 :status :good
 
+:model "hp_laserjet_m3027_mfp"
+:status :good
+
+:model "hp_laserjet_m3027_mfp"
+:status :good
+
 :model "hp_laserjet_3030"
+:status :good
+
+:model "hp_laserjet_m3035_mfp"
+:status :good
+
+:model "hp_laserjet_m3035_mfp"
 :status :good
 
 :model "hp_laserjet_3050"
@@ -67,6 +1930,48 @@
 :model "hp_laserjet_3055"
 :status :good
 
+:model "photosmart_c3100_series"
+:status :good
+
+:model "hp_laserjet_3100"
+:status :good
+
+:model "photosmart_3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_3100_series"
+:status :good
+
+:model "photosmart_3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "hp_laserjet_3150"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
+:model "photosmart_c3100_series"
+:status :good
+
 :model "hp_laserjet_3200"
 :status :good
 
@@ -74,6 +1979,69 @@
 :status :good
 
 :model "hp_laserjet_3200se"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "photosmart_3200_series"
+:status :good
+
+:model "hp_laserjet_3300_3310_3320"
+:status :good
+
+:model "photosmart_3300_series"
+:status :good
+
+:model "photosmart_3300_series"
+:status :good
+
+:model "photosmart_3300_series"
+:status :good
+
+:model "hp_laserjet_3300_3310_3320"
+:status :good
+
+:model "photosmart_3300_series"
+:status :good
+
+:model "photosmart_3300_series"
+:status :good
+
+:model "deskjet_3320"
+:status :good
+
+:model "hp_laserjet_3300_3310_3320"
+:status :good
+
+:model "deskjet_3320"
+:status :good
+
+:model "hp_laserjet_3300_3310_3320"
+:status :good
+
+:model "hp_laserjet_3300_3310_3320"
+:status :good
+
+:model "deskjet_3320"
+:status :good
+
+:model "deskjet_3325"
 :status :good
 
 :model "hp_laserjet_3300_3310_3320"
@@ -91,79 +2059,1435 @@
 :model "hp_laserjet_3392"
 :status :good
 
+:model "deskjet_3420"
+:status :good
+
+:model "deskjet_3420"
+:status :good
+
+:model "deskjet_3425"
+:status :good
+
+:model "deskjet_3450"
+:status :good
+
+:model "hp_color_laserjet_3500n"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "hp_color_laserjet_3500"
+:status :good
+
+:model "hp_color_laserjet_3500"
+:status :good
+
+:model "hp_color_laserjet_3500"
+:status :good
+
+:model "hp_color_laserjet_cp3505"
+:status :good
+
+:model "hp_color_laserjet_cp3505"
+:status :good
+
+:model "hp_color_laserjet_cp3505"
+:status :good
+
+:model "hp_color_laserjet_cp3505"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "deskjet_3500"
+:status :good
+
+:model "hp_color_laserjet_3550n"
+:status :good
+
+:model "hp_color_laserjet_3550"
+:status :good
+
+:model "deskjet_3550"
+:status :good
+
+:model "deskjet_3550"
+:status :good
+
+:model "deskjet_3550"
+:status :good
+
+:model "deskjet_3550"
+:status :good
+
+:model "hp_color_laserjet_3600"
+:status :good
+
+:model "hp_color_laserjet_3600"
+:status :good
+
+:model "hp_color_laserjet_3600"
+:status :good
+
+:model "deskjet_3600"
+:status :good
+
+:model "officejet_j3600_series"
+:status :good
+
+:model "deskjet_3600"
+:status :good
+
+:model "officejet_j3600_series"
+:status :good
+
+:model "deskjet_3600"
+:status :good
+
+:model "deskjet_3600"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "officejet_j3600_series"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "deskjet_3650"
+:status :good
+
+:model "officejet_j3600_series"
+:status :good
+
+:model "hp_color_laserjet_3700n"
+:status :good
+
+:model "hp_color_laserjet_3700n"
+:status :good
+
+:model "hp_color_laserjet_3700"
+:status :good
+
+:model "hp_color_laserjet_3700n"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "deskjet_3740"
+:status :good
+
+:model "hp_color_laserjet_3800"
+:status :good
+
+:model "hp_color_laserjet_3800"
+:status :good
+
+:model "hp_color_laserjet_3800"
+:status :good
+
+:model "hp_color_laserjet_3800"
+:status :good
+
+:model "deskjet_3810"
+:status :good
+
+:model "deskjet_3816"
+:status :good
+
+:model "deskjet_3816"
+:status :good
+
+:model "deskjet_3819"
+:status :good
+
+:model "deskjet_3820"
+:status :good
+
+:model "deskjet_3820"
+:status :good
+
+:model "deskjet_3820"
+:status :good
+
+:model "deskjet_3822"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3840"
+:status :good
+
+:model "deskjet_3870"
+:status :good
+
+:model "deskjet_3900"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "deskjet_3910"
+:status :good
+
+:model "hp_laserjet_4000_series"
+:status :good
+
+:model "hp_laserjet_4000_series"
+:status :good
+
+:model "hp_laserjet_4000_series"
+:status :good
+
+:model "hp_laserjet_4000_series"
+:status :good
+
+:model "hp_laserjet_4000_series"
+:status :good
+
+:model "hp_color_laserjet_cp4005"
+:status :good
+
+:model "hp_color_laserjet_cp4005"
+:status :good
+
+:model "hp_color_laserjet_cp4005"
+:status :good
+
+:model "hp_laserjet_4050_series"
+:status :good
+
+:model "hp_laserjet_4050_series"
+:status :good
+
+:model "hp_laserjet_4050_series"
+:status :good
+
+:model "hp_laserjet_4050_series"
+:status :good
+
+:model "hp_laserjet_4050_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
 :model "hp_laserjet_4100_mfp"
+:status :good
+
+:model "hp_laserjet_4100_series"
+:status :good
+
+:model "deskjet_f4100_series"
 :status :good
 
 :model "officejet_4100_series"
 :status :good
 
+:model "hp_laserjet_4100_series"
+:status :good
+
+:model "hp_laserjet_4100_series"
+:status :good
+
+:model "hp_laserjet_4100_series"
+:status :good
+
+:model "hp_laserjet_4100_mfp"
+:status :good
+
 :model "officejet_4105"
+:status :good
+
+:model "officejet_4100_series"
+:status :good
+
+:model "officejet_4100_series"
+:status :good
+
+:model "officejet_4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
 :status :good
 
 :model "officejet_4115_series"
 :status :good
 
+:model "deskjet_f4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
+:model "deskjet_d4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
+:model "hp_laserjet_4150_series"
+:status :good
+
+:model "deskjet_d4100_series"
+:status :good
+
+:model "deskjet_d4100_series"
+:status :good
+
+:model "deskjet_d4100_series"
+:status :good
+
+:model "deskjet_f4100_series"
+:status :good
+
+:model "deskjet_f4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
+:model "deskjet_f4100_series"
+:status :good
+
+:model "photosmart_c4100_series"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
 :model "officejet_4200_series"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "deskjet_d4200_series"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "photosmart_c4200_series"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "hp_laserjet_4200"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "officejet_4200_series"
+:status :good
+
+:model "hp_laserjet_4240"
+:status :good
+
+:model "hp_laserjet_4240"
+:status :good
+
+:model "photosmart_c4200_series"
+:status :good
+
+:model "hp_laserjet_4250"
+:status :good
+
+:model "hp_laserjet_4250"
+:status :good
+
+:model "photosmart_c4200_series"
+:status :good
+
+:model "hp_laserjet_4250"
+:status :good
+
+:model "hp_laserjet_4250"
+:status :good
+
+:model "hp_laserjet_4250"
 :status :good
 
 :model "officejet_4255"
 :status :good
 
+:model "officejet_4255"
+:status :good
+
+:model "officejet_4255"
+:status :good
+
+:model "officejet_4255"
+:status :good
+
+:model "deskjet_d4200_series"
+:status :good
+
+:model "deskjet_d4200_series"
+:status :good
+
+:model "deskjet_d4200_series"
+:status :good
+
+:model "photosmart_c4200_series"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
+:model "hp_laserjet_4300"
+:status :good
+
 :model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "photosmart_c4340_series"
+:status :good
+
+:model "photosmart_c4340_series"
+:status :good
+
+:model "hp_laserjet_m4345_mfp"
+:status :good
+
+:model "hp_laserjet_4345_mfp"
+:status :good
+
+:model "photosmart_c4340_series"
+:status :good
+
+:model "hp_laserjet_4345_mfp"
+:status :good
+
+:model "hp_laserjet_m4345_mfp"
+:status :good
+
+:model "hp_laserjet_m4345_mfp"
+:status :good
+
+:model "hp_laserjet_4345_mfp"
+:status :good
+
+:model "hp_laserjet_4345_mfp"
+:status :good
+
+:model "hp_laserjet_m4345_mfp"
+:status :good
+
+:model "hp_laserjet_4350"
+:status :good
+
+:model "hp_laserjet_4350"
+:status :good
+
+:model "hp_laserjet_4350"
+:status :good
+
+:model "hp_laserjet_4350"
+:status :good
+
+:model "hp_laserjet_4350"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "officejet_4300_series"
+:status :good
+
+:model "photosmart_c4380_series"
+:status :good
+
+:model "photosmart_c4380_series"
+:status :good
+
+:model "hp_color_laserjet_4500"
+:status :good
+
+:model "hp_color_laserjet_4500"
+:status :good
+
+:model "hp_color_laserjet_4550"
+:status :good
+
+:model "hp_color_laserjet_4550"
+:status :good
+
+:model "hp_color_laserjet_4550"
+:status :good
+
+:model "hp_color_laserjet_4550"
+:status :good
+
+:model "hp_color_laserjet_4600"
+:status :good
+
+:model "hp_color_laserjet_4600_series"
+:status :good
+
+:model "hp_color_laserjet_4600_series"
+:status :good
+
+:model "hp_color_laserjet_4600_series"
+:status :good
+
+:model "hp_color_laserjet_4600_series"
+:status :good
+
+:model "hp_color_laserjet_4610"
+:status :good
+
+:model "hp_color_laserjet_4650"
+:status :good
+
+:model "hp_color_laserjet_4650"
+:status :good
+
+:model "hp_color_laserjet_4650"
+:status :good
+
+:model "hp_color_laserjet_4650"
+:status :good
+
+:model "hp_color_laserjet_4650"
+:status :good
+
+:model "hp_color_laserjet_4700"
+:status :good
+
+:model "hp_color_laserjet_4700"
+:status :good
+
+:model "hp_color_laserjet_4700"
+:status :good
+
+:model "hp_color_laserjet_4700"
+:status :good
+
+:model "hp_color_laserjet_4700"
+:status :good
+
+:model "hp_color_laserjet_4730mfp"
+:status :good
+
+:model "hp_color_laserjet_4730mfp"
+:status :good
+
+:model "hp_color_laserjet_4730mfp"
+:status :good
+
+:model "hp_color_laserjet_4730mfp"
+:status :good
+
+:model "hp_color_laserjet_cm4730_mfp"
+:status :good
+
+:model "hp_color_laserjet_cm4730_mfp"
+:status :good
+
+:model "hp_color_laserjet_cm4730_mfp"
+:status :good
+
+:model "hp_color_laserjet_cm4730_mfp"
+:status :good
+
+:model "hp_laserjet_5000"
+:status :good
+
+:model "hp_laserjet_5000_series"
+:status :good
+
+:model "hp_laserjet_5000"
+:status :good
+
+:model "hp_laserjet_5000"
+:status :good
+
+:model "hp_laserjet_5000"
+:status :good
+
+:model "hp_laserjet_5000"
+:status :good
+
+:model "hp_laserjet_m5025_mfp"
+:status :good
+
+:model "hp_laserjet_m5035_mfp"
+:status :good
+
+:model "hp_laserjet_m5035_mfp"
+:status :good
+
+:model "hp_laserjet_m5035_mfp"
+:status :good
+
+:model "photosmart_d5060_series"
+:status :good
+
+:model "photosmart_d5060_series"
+:status :good
+
+:model "photosmart_d5060_series"
+:status :good
+
+:model "hp_laserjet_5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "hp_laserjet_5100_series"
+:status :good
+
+:model "hp_laserjet_5100_series"
+:status :good
+
+:model "hp_laserjet_5100_series"
+:status :good
+
+:model "photosmart_c5100_series"
 :status :good
 
 :model "officejet_5100_series"
 :status :good
 
-:model "officejet_5105"
+:model "hp_laserjet_5100_series"
 :status :good
 
-:model "officejet_5110"
+:model "photosmart_d5100_series"
 :status :good
 
-:model "officejet_5110v"
+:model "officejet_5100_series"
+:status :good
+
+:model "officejet_5100_series"
+:status :good
+
+:model "officejet_5100_series"
+:status :good
+
+:model "officejet_5100_series"
+:status :good
+
+:model "photosmart_c5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "photosmart_d5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "photosmart_c5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "photosmart_d5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "photosmart_d5100_series"
+:status :good
+
+:model "deskjet_5100"
+:status :good
+
+:model "photosmart_d5100_series"
+:status :good
+
+:model "photosmart_c5100_series"
+:status :good
+
+:model "photosmart_c5100_series"
+:status :good
+
+:model "photosmart_c5100_series"
+:status :good
+
+:model "hp_laserjet_5200"
+:status :good
+
+:model "hp_laserjet_5200"
+:status :good
+
+:model "hp_laserjet_5200"
+:status :good
+
+:model "photosmart_c5200_series"
+:status :good
+
+:model "hp_laserjet_5200lx"
+:status :good
+
+:model "hp_laserjet_5200"
+:status :good
+
+:model "hp_laserjet_5200l"
+:status :good
+
+:model "photosmart_c5200_series"
+:status :good
+
+:model "photosmart_c5200_series"
+:status :good
+
+:model "photosmart_c5200_series"
+:status :good
+
+:model "photosmart_d5300_series"
+:status :good
+
+:model "officejet_pro_k5300"
+:status :good
+
+:model "photosmart_d5300_series"
+:status :good
+
+:model "officejet_pro_k5400"
+:status :good
+
+:model "officejet_pro_k5400"
+:status :good
+
+:model "officejet_pro_k5400"
+:status :good
+
+:model "officejet_pro_k5400"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "deskjet_5400_series"
+:status :good
+
+:model "officejet_pro_k5400"
+:status :good
+
+:model "hp_color_laserjet_5500"
+:status :good
+
+:model "hp_color_laserjet_5500"
+:status :good
+
+:model "hp_color_laserjet_5500"
+:status :good
+
+:model "hp_color_laserjet_5500"
+:status :good
+
+:model "hp_color_laserjet_5500"
+:status :good
+
+:model "officejet_j5500_series"
 :status :good
 
 :model "officejet_5500_series"
 :status :good
 
+:model "officejet_5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "officejet_5500_series"
+:status :good
+
+:model "officejet_5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "officejet_5500_series"
+:status :good
+
+:model "officejet_5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "officejet_j5500_series"
+:status :good
+
+:model "hp_color_laserjet_5550"
+:status :good
+
+:model "hp_color_laserjet_5550"
+:status :good
+
+:model "hp_color_laserjet_5550"
+:status :good
+
+:model "hp_color_laserjet_5550"
+:status :good
+
+:model "deskjet_5550"
+:status :good
+
+:model "hp_color_laserjet_5550"
+:status :good
+
+:model "deskjet_5551"
+:status :good
+
+:model "deskjet_5552"
+:status :good
+
 :model "officejet_5600_series"
+:status :good
+
+:model "deskjet_5600"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "officejet_5600_series"
+:status :good
+
+:model "deskjet_5650"
+:status :good
+
+:model "deskjet_5650"
+:status :good
+
+:model "deskjet_5650"
+:status :good
+
+:model "deskjet_5652"
+:status :good
+
+:model "deskjet_5650"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "deskjet_5700"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "officejet_j5700_series"
+:status :good
+
+:model "deskjet_5800"
+:status :good
+
+:model "deskjet_5850"
+:status :good
+
+:model "deskjet_5850"
+:status :good
+
+:model "deskjet_5900_series"
+:status :good
+
+:model "deskjet_5900_series"
+:status :good
+
+:model "deskjet_5900_series"
+:status :good
+
+:model "deskjet_5900_series"
+:status :good
+
+:model "photosmart_c6100_series"
 :status :good
 
 :model "officejet_6100_series"
 :status :good
 
+:model "officejet_6100_series"
+:status :good
+
+:model "officejet_6100_series"
+:status :good
+
+:model "officejet_6100_series"
+:status :good
+
+:model "deskjet_6120"
+:status :good
+
+:model "deskjet_6122"
+:status :good
+
+:model "deskjet_6127"
+:status :good
+
 :model "officejet_6150_series"
+:status :good
+
+:model "photosmart_c6100_series"
+:status :good
+
+:model "photosmart_d6100_series"
+:status :good
+
+:model "photosmart_c6100_series"
+:status :good
+
+:model "photosmart_c6100_series"
+:status :good
+
+:model "photosmart_c6100_series"
 :status :good
 
 :model "officejet_6200_series"
 :status :good
 
+:model "officejet_6200_series"
+:status :good
+
+:model "officejet_6200_series"
+:status :good
+
+:model "officejet_6200_series"
+:status :good
+
+:model "officejet_6200_series"
+:status :good
+
+:model "photosmart_c6200_series"
+:status :good
+
+:model "photosmart_c6200_series"
+:status :good
+
+:model "photosmart_c6200_series"
+:status :good
+
 :model "officejet_6300_series"
+:status :good
+
+:model "officejet_6300_series"
+:status :good
+
+:model "officejet_j6400_series"
+:status :good
+
+:model "officejet_j6400_series"
+:status :good
+
+:model "officejet_j6400_series"
+:status :good
+
+:model "officejet_j6400_series"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6500"
+:status :good
+
+:model "deskjet_6600"
+:status :good
+
+:model "deskjet_6600"
+:status :good
+
+:model "deskjet_6600"
+:status :good
+
+:model "deskjet_6600"
+:status :good
+
+:model "deskjet_6600"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6800"
+:status :good
+
+:model "deskjet_6940_series"
+:status :good
+
+:model "deskjet_6940_series"
+:status :good
+
+:model "deskjet_6980_series"
+:status :good
+
+:model "deskjet_6980_series"
+:status :good
+
+:model "deskjet_6940_series"
+:status :good
+
+:model "deskjet_6940_series"
+:status :good
+
+:model "photosmart_c7100_series"
+:status :good
+
+:model "officejet_k7100"
 :status :good
 
 :model "officejet_7100_series"
 :status :good
 
+:model "officejet_k7100"
+:status :good
+
+:model "officejet_k7100"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "officejet_7100_series"
+:status :good
+
+:model "photosmart_d7100_series"
+:status :good
+
+:model "photosmart_7150"
+:status :good
+
+:model "photosmart_7150"
+:status :good
+
+:model "photosmart_c7100_series"
+:status :good
+
+:model "photosmart_d7100_series"
+:status :good
+
+:model "photosmart_7150"
+:status :good
+
+:model "photosmart_d7100_series"
+:status :good
+
+:model "photosmart_d7100_series"
+:status :good
+
+:model "photosmart_c7100_series"
+:status :good
+
+:model "photosmart_c7100_series"
+:status :good
+
+:model "photosmart_d7200_series"
+:status :good
+
 :model "officejet_7200_series"
+:status :good
+
+:model "officejet_7200_series"
+:status :good
+
+:model "officejet_7200_series"
+:status :good
+
+:model "officejet_7200_series"
+:status :good
+
+:model "photosmart_c7200_series"
+:status :good
+
+:model "photosmart_7200_series"
+:status :good
+
+:model "photosmart_7200_series"
+:status :good
+
+:model "photosmart_7200_series"
+:status :good
+
+:model "photosmart_d7200_series"
+:status :good
+
+:model "photosmart_7200_series"
+:status :good
+
+:model "photosmart_c7200_series"
+:status :good
+
+:model "photosmart_c7200_series"
+:status :good
+
+:model "photosmart_d7300_series"
+:status :good
+
+:model "officejet_pro_l7300"
 :status :good
 
 :model "officejet_7300_series"
 :status :good
 
-:model "officejet_7400_series"
+:model "officejet_7300_series"
 :status :good
 
-:model "officejet_9100_series"
+:model "officejet_7300_series"
 :status :good
 
-:model "officejet_pro_1150c"
+:model "photosmart_7345"
 :status :good
 
-:model "officejet_pro_1170c_series"
+:model "photosmart_d7300_series"
+:status :good
+
+:model "photosmart_7350"
+:status :good
+
+:model "photosmart_7350"
+:status :good
+
+:model "photosmart_d7300_series"
+:status :good
+
+:model "photosmart_d7300_series"
+:status :good
+
+:model "photosmart_d7300_series"
 :status :good
 
 :model "officejet_pro_l7300"
+:status :good
+
+:model "photosmart_d7400_series"
+:status :good
+
+:model "officejet_7400_series"
+:status :good
+
+:model "officejet_7400_series"
+:status :good
+
+:model "officejet_7400_series"
+:status :good
+
+:model "photosmart_7400_series"
+:status :good
+
+:model "photosmart_7400_series"
+:status :good
+
+:model "photosmart_7400_series"
+:status :good
+
+:model "photosmart_7400_series"
+:status :good
+
+:model "photosmart_7400_series"
+:status :good
+
+:model "photosmart_d7400_series"
+:status :good
+
+:model "officejet_pro_l7400"
+:status :good
+
+:model "officejet_pro_l7500"
+:status :good
+
+:model "officejet_pro_l7500"
+:status :good
+
+:model "photosmart_7550"
+:status :good
+
+:model "photosmart_7550"
+:status :good
+
+:model "photosmart_7550"
 :status :good
 
 :model "officejet_pro_l7500"
@@ -172,264 +3496,393 @@
 :model "officejet_pro_l7600"
 :status :good
 
+:model "officejet_pro_l7600"
+:status :good
+
+:model "photosmart_7600_series"
+:status :good
+
+:model "photosmart_7600_series"
+:status :good
+
+:model "officejet_pro_l7600"
+:status :good
+
 :model "officejet_pro_l7700"
 :status :good
 
-:model "officejet_d_series"
+:model "officejet_pro_l7700"
 :status :good
 
-:model "officejet_g55"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_g55xi"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_g85"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_g85xi"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_g95"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_j3600_series"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_j5500_series"
+:model "photosmart_7700_series"
 :status :good
 
-:model "officejet_j5700_series"
+:model "officejet_pro_l7700"
 :status :good
 
-:model "officejet_k60"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_k60xi"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_k80"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_k80xi"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_r40"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_r40xi"
+:model "photosmart_7800_series"
 :status :good
 
-:model "officejet_r45"
+:model "photosmart_7900_series"
 :status :good
 
-:model "officejet_r60"
+:model "photosmart_7900_series"
 :status :good
 
-:model "officejet_r65"
+:model "photosmart_7900_series"
 :status :good
 
-:model "officejet_r80"
+:model "photosmart_7900_series"
 :status :good
 
-:model "officejet_r80xi"
+:model "hp_laserjet_8000_series"
 :status :good
 
-:model "officejet_series_500"
+:model "hp_laserjet_8000"
 :status :good
 
-:model "officejet_series_520"
+:model "hp_laserjet_8000"
 :status :good
 
-:model "officejet_series_570"
+:model "hp_laserjet_8000"
 :status :good
 
-:model "officejet_series_580"
+:model "hp_laserjet_8000"
 :status :good
 
-:model "officejet_series_590"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_600"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_610"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_630"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_700"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_710"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_series_720"
+:model "hp_cm8050_mfp_with_edgeline"
 :status :good
 
-:model "officejet_series_725"
+:model "photosmart_8000_series"
 :status :good
 
-:model "officejet_t_series"
+:model "hp_cm8060_mfp_with_edgeline"
 :status :good
 
-:model "officejet_v30"
+:model "hp_laserjet_8100_series"
 :status :good
 
-:model "officejet_v40"
+:model "hp_laserjet_8100_series"
 :status :good
 
-:model "officejet_v40xi"
+:model "hp_laserjet_8100_series"
 :status :good
 
-:model "officejet_v45"
-:status :good
-
-:model "psc_1000_series"
-:status :good
-
-:model "psc_1100_series"
-:status :good
-
-:model "psc_1200_series"
-:status :good
-
-:model "psc_1300_series"
-:status :good
-
-:model "psc_1310_series"
-:status :good
-
-:model "psc_1358_series"
-:status :good
-
-:model "psc_1400_series"
-:status :good
-
-:model "psc_1500_series"
-:status :good
-
-:model "psc_1510_series"
-:status :good
-
-:model "psc_1600_series"
-:status :good
-
-:model "psc_2100_series"
-:status :good
-
-:model "psc_2150_series"
-:status :good
-
-:model "psc_2170_series"
-:status :good
-
-:model "psc_2200_series"
-:status :good
-
-:model "psc_2210_series"
-:status :good
-
-:model "psc_2300_series"
-:status :good
-
-:model "psc_2350_series"
-:status :good
-
-:model "psc_2400_series"
-:status :good
-
-:model "psc_2500_series"
-:status :good
-
-:model "psc_500"
-:status :good
-
-:model "psc_720"
-:status :good
-
-:model "psc_750"
-:status :good
-
-:model "psc_750xi"
-:status :good
-
-:model "psc_760"
-:status :good
-
-:model "psc_780"
-:status :good
-
-:model "psc_780xi"
-:status :good
-
-:model "psc_900_series"
-:status :good
-
-:model "psc_920"
-:status :good
-
-:model "psc_950"
-:status :good
-
-:model "psc_950vr"
-:status :good
-
-:model "psc_950xi"
-:status :good
-
-:model "photosmart_2570_series"
-:status :good
-
-:model "photosmart_2600_series"
-:status :good
-
-:model "photosmart_2700_series"
-:status :good
-
-:model "photosmart_3100_series"
-:status :good
-
-:model "photosmart_3200_series"
-:status :good
-
-:model "photosmart_3300_series"
-:status :good
-
-:model "photosmart_c3100_series"
-:status :good
-
-:model "photosmart_c4100_series"
-:status :good
-
-:model "photosmart_c4200_series"
-:status :good
-
-:model "photosmart_c4380_series"
-:status :good
-
-:model "photosmart_c5100_series"
-:status :good
-
-:model "photosmart_c5200_series"
-:status :good
-
-:model "photosmart_c6100_series"
-:status :good
-
-:model "photosmart_c6200_series"
-:status :good
-
-:model "photosmart_c7100_series"
-:status :good
-
-:model "photosmart_c7200_series"
+:model "hp_laserjet_8100_mfp"
 :status :good
 
 :model "photosmart_c8100_series"
 :status :good
 
-:model "printer_scanner_copier_300"
+:model "hp_laserjet_8150_series"
+:status :good
+
+:model "hp_laserjet_8150_series"
+:status :good
+
+:model "photosmart_8100_series"
+:status :good
+
+:model "hp_laserjet_8150_series"
+:status :good
+
+:model "hp_laserjet_8150_series"
+:status :good
+
+:model "photosmart_c8100_series"
+:status :good
+
+:model "photosmart_8100_series"
+:status :good
+
+:model "hp_laserjet_8150_mfp"
+:status :good
+
+:model "photosmart_8100_series"
+:status :good
+
+:model "photosmart_8100_series"
+:status :good
+
+:model "photosmart_8100_series"
+:status :good
+
+:model "photosmart_c8100_series"
+:status :good
+
+:model "photosmart_c8100_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_8200_series"
+:status :good
+
+:model "photosmart_pro_b8300_series"
+:status :good
+
+:model "photosmart_pro_b8300_series"
+:status :good
+
+:model "photosmart_pro_b8300_series"
+:status :good
+
+:model "photosmart_pro_b8300_series"
+:status :good
+
+:model "photosmart_pro_b8300_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "photosmart_8400_series"
+:status :good
+
+:model "hp_color_laserjet_8500"
+:status :good
+
+:model "hp_color_laserjet_8500"
+:status :good
+
+:model "hp_color_laserjet_8500"
+:status :good
+
+:model "hp_color_laserjet_8550"
+:status :good
+
+:model "hp_color_laserjet_8550"
+:status :good
+
+:model "hp_color_laserjet_8550"
+:status :good
+
+:model "hp_color_laserjet_8550"
+:status :good
+
+:model "hp_color_laserjet_8550"
+:status :good
+
+:model "officejet_pro_k8600"
+:status :good
+
+:model "officejet_pro_k8600"
+:status :good
+
+:model "photosmart_8700_series"
+:status :good
+
+:model "photosmart_8700_series"
+:status :good
+
+:model "photosmart_8700_series"
+:status :good
+
+:model "photosmart_8700_series"
+:status :good
+
+:model "photosmart_8700_series"
+:status :good
+
+:model "photosmart_pro_b8800_series"
+:status :good
+
+:model "hp_laserjet_9000_series"
+:status :good
+
+:model "hp_laserjet_9000_series"
+:status :good
+
+:model "hp_laserjet_9000_series"
+:status :good
+
+:model "hp_laserjet_9000_mfp"
+:status :good
+
+:model "hp_laserjet_9000_series"
+:status :good
+
+:model "hp_laserjet_9000_mfp"
+:status :good
+
+:model "hp_laserjet_9000_series"
+:status :good
+
+:model "hp_laserjet_9040_mfp"
+:status :good
+
+:model "hp_laserjet_9040"
+:status :good
+
+:model "hp_laserjet_9040_mfp"
+:status :good
+
+:model "hp_laserjet_9040_mfp"
+:status :good
+
+:model "hp_laserjet_9040"
+:status :good
+
+:model "hp_laserjet_9050"
+:status :good
+
+:model "hp_laserjet_9050"
+:status :good
+
+:model "hp_laserjet_9050"
+:status :good
+
+:model "hp_laserjet_9050_mfp"
+:status :good
+
+:model "hp_laserjet_9055mfp"
+:status :good
+
+:model "hp_laserjet_9065mfp"
+:status :good
+
+:model "photosmart_pro_b9100_series"
+:status :good
+
+:model "officejet_9100_series"
+:status :good
+
+:model "officejet_9100_series"
+:status :good
+
+:model "officejet_9100_series"
+:status :good
+
+:model "hp_deskjet_9300"
+:status :good
+
+:model "hp_color_laserjet_9500"
+:status :good
+
+:model "hp_color_laserjet_9500"
+:status :good
+
+:model "hp_color_laserjet_9500"
+:status :good
+
+:model "hp_color_laserjet_9500"
+:status :good
+
+:model "hp_color_laserjet_9500"
+:status :good
+
+:model "deskjet_9600"
+:status :good
+
+:model "deskjet_9600"
+:status :good
+
+:model "deskjet_9600"
+:status :good
+
+:model "deskjet_9600"
+:status :good
+
+:model "deskjet_9600"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
+:status :good
+
+:model "deskjet_9800"
 :status :good
 

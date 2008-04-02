@@ -23,6 +23,7 @@
 from base.g import *
 from base import utils
 from prnt import cups
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -40,8 +41,8 @@ class CancelJobPushButton(QPushButton):
 
 
 class ScrollPrintJobView(ScrollView):
-    def __init__(self,parent = None,name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, parent=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
         
         #self.heading_color = "#cccccc"
         
@@ -54,12 +55,12 @@ class ScrollPrintJobView(ScrollView):
                             cups.IPP_JOB_COMPLETED : self.__tr("Completed"),
                            }
 
-        self.warning_pix = QPixmap(os.path.join(prop.image_dir, "warning.png"))
-        self.error_pix = QPixmap(os.path.join(prop.image_dir, "error.png"))
-        self.ok_pix = QPixmap(os.path.join(prop.image_dir, "ok.png"))
-        self.busy_pix = QPixmap(os.path.join(prop.image_dir, 'busy.png'))
-        self.idle_pix = QPixmap(os.path.join(prop.image_dir, 'idle.png'))
-        self.print_pix = QPixmap(os.path.join(prop.image_dir, "print_icon.png"))
+        self.warning_pix = load_pixmap('warning', '32x32')
+        self.error_pix = load_pixmap('error', '32x32')
+        self.ok_pix = load_pixmap('ok', '32x32')
+        self.busy_pix = load_pixmap('busy', '32x32')
+        self.idle_pix = load_pixmap('idle', '32x32')
+        self.print_pix = load_pixmap('print', '32x32')
 
         self.JOB_STATE_ICONS = { cups.IPP_JOB_PENDING: self.busy_pix,
                                  cups.IPP_JOB_HELD : self.busy_pix,
@@ -149,7 +150,10 @@ class ScrollPrintJobView(ScrollView):
     def updatePrintController(self):
         # default printer
         self.defaultPushButton.setText(self.__tr("Set as Default"))
+        
         default_printer = cups.getDefaultPrinter()
+        if default_printer is not None:
+            default_printer = default_printer.decode('utf8')
 
         if default_printer == self.cur_printer:
             s = self.__tr("SET AS DEFAULT")
@@ -220,8 +224,12 @@ class ScrollPrintJobView(ScrollView):
 
     def defaultPushButton_clicked(self):
         QApplication.setOverrideCursor(QApplication.waitCursor)
+        #print repr(self.cur_printer)
+        #print self.cur_printer.encode('latin1')
+        #print self.cur_printer.encode('utf8')
         try:
-            result = cups.setDefaultPrinter(self.cur_printer)
+            result = cups.setDefaultPrinter(self.cur_printer.encode('utf8'))
+            #print result
             if not result:
                 log.error("Set default printer failed.")
             else:

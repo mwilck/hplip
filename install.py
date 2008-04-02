@@ -129,7 +129,9 @@ for o, a in opts:
         test_unknown = True
         
         
-    
+if os.getuid() == 0:
+    log.error("hplip-install should not be run as root.")
+
 log_file = os.path.normpath('./hplip-install_%s.log' % time.strftime("%a-%d-%b-%Y_%H:%M:%S"))
 
 if os.path.exists(log_file):
@@ -177,9 +179,13 @@ if mode == BROWSER_MODE:
     web_install.start(language)
 
 elif mode == INTERACTIVE_MODE:
-    from installer import text_install
-    log.debug("Starting text installer...")
-    text_install.start(language, auto, test_depends, test_unknown)
+
+    try:
+        from installer import text_install
+        log.debug("Starting text installer...")
+        text_install.start(language, auto, test_depends, test_unknown)
+    except KeyboardInterrupt:
+        log.error("User exit")
 
 else:
     log.error("Invalid mode. Please use '-i', '-t', '-u' or '-w' to select the mode.")

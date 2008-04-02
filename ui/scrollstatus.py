@@ -21,7 +21,8 @@
 
 # Local
 from base.g import *
-from base import utils
+from base import utils, device
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -31,32 +32,25 @@ from scrollview import ScrollView
 import os.path, os
 import time
 
-try:
-    import datetime
-    have_datetime = True
-except ImportError:
-    have_datetime = False
-
-
 
 class ScrollStatusView(ScrollView):
-    def __init__(self,parent = None,name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, parent=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
-        self.warning_pix = QPixmap(os.path.join(prop.image_dir, "warning.png"))
-        self.error_pix = QPixmap(os.path.join(prop.image_dir, "error.png"))
-        self.ok_pix = QPixmap(os.path.join(prop.image_dir, "ok.png"))
-        self.lowink_pix = QPixmap(os.path.join(prop.image_dir, 'inkdrop.png'))
-        self.lowtoner_pix = QPixmap(os.path.join(prop.image_dir, 'toner.png'))
-        self.busy_pix = QPixmap(os.path.join(prop.image_dir, 'busy.png'))
-        self.lowpaper_pix = QPixmap(os.path.join(prop.image_dir, 'paper.png'))
-        self.idle_pix = QPixmap(os.path.join(prop.image_dir, 'idle.png'))
+        self.warning_pix = load_pixmap("warning", '32x32')
+        self.error_pix = load_pixmap("error", '32x32')
+        self.ok_pix = load_pixmap("ok", '32x32')
+        self.lowink_pix = load_pixmap('inkdrop', '32x32')
+        self.lowtoner_pix = load_pixmap('toner', '32x32')
+        self.busy_pix = load_pixmap('busy', '32x32')
+        self.lowpaper_pix = load_pixmap('paper', '32x32')
+        self.idle_pix = load_pixmap('idle', '32x32')
 
-        self.ScanPixmap = QPixmap(os.path.join(prop.image_dir, "scan_icon.png"))
-        self.PrintPixmap = QPixmap(os.path.join(prop.image_dir, "print_icon.png"))
-        self.SendFaxPixmap =QPixmap(os.path.join(prop.image_dir, "fax_icon.png"))
-        self.PhotoCardPixmap = QPixmap(os.path.join(prop.image_dir, "pcard_icon.png"))
-        self.MakeCopiesPixmap = QPixmap(os.path.join(prop.image_dir, "makecopies_icon.png"))
+        self.ScanPixmap = load_pixmap("scan", '32x32')
+        self.PrintPixmap = load_pixmap("print", '32x32')
+        self.SendFaxPixmap =load_pixmap("fax", '32x32')
+        self.PhotoCardPixmap = load_pixmap("pcard", '32x32')
+        self.MakeCopiesPixmap = load_pixmap("makecopies", '32x32')
 
         self.STATUS_ICONS = { ERROR_STATE_CLEAR : (self.idle_pix, self.idle_pix),
                               ERROR_STATE_BUSY : (self.busy_pix, self.busy_pix),
@@ -99,24 +93,33 @@ class ScrollStatusView(ScrollView):
         ScrollView.fillControls(self)
         self.row = 0
         
-        for x in self.cur_device.hist:
-            self.addItem(x)
+        if self.cur_device.hist:
+            for x in self.cur_device.hist:
+                self.addItem(x)
+        else:
+            if self.cur_device.last_event is not None:
+                self.addGroupHeading("no_status", self.__tr("NOTICE: Only partial device status is available."))
+                self.addItem(self.cur_device.last_event)
+            else:
+                self.addGroupHeading("no_status", self.__tr("NOTICE: Device status not available."))
+            
 
-    def addItem(self, hist):
-        yr, mt, dy, hr, mi, sec, wd, yd, dst, job_id, user, ec, ess, esl = hist
-
+    def addItem(self, e):
+        ess = device.queryString(e.event_code, 0)
+        esl = device.queryString(e.event_code, 1)
+        
         if self.row == 0:
             desc = self.__tr("(most recent)")
 
         else:
-            if have_datetime:
-                desc = self.getTimeDeltaDesc(hist[:9])
-            else:
-                desc = ''
+            desc = self.getTimeDeltaDesc(e.timedate)
 
-        # TODO: In Qt4.x, use QLocale.toString(date, format)
-        tt = QString("<b>%1 %2</b>").arg(QDateTime (QDate(yr, mt, dy), QTime(hr, mi, sec)).toString()).arg(desc).stripWhiteSpace()
+        dt = QDateTime()
+        dt.setTime_t(int(e.timedate), Qt.LocalTime)
         
+        # TODO: In Qt4.x, use QLocale.toString(date, format)
+        tt = QString("<b>%1 %2</b>").arg(dt.toString()).arg(desc) # , Qt.LocalTime)).arg(desc)
+                
         self.addGroupHeading(unicode(tt), tt)
         
         widget = self.getWidget()
@@ -186,18 +189,18 @@ class ScrollStatusView(ScrollView):
         eslText.setText(esl)
 
         userTextLabel.setText(self.__tr("User:"))
-        userText.setText(user)
+        userText.setText(e.username)
 
         jobIDTextLabel.setText(self.__tr("Job ID:"))
-        if job_id <= 0:
+        if e.job_id <= 0:
             jobIDText.setText(self.__tr("n/a"))
         else:
-            jobIDText.setText(str(job_id))
+            jobIDText.setText(str(e.job_id))
 
         codeTextLabel.setText(self.__tr("Code:"))
-        codeText.setText(unicode(ec))
+        codeText.setText(unicode(e.event_code))
 
-        error_state = STATUS_TO_ERROR_STATE_MAP.get(ec, ERROR_STATE_CLEAR)
+        error_state = STATUS_TO_ERROR_STATE_MAP.get(e.event_code, ERROR_STATE_CLEAR)
         
         try:
             tech_type = self.cur_device.tech_type
@@ -211,13 +214,16 @@ class ScrollStatusView(ScrollView):
 
         if status_pix is not None:
             icon.setPixmap(status_pix)
-
-        self.row += 1
+        
         self.addWidget(widget, str(self.row))
-
+        self.row += 1
+        
 
     def getTimeDeltaDesc(self, past):
-        delta = datetime.datetime(*time.localtime()[:7]) - datetime.datetime(*past[:7])
+        t1 = QDateTime()
+        t1.setTime_t(int(past))
+        t2 = QDateTime.currentDateTime()
+        delta = t1.secsTo(t2)
         return self.__tr("(about %1 ago)").arg(self.stringify(delta))
 
 
@@ -241,8 +247,7 @@ class ScrollStatusView(ScrollView):
 
         return seconds, "second"
 
-    def stringify(self, td):
-        seconds = td.days * 3600 * 24 + td.seconds
+    def stringify(self, seconds):
         amount, unit_name = self.seconds_in_units(seconds)
 
         try:

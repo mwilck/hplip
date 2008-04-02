@@ -1266,39 +1266,50 @@ def MapPJLErrorCode(error_code, str_code=None):
 
 pjl_code_pat = re.compile("""^CODE\s*=\s*(\d.*)$""", re.IGNORECASE)
 
-def StatusType8(dev): #  LaserJet PJL
+
+
+def StatusType8(dev): #  LaserJet PJL (B&W only)
     try:
+        # Will error if printer is busy printing...
         dev.openPrint()
     except Error, e:
         log.warn(e.msg)
+        status_code = STATUS_PRINTER_BUSY
+    else:
+        try:
+            dev.writePrint("\x1b%-12345X@PJL INFO STATUS \r\n\x1b%-12345X")
+            pjl_return = dev.readPrint(1024, timeout=5, allow_short_read=True)
+            dev.close()
 
-    dev.writePrint("\x1b%-12345X@PJL INFO STATUS \r\n\x1b%-12345X")
-    pjl_return = dev.readPrint(1024, timeout=5, allow_short_read=True)
-    dev.close()
+            log.debug_block("PJL return:", pjl_return)
 
-    log.debug_block("PJL return:", pjl_return)
+            str_code = '10001'
 
-    str_code = '10001'
+            for line in pjl_return.splitlines():
+                line = line.strip()
+                match = pjl_code_pat.match(line)
 
-    for line in pjl_return.splitlines():
-        line = line.strip()
-        match = pjl_code_pat.match(line)
+                if match is not None:
+                    str_code = match.group(1)
+                    break
 
-        if match is not None:
-            str_code = match.group(1)
-            break
+            log.debug("Code = %s" % str_code)
 
-    log.debug("Code = %s" % str_code)
+            try:
+                error_code = int(str_code)
+            except ValueError:
+                error_code = DEFAULT_PJL_ERROR_CODE
 
-    try:
-        error_code = int(str_code)
-    except ValueError:
-        error_code = DEFAULT_PJL_ERROR_CODE
+            log.debug("Error code = %d" % error_code)
 
-    log.debug("Error code = %d" % error_code)
-
-    status_code = MapPJLErrorCode(error_code, str_code)
-
+            status_code = MapPJLErrorCode(error_code, str_code)
+        
+        finally:
+            try:
+                dev.closePrint()
+            except Error:
+                pass
+    
     agents = []
 
     # TODO: Only handles mono lasers...

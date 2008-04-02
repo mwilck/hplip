@@ -24,6 +24,7 @@ from base.g import *
 from base import utils, pml, maint
 from prnt import cups
 from base.codes import *
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -54,8 +55,8 @@ from faxsettingsform import FaxSettingsForm
 
 
 class ScrollToolView(ScrollView):
-    def __init__(self, toolbox_hosted=True, parent = None,form=None, name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, toolbox_hosted=True, parent=None, form=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
         self.form = form
         self.toolbox_hosted = toolbox_hosted
@@ -73,93 +74,101 @@ class ScrollToolView(ScrollView):
 
             if self.cur_device.device_settings_ui is not None:
                 self.addItem( "device_settings", self.__tr("<b>Device Settings</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_settings.png')), 
+                    load_pixmap('settings', '32x32'),
                     self.__tr("Your device has special device settings. You may alter these settings here."), 
                     self.__tr("Device Settings..."), 
                     self.deviceSettingsButton_clicked)
 
             if self.cur_device.fax_type and prop.fax_build:
                 self.addItem( "fax_settings", self.__tr("<b>Fax Setup</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_fax.png')), 
+                    load_pixmap('fax', '32x32'),
                     self.__tr("Fax support must be setup before you can send faxes."), 
                     self.__tr("Setup Fax..."), 
                     self.faxSettingsButton_clicked)
 
                 self.addItem( "fax_address_book", self.__tr("<b>Fax Address Book</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_fax.png')), 
+                    load_pixmap('fax', '32x32'),
                     self.__tr("Setup fax phone numbers to use when sending faxes from the PC."), 
                     self.__tr("Fax Address Book..."), 
                     self.faxAddressBookButton_clicked)
 
             self.addItem( "testpage", self.__tr("<b>Print Test Page</b>"), 
-                QPixmap(os.path.join(prop.image_dir, 'icon_testpage.png')), 
+                load_pixmap('testpage', '32x32'),
                 self.__tr("Print a test page to test the setup of your printer."), 
                 self.__tr("Print Test Page >>"), 
                 self.PrintTestPageButton_clicked)
 
             self.addItem( "printer_info", self.__tr("<b>View Printer (Queue) Information</b>"), 
-                QPixmap(os.path.join(prop.image_dir, 'icon_cups.png')), 
+                load_pixmap('cups', '32x32'),
                 self.__tr("View the printers (queues) installed in CUPS."), 
                 self.__tr("View Printer Information >>"), 
                 self.viewPrinterInformation) 
 
             self.addItem( "device_info", self.__tr("<b>View Device Information</b>"), 
-                QPixmap(os.path.join(prop.image_dir, 'icon_info.png')), 
+                load_pixmap('info', '32x32'),
                 self.__tr("This information is primarily useful for debugging and troubleshooting (advanced)."), 
                 self.__tr("View Device Information >>"), 
                 self.viewInformation) 
 
             if self.cur_device.pq_diag_type:
                 self.addItem( "pqdiag", self.__tr("<b>Print Quality Diagnostics</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_pq_diag.png')),
+                    load_pixmap('pq_diag', '32x32'),
                     self.__tr("Your printer can print a test page to help diagnose print quality problems."), 
                     self.__tr("Print Diagnostic Page..."), 
                     self.pqDiag)
 
             if self.cur_device.fw_download:
                 self.addItem( "fwdownload", self.__tr("<b>Download Firmware</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'download.png')),
+                    load_pixmap('download', '32x32'),
                     self.__tr("Download firmware to your printer (required on some devices after each power-up)."), 
                     self.__tr("Download Firmware..."), 
                     self.downloadFirmware)
 
             if self.cur_device.clean_type:
                 self.addItem( "clean", self.__tr("<b>Clean Cartridges</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_clean.png')), 
+                    load_pixmap('clean', '32x32'),
                     self.__tr("You only need to perform this action if you are having problems with poor printout quality due to clogged ink nozzles."), 
                     self.__tr("Clean Cartridges..."), 
                     self.CleanPensButton_clicked)
 
             if self.cur_device.align_type:
                 self.addItem( "align", self.__tr("<b>Align Cartridges</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_align.png')), 
+                    load_pixmap('align', '32x32'), 
                     self.__tr("This will improve the quality of output when a new cartridge is installed."), 
                     self.__tr("Align Cartridges..."), 
                     self.AlignPensButton_clicked)
 
             if self.cur_device.color_cal_type:
-                self.addItem( "colorcal", self.__tr("<b>Perform Color Calibration</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_colorcal.png')), 
-                    self.__tr("Use this procedure to optimimize your printer's color output."), 
-                    self.__tr("Color Calibration..."), 
-                    self.ColorCalibrationButton_clicked)
+                if self.cur_device.color_cal_type == COLOR_CAL_TYPE_TYPHOON:
+                    self.addItem( "colorcal", self.__tr("<b>Perform Color Calibration</b>"), 
+                        load_pixmap('colorcal', '32x32'),
+                        self.__tr("Use this procedure to optimimize your printer's color output (requires glossy photo paper)."), 
+                        self.__tr("Color Calibration >>"), 
+                        self.ColorCalibrationButton_clicked)
+                    
+                else: # All others
+                    self.addItem( "colorcal", self.__tr("<b>Perform Color Calibration</b>"), 
+                        load_pixmap('colorcal', '32x32'),
+                        self.__tr("Use this procedure to optimimize your printer's color output."), 
+                        self.__tr("Color Calibration..."), 
+                        self.ColorCalibrationButton_clicked)
 
             if self.cur_device.linefeed_cal_type:
                 self.addItem( "linefeed", self.__tr("<b>Perform Line Feed Calibration</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_linefeed_cal.png')),
+                    load_pixmap('linefeed_cal', '32x32'),
                     self.__tr("Use line feed calibration to optimize print quality (to remove gaps in the printed output)."), 
                     self.__tr("Line Feed Calibration..."), 
                     self.linefeedCalibration) 
 
             if self.cur_device.embedded_server_type and self.cur_device.bus == 'net' and prop.net_build:
                 self.addItem( "ews", self.__tr("<b>Access Embedded Web Page</b>"), 
-                    QPixmap(os.path.join(prop.image_dir, 'icon_ews.png')), 
+                    load_pixmap('ews', '32x32'),
                     self.__tr("You can use your printer's embedded web server to configure, maintain, and monitor the device from a web browser."),
                     self.__tr("Open in Browser..."), 
                     self.OpenEmbeddedBrowserButton_clicked)
 
         self.addItem("support",  self.__tr("<b>View Documentation</b>"), 
-            QPixmap(os.path.join(prop.image_dir, 'icon_support2.png')), 
+            load_pixmap('support2', '32x32'),
             self.__tr("View documentation installed on your system."), 
             self.__tr("View Documentation..."), 
             self.viewSupport) 
@@ -438,45 +447,49 @@ class ScrollToolView(ScrollView):
         color_cal_type = d.color_cal_type
         log.debug("Color-cal: %s %s (type=%d) %s" % ("*"*20, self.cur_device.device_uri, color_cal_type, "*"*20))
 
-        try:
-            QApplication.setOverrideCursor(QApplication.waitCursor)
-
+        if color_cal_type == COLOR_CAL_TYPE_TYPHOON:
+            self.form.SwitchMaintTab("colorcal")
+        
+        else:
             try:
-                d.open()
-            except Error:
-                self.CheckDeviceUI()
-            else:
-                if d.isIdleAndNoError():
-                    QApplication.restoreOverrideCursor()
+                QApplication.setOverrideCursor(QApplication.waitCursor)
 
-                    if color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
-                         maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
-                                             self.PhotoPenRequiredUI)
-
-                    elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
-                        maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
-                                            self.InvalidPenUI)
-
-                    elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
-                        maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
-                                            self.PhotoPenRequiredUI2)
-
-                    elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
-                        maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
-                                            self.WaitUI)
-
-                    elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
-                        maint.colorCalType5(d, self.LoadPaperUI)
-
-                    elif color_cal_type == COLOR_CAL_TYPE_CARRIER:
-                        maint.colorCalType6(d, self.LoadPaperUI)
-
-                else:
+                try:
+                    d.open()
+                except Error:
                     self.CheckDeviceUI()
+                else:
+                    if d.isIdleAndNoError():
+                        QApplication.restoreOverrideCursor()
 
-        finally:
-            d.close()
-            QApplication.restoreOverrideCursor()
+                        if color_cal_type == COLOR_CAL_TYPE_DESKJET_450:
+                             maint.colorCalType1(d, self.LoadPaperUI, self.ColorCalUI,
+                                                 self.PhotoPenRequiredUI)
+
+                        elif color_cal_type == COLOR_CAL_TYPE_MALIBU_CRICK:
+                            maint.colorCalType2(d, self.LoadPaperUI, self.ColorCalUI2,
+                                                self.InvalidPenUI)
+
+                        elif color_cal_type == COLOR_CAL_TYPE_STRINGRAY_LONGBOW_TORNADO:
+                            maint.colorCalType3(d, self.LoadPaperUI, self.ColorAdjUI,
+                                                self.PhotoPenRequiredUI2)
+
+                        elif color_cal_type == COLOR_CAL_TYPE_CONNERY:
+                            maint.colorCalType4(d, self.LoadPaperUI, self.ColorCalUI4,
+                                                self.WaitUI)
+
+                        elif color_cal_type == COLOR_CAL_TYPE_COUSTEAU:
+                            maint.colorCalType5(d, self.LoadPaperUI)
+
+                        elif color_cal_type == COLOR_CAL_TYPE_CARRIER:
+                            maint.colorCalType6(d, self.LoadPaperUI)
+
+                    else:
+                        self.CheckDeviceUI()
+
+            finally:
+                d.close()
+                QApplication.restoreOverrideCursor()
 
 
     def PrintTestPageButton_clicked(self):
@@ -642,8 +655,8 @@ class ScrollToolView(ScrollView):
 #
 
 class ScrollDeviceInfoView(ScrollView):
-    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, toolbox_hosted=True, parent=None, form=None, name=None, fl=0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
         self.form = form
         self.toolbox_hosted = toolbox_hosted
@@ -718,8 +731,8 @@ class ScrollDeviceInfoView(ScrollView):
 #
 
 class ScrollTestpageView(ScrollView):
-    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
         self.form = form
         self.toolbox_hosted = toolbox_hosted
@@ -840,8 +853,8 @@ class ScrollTestpageView(ScrollView):
 #
 
 class ScrollPrinterInfoView(ScrollView):
-    def __init__(self, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
-        ScrollView.__init__(self,parent,name,fl)
+    def __init__(self, service, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self, service, parent, name, fl)
 
         self.form = form
         self.toolbox_hosted = toolbox_hosted
@@ -926,3 +939,89 @@ class ScrollPrinterInfoView(ScrollView):
 
     def __tr(self,s,c = None):
         return qApp.translate("ScrollPrinterInfoView",s,c)
+        
+        
+        
+#
+#
+# Color cal type 7
+#
+#
+
+class ScrollColorCalView(ScrollView):
+    def __init__(self, service, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+        ScrollView.__init__(self, service, parent, name, fl)
+
+        self.form = form
+        self.toolbox_hosted = toolbox_hosted
+
+    def fillControls(self):
+        ScrollView.fillControls(self)
+
+        #if self.addPrinterFaxList():
+         #   self.addTestpageType()
+    
+        self.addLoadPaper(PAPER_TYPE_HP_ADV_PHOTO)
+
+        if self.toolbox_hosted:
+            s = self.__tr("<< Tools")
+        else:
+            s = self.__tr("Close")
+
+        self.printButton = self.addActionButton("bottom_nav", self.__tr("Perform Color Calibration"), 
+                                self.colorcalButton_clicked, 'print.png', None, s, self.navButton_clicked)
+
+
+    def navButton_clicked(self):
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+
+    def colorcalButton_clicked(self):
+        d = self.cur_device
+        printer_name = self.cur_printer
+        printed = False
+
+        try:
+            QApplication.setOverrideCursor(QApplication.waitCursor)
+
+            try:
+                d.open()
+            except Error:
+                self.CheckDeviceUI()
+            else:
+                if d.isIdleAndNoError():
+                    QApplication.restoreOverrideCursor()
+                    d.close()
+
+                    d.setPML(pml.OID_PRINT_INTERNAL_PAGE, pml.PRINT_INTERNAL_PAGE_AUTOMATIC_COLOR_CALIBRATION)
+                    printed = True
+
+                else:
+                    d.close()
+                    self.CheckDeviceUI()
+
+        finally:
+            QApplication.restoreOverrideCursor()
+
+        if printed:
+            QMessageBox.information(self,
+                                 self.caption(),
+                                 self.__tr("<p><b>A test page should be printing on your printer.</b><p>If the page fails to print, please visit http://hplip.sourceforge.net for troubleshooting and support."),
+                                  QMessageBox.Ok,
+                                  QMessageBox.NoButton,
+                                  QMessageBox.NoButton)
+
+
+        if self.toolbox_hosted:
+            self.form.SwitchMaintTab("tools")
+        else:
+            self.form.close()
+            
+    def CheckDeviceUI(self):
+            self.form.FailureUI(self.__tr("<b>Device is busy or in an error state.</b><p>Please check device and try again."))            
+
+
+    def __tr(self,s,c = None):
+        return qApp.translate("ScrollColorCalView",s,c)

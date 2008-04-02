@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2001-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2001-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,13 +22,19 @@
 from __future__ import generators
 
 # Std Lib
-import sys, time, os, gzip
+import sys
+import time
+import os
+import gzip
+import select
+import struct
 
 # Local
 from base.g import *
-from base import device, utils, service
+from base import device, utils
 from prnt import cups
 from base.codes import *
+from ui_utils import load_pixmap
 
 # Qt
 from qt import *
@@ -42,13 +48,13 @@ from scrollfunc import ScrollFunctionsView
 from scrollstatus import ScrollStatusView
 from scrollprintsettings import ScrollPrintSettingsView
 from scrollprintcontrol import ScrollPrintJobView
-from scrolltool import ScrollToolView, ScrollDeviceInfoView, ScrollTestpageView, ScrollPrinterInfoView
+from scrolltool import ScrollToolView, ScrollDeviceInfoView, ScrollTestpageView, ScrollPrinterInfoView, ScrollColorCalView
 from scrollsupplies import ScrollSuppliesView
 from scrollprint import ScrollPrintView
 
 if prop.fax_build:
     from scrollfax import ScrollFaxView
-    
+
 from scrollunload import ScrollUnloadView
 from scrollcopy import ScrollCopyView
 
@@ -129,20 +135,28 @@ def PasswordUI(prompt):
 
 
 class DevMgr4(DevMgr4_base):
-    def __init__(self, hpssd_sock, 
-                 cleanup=None, toolbox_version='0.0',
+    def __init__(self, read_pipe=None, toolbox_version='0.0',
+                 initial_device_uri=None, initial_printer_name=None, 
+                 initial_function=None, disable_dbus=False,
                  parent=None, name=None, fl = 0):
 
         DevMgr4_base.__init__(self, parent, name, fl)
-
-        icon = QPixmap(os.path.join(prop.image_dir, 'HPmenu.png'))
-        self.setIcon(icon)
+        
+        self.disable_dbus = disable_dbus
 
         log.debug("Initializing toolbox UI...")
         log.debug("HPLIP Version: %s" % sys_cfg.hplip.version)
 
-        self.cleanup = cleanup
-        self.hpssd_sock = hpssd_sock
+        self.fmt = "64s64sI32sI64sf"
+        self.fmt_size = struct.calcsize(self.fmt)
+        
+        if read_pipe is not None and not disable_dbus:
+            log.debug("Setting up read_pipe")
+            self.notifier = QSocketNotifier(read_pipe, QSocketNotifier.Read)
+            QObject.connect(self.notifier, SIGNAL("activated(int)"), self.notifier_activated)
+
+        self.setIcon(load_pixmap('prog', '48x48'))
+
         self.toolbox_version = toolbox_version
         self.cur_device_uri = user_cfg.last_used.device_uri # Device URI
         self.devices = {}    # { Device_URI : device.Device(), ... }
@@ -150,6 +164,9 @@ class DevMgr4(DevMgr4_base):
         self.num_devices = 0
         self.cur_device = None
         self.rescanning = False
+        self.initial_device_uri = initial_device_uri
+        self.initial_printer_name = initial_printer_name
+        self.initial_function = initial_function
 
         self.user_settings = utils.UserSettings()
 
@@ -158,6 +175,19 @@ class DevMgr4(DevMgr4_base):
 
         self.InitDeviceList()
 
+        if not self.disable_dbus:
+            self.dbus_avail, self.service = device.init_dbus()
+            
+            if not self.dbus_avail:
+                self.FailureUI("<b>Error</b><p>hp-systray must be running to get device status. hp-systray requires dbus support. Device status will not be available.")
+            else:
+                log.debug("dbus enabled")
+
+        else:
+            log.debug("dbus disabled")
+            self.dbus_avail, self.service = False, None
+        
+        
         self.InitFunctionsTab()
         self.InitStatusTab()
         self.InitMaintTab()
@@ -178,10 +208,10 @@ class DevMgr4(DevMgr4_base):
         self.maint_page = 'tools'
 
         cups.setPasswordCallback(PasswordUI)
-        
+
         #if not prop.doc_build:
         #    self.helpContentsAction.setEnabled(False)
-            
+
         self.allow_auto_refresh = True
 
         QTimer.singleShot(0, self.InitialUpdate)
@@ -190,11 +220,82 @@ class DevMgr4(DevMgr4_base):
     def InitialUpdate(self):
         self.RescanDevices(init=True)
 
+        cont = True
+        if self.initial_device_uri is not None:
+            if not self.ActivateDevice(self.initial_device_uri):
+                log.error("Device %s not found" % self.initial_device_uri)
+                cont = False
+
+##        if cont:
+##            if self.initial_printer_name is not None:
+##                printers = cups.getPrinters()
+##
+##                for p in printers:
+##                    if p.name.lower() == self.initial_printer_name.lower():
+##                        #device_uri = p.device_uri
+##                        #self.PrinterCombo_activated(self.initial_printer_name)
+##                        self.current_printer = unicode(self.initial_printer_name)
+##                        self.PrinterCombo_activated(self.current_printer)
+##                        break
+##                else:
+##                    log.error("Initial printer %s not found" % self.initial_printer_name)
+
+
+
+        if cont:
+            if self.initial_function is not None:
+                # TODO: Make sure this device can do this func!
+                self.SwitchFunctionsTab(self.initial_function)
+
         self.refresh_timer = QTimer(self, "RefreshTimer")
         self.connect(self.refresh_timer, SIGNAL('timeout()'), self.TimedRefresh)
 
         if MIN_AUTO_REFRESH_RATE <= self.user_settings.auto_refresh_rate <= MAX_AUTO_REFRESH_RATE:
             self.refresh_timer.start(self.user_settings.auto_refresh_rate * 1000)
+
+
+    def notifier_activated(self, sock):
+        m = ''
+        while True:
+            ready = select.select([sock], [], [], 1.0)
+
+            if ready[0]:
+                m = ''.join([m, os.read(sock, self.fmt_size)])
+                if len(m) == self.fmt_size:
+                    event = device.Event(*struct.unpack(self.fmt, m))
+                    desc = device.queryString(event.event_code)
+
+                    error_state = STATUS_TO_ERROR_STATE_MAP.get(event.event_code, ERROR_STATE_CLEAR)
+                    
+                    log.debug("Status event: %s (%d)" % (event.device_uri, event.event_code))
+                    
+                    if EVENT_MIN_USER_EVENT <= event.event_code <= EVENT_MAX_USER_EVENT:
+                        if not self.ActivateDevice(event.device_uri):
+                            log.debug("Device %s Not found" % event.device_uri)
+                        else:
+                            self.UpdateHistory()
+                            #self.Tabs_deviceChanged(self.Tabs.currentPage())
+                            self.UpdatePanel()
+
+                    elif event.event_code > EVENT_MAX_USER_EVENT:
+                        if event.event_code == EVENT_FAX_RENDER_COMPLETE:
+                            log.debug("Ignored")
+                            
+                        elif event.event_code == EVENT_CUPS_QUEUES_CHANGED:
+                            pass
+                            
+                        elif event.event_code == EVENT_RAISE_DEVICE_MANAGER:
+                            self.showNormal()
+                            self.setActiveWindow()
+                            self.raiseW()
+                            
+                    else:
+                        log.debug("Ignored")
+                        
+            else:
+                break
+        
+
 
     def InitDeviceList(self):
         self.DeviceList.setAutoArrange(False)
@@ -203,28 +304,29 @@ class DevMgr4(DevMgr4_base):
 
 
     def InitFunctionsTab(self):
-        self.FuncList = ScrollFunctionsView(self.FunctionsTab, self, "FuncView")
+        self.FuncList = ScrollFunctionsView(self.service, self.FunctionsTab, self, "FuncView")
 
         self.FuncTabLayout = QGridLayout(self.FunctionsTab,1,1,11,6,"FuncTabLayout")
         self.FuncTabLayout.addWidget(self.FuncList,0,0)
+
 
     def SwitchFunctionsTab(self, page='funcs'):
         self.FuncTabLayout.remove(self.FuncList)
         self.FuncList.hide()
         self.deviceRemoveAction.setEnabled(False)
-        self.deviceInstallAction.setEnabled(False)        
+        self.deviceInstallAction.setEnabled(False)
 
         if page  == 'funcs':
             self.allow_auto_refresh = True
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions"))
-            self.FuncList = ScrollFunctionsView(self.FunctionsTab, self, "FuncView")
+            self.FuncList = ScrollFunctionsView(self.service, self.FunctionsTab, self, "FuncView")
             self.deviceRemoveAction.setEnabled(True)
-            self.deviceInstallAction.setEnabled(True)        
+            self.deviceInstallAction.setEnabled(True)
 
         elif page == 'print':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Print"))
-            self.FuncList = ScrollPrintView(True, self.FunctionsTab, self, "PrintView")
+            self.FuncList = ScrollPrintView( self.service, True, self.FunctionsTab, self, "PrintView")
 
         elif page == 'scan':
              self.allow_auto_refresh = False
@@ -233,17 +335,18 @@ class DevMgr4(DevMgr4_base):
         elif page == 'copy':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab,self.__tr("Functions > Make Copies"))
-            self.FuncList = ScrollCopyView(self.hpssd_sock, True, parent=self.FunctionsTab, form=self, name="CopyView")
+            # was self.FuncList = ScrollCopyView(self.service, True, parent=self.FunctionsTab, name="CopyView")
+            self.FuncList = ScrollCopyView(self.service, True, parent=self.FunctionsTab, name="CopyView", form=self)
 
         elif page == 'fax':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Fax"))
-            self.FuncList = ScrollFaxView(self.hpssd_sock, True, self.FunctionsTab, self, "FaxView")
+            self.FuncList = ScrollFaxView(self.service, True, self.FunctionsTab, self, "FaxView")
 
         elif page == 'pcard':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.FunctionsTab, self.__tr("Functions > Unload Photo Card"))
-            self.FuncList = ScrollUnloadView(True, self.FunctionsTab, self, "UnloadView")
+            self.FuncList = ScrollUnloadView( self.service, True, self.FunctionsTab, self, "UnloadView")
 
         self.funcs_page = page
         self.FuncTabLayout.addWidget(self.FuncList, 0, 0)
@@ -267,16 +370,16 @@ class DevMgr4(DevMgr4_base):
         spacer22 = QSpacerItem(20,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
         StatusTabLayout.addItem(spacer22,0,0)
 
-        self.StatusList = ScrollStatusView(self.StatusTab, "statuslist")
+        self.StatusList = ScrollStatusView(self.service, self.StatusTab, "statuslist")
         StatusTabLayout.addMultiCellWidget(self.StatusList,1,1,0,2)
 
-        self.warning_pix_small = QPixmap(os.path.join(prop.image_dir, "warning_small.png"))
-        self.error_pix_small = QPixmap(os.path.join(prop.image_dir, "error_small.png"))
-        self.ok_pix_small = QPixmap(os.path.join(prop.image_dir, "ok_small.png"))
-        self.lowink_pix_small = QPixmap(os.path.join(prop.image_dir, 'inkdrop_small.png'))
-        self.lowtoner_pix_small = QPixmap(os.path.join(prop.image_dir, 'toner_small.png'))
-        self.busy_pix_small = QPixmap(os.path.join(prop.image_dir, 'busy_small.png'))
-        self.lowpaper_pix_small = QPixmap(os.path.join(prop.image_dir, 'paper_small.png'))
+        self.warning_pix_small =load_pixmap('warning', '16x16')
+        self.error_pix_small = load_pixmap('error', '16x16')
+        self.ok_pix_small = load_pixmap('ok', '16x16')
+        self.lowink_pix_small = load_pixmap('inkdrop', '16x16')
+        self.lowtoner_pix_small = load_pixmap('toner', '16x16')
+        self.busy_pix_small = load_pixmap('busy', '16x16')
+        self.lowpaper_pix_small = load_pixmap('paper', '16x16')
 
         # pixmaps: (inkjet, laserjet)
         self.SMALL_ICONS = { ERROR_STATE_CLEAR : (None, None),
@@ -293,13 +396,14 @@ class DevMgr4(DevMgr4_base):
                               ERROR_STATE_COPYING : (self.busy_pix_small, self.busy_pix_small),
                             }
 
-        self.blank_lcd = os.path.join(prop.image_dir, "panel_lcd.xpm")
-        self.Panel_2.setPixmap(QPixmap(self.blank_lcd))
+        self.Panel_2.setPixmap(load_pixmap('panel_lcd', 'other'))
+
 
     def InitMaintTab(self): # Add Scrolling Maintenance (Tools)
-        self.ToolList = ScrollToolView(True, self.MaintTab, self, "ToolView")
+        self.ToolList = ScrollToolView(self.service, True, self.MaintTab, self, "ToolView")
         self.MaintTabLayout = QGridLayout(self.MaintTab,1,1,11,6,"MaintTabLayout")
         self.MaintTabLayout.addWidget(self.ToolList,0,0)
+
 
     def SwitchMaintTab(self, page='tools'):
         self.MaintTabLayout.remove(self.ToolList)
@@ -310,25 +414,30 @@ class DevMgr4(DevMgr4_base):
         if page  == 'tools':
             self.allow_auto_refresh = True
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools"))
-            self.ToolList = ScrollToolView(True, self.MaintTab, self, "ToolView")
+            self.ToolList = ScrollToolView(self.service, True, self.MaintTab, self, "ToolView")
             self.deviceRemoveAction.setEnabled(True)
-            self.deviceInstallAction.setEnabled(True)        
+            self.deviceInstallAction.setEnabled(True)
 
         elif page == 'device_info':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Device Information"))
-            self.ToolList = ScrollDeviceInfoView(True, self.MaintTab, self, "DeviceInfoView")
+            self.ToolList = ScrollDeviceInfoView(self.service, True, self.MaintTab, self, "DeviceInfoView")
 
         elif page == 'printer_info':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Printer Information"))
-            self.ToolList = ScrollPrinterInfoView(True, self.MaintTab, self, "PrinterInfoView")
+            self.ToolList = ScrollPrinterInfoView(self.service, True, self.MaintTab, self, "PrinterInfoView")
 
         elif page == 'testpage':
             self.allow_auto_refresh = False
             self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Print Test Page"))
-
-            self.ToolList = ScrollTestpageView(True, self.MaintTab, self, "ScrollTestpageView")
+            self.ToolList = ScrollTestpageView(self.service, True, self.MaintTab, self, "ScrollTestpageView")
+            
+        elif page == 'colorcal':
+            self.allow_auto_refresh = False
+            self.Tabs.changeTab(self.MaintTab,self.__tr("Tools > Color Calibration"))
+            #self.ToolList = ScrollTestpageView(self.service, True, self.MaintTab, self, "ScrollTestpageView")
+            self.ToolList = ScrollColorCalView(self.service, True, self.MaintTab, self, "ScrollTestpageView")
 
         self.maint_page = page
         self.MaintTabLayout.addWidget(self.ToolList, 0, 0)
@@ -338,15 +447,16 @@ class DevMgr4(DevMgr4_base):
 
 
     def InitSuppliesTab(self): # Add Scrolling Supplies 
-        self.SuppliesList = ScrollSuppliesView(self.SuppliesTab, "SuppliesView")
+        self.SuppliesList = ScrollSuppliesView(self.service, self.SuppliesTab, "SuppliesView")
         SuppliesTabLayout = QGridLayout(self.SuppliesTab,1,1,11,6,"SuppliesTabLayout")
         self.SuppliesList.setHScrollBarMode(QScrollView.AlwaysOff)
         SuppliesTabLayout.addWidget(self.SuppliesList,0,0)    
 
+
     def InitPrintSettingsTab(self): # Add Scrolling Print Settings
         PrintJobsTabLayout = QGridLayout(self.PrintSettingsTab,1,1,11,6,"PrintJobsTabLayout")
 
-        self.PrintSettingsList = ScrollPrintSettingsView(self.PrintSettingsTab, "PrintSettingsView")
+        self.PrintSettingsList = ScrollPrintSettingsView(self.service, self.PrintSettingsTab, "PrintSettingsView")
         PrintJobsTabLayout.addMultiCellWidget(self.PrintSettingsList,1,1,0,5)
 
         self.PrintSettingsPrinterCombo = QComboBox(0,self.PrintSettingsTab,"comboBox5")
@@ -368,11 +478,12 @@ class DevMgr4(DevMgr4_base):
 
         self.connect(self.PrintSettingsPrinterCombo, SIGNAL("activated(const QString&)"), self.SettingsPrinterCombo_activated)
 
+
     def InitPrintJobsTab(self):
         # Add Scrolling Print Jobs
         PrintJobsTabLayout = QGridLayout(self.PrintJobsTab,1,1,11,6,"PrintJobsTabLayout")
 
-        self.PrintJobsList = ScrollPrintJobView(self.PrintJobsTab, "PrintJobsView")
+        self.PrintJobsList = ScrollPrintJobView(self.service, self.PrintJobsTab, "PrintJobsView")
         PrintJobsTabLayout.addMultiCellWidget(self.PrintJobsList,1,1,0,5)
 
         self.PrintJobPrinterCombo = QComboBox(0,self.PrintJobsTab,"comboBox5")
@@ -393,6 +504,7 @@ class DevMgr4(DevMgr4_base):
         PrintJobsTabLayout.addItem(spacer35,0,0)
 
         self.connect(self.PrintJobPrinterCombo, SIGNAL("activated(const QString&)"), self.JobsPrinterCombo_activated)
+
 
     def TimedRefresh(self):
         if self.user_settings.auto_refresh and self.allow_auto_refresh:
@@ -427,10 +539,10 @@ class DevMgr4(DevMgr4_base):
         found = False
 
         while d is not None:
-
             if d.device_uri == device_uri:
                 found = True
                 self.DeviceList.setSelected(d, True)
+                self.DeviceList.setCurrentItem(d)
                 break
 
             d = d.nextItem()
@@ -440,8 +552,6 @@ class DevMgr4(DevMgr4_base):
 
     def Cleanup(self):
         self.CleanupChildren()
-        if self.cleanup is not None:
-            self.cleanup()
 
 
     def CleanupChildren(self):
@@ -458,6 +568,7 @@ class DevMgr4(DevMgr4_base):
                 self.cur_device_uri = self.DeviceList.currentItem().device_uri
                 self.cur_device = self.devices[self.cur_device_uri]
                 user_cfg.last_used.device_uri = self.cur_device_uri
+                self.Tabs_deviceChanged(self.Tabs.currentPage())
             except AttributeError:
                 pass
 
@@ -516,7 +627,7 @@ class DevMgr4(DevMgr4_base):
             self.setCaption(self.__tr("HP Device Manager - %1").arg(self.cur_device.model_ui))
 
             self.updatePrinterList()
-            
+
             if not self.rescanning:
                 self.statusBar().message(QString("%1 (%2)").arg(self.cur_device_uri).arg(', '.join(self.cur_device.cups_printers)))
 
@@ -555,15 +666,16 @@ class DevMgr4(DevMgr4_base):
 
             if not self.rescanning: 
                 self.UpdateHistory()
-                
+
                 if self.allow_auto_refresh:
                     self.Tabs_deviceChanged(self.Tabs.currentPage())
-                
+
                 self.UpdatePrinterCombos()
                 self.UpdatePanel()
                 self.setupDevice.setEnabled(self.cur_device.device_settings_ui is not None)
 
     def updatePrinterList(self):
+        #print "updatePrinterList"
         if self.cur_device is not None and \
             self.cur_device.supported:
 
@@ -579,7 +691,7 @@ class DevMgr4(DevMgr4_base):
 
                 if p_tail == cur_device_uri_tail:
                     self.cur_device.cups_printers.append(p.name)
-    
+
     def UpdatePrinterCombos(self):
         self.PrintSettingsPrinterCombo.clear()
         self.PrintJobPrinterCombo.clear()
@@ -631,12 +743,12 @@ class DevMgr4(DevMgr4_base):
             self.SwitchMaintTab('tools')
 
         else:
-            try:
-                self.TabIndex[tab].onDeviceChange(self.cur_device)
-            except AttributeError:
-                self.TabIndex[tab]()
-                
-    
+            #try:
+            self.TabIndex[tab].onDeviceChange(self.cur_device)
+            #except AttributeError:
+            #    self.TabIndex[tab]()
+
+
     def DeviceList_onItem(self, a0):
         pass
 
@@ -645,9 +757,9 @@ class DevMgr4(DevMgr4_base):
             dev = self.cur_device
 
         try:
-            pix = QPixmap(os.path.join(prop.image_dir, dev.icon))
+            pix = load_pixmap(dev.icon, 'devices')
         except AttributeError:
-            pix = QPixmap(os.path.join(prop.image_dir, 'default_printer.png'))
+            pix = load_pixmap('default_printer', 'devices')
 
         error_state = dev.error_state
         icon = QPixmap(pix.width(), pix.height())
@@ -733,8 +845,8 @@ class DevMgr4(DevMgr4_base):
                             ("*"*20, d, "*"*20)))
 
                         try:
-                            dev = device.Device(d, hpssd_sock=self.hpssd_sock,
-                                                callback=self.callback)
+                            dev = device.Device(d, service=self.service, callback=self.callback, 
+                                                disable_dbus=self.disable_dbus)
                         except Error:
                             log.error("Unexpected error in Device class.")
                             log.exception()
@@ -893,24 +1005,13 @@ class DevMgr4(DevMgr4_base):
             dev.device_settings_ui = mod.settingsUI
 
     def UpdateHistory(self):
-        try:
+        if self.dbus_avail:
             self.cur_device.queryHistory()
-        except Error:
-            log.error("History query failed.")
-            self.cur_device.last_event = None
-            self.cur_device.error_state = ERROR_STATE_ERROR
-            self.cur_device.status_code = STATUS_UNKNOWN
-        else:
-            try:
-                self.cur_device.last_event = self.cur_device.hist[-1]
-            except IndexError:
-                self.cur_device.last_event = None
-                self.cur_device.error_state = ERROR_STATE_ERROR
-                self.cur_device.status_code = STATUS_UNKNOWN
 
 
     def UpdatePanel(self):
         if self.cur_device is not None and \
+            self.cur_device.hist and \
             self.cur_device.supported:
 
             dq = self.cur_device.dq
@@ -919,14 +1020,10 @@ class DevMgr4(DevMgr4_base):
                 line1 = dq.get('panel-line1', '')
                 line2 = dq.get('panel-line2', '')
             else:
-                try:
-                    line1 = self.cur_device.hist[0][12]
-                except IndexError:
-                    line1 = ''
-
+                line1 = device.queryString(self.cur_device.hist[0].event_code)
                 line2 = ''
 
-            pm = QPixmap(self.blank_lcd)
+            pm = load_pixmap('panel_lcd', 'other')
 
             p = QPainter()
             p.begin(pm)
@@ -943,11 +1040,11 @@ class DevMgr4(DevMgr4_base):
             self.Panel_2.setPixmap(pm)
 
         else:
-            self.Panel_2.setPixmap(QPixmap(self.blank_lcd))
+            self.Panel_2.setPixmap(load_pixmap('panel_lcd', 'other'))
 
 
     def settingsConfigure_activated(self, tab_to_show=0):
-        dlg = SettingsDialog(self.hpssd_sock, self)
+        dlg = SettingsDialog(self)
         dlg.TabWidget.setCurrentPage(tab_to_show)
 
         if dlg.exec_loop() == QDialog.Accepted:
@@ -964,10 +1061,11 @@ class DevMgr4(DevMgr4_base):
 
 
     def SetAlerts(self):
-        service.setAlerts(self.hpssd_sock,
-                          self.user_settings.email_alerts,
-                          self.user_settings.email_to_addresses,
-                          self.user_settings.email_from_address)
+##        service.setAlerts(self.hpssd_sock,
+##                          self.user_settings.email_alerts,
+##                          self.user_settings.email_to_addresses,
+##                          self.user_settings.email_from_address)
+        pass
 
     def deviceRescanAction_activated(self):
         self.deviceRescanAction.setEnabled(False)
@@ -1032,13 +1130,13 @@ class DevMgr4(DevMgr4_base):
             else:
                 log.debug("Run: %s %s (%s) %s" % ("*"*20, cmd, self.cur_device_uri, "*"*20))
                 log.debug(cmd)
-                
+
                 try:
                     cmd = ''.join([self.cur_device.device_vars.get(x, x) \
                                      for x in cmd.split(macro_char)])
                 except AttributeError:
                     pass
-                    
+
                 log.debug(cmd)
 
                 path = cmd.split()[0]
@@ -1077,12 +1175,12 @@ class DevMgr4(DevMgr4_base):
 
     def helpContents(self):
         f = "http://hplip.sf.net"
-        
+
         if prop.doc_build:
             g = os.path.join(sys_cfg.dirs.doc, 'index.html')
             if os.path.exists(g):
                 f = "file://%s" % g
-            
+
         log.debug(f)
         utils.openURL(f)
 
