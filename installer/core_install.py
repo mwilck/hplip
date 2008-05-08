@@ -20,9 +20,17 @@
 #
 
 # Std Lib
-import sys, os, os.path, re, time
-import cStringIO, grp, pwd
-import urllib, sha, tarfile
+import sys
+import os
+import os.path
+import re
+import time
+import cStringIO
+import grp
+import pwd
+import urllib # TODO: Replace with urllib2 (urllib is deprecated in Python 3.0)
+import sha # TODO: Replace with hashlib (sha is deprecated in Python 3.0)
+import tarfile
 
 # Local
 from base.g import *
@@ -61,8 +69,8 @@ PASSWORD_LIST = [
     "palavra passe", # pt
     "口令", # zh
     "wachtwoord", # nl
+    "heslo", # czech
 ]
-
 
 PASSWORD_EXPECT_LIST = []
 for s in PASSWORD_LIST:
@@ -72,6 +80,30 @@ for s in PASSWORD_LIST:
         PASSWORD_EXPECT_LIST.append(s)
     else:
         PASSWORD_EXPECT_LIST.append(p)
+
+OK_PROCESS_LIST = ['adpept-notifier', 
+                   'yum-updatesd',
+                   ]
+                   
+CONFIGURE_ERRORS = { 1 : "General/unknown error",
+                     2 : "libusb not found",
+                     3 : "cups-devel not found",
+                     4 : "libnetsnmp not found",
+                     5 : "netsnmp-devel not found",
+                     6 : "python-devel not found",
+                     7 : "pthread-devel not found",
+                     8 : "ppdev-devel not found",
+                     9 : "libcups not found",
+                     10 : "libm not found",
+                     11 : "libusb-devel not found",
+                     12 : "sane-backends-devel not found",
+                     13 : "libdbus not found",
+                     14 : "dbus-devel not found",
+                     15 : "fax requires dbus support",
+                     102 : "libjpeg not found",
+                     103 : "jpeg-devel not found",
+                     104 : "libdi not found",
+                   }
 
 
 try:
@@ -155,6 +187,7 @@ class CoreInstall(object):
             'parallel_supported' : TYPE_BOOL,
             'usb_supported' : TYPE_BOOL,
             'packaged_version': TYPE_STRING, # Version of HPLIP pre-packaged in distro
+            'cups_path_with_bitness' : TYPE_BOOL,
         }
 
         # components
@@ -312,7 +345,9 @@ class CoreInstall(object):
             if callback is not None:
                 callback("Result: %s = %d\n" % (d, self.have_dependencies[d]))
 
-        log.debug("Running package manager: %s" % self.check_pkg_mgr())
+        pid, cmdline = self.check_pkg_mgr()
+        if pid:
+            log.debug("Running package manager: %s (%d)" % (cmdline, pid) )
 
         self.bitness = utils.getBitness()
         log.debug("Bitness = %d" % self.bitness)
@@ -934,22 +969,25 @@ class CoreInstall(object):
         #return check_tool("/usr/lib/cups/driver/drv list") and os.path.exists("/usr/share/cupsddk/include/media.defs")
         return check_file('drv', "/usr/lib/cups/driver") and check_file('media.defs', "/usr/share/cupsddk/include")        
 
-    def check_pkg_mgr(self): # modified from EasyUbuntu
+    def check_pkg_mgr(self):
         """
             Check if any pkg mgr processes are running
         """
-        log.debug("Searching for '%s' in 'ps' output..." % self.package_mgrs)
+        log.debug("Searching for '%s' in running processes..." % self.package_mgrs)
 
-        p = os.popen("ps -U root -o comm") # TODO: Doesn't work on Mac OS X
-        pslist = p.readlines()
-        p.close()
-
-        for process in pslist:
+        processes = get_process_list()
+        
+        for pid, cmdline in processes:
             for p in self.package_mgrs:
-                if p in process:
-                    return p
-        return ''
-
+                if p in cmdline:
+                    for k in OK_PROCESS_LIST:
+                        if k not in cmdline:
+                            log.debug("Found: %s (%d)" % (cmdline, pid))
+                            return (pid, cmdline)
+        
+        log.debug("Not found")
+        return (0, '')
+        
 
     def get_hplip_version(self):
         self.version_description, self.version_public, self.version_internal = '', '', ''
@@ -990,6 +1028,8 @@ class CoreInstall(object):
 
     def configure(self): 
         configure_cmd = './configure'
+        
+        dbus_avail = self.have_dependencies['dbus'] and self.have_dependencies['python-dbus']
 
         if self.selected_options['network']:
             configure_cmd += ' --enable-network-build'
@@ -1001,10 +1041,15 @@ class CoreInstall(object):
         else:
             configure_cmd += ' --disable-pp-build'
 
-        if self.selected_options['fax']:
+        if self.selected_options['fax'] and dbus_avail:
             configure_cmd += ' --enable-fax-build'
         else:
             configure_cmd += ' --disable-fax-build'
+            
+        if dbus_avail:
+            configure_cmd += ' --enable-dbus-build'
+        else:
+            configure_cmd += ' --disable-dbus-build'
 
         if self.selected_options['gui']:
             configure_cmd += ' --enable-gui-build'
@@ -1050,6 +1095,9 @@ class CoreInstall(object):
 
         if self.cups11:
             configure_cmd += ' --enable-cups11-build'
+            
+        if self.get_distro_ver_data('cups_path_with_bitness', False) and self.bitness == 64:
+            configure_cmd += ' --with-cupsbackenddir=/usr/lib64/cups/backend --with-cupsfilterdir=/usr/lib64/cups/filter'
 
         return configure_cmd
 

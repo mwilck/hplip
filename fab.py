@@ -192,7 +192,7 @@ class Console(cmd.Cmd):
 
     def get_groupname(self, args, fail_if_match=True, alt_text=False):
         all_groups = self.db.get_all_groups()
-        
+
         if not args:
             while True:
                 if alt_text:
@@ -252,7 +252,7 @@ class Console(cmd.Cmd):
             if args.startswith('nam'):
                 self.do_names('')
                 return
-                
+
             elif args.startswith('gro'):
                 self.do_groups('')
                 return
@@ -272,12 +272,12 @@ class Console(cmd.Cmd):
 
         print log.bold("\nNames:\n")
         if len(all_entries) > 0:
-        
+
             f = tui.Formatter()
             f.header = ("Name", "Fax Number", "Member of Group(s)")
             for name, e in all_entries.items():
                 f.add((name, e['fax'], ', '.join(e['groups'])))
-                
+
             f.output()
 
         else:
@@ -302,7 +302,7 @@ class Console(cmd.Cmd):
             for group in all_groups:
                 f.add((group, ', '.join(self.db.group_members(group))))
             f.output()
-            
+
         else:
             print "(None)"
 
@@ -399,7 +399,7 @@ class Console(cmd.Cmd):
             if not ok:
                 print log.red("Canceled")
                 return
-            
+
             if ans:
                 new_groups.append(g)
 
@@ -425,7 +425,7 @@ class Console(cmd.Cmd):
                 if not ok:
                     print log.red("Canceled")
                     return
-                
+
                 if not ans:
                     continue
 
@@ -434,8 +434,8 @@ class Console(cmd.Cmd):
                 continue
 
             new_groups.append(add_group)
-        
-        
+
+
         self.db.set(nickname, title, firstname, lastname, faxnum, new_groups, notes)
         self.do_show(nickname)
 
@@ -460,14 +460,14 @@ class Console(cmd.Cmd):
         print "\nLeave or Remove Existing Names in Group:\n"
 
         for e in old_entries:
-            
+
             ok, ans = tui.enter_yes_no("Leave name '%s' in this group" % e, 
                 choice_prompt="(y=yes* (leave), n=no (remove), c=cancel)")
-                
+
             if not ok:
                 print log.red("Canceled")
                 return
-            
+
             if ans:
                 new_entries.append(e)
 
@@ -484,7 +484,7 @@ class Console(cmd.Cmd):
                 break
 
             new_entries.append(nickname)
-            
+
         self.db.update_groups(group, new_entries)
 
         print
@@ -630,11 +630,11 @@ class Console(cmd.Cmd):
 
             f = tui.Formatter()
             f.header = ("Name", "Title", "First Name", "Last Name", "Fax", "Notes", "Member of Group(s)")
-            
+
             for name, e in all_entries.items():
                 f.add((name, e['title'], e['firstname'], e['lastname'], e['fax'], 
                        e['notes'], ', '.join(e['groups'])))
-                          
+
             f.output()
 
         print
@@ -661,9 +661,9 @@ class Console(cmd.Cmd):
             f.add(("Fax Number:", e['fax']))
             f.add(("Notes:", e['notes']))
             f.add(("Member of Group(s):", ', '.join(e['groups'])))
-            
+
             f.output()
-            
+
         else:
             log.error("Name not found. Use the 'names' command to view all names.")
 
@@ -705,7 +705,7 @@ class Console(cmd.Cmd):
     def do_about(self, args):
         """About fab."""
         utils.log_title(__title__, __version__)
-        
+
     def do_import(self, args):
         """ 
         Import LDIF
@@ -713,26 +713,26 @@ class Console(cmd.Cmd):
         [type] = vcf|ldif|auto
         """
         args = args.strip().split()
-        
+
         if not args:
             log.error("You must specify a filename to import from.")
             return
-            
+
         filename = args[0]
-        
+
         if len(args) > 1:
             typ = args[1].lower()
         else:
             typ = 'auto'
-            
+
         if typ not in ('auto', 'ldif', 'vcf', 'vcard'):
             log.error("Invalid type: %s" % typ)
             return
-            
+
         if not os.path.exists(filename):
             log.error("File %s not found." % filename)
             return
-            
+
         if typ == 'auto':
             ext = os.path.splitext(filename)[1].lower()
             if ext == '.vcf':
@@ -745,23 +745,23 @@ class Console(cmd.Cmd):
                     typ = 'vcf'
                 else:
                     typ = 'ldif'
-            
+
         if typ == 'ldif':
             print "Importing from LDIF file %s..." % filename
             ok, error_str = self.db.import_ldif(filename)
-            
+
         elif typ in ('vcard', 'vcf'):
             print "Importing from VCF file %s..." % filename
             ok, error_str = self.db.import_vcard(filename)
-            
+
         if not ok:
             log.error(error_str)
         else:
             self.db.save()
             self.do_list('')
-            
+
         print
-        
+
 
 
 mode = GUI_MODE
@@ -817,12 +817,12 @@ for o, a in opts:
 
         mode = GUI_MODE
         mode_specified = True
-        
+
     elif o in ('-q', '--lang'):
         if a.strip() == '?':
             tui.show_languages()
             sys.exit(0)
-            
+
         loc = utils.validate_language(a.lower())        
 
 utils.log_title(__title__, __version__)
@@ -845,7 +845,7 @@ if mode == GUI_MODE:
     addrbook = None
     # create the main application object
     app = QApplication(sys.argv)
-    
+
     if loc is None:
         loc = user_cfg.ui.get("loc", "system")
         if loc.lower() == 'system':
@@ -853,19 +853,21 @@ if mode == GUI_MODE:
             log.debug("Using system locale: %s" % loc)
 
     if loc.lower() != 'c':
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
-        
+        e = 'utf8'
         try:
-            l, e = loc.split('.')
+            l, x = loc.split('.')
+            loc = '.'.join([l, e])
         except ValueError:
             l = loc
-            e = 'utf8'
-        
+            loc = '.'.join([loc, e])
+
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+
         qm_file = 'hplip_%s.qm' % l
         log.debug("Name of .qm file: %s" % qm_file)
         loaded = trans.load(qm_file, prop.localization_dir)
-        
+
         if loaded:
             app.installTranslator(trans)
         else:
@@ -910,4 +912,4 @@ else: # INTERACTIVE_MODE
 
     log.info("")
     log.info("Done.")
-    
+

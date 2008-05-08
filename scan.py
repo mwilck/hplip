@@ -150,7 +150,7 @@ USAGE = [(__doc__, "", "name", True),
          ("", "Units are specified by -t/--units (default is 'mm').", "option", False),
          ("Specify the scan area based on a paper size:", "--size=<paper size name>", "option", False),
          ("", "where <paper size name> is one of: %s" % ', '.join(PAGE_SIZES.keys()), "option", False), 
-         
+
          utils.USAGE_SPACE,
          ("[-n OPTIONS] ('file' dest) (Not applicable to GUI mode)", "", "header", False),
          ("Filename for 'file' destination:", "-o<file> or -f<file> or --file=<file> or --output=<file>", "option", False),
@@ -158,12 +158,12 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_SPACE,
          ("[-n OPTIONS] ('pdf' dest) (Not applicable to GUI mode)", "", "header", False),
          ("PDF viewer application:", "--pdf=<pdf_viewer>", "option", False),
-         
+
          utils.USAGE_SPACE,
          ("[-n OPTIONS] ('viewer' dest) (Not applicable to GUI mode)", "", "header", False),
          ("Image viewer application:", "-v<viewer> or --viewer=<viewer>", "option", False),
          utils.USAGE_SPACE,
-         
+
          ("[-n OPTIONS] ('editor' dest) (Not applicable to GUI mode)", "", "header", False),
          ("Image editor application:", "-e<editor> or --editor=<editor>", "option", False),
          utils.USAGE_SPACE,
@@ -592,7 +592,7 @@ try:
                     dest.append('fax')
             else:
                 log.error("Unknown/invalid fax name: %s" % pp)
-            
+
         elif o == '--email-to':
             email_to = a.split(',')
             if 'email' not in dest:
@@ -630,14 +630,14 @@ try:
             except ValueError:
                 log.error("Invalid contrast value. Using default of 100.")
                 contrast = 100
-                
+
         elif o == '--adf':
             adf = True
             output_type = 'pdf'
 
 
     utils.log_title(__title__, __version__)
-    
+
     if os.getuid() == 0:
         log.error("hp-scan should not be run as root.")
 
@@ -652,7 +652,7 @@ try:
             log.error("Print destination enabled with no printer specified.")
             log.error("No CUPS default printer found. Disabling 'print' destination.")
             dest.remove("printer")
-            
+
     if 'fax' in dest and 'file' not in dest:
         log.error("Fax destination not implemented. Adding 'file' destination. Use output file to fax.")
         dest.append('file')
@@ -677,7 +677,7 @@ try:
                 log.info("Setting output format to JPEG for color/lineart mode.")
                 output = utils.createSequencedFilename("hpscan", ".jpg")
                 output_type = 'jpeg'
-            
+
         log.warn("Defaulting to '%s'." % output)
 
     else:
@@ -687,7 +687,7 @@ try:
                 output_type = 'jpeg'
         except IndexError:
             output_type = ''
-            
+
     if output_type and output_type not in ('jpeg', 'png', 'pdf'):
         log.error("Invalid output file format. File formats must be 'jpeg', 'png', or 'pdf'.")
         sys.exit(1)
@@ -696,7 +696,7 @@ try:
     ##if scan_mode == 'gray' and output_type and output_type != 'png':
     ##    log.error("Grayscale scans must be saved in PNG file format. To save in other formats, set the 'editor' destination and save the image from the editor in the desired format.")
     ##    sys.exit(1)
-        
+
     if adf and output_type and output_type != 'pdf':
         log.error("ADF scans must be saved in PDF file format.")
         sys.exit(1)
@@ -787,24 +787,26 @@ try:
                 log.debug("Using system locale: %s" % loc)
 
         if loc.lower() != 'c':
-            log.debug("Trying to load .qm file for %s locale." % loc)
-            trans = QTranslator(None)
-            
+            e = 'utf8'
             try:
-                l, e = loc.split('.')
+                l, x = loc.split('.')
+                loc = '.'.join([l, e])
             except ValueError:
                 l = loc
-                e = 'utf8'
-            
+                loc = '.'.join([loc, e])
+
+            log.debug("Trying to load .qm file for %s locale." % loc)
+            trans = QTranslator(None)
+
             qm_file = 'hplip_%s.qm' % l
             log.debug("Name of .qm file: %s" % qm_file)
             loaded = trans.load(qm_file, prop.localization_dir)
-            
+
             if loaded:
                 app.installTranslator(trans)
             else:
                 loc = 'c'
-        
+
         if loc == 'c':
             log.debug("Using default 'C' locale")
         else:
@@ -840,7 +842,7 @@ try:
         from scan import sane
         import scanext
         import cStringIO
-        
+
         try:
             import subprocess
         except ImportError:
@@ -852,14 +854,14 @@ try:
         except ImportError:
             log.error("'hp-scan -n' requires the Python Imaging Library (PIL). Please install it and try again or run 'hp-scan -u' instead.")
             sys.exit(1)
-        
+
     ##    if output_type == 'pdf':
     ##        try:
     ##            from reportlab.pdfgen import canvas
     ##        except ImportError:
     ##            log.error("PDF output requires ReportLab.")
     ##            sys.exit(1)
-                
+
         sane.init()
         devices = sane.getDevices()
 
@@ -909,7 +911,7 @@ try:
 
         #print device.options
         #sys.exit(0)
-        
+
         tlx = device.getOptionObj('tl-x').limitAndSet(tlx)
         tly = device.getOptionObj('tl-y').limitAndSet(tly)
         brx = device.getOptionObj('br-x').limitAndSet(brx)
@@ -994,7 +996,7 @@ try:
 
         device.setOption("mode", scan_mode)
         device.setOption("resolution", res)
-        
+
         if adf:
             try:
                 device.setOption("source", "ADF")
@@ -1002,7 +1004,7 @@ try:
             except scanext.error:
                 log.error("Failed to set ADF mode. Does this device support ADF? Disabling ADF mode.")
                 adf = False
-        
+
         if not adf:
             try:
                 device.setOption("source", "Auto")
@@ -1011,12 +1013,12 @@ try:
                 log.debug("Error setting source or batch-scan option (this is probably OK).")
 
         log.info("\nWarming up...")
-        
+
         no_docs = False
         page = 1
         adf_page_files = []
         #adf_pages = []
-        
+
         cleanup_spinner()
         log.info("")
 
@@ -1026,9 +1028,9 @@ try:
                     log.info("\nPage %d: Scanning..." % page)
                 else:
                     log.info("\nScanning...")
-                    
+
                 bytes_read = 0
-     
+
                 try:
                     try:
                         ok, expected_bytes, status = device.startScan("RGBA", update_queue, event_queue)
@@ -1039,7 +1041,7 @@ try:
                         log.error("Aborted.")
                         device.cancelScan()
                         sys.exit(1) 
-                 
+
                     if adf and status == scanext.SANE_STATUS_NO_DOCS:
                         if page-1 == 0:
                             log.error("No document(s). Please load documents and try again.")
@@ -1048,26 +1050,26 @@ try:
                             log.info("Out of documents. Scanned %d pages total." % (page-1))
                             no_docs = True
                             break
-                    
+
                     if adf:
                         log.info("Expecting to read %s from scanner (per page)." % utils.format_bytes(expected_bytes))
                     else:
                         log.info("Expecting to read %s from scanner." % utils.format_bytes(expected_bytes))
-                    
+
                     device.waitForScanActive()
-                    
+
                     pm = tui.ProgressMeter("Reading data:")
-            
+
                     while device.isScanActive():
                         while update_queue.qsize():
                             try:
                                 status, bytes_read = update_queue.get(0)
-                                
+
                                 #if log.get_level() >= log.LOG_LEVEL_INFO:
                                 if not log.is_debug():
                                     pm.update(int(100*bytes_read/expected_bytes), 
                                         utils.format_bytes(bytes_read))
-                                
+
     ##                            if status == scanext.SANE_STATUS_EOF:
     ##                                log.debug("EOF")
     ##                            elif status == scanext.SANE_STATUS_NO_DOCS:
@@ -1077,26 +1079,26 @@ try:
                                 if status != scanext.SANE_STATUS_GOOD:
                                     log.error("SANE error %d" % status)
                                     sys.exit(1)
-            
+
                             except Queue.Empty:
                                 break
-            
+
 
                         time.sleep(0.5)
-                        
+
                 except KeyboardInterrupt:
                     log.error("Aborted.")
                     device.cancelScan()
                     sys.exit(1)
-            
+
                 # Make sure queue is cleared out...
                 while update_queue.qsize():
                     status, bytes_read = update_queue.get(0)
-                    
+
                     if not log.is_debug():
                         pm.update(int(100*bytes_read/expected_bytes), 
                             utils.format_bytes(bytes_read))
-            
+
     ##                if status == scanext.SANE_STATUS_EOF:
     ##                    log.debug("EOF")
     ##                elif status == scanext.SANE_STATUS_NO_DOCS:
@@ -1106,15 +1108,15 @@ try:
                     if status != scanext.SANE_STATUS_GOOD:
                         log.error("SANE error %d" % status)
                         sys.exit(1)
-                    
+
                 log.info("")
-            
+
                 if bytes_read:
                     log.info("Read %s from scanner." % utils.format_bytes(bytes_read))
-            
+
                     buffer, format, format_name, pixels_per_line, \
                         lines, depth, bytes_per_line, pad_bytes, total_read = device.getScan()
-            
+
                     if scan_mode in ('color', 'gray'):
                         try:
                             im = Image.frombuffer('RGBA', (pixels_per_line, lines), buffer.read(), 
@@ -1122,11 +1124,11 @@ try:
                         except ValueError:
                             log.error("Did not read enough data from scanner (I/O Error?)")
                             sys.exit(1)
-                            
+
     ##                elif scan_mode == 'gray':
     ##                    im = Image.frombuffer('RGBA', (pixels_per_line, lines), buffer.read(), 
     ##                        'raw', 'RGBA', 0, 1).convert('P')
-            
+
                     elif scan_mode == 'lineart':
                         try:
                             im = Image.frombuffer('RGBA', (pixels_per_line, lines), buffer.read(), 
@@ -1134,7 +1136,7 @@ try:
                         except ValueError:
                             log.error("Did not read enough data from scanner (I/O Error?)")
                             sys.exit(1)
-                            
+
                     if adf:
                         temp_output = utils.createSequencedFilename("hpscan_pg%d_" % page, ".png")
                         adf_page_files.append(temp_output)
@@ -1147,19 +1149,19 @@ try:
 
                 if not adf or (adf and no_docs):
                     break
-                    
+
                 page += 1
-            
+
         finally:
             log.info("Closing device.")
             device.cancelScan()
             #print "0"
             #device.freeScan()
             #sane.deInit()
-                
+
         #if no_docs:
         #    sys.exit(0)
-        
+
         #print "1"
         if adf:
             try:
@@ -1170,26 +1172,26 @@ try:
             #print "2"
             #print canvas
             #print canvas.Canvas
-            
+
             tlx_max = device.getOptionObj('tl-x').constraint[1]
             bry_max = device.getOptionObj('br-y').constraint[1]
 
             if not output:
                 output = utils.createSequencedFilename("hpscan", ".pdf")
-            
+
             c = canvas.Canvas(output, (tlx_max/0.3528, bry_max/0.3528))
             #print c
-            
+
             #for p in adf_page_files:
             for p in adf_page_files:
                 log.info("Processing page %s..." % p)
-                
+
                 image = Image.open(p)
                 #print image
-                
+
                 try:
                     c.drawInlineImage(image, (tlx/0.3528), ((bry_max/0.3528)-(bry/0.3528)), 
-                    
+
                     #c.drawInlineImage(image, 0, bry/0.3528,
                         width=None,height=None)
                 except NameError:
@@ -1197,15 +1199,15 @@ try:
                     sys.exit(1)
 
                 c.showPage()
-                
+
             log.info("Saving to file %s" % output)
             c.save()
             log.info("Viewing PDF file in %s" % pdf_viewer)
             os.system("%s %s &" % (pdf_viewer, output))            
-        
-        
+
+
             sys.exit(0)
-        
+
         if resize != 100:
             if resize < 1 or resize > 400:
                 log.error("Resize parameter is incorrect. Resize must be 0% < resize < 400%.")
@@ -1244,7 +1246,7 @@ try:
         temp_saved = False
         if ('editor' in dest or 'viewer' in dest or 'email' in dest or 'printer' in dest) \
             and not file_saved:
-            
+
             output_fd, output = utils.make_temp_file(suffix='.png')
             try:
                 im.save(output)
@@ -1299,7 +1301,7 @@ try:
                     cmd = 'hp-print %s &' % output
                 else:
                     cmd = "python ./print.py %s &" % output
-                    
+
                 os.system(cmd)
 
             elif d == 'email':
@@ -1377,11 +1379,11 @@ try:
 
         device.freeScan()
         sane.deInit()    
-        
-        
+
+
 except KeyboardInterrupt:
     log.error("User exit")
-    
+
 log.info("")
 log.info("Done.")
 

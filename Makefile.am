@@ -62,6 +62,30 @@ www61dir = $(docdir)/tech_docs/man_pages
 dist_www61_DATA = $(wwwsrc)/tech_docs/man_pages/*
 www7dir = $(docdir)/troubleshooting
 dist_www7_DATA = $(wwwsrc)/troubleshooting/*
+www8dir = $(docdir)/models
+dist_www8_DATA = $(wwwsrc)/models/index.html
+www82dir = $(docdir)/models/deskjet
+dist_www82_DATA = $(wwwsrc)/models/deskjet/*
+www83dir = $(docdir)/models/deskjet_aio
+dist_www83_DATA = $(wwwsrc)/models/deskjet_aio/*
+www84dir = $(docdir)/models/photosmart
+dist_www84_DATA = $(wwwsrc)/models/photosmart/*
+www85dir = $(docdir)/models/officejet
+dist_www85_DATA = $(wwwsrc)/models/officejet/*
+www86dir = $(docdir)/models/psc
+dist_www86_DATA = $(wwwsrc)/models/psc/*
+www87dir = $(docdir)/models/laserjet
+dist_www87_DATA = $(wwwsrc)/models/laserjet/*
+www88dir = $(docdir)/models/color_laserjet
+dist_www88_DATA = $(wwwsrc)/models/color_laserjet/*
+www89dir = $(docdir)/models/bij
+dist_www89_DATA = $(wwwsrc)/models/bij/*
+www810dir = $(docdir)/models/edgeline
+dist_www810_DATA = $(wwwsrc)/models/edgeline/*
+www811dir = $(docdir)/models/apollo
+dist_www811_DATA = $(wwwsrc)/models/apollo/*
+www812dir = $(docdir)/models/other
+dist_www812_DATA = $(wwwsrc)/models/other/*
 endif
 
 if HPLIP_BUILD
@@ -207,7 +231,7 @@ libsane_hpaio_LTLIBRARIES = libsane-hpaio.la
 libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
 	  scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
 	  scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/soapht.h scan/sane/sanei_debug.h scan/sane/sanei.h \
-	  scan/sane/sanei_init_debug.c $(BB_SCAN_SOURCES)
+	  scan/sane/sanei_init_debug.c scan/sane/marvell.h $(BB_SCAN_SOURCES)
 if DARWIN_BUILD
 libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation -version-info 1:0:0
 else
@@ -270,10 +294,10 @@ dist_ui_SCRIPTS = ui/alignform.py \
 	ui/faxsendjobform.py ui/faxsettingsform_base.py ui/faxsettingsform.py \
 	ui/coverpageform_base.py ui/coverpageform.py ui/allowabletypesdlg_base.py ui/allowabletypesdlg.py \
 	ui/makecopiesform.py ui/setupform_base.py ui/setupform.py ui/setupmanualfind_base.py \
-	ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py ui/scrollfunc.py ui/scrollstatus.py \
-	ui/scrollprintsettings.py ui/scrollprintcontrol.py ui/scrolltool.py ui/scrollsupplies.py  ui/scrollprint.py ui/scrollfax.py \
+	ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py \
+	ui/scrollprintsettings.py ui/scrollprint.py ui/scrollfax.py \
 	ui/scrollunload.py ui/scrollcopy.py ui/pluginform.py ui/pluginform_base.py ui/systemtray_qt3.py \
-	ui/systemtray_qt4.py ui/ui_utils.py
+	ui/systemtray_qt4.py ui/ui_utils.py ui/jobstoragemixin.py
 dist_noinst_DATA += ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
 	ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
 	ui/nodevicesform_base.ui ui/cleaningform_base.ui ui/colorcalform_base.ui ui/devmgr4_base.ui ui/loadpaperform_base.ui \
@@ -345,6 +369,11 @@ if RIP_INSTALL
 ripdir = $(cupsfilterdir)
 dist_rip_SCRIPTS = prnt/hpijs/foomatic-rip-hplip
 endif
+
+# hpipjs
+hplipjsdir = $(cupsfilterdir)
+hplipjs_PROGRAMS = hplipjs
+hplipjs_SOURCES = prnt/filters/hplipjs.c
 
 # hpijs
 bin_PROGRAMS = hpijs

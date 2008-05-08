@@ -51,8 +51,8 @@ except ImportError:
     log.error("dbus failed to load (python-dbus ver. 0.80+ required). Exiting...")
     dbus_loaded = False
     sys.exit(1)
-    
-    
+
+
 # Globals
 PIPE_BUF = 4096
 dbus_loop = None
@@ -190,15 +190,18 @@ class StatusService(dbus.service.Object):
     # Pass zero for job_id to retrieve any avail. fax
     @dbus.service.method('com.hplip.StatusService', in_signature='ssi', out_signature='ssisisds')
     def CheckForWaitingFax(self, device_uri, username, job_id=0):
-        device_uri = device_uri.replace('hp:', 'hpfax:')
+        #device_uri = device_uri.replace('hp:', 'hpfax:')
         log.debug("CheckForWaitingFax('%s', '%s', %d)" % (device_uri, username, job_id))
         r = (device_uri, '', 0, username, job_id, '', 0.0, '')
-        try:
-            devices[device_uri]
-        except KeyError:
-            log.warn("Unknown device URI: %s" % device_uri)
-            return r
-        else:
+        
+        check_device(device_uri)
+        #try:
+        #    devices[device_uri]
+        #except KeyError:
+        #    log.warn("Unknown device URI: %s" % device_uri)
+        #    return r
+        #else:
+        if 1:
             show_waiting_faxes(device_uri)
 
             if job_id: # check for specific job_id
@@ -266,7 +269,7 @@ def create_history(event):
 def handle_fax_event(event, pipe_name):
     if event.event_code == EVENT_FAX_RENDER_COMPLETE and \
         event.username == prop.username:
-        
+
         fax_file_fd, fax_file_name = tempfile.mkstemp(prefix="hpfax-")
         pipe = os.open(pipe_name, os.O_RDONLY) 
         bytes_read = 0
@@ -287,6 +290,38 @@ def handle_fax_event(event, pipe_name):
             FaxEvent(fax_file_name, event)
 
         show_waiting_faxes(event.device_uri)
+
+        try:
+            os.waitpid(-1, os.WNOHANG)
+        except OSError:
+            pass
+
+        # See if hp-sendfax is already running for this queue
+        ok, lock_file = utils.lock_app('hp-sendfax-%s' % event.printer_name, True)
+
+        if ok: 
+            # able to lock, not running...
+            utils.unlock(lock_file)
+            
+            path = utils.which('hp-sendfax')
+            if path:
+                path = os.path.join(path, 'hp-sendfax')
+            else:
+                log.error("Unable to find hp-sendfax on PATH.")
+                return
+
+            log.debug(path)
+            
+            log.debug("Running hp-sendfax: hp-senfax --fax=%s" % event.printer_name)
+            
+            os.spawnvp(os.P_NOWAIT, path, ['hp-sendfax', 
+                #'-d %s' % event.device_uri, 
+                '--fax=%s' % event.printer_name])
+        
+        else: 
+            # hp-sendfax running
+            # no need to do anything... hp-sendfax is polling
+            log.debug("hp-sendfax is running. Waiting for CheckForWaitingFax() call.")
 
     else:
         log.warn("Not handled!")
@@ -315,15 +350,16 @@ def handle_event(event, more_args=None):
 
     if event.device_uri and check_device(event.device_uri) != ERROR_SUCCESS:
         return
-
+   
     # If event-code > 10001, its a PJL error code, so convert it
     if event.event_code > EVENT_MAX_EVENT:
         event.event_code = status.MapPJLErrorCode(event.event_code)
-        #event_code = event.event_code
 
     # regular user/device status event
     if EVENT_MIN_USER_EVENT <= event.event_code <= EVENT_MAX_USER_EVENT:
+        
         if event.device_uri:
+            #event.device_uri = event.device_uri.replace('hpfax:', 'hp:')
             dup_event = create_history(event)
 
         # Send to system tray icon if available
@@ -334,13 +370,26 @@ def handle_event(event, more_args=None):
                     os.write(w, event.pack())
                 except OSError:
                     log.debug("Failed.")
+                    
+        # send EVENT_HISTORY_UPDATE signal to hp-toolbox
+        send_toolbox_event(event, EVENT_HISTORY_UPDATE)
 
+        
     # Handle fax signals
     elif EVENT_FAX_MIN <= event.event_code <= EVENT_FAX_MAX and more_args:
         log.debug("Fax event")
         pipe_name = str(more_args[0])
         handle_fax_event(event, pipe_name)
 
+
+def send_toolbox_event(event, event_code):
+    args = [event.device_uri, event.printer_name, event_code, 
+            prop.username, event.job_id, event.title, '']
+            
+    msg = lowlevel.SignalMessage('/', 'com.hplip.Toolbox', 'Event')
+    msg.append(signature='ssisiss', *args)
+
+    SessionBus().send_message(msg)
 
 
 def handle_signal(typ, *args, **kwds):
@@ -370,8 +419,13 @@ def run(write_pipe=None, parent_pid=0):
     w = write_pipe
 
     dbus_loop = DBusGMainLoop(set_as_default=True)
-    system_bus = SystemBus(mainloop=dbus_loop)
     
+    try:
+        system_bus = SystemBus(mainloop=dbus_loop)
+    except dbus.exceptions.DBusException, e:        
+        log.error("Unable to connect to dbus system bus. Exiting.")
+        sys.exit(1)
+
     try:
         session_bus = dbus.SessionBus()
     except dbus.exceptions.DBusException, e:
@@ -381,8 +435,6 @@ def run(write_pipe=None, parent_pid=0):
         else:
             log.error("Unable to connect to dbus session bus (running as root?)")            
             sys.exit(1)    
-    
-    #session_bus = SessionBus(mainloop=dbus_loop)
 
     # Receive events from the system bus
     system_bus.add_signal_receiver(handle_system_signal, sender_keyword='sender',

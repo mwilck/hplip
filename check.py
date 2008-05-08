@@ -118,7 +118,7 @@ try:
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hl:gtcrb', 
             ['help', 'help-rest', 'help-man', 'help-desc', 'logging=', 
-             'run', 'compile', 'both']) 
+             'run', 'runtime', 'compile', 'both']) 
 
     except getopt.GetoptError, e:
         log.error(e.msg)
@@ -156,7 +156,7 @@ try:
         elif o in ('-c', '--compile'):
             time_flag = DEPENDENCY_COMPILE_TIME
             
-        elif o in ('-r', '--runtime'):
+        elif o in ('-r', '--runtime', '--run'):
             time_flag = DEPENDENCY_RUN_TIME
             
         elif o in ('-b', '--both'):

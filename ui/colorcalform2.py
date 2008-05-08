@@ -37,4 +37,4 @@ class ColorCalForm2(ColorCalForm2_base):
 
     def SpinBox_valueChanged(self,a0):
         self.value = a0
-        print self.value
+        #print self.value

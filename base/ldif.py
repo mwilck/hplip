@@ -42,7 +42,7 @@ __all__ = [
 ]
 
 import urlparse
-import urllib
+import urllib # TODO: Replace with urllib2 (urllib is deprecated in Python 3.0)
 import base64
 import re
 import types

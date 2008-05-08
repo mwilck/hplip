@@ -116,10 +116,13 @@ class FaxSendJobForm(QMainWindow):
                 for p in self.cups_printers:
                     if p.device_uri == d:
                         printers.append(p.name)
+                
                 devices[x] = (d, printers)
-                x += 1
+                #x += 1
                 max_deviceid_size = max(len(d), max_deviceid_size)
 
+            x = len(devices)
+            
             if x == 0:
                 from nodevicesform import NoDevicesForm
                 self.FailureUI(self.__tr("<p><b>No devices found.</b><p>Please make sure your device is properly installed and try again."))
@@ -139,7 +142,7 @@ class FaxSendJobForm(QMainWindow):
                     
         self.dbus_avail, self.service = device.init_dbus()
 
-        self.FaxView = ScrollFaxView(self.service, False, self.centralWidget(), self)
+        self.FaxView = ScrollFaxView(self.service, self.centralWidget(), self)
         self.FormLayout.addWidget(self.FaxView,0,0)
 
         if not self.init_failed:
@@ -179,6 +182,12 @@ class FaxSendJobForm(QMainWindow):
 
     def languageChange(self):
         self.setCaption(self.__tr("HP Device Manager - Send Fax"))
+        
+    def closeEvent(self, event):
+        #print "close"
+        print self.FaxView.lock_file
+        utils.unlock(self.FaxView.lock_file)
+        event.accept()
 
     def SuccessUI(self):
         QMessageBox.information(self,

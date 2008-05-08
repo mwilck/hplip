@@ -20,7 +20,12 @@
 #
 
 # Std Lib
-import sys, thread, syslog, traceback, string, os
+import sys
+import thread # TODO: Use threading instead (thread deprecated in Python 3.0)
+import syslog
+import traceback
+import string
+import os
 
 identity = string.maketrans('','')
 unprintable = identity.translate(identity, string.printable)

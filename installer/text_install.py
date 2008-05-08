@@ -20,15 +20,16 @@
 # Author: Don Welch
 #
 
-# Local
-from base.g import *
-from base import utils, tui
-from core_install import *
-
 # Std Lib
 import os
 import sys
 import getpass
+import signal
+
+# Local
+from base.g import *
+from base import utils, tui
+from core_install import *
 
 
 def progress_callback(cmd="", desc="Working..."):
@@ -45,7 +46,7 @@ def option_question_callback(opt, desc):
     if not ok: sys.exit(0)
     return ans
 
-def start(language, auto=True, test_depends=False, test_unknown=False):
+def start(language, auto=True, test_depends=False, test_unknown=False, assume_network=False, max_retries=3):
     try:
         core =  CoreInstall(MODE_INSTALLER, INTERACTIVE_MODE)
 
@@ -68,7 +69,8 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             log.info("Automatic mode will install the full HPLIP solution with the most common options.")
             log.info("Custom mode allows you to chose installation options to fit specific requirements.")
 
-            if os.getenv('DISPLAY') and utils.find_browser() is not None:
+            #if os.getenv('DISPLAY') and utils.find_browser() is not None:
+            if 0:
                 ok, choice = tui.enter_choice("\nPlease choose the installation mode (a=automatic*, c=custom, w=web installer, q=quit) : ", 
                     ['a', 'c', 'w'], 'a')
             else:
@@ -319,15 +321,15 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             if not ok: sys.exit(0)
 
             core.selected_options['parallel'] = enable_par
-            
+
             if enable_par:
                 log.info("Parallel support enabled.")
 
 
         log.debug("Req missing=%d Opt missing=%d HPOJ=%s HPLIP=%s Component=%s" % \
             (num_req_missing, num_opt_missing, core.hpoj_present, core.hplip_present, core.selected_component))
-        
-        
+
+
         #
         # COLLECT SUPERUSER PASSWORD
         #
@@ -475,10 +477,10 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             # CHECK FOR RUNNING PACKAGE MANAGER
             #
 
-            p = core.check_pkg_mgr()
-            while p:
-                ok, user_input = tui.enter_choice("A package manager '%s' appears to be running. Please quit the package manager and press enter to continue (i=ignore, r=retry*, q=quit) :" 
-                    % p, ['i', 'r', 'q'], 'r')
+            pid, cmdline = core.check_pkg_mgr()
+            while pid:
+                ok, user_input = tui.enter_choice("A package manager '%s' appears to be running. Please quit the package manager and press enter to continue (i=ignore, r=retry*, f=force, q=quit) :" 
+                    % cmdline, ['i', 'r', 'q', 'f'], 'r')
 
                 if not ok: sys.exit(0)
 
@@ -486,21 +488,34 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
                     log.warn("Ignoring running package manager. Some package operations may fail.")
                     break
 
-                p = core.check_pkg_mgr()
+                if user_input == 'f':
+                    ok, ans = tui.enter_yes_no("\nForce quit of package manager '%s'" % cmdline, 'y')
+
+                    if not ok: sys.exit(0)
+
+                    if ans:
+                        cmd = core.su_sudo() % ("kill %d" % pid)
+                        status, output = core.run(cmd)
+
+                        if status != 0:
+                            log.error("Failed to kill process. You may need to manually quit the program.")
+
+                pid, cmdline = core.check_pkg_mgr()
 
 
             #
             # CHECK FOR ACTIVE NETWORK CONNECTION
             #
 
-            tui.title("CHECKING FOR NETWORK CONNECTION")
+            if not assume_network:
+                tui.title("CHECKING FOR NETWORK CONNECTION")
 
-            if not core.check_network_connection():
-                log.error("\nThe network appears to be unreachable. Installation cannot complete without access to")
-                log.error("distribution repositories. Please check the network and try again.")
-                sys.exit(1)
-            else:
-                log.info("Network connection present.")
+                if not core.check_network_connection():
+                    log.error("\nThe network appears to be unreachable. Installation cannot complete without access to")
+                    log.error("distribution repositories. Please check the network and try again.")
+                    sys.exit(1)
+                else:
+                    log.info("Network connection present.")
 
             #
             # PRE-DEPEND
@@ -553,6 +568,7 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             if package_mgr_cmd and packages:
                 if individual_pkgs:
                     for packages_to_install in packages:
+                        retries = 0
                         while True:
                             cmd = utils.cat(package_mgr_cmd)
                             log.debug("Package manager command: %s" % cmd)
@@ -561,6 +577,11 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
                             status, output = core.run(cmd)
 
                             if status != 0:
+                                retries += 1
+                                if retries < (max_retries+1):
+                                    log.error("Command failed. Re-try #%d..." % retries)
+                                    continue
+
                                 log.error("Package install command failed with error code %d" % status)
                                 ok, ans = tui.enter_yes_no("Would you like to retry installing the missing package(s)")
 
@@ -713,8 +734,6 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             if not num_opt_missing and not num_req_missing:
                 log.info("OK")
 
-
-
         #
         # INSTALL LOCATION
         #
@@ -742,7 +761,12 @@ def start(language, auto=True, test_depends=False, test_unknown=False):
             status, output = core.run(cmd)
 
             if status != 0:
-                log.error("'%s' command failed with status code %d" % (cmd, status))
+                if 'configure' in cmd:
+                    log.error("Configure failed with error: %s" % CONFIGURE_ERRORS.get(status, CONFIGURE_ERRORS[1]))
+
+                else:
+                    log.error("'%s' command failed with status code %d" % (cmd, status))
+
                 sys.exit(0)
             else:
                 log.info("Command completed successfully.")

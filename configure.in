@@ -19,13 +19,14 @@
 #   12 = no sane-backends-devel
 #   13 = no libdbus-1 support
 #   14 = no dbus-devel support
+#   15 = fax requries dbus support
 #
 #   102 = no libjpeg
 #   103 = no jpeg-devel
 #   104 = no libdl
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [2.8.4], [2.8.4.2], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [2.8.5], [2.8.5.23], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -170,11 +171,21 @@ AC_ARG_ENABLE(fax_build,
   fax_build=$enableval, fax_build=yes)
 if test "$fax_build" = "yes"; then
    AC_MSG_RESULT(yes)
-   AC_DEFINE(HAVE_FAX) 
 else
    AC_MSG_RESULT(no)
 fi
 AM_CONDITIONAL(FAX_BUILD, test x$fax_build = xyes)
+
+AC_MSG_CHECKING([for dbus build])
+AC_ARG_ENABLE(dbus_build,
+  [  --enable-dbus-build    enable dbus build (default=yes)],
+  dbus_build=$enableval, dbus_build=yes)
+if test "$dbus_build" = "yes"; then
+   AC_MSG_RESULT(yes)
+   AC_DEFINE(HAVE_DBUS) 
+else
+   AC_MSG_RESULT(no)
+fi
 
 AC_MSG_CHECKING([for cups 1.1.x build])
 AC_ARG_ENABLE(cups11_build,
@@ -282,10 +293,14 @@ if test "$hpijs_only_build" = "no" && test "$scan_build" = "yes"; then
    AC_CHECK_LIB([sane], [sane_open],, [AC_MSG_ERROR([cannot find sane-backends-devel support (or --disable-scan-build)], 12)])
 fi
 
-if test "$hpijs_only_build" = "no" && test "$fax_build" = "yes"; then
+if test "$hpijs_only_build" = "no" && test "$dbus_build" = "yes"; then
 #   PKG_CHECK_MODULES(DBUS, [dbus-1 >= 1.0.0, dbus-glib-1 >= 0.61],,[AC_MSG_ERROR([cannot find dbus-devel support: $DBUS_PKG_ERRORS], 14)])
    PKG_CHECK_MODULES(DBUS, [dbus-1 >= 1.0.0],,[AC_MSG_ERROR([cannot find dbus-devel support: $DBUS_PKG_ERRORS], 14)])
    AC_CHECK_LIB([dbus-1], [dbus_connection_open],,[AC_MSG_ERROR([cannot find libdbus support], 13)])
+fi
+
+if test "$hpijs_only_build" = "no" && test "$fax_build" = "yes" && test "$dbus_build" = "no"; then
+   AC_MSG_ERROR([fax requires dbus support], 15)
 fi
 
 # AC_DEFINE_DIR([DATADIR], [datadir])
@@ -334,6 +349,7 @@ AC_SUBST(pp_build)
 AC_SUBST(gui_build)
 AC_SUBST(scan_build)
 AC_SUBST(fax_build)
+AC_SUBST(dbus_build)
 AC_SUBST(cups11_build)
 AC_SUBST(foomatic_drv_install)
 AC_SUBST(foomatic_ppd_install)

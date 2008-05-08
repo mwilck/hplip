@@ -39,7 +39,7 @@ try:
 except ImportError:
     log.error("Python bindings for Qt4 not found. Try using --qt3. Exiting!")
     sys.exit(1)
-    
+
 # dbus
 try:
     import dbus
@@ -47,8 +47,8 @@ try:
 except ImportError:
     log.error("Python bindings for dbus not found. Exiting!")
     sys.exit(1)
-    
-    
+
+
 ERROR_STATE_TO_ICON = {
     ERROR_STATE_CLEAR: QSystemTrayIcon.Information, 
     ERROR_STATE_OK: QSystemTrayIcon.Information,
@@ -183,7 +183,7 @@ class SystemTrayApp(QApplication):
 
 
     def message_clicked(self):
-        print "\nPARENT: message clicked"
+        #print "\nPARENT: message clicked"
         pass
 
     def quit_triggered(self):
@@ -197,26 +197,29 @@ class SystemTrayApp(QApplication):
 
         # See if it is already running...
         ok, lock_file = utils.lock_app('hp-toolbox', True)
-        
+
         if ok: # able to lock, not running...
             utils.unlock(lock_file)
-            
+
             path = utils.which('hp-toolbox')
             if path:
                 path = os.path.join(path, 'hp-toolbox')
             else:
-                path = os.path.join(prop.home_dir, 'toolbox.py')
-                if not os.path.exists(path):
-                    return # TODO: show error message
+                self.tray_icon.showMessage(self.trUtf8("HPLIP Status Service"), 
+                                self.trUtf8("Unable to locate hp-toolbox on system PATH."),
+                                QSystemTrayIcon.Critical, 5000)
+
+                log.error("Unable to find hp-toolbox on PATH.")
+                return
 
             log.debug(path)
             os.spawnvp(os.P_NOWAIT, path, [])
-        
+
         else: # ...already running, raise it
             args = ['', '', EVENT_RAISE_DEVICE_MANAGER, prop.username, 0, '', '']
-            msg = lowlevel.SignalMessage('/', 'com.hplip.Service', 'Event')
+            msg = lowlevel.SignalMessage('/', 'com.hplip.Toolbox', 'Event')
             msg.append(signature='ssisiss', *args)
-            
+
             SessionBus().send_message(msg)
 
 
@@ -234,19 +237,19 @@ class SystemTrayApp(QApplication):
                 if len(m) == self.fmt_size:
                     event = device.Event(*struct.unpack(self.fmt, m))
                     desc = device.queryString(event.event_code)
-                    
+
                     error_state = STATUS_TO_ERROR_STATE_MAP.get(event.event_code, ERROR_STATE_CLEAR)
                     icon = ERROR_STATE_TO_ICON.get(error_state, QSystemTrayIcon.Information)
 
                     if self.tray_icon.supportsMessages():
                         if event.job_id and event.title:
-                            self.tray_icon.showMessage("HPLIP Device Status", 
+                            self.tray_icon.showMessage(self.trUtf8("HPLIP Device Status"), 
                                 QString("%1\n%2\n%3\n(%4/%5/%6)").\
                                 arg(event.device_uri).arg(event.event_code).\
                                 arg(desc).arg(event.username).arg(event.job_id).arg(event.title),
                                 icon, 5000)
                         else:
-                            self.tray_icon.showMessage("HPLIP Device Status", 
+                            self.tray_icon.showMessage(self.trUtf8("HPLIP Device Status"), 
                                 QString("%1\n%2\n%3").arg(event.device_uri).\
                                 arg(event.event_code).arg(desc),
                                 icon, 5000)

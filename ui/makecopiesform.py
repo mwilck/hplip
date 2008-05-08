@@ -107,7 +107,7 @@ class MakeCopiesForm(QMainWindow):
                     self.init_failed = True
                     
 
-        self.CopyView = ScrollCopyView(None, False, num_copies=num_copies, 
+        self.CopyView = ScrollCopyView(None, num_copies=num_copies, 
                                         contrast=contrast, quality=quality, 
                                         reduction=reduction, fit_to_page=fit_to_page, 
                                         parent=self.centralWidget(), form=self)

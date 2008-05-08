@@ -217,7 +217,7 @@ PAPER_SIZE DJGenericVIP::MandatoryPaperSize ()
  *      100 - 13 X 19 size
  */
 
-    if (pSS->IOMode.bDevID && (pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
+    if ((pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
     {
         if ((pStr = strstr ((char *) sDevIdStr, ";S:")) && (pSS->GetVIPVersion ()) >= 3)
         {
@@ -255,7 +255,7 @@ BOOL DJGenericVIP::FullBleedCapable (PAPER_SIZE ps, FullbleedType  *fbType, floa
     char    *pStr;
     sDevIdStr[0] = 0;
 
-    if (pSS->IOMode.bDevID && (pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
+    if ((pSS->GetDeviceID (sDevIdStr, DevIDBuffSize, FALSE)) == NO_ERROR)
     {
         if ((pStr = strstr ((char *) sDevIdStr, ";S:")) && (pSS->GetVIPVersion ()) >= 3)
         {
@@ -455,7 +455,7 @@ BOOL DJGenericVIP::HagakiFeedDuplexerPresent(BOOL bQueryPrinter)
         bQueryPrinter = FALSE;
     }
 
-    err = pSS->GetDeviceID(bDevIDBuff, DevIDBuffSize, bQueryPrinter);
+    err = pSS->GetDeviceID (bDevIDBuff, DevIDBuffSize, bQueryPrinter);
     if (err!=NO_ERROR)
     {
         return 0;

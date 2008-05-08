@@ -35,18 +35,15 @@
 from base.g import *
 
 # Std Lib
-#import sys
 import quopri
 import base64
 import codecs
 import cStringIO
 import re
-
-# start: common
-
 import StringIO
-
 import codecs
+
+
 
 _boms = []
 # 64 bit 

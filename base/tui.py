@@ -169,7 +169,7 @@ def enter_regex(regex, prompt, pattern, default_value=None):
         
         
 def ttysize():
-    import commands
+    import commands # TODO: Replace with subprocess (commands is deprecated in Python 3.0)
     ln1 = commands.getoutput('stty -a').splitlines()[0]
     vals = {'rows':None, 'columns':None}
     for ph in ln1.split(';'):

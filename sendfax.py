@@ -186,10 +186,6 @@ for o, a in opts:
 
 utils.log_title(__title__, __version__)
 
-if os.getuid() == 0:
-    log.error("hp-sendfax should not be run as root.")
-
-
 # Security: Do *not* create files that other users can muck around with
 os.umask (0037)
 
@@ -220,14 +216,16 @@ if mode == GUI_MODE:
             log.debug("Using system locale: %s" % loc)
 
     if loc.lower() != 'c':
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
-
+        e = 'utf8'
         try:
-            l, e = loc.split('.')
+            l, x = loc.split('.')
+            loc = '.'.join([l, e])
         except ValueError:
             l = loc
-            e = 'utf8'
+            loc = '.'.join([loc, e])
+
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
 
         qm_file = 'hplip_%s.qm' % l
         log.debug("Name of .qm file: %s" % qm_file)
@@ -249,6 +247,20 @@ if mode == GUI_MODE:
             locale.setlocale(locale.LC_ALL, locale.normalize(loc))
         except locale.Error:
             pass
+            
+            
+    if os.geteuid() == 0:
+        log.error("You must not be root to run this utility.")
+
+        QMessageBox.critical(None, 
+                             "HP Device Manager - Send Fax",
+                             "You must not be root to run hp-sendfax.",
+                              QMessageBox.Ok,
+                              QMessageBox.NoButton,
+                              QMessageBox.NoButton)
+
+        sys.exit(1)
+            
 
 
     sendfax = FaxSendJobForm(device_uri,  
@@ -274,6 +286,10 @@ if mode == GUI_MODE:
 
 
 else: # NON_INTERACTIVE_MODE
+    if os.getuid() == 0:
+        log.error("hp-sendfax cannot be run as root.")
+        sys.exit(1)
+    
     try:
         import struct, Queue
 
@@ -584,7 +600,7 @@ else: # NON_INTERACTIVE_MODE
 
                     fax_file = str(result[7])
                     print fax_file
-                    
+
                     if fax_file:
                         log.debug("Fax file=%s" % fax_file)
                         title = str(result[5])

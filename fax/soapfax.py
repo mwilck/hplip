@@ -26,7 +26,7 @@ import sys
 import os
 import time
 import cStringIO
-import urllib
+import urllib # TODO: Replace with urllib2 (urllib is deprecated in Python 3.0)
 import re
 
 # Local

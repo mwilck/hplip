@@ -48,10 +48,9 @@ class IconViewItem(QIconViewItem):
 
 
 class ScrollUnloadView(ScrollView):
-    def __init__(self, service, toolbox_hosted=True, parent=None, form=None, name=None, fl=0):
+    def __init__(self, service, parent=None, form=None, name=None, fl=0):
         ScrollView.__init__(self, service, parent, name, fl)
         
-        self.toolbox_hosted = toolbox_hosted
         self.form = form
         self.progress_dlg = None
         self.unload_dir = os.path.normpath(os.path.expanduser('~'))
@@ -89,14 +88,9 @@ class ScrollUnloadView(ScrollView):
 
         self.addGroupHeading("space1", "")
 
-        if self.toolbox_hosted:
-            s = self.__tr("<< Functions")
-        else:
-            s = self.__tr("Close")
-
         self.unloadButton = self.addActionButton("bottom_nav", self.__tr("Unload File(s)"), 
                                 self.unloadButton_clicked, 'download.png', 'download-disabled.png', 
-                                s, self.funcButton_clicked)
+                                self.__tr("Close"), self.funcButton_clicked)
 
         self.unloadButton.setEnabled(False)
 
@@ -651,10 +645,7 @@ class ScrollUnloadView(ScrollView):
             self.pc.umount()
             self.pc.device.close()
         
-        if self.toolbox_hosted:
-            self.form.SwitchFunctionsTab("funcs")
-        else:
-            self.form.close()
+        self.form.close()
 
     def __tr(self,s,c = None):
         return qApp.translate("ScrollUnloadView",s,c)

@@ -32,13 +32,15 @@ import signal
 # Local
 from base.g import *
 from base import utils
+from prnt import cups
 
 
 USAGE = [(__doc__, "", "name", True),
          ("Usage: hp-systray [OPTIONS]", "", "summary", True),
          utils.USAGE_OPTIONS,
          ("Force Qt3:", "--qt3 (default)", "option", False),
-         ("Force Qt4:", "--qt4", "option", False), 
+         ("Force Qt4:", "--qt4", "option", False),
+         ("Startup even if no hplip CUPS queues are present:", "-x or --force-startup", "option", False),
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
         ]
@@ -59,11 +61,12 @@ if __name__ == '__main__':
     prop.prog = sys.argv[0]
     force_qt3 = False
     force_qt4 = False
+    force_startup = False
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'l:hg', 
+        opts, args = getopt.getopt(sys.argv[1:], 'l:hgx', 
             ['level=', 'help', 'help-man', 'help-rest', 'help-desc',
-            'qt3', 'qt4'])
+            'qt3', 'qt4', 'force-startup'])
 
     except getopt.GetoptError, e:
         log.error(e.msg)
@@ -101,6 +104,9 @@ if __name__ == '__main__':
         elif o == '--qt4':
             force_qt4 = True
             force_qt3 = False
+            
+        elif o in ('-x', '--force-startup'):
+            force_startup = True
 
 
     utils.log_title(__title__, __version__) 
@@ -109,6 +115,12 @@ if __name__ == '__main__':
         log.error("hp-systray cannot be run as root. Exiting.")
         sys.exit(1)
 
+    if not force_startup:
+        # Check for any hp: or hpfax: queues. If none, exit
+        if not utils.any([p.device_uri for p in cups.getPrinters()], lambda x : x.startswith('hp')):
+            log.warn("No hp: or hpfax: devices found in any installed CUPS queue. Exiting.")
+            sys.exit(1)
+    
     ok, lock_file = utils.lock_app('hp-systray')
     if not ok:
         sys.exit(1)

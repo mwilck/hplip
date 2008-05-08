@@ -151,7 +151,8 @@ class PluginForm(PluginForm_base):
         
 
     def cancelled(self):
-        print "Cancel!"
+        #print "Cancel!"
+        pass
         # TODO: How to cancel urllib.urlretrieve? (use urlopen())
         
     def download_callback(self, c, s, t):

@@ -33,13 +33,13 @@
 #include "common.h"
 #include "pml.h"
 #include "io.h"
-#ifdef HAVE_FAX
+#ifdef HAVE_DBUS
 #include <dbus/dbus.h>
 #endif
 #define DEBUG_DECLARE_ONLY
 #include "sanei_debug.h"
 
-#ifdef HAVE_FAX
+#ifdef HAVE_DBUS
 DBusError dbus_err;
 DBusConnection * dbus_conn;
 
@@ -112,7 +112,7 @@ int __attribute__ ((visibility ("hidden"))) SendScanEvent(char *device_uri, int 
 {
     return 1;
 }
-#endif  /* HAVE_FAX */
+#endif  /* HAVE_DBUS */
  
 /* Read full requested data length in BUFFER_SIZE chunks. Return number of bytes read. */
 int __attribute__ ((visibility ("hidden"))) ReadChannelEx(int deviceid, int channelid, unsigned char * buffer, int length, int timeout)

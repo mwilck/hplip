@@ -147,8 +147,8 @@ try:
         elif o == '-g':
             log.set_level('debug')
 
-        elif o in ('-v', '--value'):
-            print a
+        #elif o in ('-v', '--value'):
+        #    print a
 
     if device_uri and printer_name:
         log.error("You may not specify both a printer (-p) and a device (-d).")
@@ -169,7 +169,7 @@ try:
             sys.exit(0)
 
     try:
-        d = faxdevice.FaxDevice(device_uri, printer_name)
+        d = faxdevice.FaxDevice(device_uri, printer_name, disable_dbus=True)
     except Error, e:
         if e.opt == ERROR_DEVICE_DOES_NOT_SUPPORT_OPERATION:
             log.error("Device does not support setting time/date.")

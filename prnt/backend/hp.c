@@ -40,7 +40,7 @@
 #include <syslog.h>
 #include <ctype.h>
 #include <pthread.h>
-#ifdef HAVE_FAX
+#ifdef HAVE_DBUS
 #include <dbus/dbus.h>
 #endif
 #include "hpmud.h"
@@ -131,7 +131,7 @@ static const char pjl_ustatus_cmd[] = "\e%-12345X@PJL USTATUS DEVICE = ON \r\n@P
 static const char pjl_job_end_cmd[] = "\e%-12345X@PJL EOJ \r\n\e%-12345X";
 static const char pjl_ustatus_off_cmd[] = "\e%-12345X@PJL USTATUSOFF \r\n\e%-12345X";
 
-#ifdef HAVE_FAX
+#ifdef HAVE_DBUS
 #define DBUS_INTERFACE "com.hplip.Service"
 #define DBUS_PATH "/"
 static DBusError dbus_err;
@@ -482,7 +482,7 @@ bugout:
    return r;
 }
 
-#ifdef HAVE_FAX
+#ifdef HAVE_DBUS
 static int device_event(const char *dev, const char *printer, int code, 
     const char *username, const char *jobid, const char *title)
 {
@@ -546,7 +546,7 @@ int init_dbus(void)
 {
    return 1;
 }
-#endif  /* HAVE_FAX */
+#endif  /* HAVE_DBUS */
 
 /* Check printer status, if in an error state, loop until error condition is cleared. */
 static int loop_test(HPMUD_DEVICE dd, HPMUD_CHANNEL cd, struct pjl_attributes *pa, 

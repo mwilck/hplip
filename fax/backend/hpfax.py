@@ -202,14 +202,14 @@ else:
         bug("Invalid command line: invalid arguments.")
         sys.exit(CUPS_BACKEND_FAILED)
 
-    send_message(device_uri, printer_name, EVENT_START_PRINT_JOB, username, job_id, title)
+    send_message(device_uri, printer_name, EVENT_START_FAX_PRINT_JOB, username, job_id, title)
     
     try:
         input_fd = file(args[5], 'r')
     except IndexError:
         input_fd = 0
  
-    #tmp_dir = tempfile.gettempdir() # fails on Ubuntu 7.04 (file not readable by users) 
+    # REVISIT:
     tmp_dir = '/tmp'
     pipe_name = os.path.join(tmp_dir, "hpfax-pipe-%d" % job_id)
     
@@ -247,6 +247,6 @@ else:
     os.close(pipe)
     os.unlink(pipe_name)
     
-    send_message(device_uri, printer_name, EVENT_END_PRINT_JOB, username, job_id, title)
+    send_message(device_uri, printer_name, EVENT_END_FAX_PRINT_JOB, username, job_id, title)
     
     sys.exit(CUPS_BACKEND_OK)

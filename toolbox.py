@@ -22,7 +22,7 @@
 # Thanks to Henrique M. Holschuh <hmh@debian.org> for various security patches
 #
 
-__version__ = '13.1'
+__version__ = '14.0'
 __title__ = 'HP Device Manager'
 __doc__ = "The HP Device Manager (aka Toolbox) for HPLIP supported devices. Provides status, tools, and supplies levels."
 
@@ -49,7 +49,7 @@ USAGE = [(__doc__, "", "name", True),
          utils.USAGE_OPTIONS,
          ("Activate device on startup:", "-d<device_uri> or --device=<device_uri>", "option", False),
          #("Activate printer on startup:", "-p<printer> or --printer=<printer>", "option", False),
-         ("Activate function on startup:", "-f<function> or --function=<function>", "option", False),
+         #("Activate function on startup:", "-f<function> or --function=<function>", "option", False),
          ("Disable dbus:", "-x or --disable-dbus", "option", False),
          utils.USAGE_LANGUAGE,
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
@@ -71,37 +71,37 @@ def usage(typ='text'):
 
     utils.format_text(USAGE, typ, __title__, 'hp-toolbox', __version__)
     sys.exit(0)
-    
-    
+
+
 def handle_session_signal(*args, **kwds):
-    if kwds['interface'] == 'com.hplip.Service' and \
+    if kwds['interface'] == 'com.hplip.Toolbox' and \
         kwds['member'] == 'Event':
-        
+
         event = device.Event(*args)
-        
+
         if event.event_code > EVENT_MAX_EVENT:
             event.event_code = status.MapPJLErrorCode(event.event_code)
 
         # regular user/device status event
-        #if EVENT_MIN_USER_EVENT <= event.event_code <= EVENT_MAX_USER_EVENT:
-        if 1:   
-            log.debug("Received event notifier: %d" % event.event_code)
-            
-            if w is not None:
-                log.debug("Sending event to toolbox UI...")
-                try:
-                    os.write(w, event.pack())
-                except OSError:
-                    log.debug("Failed.")
-        
-        
-    
+        log.debug("Received event notifier: %d" % event.event_code)
+
+        if w is not None:
+            log.debug("Sending event to toolbox UI...")
+            try:
+                os.write(w, event.pack())
+            except OSError:
+                log.debug("Failed. Exiting...")
+                # if this fails, then hp-toolbox must be killed.
+                # No need to continue running...
+                sys.exit(1)
+
+
 log.set_module('hp-toolbox(init)')
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'l:hgq:d:p:f:x', 
+    opts, args = getopt.getopt(sys.argv[1:], 'l:hgq:d:x', 
         ['level=', 'help', 'help-rest', 'help-man', 'help-desc', 
-        'lang=', 'device=', 'printer=', 'function=', 'disable-dbus'])
+        'lang=', 'device=', 'disable-dbus'])
 
 except getopt.GetoptError, e:
     log.error(e.msg)
@@ -111,8 +111,8 @@ if os.getenv("HPLIP_DEBUG"):
     log.set_level('debug')
 
 initial_device_uri = None
-initial_printer_name = None
-initial_function = None
+#initial_printer_name = None
+#initial_function = None
 disable_dbus = False
 
 for o, a in opts:
@@ -141,19 +141,19 @@ for o, a in opts:
         if a.strip() == '?':
             tui.show_languages()
             sys.exit(0)
-            
+
         loc = utils.validate_language(a.lower())
-        
+
     elif o in ('-d', '--device'):
         initial_device_uri = a
-        
-    elif o in ('-f', '--function'):
-        initial_function = a
-        
+
+    #elif o in ('-f', '--function'):
+    #    initial_function = a
+
     elif o in ('-x', '--disable-dbus'):
         disable_dbus = True
-        
-        
+
+
 
 utils.log_title(__title__, __version__)
 
@@ -168,7 +168,7 @@ if not ok:
 if not utils.canEnterGUIMode():
     log.error("hp-toolbox requires GUI support. Exiting.")
     sys.exit(1)
-    
+
 try:
     from dbus import SessionBus
     import dbus.service
@@ -178,8 +178,8 @@ try:
 except ImportError:
     log.error("Unable to load dbus - Automatic status updates in HPLIP Device Manager will be disabled.")
     disable_dbus = True    
-        
-    
+
+
 child_pid, w, r = 0, 0, 0
 
 if not disable_dbus:
@@ -191,44 +191,46 @@ if not disable_dbus:
 if disable_dbus or child_pid:
     # parent (UI)
     log.set_module("hp-toolbox(UI)")
-    
+
     if w:
         os.close(w)
-    
+
     from qt import *
     from ui.devmgr4 import DevMgr4
-    
+
     # Security: Do *not* create files that other users can muck around with
     os.umask (0037)
-    
+
     # create the main application object
     app = QApplication(sys.argv)
-    
+
     if loc is None:
         loc = user_cfg.ui.get("loc", "system")
         if loc.lower() == 'system':
             loc = str(QTextCodec.locale())
             log.debug("Using system locale: %s" % loc)
-    
-    if loc.lower() != 'c':
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
-        
+
+    if loc.lower() != 'c':    
+        e = 'utf8'
         try:
-            l, e = loc.split('.')
+            l, x = loc.split('.')
+            loc = '.'.join([l, e])
         except ValueError:
             l = loc
-            e = 'utf8'
-        
+            loc = '.'.join([loc, e])
+
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+
         qm_file = 'hplip_%s.qm' % l
         log.debug("Name of .qm file: %s" % qm_file)
         loaded = trans.load(qm_file, prop.localization_dir)
-        
+
         if loaded:
             app.installTranslator(trans)
         else:
             loc = 'c'
-    
+
     if loc == 'c':
         log.debug("Using default 'C' locale")
     else:
@@ -239,19 +241,19 @@ if disable_dbus or child_pid:
             locale.setlocale(locale.LC_ALL, locale.normalize(loc))
         except locale.Error:
             pass
-    
-    toolbox = DevMgr4(r, __version__, initial_device_uri, initial_printer_name, initial_function, disable_dbus)
+
+    toolbox = DevMgr4(r, __version__, initial_device_uri, disable_dbus)
     app.setMainWidget(toolbox)
-    
+
     toolbox.show()
-    
+
     try:
         try:
             log.debug("Starting GUI loop...")
             app.exec_loop()
         except KeyboardInterrupt:
             sys.exit(0)
-    
+
     finally:
         if child_pid:
             log.debug("Killing child toolbox process (pid=%d)..." % child_pid)
@@ -259,23 +261,23 @@ if disable_dbus or child_pid:
                 os.kill(child_pid, signal.SIGKILL)
             except OSError, e:
                 log.debug("Failed: %s" % e.message)
-                
+
         utils.unlock(lock_file)
         sys.exit(0)
 
-    
+
 elif not disable_dbus:
     # dBus
     log.set_module("hp-toolbox(dbus)")
-    
+
     from base import device
-    
+
     try:
         # child (dbus connector)
         os.close(r)
-        
+
         dbus_loop = DBusGMainLoop(set_as_default=True)
-        
+
         try:
             session_bus = dbus.SessionBus()
         except dbus.exceptions.DBusException, e:
@@ -285,25 +287,20 @@ elif not disable_dbus:
             else:
                 log.error("Unable to connect to dbus session bus (running as root?)")            
                 sys.exit(1)
-        
-        #try:
-        #    session_bus = SessionBus(mainloop=dbus_loop)
-        #except dbus.exceptions.DBusException:
-            
 
         # Receive events from the session bus
         session_bus.add_signal_receiver(handle_session_signal, sender_keyword='sender',
             destination_keyword='dest', interface_keyword='interface',
             member_keyword='member', path_keyword='path')
-        
+
         log.debug("Entering main loop...")
 
         try:
             MainLoop().run()
         except KeyboardInterrupt:
             log.debug("Ctrl-C: Exiting...")
-            
-        print "MainLoop exited!"
+
+        #print "MainLoop exited!"
 
     finally:
         if parent_pid:
@@ -312,9 +309,9 @@ elif not disable_dbus:
                 os.kill(parent_pid, signal.SIGKILL)
             except OSError, e:
                 log.debug("Failed: %s" % e.message)
-            
+
         utils.unlock(lock_file)
-            
+
     sys.exit(0)
 
 

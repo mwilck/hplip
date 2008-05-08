@@ -50,6 +50,7 @@
 #include "hpmud.h"
 #include "soap.h"
 #include "soapht.h"
+#include "marvell.h"
 #include "hpaio.h"
 
 #define DEBUG_DECLARE_ONLY
@@ -267,6 +268,10 @@ static int DevDiscovery(int localOnly)
          AddDeviceList(uri, model, &DeviceList);
          total++;
       }
+      else
+      {
+         DBG6("unsupported scantype=%d %s\n", ma.scantype, uri);
+      }
    }
 
    /* Ignore localOnly flag (used by saned) and always look for network all-in-one scan devices (defined by cups). */
@@ -283,6 +288,10 @@ static int DevDiscovery(int localOnly)
          hpmud_get_uri_model(cups_printer[i], model, sizeof(model));
          AddDeviceList(cups_printer[i], model, &DeviceList);
          total++;
+      }
+      else
+      {
+         DBG6("unsupported scantype=%d %s\n", ma.scantype, cups_printer[i]);
       }
       free(cups_printer[i]);
    }
@@ -1617,13 +1626,13 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
 #ifdef BB_SOURCES
     if (ma.scantype == HPMUD_SCANTYPE_SOAPHT)
        return soapht_open(devicename, pHandle);
-//    else if (ma.scantype == HPMUD_SCANTYPE_MARVELL)
-//       return marvell_open(devicename, pHandle);
+    else if (ma.scantype == HPMUD_SCANTYPE_MARVELL)
+       return marvell_open(devicename, pHandle);
 #endif
 
     DBG(8, "sane_hpaio_open(%s): %s %d\n", devicename, __FILE__, __LINE__);
 
-    hpaio = hpaioFindScanner( devicename );
+    hpaio = hpaioFindScanner(devicename);
     
     if( hpaio )
     {
@@ -2292,7 +2301,9 @@ extern void sane_hpaio_close(SANE_Handle handle)
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_close(handle);
+       return soapht_close(handle);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_close(handle);
 #endif
 
     DBG(8, "sane_hpaio_close(): %s %d\n", __FILE__, __LINE__); 
@@ -2318,7 +2329,9 @@ extern const SANE_Option_Descriptor * sane_hpaio_get_option_descriptor(SANE_Hand
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_get_option_descriptor(handle, option);
+       return soapht_get_option_descriptor(handle, option);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_get_option_descriptor(handle, option);
 #endif
 
     DBG(8, "sane_hpaio_get_option_descriptor(option=%s): %s %d\n", hpaio->option[option].name, __FILE__, __LINE__);
@@ -2342,7 +2355,9 @@ extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_control_option(handle, option, action, pValue, pInfo);
+       return soapht_control_option(handle, option, action, pValue, pInfo);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_control_option(handle, option, action, pValue, pInfo);
 #endif
 
     if( !pInfo )
@@ -2721,7 +2736,9 @@ extern SANE_Status sane_hpaio_get_parameters(SANE_Handle handle, SANE_Parameters
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_get_parameters(handle, pParams);
+       return soapht_get_parameters(handle, pParams);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_get_parameters(handle, pParams);
 #endif
 
     if( !hpaio->hJob )
@@ -2749,7 +2766,9 @@ extern SANE_Status sane_hpaio_start(SANE_Handle handle)
         
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_start(handle);
+       return soapht_start(handle);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_start(handle);
 #endif
 
     DBG(8, "sane_hpaio_start(): %s %d\n", __FILE__, __LINE__);
@@ -3088,7 +3107,9 @@ extern SANE_Status sane_hpaio_read(SANE_Handle handle, SANE_Byte *data, SANE_Int
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_read(handle, data, maxLength, pLength);
+       return soapht_read(handle, data, maxLength, pLength);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_read(handle, data, maxLength, pLength);
 #endif
 
     *pLength = 0;
@@ -3248,7 +3269,9 @@ extern void sane_hpaio_cancel( SANE_Handle handle )
 
 #ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
-        return soapht_cancel(handle);
+       return soapht_cancel(handle);
+    else if (strcmp(*((char **)handle), "MARVELL") == 0)
+       return marvell_cancel(handle);
 #endif
 
     DBG(8, "sane_hpaio_cancel(): %s %d\n", __FILE__, __LINE__); 

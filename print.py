@@ -135,7 +135,7 @@ if not utils.canEnterGUIMode():
 from qt import *
 from ui.printerform import PrinterForm
 
-   
+
 # create the main application object
 app = QApplication(sys.argv)
 
@@ -146,19 +146,21 @@ if loc is None:
         log.debug("Using system locale: %s" % loc)
 
 if loc.lower() != 'c':
-    log.debug("Trying to load .qm file for %s locale." % loc)
-    trans = QTranslator(None)
-    
+    e = 'utf8'
     try:
-        l, e = loc.split('.')
+        l, x = loc.split('.')
+        loc = '.'.join([l, e])
     except ValueError:
         l = loc
-        e = 'utf8'
-    
+        loc = '.'.join([loc, e])
+
+    log.debug("Trying to load .qm file for %s locale." % loc)
+    trans = QTranslator(None)
+
     qm_file = 'hplip_%s.qm' % l
     log.debug("Name of .qm file: %s" % qm_file)
     loaded = trans.load(qm_file, prop.localization_dir)
-    
+
     if loaded:
         app.installTranslator(trans)
     else:

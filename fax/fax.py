@@ -305,6 +305,8 @@ class FaxAddressBook(object): # Pickle based address book
             
     def import_vcard(self, filename):
         for card in vcard.VCards(vcard.VFile(vcard.opentextfile(filename))):
+            log.debug(card)
+            
             if card['name']:
                 fax = ''
                 for x in range(1,9999):
@@ -318,14 +320,20 @@ class FaxAddressBook(object): # Pickle based address book
                     except KeyError:
                         break
                     else:
-                        if card[s]['type'] == 'fax':
+                        if 'fax' in card[s]['type']:
                             fax = card[s]['number']
                             break
-                            
-                log.debug(card)
+                
+                org = card.get('organisation', '')
+                if org:
+                    org = [org]
+                else:
+                    org = card.get('categories', '').split(';')
+                    if not org:
+                        org = []
                 
                 self.set(card['name'], '', card.get('first name', ''), card.get('last name', ''), 
-                    fax, [card.get('organisation', '')], card.get('notes', ''))
+                    fax, org, card.get('notes', ''))
         
         return True, ''
 

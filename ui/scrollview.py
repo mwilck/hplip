@@ -91,11 +91,19 @@ class ScrollView(QScrollView):
 
     def maximizeControl(self, total_height=0):
         if self.maximize is not None:
-
+            try:
+                self.items[self.maximize]
+            except KeyError:
+                return
+                
             if total_height == 0:
                 item_margin = self.item_margin
                 for w in self.items:
                     total_height += (self.items[w].size().height() + item_margin)
+                    
+            if len(self.items) == 1:
+                #total_height += item_margin
+                self.content_padding = 0
 
             width = self.items[self.maximize].size().width()
             old_height = self.items[self.maximize].size().height()
@@ -115,16 +123,6 @@ class ScrollView(QScrollView):
                     if w_y > m_y:
                         self.moveChild(self.items[w], 0, w_y+delta)
 
-    def isFax(self):
-        self.is_fax = False
-        self.printers = cups.getPrinters()
-
-        for p in self.printers:
-            if p.name.decode('utf-8') == self.cur_printer:
-                if p.device_uri.startswith("hpfax:"):
-                    self.is_fax = True
-
-                break
 
     def onDeviceChange(self, cur_device=None, updating=False):
         if cur_device is not None:
@@ -135,24 +133,31 @@ class ScrollView(QScrollView):
         self.cur_device = cur_device
 
         if self.cur_device is not None and self.cur_device.supported:
-            if not updating or not self.cur_printer:
+            #if not updating or not self.cur_printer:
+            if not self.cur_printer:
                 try:
-                    self.cur_printer = self.cur_device.cups_printers[0]
+                    cur_printer = self.cur_device.cups_printers[0]
                 except IndexError:
                     log.error("Printer list empty") # Shouldn't happen!
                     self.cur_printer = None
-                else:
-                    self.isFax()
+                    return
+               
+                #self.isFax()
+                self.printers = cups.getPrinters()
+                self.onPrinterChange(cur_printer)
+                self.cur_printer = cur_printer
 
-            QApplication.setOverrideCursor(QApplication.waitCursor)
-            try:
-                if 1:
-                #try:
-                    self.fillControls()
-                #except Exception, e:
-                #    log.exception()
-            finally:
-                QApplication.restoreOverrideCursor()
+            #else:
+            if 1:
+                QApplication.setOverrideCursor(QApplication.waitCursor)
+                try:
+                    if 1:
+                    #try:
+                        self.fillControls()
+                    #except Exception, e:
+                    #    log.exception()
+                finally:
+                    QApplication.restoreOverrideCursor()
 
         else:
             log.debug("Unsupported device")
@@ -171,14 +176,13 @@ class ScrollView(QScrollView):
         self.clear()
 
     def onPrinterChange(self, printer_name):
-        if printer_name == self.cur_printer:
+        if printer_name == self.cur_printer or printer_name is None:
             return
 
-        #self.cur_printer = str(printer_name)
         self.cur_printer = unicode(printer_name)
 
         if self.cur_device is not None and self.cur_device.supported:
-            self.isFax()
+            #self.isFax()
             QApplication.setOverrideCursor(QApplication.waitCursor)
             try:
                 if 1:
@@ -189,11 +193,11 @@ class ScrollView(QScrollView):
             finally:
                 QApplication.restoreOverrideCursor()
 
-            try:
-            #if 1:
-                self.printerComboBox.setCurrentText(self.cur_printer)
-            except AttributeError:
-                pass
+            if self.cur_printer is not None:
+                try:
+                    self.printerComboBox.setCurrentText(self.cur_printer)
+                except AttributeError:
+                    pass
 
         else:
             self.y = 0
@@ -319,7 +323,7 @@ class ScrollView(QScrollView):
     def printerComboBox_activated(self, p):
         self.cur_printer = str(p)
 
-    def addPrinterFaxList(self, printers=True, faxes=False):
+    def addPrinterFaxList(self): # printers=True, faxes=False):
         widget = self.getWidget()
 
         layout = QGridLayout(widget,1,1,5,10,"layout")
@@ -330,37 +334,32 @@ class ScrollView(QScrollView):
         self.printerComboBox = QComboBox(0,widget,"printerComboBox")
         layout.addWidget(self.printerComboBox,0,1)
 
-        if printers and faxes:
-            self.addGroupHeading("printer_list_heading", self.__tr("Printer/Fax"))
-            self.printernameTextLabel.setText(self.__tr("Printer/Fax Name:"))
-        elif printers:
+        #print self.cur_device.device_type
+        if self.cur_device.device_type == DEVICE_TYPE_PRINTER:
             self.addGroupHeading("printer_list_heading", self.__tr("Printer"))
             self.printernameTextLabel.setText(self.__tr("Printer Name:"))
         else:
-            self.addGroupHeading("printer_list_heading", self.__tr("Fax"))
+            self.addGroupHeading("fax_list_heading", self.__tr("Fax"))
             self.printernameTextLabel.setText(self.__tr("Fax Name:"))
 
+        self.printers = cups.getPrinters()
         self.cur_printer = None
         for p in self.printers:
-            if p.device_uri == self.cur_device.device_uri or \
-                p.device_uri == self.cur_device.device_uri.replace("hp:", "hpfax:"):
-                    if (p.device_uri.startswith("hpfax:") and faxes) or \
-                       (p.device_uri.startswith("hp:") and printers):
+            if p.device_uri == self.cur_device.device_uri:
 
-                        self.printerComboBox.insertItem(p.name)
+                self.printerComboBox.insertItem(p.name)
 
-                        if self.cur_printer is None:
-                            self.cur_printer = p.name
+                if self.cur_printer is None:
+                    self.cur_printer = p.name
 
         if self.cur_printer is None:
             #log.error("No fax queue found")
             self.y = 0
             self.clear()
 
-            if printers and faxes:
+            #if printers and faxes:
+            if self.cur_device.device_type == DEVICE_TYPE_PRINTER:
                 self.addGroupHeading("error", self.__tr("ERROR: No CUPS queue found for device."))
-            elif printers:
-                self.addGroupHeading("error", self.__tr("ERROR: No CUPS printer queue found for device."))
             else:
                 self.addGroupHeading("error", self.__tr("ERROR: No CUPS fax queue found for device."))
 
@@ -408,6 +407,9 @@ class ScrollView(QScrollView):
 
         self.addWidget(widget, "load_paper")
 
+        
+    def cleanup(self):
+        pass
         
     def __tr(self,s,c = None):
         return qApp.translate("ScrollView",s,c)

@@ -26,7 +26,8 @@ __doc__ = "Access inserted photo cards on supported HPLIP printers. This provide
 
 # Std Lib
 import sys
-import os, os.path
+import os
+import os.path
 import getopt
 import re
 import cmd
@@ -690,12 +691,12 @@ for o, a in opts:
 
     elif o in ('-o', '--output'):
         output_dir = a
-        
+
     elif o in ('-q', '--lang'):
         if a.strip() == '?':
             tui.show_languages()
             sys.exit(0)
-            
+
         loc = utils.validate_language(a.lower())
 
 
@@ -754,7 +755,7 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
         if pc.device.device_uri is None and device_uri:
             log.error("Malformed/invalid device-uri: %s" % device_uri)
             sys.exit(1)
-            
+
         user_cfg.last_used.device_uri = pc.device.device_uri
 
         # TODO: 
@@ -839,7 +840,7 @@ if mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE):
 
     except KeyboardInterrupt:
         log.error("User exit")
-        
+
 
 else: # GUI_MODE
 
@@ -848,7 +849,7 @@ else: # GUI_MODE
 
     app = QApplication(sys.argv)
     QObject.connect(app, SIGNAL("lastWindowClosed()"), app, SLOT("quit()"))
-    
+
     if loc is None:
         loc = user_cfg.ui.get("loc", "system")
         if loc.lower() == 'system':
@@ -856,19 +857,21 @@ else: # GUI_MODE
             log.debug("Using system locale: %s" % loc)
 
     if loc.lower() != 'c':
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
-        
+        e = 'utf8'
         try:
-            l, e = loc.split('.')
+            l, x = loc.split('.')
+            loc = '.'.join([l, e])
         except ValueError:
             l = loc
-            e = 'utf8'
-        
+            loc = '.'.join([loc, e])
+
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+
         qm_file = 'hplip_%s.qm' % l
         log.debug("Name of .qm file: %s" % qm_file)
         loaded = trans.load(qm_file, prop.localization_dir)
-        
+
         if loaded:
             app.installTranslator(trans)
         else:

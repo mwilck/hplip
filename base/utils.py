@@ -24,9 +24,21 @@
 from __future__ import generators
 
 # Std Lib
-import sys, os, fnmatch, tempfile, socket, struct, select, time
-import fcntl, errno, stat, string, commands
-import cStringIO, re
+import sys
+import os
+import fnmatch
+import tempfile
+import socket
+import struct
+import select
+import time
+import fcntl
+import errno
+import stat
+import string
+import commands # TODO: Replace with subprocess (commands is deprecated in Python 3.0)
+import cStringIO
+import re
 import xml.parsers.expat as expat
 import getpass
 import locale
@@ -45,18 +57,23 @@ import pexpect
 
 
 def lock(f):
+    log.debug("Locking: %s" % f.name)
     try:
         fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
         return True
-    except IOError:
+    except (IOError, OSError):
+        log.debug("Failed to unlock %s." % f.name)
         return False
 
         
 def unlock(f):
-    try:
-        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
-    except IOError:
-        pass
+    if f is not None:
+        log.debug("Unlocking: %s" % f.name)
+        try:
+            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+            os.remove(f.name)
+        except (IOError, OSError):
+            pass
         
         
 def lock_app(application, suppress_error=False):
@@ -99,49 +116,6 @@ def Translator(frm='', to='', delete='', keep=None):
 
     return callable
 
-##def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
-##    """
-##    Credit: Jürgen Hermann, Andy Gimblett, and Noah Spurrier
-##            http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
-##    """
-##
-##    # Do first fork.
-##    try:
-##        pid = os.fork()
-##        if pid > 0:
-##            sys.exit(0) # Exit first parent.
-##    except OSError, e:
-##        sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror))
-##        sys.exit(1)
-##
-##    # Decouple from parent environment.
-##    os.chdir("/")
-##    os.umask(0)
-##    os.setsid()
-##
-##    # Do second fork.
-##    try:
-##        pid = os.fork()
-##        if pid > 0:
-##            sys.exit(0) # Exit second parent.
-##    except OSError, e:
-##        sys.stderr.write ("fork #2 failed: (%d) %s\n" % (e.errno, e.strerror))
-##        sys.exit(1)
-##
-##    # Now I am a daemon!
-##    # Redirect standard file descriptors.
-##    si = file(stdin, 'r')
-##    so = file(stdout, 'a+')
-##    se = file(stderr, 'a+', 0)
-##    os.dup2(si.fileno(), sys.stdin.fileno())
-##    os.dup2(so.fileno(), sys.stdout.fileno())
-##    os.dup2(se.fileno(), sys.stderr.fileno())
-
-
-
-##def ifelse(cond, t, f):
-##    if cond: return t
-##    else: return f
 
 def to_bool_str(s, default='0'):
     """ Convert an arbitrary 0/1/T/F/Y/N string to a normalized string 0/1."""
@@ -164,17 +138,6 @@ def to_bool(s, default=False):
         return s
 
     return default
-
-##def path_exists_safely(path):
-##    """ Returns True if path exists, and points to a file with permissions at least as strict as 0755.
-##        Credit: Contributed by Henrique M. Holschuh <hmh@debian.org>"""
-##    try:
-##        pathmode = os.stat(path)[stat.ST_MODE]
-##        if pathmode & 0022 != 0:
-##            return False
-##    except (IOError,OSError):
-##        return False
-##    return True
 
 
 def walkFiles(root, recurse=True, abs_paths=False, return_folders=False, pattern='*', path=None):
@@ -553,9 +516,9 @@ class UserSettings(object):
 
         log.debug("Loading user settings...")
 
-        self.email_alerts = to_bool(user_cfg.alerts.email_alerts, False)
-        self.email_to_addresses = user_cfg.alerts.email_to_addresses
-        self.email_from_address = user_cfg.alerts.email_from_address
+##        self.email_alerts = to_bool(user_cfg.alerts.email_alerts, False)
+##        self.email_to_addresses = user_cfg.alerts.email_to_addresses
+##        self.email_from_address = user_cfg.alerts.email_from_address
         self.auto_refresh = to_bool(user_cfg.refresh.enable, False)
 
         try:
@@ -569,47 +532,47 @@ class UserSettings(object):
             self.auto_refresh_type = 0 # refresh 1 (1=refresh all)
 
         self.cmd_print = user_cfg.commands.prnt or self.cmd_print
-        self.cmd_print_int = to_bool(user_cfg.commands.prnt_int, True)
+        #self.cmd_print_int = to_bool(user_cfg.commands.prnt_int, True)
 
         self.cmd_scan = user_cfg.commands.scan or self.cmd_scan
-        self.cmd_scan_int = to_bool(user_cfg.commands.scan_int, False)
+        #self.cmd_scan_int = to_bool(user_cfg.commands.scan_int, False)
 
         self.cmd_pcard = user_cfg.commands.pcard or self.cmd_pcard
-        self.cmd_pcard_int = to_bool(user_cfg.commands.pcard_int, True)
+        #self.cmd_pcard_int = to_bool(user_cfg.commands.pcard_int, True)
 
         self.cmd_copy = user_cfg.commands.cpy or self.cmd_copy
-        self.cmd_copy_int = to_bool(user_cfg.commands.cpy_int, True)
+        #self.cmd_copy_int = to_bool(user_cfg.commands.cpy_int, True)
 
         self.cmd_fax = user_cfg.commands.fax or self.cmd_fax
-        self.cmd_fax_int = to_bool(user_cfg.commands.fax_int, True)
+        #self.cmd_fax_int = to_bool(user_cfg.commands.fax_int, True)
 
         self.cmd_fab = user_cfg.commands.fab or self.cmd_fab
-        self.cmd_fab_int = to_bool(user_cfg.commands.fab_int, False)
+        #self.cmd_fab_int = to_bool(user_cfg.commands.fab_int, False)
 
         self.debug()
 
     def debug(self):
         log.debug("Print command: %s" % self.cmd_print)
-        log.debug("Use Internal print command: %s" % self.cmd_print_int)
+        #log.debug("Use Internal print command: %s" % self.cmd_print_int)
 
         log.debug("PCard command: %s" % self.cmd_pcard)
-        log.debug("Use internal PCard command: %s" % self.cmd_pcard_int)
+        #log.debug("Use internal PCard command: %s" % self.cmd_pcard_int)
 
         log.debug("Fax command: %s" % self.cmd_fax)
-        log.debug("Use internal fax command: %s" % self.cmd_fax_int)
+        #log.debug("Use internal fax command: %s" % self.cmd_fax_int)
 
         log.debug("FAB command: %s" % self.cmd_fab)
-        log.debug("Use internal FAB command: %s" % self.cmd_fab_int)
+        #log.debug("Use internal FAB command: %s" % self.cmd_fab_int)
 
         log.debug("Copy command: %s " % self.cmd_copy)
-        log.debug("Use internal copy command: %s " % self.cmd_copy_int)
+        #log.debug("Use internal copy command: %s " % self.cmd_copy_int)
 
         log.debug("Scan command: %s" % self.cmd_scan)
-        log.debug("Use internal scan command: %s" % self.cmd_scan_int)
+        #log.debug("Use internal scan command: %s" % self.cmd_scan_int)
 
-        log.debug("Email alerts: %s" % self.email_alerts)
-        log.debug("Email to address(es): %s" % self.email_to_addresses)
-        log.debug("Email from address: %s" % self.email_from_address)
+##        log.debug("Email alerts: %s" % self.email_alerts)
+##        log.debug("Email to address(es): %s" % self.email_to_addresses)
+##        log.debug("Email from address: %s" % self.email_from_address)
         log.debug("Auto refresh: %s" % self.auto_refresh)
         log.debug("Auto refresh rate: %s" % self.auto_refresh_rate)
         log.debug("Auto refresh type: %s" % self.auto_refresh_type)        
@@ -618,23 +581,23 @@ class UserSettings(object):
         log.debug("Saving user settings...")
 
         user_cfg.commands.prnt = self.cmd_print
-        user_cfg.commands.prnt_int = self.cmd_print_int
+        #user_cfg.commands.prnt_int = self.cmd_print_int
 
         user_cfg.commands.pcard = self.cmd_pcard
-        user_cfg.commands.pcard_int = self.cmd_pcard_int
+        #user_cfg.commands.pcard_int = self.cmd_pcard_int
 
         user_cfg.commands.fax = self.cmd_fax
-        user_cfg.commands.fax_int = self.cmd_fax_int
+        #user_cfg.commands.fax_int = self.cmd_fax_int
 
         user_cfg.commands.scan = self.cmd_scan
-        user_cfg.commands.scan_int = self.cmd_scan_int
+        #user_cfg.commands.scan_int = self.cmd_scan_int
 
         user_cfg.commands.cpy = self.cmd_copy
-        user_cfg.commands.cpy_int = self.cmd_copy_int
+        #user_cfg.commands.cpy_int = self.cmd_copy_int
 
-        user_cfg.alerts.email_to_addresses = self.email_to_addresses
-        user_cfg.alerts.email_from_address = self.email_from_address
-        user_cfg.alerts.email_alerts = self.email_alerts
+##        user_cfg.alerts.email_to_addresses = self.email_to_addresses
+##        user_cfg.alerts.email_from_address = self.email_from_address
+##        user_cfg.alerts.email_alerts = self.email_alerts
 
         user_cfg.refresh.enable = self.auto_refresh
         user_cfg.refresh.rate = self.auto_refresh_rate
@@ -935,9 +898,12 @@ class XMLToDictParser:
     def __init__(self):
         self.stack = []
         self.data = {}
+        self.last_start = ''
 
     def startElement(self, name, attrs):
+        #print "START:", name, attrs
         self.stack.append(str(name).lower())
+        self.last_start = str(name).lower()
 
         if len(attrs):
             for a in attrs:
@@ -946,6 +912,10 @@ class XMLToDictParser:
                 self.stack.pop()
 
     def endElement(self, name):
+        if name.lower() == self.last_start:
+            self.addData('')
+        
+        #print "END:", name
         self.stack.pop()
 
     def charData(self, data):
@@ -955,6 +925,8 @@ class XMLToDictParser:
             self.addData(data)
 
     def addData(self, data):
+        #print "DATA:", data
+        self.last_start = ''
         try:
             data = int(data)
         except ValueError:
@@ -1405,7 +1377,7 @@ def gen_random_uuid():
         uuidgen = which("uuidgen")
         if uuidgen:
             uuidgen = os.path.join(uuidgen, "uuidgen")
-            return commands.getoutput(uuidgen)
+            return commands.getoutput(uuidgen) # TODO: Replace with subprocess (commands is deprecated in Python 3.0)
         else:
             return ''
             
@@ -1479,4 +1451,18 @@ class RestTableFormatter(object):
         else:
             log.error("No data rows")
 
+
+def mixin(cls):
+    import inspect
+    
+    locals = inspect.stack()[1][0].f_locals
+    if "__module__" not in locals:
+        raise TypeError("Must call mixin() from within class def.")
+        
+    dict = cls.__dict__.copy()
+    dict.pop("__doc__", None)
+    dict.pop("__module__", None)
+    
+    locals.update(dict)
+    
     

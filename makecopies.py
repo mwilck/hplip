@@ -225,12 +225,12 @@ for o, a in opts:
         bus = [x.lower().strip() for x in a.split(',')]
         if not device.validateBusList(bus):
             usage()
-            
+
     elif o == '--lang':
         if a.strip() == '?':
             tui.show_languages()
             sys.exit(0)
-            
+
         loc = utils.validate_language(a.lower())
 
 
@@ -250,17 +250,17 @@ os.umask (0037)
 if mode == GUI_MODE:
     if not utils.canEnterGUIMode():
         mode = NON_INTERACTIVE_MODE
-        
+
 if mode == GUI_MODE:
     app = None
     makecopiesdlg = None
 
     from qt import *
     from ui.makecopiesform import MakeCopiesForm
-    
+
     # create the main application object
     app = QApplication(sys.argv)
-    
+
     if loc is None:
         loc = user_cfg.ui.get("loc", "system")
         if loc.lower() == 'system':
@@ -268,19 +268,21 @@ if mode == GUI_MODE:
             log.debug("Using system locale: %s" % loc)
 
     if loc.lower() != 'c':
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
-        
+        e = 'utf8'
         try:
-            l, e = loc.split('.')
+            l, x = loc.split('.')
+            loc = '.'.join([l, e])
         except ValueError:
             l = loc
-            e = 'utf8'
-        
+            loc = '.'.join([loc, e])
+
+        log.debug("Trying to load .qm file for %s locale." % loc)
+        trans = QTranslator(None)
+
         qm_file = 'hplip_%s.qm' % l
         log.debug("Name of .qm file: %s" % qm_file)
         loaded = trans.load(qm_file, prop.localization_dir)
-        
+
         if loaded:
             app.installTranslator(trans)
         else:
@@ -296,7 +298,7 @@ if mode == GUI_MODE:
             locale.setlocale(locale.LC_ALL, locale.normalize(loc))
         except locale.Error:
             pass
-    
+
     makecopiesdlg = MakeCopiesForm(bus, device_uri, printer_name, 
                                    num_copies, contrast, quality, 
                                    reduction, fit_to_page)
@@ -310,17 +312,17 @@ if mode == GUI_MODE:
     except KeyboardInterrupt:
         pass
 
-        
-        
-        
-        
+
+
+
+
 else: # NON_INTERACTIVE_MODE
     try:
         if not device_uri and not printer_name:
             try:
                 device_uri = device.getInteractiveDeviceURI(bus, 
                     filter={'copy-type': (operator.gt, 0)})
-                    
+
                 if device_uri is None:
                     sys.exit(1)
             except Error:
@@ -332,7 +334,7 @@ else: # NON_INTERACTIVE_MODE
         if dev.copy_type == COPY_TYPE_NONE:
             log.error("Sorry, make copies functionality is not supported on this device.")
             sys.exit(1)
-            
+
         user_cfg.last_used.device_uri = dev.device_uri
 
         try:
@@ -385,7 +387,7 @@ else: # NON_INTERACTIVE_MODE
                      quality, fit_to_page, scan_style,
                      update_queue, event_queue)
 
-        
+
             cont = True
             while cont:
                 while update_queue.qsize():
@@ -419,10 +421,10 @@ else: # NON_INTERACTIVE_MODE
                             break
 
                 time.sleep(2)
-        
+
         finally:
             dev.close()
-            
+
     except KeyboardInterrupt:
         log.error("User interrupt. Canceling...")
         event_queue.put(copier.COPY_CANCELED)

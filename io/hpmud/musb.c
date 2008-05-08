@@ -843,7 +843,7 @@ static int new_channel(mud_device *pd, int index, const char *sn)
       goto bugout; 
    }
 
-   if (index == HPMUD_EWS_CHANNEL || index == HPMUD_SOAPSCAN_CHANNEL || index == HPMUD_SOAPFAX_CHANNEL)
+   if (index == HPMUD_EWS_CHANNEL || index == HPMUD_SOAPSCAN_CHANNEL || index == HPMUD_SOAPFAX_CHANNEL || index == HPMUD_MARVELL_SCAN_CHANNEL)
       pd->channel[index].vf = musb_comp_channel_vf;
    else if (pd->io_mode == HPMUD_RAW_MODE || pd->io_mode == HPMUD_UNI_MODE)
       pd->channel[index].vf = musb_raw_channel_vf;
@@ -1261,10 +1261,9 @@ enum HPMUD_RESULT __attribute__ ((visibility ("hidden"))) musb_channel_open(mud_
    else
    {
       if ((stat = (pd->channel[index].vf.open)(&pd->channel[index])) != HPMUD_R_OK)  /* call transport specific open */
-      {
          del_channel(pd, &pd->channel[index]);   /* open failed, cleanup */
-      }
-      *cd = index;
+      else
+         *cd = index;
    }
 
    pthread_mutex_unlock(&pd->mutex);
@@ -1407,6 +1406,9 @@ enum HPMUD_RESULT __attribute__ ((visibility ("hidden"))) musb_comp_channel_open
          break;
       case HPMUD_SOAPFAX_CHANNEL:
          fd = FD_ff_3_1;   
+         break;
+      case HPMUD_MARVELL_SCAN_CHANNEL:
+         fd = FD_ff_ff_ff;   
          break;
       default:
          stat = HPMUD_R_INVALID_SN;

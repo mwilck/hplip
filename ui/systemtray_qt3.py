@@ -47,7 +47,7 @@ try:
 except ImportError:
     log.error("Qt3 version of hp-systray requires python-ctypes module. Exiting!")
     sys.exit(1)
-    
+
 # dbus
 try:
     import dbus
@@ -70,7 +70,7 @@ class BalloonTip(QDialog):
     def __init__(self, msg_icon, title, msg, tray_icon):
         QDialog.__init__(self, tray_icon, "BalloonTip", False,
         Qt.WStyle_StaysOnTop | Qt.WStyle_Customize | Qt.WStyle_NoBorder | Qt.WStyle_Tool | Qt.WX11BypassWM)
-        
+
         self.timerId = None
         self.bubbleActive = False
 
@@ -95,7 +95,7 @@ class BalloonTip(QDialog):
         self.msgLabel.setText(msg)
         self.msgLabel.setTextFormat(Qt.PlainText)
         self.msgLabel.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        
+
         layout = QGridLayout(self)
         if msg_icon is not None: 
             self.iconLabel = QLabel(self)
@@ -199,7 +199,7 @@ class SystrayIcon(QLabel):
         QLabel.__init__(self, parent, name, Qt.WMouseNoMask | Qt.WRepaintNoErase | 
                            Qt.WType_TopLevel | Qt.WStyle_Customize | 
                            Qt.WStyle_NoBorder | Qt.WStyle_StaysOnTop)  
-        
+
         self.setMinimumSize(22, 22)
         self.setBackgroundMode(Qt.X11ParentRelative)
         self.setBackgroundOrigin(QWidget.WindowOrigin)
@@ -254,8 +254,8 @@ class SystrayIcon(QLabel):
             x += 1
             if x > 10: break
             time.sleep(2.0)
-        
-        
+
+
         # Make sure KDE puts the icon in the system tray
         class data2(c.Union):
             _fields_ = [("i", c.c_int, 32),
@@ -303,20 +303,20 @@ class SystrayIcon(QLabel):
         if parent:
             QToolTip.add(self, parent.caption())
 
-            
-            
+
+
     def locateTray(self, dpy):
         # get systray window (holds _NET_SYSTEM_TRAY_S<screen> atom)
         self.XScreenNumberOfScreen = self.libX11.XScreenNumberOfScreen
         self.XScreenNumberOfScreen.argtypes = [c.c_void_p]
-        
+
         XDefaultScreenOfDisplay = self.libX11.XDefaultScreenOfDisplay
         XDefaultScreenOfDisplay.argtypes = [c.c_void_p]
         XDefaultScreenOfDisplay.restype = c.c_void_p
-        
+
         XGetSelectionOwner = self.libX11.XGetSelectionOwner
         XGetSelectionOwner.argtypes = [c.c_void_p, c.c_int]
-        
+
         XGrabServer = self.libX11.XGrabServer
         XGrabServer.argtypes = [c.c_void_p]
 
@@ -326,7 +326,7 @@ class SystrayIcon(QLabel):
 
         managerWin = XGetSelectionOwner(dpy, selectionAtom)
         return managerWin
-        
+
 
     def setTooltipText(self, text):
         QToolTip.add(self, text)
@@ -339,7 +339,7 @@ class SystrayIcon(QLabel):
         elif e.button() == Qt.LeftButton:
             self.emit(PYSIGNAL("activated()"), ())
 
-            
+
     def supportsMessages(self):
         return True
 
@@ -409,11 +409,11 @@ class SystemTrayApp(QApplication):
         QObject.connect(notifier, SIGNAL("activated(int)"), self.notifier_activated)
 
         QObject.connect(self.tray_icon, PYSIGNAL("contextMenuRequested(const QPoint&)"), self.menu_requested)
-        
+
         self.icon_info = load_pixmap('info', '16x16')
         self.icon_warn = load_pixmap('warning', '16x16')
         self.icon_error = load_pixmap('error', '16x16')
-        
+
         self.ERROR_STATE_TO_ICON = {
             ERROR_STATE_CLEAR: self.icon_info, 
             ERROR_STATE_OK: self.icon_info,
@@ -433,11 +433,11 @@ class SystemTrayApp(QApplication):
     def menu_requested(self, pos):
         self.menu.popup(pos)
 
-        
+
     def quit_triggered(self):
         self.quit()
 
-        
+
     def toolbox_triggered(self):
         try:
             os.waitpid(-1, os.WNOHANG)
@@ -446,26 +446,30 @@ class SystemTrayApp(QApplication):
 
         # See if it is already running...
         ok, lock_file = utils.lock_app('hp-toolbox', True)
-        
+
         if ok: # able to lock, not running...
             utils.unlock(lock_file)
-            
+
             path = utils.which('hp-toolbox')
             if path:
                 path = os.path.join(path, 'hp-toolbox')
             else:
-                path = os.path.join(prop.home_dir, 'toolbox.py')
-                if not os.path.exists(path):
-                    return # TODO: show error message
+                log.error("Unable to find hp-toolbox on PATH.")
+
+                self.tray_icon.showMessage("HPLIP Status Service", 
+                                self.__tr("Unable to locate hp-toolbox on system PATH."),
+                                self.icon_error, 5000)
+
+                return
 
             log.debug(path)
             os.spawnvp(os.P_NOWAIT, path, [])
-        
+
         else: # ...already running, raise it
             args = ['', '', EVENT_RAISE_DEVICE_MANAGER, prop.username, 0, '', '']
-            msg = lowlevel.SignalMessage('/', 'com.hplip.Service', 'Event')
+            msg = lowlevel.SignalMessage('/', 'com.hplip.Toolbox', 'Event')
             msg.append(signature='ssisiss', *args)
-            
+
             SessionBus().send_message(msg)
 
 
@@ -473,7 +477,7 @@ class SystemTrayApp(QApplication):
         #print "\nPARENT: prefs!"
         pass
 
-        
+
     def notifier_activated(self, s):
         m = ''
         while True:
@@ -504,6 +508,11 @@ class SystemTrayApp(QApplication):
 
             else:
                 break
+
+
+    def __tr(self,s,c = None):
+        return qApp.translate("SystemTrayApp",s,c)
+
 
 
 

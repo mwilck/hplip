@@ -233,6 +233,7 @@ public:
         "hp color LaserJet 3500\0"
 		"hp color LaserJet 3550\0"
         "hp color LaserJet 3600\0"
+        "Hp Color LaserJet CP151\0"
 #ifdef APDK_MLC_PRINTER
 #endif
     ) {m_iPrinterType = eLJJetReady;}

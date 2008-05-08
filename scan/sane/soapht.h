@@ -26,8 +26,6 @@
 #ifndef _SOAPHT_H
 #define _SOAPHT_H
 
-#define HAVE_SOAPHT
-
 #include "sane.h"
 
 SANE_Status soapht_open(SANE_String_Const device, SANE_Handle *handle);

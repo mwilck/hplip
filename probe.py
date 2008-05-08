@@ -177,8 +177,7 @@ try:
     utils.log_title(__title__, __version__)
     
     if os.getuid() == 0:
-        log.error("hp-probe should not be run as root.")
-
+        log.warn("hp-probe should not be run as root.")
 
     if bus is None:
         x = 1

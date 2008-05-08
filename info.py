@@ -135,8 +135,7 @@ try:
         utils.log_title(__title__, __version__)
         
     if os.getuid() == 0:
-        log.error("hp-info should not be run as root.")
-
+        log.warn("hp-info should not be run as root.")
 
     if not device_uri and not printer_name:
         try:
@@ -147,11 +146,10 @@ try:
             log.error("Error occured during interactive mode. Exiting.")
             sys.exit(1)
             
-
     try:
         d = device.Device(device_uri, printer_name)
     except Error:
-        log.error("Error opening device. Exiting.")
+        log.error("Unexpected error. Exiting.")
         sys.exit(1)
 
     if d.device_uri is None and printer_name:
@@ -174,8 +172,8 @@ try:
             d.open()
             d.queryDevice()
         except Error, e:
-            log.error("Error opening device (%s). Exiting." % e.msg)
-            sys.exit(1)
+            log.error("Error opening device (%s)." % e.msg)
+            #sys.exit(1)
 
         if not devid_mode:
             formatter = utils.TextFormatter(

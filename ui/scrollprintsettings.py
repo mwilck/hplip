@@ -23,13 +23,15 @@
 from base.g import *
 from base import utils
 from prnt import cups
+from jobstoragemixin import JobStorageMixin
 
 # Qt
 from qt import *
 from scrollview import ScrollView
 
 # Std Lib
-import os.path, os
+import os.path
+import os
 
 
 class OptionComboBox(QComboBox):
@@ -84,10 +86,18 @@ class DefaultPushButton(QPushButton):
 
 
 class ScrollPrintSettingsView(ScrollView):
+    utils.mixin(JobStorageMixin)
+
     def __init__(self, service, parent=None, name=None, fl=0):
         ScrollView.__init__(self, service, parent, name, fl)
+        
+        self.initJobStorage(True)
 
+    
+    
     def fillControls(self):
+        QApplication.setOverrideCursor(QApplication.waitCursor)
+    
         ScrollView.fillControls(self)
     
         self.loading = True
@@ -100,7 +110,7 @@ class ScrollPrintSettingsView(ScrollView):
             #try:
                 current_options = dict(cups.getOptions())
                 
-                if not self.is_fax:
+                if not self.cur_device.device_type == DEVICE_TYPE_FAX:
                     self.addGroupHeading("basic", self.__tr("Basic"))
                     log.debug("Group: Basic")
     
@@ -164,6 +174,11 @@ class ScrollPrintSettingsView(ScrollView):
 
                 for g in groups:
                     log.debug("Group: %s" % repr(g))
+                    
+                    if 'jobretention' in g.lower():
+                        log.debug("HPJobRetention skipped.")
+                        continue                    
+                    
                     text, num_subgroups = cups.getGroup(g) 
                     read_only = 'install' in g.lower()
                     
@@ -186,8 +201,10 @@ class ScrollPrintSettingsView(ScrollView):
                         log.debug("  Option: %s" % repr(o))
 
                         if 'pageregion' in o.lower():
-                            log.debug("Skipped.")
+                            log.debug("Page Region skipped.")
                             continue
+                            
+                        
 
                         option_text, defchoice, conflicted, ui  = cups.getOption(g, o)
 
@@ -298,7 +315,7 @@ class ScrollPrintSettingsView(ScrollView):
                     # brightness
                     # gamma
 
-                if not self.is_fax:
+                if not self.cur_device.device_type == DEVICE_TYPE_FAX:
                     self.addGroupHeading("adjustment", self.__tr("Printout Appearance"))
     
                     current = int(current_options.get('brightness', 100))
@@ -389,7 +406,7 @@ class ScrollPrintSettingsView(ScrollView):
                 log.debug("  Option: position")
                 log.debug("  Current value: %s" % current)
 
-                if not self.is_fax:
+                if not self.cur_device.device_type == DEVICE_TYPE_FAX:
                     current = int(current_options.get('saturation', 100))
     
                     log.debug("  Option: saturation")
@@ -443,7 +460,7 @@ class ScrollPrintSettingsView(ScrollView):
                 log.debug("  Option: prettyprint")
                 log.debug("  Current value: %s" % current)
 
-                if not self.is_fax:
+                if not self.cur_device.device_type == DEVICE_TYPE_FAX:
                     current = current_options.get('job-sheets', 'none').split(',')
                     
                     try:
@@ -477,6 +494,15 @@ class ScrollPrintSettingsView(ScrollView):
 
                 log.debug("  Option: mirror")
                 log.debug("  Current value: %s" % current)
+                
+                self.job_storage_avail = self.cur_device.mq['job-storage'] == JOB_STORAGE_ENABLE
+            
+                #print current_options
+                
+                if self.job_storage_avail:
+                    self.addGroupHeading("jobstorage", self.__tr("Job Storage and Secure Printing"))
+                    self.addJobStorage(current_options)
+                    
 
             #except Exception, e:
                 #log.exception()
@@ -485,6 +511,8 @@ class ScrollPrintSettingsView(ScrollView):
         finally:
             cups.closePPD()
             self.loading = False
+            QApplication.restoreOverrideCursor()
+            
 
     def optionComboBox_activated(self, a):
         a = unicode(a)
@@ -924,7 +952,7 @@ class ScrollPrintSettingsView(ScrollView):
             self.connect(defaultPushButton, SIGNAL("clicked()"), self.defaultPushButton_clicked)
             
         elif typ == cups.PPD_UI_PICKMANY:
-            print "pickmany"
+            log.error("Unrecognized type: pickmany")
 
         elif typ == cups.UI_UNITS_SPINNER:
             widget = self.getWidget()

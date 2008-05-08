@@ -35,11 +35,10 @@ import Queue
 
 
 class ScrollCopyView(ScrollView):
-    def __init__(self, service, toolbox_hosted=True, num_copies=None, contrast=None, quality=None, 
+    def __init__(self, service, num_copies=None, contrast=None, quality=None, 
                 reduction=None, fit_to_page=None, parent=None, form=None, name=None, fl=0):
         ScrollView.__init__(self, service, parent, name, fl)
 
-        self.toolbox_hosted = toolbox_hosted
         self.form = form
 
         self.num_copies = num_copies
@@ -186,14 +185,9 @@ class ScrollCopyView(ScrollView):
 
         self.addGroupHeading("space1", "")
 
-        if self.toolbox_hosted:
-            s = self.__tr("<< Functions")
-        else:
-            s = self.__tr("Close")
-
         self.copyButton = self.addActionButton("bottom_nav", self.__tr("Make Copies(s)"), 
                                 self.copyButton_clicked, 'print.png', 'print-disabled.png', 
-                                s, self.funcButton_clicked)
+                                self.__tr("Close"), self.funcButton_clicked)
 
 
 
@@ -489,10 +483,7 @@ class ScrollCopyView(ScrollView):
                 self.cur_device.close()
                 self.copyButton.setEnabled(True)
 
-                if self.toolbox_hosted:
-                    self.form.SwitchFunctionsTab("funcs")
-                else:
-                    self.form.close()
+                self.form.close()
 
 
     def copyButton_clicked(self):
@@ -558,10 +549,7 @@ class ScrollCopyView(ScrollView):
 
     def funcButton_clicked(self):
         self.dev.close()
-        if self.toolbox_hosted:
-            self.form.SwitchFunctionsTab("funcs")
-        else:
-            self.form.close()
+        self.form.close()
 
     def __tr(self,s,c = None):
         return qApp.translate("ScrollCopy",s,c)

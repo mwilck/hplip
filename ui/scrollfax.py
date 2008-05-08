@@ -108,15 +108,15 @@ class PhoneNumValidator(QValidator):
             return QValidator.Acceptable, pos
 
 
+            
 class ScrollFaxView(ScrollView):
-    def __init__(self, service, toolbox_hosted=True, parent = None, form=None, name = None,fl = 0):
+    def __init__(self, service, parent = None, form=None, name = None,fl = 0):
         ScrollView.__init__(self, service, parent, name, fl)
         
         global fax_enabled
         if service is None:
             fax_enabled = False
             
-        self.toolbox_hosted = toolbox_hosted
         self.form = form
         self.file_list = []
         self.pages_button_group = 0
@@ -138,6 +138,8 @@ class ScrollFaxView(ScrollView):
         log.debug(self.allowable_mime_types)
         self.last_job_id = 0
         self.dev = None
+        self.lock_file = None
+        
 
         self.db =  fax.FaxAddressBook()
         self.last_db_modification = self.db.last_modification_time()
@@ -187,7 +189,8 @@ class ScrollFaxView(ScrollView):
         ScrollView.fillControls(self)
 
         if fax_enabled:
-            if self.addPrinterFaxList(faxes=True, printers=False):
+            if self.addPrinterFaxList(): #faxes=True, printers=False):
+                
                 self.addGroupHeading("files_to_fax", self.__tr("File(s) to Fax"))
                 self.addFileList()
     
@@ -209,14 +212,9 @@ class ScrollFaxView(ScrollView):
     
                 self.addGroupHeading("space1", "")
     
-                if self.toolbox_hosted:
-                    s = self.__tr("<< Functions")
-                else:
-                    s = self.__tr("Close")
-    
                 self.faxButton = self.addActionButton("bottom_nav", self.__tr("Send Fax Now"), 
                                         self.faxButton_clicked, 'fax.png', 'fax-disabled.png', 
-                                        s, self.funcButton_clicked)
+                                        self.__tr("Close"), self.funcButton_clicked)
     
                 self.faxButton.setEnabled(False)
     
@@ -243,8 +241,9 @@ class ScrollFaxView(ScrollView):
         
 
     def PeriodicCheck(self): # called by check_timer every 3 sec
+        #print self
         if not self.busy:
-            #log.debug("Checking for incoming faxes...")
+            log.debug("Checking for incoming faxes...")
             
             result = list(self.service.CheckForWaitingFax(self.cur_device.device_uri,
                           prop.username, self.last_job_id))
@@ -265,6 +264,8 @@ class ScrollFaxView(ScrollView):
                 self.check_timer.start(3000)
                 return
 
+            log.debug("Not found.")
+            
             # Check for updated FAB
             last_db_modification = self.db.last_modification_time()
 
@@ -274,6 +275,26 @@ class ScrollFaxView(ScrollView):
                 self.last_db_modification = last_db_modification
                 self.updateRecipientCombos()
                 QApplication.restoreOverrideCursor()
+                
+    
+    def onPrinterChange(self, printer_name):
+        if printer_name != self.cur_printer:
+            self.unlock()
+            self.lock(printer_name)
+            #utils.unlock(self.lock_file)
+            #ok, self.lock_file = utils.lock_app('hp-sendfax-%s' % printer_name, True)
+            
+        ScrollView.onPrinterChange(self, printer_name)
+        
+    def unlock(self):
+        utils.unlock(self.lock_file)
+        
+    def lock(self, printer_name=None):
+        if printer_name is None:
+            printer_name = self.cur_printer
+            
+        ok, self.lock_file = utils.lock_app('hp-sendfax-%s' % printer_name, True)
+        
 
 
     # Event handler for adding files from a external print job (not during fax send thread)
@@ -1239,11 +1260,11 @@ class ScrollFaxView(ScrollView):
 
                 if status  == fax.STATUS_ERROR:
                     self.form.FailureUI(self.__tr("<b>Fax send error.</b><p>"))
-                    self.dev.sendEvent(EVENT_FAX_JOB_FAIL, self.cur_printer, EVENT_FAX_JOB_FAIL, 0, '')
+                    self.dev.sendEvent(EVENT_FAX_JOB_FAIL, self.cur_printer, 0, '')
 
                 elif status == fax.STATUS_BUSY:
                     self.form.FailureUI(self.__tr("<b>Fax device is busy.</b><p>Please try again later."))
-                    self.dev.sendEvent(EVENT_FAX_JOB_FAIL, self.cur_printer, EVENT_FAX_JOB_FAIL, 0, '')
+                    self.dev.sendEvent(EVENT_FAX_JOB_FAIL, self.cur_printer, 0, '')
 
                 elif status == fax.STATUS_COMPLETED:
                     self.dev.sendEvent(EVENT_END_FAX_JOB, self.cur_printer, 0, '')
@@ -1251,14 +1272,15 @@ class ScrollFaxView(ScrollView):
                     self.funcButton_clicked()
 
 
+    def cleanup(self):
+        self.unlock()
+        
+        if fax_enabled:
+            self.check_timer.stop()
 
     def funcButton_clicked(self):
-        self.check_timer.stop()
-
-        if self.toolbox_hosted:
-            self.form.SwitchFunctionsTab("funcs")
-        else:
-            self.form.close()
+        self.cleanup()
+        self.form.close()
 
     def __tr(self,s,c = None):
         return qApp.translate("ScrollFaxView",s,c)

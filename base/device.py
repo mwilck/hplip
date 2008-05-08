@@ -25,7 +25,7 @@ import re
 import gzip
 import os.path
 import time
-import urllib
+import urllib # TODO: Replace with urllib2 (urllib is deprecated in Python 3.0)
 import StringIO
 import httplib
 import struct
@@ -108,7 +108,7 @@ class Event(object):
         log.debug("    title=%s" % self.title)
         log.debug("    timedate=%s" % self.timedate)
 
-    def pack(self): # pack up for transport in pipe between hpssd and systemtray_ui
+    def pack(self): # pack up for transport in pipe between hpssd and systemtray_ui and between toolbox and toolbox dbus receiver
         return struct.pack(self.fmt, self.device_uri[:64], self.printer_name[:64],
                 self.event_code, self.username[:32], self.job_id, self.title[:64], self.timedate)
 
@@ -129,7 +129,8 @@ def init_dbus():
     if dbus_avail and not dbus_disabled:
         if os.getuid() == 0:
             log.debug("Not starting dbus: running as root.")
-            return False, None
+            dbus_avail = False
+            return dbus_avail, None
 
         try:
             session_bus = dbus.SessionBus()
@@ -139,7 +140,8 @@ def init_dbus():
             else:
                 log.debug("Unable to connect to dbus session bus (running as root?)")
 
-            return False, None
+            dbus_avail = False
+            return dbus_avail, None
 
         try:
             log.debug("Connecting to com.hplip.StatusService (try #1)...")
@@ -894,7 +896,7 @@ class Device(object):
 
         global dbus_disabled
         dbus_disabled = disable_dbus
-
+        
         if not disable_dbus:
             if service is None:
                 self.dbus_avail, self.service = init_dbus()
@@ -919,8 +921,17 @@ class Device(object):
 
         self.device_uri = device_uri
         self.callback = callback
-        self.query_device_thread = None
-
+        self.device_type = DEVICE_TYPE_UNKNOWN
+        
+        if self.device_uri.startswith('hp:'):
+            self.device_type = DEVICE_TYPE_PRINTER
+        
+        elif self.device_uri.startswith('hpaio:'):
+            self.device_type = DEVICE_TYPE_SCANNER
+        
+        elif self.device_uri.startswith('hpfax:'):
+            self.device_type = DEVICE_TYPE_FAX
+        
         try:
             self.back_end, self.is_hp, self.bus, self.model, \
                 self.serial, self.dev_file, self.host, self.port = \
@@ -942,6 +953,7 @@ class Device(object):
 
         self.mq = {} # Model query
         self.dq = {} # Device query
+        self.icon = "default_printer"
         self.cups_printers = []
         self.channels = {} # { 'SERVICENAME' : channel_id, ... }
         self.device_id = -1
@@ -1069,7 +1081,9 @@ class Device(object):
                 hpmudext.open_device(self.device_uri, self.io_mode)
 
             if result_code != hpmudext.HPMUD_R_OK:
+                self.error_state = ERROR_STATE_ERROR
                 self.sendEvent(result_code+ERROR_CODE_BASE)
+                
                 if result_code == hpmudext.HPMUD_R_DEVICE_BUSY:
                     log.error("Device busy: %s" % self.device_uri)
                 else:
@@ -1077,7 +1091,7 @@ class Device(object):
 
                 self.last_event = Event(self.device_uri, '', EVENT_ERROR_DEVICE_NOT_FOUND,
                         prop.username, 0, '', time.time())
-
+                
                 raise Error(ERROR_DEVICE_NOT_FOUND)
 
             else:
@@ -1357,9 +1371,124 @@ class Device(object):
                 r_value, r_value_str, rg, rr = self.r_values
 
         return r_value, r_value_str, rg, rr
+    
+    
+    def __queryFax(self, quick=False, reread_cups_printers=False):
+        io_mode = self.mq.get('io-mode', IO_MODE_UNI)
+        self.status_code = STATUS_PRINTER_IDLE
+        
+        if io_mode != IO_MODE_UNI:
+        
+            if self.device_state != DEVICE_STATE_NOT_FOUND:
+                if self.tech_type in (TECH_TYPE_MONO_INK, TECH_TYPE_COLOR_INK):
+                    try:
+                        self.getDeviceID()
+                    except Error, e:
+                        log.error("Error getting device ID.")
+                        self.last_event = Event(self.device_uri, '', ERROR_DEVICE_IO_ERROR,
+                            prop.username, 0, '', time.time())
+                        
+                        raise Error(ERROR_DEVICE_IO_ERROR)
 
+                status_desc = self.queryString(self.status_code)
 
-    def queryDevice(self, quick=False, no_fwd=False, reread_cups_printers=False):
+                #print self.status_code
+                
+                self.dq.update({
+                    'serial'           : self.serial,
+                    'cups-printer'     : ','.join(self.cups_printers),
+                    'status-code'      : self.status_code,
+                    'status-desc'      : status_desc,
+                    'deviceid'         : self.raw_deviceID,
+                    'panel'            : 0,
+                    'panel-line1'      : '',
+                    'panel-line2'      : '',
+                    'device-state'     : self.device_state,
+                    'error-state'      : self.error_state,
+                    })
+
+    
+            log.debug("Fax activity check...")
+
+            tx_active, rx_active = status.getFaxStatus(self)
+
+            if tx_active:
+                self.status_code = STATUS_FAX_TX_ACTIVE
+            elif rx_active:
+                self.status_code = STATUS_FAX_RX_ACTIVE
+                
+            #print self.status_code                
+            
+            self.error_state = STATUS_TO_ERROR_STATE_MAP.get(self.status_code, ERROR_STATE_CLEAR)
+            self.sendEvent(self.status_code)
+            
+            #print "Error state=", self.error_state, self.device_uri
+
+            try:
+                self.dq.update({'status-desc' : self.queryString(self.status_code),
+                                'error-state' : self.error_state,
+                                })
+
+            except (KeyError, Error):
+                self.dq.update({'status-desc' : '',
+                                'error-state' : ERROR_STATE_CLEAR,
+                                })
+                                
+                                
+            if self.panel_check:
+                self.panel_check = bool(self.mq.get('panel-check-type', 0))
+            
+            status_type = self.mq.get('status-type', STATUS_TYPE_NONE)
+            if self.panel_check and \
+                status_type in (STATUS_TYPE_LJ, STATUS_TYPE_S, STATUS_TYPE_VSTATUS) and \
+                io_mode != IO_MODE_UNI:
+
+                log.debug("Panel check...")
+                try:
+                    self.panel_check, line1, line2 = status.PanelCheck(self)
+                finally:
+                    self.closePML()
+
+                self.dq.update({'panel': int(self.panel_check),
+                                  'panel-line1': line1,
+                                  'panel-line2': line2,}) 
+   
+            if not quick and reread_cups_printers:
+                self.cups_printers = []
+                log.debug("Re-reading CUPS printer queue information.")
+                printers = cups.getPrinters()
+                for p in printers:
+                    if self.device_uri == p.device_uri:
+                        self.cups_printers.append(p.name)
+                        self.state = p.state # ?
+
+                        if self.io_state == IO_STATE_NON_HP:
+                            self.model = p.makemodel.split(',')[0]
+
+                self.dq.update({'cups-printer' : ','.join(self.cups_printers)})
+
+                try:
+                    self.first_cups_printer = self.cups_printers[0]
+                except IndexError:
+                    self.first_cups_printer = ''
+                                
+                                
+        for d in self.dq:
+            self.__dict__[d.replace('-','_')] = self.dq[d]
+
+        self.last_event = Event(self.device_uri, '', self.status_code, prop.username, 0, '', time.time())
+        #print self.last_event
+        
+        log.debug(self.dq)
+        
+        #import pprint
+        
+        #pprint.pprint(self.dq)
+                                
+                        
+                        
+        
+    def queryDevice(self, quick=False, reread_cups_printers=False):
         if not self.supported:
             self.dq = {}
 
@@ -1367,6 +1496,9 @@ class Device(object):
                 prop.username, 0, '', time.time())
 
             return
+            
+        if self.device_type == DEVICE_TYPE_FAX:
+            return self.__queryFax(quick, reread_cups_printers)
 
         r_type = self.mq.get('r-type', 0)
         tech_type = self.mq.get('tech-type', TECH_TYPE_NONE)
@@ -1390,6 +1522,7 @@ class Device(object):
                     log.error("Error getting device ID.")
                     self.last_event = Event(self.device_uri, '', ERROR_DEVICE_IO_ERROR,
                         prop.username, 0, '', time.time())
+                    
                     raise Error(ERROR_DEVICE_IO_ERROR)
 
             status_desc = self.queryString(self.status_code)
@@ -1452,29 +1585,25 @@ class Device(object):
 
             status_code = self.dq.get('status-code', STATUS_UNKNOWN)
 
-            if not quick and \
-                self.mq.get('fax-type', FAX_TYPE_NONE) and \
-                status_code == STATUS_PRINTER_IDLE and \
-                io_mode != IO_MODE_UNI:
+##            if not quick and \
+##                self.mq.get('fax-type', FAX_TYPE_NONE) and \
+##                status_code == STATUS_PRINTER_IDLE and \
+##                io_mode != IO_MODE_UNI:
+##
+##                log.debug("Fax activity check...")
+##
+##                tx_active, rx_active = status.getFaxStatus(self)
+##
+##                if tx_active:
+##                    status_code = STATUS_FAX_TX_ACTIVE
+##                elif rx_active:
+##                    status_code = STATUS_FAX_RX_ACTIVE
 
-                log.debug("Fax activity check...")
 
-                tx_active, rx_active = status.getFaxStatus(self)
-
-                if tx_active:
-                    status_code = STATUS_FAX_TX_ACTIVE
-                elif rx_active:
-                    status_code = STATUS_FAX_RX_ACTIVE
-
-
-            #typ = 'event'
             self.error_state = STATUS_TO_ERROR_STATE_MAP.get(status_code, ERROR_STATE_CLEAR)
-
-            #if self.error_state == ERROR_STATE_ERROR:
-            #    typ = 'error'
-
             self.sendEvent(status_code)
-
+            
+            #print "Error state=", self.error_state, self.device_uri
 
             try:
                 self.dq.update({'status-desc' : self.queryString(status_code),
@@ -1550,7 +1679,7 @@ class Device(object):
                                     'rr' : rr,
                                   })
 
-                a = 1
+                a, aa = 1, 1
                 while True:
                     mq_agent_kind = self.mq.get('r%d-agent%d-kind' % (r_value, a), -1)
 
@@ -1562,6 +1691,7 @@ class Device(object):
 
                     found = False
 
+                    log.debug("Looking for kind=%d, type=%d..." % (mq_agent_kind, mq_agent_type))
                     for agent in agents:
                         agent_kind = agent['kind']
                         agent_type = agent['type']
@@ -1621,20 +1751,20 @@ class Device(object):
 
                             self.dq.update(
                             {
-                                'agent%d-kind' % a :          agent_kind,
-                                'agent%d-type' % a :          agent_type,
-                                'agent%d-known' % a :         agent.get('known', False),
-                                'agent%d-sku' % a :           mq_agent_sku,
-                                'agent%d-level' % a :         agent_level,
-                                'agent%d-level-trigger' % a : agent_level_trigger,
-                                'agent%d-ack' % a :           agent.get('ack', False),
-                                'agent%d-hp-ink' % a :        agent.get('hp-ink', False),
-                                'agent%d-health' % a :        agent_health,
-                                'agent%d-dvc' % a :           agent.get('dvc', 0),
-                                'agent%d-virgin' % a :        agent.get('virgin', False),
-                                'agent%d-desc' % a :          agent_desc,
-                                'agent%d-id' % a :            agent.get('id', 0),
-                                'agent%d-health-desc' % a :   agent_health_desc,
+                                'agent%d-kind' % aa :          agent_kind,
+                                'agent%d-type' % aa :          agent_type,
+                                'agent%d-known' % aa :         agent.get('known', False),
+                                'agent%d-sku' % aa :           mq_agent_sku,
+                                'agent%d-level' % aa :         agent_level,
+                                'agent%d-level-trigger' % aa : agent_level_trigger,
+                                'agent%d-ack' % aa :           agent.get('ack', False),
+                                'agent%d-hp-ink' % aa :        agent.get('hp-ink', False),
+                                'agent%d-health' % aa :        agent_health,
+                                'agent%d-dvc' % aa :           agent.get('dvc', 0),
+                                'agent%d-virgin' % aa :        agent.get('virgin', False),
+                                'agent%d-desc' % aa :          agent_desc,
+                                'agent%d-id' % aa :            agent.get('id', 0),
+                                'agent%d-health-desc' % aa :   agent_health_desc,
                             })
 
                         else:
@@ -1643,22 +1773,27 @@ class Device(object):
 
                             self.dq.update(
                             {
-                                'agent%d-kind' % a :          agent_kind,
-                                'agent%d-type' % a :          agent_type,
-                                'agent%d-known' % a :         False,
-                                'agent%d-sku' % a :           mq_agent_sku,
-                                'agent%d-level' % a :         agent_level,
-                                'agent%d-level-trigger' % a : agent_level_trigger,
-                                'agent%d-ack' % a :           False,
-                                'agent%d-hp-ink' % a :        False,
-                                'agent%d-health' % a :        agent_health,
-                                'agent%d-dvc' % a :           0,
-                                'agent%d-virgin' % a :        False,
-                                'agent%d-desc' % a :          agent_desc,
-                                'agent%d-id' % a :            0,
-                                'agent%d-health-desc' % a :   agent_health_desc,
+                                'agent%d-kind' % aa :          agent_kind,
+                                'agent%d-type' % aa :          agent_type,
+                                'agent%d-known' % aa :         False,
+                                'agent%d-sku' % aa :           mq_agent_sku,
+                                'agent%d-level' % aa :         agent_level,
+                                'agent%d-level-trigger' % aa : agent_level_trigger,
+                                'agent%d-ack' % aa :           False,
+                                'agent%d-hp-ink' % aa :        False,
+                                'agent%d-health' % aa :        agent_health,
+                                'agent%d-dvc' % aa :           0,
+                                'agent%d-virgin' % aa :        False,
+                                'agent%d-desc' % aa :          agent_desc,
+                                'agent%d-id' % aa :            0,
+                                'agent%d-health-desc' % aa :   agent_health_desc,
                             })
+                            
+                        aa += 1
 
+                    else:
+                        log.debug("Not found: %d" % a)
+                        
                     a += 1
 
         else: # Create agent keys for not-found devices
@@ -2098,11 +2233,22 @@ class Device(object):
             except dbus.exceptions.DBusException, e:
                 log.debug("dbus call to GetHistory() failed.")
                 history = []
-            else:
-                history.reverse()
+            
+            history.reverse()
 
-                for h in history:
-                    result.append(Event(*tuple(h)))
+            for h in history:
+                result.append(Event(*tuple(h)))
+                
+            try:
+                self.error_code = result[0].event_code
+            except IndexError:
+                self.error_code = STATUS_UNKNOWN
+                
+            self.error_state = STATUS_TO_ERROR_STATE_MAP.get(self.error_code, ERROR_STATE_CLEAR)
+            
+        else:
+            self.error_code = STATUS_UNKNOWN
+            self.error_state = ERROR_STATE_CLEAR
 
         self.hist = result
         return result

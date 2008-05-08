@@ -95,7 +95,9 @@ class UnloadForm(QMainWindow):
 
         self.dbus_avail, self.service = device.init_dbus()
         
-        self.UnloadView = ScrollUnloadView(self.service, False, self.centralWidget(), self, "UnloadView")
+        self.UnloadView = ScrollUnloadView(self.service, 
+            self.centralWidget(), self, "UnloadView")
+            
         self.FormLayout.addWidget(self.UnloadView,0,0)
 
 

@@ -68,6 +68,7 @@
 # parallel_supported=True|False [TYPE_BOOL]
 # usb_supported=True|False [TYPE_BOOL]
 # packaged_version=<hplip version major.year.month> [TYPE_STRING] (version of HPLIP pre-packaged in distro, e.g. "2.8.2")
+# cups_path_with_bitness=True|False [TYPE_BOOL] (False is defult)
 # 
 # # Only include these sections if supported==True for this <distro name>:<version name>.
 # [<distro name>:<version name>:<dependency name>]
@@ -102,7 +103,7 @@ display_name=SUSE Linux
 alt_names=
 display=True
 notes=
-package_mgrs=yast,yast2
+package_mgrs=yast,yast2,opensuse-updater
 package_mgr_cmd=xterm -e su -c "yast --install $packages_to_install"
 pre_depend_cmd=
 post_depend_cmd=
@@ -276,7 +277,7 @@ packages=xsane
 packages=
 
 [suse:10.0:python-dbus]
-# packages=dbus-1-python,dbus-1-devel
+# packages=dbus-1-python,dbus-1-devel,python-gobject2
 
 [suse:10.0:python-ctypes]
 # packages=python-ctypes-1.0.0
@@ -372,7 +373,7 @@ packages=xsane
 packages=
 
 [suse:10.1:python-dbus]
-# packages=dbus-1-python,dbus-1-devel
+# packages=dbus-1-python,dbus-1-devel,python-gobject2
 
 [suse:10.1:python-ctypes]
 # packages=python-ctypes-1.0.0
@@ -468,7 +469,7 @@ packages=xsane
 packages=
 
 [suse:10.2:python-dbus]
-# packages=dbus-1-python,dbus-1-devel
+# packages=dbus-1-python,dbus-1-devel,python-gobject2
 
 [suse:10.2:python-ctypes]
 # packages=python-ctypes
@@ -492,6 +493,7 @@ udev_mode_fix=True
 ppd_dir=/usr/share/cups/model/HP
 fix_ppd_symlink=False
 drv_dir=/usr/share/cups/drv/hp/
+cups_path_with_bitness=True
 
 [suse:10.3:cups]
 packages=cups,cups-client
@@ -567,7 +569,7 @@ packages=cupsddk
 packages=dbus-1-python
 
 [suse:10.3:dbus]
-packages=dbus-1-devel
+packages=dbus-1-devel,python-gobject2
 
 [suse:10.3:python-ctypes]
 packages=python-ctypes
@@ -3117,7 +3119,7 @@ display_name=Debian
 alt_names=
 display=True
 notes=
-package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,adept-notifier,aptitude
+package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude
 package_mgr_cmd=su -c "apt-get install --force-yes -y $packages_to_install"
 pre_depend_cmd=su -c "dpkg --configure -a",su -c "apt-get install -f",su -c "apt-get update",gnome-terminal -x su -c "apt-get install --yes cupsys-bsd"
 post_depend_cmd=
@@ -4434,7 +4436,7 @@ display_name=Mepis
 alt_names=
 display=True
 notes=
-package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,adept-notifier,aptitude
+package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude
 package_mgr_cmd=su -c "apt-get install --yes $packages_to_install"
 pre_depend_cmd=su -c "dpkg --configure -a",su -c "apt-get update"
 post_depend_cmd=

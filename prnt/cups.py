@@ -20,8 +20,14 @@
 #
 
 # Std Lib
-import os, os.path, gzip
-import re, time, urllib, tempfile, glob
+import os
+import os.path
+import gzip
+import re
+import time
+import urllib
+import tempfile
+import glob
 
 # Local
 from base.g import *
@@ -389,6 +395,8 @@ def getErrorLogLevel():
         f = file(cups_conf, 'r')
     except OSError:
         log.error("%s not found." % cups_conf)
+    except IOError:
+        log.error("%s: I/O error." % cups_conf)
     else:
         for l in f:
             m = pat_cups_error_log.match(l)
@@ -404,17 +412,16 @@ def getErrorLogLevel():
 def getPrintJobErrorLog(job_id, max_lines=1000, cont_interval=5):
     ret = []
     s = '[Job %d]' % job_id
-    level = getLogLevel()
+    #level = getErrorLogLevel()
     cups_conf = '/var/log/cups/error_log'
 
-
-    if level in ('debug', 'debug2'):
+    #if level in ('debug', 'debug2'):
+    if 1:
         try:
             f = file(cups_conf, 'r')
-
-        except OSError:
+        except (IOError, OSError):
             log.error("Could not open the CUPS error_log file: %s" % cups_conf)
-            return ret
+            return ''
 
         else:
             if s in file(cups_conf, 'r').read():
@@ -442,7 +449,7 @@ def getPrintJobErrorLog(job_id, max_lines=1000, cont_interval=5):
                             if len(queue) > cont_interval:
                                 break
 
-            return ret
+            return '\n'.join(ret)
 
 
 #
@@ -452,7 +459,7 @@ def getPrintJobErrorLog(job_id, max_lines=1000, cont_interval=5):
 def getDefaultPrinter():
     r = cupsext.getDefaultPrinter()
     if r is None:
-        log.warning("The CUPS default printer is not set.")
+        log.debug("The CUPS default printer is not set.")
     return r
 
 def setDefaultPrinter(printer_name):

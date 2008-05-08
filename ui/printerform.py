@@ -107,7 +107,7 @@ class PrinterForm(QMainWindow):
                     self.init_failed = True
 
         if not self.init_failed:
-            self.PrintView = ScrollPrintView(None, False, self.centralWidget(), self, "PrintView")
+            self.PrintView = ScrollPrintView(None, self.centralWidget(), self, "PrintView")
             self.FormLayout.addWidget(self.PrintView,0,0)
 
             try:

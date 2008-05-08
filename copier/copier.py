@@ -22,7 +22,12 @@
 from __future__ import generators
 
 # Std Lib
-import sys, os, os.path, mmap, struct, time, threading, Queue, socket
+import sys
+import os
+import os.path
+import time
+import threading
+import Queue
 from cStringIO import StringIO
 
 # Local

@@ -105,6 +105,7 @@ enum HPMUD_SUPPORT_TYPE
 #define HPMUD_S_SOAP_SCAN "HP-SOAP-SCAN"
 #define HPMUD_S_SOAP_FAX "HP-SOAP-FAX"
 #define HPMUD_S_DEVMGMT_CHANNEL "HP-DEVMGMT"
+#define HPMUD_S_MARVELL_SCAN_CHANNEL "HP-MARVELL-SCAN"
 
 typedef int HPMUD_DEVICE;       /* usb, parallel or jetdirect */
 #define HPMUD_DEVICE_MAX 2      /* zero is not used */
