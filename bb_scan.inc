@@ -1,2 +1,3 @@
 BB_SCAN_SOURCES =
 BB_SCAN_CFLAGS = 
+BB_SCAN_VERSION = -version-info 1:0:0
