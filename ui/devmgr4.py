@@ -133,8 +133,10 @@ class DeviceViewItem(QIconViewItem):
 class SuppliesListViewItem(QListViewItem):
     def __init__(self, parent, pixmap, desc, part_no, level_pixmap, status):
         QListViewItem.__init__(self, parent, '', desc, part_no, '', status)
-        self.setPixmap(0, pixmap)
-        self.setPixmap(3, level_pixmap)
+        if pixmap is not None:
+            self.setPixmap(0, pixmap)
+        if level_pixmap is not None:
+            self.setPixmap(3, level_pixmap)
 
     def paintCell(self, p, cg, c, w, a):
         color = QColorGroup(cg)
@@ -398,7 +400,7 @@ class DevMgr4(DevMgr4_base):
 
         DevMgr4_base.__init__(self, parent, name, fl)
 
-        log.debug("Initializing toolbox UI...")
+        log.debug("Initializing toolbox UI (Qt3)...")
         log.debug("HPLIP Version: %s" % sys_cfg.hplip.version)
 
         self.disable_dbus = disable_dbus
@@ -412,7 +414,7 @@ class DevMgr4(DevMgr4_base):
 
         # dbus setup
         if not self.disable_dbus:
-            self.dbus_avail, self.service = device.init_dbus()
+            self.dbus_avail, self.service, session_bus = device.init_dbus()
 
             if not self.dbus_avail:
                 self.FailureUI("<b>Error</b><p>hp-systray must be running to get device status. hp-systray requires dbus support. Device status will not be available.")
@@ -2160,7 +2162,7 @@ class DevMgr4(DevMgr4_base):
                 # Bar graph level
                 level_pixmap = None
                 if agent_kind in (AGENT_KIND_SUPPLY,
-                                  #AGENT_KIND_HEAD,
+                                  AGENT_KIND_HEAD,
                                   AGENT_KIND_HEAD_AND_SUPPLY,
                                   AGENT_KIND_TONER_CARTRIDGE,
                                   AGENT_KIND_MAINT_KIT,
@@ -3206,3 +3208,5 @@ class ScrollColorCalView(ScrollView):
             QMessageBox.NoButton)
       
 
+    def __tr(self,s,c = None):
+        return qApp.translate("ScrollColorCalView",s,c)

@@ -214,6 +214,7 @@ class ModelData:
             'io-mfp-mode' : TYPE_INT,
             'io-mode' : TYPE_INT,
             'io-support' : TYPE_BITFIELD,
+            'monitor-type' : TYPE_INT,
             'linefeed-cal-type' : TYPE_INT,
             'panel-check-type' : TYPE_INT,
             'pcard-type' : TYPE_INT,

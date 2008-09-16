@@ -244,7 +244,7 @@ static int map_ipp_printer_state_reason(int status, const char **state_msg)
       else if (status == 40600)
          *state_msg = "toner-empty-error";
       else
-         *state_msg = "other";      
+         *state_msg = "other";      /* 40017 - cartridge E-LABEL is unreadable (ie: ljp1005) */ 
    }
    else
    {
@@ -561,7 +561,7 @@ static int loop_test(HPMUD_DEVICE dd, HPMUD_CHANNEL cd, struct pjl_attributes *p
       status = get_printer_status(dd, cd, pa);
       map_ipp_printer_state_reason(status, &pstate);
 
-      if (strcmp(pstate, "none")==0)
+      if (strstr(pstate, "error") == NULL)
       {
          if (retry)
          {

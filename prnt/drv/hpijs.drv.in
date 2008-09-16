@@ -91,6 +91,9 @@ Filter "application/vnd.cups-postscript 0 @foomatic_filter@"
 
 /////////////// Apollo
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "300dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -310,6 +313,9 @@ et=4"
 
 ///////// DJ9xx
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "1200dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -829,6 +835,7 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xx:LargeFormatSuperB%>
     {
       ModelName "HP Deskjet 1220c Foomatic/hpijs"
@@ -855,6 +862,9 @@ et=2"
 
 /////////// DJ9xx but without photo modes
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "600dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1046,51 +1056,16 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xx:NoPhotoMode:LargeFormatSuperB%>
-    {
-      ModelName "HP Deskjet 1220c Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1220c;DES:deskjet_1220c;"
-      PCFileName "hp-deskjet_1220c-hpijs.ppd"
-      Attribute "Product" "" "HP Deskjet 1220cse"
-      Attribute "Product" "" "HP Deskjet 1220cxi"
-      Attribute "Product" "" "HP Deskjet 1220c"
-    }
-    {
-      ModelName "HP Deskjet 1280 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1280;DES:deskjet_1280;"
-      PCFileName "hp-deskjet_1280-hpijs.ppd"
-      Attribute "Product" "" "HP Deskjet 1280"
-    }
-    {
-      ModelName "HP 2000c Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_2000c;DES:hp_2000c;"
-      PCFileName "hp-2000c-hpijs.ppd"
-      Attribute "Product" "" "HP 2000c"
-      Attribute "Product" "" "HP 2000cxi"
-      Attribute "Product" "" "HP 2000cn"
-      Attribute "Product" "" "HP 2000cse"
-    }
-    {
-      ModelName "HP 2500c Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_2500c;DES:hp_2500c;"
-      PCFileName "hp-2500c-hpijs.ppd"
-      Attribute "Product" "" "HP 2500c"
-      Attribute "Product" "" "HP 2500c Plus"
-      Attribute "Product" "" "HP 2500cm"
-      Attribute "Product" "" "HP 2500cse"
-      Attribute "Product" "" "HP 2500cxi"
-    }
-    {
-      ModelName "HP Deskjet 9300 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_deskjet_9300;DES:hp_deskjet_9300;"
-      PCFileName "hp-deskjet_9300-hpijs.ppd"
-      Attribute "Product" "" "HP Deskjet 9300"
-    }
   }
 } // end DJ9xx but without photo modes
 
 ///////// DJ9xx but without photo/hires/best color modes
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "600dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1273,45 +1248,13 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
   // <%DJ9xx:LargeFormatSuperB:NoPhotoBestHiresModes%>
-  {
-    ModelName "HP Deskjet 1120 Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1120;DES:deskjet_1120;"
-    PCFileName "hp-deskjet_1120-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 1120cse"
-    Attribute "Product" "" "HP Deskjet 1120cxi"
-    Attribute "Product" "" "HP Deskjet 1120c"
-  }
-  {
-    ModelName "HP Deskjet 1125 Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1125;DES:deskjet_1125;"
-    PCFileName "hp-deskjet_1125-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 1125c"
-  }
-  {
-    ModelName "HP Deskjet 1220c Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1220c;DES:deskjet_1220c;"
-    PCFileName "hp-deskjet_1220c-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 1220cse"
-    Attribute "Product" "" "HP Deskjet 1220cxi"
-    Attribute "Product" "" "HP Deskjet 1220c"
-  }
-  {
-    ModelName "HP Deskjet 1280 Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_1280;DES:deskjet_1280;"
-    PCFileName "hp-deskjet_1280-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 1280"
-  }
-  {
-    ModelName "HP Deskjet 9300 Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_deskjet_9300;DES:hp_deskjet_9300;"
-    PCFileName "hp-deskjet_9300-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 9300"
-  }
 } // DJ9xx but without photo/hires/best color modes
 
 //////// DJ9xxVIP
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1674,6 +1617,7 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xxVIP:LargeFormatSuperB%>
     {
       ModelName "HP Color Inkjet Printer cp1700 Foomatic/hpijs"
@@ -1688,6 +1632,7 @@ et=2"
 
 //////// DJ9xxVIP but without 1200-dpi mode and without paper type sensor
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1898,6 +1843,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ////////// DJ55xx (a VIP)
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2147,6 +2093,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 
 /////////////// DJGenericVIP
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2728,12 +2675,25 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "Product" "" "HP Photosmart d5368 Printer"
   }
   {
+    ModelName "HP Deskjet 5400 series Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_5400_series;DES:deskjet_5400_series;"
+    PCFileName "hp-deskjet_5400_series-hpijs.ppd"
+    Attribute "Product" "" "HP Deskjet 5440"
+    Attribute "Product" "" "HP Deskjet 5438"
+    Attribute "Product" "" "HP Deskjet 5420v"
+    Attribute "Product" "" "HP Deskjet 5432"
+    Attribute "Product" "" "HP Deskjet 5440v"
+    Attribute "Product" "" "HP Deskjet 5440xi"
+    Attribute "Product" "" "HP Deskjet 5442"
+    Attribute "Product" "" "HP Deskjet 5443"
+  }
+  {
     ModelName "HP Photosmart d5400 series Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart_d5400_series;DES:photosmart_d5400_series;"
     PCFileName "hp-photosmart_d5400_series-hpijs.ppd"
-    Attribute "Product" "" "HP Photosmart d5400 Printer"
     Attribute "Product" "" "HP Photosmart d5460 Printer"
-    Attribute "Product" "" "HP Photosmart d5480 Printer"
+    Attribute "Product" "" "HP Photosmart d5463 Printer"
+    Attribute "Product" "" "HP Photosmart d5468 Printer"
   }
   {
     ModelName "HP Photosmart c5500 series Foomatic/hpijs"
@@ -3186,6 +3146,7 @@ lity:PenSet=2,Quality:FullBleed=1"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJGenericVIP:LargeFormatSuperB%>
     {
       ModelName "HP Officejet k7100 Foomatic/hpijs"
@@ -3248,6 +3209,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 
 ////////////// OJProKx50 and DJGenericVIP without full bleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3552,172 +3514,15 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJGenericVIP:LargeFormatSuperB:NoFullBleed%>
-    {
-      ModelName "HP Business Inkjet 1000 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_business_inkjet_1000;DES:hp_business_inkjet_1000;"
-      PCFileName "hp-business_inkjet_1000-hpijs.ppd"
-      Attribute "Product" "" "HP Business Inkjet 1000"
-    }
-    {
-      ModelName "HP Business Inkjet 1100 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_business_inkjet_1100;DES:hp_business_inkjet_1100;"
-      PCFileName "hp-business_inkjet_1100-hpijs.ppd"
-      Attribute "Product" "" "HP Business Inkjet 1100"
-      Attribute "Product" "" "HP Business Inkjet 1100d"
-      Attribute "Product" "" "HP Business Inkjet 1100dtn"
-    }
-    {
-      ModelName "HP Business Inkjet 1200 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:business_inkjet_1200;DES:business_inkjet_1200;"
-      PCFileName "hp-business_inkjet_1200-hpijs.ppd"
-      Attribute "Product" "" "HP Business Inkjet 1200"
-      Attribute "Product" "" "HP Business Inkjet 1200d"
-      Attribute "Product" "" "HP Business Inkjet 1200dn"
-      Attribute "Product" "" "HP Business Inkjet 1200dtn"
-      Attribute "Product" "" "HP Business Inkjet 1200dtwn"
-    }
-    {
-      ModelName "HP Officejet Pro k5300 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_k5300;DES:officejet_pro_k5300;"
-      PCFileName "hp-officejet_pro_k5300-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro k5300 series"
-    }
-    {
-      ModelName "HP Officejet Pro k5400 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_k5400;DES:officejet_pro_k5400;"
-      PCFileName "hp-officejet_pro_k5400-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro k5400dn"
-      Attribute "Product" "" "HP Officejet Pro k5400dtn"
-      Attribute "Product" "" "HP Officejet Pro k5400tn"
-      Attribute "Product" "" "HP Officejet Pro k5400"
-      Attribute "Product" "" "HP Officejet Pro k5456z"
-    }
-    {
-      ModelName "HP Officejet k7100 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_k7100;DES:officejet_k7100;"
-      PCFileName "hp-officejet_k7100-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet k7103 Printer"
-      Attribute "Product" "" "HP Officejet k7108 Printer"
-      Attribute "Product" "" "HP Officejet k7100 Printer"
-    }
-    {
-      ModelName "HP Photosmart Pro b8300 series Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart_pro_b8300_series;DES:photosmart_pro_b8300_series;"
-      PCFileName "hp-photosmart_pro_b8300_series-hpijs.ppd"
-      Attribute "Product" "" "HP Photosmart Pro b8330 Printer"
-      Attribute "Product" "" "HP Photosmart Pro b8338 Printer"
-      Attribute "Product" "" "HP Photosmart Pro b8350 Printer"
-      Attribute "Product" "" "HP Photosmart Pro b8353 Printer"
-    }
-    {
-      ModelName "HP Officejet Pro k8600 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_k8600;DES:officejet_pro_k8600;"
-      PCFileName "hp-officejet_pro_k8600-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro k8600 Color Printer"
-      Attribute "Product" "" "HP Officejet Pro k8600dn Color Printer"
-    }
-    {
-      ModelName "HP Photosmart 8700 series Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart_8700_series;DES:photosmart_8700_series;"
-      PCFileName "hp-photosmart_8700_series-hpijs.ppd"
-      Attribute "Product" "" "HP Photosmart 8750"
-      Attribute "Product" "" "HP Photosmart 8750xi"
-      Attribute "Product" "" "HP Photosmart 8750gp"
-      Attribute "Product" "" "HP Photosmart 8753"
-      Attribute "Product" "" "HP Photosmart 8758"
-    }
-    {
-      ModelName "HP Photosmart Pro b8800 series Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart_pro_b8800_series;DES:photosmart_pro_b8800_series;"
-      PCFileName "hp-photosmart_pro_b8800_series-hpijs.ppd"
-      Attribute "Product" "" "HP Photosmart Pro b8850 Printer"
-    }
-    {
-      ModelName "HP Deskjet 9600 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_9600;DES:deskjet_9600;"
-      PCFileName "hp-deskjet_9600-hpijs.ppd"
-      Attribute "Product" "" "HP Deskjet 9600"
-      Attribute "Product" "" "HP Deskjet 9650"
-      Attribute "Product" "" "HP Deskjet 9670"
-      Attribute "Product" "" "HP Deskjet 9680"
-      Attribute "Product" "" "HP Deskjet 9680gp"
-    }
-    {
-      ModelName "HP Deskjet 9800 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_9800;DES:deskjet_9800;"
-      PCFileName "hp-deskjet_9800-hpijs.ppd"
-      Attribute "Product" "" "HP Deskjet 9800"
-      Attribute "Product" "" "HP Deskjet 9800d"
-      Attribute "Product" "" "HP Deskjet 9803"
-      Attribute "Product" "" "HP Deskjet 9803d"
-      Attribute "Product" "" "HP Deskjet 9808"
-      Attribute "Product" "" "HP Deskjet 9808d"
-      Attribute "Product" "" "HP Deskjet 9860"
-      Attribute "Product" "" "HP Deskjet 9868"
-    }
     // <%OJProKx50:LargeFormatSuperB:NoFullBleed%>
-    {
-      ModelName "HP Officejet Pro k550 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_k550;DES:officejet_pro_k550;"
-      PCFileName "hp-officejet_pro_k550-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro k550"
-      Attribute "Product" "" "HP Officejet Pro k550dtn"
-      Attribute "Product" "" "HP Officejet Pro k550dtwn"
-    }
-    {
-      ModelName "HP Officejet Pro k850 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_k850;DES:officejet_pro_k850;"
-      PCFileName "hp-officejet_pro_k850-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro k850"
-      Attribute "Product" "" "HP Officejet Pro k850dn"
-    }
-    {
-      ModelName "HP Officejet Pro l7300 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_l7300;DES:officejet_pro_l7300;"
-      PCFileName "hp-officejet_pro_l7300-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro l7300"
-      Attribute "Product" "" "HP Officejet Pro l7380"
-    }
-    {
-      ModelName "HP Officejet Pro l7400 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_l7400;DES:officejet_pro_l7400;"
-      PCFileName "hp-officejet_pro_l7400-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro l7480 All-in-one"
-    }
-    {
-      ModelName "HP Officejet Pro l7500 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_l7500;DES:officejet_pro_l7500;"
-      PCFileName "hp-officejet_pro_l7500-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro l7500"
-      Attribute "Product" "" "HP Officejet Pro l7550"
-      Attribute "Product" "" "HP Officejet Pro l7580"
-      Attribute "Product" "" "HP Officejet Pro l7590"
-      Attribute "Product" "" "HP Officejet Pro l7555"
-    }
-    {
-      ModelName "HP Officejet Pro l7600 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_l7600;DES:officejet_pro_l7600;"
-      PCFileName "hp-officejet_pro_l7600-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro l7600"
-      Attribute "Product" "" "HP Officejet Pro l7650"
-      Attribute "Product" "" "HP Officejet Pro l7680"
-      Attribute "Product" "" "HP Officejet Pro l7681"
-    }
-    {
-      ModelName "HP Officejet Pro l7700 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_pro_l7700;DES:officejet_pro_l7700;"
-      PCFileName "hp-officejet_pro_l7700-hpijs.ppd"
-      Attribute "Product" "" "HP Officejet Pro l7700"
-      Attribute "Product" "" "HP Officejet Pro l7750"
-      Attribute "Product" "" "HP Officejet Pro l7780"
-      Attribute "Product" "" "HP Officejet Pro l7710"
-    }
   }
 }  // end OJProKx50 and DJGenericVIP without full bleed
 
 ///////////////// DJ3320
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4134,6 +3939,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 //////////////////////// DJ3600
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4508,19 +4314,6 @@ ty:PenSet=2,Quality:FullBleed=1"
     Attribute "Product" "" "HP Officejet 4259"
   }
   {
-    ModelName "HP Deskjet 5400 series Foomatic/hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet_5400_series;DES:deskjet_5400_series;"
-    PCFileName "hp-deskjet_5400_series-hpijs.ppd"
-    Attribute "Product" "" "HP Deskjet 5440"
-    Attribute "Product" "" "HP Deskjet 5438"
-    Attribute "Product" "" "HP Deskjet 5420v"
-    Attribute "Product" "" "HP Deskjet 5432"
-    Attribute "Product" "" "HP Deskjet 5440v"
-    Attribute "Product" "" "HP Deskjet 5440xi"
-    Attribute "Product" "" "HP Deskjet 5442"
-    Attribute "Product" "" "HP Deskjet 5443"
-  }
-  {
     ModelName "HP Officejet 5500 series Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet_5500_series;DES:officejet_5500_series;"
     PCFileName "hp-officejet_5500_series-hpijs.ppd"
@@ -4560,6 +4353,7 @@ ty:PenSet=2,Quality:FullBleed=1"
 
 ////////////////// DJ4100
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4756,6 +4550,7 @@ ty:PenSet=2,Quality:FullBleed=1"
 
 //////////////////// PSP100 4x6, three-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4879,6 +4674,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// DJGenericVIP 4x6, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -5066,6 +4862,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// PSP470 5x7, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -5199,6 +4996,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// QuickConnect 5x7, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -5208,7 +5006,7 @@ EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "HeightOffset" "5 points 0 0"
   Attribute "FoomaticIDs" "" "HP-PhotoSmart_A530 hpijs"
   Attribute "FoomaticRIPCommandLine" "" "gs -q -dBATCH -dPARANOIDSAFER -dQUIET -dNOPA&&
-USE -sDEVICE=ijs -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
+USE -sDEVICE=ijs -r300 -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
 le=- -"
   Attribute "FoomaticRIPOption" "Model" "enum CmdLine A 100"
   Attribute "FoomaticRIPOptionSetting" "Model=HP-Photosmart_A53" " -sDeviceManufacture&&
@@ -5298,16 +5096,14 @@ Bleed=1"
     ModelName "HP Photosmart a630 series Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart_a630_series;DES:photosmart_a630_series;"
     PCFileName "hp-photosmart_a630_series-hpijs.ppd"
-    Attribute "Product" "" "HP Photosmart a630 Compact Photo Printer"
-    Attribute "Product" "" "HP Photosmart a632 Compact Photo Printer"
     Attribute "Product" "" "HP Photosmart a636 Compact Photo Printer"
     Attribute "Product" "" "HP Photosmart a637 Compact Photo Printer"
-    Attribute "Product" "" "HP Photosmart a638 Compact Photo Printer"
   }
 }  // end QuickConnect, 4-sided fullbleed
 
 ///////////////// LJMono
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -5928,16 +5724,52 @@ t=0"
     Attribute "Product" "" "HP LaserJet 4000tn"
   }
   {
+    ModelName "HP LaserJet p4014n Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4014n;DES:hp_laserjet_p4014n;"
+    PCFileName "hp-laserjet_p4014n-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4014n Printer"
+  }
+  {
+    ModelName "HP LaserJet p4014dn Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4014dn;DES:hp_laserjet_p4014dn;"
+    PCFileName "hp-laserjet_p4014dn-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4014dn Printer"
+  }
+  {
     ModelName "HP LaserJet p4014 Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4014;DES:hp_laserjet_p4014;"
     PCFileName "hp-laserjet_p4014-hpijs.ppd"
     Attribute "Product" "" "HP LaserJet p4014 Printer"
   }
   {
+    ModelName "HP LaserJet p4015tn Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4015tn;DES:hp_laserjet_p4015tn;"
+    PCFileName "hp-laserjet_p4015tn-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4015tn Printer"
+  }
+  {
     ModelName "HP LaserJet p4015 Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4015;DES:hp_laserjet_p4015;"
     PCFileName "hp-laserjet_p4015-hpijs.ppd"
     Attribute "Product" "" "HP LaserJet p4015 Printer"
+  }
+  {
+    ModelName "HP LaserJet p4015n Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4015n;DES:hp_laserjet_p4015n;"
+    PCFileName "hp-laserjet_p4015n-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4015n Printer"
+  }
+  {
+    ModelName "HP LaserJet p4015x Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4015x;DES:hp_laserjet_p4015x;"
+    PCFileName "hp-laserjet_p4015x-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4015x Printer"
+  }
+  {
+    ModelName "HP LaserJet p4015dn Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4015dn;DES:hp_laserjet_p4015dn;"
+    PCFileName "hp-laserjet_p4015dn-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4015dn Printer"
   }
   {
     ModelName "HP LaserJet 4050 series Foomatic/hpijs"
@@ -6042,10 +5874,34 @@ t=0"
     Attribute "Product" "" "HP LaserJet 4350tn"
   }
   {
+    ModelName "HP LaserJet p4515tn Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4515tn;DES:hp_laserjet_p4515tn;"
+    PCFileName "hp-laserjet_p4515tn-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4515tn Printer"
+  }
+  {
+    ModelName "HP LaserJet p4515xm Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4515xm;DES:hp_laserjet_p4515xm;"
+    PCFileName "hp-laserjet_p4515xm-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4515xm Printer"
+  }
+  {
+    ModelName "HP LaserJet p4515n Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4515n;DES:hp_laserjet_p4515n;"
+    PCFileName "hp-laserjet_p4515n-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4515n Printer"
+  }
+  {
     ModelName "HP LaserJet p4515 Foomatic/hpijs"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4515;DES:hp_laserjet_p4515;"
     PCFileName "hp-laserjet_p4515-hpijs.ppd"
     Attribute "Product" "" "HP LaserJet p4515 Printer"
+  }
+  {
+    ModelName "HP LaserJet p4515x Foomatic/hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_laserjet_p4515x;DES:hp_laserjet_p4515x;"
+    PCFileName "hp-laserjet_p4515x-hpijs.ppd"
+    Attribute "Product" "" "HP LaserJet p4515x Printer"
   }
   {
     ModelName "HP LaserJet 5000 series Foomatic/hpijs"
@@ -6259,6 +6115,7 @@ t=0"
 
 ///////////////// LJMono 300 dpi only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -6399,6 +6256,7 @@ PenSet=0"
 
 ////////////// LJColor
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -6780,6 +6638,7 @@ nSet=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%LJColor:LargeFormatSuperB%>
     {
       ModelName "HP Business Inkjet 2600 Foomatic/hpijs"
@@ -6889,6 +6748,7 @@ nSet=2"
 
 ////////////// LJColor 300 dpi max. only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7080,96 +6940,13 @@ nSet=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
     // <%LJColor:300dpiOnly:LargeFormatA3%>
-    {
-      ModelName "HP Color LaserJet 5 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_5;DES:hp_color_laserjet_5;"
-      PCFileName "hp-color_laserjet_5-hpijs.ppd"
-      Attribute "Product" "" "HP Color LaserJet 5"
-    }
-    {
-      ModelName "HP Color LaserJet 5m Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_5m;DES:hp_color_laserjet_5m;"
-      PCFileName "hp-color_laserjet_5m-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 5m"
-    }
-    {
-      ModelName "HP Color LaserJet 5500 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_5500;DES:hp_color_laserjet_5500;"
-      PCFileName "hp-color_laserjet_5500-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 5500hdn"
-      Attribute "Product" "" "HP Color LaserJet 5500dn"
-      Attribute "Product" "" "HP Color LaserJet 5500dtn"
-      Attribute "Product" "" "HP Color LaserJet 5500"
-      Attribute "Product" "" "HP Color LaserJet 5500n"
-    }
-    {
-      ModelName "HP Color LaserJet 5550 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_5550;DES:hp_color_laserjet_5550;"
-      PCFileName "hp-color_laserjet_5550-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 5550n"
-      Attribute "Product" "" "HP Color LaserJet 5550"
-      Attribute "Product" "" "HP Color LaserJet 5550dn"
-      Attribute "Product" "" "HP Color LaserJet 5550dtn"
-      Attribute "Product" "" "HP Color LaserJet 5550hdn"
-    }
-    {
-      ModelName "HP Color LaserJet cp6015 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_cp6015;DES:hp_color_laserjet_cp6015;"
-      PCFileName "hp-color_laserjet_cp6015-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet cp6015n Printer"
-      Attribute "Product" "" "HP Color LaserJet cp6015dn Printer"
-      Attribute "Product" "" "HP Color LaserJet cp6015x Printer"
-      Attribute "Product" "" "HP Color LaserJet cp6015xh Printer"
-      Attribute "Product" "" "HP Color LaserJet cp6015de Printer"
-    }
-    {
-      ModelName "HP Color LaserJet cm6030 MFP Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_cm6030_mfp;DES:hp_color_laserjet_cm6030_mfp;"
-      PCFileName "hp-color_laserjet_cm6030_mfp-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet cm6030 MFP"
-      Attribute "Product" "" "HP Color LaserJet cm6030f MFP"
-    }
-    {
-      ModelName "HP Color LaserJet cm6040 MFP Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_cm6040_mfp;DES:hp_color_laserjet_cm6040_mfp;"
-      PCFileName "hp-color_laserjet_cm6040_mfp-hpijs.ppd"
-      Attribute "Product" "" "HP Color LaserJet cm6040 MFP"
-      Attribute "Product" "" "HP Color LaserJet cm6040f MFP"
-    }
-    {
-      ModelName "HP Color LaserJet 8500 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_8500;DES:hp_color_laserjet_8500;"
-      PCFileName "hp-color_laserjet_8500-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 8500"
-      Attribute "Product" "" "HP Color LaserJet 8500dn"
-      Attribute "Product" "" "HP Color LaserJet 8500n"
-    }
-    {
-      ModelName "HP Color LaserJet 8550 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_8550;DES:hp_color_laserjet_8550;"
-      PCFileName "hp-color_laserjet_8550-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 8550"
-      Attribute "Product" "" "HP Color LaserJet 8550dn"
-      Attribute "Product" "" "HP Color LaserJet 8550gn"
-      Attribute "Product" "" "HP Color LaserJet 8550mfp"
-      Attribute "Product" "" "HP Color LaserJet 8550mn"
-    }
-    {
-      ModelName "HP Color LaserJet 9500 Foomatic/hpijs"
-      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp_color_laserjet_9500;DES:hp_color_laserjet_9500;"
-      PCFileName "hp-color_laserjet_9500-hpijs-pcl3.ppd"
-      Attribute "Product" "" "HP Color LaserJet 9500"
-      Attribute "Product" "" "HP Color LaserJet 9500gp"
-      Attribute "Product" "" "HP Color LaserJet 9500hdn"
-      Attribute "Product" "" "HP Color LaserJet 9500n"
-      Attribute "Product" "" "HP Color LaserJet 9500mfp"
-    }
   }
   // <%LJColor:300dpiOnly%>
 } // end LJColor 300 dpi max. only
 
 //////////////// LJFastRaster
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7328,6 +7105,7 @@ t=0"
 
 ///////////////// LJJetReady
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7506,6 +7284,7 @@ nSet=2"
 
 /////////////// DJ350
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7658,6 +7437,7 @@ uality:PenSet=0"
 
 //////////// DJ540 grayscale only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7824,6 +7604,7 @@ t=0"
 
 /////////////// DJ540
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -7998,6 +7779,7 @@ t=0"
 
 /////////////// DJ630
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -8169,6 +7951,7 @@ uality:PenSet=0"
 
 /////////////// DJ600 and DJ6xx
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -8423,6 +8206,7 @@ r=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;DESKJET 660&quot;"
 
 ///////////// DJ6xxPhoto
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -8670,6 +8454,7 @@ et=4"
 
 ///////////////// DJ8xx
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -8957,6 +8742,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ////////////// DJ8x5
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -9136,6 +8922,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ///////////////////// DJ850 and DJ890
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"

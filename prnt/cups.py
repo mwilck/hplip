@@ -41,7 +41,7 @@ try:
     import cupsext
 except ImportError:
     if not os.getenv("HPLIP_BUILD"):
-        log.error("CUPSEXT could not be loaded. Please check HPLIP installation.")
+        log.warn("CUPSEXT could not be loaded. Please check HPLIP installation.")
         sys.exit(1)
 
 nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
@@ -59,6 +59,7 @@ PPD_UI_PICKMANY = 2  # Pick zero or more from a list
 UI_SPINNER = 100           # Simple spinner with opt. suffix (ie, %)
 UI_UNITS_SPINNER = 101     # Spinner control w/pts, cm, in, etc. units
 UI_BANNER_JOB_SHEETS = 102 # dual combos for banner job-sheets
+UI_PAGE_RANGE = 103        # Radio + page range entry field
 
 # ipp_op_t
 IPP_PAUSE_PRINTER = 0x0010

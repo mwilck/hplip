@@ -91,6 +91,9 @@ Filter "application/vnd.cups-postscript 0 @foomatic_filter@"
 
 /////////////// Apollo
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "300dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -262,6 +265,9 @@ et=4"
 
 ///////// DJ9xx
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "1200dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -450,12 +456,16 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xx:LargeFormatSuperB%>
   }
 }  // end DJ9xx
 
 /////////// DJ9xx but without photo modes
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "600dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -638,12 +648,16 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xx:NoPhotoMode:LargeFormatSuperB%>
   }
 } // end DJ9xx but without photo modes
 
 ///////// DJ9xx but without photo/hires/best color modes
 {
+  // Set an up-stream hint for applications that we suppport 300/600/1200dpi. 
+  Attribute "DefaultResolution" "" "600dpi"
+
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -826,11 +840,13 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
   // <%DJ9xx:LargeFormatSuperB:NoPhotoBestHiresModes%>
 } // DJ9xx but without photo/hires/best color modes
 
 //////// DJ9xxVIP
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1046,12 +1062,14 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJ9xxVIP:LargeFormatSuperB%>
   }
 } // end DJ9xxVIP
 
 //////// DJ9xxVIP but without 1200-dpi mode and without paper type sensor
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1234,6 +1252,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ////////// DJ55xx (a VIP)
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1453,6 +1472,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 
 /////////////// DJGenericVIP
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1685,12 +1705,14 @@ lity:PenSet=2,Quality:FullBleed=1"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJGenericVIP:LargeFormatSuperB%>
   }
 }  // end DJGenericVIP
 
 ////////////// OJProKx50 and DJGenericVIP without full bleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -1906,6 +1928,7 @@ et=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%DJGenericVIP:LargeFormatSuperB:NoFullBleed%>
     // <%OJProKx50:LargeFormatSuperB:NoFullBleed%>
   }
@@ -1913,6 +1936,7 @@ et=2"
 
 ///////////////// DJ3320
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2092,6 +2116,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 //////////////////////// DJ3600
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2284,6 +2309,7 @@ ty:PenSet=2,Quality:FullBleed=1"
 
 ////////////////// DJ4100
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2453,6 +2479,7 @@ ty:PenSet=2,Quality:FullBleed=1"
 
 //////////////////// PSP100 4x6, three-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2535,6 +2562,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// DJGenericVIP 4x6, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2617,6 +2645,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// PSP470 5x7, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "1200dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2705,6 +2734,7 @@ ity:PenSet=1,Quality:FullBleed=1"
 
 //////////////// QuickConnect 5x7, 4-sided fullbleed
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2714,7 +2744,7 @@ EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "HeightOffset" "5 points 0 0"
   Attribute "FoomaticIDs" "" "HP-PhotoSmart_A530 hpijs"
   Attribute "FoomaticRIPCommandLine" "" "gs -q -dBATCH -dPARANOIDSAFER -dQUIET -dNOPA&&
-USE -sDEVICE=ijs -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
+USE -sDEVICE=ijs -r300 -sIjsServer=hpijs%A%B%C -dIjsUseOutputFD%Z -sOutputFi&&
 le=- -"
   Attribute "FoomaticRIPOption" "Model" "enum CmdLine A 100"
   Attribute "FoomaticRIPOptionSetting" "Model=HP-Photosmart_A53" " -sDeviceManufacture&&
@@ -2796,6 +2826,7 @@ Bleed=1"
 
 ///////////////// LJMono
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -2964,6 +2995,7 @@ t=0"
 
 ///////////////// LJMono 300 dpi only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3095,6 +3127,7 @@ PenSet=0"
 
 ////////////// LJColor
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3296,6 +3329,7 @@ nSet=2"
     CustomMedia "Ledger/Ledger" 792.00 1224.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=Ledger" "%% FoomaticRIPOptionSetting: PageSize=Ledger"
     CustomMedia "SuperB/Super B" 936.00 1368.00 14.40 36.00 14.40 9.00 "%% FoomaticRIPOptionSetting: PageSize=SuperB" "%% FoomaticRIPOptionSetting: PageSize=SuperB"
     CustomMedia "w774h1116/8K" 774.00 1116.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w774h1116" "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+    CustomMedia "A3/A3" 842.00 1190.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A3" "%% FoomaticRIPOptionSetting: PageSize=A3"
     // <%LJColor:LargeFormatSuperB%>
   }
   {
@@ -3310,6 +3344,7 @@ nSet=2"
 
 ////////////// LJColor 300 dpi max. only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3507,6 +3542,7 @@ nSet=2"
 
 //////////////// LJFastRaster
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3653,6 +3689,7 @@ t=0"
 
 ///////////////// LJJetReady
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3797,6 +3834,7 @@ nSet=2"
 
 /////////////// DJ350
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -3936,6 +3974,7 @@ uality:PenSet=0"
 
 //////////// DJ540 grayscale only
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4054,6 +4093,7 @@ t=0"
 
 /////////////// DJ540
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4186,6 +4226,7 @@ t=0"
 
 /////////////// DJ630
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4339,6 +4380,7 @@ uality:PenSet=0"
 
 /////////////// DJ600 and DJ6xx
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4485,6 +4527,7 @@ r=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;DESKJET 660&quot;"
 
 ///////////// DJ6xxPhoto
 {
+  Attribute "DefaultResolution" "" "300dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4630,6 +4673,7 @@ et=4"
 
 ///////////////// DJ8xx
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4778,6 +4822,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ////////////// DJ8x5
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"
@@ -4943,6 +4988,7 @@ ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenSet&&
 
 ///////////////////// DJ850 and DJ890
 {
+  Attribute "DefaultResolution" "" "600dpi"
   Attribute "FoomaticRIPOptionSetting" "PageSize=Custom" " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
   Attribute "ParamCustomPageSize" "Width" "1 points 36 100000"

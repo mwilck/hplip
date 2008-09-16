@@ -19,6 +19,8 @@
 # Author: Don Welch
 #
 
+# NOTE: Not used by Qt4 code. Use maint_*.py modules instead.
+
 # Local
 from g import *
 from codes import *

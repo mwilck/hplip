@@ -149,6 +149,7 @@ class CoreInstall(object):
         self.logoff_required = False
         self.restart_required = False
         self.network_connected = False
+        self.ui_toolkit = 'qt3'
         
         self.plugin_path = os.path.join(prop.home_dir, "data", "plugin")
         self.plugin_version = '0.0.0'
@@ -191,6 +192,8 @@ class CoreInstall(object):
             'usb_supported' : TYPE_BOOL,
             'packaged_version': TYPE_STRING, # Version of HPLIP pre-packaged in distro
             'cups_path_with_bitness' : TYPE_BOOL,
+            'ui_toolkit' : TYPE_STRING,  # qt3 or qt4 [or gtk]
+
         }
 
         # components
@@ -279,7 +282,8 @@ class CoreInstall(object):
             'ppdev':            (True,  ['parallel'], "ppdev - Parallel port support kernel module.", self.check_ppdev, DEPENDENCY_RUN_TIME),
 
             # Required gui packages
-            'pyqt':             (True,  ['gui'], "PyQt - Qt interface for Python", self.check_pyqt, DEPENDENCY_RUN_TIME), # PyQt 3.x
+            'pyqt':             [True,  ['gui'], "PyQt 3- Qt interface for Python (for Qt version 3.x)", self.check_pyqt, DEPENDENCY_RUN_TIME], # PyQt 3.x
+            'pyqt4':            [False,  ['gui'], "PyQt 4- Qt interface for Python (for Qt version 4.x)", self.check_pyqt4, DEPENDENCY_RUN_TIME], # PyQt 4.x )
 
             # Required network I/O packages
             'libnetsnmp-devel': (True,  ['network'], "libnetsnmp-devel - SNMP networking library development files", self.check_libnetsnmp, DEPENDENCY_RUN_AND_COMPILE_TIME),
@@ -293,14 +297,6 @@ class CoreInstall(object):
                     self.options[opt][2].append(d)
 
         self.load_distros()
-        
-        #for d in self.distros:
-        #    print
-##        import pprint
-##        print "6: ", pprint.pprint(self.distros['fedora']['versions']['6'])
-##        print
-##        print "6.0: ", pprint.pprint(self.distros['fedora']['versions']['6.0'])
-##        sys.exit(1)
 
         self.distros_index = {}
         for d in self.distros:
@@ -343,10 +339,10 @@ class CoreInstall(object):
         for d in self.dependencies:
             update_spinner()
 
-            log.debug("have %s = %d" % (d, self.have_dependencies[d]))
+            log.debug("have %s = %s" % (d, self.have_dependencies[d]))
 
             if callback is not None:
-                callback("Result: %s = %d\n" % (d, self.have_dependencies[d]))
+                callback("Result: %s = %s\n" % (d, self.have_dependencies[d]))
 
         pid, cmdline = self.check_pkg_mgr()
         if pid:
@@ -388,6 +384,8 @@ class CoreInstall(object):
         self.sys_uname_info = self.sys_uname_info.replace('\n', '')
         log.debug(self.sys_uname_info)
 
+            
+        
         self.distro_changed()
 
         # Record the installation time/date and version.
@@ -435,7 +433,7 @@ class CoreInstall(object):
                 callback("Checking: %s\n" % d)
 
             self.have_dependencies[d] = self.dependencies[d][3]()
-            log.debug("have %s = %d" % (d, self.have_dependencies[d]))
+            log.debug("have %s = %s" % (d, self.have_dependencies[d]))
 
         cleanup_spinner()
 
@@ -627,6 +625,19 @@ class CoreInstall(object):
         self.selected_options['network'] = self.get_distro_ver_data('network-supported', True)
         self.selected_options['scan'] = self.get_distro_ver_data('scan-supported', True)
         self.selected_options['parallel'] = self.get_distro_ver_data('parallel-supported', False)
+        
+        # Adjust required flag based on the distro ver ui_toolkit value
+        if self.get_distro_ver_data('ui_toolkit',  'qt3').lower() == 'qt4':
+            log.debug("UI toolkit: Qt4")
+            self.ui_toolkit = 'qt4'
+            self.dependencies['pyqt4'][0] = True
+            self.dependencies['pyqt'][0] = False
+        else: # qt3
+            self.ui_toolkit = 'qt3'
+            log.debug("UI toolkit: Qt3")
+            self.dependencies['pyqt'][0] = True
+            self.dependencies['pyqt4'][0] = False
+        # todo: gtk
                 
 
     def __fixup_data(self, key, data):
@@ -876,9 +887,17 @@ class CoreInstall(object):
                     else:
                         return True
 
-        except ImportError:
+        except (ImportError, TypeError): # Note: IGOS 1.0 produces a TypeError when importing Qt3
              return False
 
+
+    def check_pyqt4(self):
+        try:
+            import PyQt4
+        except ImportError:
+            return False
+        else:
+            return True
 
     def check_python_devel(self):
         return check_file('Python.h')
@@ -1056,6 +1075,10 @@ class CoreInstall(object):
 
         if self.selected_options['gui']:
             configure_cmd += ' --enable-gui-build'
+            if self.ui_toolkit == 'qt4':
+                configure_cmd += ' --enable-qt4 --disable-qt3'
+            else:
+                configure_cmd += ' --enable-qt3 --disable-qt4'
         else:
             configure_cmd += ' --disable-gui-build'
 
@@ -1442,6 +1465,10 @@ class CoreInstall(object):
                 kill = os.path.join(utils.which("kill"), "kill") + " %d" % pid
 
                 cmds.append(self.su_sudo() % kill)
+                
+        # Record the UI toolkit in use
+        # Now, done in configure!
+        #sys_cfg.configure['ui-toolkit'] = self.ui_toolkit
 
         return cmds
 
@@ -1473,8 +1500,11 @@ class CoreInstall(object):
 
 
     def check_for_gui_support(self):
-        return os.getenv('DISPLAY') and self.selected_options['gui'] and utils.checkPyQtImport()
-
+        if self.ui_toolkit == 'qt4':
+            return os.getenv('DISPLAY') and self.selected_options['gui'] and utils.checkPyQtImport4()
+        else:
+            return os.getenv('DISPLAY') and self.selected_options['gui'] and utils.checkPyQtImport()
+    
 
     def run_hp_setup(self):
         status = 0

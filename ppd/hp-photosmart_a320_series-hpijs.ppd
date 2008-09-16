@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.7.3"
+*FileVersion: "hpijs 2.8.9.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a320_series-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a320 series Foomatic/hpijs"
 *ShortNickName: "HP Photosmart a320 series Foomatic/hpijs"
-*NickName: "HP Photosmart a320 series Foomatic/hpijs, hpijs 2.8.7.3"
+*NickName: "HP Photosmart a320 series Foomatic/hpijs, hpijs 2.8.9.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -24,7 +24,7 @@
 *Throughput: "1"
 *LandscapeOrientation: Plus90
 *% Driver-defined attributes...
-*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
+*DefaultResolution: 1200dpi*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
 *End
 *FoomaticIDs: "HP-PhotoSmart_320 hpijs"
@@ -195,4 +195,4 @@ ity:PenSet=1,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_a320_series-hpijs.ppd, 09832 bytes.
+*% End of hp-photosmart_a320_series-hpijs.ppd, 09859 bytes.

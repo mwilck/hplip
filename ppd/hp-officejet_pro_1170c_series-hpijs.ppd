@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.7.3"
+*FileVersion: "hpijs 2.8.9.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_1170c_series-hpijs.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro 1170c series Foomatic/hpijs"
 *ShortNickName: "HP Officejet Pro 1170c series Foomatic/hpijs"
-*NickName: "HP Officejet Pro 1170c series Foomatic/hpijs, hpijs 2.8.7.3"
+*NickName: "HP Officejet Pro 1170c series Foomatic/hpijs, hpijs 2.8.9.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -28,7 +28,7 @@
 *Throughput: "1"
 *LandscapeOrientation: Plus90
 *% Driver-defined attributes...
-*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
+*DefaultResolution: 600dpi*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
 *End
 *FoomaticIDs: "HP-DeskJet_850C hpijs"
@@ -339,4 +339,4 @@ r=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;DESKJET 890&quot;"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_1170c_series-hpijs.ppd, 17228 bytes.
+*% End of hp-officejet_pro_1170c_series-hpijs.ppd, 17254 bytes.

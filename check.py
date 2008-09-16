@@ -22,6 +22,7 @@
 
 __version__ = '14.0'
 __title__ = 'Dependency/Version Check Utility'
+__mod__ = 'hp-check'
 __doc__ = "Check the existence and versions of HPLIP dependencies."
 
 # Std Lib
@@ -40,6 +41,7 @@ from installer.core_install import *
 device_avail = False
 try:
     from base import device, pml
+    # This can fail due to hpmudext not being present
 except ImportError:
     log.debug("Device library is not avail.")
 else:
@@ -47,7 +49,7 @@ else:
 
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: hp-check/check.py [OPTIONS]", "", "summary", True),
+         ("Usage: %s [OPTIONS]" % __mod__, "", "summary", True),
          utils.USAGE_OPTIONS,
          ("Compile-time check:", "-c or --compile", "option", False),
          ("Run-time check:", "-r or --run", "option", False),
@@ -66,7 +68,7 @@ def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
 
-    utils.format_text(USAGE, typ, __title__, 'hp-check', __version__)
+    utils.format_text(USAGE, typ, __title__, __mod__, __version__)
     sys.exit(0)        
 
 
@@ -113,7 +115,7 @@ overall_commands_to_run = []
 time_flag = DEPENDENCY_RUN_AND_COMPILE_TIME
 
 try:
-    log.set_module("hp-check")
+    log.set_module(__mod__)
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hl:gtcrb', 
@@ -152,13 +154,13 @@ try:
 
         elif o == '-t':
             fmt = False
-            
+
         elif o in ('-c', '--compile'):
             time_flag = DEPENDENCY_COMPILE_TIME
-            
+
         elif o in ('-r', '--runtime', '--run'):
             time_flag = DEPENDENCY_RUN_TIME
-            
+
         elif o in ('-b', '--both'):
             time_flag = DEPENDENCY_RUN_AND_COMPILE_TIME
 
@@ -171,19 +173,18 @@ try:
     utils.log_title(__title__, __version__)
 
     log.info(log.bold("Note: hp-check can be run in three modes:"))
-    
+
     for l in tui.format_paragraph("1. Compile-time check mode (-c or --compile): Use this mode before compiling the HPLIP supplied tarball (.tar.gz or .run) to determine if the proper dependencies are installed to successfully compile HPLIP."):
         log.info(l)
-        
+
     for l in tui.format_paragraph("2. Run-time check mode (-r or --run): Use this mode to determine if a distro supplied package (.deb, .rpm, etc) or an already built HPLIP supplied tarball has the proper dependencies installed to successfully run."):
         log.info(l)
-    
+
     for l in tui.format_paragraph("3. Both compile- and run-time check mode (-b or --both) (Default): This mode will check both of the above cases (both compile- and run-time dependencies)."):
         log.info(l)
-    
+
     log.info()
-    
-    
+
     log_file = os.path.normpath('./hp-check.log')
     log.info(log.bold("Saving output in log file: %s" % log_file))
     log.debug("Log file=%s" % log_file)
@@ -315,10 +316,10 @@ try:
             log.error("Version: (Not available. CUPS may not be installed or not running.)")
             cups_ok = False
             num_errors += 1
-        
+
     if cups_ok:
         cups_conf = '/etc/cups/cupsd.conf'
-        
+
         try:
             f = file(cups_conf, 'r')
         except (IOError, OSError):
@@ -329,7 +330,7 @@ try:
                 if m is not None:
                     level = m.group(1).lower()
                     log.info("error_log is set to level: %s" % level)
-                    
+
                     if level not in ('debug', 'debug2'):
                         log.note("For troubleshooting printing issues, it is best to have the CUPS 'LogLevel'")
                         log.note("set to 'debug'. To set the LogLevel to debug, edit the file %s (as root)," % cups_conf)
@@ -340,19 +341,19 @@ try:
                         log.note("/var/log/cups/error_log")
                         log.note("You can monitor this file by running this command in a console/shell:")
                         log.note("tail -f /var/log/cups/error_log")
-                    
+
                     break
-                    
+
 
     log.info()
 
     log.info(log.bold("Checking for dbus/python-dbus..."))
-    
+
     if dcheck.check_ps(['dbus-daemon']):
         log.info("dbus daemon is running.")
     else:
         log.warn("dbus daemon is not running.")
-        
+
     try:
         import dbus
         try:
@@ -364,18 +365,18 @@ try:
                 log.warn("python-dbus imported OK, but unknown version.")
     except ImportError:
         log.warn("python-dbus not installed.")
-    
+
     log.info()
-    
+
 
     if time_flag == DEPENDENCY_RUN_AND_COMPILE_TIME:
         tui.header("COMPILE AND RUNTIME DEPENDENCIES")
         log.note("To check for compile-time only dependencies, re-run hp-check with the -c parameter (ie, hp-check -c).")
         log.note("To check for run-time only dependencies, re-run hp-check with the -r parameter (ie, hp-check -r).")
-    
+
     elif time_flag == DEPENDENCY_COMPILE_TIME:
         tui.header("COMPILE TIME DEPENDENCIES")
-    
+
     elif time_flag == DEPENDENCY_RUN_TIME:
         tui.header("RUNTIME DEPENDENCIES")
 
@@ -387,7 +388,7 @@ try:
         log.debug("***")
 
         if time_flag == DEPENDENCY_RUN_AND_COMPILE_TIME or time_flag == core.dependencies[d][4]:
-                
+
             log.info(log.bold("Checking for dependency: %s..." % core.dependencies[d][2]))
 
             if core.have_dependencies[d]:
@@ -399,10 +400,10 @@ try:
                     s = ''
                 elif core.dependencies[d][4] == DEPENDENCY_COMPILE_TIME:
                     s = '/COMPILE TIME ONLY'
-                    
+
                 elif core.dependencies[d][4] == DEPENDENCY_RUN_TIME:
                     s = '/RUNTIME ONLY'
-                
+
                 if core.dependencies[d][0]:
                     log.error("NOT FOUND! This is a REQUIRED%s dependency. Please make sure that this dependency is installed before installing or running HPLIP." % s)
                 else:
@@ -436,7 +437,7 @@ try:
 
 
             log.info()
-    
+
     if time_flag in (DEPENDENCY_RUN_TIME, DEPENDENCY_RUN_AND_COMPILE_TIME):
         tui.header("HPLIP INSTALLATION")
 
@@ -458,46 +459,46 @@ try:
         else:
             log.info("Not found.")  
 
-        
+
         if device_avail:
             if prop.par_build:
                 tui.header("DISCOVERED PARALLEL DEVICES")
-                
+
                 devices = device.probeDevices(['par'])
-                
+
                 if devices:
                     f = tui.Formatter()
                     f.header = ("Device URI", "Model")
-                    
+
                     for d, dd in devices.items():
                         f.add((d, dd[0]))
 
                     f.output()
-                
+
                 else:
                     log.info("No devices found.")
-                    
+
                     if not core.have_dependencies['ppdev']:
                         log.error("'ppdev' kernel module not loaded.")
-            
+
             if prop.usb_build:
                 tui.header("DISCOVERED USB DEVICES")                
-                
+
                 devices = device.probeDevices(['usb'])
-                
+
                 if devices:
                     f = tui.Formatter()
                     f.header = ("Device URI", "Model")
-                    
+
                     for d, dd in devices.items():
                         f.add((d, dd[0]))
 
                     f.output()
-                    
+
                 else:
                     log.info("No devices found.")
-        
-        
+
+
         tui.header("INSTALLED CUPS PRINTER QUEUES")
 
         lpstat_pat = re.compile(r"""^device for (.*): (.*)""", re.IGNORECASE)
@@ -590,7 +591,7 @@ try:
                         plugin = d.mq.get('plugin', PLUGIN_NONE)
                         if plugin in (PLUGIN_REQUIRED, PLUGIN_OPTIONAL):
                             home = sys_cfg.dirs.home or os.path.realpath(os.path.normpath(os.getcwd()))
-                            
+
                             log.debug("home=%s" % home)
 
                             model = model.lower()
@@ -602,12 +603,12 @@ try:
                                     log.info("Optional plug-in status: Installed")
                             else:
                                 num_errors += 1
-                                
+
                                 if plugin == PLUGIN_REQUIRED:
                                     log.error("Required plug-in status: Not installed")
                                 else:
                                     log.warn("Optional plug-in status: Not installed") 
-                                
+
 
                         if bus in ('par', 'usb'):
                             try:
@@ -631,7 +632,7 @@ try:
                             except Error:
                                 #log.error("Communication with device failed.")
                                 error_code = pml.ERROR_COMMAND_EXECUTION
-                            
+
                             if error_code > pml.ERROR_MAX_OK:
                                 #log.error("Communication status: Failed")
                                 num_errors += 1
@@ -796,7 +797,7 @@ try:
 
 except KeyboardInterrupt:
     log.error("User exit")
-    
+
 log.info()
 log.info("Done.")
 

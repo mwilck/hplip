@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,9 @@
 # Author: Don Welch
 #
 
-__version__ = '4.1'
+__version__ = '5.0'
 __title__ = "Fax Address Book"
+__mod__ = 'hp-fab'
 __doc__ = "A simple fax address book for HPLIP."
 
 # Std Lib
@@ -31,35 +32,7 @@ import os
 
 # Local
 from base.g import *
-from base import utils, tui
-
-
-log.set_module("hp-fab")
-
-
-USAGE = [(__doc__, "", "name", True),
-         ("Usage: hp-fab [MODE] [OPTIONS]", "", "summary", True),
-         ("[MODE]", "", "header", False),
-         ("Enter interactive mode:", "-i or --interactive (see Note 1)", "option", False),
-         ("Enter graphical UI mode:", "-u or --gui (Default)", "option", False),
-         utils.USAGE_SPACE,
-         utils.USAGE_OPTIONS,
-         utils.USAGE_LANGUAGE,
-         utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
-         utils.USAGE_HELP,
-         utils.USAGE_NOTES,
-         ("1. Use 'help' command at the fab > prompt for command help (interactive mode (-i) only).", "", "note", False),
-         utils.USAGE_SPACE,
-         utils.USAGE_SEEALSO,
-         ("hp-sendfax", "", "seealso", False),
-         ]
-
-def usage(typ='text'):
-    if typ == 'text':
-        utils.log_title(__title__, __version__)
-
-    utils.format_text(USAGE, typ, __title__, 'hp-fab', __version__)
-    sys.exit(0)
+from base import utils, tui, module
 
 
 # Console class (from ASPN Python Cookbook)
@@ -764,137 +737,105 @@ class Console(cmd.Cmd):
 
 
 
-mode = GUI_MODE
-mode_specified = False
-loc = None
 
-try:
-    opts, args = getopt.getopt(sys.argv[1:], 'l:hgiuq:', 
-        ['level=', 'help', 'help-rest', 'help-man',
-         'help-desc', 'gui', 'interactive', 'lang='])
+mod = module.Module(__mod__, __title__, __version__, __doc__, None,
+                    (GUI_MODE, INTERACTIVE_MODE), 
+                    (UI_TOOLKIT_QT3, UI_TOOLKIT_QT4))
+                    
+mod.setUsage(module.USAGE_FLAG_NONE)
 
-except getopt.GetoptError, e:
-    log.error(e.msg)
-    usage()
+opts, device_uri, printer_name, mode, ui_toolkit, loc = \
+    mod.parseStdOpts(handle_device_printer=False)
 
-if os.getenv("HPLIP_DEBUG"):
-    log.set_level('debug')
-
-for o, a in opts:
-    if o in ('-l', '--logging'):
-        log_level = a.lower().strip()
-        if not log.set_level(log_level):
-            usage()
-
-    elif o == '-g':
-        log.set_level('debug')
-
-    elif o in ('-h', '--help'):
-        usage()
-
-    elif o == '--help-rest':
-        usage('rest')
-
-    elif o == '--help-man':
-        usage('man')
-
-    elif o == '--help-desc':
-        print __doc__,
-        sys.exit(0)
-
-    elif o in ('-i', '--interactive'):
-        if mode_specified:
-            log.error("You may only specify a single mode as a parameter (-i or -u).")
-            sys.exit(1)
-
-        mode = INTERACTIVE_MODE
-        mode_specified = True
-
-    elif o in ('-u', '--gui'):
-        if mode_specified:
-            log.error("You may only specify a single mode as a parameter (-i or -u).")
-            sys.exit(1)
-
-        mode = GUI_MODE
-        mode_specified = True
-
-    elif o in ('-q', '--lang'):
-        if a.strip() == '?':
-            tui.show_languages()
-            sys.exit(0)
-
-        loc = utils.validate_language(a.lower())        
-
-utils.log_title(__title__, __version__)
-
-if os.getuid() == 0:
-    log.warn("hp-fab should not be run as root.")
-
-# Security: Do *not* create files that other users can muck around with
-os.umask(0037)
-
-if mode == GUI_MODE:
+if ui_toolkit == 'qt3':
     if not utils.canEnterGUIMode():
-        mode = NON_INTERACTIVE_MODE
+        log.error("%s GUI mode requires GUI support (try running with --qt4). Entering interactive mode." % __mod__)
+        mode = INTERACTIVE_MODE
+else:
+    if not utils.canEnterGUIMode4():
+        log.error("%s GUI mode requires GUI support (try running with --qt3). Entering interactive mode." % __mod__)
+        mode = INTERACTIVE_MODE
+
 
 if mode == GUI_MODE:
-    from qt import *
-    from ui.faxaddrbookform import FaxAddrBookForm
+    if ui_toolkit == 'qt3':
+        log.set_module("hp-fab(qt3)")
+        from qt import *
+        from ui.faxaddrbookform import FaxAddrBookForm
 
-    app = None
-    addrbook = None
-    # create the main application object
-    app = QApplication(sys.argv)
+        app = None
+        addrbook = None
+        # create the main application object
+        app = QApplication(sys.argv)
 
-    if loc is None:
-        loc = user_cfg.ui.get("loc", "system")
-        if loc.lower() == 'system':
-            loc = str(QTextCodec.locale())
-            log.debug("Using system locale: %s" % loc)
+        if loc is None:
+            loc = user_cfg.ui.get("loc", "system")
+            if loc.lower() == 'system':
+                loc = str(QTextCodec.locale())
+                log.debug("Using system locale: %s" % loc)
 
-    if loc.lower() != 'c':
-        e = 'utf8'
-        try:
-            l, x = loc.split('.')
-            loc = '.'.join([l, e])
-        except ValueError:
-            l = loc
-            loc = '.'.join([loc, e])
+        if loc.lower() != 'c':
+            e = 'utf8'
+            try:
+                l, x = loc.split('.')
+                loc = '.'.join([l, e])
+            except ValueError:
+                l = loc
+                loc = '.'.join([loc, e])
 
-        log.debug("Trying to load .qm file for %s locale." % loc)
-        trans = QTranslator(None)
+            log.debug("Trying to load .qm file for %s locale." % loc)
+            trans = QTranslator(None)
 
-        qm_file = 'hplip_%s.qm' % l
-        log.debug("Name of .qm file: %s" % qm_file)
-        loaded = trans.load(qm_file, prop.localization_dir)
+            qm_file = 'hplip_%s.qm' % l
+            log.debug("Name of .qm file: %s" % qm_file)
+            loaded = trans.load(qm_file, prop.localization_dir)
 
-        if loaded:
-            app.installTranslator(trans)
+            if loaded:
+                app.installTranslator(trans)
+            else:
+                loc = 'c'
+
+        if loc == 'c':
+            log.debug("Using default 'C' locale")
         else:
-            loc = 'c'
+            log.debug("Using locale: %s" % loc)
+            QLocale.setDefault(QLocale(loc))
+            prop.locale = loc
+            try:
+                locale.setlocale(locale.LC_ALL, locale.normalize(loc))
+            except locale.Error:
+                pass
 
-    if loc == 'c':
-        log.debug("Using default 'C' locale")
-    else:
-        log.debug("Using locale: %s" % loc)
-        QLocale.setDefault(QLocale(loc))
-        prop.locale = loc
+        addrbook = FaxAddrBookForm()
+        addrbook.show()
+        app.setMainWidget(addrbook)
+
         try:
-            locale.setlocale(locale.LC_ALL, locale.normalize(loc))
-        except locale.Error:
+            log.debug("Starting GUI loop...")
+            app.exec_loop()
+        except KeyboardInterrupt:
             pass
 
-    addrbook = FaxAddrBookForm()
-    addrbook.show()
-    app.setMainWidget(addrbook)
+        sys.exit(0)
 
-    try:
-        log.debug("Starting GUI loop...")
-        app.exec_loop()
-    except KeyboardInterrupt:
-        pass
+    else: # qt4
+        from PyQt4.QtGui import QApplication
+        from ui4.fabwindow import FABWindow
+        log.set_module("hp-fab(qt4)")
 
-    sys.exit(0)
+        if 1:
+            app = QApplication(sys.argv)
+
+            fab = FABWindow(None)
+            fab.show()
+
+            try:
+                log.debug("Starting GUI loop...")
+                app.exec_()
+            except KeyboardInterrupt:
+                sys.exit(0)
+
+
 
 else: # INTERACTIVE_MODE
     try:
@@ -905,6 +846,7 @@ else: # INTERACTIVE_MODE
         sys.exit(1)    
 
     console = Console()
+
     try:
         console.cmdloop()
     except KeyboardInterrupt:

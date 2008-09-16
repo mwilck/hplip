@@ -104,12 +104,12 @@ def start(language, auto=True, test_depends=False, test_unknown=False, assume_ne
         if not auto:
             tui.title("INSTALL TYPE")
             log.info("For most users, it is recommended to install HPLIP with full support (scanning, faxing, toolbox, etc).")
-            log.info("For servers or minimal installations, you can also install print support only (using HPIJS).")
+            log.info("For servers or minimal installations, you can also install print support only (HPIJS only).")
 
-            ok, choice = tui.enter_choice("\nInstall full support (recommended) or print-only support (m=multifunction*, s=single func, q=quit) ?", 
-                ['m', 's'], 'm')
+            ok, choice = tui.enter_choice("\nInstall full hplip support (recommended) or print-only support (f=full hplip support*, p=printing only support, q=quit) ?", 
+                ['f', 'p'], 'f')
             if not ok: sys.exit(0)
-            if choice  == 's':
+            if choice  == 'p':
                 core.selected_component = 'hpijs'
 
         log.debug(core.selected_component)

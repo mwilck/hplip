@@ -29,6 +29,11 @@ GUI_MODE = 1 # -u
 NON_INTERACTIVE_MODE = 2 # -n
 BROWSER_MODE = 3 # -w
 
+# Supported UI toolkits
+UI_TOOLKIT_QT3 = 0
+UI_TOOLKIT_QT4 = 1
+UI_TOOLKIT_GTK = 2 # Not used
+
 # device types (CUPS queue or SANE types)
 DEVICE_TYPE_UNKNOWN = 0
 DEVICE_TYPE_PRINTER = 1 # hp:
@@ -253,6 +258,8 @@ EVENT_CUPS_QUEUES_CHANGED = 9000 # sent by hp-setup if queues added (or removed)
 EVENT_RAISE_DEVICE_MANAGER = 9001
 #EVENT_JOB_STORAGE_UI_REQUEST = 9002 # sent by hplipjs CUPS filter for job storage UI
 EVENT_HISTORY_UPDATE = 9003 # sent by hp-systray to hp-toolbox when a device's history changes
+EVENT_USER_CONFIGURATION_CHANGED = 9004 # sent when ~/.hplip/hplip.conf has been changed by another app.
+EVENT_SYS_CONFIGURATION_CHANGED = 9005 # sent when /etc/hp/hplip.conf has been changed by another app.
 EVENT_MAX_UI_EVENT = 9999
 
 EVENT_MAX_EVENT = 9999
@@ -430,6 +437,13 @@ IO_STATE_HP_OPEN = 0
 IO_STATE_HP_READY = 1
 IO_STATE_HP_NOT_AVAIL = 2
 IO_STATE_NON_HP = 3
+
+#
+# Systray visibility setting
+#
+SYSTRAY_VISIBLE_SHOW_ALWAYS = 0
+SYSTRAY_VISIBLE_HIDE_WHEN_INACTIVE = 1
+SYSTRAY_VISIBLE_HIDE_ALWAYS = 2
 
 #
 # Defines for model query types and status query

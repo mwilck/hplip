@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.7.3"
+*FileVersion: "hpijs 2.8.9.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_k60xi-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet k60xi Foomatic/hpijs"
 *ShortNickName: "HP Officejet k60xi Foomatic/hpijs"
-*NickName: "HP Officejet k60xi Foomatic/hpijs, hpijs 2.8.7.3"
+*NickName: "HP Officejet k60xi Foomatic/hpijs, hpijs 2.8.9.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -23,7 +23,7 @@
 *Throughput: "1"
 *LandscapeOrientation: Plus90
 *% Driver-defined attributes...
-*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
+*DefaultResolution: 1200dpi*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
 *End
 *FoomaticIDs: "HP-PSC_750 hpijs"
@@ -387,4 +387,4 @@ et=2"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_k60xi-hpijs.ppd, 19521 bytes.
+*% End of hp-officejet_k60xi-hpijs.ppd, 19548 bytes.

@@ -46,6 +46,7 @@
 # drv_dir=<drv dir> [TYPE_STRING] # Used for only drv installs
 # fix_ppd_symlink=True|False [TYPE_BOOL]
 # usermod_params=<params for usermod command, w/o user name(s). e.g. '-Glp' (default)>
+# ui_toolkit=Qt3|Qt4|GTK [TYPE_STRING]
 # 
 # # Version data overrides distro data if present.
 # # <version name> must be present in [<distro name>] section's versions= list. 
@@ -69,6 +70,7 @@
 # usb_supported=True|False [TYPE_BOOL]
 # packaged_version=<hplip version major.year.month> [TYPE_STRING] (version of HPLIP pre-packaged in distro, e.g. "2.8.2")
 # cups_path_with_bitness=True|False [TYPE_BOOL] (False is defult)
+# ui_toolkit=qt3|qt4|gtk [TYPE_STRING]
 # 
 # # Only include these sections if supported==True for this <distro name>:<version name>.
 # [<distro name>:<version name>:<dependency name>]
@@ -197,7 +199,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.4
 release_date=2005-5-10
 notes=
 ppd_install=ppd
@@ -296,7 +298,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.7.1
 release_date=2006-5-11
 notes=After the installation is completed please go to http://hplip.sourceforge.net/install/manual/distros/novell.html and complete the Step 7 post installation steps.
 ppd_install=ppd
@@ -392,7 +394,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.7
 release_date=2006-7-12
 notes=After the installation is completed please go to http://hplip.sourceforge.net/install/manual/distros/novell.html and complete the Step 7 post installation steps.
 ppd_install=ppd
@@ -588,8 +590,8 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=2.7.7
-release_date=2007-10-04
+packaged_version=2.8.7
+release_date=2008-06-19
 notes=Please be sure to disable the CD repositories in YaST.
 ppd_install=drv
 udev_mode_fix=True
@@ -597,6 +599,7 @@ ppd_dir=/usr/share/cups/model/HP
 fix_ppd_symlink=False
 drv_dir=/usr/share/cups/drv/hp/
 cups_path_with_bitness=True
+ui_toolkit=qt3
 
 [suse:11.0:cups]
 packages=cups,cups-client
@@ -640,6 +643,9 @@ commands=su -c "modprobe ppdev"
 
 [suse:11.0:pyqt]
 packages=python-qt
+
+[suse:11.0:pyqt4]
+packages=
 
 [suse:11.0:python-devel]
 packages=python-devel,python-xml
@@ -1051,7 +1057,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.7
 release_date=2005-6-13
 notes=
 ppd_install=ppd
@@ -1148,7 +1154,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.11
 release_date=2006-3-20
 notes=
 ppd_install=ppd
@@ -1249,7 +1255,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.11
 release_date=2006-10-24
 notes=
 ppd_install=ppd
@@ -1346,7 +1352,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.7.2
 release_date=2006-10-24
 notes=
 ppd_install=drv
@@ -1448,7 +1454,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.7.4a
 release_date=2007-5-31
 notes=
 ppd_install=drv
@@ -1552,7 +1558,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=2.7.7
+packaged_version=2.8.2
 release_date=2007-11-8
 notes=
 ppd_install=drv
@@ -1655,7 +1661,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=2.7.7
+packaged_version=2.8.6
 release_date=2008-05-13
 notes=
 ppd_install=drv
@@ -1863,7 +1869,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.6.7
 release_date=
 notes=
 ppd_install=
@@ -1875,7 +1881,7 @@ drv_dir=/usr/share/cups/drv/hp/
 # ****************************************
 [slackware]
 index=8
-versions=9.0,9.1,10.0,10.1,10.2
+versions=9.0,9.1,10.0,10.1,10.2,11,12,12.1
 display_name=Slackware Linux
 alt_names=
 display=False
@@ -1987,6 +1993,66 @@ parallel_supported=0
 usb_supported=0
 packaged_version=
 release_date=2005-9-14
+notes=
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[slackware:11]
+code_name=
+supported=False
+gui_supported=0
+scan_supported=0
+fax_supported=0
+pcard_supported=0
+network_supported=0
+parallel_supported=0
+usb_supported=0
+packaged_version=1.6.9
+release_date=
+notes=
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[slackware:12]
+code_name=
+supported=False
+gui_supported=0
+scan_supported=0
+fax_supported=0
+pcard_supported=0
+network_supported=0
+parallel_supported=0
+usb_supported=0
+packaged_version=1.7.4a
+release_date=
+notes=
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[slackware:12.1]
+code_name=
+supported=False
+gui_supported=0
+scan_supported=0
+fax_supported=0
+pcard_supported=0
+network_supported=0
+parallel_supported=0
+usb_supported=0
+packaged_version=2.8.4
+release_date=
 notes=
 ppd_install=ppd
 udev_mode_fix=True
@@ -2290,7 +2356,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.7.10
 release_date=
 notes=
 ppd_install=ppd
@@ -2394,7 +2460,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.7.10
 release_date=
 notes=
 ppd_install=ppd
@@ -2609,17 +2675,17 @@ packages=xsane
 # ****************************************
 [ubuntu]
 index=12
-versions=5.04,5.1,6.06,6.10,7.04,7.10,8.04
+versions=5.04,5.1,6.06,6.10,7.04,7.10,8.04,8.10
 display_name=Ubuntu
 alt_names=kubunbu,edubuntu,xubuntu
 display=True
 notes=
 package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude,adept-updater
-package_mgr_cmd=sudo apt-get install --yes --force-yes $packages_to_install
-pre_depend_cmd=sudo dpkg --configure -a,sudo apt-get install --yes --force-yes -f,sudo apt-get update
+package_mgr_cmd=sudo aptitude install --assume-yes $packages_to_install
+pre_depend_cmd=sudo dpkg --configure -a,sudo apt-get install --yes --force-yes -f,sudo aptitude update
 post_depend_cmd=
-hpoj_remove_cmd=sudo apt-get remove --yes --force-yes hpoj
-hplip_remove_cmd=sudo apt-get remove --yes --force-yes hplip hpijs
+hpoj_remove_cmd=sudo aptitude remove --assume-yes hpoj
+hplip_remove_cmd=sudo aptitude remove --assume-yes hplip hpijs
 su_sudo=sudo
 ppd_install=ppd
 udev_mode_fix=True
@@ -2834,7 +2900,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.7
 release_date=2006-6-1
 notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
 ppd_install=ppd
@@ -2931,7 +2997,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.6.9
 release_date=2006-10-1
 notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
 ppd_install=ppd
@@ -3028,7 +3094,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.7.3
 release_date=2007-4-1
 notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
 ppd_install=ppd
@@ -3236,6 +3302,7 @@ udev_mode_fix=True
 ppd_dir=/usr/share/ppd/hpijs/HP
 fix_ppd_symlink=False
 drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
 
 [ubuntu:8.04:cups]
 packages=libcupsys2
@@ -3280,6 +3347,9 @@ commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppd
 [ubuntu:8.04:pyqt]
 packages=python-qt3
 
+[ubuntu:8.04:pyqt4]
+packages=python-qt4
+
 [ubuntu:8.04:python-devel]
 packages=python2.5-dev
 
@@ -3314,6 +3384,109 @@ packages=python-dbus
 packages=libdbus-1-dev
 
 [ubuntu:8.04:python-ctypes]
+packages=python-ctypes
+
+# ********************
+[ubuntu:8.10]
+code_name=Intrepid Ibex
+supported=True
+gui_supported=1
+scan_supported=1
+fax_supported=1
+pcard_supported=1
+network_supported=1
+parallel_supported=1
+usb_supported=1
+packaged_version=2.8.7
+release_date=2008
+notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[ubuntu:8.10:cups]
+packages=libcupsys2
+
+[ubuntu:8.10:cups-devel]
+packages=libcupsys2-dev,cupsys-bsd
+
+[ubuntu:8.10:gcc]
+packages=build-essential
+
+[ubuntu:8.10:gs]
+packages=gs-esp
+
+[ubuntu:8.10:libcrypto]
+packages=openssl
+
+[ubuntu:8.10:libjpeg]
+packages=libjpeg62-dev
+
+[ubuntu:8.10:libnetsnmp-devel]
+packages=libsnmp-dev
+
+[ubuntu:8.10:libpthread]
+packages=build-essential
+
+[ubuntu:8.10:libtool]
+packages=libtool
+
+[ubuntu:8.10:libusb]
+packages=libusb-dev
+
+[ubuntu:8.10:make]
+packages=build-essential
+
+[ubuntu:8.10:pil]
+packages=python-imaging
+
+[ubuntu:8.10:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[ubuntu:8.10:pyqt]
+packages=python-qt3
+
+[ubuntu:8.10:pyqt4]
+packages=python-qt4
+
+[ubuntu:8.10:python-devel]
+packages=python2.5-dev
+
+[ubuntu:8.10:python23]
+packages=python
+
+[ubuntu:8.10:python2x]
+packages=python
+
+[ubuntu:8.10:reportlab]
+packages=python-reportlab
+
+[ubuntu:8.10:sane]
+packages=libsane
+
+[ubuntu:8.10:sane-devel]
+packages=libsane-dev
+
+[ubuntu:8.10:scanimage]
+packages=sane-utils
+
+[ubuntu:8.10:xsane]
+packages=xsane
+
+[ubuntu:8.10:cups-ddk]
+packages=cupsddk,cupsddk-drivers
+
+[ubuntu:8.10:python-dbus]
+packages=python-dbus
+
+[ubuntu:8.10:dbus]
+packages=libdbus-1-dev
+
+[ubuntu:8.10:python-ctypes]
 packages=python-ctypes
 
 
@@ -3546,7 +3719,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.2
 release_date=2005-6-6
 notes=
 ppd_install=ppd
@@ -3643,7 +3816,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.6.10
 release_date=2007-4-8
 notes=Be sure to disable the CD-ROM repositories and also ensure that the main/security repositories are enabled.
 ppd_install=ppd
@@ -3740,7 +3913,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.6.10
 release_date=2007-4-8
 notes=Be sure to disable the CD-ROM repositories and also ensure that the main/security repositories are enabled.
 ppd_install=ppd
@@ -3836,7 +4009,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.6.10
 release_date=2007-4-8
 notes=Be sure to disable the CD-ROM repositories and also ensure that the main/security repositories are enabled.
 ppd_install=ppd
@@ -3933,7 +4106,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.8.6
 release_date=
 notes=NOTE: Disable the CD Sources in your apt sources.list or the install will fail and hang.
 ppd_install=ppd
@@ -4033,7 +4206,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.8.6
 release_date=2007-4-8
 notes=Be sure to disable the CD-ROM repositories and also ensure that the main/security repositories are enabled.
 ppd_install=ppd
@@ -4133,7 +4306,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.8.6
 release_date=
 notes=NOTE: Disable the CD Sources in your apt sources.list or the install will fail and hang. Also make sure all the lenny repositories are enabled or the install will fail.
 ppd_install=ppd
@@ -4233,7 +4406,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.8.6
 release_date=
 notes=NOTE: Disable the CD Sources in your apt sources.list or the install will fail and hang. Also make sure all the lenny repositories are enabled or the install will fail.
 ppd_install=ppd
@@ -4334,7 +4507,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.8.6
 release_date=
 notes=NOTE: Disable the CD Sources in your apt sources.list or the install will fail and hang. Also make sure all the lenny repositories are enabled or the install will fail.
 ppd_install=ppd
@@ -4667,7 +4840,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.7
 release_date=2006-07-22
 notes=Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.
 udev_mode_fix=True
@@ -4764,7 +4937,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=1.7.3
 release_date=2006-4-4
 notes=Before proceeding please enable the universe/multiverse repositories in Synaptic or Apt.
 udev_mode_fix=True
@@ -5024,7 +5197,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.1
 release_date=2004-3-4
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
 ppd_install=drv
@@ -5045,7 +5218,7 @@ pcard_supported=1
 network_supported=0
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.1
 release_date=2004-9-16
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also be sure to disable the cdrom1-12 media sources. *Important* After the install run: su -c "/usr/sbin/usermod -G lp <your.username> Then logout and log back in.
 ppd_install=ppd
@@ -5142,7 +5315,7 @@ pcard_supported=1
 network_supported=0
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.1
 release_date=2005-4-14
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also be sure to disable the cdrom1-12 media sources.
 ppd_install=ppd
@@ -5238,7 +5411,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=0.9.8
 release_date=2005-4-14
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
 ppd_install=drv
@@ -5335,7 +5508,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.7.7
 release_date=2006-10-3
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
 ppd_install=drv
@@ -5432,7 +5605,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.7.7
 release_date=2007-4-17
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
 ppd_install=drv
@@ -5532,7 +5705,7 @@ pcard_supported=1
 network_supported=1
 parallel_supported=1
 usb_supported=1
-packaged_version=
+packaged_version=2.7.12
 release_date=2007-4-17
 notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
 ppd_install=drv

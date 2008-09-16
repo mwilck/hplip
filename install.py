@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2007 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,9 @@
 # Author: Don Welch
 #
 
-__version__ = '4.0'
+__version__ = '5.0'
 __title__ = 'HPLIP Installer'
+__mod__ = 'hplip-install'
 __doc__ = "Installer for HPLIP tarball."
 
 
@@ -32,7 +33,6 @@ import os.path
 import sys
 import time
 import re
-import platform
 
 # Local
 from base.g import *
@@ -40,36 +40,34 @@ from base import utils
 
 
 USAGE = [(__doc__, "", "name", True),
-         ("Usage: sh ./hplip-install [MODE] [OPTIONS]", "", "summary", True),
+         ("Usage: sh %s [OPTIONS]" % __mod__, "", "summary", True),
          utils.USAGE_SPACE,
-         ("[MODE]", "", "header", False),
-         ("Enter browser (web) GUI mode:", "-u or --gui or -w or --web or --browser", "option", False),
-         ("Run in interactive (text) mode:", "-t or --text or -i or  --interactive (Default)", "option", False),
          utils.USAGE_SPACE,
          utils.USAGE_OPTIONS,
-         ("Automatic mode (chooses the most common options):", "-a or --auto (text mode only)", "option", False),
-         ("Dependency installation retries:", "-r <retries> or --retries=<retries> (default is 3)", "option", False),
+         ("Automatic mode (chooses the most common options):", "-a or --auto", "option", False),
+         ("Dependency package installation retries:", "-r <retries> or --retries=<retries> (default is 3)", "option", False),
          ("Assume network connection present:", "-n or --network", "option", False),
-         ("Force install of all dependencies (FOR TESTING ONLY):", "-x (text mode only)", "option", False),
-         ("Unknown distro mode (FOR TESTING ONLY):", "-d (text mode only)", "option", False),
          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
          utils.USAGE_HELP,
          utils.USAGE_SPACE,
-         utils.USAGE_NOTES,
+         utils.USAGE_SPACE,
+         ("[OPTIONS] (FOR TESTING ONLY)", "", "header", False),
+         ("Force install of all dependencies:", "-x", "option", False),
+         ("Force unknown distro mode:", "-d", "option", False),
         ]
 
 def usage(typ='text'):
     if typ == 'text':
         utils.log_title(__title__, __version__)
 
-    utils.format_text(USAGE, typ, __title__, 'hplip-install', __version__)
+    utils.format_text(USAGE, typ, __title__, __mod__, __version__)
     sys.exit(0)        
 
 
-log.set_module("hplip-install")
+log.set_module(__mod__)
 
 log.debug("euid = %d" % os.geteuid())
-mode = INTERACTIVE_MODE #INTERACTIVE_MODE   #BROWSER_MODE
+mode = INTERACTIVE_MODE
 auto = False
 test_depends = False
 test_unknown = False
@@ -79,9 +77,9 @@ max_retries = 3
 restricted_override = False
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'hl:giawutxdq:nr:b', 
+    opts, args = getopt.getopt(sys.argv[1:], 'hl:giatxdq:nr:b', 
         ['help', 'help-rest', 'help-man', 'help-desc', 'gui', 'lang=',
-        'logging=', 'interactive', 'auto', 'web', 'browser', 'text', 
+        'logging=', 'interactive', 'auto', 'text', 
         'network', 'retries=']) 
 
 except getopt.GetoptError, e:
@@ -123,9 +121,6 @@ for o, a in opts:
     elif o in ('-a', '--auto'):
         auto = True
 
-    elif o in ('-u', '-w', '--browser', '--web', '--gui'):
-        mode = BROWSER_MODE
-        
     elif o == '-x':
         log.warn("Install all depends (-x) is for TESTING ONLY")
         test_depends = True
@@ -180,7 +175,6 @@ utils.log_title(__title__, __version__, True)
 log.info("Installer log saved in: %s" % log.bold(log_file))
 log.info("")
 
-
 bb_build_pat = re.compile("BB_BUILD\s*=\s*(.*)", re.I)
 bb_build_value = False
 try:
@@ -201,34 +195,10 @@ else:
         log.error("This is a restricted build. The installer is disabled. Exiting.")
         sys.exit(1)
     
-
-if mode == BROWSER_MODE:
-    if platform.system() != 'Darwin':
-        if not os.getenv('DISPLAY'):
-            log.warn("No display found.")
-            mode = INTERACTIVE_MODE
-        
-    if utils.find_browser() is None:
-        log.warn("No browser found.")
-        mode = INTERACTIVE_MODE
-
-if mode == BROWSER_MODE:
-    if test_depends or test_unknown:
-        log.error("Test modes -x and -d are not implemented with GUI mode.")
-    from installer import web_install
-    log.debug("Starting web browser installer...")
-    web_install.start(language)
-
-elif mode == INTERACTIVE_MODE:
-
-    try:
-        from installer import text_install
-        log.debug("Starting text installer...")
-        text_install.start(language, auto, test_depends, test_unknown, assume_network, max_retries)
-    except KeyboardInterrupt:
-        log.error("User exit")
-
-else:
-    log.error("Invalid mode. Please use '-i', '-t', '-u' or '-w' to select the mode.")
-    sys.exit(1)
+try:
+    from installer import text_install
+    log.debug("Starting text installer...")
+    text_install.start(language, auto, test_depends, test_unknown, assume_network, max_retries)
+except KeyboardInterrupt:
+    log.error("User exit")
 

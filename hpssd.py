@@ -22,6 +22,7 @@
 
 __version__ = '10.1'
 __title__ = "Services and Status System Tray dBus Child Process"
+__mod__ = 'hpssd'
 __doc__ = "Provides persistent data and event services to HPLIP client applications. Required to be running for PC send fax, optional in all other cases."
 
 

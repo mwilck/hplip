@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.7.3"
+*FileVersion: "hpijs 2.8.9.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_2600-hpijs-pcl3.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 2600 Foomatic/hpijs"
 *ShortNickName: "HP Business Inkjet 2600 Foomatic/hpijs"
-*NickName: "HP Business Inkjet 2600 Foomatic/hpijs, hpijs 2.8.7.3"
+*NickName: "HP Business Inkjet 2600 Foomatic/hpijs, hpijs 2.8.9.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -24,7 +24,7 @@
 *Throughput: "1"
 *LandscapeOrientation: Plus90
 *% Driver-defined attributes...
-*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
+*DefaultResolution: 600dpi*FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
 *End
 *FoomaticIDs: "HP-Color_LaserJet_2500 hpijs"
@@ -241,6 +241,7 @@ nSet=2"
 *PageSize Ledger/Ledger: "%% FoomaticRIPOptionSetting: PageSize=Ledger"
 *PageSize SuperB/Super B: "%% FoomaticRIPOptionSetting: PageSize=SuperB"
 *PageSize w774h1116/8K: "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+*PageSize A3/A3: "%% FoomaticRIPOptionSetting: PageSize=A3"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -273,6 +274,7 @@ nSet=2"
 *PageRegion Ledger/Ledger: "%% FoomaticRIPOptionSetting: PageSize=Ledger"
 *PageRegion SuperB/Super B: "%% FoomaticRIPOptionSetting: PageSize=SuperB"
 *PageRegion w774h1116/8K: "%% FoomaticRIPOptionSetting: PageSize=w774h1116"
+*PageRegion A3/A3: "%% FoomaticRIPOptionSetting: PageSize=A3"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "18.00 14.40 594.00 777.60"
@@ -303,6 +305,7 @@ nSet=2"
 *ImageableArea Ledger/Ledger: "14.40 36.00 777.60 1215.00"
 *ImageableArea SuperB/Super B: "14.40 36.00 921.60 1359.00"
 *ImageableArea w774h1116/8K: "18.00 36.00 756.00 1107.00"
+*ImageableArea A3/A3: "18.00 14.40 824.00 1175.60"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612.00 792.00"
 *PaperDimension A4/A4: "595.00 842.00"
@@ -332,6 +335,7 @@ nSet=2"
 *PaperDimension Ledger/Ledger: "792.00 1224.00"
 *PaperDimension SuperB/Super B: "936.00 1368.00"
 *PaperDimension w774h1116/8K: "774.00 1116.00"
+*PaperDimension A3/A3: "842.00 1190.00"
 *OpenUI *PrintoutMode/Printout Mode: PickOne
 *OrderDependency: 10.0 AnySetup *PrintoutMode
 *DefaultPrintoutMode: Normal
@@ -415,4 +419,4 @@ nSet=2"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-business_inkjet_2600-hpijs-pcl3.ppd, 21205 bytes.
+*% End of hp-business_inkjet_2600-hpijs-pcl3.ppd, 21444 bytes.

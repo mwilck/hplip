@@ -369,6 +369,10 @@ class FaxAddrBookForm(FaxAddrBookForm_base):
 
         if all_entries:
             for e, v in all_entries.items():
+                
+                if v['name'].startswith('__'):
+                    continue
+                    
                 i = AddressBookItem2(self.addressListView, v)
 
                 if first_rec is None:
