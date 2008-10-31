@@ -54,13 +54,13 @@ class InfoDialog(QDialog, Ui_Dialog):
         self.connect(self.CancelButton, SIGNAL("clicked()"), self.CancelButton_clicked)
         self.connect(self.DeviceComboBox, SIGNAL("DeviceUriComboBox_noDevices"), self.DeviceUriComboBox_noDevices)
         self.connect(self.DeviceComboBox, SIGNAL("DeviceUriComboBox_currentChanged"), self.DeviceUriComboBox_currentChanged)
-    
+
         # Application icon
         self.setWindowIcon(QIcon(load_pixmap('prog', '48x48')))
-        
+
         if self.device_uri:
             self.DeviceComboBox.setInitialDevice(self.device_uri)
-            
+
         self.DeviceComboBox.setType(DEVICEURICOMBOBOX_TYPE_PRINTER_AND_FAX)
 
         self.headers = [self.__tr("Key"), self.__tr("Value")]
@@ -69,67 +69,42 @@ class InfoDialog(QDialog, Ui_Dialog):
     def updateUi(self):
         self.DeviceComboBox.updateUi()
         #self.updateInfoTable()
-        
-        
+
+
     def updateInfoTable(self):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.DynamicTableWidget.clear()
         self.DynamicTableWidget.setRowCount(0)
         self.DynamicTableWidget.setColumnCount(0)
         flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
-        
+
+        while self.TabWidget.count() > 2:
+            self.TabWidget.removeTab(2)   
+
+
+        self.DynamicTableWidget.clear()
+        self.DynamicTableWidget.setRowCount(0)
+        self.DynamicTableWidget.setColumnCount(len(self.headers))
+        self.DynamicTableWidget.setHorizontalHeaderLabels(self.headers)
+
         try:
             d = device.Device(self.device_uri, None)
         except Error:
             QApplication.restoreOverrideCursor()
-            FailureUI("<b>Unable to open device %1.</b><p>Exiting.</p>")
-            self.close()
+            FailureUI(self, self.__tr("<b>Unable to open device %1.</b>").arg(self.device_uri))
+            #self.close()
             return
-            
-        try:
-            try:
-                d.open()
-                d.queryDevice()
-            except Error, e:
-                QApplication.restoreOverrideCursor()
-                FailureUI("<b>Unable to open device %1.</b><p>Exiting.</p>")
-                self.close()
-                return
-                
-            self.DynamicTableWidget.setColumnCount(len(self.headers))
-            self.DynamicTableWidget.setHorizontalHeaderLabels(self.headers)
-            
-            dq_keys = d.dq.keys()
-            dq_keys.sort()
-            
-            self.DynamicTableWidget.setRowCount(len(dq_keys))
 
-            for row, key in enumerate(dq_keys):
-                i = QTableWidgetItem(QString(key))
-                i.setFlags(flags)
-                self.DynamicTableWidget.setItem(row, 0, i)  
-  
-                i = QTableWidgetItem(QString(str(d.dq[key])))
-                i.setFlags(flags)
-                self.DynamicTableWidget.setItem(row, 1, i)  
-    
-                
-            self.DynamicTableWidget.resizeColumnToContents(0)
-            self.DynamicTableWidget.resizeColumnToContents(1)
-        
-        finally:
-            d.close()
-            
         self.StaticTableWidget.clear()
-        
+
         self.StaticTableWidget.setColumnCount(len(self.headers))
         self.StaticTableWidget.setHorizontalHeaderLabels(self.headers)
-        
+
         mq_keys = d.mq.keys()
         mq_keys.sort()
-        
+
         self.StaticTableWidget.setRowCount(len(mq_keys))
-        
+
         for row, key in enumerate(mq_keys):            
             i = QTableWidgetItem(QString(key))
             i.setFlags(flags)
@@ -141,21 +116,42 @@ class InfoDialog(QDialog, Ui_Dialog):
 
         self.StaticTableWidget.resizeColumnToContents(0)
         self.StaticTableWidget.resizeColumnToContents(1)
+
+        try:
+            try:
+                d.open()
+                d.queryDevice()
+            except Error, e:
+                QApplication.restoreOverrideCursor()
+                FailureUI(self, self.__tr("<b>Unable to open device %1.</b>").arg(self.device_uri))
+                #self.close()
+                return
+
+            dq_keys = d.dq.keys()
+            dq_keys.sort()
+
+            self.DynamicTableWidget.setRowCount(len(dq_keys))
+
+            for row, key in enumerate(dq_keys):
+                i = QTableWidgetItem(QString(key))
+                i.setFlags(flags)
+                self.DynamicTableWidget.setItem(row, 0, i)  
+
+                i = QTableWidgetItem(QString(str(d.dq[key])))
+                i.setFlags(flags)
+                self.DynamicTableWidget.setItem(row, 1, i)  
+
+
+            self.DynamicTableWidget.resizeColumnToContents(0)
+            self.DynamicTableWidget.resizeColumnToContents(1)
+
+        finally:
+            d.close()
+
         #self.StaticTableWidget.setColumnWidth(1, self.StaticTableWidget.width() - self.StaticTableWidget.columnWidth(0))
-        
-        while self.TabWidget.count() > 2:
-            self.TabWidget.removeTab(2)
-#        num_tabs = self.TabWidget.count()
-#        
-#        if num_tabs > 2:
-#            
-#            i = 2
-#            while i < num_tabs:
-#                self.TabWidget.removeTab(i)
-#                i += 1
-                
+
         printers = cups.getPrinters()
-            
+
         for p in printers:
             if p.device_uri == self.device_uri:
                 Tab = QWidget()
@@ -174,16 +170,16 @@ class InfoDialog(QDialog, Ui_Dialog):
                 Table.setObjectName(QString("Table-%s" % p.name))
                 GridLayout.addWidget(Table, 0, 0, 1, 1)
                 self.TabWidget.addTab(Tab, QString(p.name))    
-                
+
                 Table.setColumnCount(len(self.headers))
                 Table.setHorizontalHeaderLabels(self.headers)
-                
+
                 cups.resetOptions()
                 cups.openPPD(p.name)
                 current_options = dict(cups.getOptions())
-                
+
                 #current_options['cups_error_log_level'] = cups.getErrorLogLevel()
-                
+
                 try:
                     f = file(os.path.expanduser('~/.cups/lpoptions'))
                 except IOError, e:
@@ -197,12 +193,12 @@ class InfoDialog(QDialog, Ui_Dialog):
                             break
                     else:
                         current_options['lpoptions_file_data'] = self.__tr("(no data)")
-                    
+
                 keys = current_options.keys()
                 keys.sort()
-                
+
                 Table.setRowCount(len(keys))
-                
+
                 for row, key in enumerate(keys):            
                     i = QTableWidgetItem(QString(key))
                     i.setFlags(flags)
@@ -220,31 +216,31 @@ class InfoDialog(QDialog, Ui_Dialog):
                             i = QTableWidgetItem(QString(str(state)))
                     else:
                         i = QTableWidgetItem(QString(str(current_options[key])))
-                    
+
                     i.setFlags(flags)
                     Table.setItem(row, 1, i)  
 
                 Table.resizeColumnToContents(0)
                 Table.resizeColumnToContents(1)
-                
+
         cups.closePPD()
         self.TabWidget.setCurrentIndex(0)
         QApplication.restoreOverrideCursor()
-    
-    
+
+
     def DeviceUriComboBox_currentChanged(self, device_uri):
         self.device_uri = device_uri
         self.updateInfoTable()
-    
-    
+
+
     def DeviceUriComboBox_noDevices(self):
         FailureUI(self, self.__tr("<b>No devices found.</b>"))
         self.close()
-    
-    
+
+
     def CancelButton_clicked(self):
         self.close()
-        
+
     #
     # Misc
     # 

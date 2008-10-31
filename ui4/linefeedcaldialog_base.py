@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/linefeedcaldialog_base.ui'
 #
-# Created: Thu Sep  4 15:43:39 2008
+# Created: Thu Oct 30 15:47:08 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,19 +35,23 @@ class Ui_Dialog(object):
         self.DeviceComboBox.setObjectName("DeviceComboBox")
         self.gridlayout.addWidget(self.DeviceComboBox,2,0,1,3)
 
-        spacerItem = QtGui.QSpacerItem(20,301,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
-        self.gridlayout.addItem(spacerItem,3,0,1,1)
+        self.LoadPaper = LoadPaperGroupBox(Dialog)
+        self.LoadPaper.setObjectName("LoadPaper")
+        self.gridlayout.addWidget(self.LoadPaper,3,0,1,3)
+
+        spacerItem = QtGui.QSpacerItem(410,81,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.gridlayout.addItem(spacerItem,4,0,1,1)
 
         spacerItem1 = QtGui.QSpacerItem(361,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.gridlayout.addItem(spacerItem1,4,0,1,1)
+        self.gridlayout.addItem(spacerItem1,5,0,1,1)
 
         self.CalibrateButton = QtGui.QPushButton(Dialog)
         self.CalibrateButton.setObjectName("CalibrateButton")
-        self.gridlayout.addWidget(self.CalibrateButton,4,1,1,1)
+        self.gridlayout.addWidget(self.CalibrateButton,5,1,1,1)
 
         self.CancelButton = QtGui.QPushButton(Dialog)
         self.CancelButton.setObjectName("CancelButton")
-        self.gridlayout.addWidget(self.CancelButton,4,2,1,1)
+        self.gridlayout.addWidget(self.CancelButton,5,2,1,1)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -58,4 +62,5 @@ class Ui_Dialog(object):
         self.CalibrateButton.setText(QtGui.QApplication.translate("Dialog", "Calibrate", None, QtGui.QApplication.UnicodeUTF8))
         self.CancelButton.setText(QtGui.QApplication.translate("Dialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
+from loadpapergroupbox import LoadPaperGroupBox
 from deviceuricombobox import DeviceUriComboBox

@@ -24,7 +24,7 @@ import operator
 
 # Local
 from base.g import *
-from base import device, utils
+from base import device, utils, maint
 from prnt import cups
 from base.codes import *
 from ui_utils import *
@@ -57,31 +57,62 @@ class PQDiagDialog(QDialog, Ui_Dialog):
 
         # Application icon
         self.setWindowIcon(QIcon(load_pixmap('prog', '48x48')))
-        
+
         if self.device_uri:
             self.DeviceComboBox.setInitialDevice(self.device_uri)
-        
-    
+
+
     def updateUi(self):
         self.DeviceComboBox.updateUi()
+        self.LoadPaper.setButtonName(self.__tr("Run"))
+        self.LoadPaper.updateUi()
 
 
     def DeviceUriComboBox_currentChanged(self, device_uri):
         self.device_uri = device_uri
-        # Update
-    
-    
+
+
     def DeviceUriComboBox_noDevices(self):
         FailureUI(self, self.__tr("<b>No devices that support print quality diagnostics found.</b><p>Click <i>OK</i> to exit.</p>"))
         self.close()
-    
-    
+
+
     def CancelButton_clicked(self):
         self.close()
-        
-        
+
+
     def RunButton_clicked(self):
-        pass
+        d = None
+
+        try:    
+            try:
+                d = device.Device(self.device_uri)
+            except Error:
+                CheckDeviceUI(self)
+                return
+
+            pqdiag_type = d.pq_diag_type
+
+            try:
+                d.open()
+            except Error:
+                CheckDeviceUI(self)
+            else:
+                if d.isIdleAndNoError():
+                    if pqdiag_type == 1:
+                        maint.printQualityDiagType1(d, lambda : True)
+
+                    elif pqdiag_type == 2:
+                        maint.printQualityDiagType2(d, lambda : True)
+
+                else:
+                    CheckDeviceUI(self)
+
+        finally:
+            if d is not None:
+                d.close()
+
+        self.close()
 
     #
     # Misc

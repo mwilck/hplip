@@ -36,6 +36,7 @@ from base import utils, module
 from prnt import cups
 
 
+
 if __name__ == '__main__':
     mod = module.Module(__mod__, __title__, __version__, __doc__, None,
                        (GUI_MODE,), (UI_TOOLKIT_QT4, UI_TOOLKIT_QT3))
@@ -72,48 +73,59 @@ if __name__ == '__main__':
             sys.exit(1)
 
     mod.lockInstance()
-
-    r, w = os.pipe()
+    
+    r1, w1 = os.pipe()
+    log.debug("Creating pipe: hpssd (%d) ==> systemtray (%d)" % (w1, r1))
+    
     parent_pid = os.getpid()
-    log.debug("Parent PID=%d" % parent_pid)
-    child_pid = os.fork()
-
-    if child_pid:
+    child_pid1 = os.fork()
+    
+    if child_pid1:
         # parent (UI)
-        os.close(w)
+        os.close(w1)
 
         if ui_toolkit == 'qt3':
             import ui.systemtray as systray
         
         else: # qt4
-            import ui4.systemtray as systray
+            try:
+                import ui4.systemtray as systray
+            except ImportError:
+                log.error("Unable to load Qt4 support. Is it installed?")
+                mod.unlockInstance()
+                sys.exit(1)        
 
         try:
-            systray.run(r, child_pid)
+            systray.run(r1)
         finally:
-            log.debug("Killing child hpssd process (pid=%d)..." % child_pid)
-            try:
-                os.kill(child_pid, signal.SIGKILL)
-
-            except OSError, e:
-                log.debug("Failed: %s" % e)
-
             mod.unlockInstance()
 
     else:
-        # child (dbus)
-        os.close(r)
-
-        try:
+        # child (dbus & device i/o [qt4] or dbus [qt3])
+        os.close(r1)
+        
+        if ui_toolkit == 'qt4':
+            r2, w2 = os.pipe()
+            r3, w3 = os.pipe()
+            
+            log.debug("Creating pipe: hpssd (%d) ==> hpdio (%d)" % (w2, r2))
+            log.debug("Creating pipe: hpdio (%d) ==> hpssd (%d)" % (w3, r3))
+            
+            child_pid2 = os.fork()
+            if child_pid2:
+                # parent (dbus)
+                os.close(r2)
+                
+                import hpssd
+                hpssd.run(w1, w2, r3)
+                        
+            else:
+                # child (device i/o)
+                os.close(w2)
+                
+                import hpdio
+                hpdio.run(r2, w3) 
+                
+        else: # qt3
             import hpssd
-            hpssd.run(w, parent_pid)
-        finally:
-            if parent_pid:
-                log.debug("Killing parent systray process (pid=%d)..." % parent_pid)
-                try:
-                    os.kill(parent_pid, signal.SIGKILL)
-
-                except OSError, e:
-                    log.debug("Failed: %s" % e)
-
-                mod.unlockInstance()
+            hpssd.run(w1)

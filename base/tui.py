@@ -134,6 +134,9 @@ def load_paper_prompt():
     return continue_prompt("A page will be printed.\nPlease load plain paper into the printer.")
 
 
+def load_scanner_for_align_prompt():
+    return continue_prompt("Load the alignment page on the scanner bed and push the 'Scan' or 'Enter' button on the printer to complete the alignment.")
+
 def load_photo_paper_prompt():
     return continue_prompt("A page will be printed.\nPlease load HP Advanced Photo Paper - Glossy into the printer.")
 

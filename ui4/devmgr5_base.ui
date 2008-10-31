@@ -56,7 +56,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex" >
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="Actions" >
         <attribute name="title" >
@@ -142,7 +142,23 @@
           </layout>
          </item>
          <item row="1" column="0" >
-          <widget class="QTableWidget" name="StatusTable" />
+          <widget class="QTableWidget" name="StatusTable" >
+           <property name="alternatingRowColors" >
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode" >
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior" >
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid" >
+            <bool>false</bool>
+           </property>
+           <property name="cornerButtonEnabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -152,7 +168,23 @@
         </attribute>
         <layout class="QGridLayout" >
          <item row="0" column="0" >
-          <widget class="QTableWidget" name="SuppliesTable" />
+          <widget class="QTableWidget" name="SuppliesTable" >
+           <property name="alternatingRowColors" >
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode" >
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior" >
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid" >
+            <bool>false</bool>
+           </property>
+           <property name="cornerButtonEnabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -272,7 +304,7 @@
      <x>0</x>
      <y>0</y>
      <width>720</width>
-     <height>26</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice" >

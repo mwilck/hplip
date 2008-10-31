@@ -58,8 +58,13 @@ try:
             mode = INTERACTIVE_MODE
 
     if mode == GUI_MODE:
-        from PyQt4.QtGui import QApplication
-        from ui4.printtestpagedialog import PrintTestPageDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.printtestpagedialog import PrintTestPageDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)
+            
         log.set_module("%s(UI)" % __mod__)
 
         if 1:

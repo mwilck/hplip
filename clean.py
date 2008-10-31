@@ -160,8 +160,13 @@ try:
             d.close()
     
     else:
-        from PyQt4.QtGui import QApplication
-        from ui4.cleandialog import CleanDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.cleandialog import CleanDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
+
 
         #try:
         if 1:

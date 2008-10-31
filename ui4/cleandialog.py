@@ -24,7 +24,7 @@ import operator
 
 # Local
 from base.g import *
-from base import device, utils
+from base import device, utils, maint
 from prnt import cups
 from base.codes import *
 from ui_utils import *
@@ -37,6 +37,9 @@ from PyQt4.QtGui import *
 from cleandialog_base import Ui_Dialog
 
 
+d = None
+
+
 class CleanDialog(QDialog, Ui_Dialog):
     def __init__(self, parent, device_uri):
         QDialog.__init__(self, parent)
@@ -44,6 +47,7 @@ class CleanDialog(QDialog, Ui_Dialog):
         self.device_uri = device_uri
         self.initUi()
         QTimer.singleShot(0, self.updateUi)
+        self.level = 1
 
 
     def initUi(self):
@@ -63,12 +67,19 @@ class CleanDialog(QDialog, Ui_Dialog):
     
     def updateUi(self):
         self.DeviceComboBox.updateUi()
-    
-    
+        self.LoadPaper.setButtonName(self.__tr("Clean"))
+        self.LoadPaper.updateUi()
+        
+        if self.level == 1:
+            self.Prompt.setText(self.__tr("""Click <i>Clean</i> to begin the level 1 cleaning process.</p>"""))
+        elif self.level == 2:
+            self.Prompt.setText(self.__tr("""<b>Cleaning level 1 is done after the page being printed is complete.</b> If the printed output from level 1 cleaning is acceptable, then click <i>Cancel</i> to exit. Otherwise, click <i>Clean</i> again to begin the level 2 cleaning process.</p>"""))
+        else: # 3
+            self.Prompt.setText(self.__tr("""<b>Cleaning level 2 is done after the page being printed is complete.</b> If the printed output from level 2 cleaning is acceptable, then click <i>Cancel</i> to exit. Otherwise, click <i>Clean</i> again to begin the level 3 cleaning process. <b>When the level 3 cleaning process is complete, this utility will automatically exit.<b></p>"""))
+
+
     def DeviceUriComboBox_currentChanged(self, device_uri):
         self.device_uri = device_uri
-        print self.device_uri
-        # Update    
     
     
     def DeviceUriComboBox_noDevices(self):
@@ -81,7 +92,65 @@ class CleanDialog(QDialog, Ui_Dialog):
         
         
     def CleanButton_clicked(self):
-        pass
+        global d
+        
+        self.DeviceComboBox.setEnabled(False)
+        
+        try:    
+            if d is None:
+                try:
+                    d = device.Device(self.device_uri)
+                except Error:
+                    CheckDeviceUI(self)
+                    return
+
+            clean_type = d.clean_type
+
+            try:
+                d.open()
+            except Error:
+                CheckDeviceUI(self)
+            else:
+                if d.isIdleAndNoError():
+                    if clean_type in (CLEAN_TYPE_PCL, # 1
+                                      CLEAN_TYPE_PCL_WITH_PRINTOUT): # 3
+                        
+                        if self.level == 1:
+                            maint.cleanType1(d)
+                        
+                        elif self.level == 2:
+                            maint.primeType1(d)
+                        
+                        else: # 3
+                            maint.wipeAndSpitType1(d)
+
+
+                    elif clean_type == CLEAN_TYPE_LIDIL: # 2
+                        if self.level == 1:
+                            maint.cleanType2(d)
+                        
+                        elif self.level == 2:
+                            maint.primeType2(d)
+                        
+                        else: # 3
+                            maint.wipeAndSpitType2(d)
+
+                else:
+                    CheckDeviceUI(self)
+
+        finally:
+            if d is not None:
+                d.close()
+            
+        # TODO: Add call to maint.print_clean_test_page() (CLEAN_TYPE_PCL_WITH_PRINTOUT)
+            
+        self.level += 1
+        
+        if self.level > 3:
+            self.close()
+            return
+        
+        self.updateUi()
 
     #
     # Misc

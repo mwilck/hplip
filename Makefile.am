@@ -17,7 +17,6 @@ dist_noinst_DATA =
 noinst_PROGRAMS =
 lib_LTLIBRARIES = 
 
-include bb_build.inc
 include foomatic_drv.inc
 include unreleased.inc
 
@@ -187,16 +186,17 @@ libsane_hpaio_LTLIBRARIES = libsane-hpaio.la
 libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
 	  scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
 	  scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/soapht.h scan/sane/sanei_debug.h scan/sane/sanei.h \
-	  scan/sane/sanei_init_debug.c scan/sane/marvell.h scan/sane/marvelli.h scan/sane/marvell.c $(BB_SCAN_SOURCES)
+	  scan/sane/sanei_init_debug.c scan/sane/marvell.h scan/sane/marvelli.h scan/sane/marvell.c scan/sane/soapht.c scan/sane/soap.c \
+          scan/sane/soaphti.h scan/sane/soapi.h scan/sane/xml.c scan/sane/xml.h 
 if DARWIN_BUILD
-libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation $(BB_SCAN_VERSION)
+libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation -version-info 1:0:0
 else
-libsane_hpaio_la_LDFLAGS = $(BB_SCAN_VERSION)
+libsane_hpaio_la_LDFLAGS = -version-info 1:0:0
 endif
 # The following is a interlibrary dependency that must be compiled first.
 libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la $(DBUS_LIBS) -lcups
 #libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
-libsane_hpaio_la_CFLAGS = $(DBUS_CFLAGS) $(BB_SCAN_CFLAGS)
+libsane_hpaio_la_CFLAGS = $(DBUS_CFLAGS) 
 
 # scan
 scandir = $(hplipdir)/scan
@@ -217,9 +217,9 @@ libhpmud_la_SOURCES = io/hpmud/hpmud.c io/hpmud/mlc.c io/hpmud/model.c io/hpmud/
 	  io/hpmud/hpmud.h io/hpmud/hpmudi.h io/hpmud/list.h io/hpmud/mlc.h io/hpmud/musb.h io/hpmud/pml.h io/hpmud/dot4.c \
 	  io/hpmud/dot4.h io/hpmud/jd.c io/hpmud/jd.h io/hpmud/pp.c io/hpmud/pp.h 
 if NETWORK_BUILD
-libhpmud_la_LDFLAGS = -version-info 0:3:0 -lusb -lpthread -lnetsnmp -lcrypto
+libhpmud_la_LDFLAGS = -version-info 0:4:0 -lusb -lpthread -lnetsnmp -lcrypto
 else
-libhpmud_la_LDFLAGS = -version-info 0:3:0 -lusb -lpthread
+libhpmud_la_LDFLAGS = -version-info 0:4:0 -lusb -lpthread
 endif
 libhpmud_la_CFLAGS = -DMUDNAME=\"$(MUDNAME)\" -DCONFDIR=\"$(hplip_confdir)\"
 
@@ -257,7 +257,8 @@ dist_ui_SCRIPTS = ui/alignform.py \
 	ui/setupmanualfind.py ui/setupsettings_base.py ui/setupsettings.py ui/scrollview.py \
 	ui/scrollprintsettings.py ui/scrollprint.py ui/scrollfax.py \
 	ui/scrollunload.py ui/scrollcopy.py ui/pluginform2.py ui/pluginform2_base.py ui/systemtray.py \
-	ui/ui_utils.py ui/jobstoragemixin.py ui/pluginlicenseform_base.py ui/pluginlicenseform.py
+	ui/ui_utils.py ui/jobstoragemixin.py ui/pluginlicenseform_base.py ui/pluginlicenseform.py \
+	ui/align13form_base.py ui/align13form.py
 
 dist_noinst_DATA += ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/aligntype6form1_base.ui \
 	ui/aboutdlg_base.ui ui/imagepropertiesdlg_base.ui ui/paperedgealignform_base.ui ui/aligntype6form2_base.ui \
@@ -267,7 +268,7 @@ dist_noinst_DATA += ui/colorcalform2_base.ui ui/settingsdialog_base.ui ui/alignt
 	ui/align10form_base.ui  ui/pluginform2_base.ui \
 	plugins/powersettingsdialog_base.ui ui/faxsettingsform_base.ui ui/coverpageform_base.ui \
 	ui/allowabletypesdlg_base.ui ui/setupform_base.ui ui/setupmanualfind_base.ui \
-	ui/setupsettings_base.ui ui/pluginlicenseform_base.ui
+	ui/setupsettings_base.ui ui/pluginlicenseform_base.ui ui/align13form_base.ui
 endif
 endif
 
@@ -388,7 +389,7 @@ apdk_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
 	prnt/hpijs/ljjetready.cpp prnt/hpijs/ljjetready.h prnt/hpijs/jdatadbf.c prnt/hpijs/jccolor.c prnt/hpijs/ljfastraster.cpp prnt/hpijs/ljfastraster.h \
 	prnt/hpijs/jinclude.h prnt/hpijs/jpegint.h prnt/hpijs/dj55xx.h prnt/hpijs/hpijsfax.h prnt/hpijs/ojprokx50.h \
 	prnt/hpijs/ljzjs.cpp prnt/hpijs/ljzjs.h prnt/hpijs/ljzjsmono.cpp prnt/hpijs/ljm1005.cpp prnt/hpijs/ljm1005.h \
-	prnt/hpijs/ljzjsmono.h prnt/hpijs/hpjbig_wrapper.h prnt/hpijs/quickconnect.cpp prnt/hpijs/quickconnect.h
+	prnt/hpijs/ljzjsmono.h prnt/hpijs/hpjbig_wrapper.h prnt/hpijs/quickconnect.cpp prnt/hpijs/quickconnect.h prnt/hpijs/ljp1xxx.h
 hpijs_SOURCES = $(apdk_SOURCES) prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c prnt/hpijs/hpijsfax.cpp prnt/hpijs/services.cpp \
 	prnt/hpijs/hpijs.h prnt/hpijs/ijs.h prnt/hpijs/ijs_server.h prnt/hpijs/services.h prnt/hpijs/ijs_client.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h 
 hpijs_CXXFLAGS = -DAPDK_DJ660 -DAPDK_DJ6xx -DAPDK_DJ6xxPhoto -DAPDK_DJ8xx -DAPDK_DJ9xx -DAPDK_DJ9xxVIP -DAPDK_DJ630 \

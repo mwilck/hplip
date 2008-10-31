@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '5.0'
+__version__ = '6.0'
 __title__ = "Fax Address Book"
 __mod__ = 'hp-fab'
 __doc__ = "A simple fax address book for HPLIP."
@@ -119,9 +119,9 @@ class Console(cmd.Cmd):
         if not args:
             while True:
                 if alt_text:
-                    nickname = raw_input(log.bold("Enter the name (nickname) to add (<enter>=done*, c=cancel) ? ")).strip()
+                    nickname = raw_input(log.bold("Enter the name to add to the group (<enter>=done*, c=cancel) ? ")).strip()
                 else:
-                    nickname = raw_input(log.bold("Enter the name (nickname) (c=cancel) ? ")).strip()
+                    nickname = raw_input(log.bold("Enter name (c=cancel) ? ")).strip()
 
                 if nickname.lower() == 'c':
                     print log.red("Canceled")
@@ -131,7 +131,7 @@ class Console(cmd.Cmd):
                     if alt_text:
                         return ''
                     else:
-                        log.error("Nickname must not be blank.")
+                        log.error("Name must not be blank.")
                         continue
 
 
@@ -169,9 +169,9 @@ class Console(cmd.Cmd):
         if not args:
             while True:
                 if alt_text:
-                    groupname = raw_input(log.bold("Enter the group name to join (<enter>=done*, c=cancel) ? ")).strip()
+                    groupname = raw_input(log.bold("Enter the group to join (<enter>=done*, c=cancel) ? ")).strip()
                 else:
-                    groupname = raw_input(log.bold("Enter the group name (c=cancel) ? ")).strip()
+                    groupname = raw_input(log.bold("Enter the group (c=cancel) ? ")).strip()
 
 
                 if groupname.lower() == 'c':
@@ -184,15 +184,19 @@ class Console(cmd.Cmd):
                     else:
                         log.error("The group name must not be blank.")
                         continue
+                        
+                if groupname == 'All': 
+                    print "Cannot specify group 'All'. Please choose a different group."
+                    return ''
 
                 if fail_if_match: 
                     if groupname in all_groups:
-                        log.error("Name already exists. Please choose a different name.")
+                        log.error("Group already exists. Please choose a different group.")
                         continue
 
                 else:
                     if groupname not in all_groups:
-                        log.error("Name not found. Please enter a different name.")
+                        log.error("Group not found. Please enter a different group.")
                         continue
 
                 break
@@ -202,12 +206,12 @@ class Console(cmd.Cmd):
 
             if fail_if_match: 
                 if groupname in all_groups:
-                    log.error("Name already exists. Please choose a different name.")
+                    log.error("Group already exists. Please choose a different group.")
                     return ''
 
             else:
                 if groupname not in all_groups:
-                    log.error("Name not found. Please enter a different name.")
+                    log.error("Group not found. Please enter a different group.")
                     return ''
 
         return groupname
@@ -247,9 +251,10 @@ class Console(cmd.Cmd):
         if len(all_entries) > 0:
 
             f = tui.Formatter()
-            f.header = ("Name", "Fax Number", "Member of Group(s)")
+            f.header = ("Name", "Fax Number", "Notes", "Member of Group(s)")
             for name, e in all_entries.items():
-                f.add((name, e['fax'], ', '.join(e['groups'])))
+                if not name.startswith('__'):
+                    f.add((name, e['fax'], e['notes'], ', '.join(e['groups'])))
 
             f.output()
 
@@ -263,7 +268,6 @@ class Console(cmd.Cmd):
         List groups.
         groups
         """
-        #all_groups = self.db.AllGroups() XXXXXXXXXXXXXX
         all_groups = self.db.get_all_groups()
         log.debug(all_groups)
 
@@ -273,7 +277,7 @@ class Console(cmd.Cmd):
             f = tui.Formatter()
             f.header = ("Group", "Members")
             for group in all_groups:
-                f.add((group, ', '.join(self.db.group_members(group))))
+                f.add((group, ', '.join([x for x in self.db.group_members(group) if not x.startswith('__')])))
             f.output()
 
         else:
@@ -296,39 +300,43 @@ class Console(cmd.Cmd):
 
         print log.bold("\nEdit/modify information for %s:\n" % nickname)
 
-        save_title = e['title']
-        title = raw_input(log.bold("Title (<enter>='%s', c=cancel)? " % save_title)).strip()
+#        save_title = e['title']
+#        title = raw_input(log.bold("Title (<enter>='%s', c=cancel) ? " % save_title)).strip()
+#
+#        if title.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+#
+#        if not title:
+#            title = save_title
+#
+#        save_firstname = e['firstname']
+#        firstname = raw_input(log.bold("First name (<enter>='%s', c=cancel) ? " % save_firstname)).strip()
+#
+#        if firstname.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+#
+#        if not firstname:
+#            firstname = save_firstname
+#
+#        save_lastname = e['lastname']
+#        lastname = raw_input(log.bold("Last name (<enter>='%s', c=cancel) ? " % save_lastname)).strip()
+#
+#        if lastname.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+#
+#        if not lastname:
+#            lastname = save_lastname
 
-        if title.lower() == 'c':
-            print log.red("Canceled")
-            return
-
-        if not title:
-            title = save_title
-
-        save_firstname = e['firstname']
-        firstname = raw_input(log.bold("First name (<enter>='%s', c=cancel)? " % save_firstname)).strip()
-
-        if firstname.lower() == 'c':
-            print log.red("Canceled")
-            return
-
-        if not firstname:
-            firstname = save_firstname
-
-        save_lastname = e['lastname']
-        lastname = raw_input(log.bold("Last name (<enter>='%s', c=cancel)? " % save_lastname)).strip()
-
-        if lastname.lower() == 'c':
-            print log.red("Canceled")
-            return
-
-        if not lastname:
-            lastname = save_lastname
+        lastname = ''
+        firstname = ''
+        title = ''
 
         save_faxnum = e['fax']
         while True:
-            faxnum = raw_input(log.bold("Fax Number (<enter>='%s', c=cancel)? " % save_faxnum)).strip()
+            faxnum = raw_input(log.bold("Fax Number (<enter>='%s', c=cancel) ? " % save_faxnum)).strip()
 
             if faxnum.lower() == 'c':
                 print log.red("Canceled")
@@ -352,7 +360,7 @@ class Console(cmd.Cmd):
             if ok: break
 
         save_notes = e['notes']
-        notes = raw_input(log.bold("Notes (<enter>='%s', c=cancel)? " % save_notes)).strip()
+        notes = raw_input(log.bold("Notes (<enter>='%s', c=cancel) ? " % save_notes)).strip()
 
         if notes.lower() == 'c':
             print log.red("Canceled")
@@ -366,8 +374,11 @@ class Console(cmd.Cmd):
 
         new_groups = []
         for g in e['groups']:
-            ok, ans = tui.enter_yes_no("Stay in group %s" % g, 
-                choice_prompt="(y=yes* (stay), n=no (leave), c=cancel)")
+            if g == 'All':
+                continue
+            
+            ok, ans = tui.enter_yes_no("Stay in group %s " % g, 
+                choice_prompt="(y=yes* (stay), n=no (leave), c=cancel) ? ")
 
             if not ok:
                 print log.red("Canceled")
@@ -385,7 +396,7 @@ class Console(cmd.Cmd):
                 print log.red("Canceled")
                 return
 
-            if not add_group.lower():
+            if not add_group:
                 break
 
             get_all_groups = self.db.get_all_groups()
@@ -393,7 +404,7 @@ class Console(cmd.Cmd):
             if add_group not in all_groups:
                 log.warn("Group not found.")
                 ok, ans = tui.enter_yes_no("Is this a new group", 
-                    choice_prompt="(y=yes* (new), n=no, c=cancel)")
+                    choice_prompt="(y=yes* (new), n=no, c=cancel) ? ")
 
                 if not ok:
                     print log.red("Canceled")
@@ -407,7 +418,6 @@ class Console(cmd.Cmd):
                 continue
 
             new_groups.append(add_group)
-
 
         self.db.set(nickname, title, firstname, lastname, faxnum, new_groups, notes)
         self.do_show(nickname)
@@ -430,12 +440,14 @@ class Console(cmd.Cmd):
 
         new_entries = []
 
-        print "\nLeave or Remove Existing Names in Group:\n"
+        print "\nExisting Names in Group:\n"
 
         for e in old_entries:
-
-            ok, ans = tui.enter_yes_no("Leave name '%s' in this group" % e, 
-                choice_prompt="(y=yes* (leave), n=no (remove), c=cancel)")
+            if not e.startswith('__'):
+                ok, ans = tui.enter_yes_no("Should '%s' stay in this group " % e, 
+                    choice_prompt="(y=yes* (stay), n=no (leave), c=cancel) ? ")
+            else:
+                continue
 
             if not ok:
                 print log.red("Canceled")
@@ -444,7 +456,7 @@ class Console(cmd.Cmd):
             if ans:
                 new_entries.append(e)
 
-        print "\nAdd New Names in Group:\n"
+        print "\nAdd New Names to Group:\n"
 
         while True:
             nickname = self.get_nickname('', fail_if_match=False, alt_text=True)
@@ -476,26 +488,30 @@ class Console(cmd.Cmd):
 
         print log.bold("\nEnter information for %s:\n" % nickname)
 
-        title = raw_input(log.bold("Title (c=cancel)? ")).strip()
-
-        if title.lower() == 'c':
-            print log.red("Canceled")
-            return
-
-        firstname = raw_input(log.bold("First name (c=cancel)? ")).strip()
-
-        if firstname.lower() == 'c':
-            print log.red("Canceled")
-            return
-
-        lastname = raw_input(log.bold("Last name (c=cancel)? ")).strip()
-
-        if lastname.lower() == 'c':
-            print log.red("Canceled")
-            return
+#        title = raw_input(log.bold("Title (c=cancel) ? ")).strip()
+#
+#        if title.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+#
+#        firstname = raw_input(log.bold("First name (c=cancel) ? ")).strip()
+#
+#        if firstname.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+#
+#        lastname = raw_input(log.bold("Last name (c=cancel) ? ")).strip()
+#
+#        if lastname.lower() == 'c':
+#            print log.red("Canceled")
+#            return
+    
+        title = ''
+        firstname = ''
+        lastname = ''
 
         while True:
-            faxnum = raw_input(log.bold("Fax Number (c=cancel)? ")).strip()
+            faxnum = raw_input(log.bold("Fax Number (c=cancel) ? ")).strip()
 
             if faxnum.lower() == 'c':
                 print log.red("Canceled")
@@ -515,7 +531,7 @@ class Console(cmd.Cmd):
 
             if ok: break
 
-        notes = raw_input(log.bold("Notes (c=cancel)? ")).strip()
+        notes = raw_input(log.bold("Notes (c=cancel) ? ")).strip()
 
         if notes.strip().lower() == 'c':
             print log.red("Canceled")
@@ -524,7 +540,7 @@ class Console(cmd.Cmd):
         groups = []
         all_groups = self.db.get_all_groups()
         while True:
-            add_group = raw_input(log.bold("Member of group (<enter>=done*, c=cancel) ?" )).strip()
+            add_group = raw_input(log.bold("Member of group (<enter>=done*, c=cancel) ? " )).strip()
 
             if add_group.lower() == 'c':
                 print log.red("Canceled")
@@ -532,12 +548,16 @@ class Console(cmd.Cmd):
 
             if not add_group:
                 break
+                
+            if add_group == 'All':
+                print log.red("Cannot specify 'All'.")
+                continue
 
             if add_group not in all_groups:
                 log.warn("Group not found.")
 
                 while True:
-                    user_input = raw_input(log.bold("Is this a new group (y=yes*, n=no) ?")).lower().strip()
+                    user_input = raw_input(log.bold("Is this a new group (y=yes*, n=no) ? ")).lower().strip()
 
                     if user_input not in ['', 'n', 'y']:
                         log.error("Please enter 'y', 'n' or press <enter> for 'yes'.")
@@ -553,6 +573,8 @@ class Console(cmd.Cmd):
                 continue
 
             groups.append(add_group)
+            
+        groups.append('All')
 
         self.db.set(nickname, title, firstname, lastname, faxnum, groups, notes)
         self.do_show(nickname)
@@ -602,11 +624,11 @@ class Console(cmd.Cmd):
         if len(all_entries) > 0:
 
             f = tui.Formatter()
-            f.header = ("Name", "Title", "First Name", "Last Name", "Fax", "Notes", "Member of Group(s)")
+            f.header = ("Name", "Fax", "Notes", "Member of Group(s)")
 
             for name, e in all_entries.items():
-                f.add((name, e['title'], e['firstname'], e['lastname'], e['fax'], 
-                       e['notes'], ', '.join(e['groups'])))
+                if not name.startswith('__'):
+                    f.add((name, e['fax'], e['notes'], ', '.join(e['groups'])))
 
             f.output()
 
@@ -628,9 +650,9 @@ class Console(cmd.Cmd):
             f = tui.Formatter()
             f.header = ("Key", "Value")
             f.add(("Name:", name))
-            f.add(("Title:", e['title']))
-            f.add(("First Name:", e['firstname']))
-            f.add(("Last Name:", e['lastname']))
+            #f.add(("Title:", e['title']))
+            #f.add(("First Name:", e['firstname']))
+            #f.add(("Last Name:", e['lastname']))
             f.add(("Fax Number:", e['fax']))
             f.add(("Notes:", e['notes']))
             f.add(("Member of Group(s):", ', '.join(e['groups'])))
@@ -667,7 +689,7 @@ class Console(cmd.Cmd):
         """
         group = self.get_groupname(args, fail_if_match=False)
         if not group: return
-
+        
         self.db.delete_group(group)
 
         print
@@ -730,7 +752,6 @@ class Console(cmd.Cmd):
         if not ok:
             log.error(error_str)
         else:
-            self.db.save()
             self.do_list('')
 
         print
@@ -819,8 +840,13 @@ if mode == GUI_MODE:
         sys.exit(0)
 
     else: # qt4
-        from PyQt4.QtGui import QApplication
-        from ui4.fabwindow import FABWindow
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.fabwindow import FABWindow
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
+            
         log.set_module("hp-fab(qt4)")
 
         if 1:

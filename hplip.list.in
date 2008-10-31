@@ -53,7 +53,7 @@ $machine=@platform@
 f 0755 root root $bindir/hpijs .libs/hpijs
 f 0644 root root /etc/hp/hplip.conf hplip.conf
 f 0644 root root $home/data/models/models.dat data/models/models.dat
-f 0755 root root $cupsbackend/hp .libs/hp
+f 0700 root root $cupsbackend/hp .libs/hp
 f 0755 root root $bindir/hp-mkuri .libs/hp-mkuri
 f 0644 root root $drv/hpijs.drv prnt/drv/hpijs.drv
 f 0755 root root $cupsfilter/foomatic-rip-hplip prnt/hpijs/foomatic-rip-hplip
@@ -61,13 +61,13 @@ f 0644 root root $ppd/HP ppd/*.ppd.gz
 f 0644 root root $ppd/HP prnt/ps/*.ppd.gz
 
 %system darwin
-f 0755 root root $libdir/libhpmud.0.0.3.dylib .libs/libhpmud.0.0.3.dylib
-l 0755 root root $libdir/libhpmud.dylib libhpmud.0.0.3.dylib
+f 0755 root root $libdir/libhpmud.0.0.4.dylib .libs/libhpmud.0.0.4.dylib
+l 0755 root root $libdir/libhpmud.dylib libhpmud.0.0.4.dylib
 f 0755 root root $libdir/libhpip.0.0.1.dylib .libs/libhpip.0.0.1.dylib
 l 0755 root root $libdir/libhpip.dylib libhpip.0.0.1.dylib
 %system !darwin
-f 0755 root root $libdir/libhpmud.so.0.0.3 .libs/libhpmud.so.0.0.3
-l 0755 root root $libdir/libhpmud.so libhpmud.so.0.0.3
+f 0755 root root $libdir/libhpmud.so.0.0.4 .libs/libhpmud.so.0.0.4
+l 0755 root root $libdir/libhpmud.so libhpmud.so.0.0.4
 f 0755 root root $libdir/libhpip.so.0.0.1 .libs/libhpip.so.0.0.1
 l 0755 root root $libdir/libhpip.so libhpip.so.0.0.1
 # Ugly fix for inconsistent libcrypto soname
@@ -114,7 +114,7 @@ f 0755 root root $pyexecdir/scanext.so .libs/scanext.so
 %system all
 f 644 root root $icondir/hplip.desktop hplip.desktop
 f 644 root root $systraydir/hplip-systray.desktop hplip-systray.desktop
-f 0755 root root $cupsbackend/hpfax fax/backend/hpfax.py
+f 0700 root root $cupsbackend/hpfax fax/backend/hpfax.py
 f 644 root root $ppd/HP fax/ppd/*.ppd.gz
 # /usr/share/hplip files
 f 755 root root $home/levels.py levels.py
@@ -280,6 +280,10 @@ f 0755 root root $home/prnt/plugins/lj-${machine}.so prnt/plugins/lj-${machine}.
 l 0755 root root $home/prnt/plugins/lj.so lj-${machine}.so
 f 0755 root root $home/scan/plugins/bb_marvell-${machine}.so scan/sane/bb_marvell-${machine}.so
 l 0755 root root $home/scan/plugins/bb_marvell.so bb_marvell-${machine}.so
+f 0755 root root $home/scan/plugins/bb_soapht-${machine}.so scan/sane/bb_soapht-${machine}.so
+l 0755 root root $home/scan/plugins/bb_soapht.so bb_soapht-${machine}.so
+f 0755 root root $home/scan/plugins/bb_soap-${machine}.so scan/sane/bb_soap-${machine}.so
+l 0755 root root $home/scan/plugins/bb_soap.so bb_soap-${machine}.so
 %system all
 %postinstall <<EOF
 conf=/etc/hp/hplip.conf
@@ -287,20 +291,12 @@ grep -q '^plugin *= *1' $$conf
 if [ $$? -ne 0 ]; then
    sed -i -e s/version=${version}/version=${version}\\nplugin=1/ $$conf
 fi
-ver=$version
-if [ $version = $internal_tag ]; then
-   touch $home/data/plugin/hplip-$${ver%\.*}-plugin.run   # convert 4-digit to 3-digit
-else
-   touch $home/data/plugin/hplip-$${ver}-plugin.run
-fi
+ver=`echo $version | sed 's/\([0-9]*.[0-9]*.[0-9]*\).*/\1/'`
+touch $home/data/plugin/hplip-$${ver}-plugin.run
 EOF
 %postremove <<EOF
-ver=$version
-if [ $version = $internal_tag ]; then
-   rm -f $home/data/plugin/hplip-$${ver%\.*}-plugin.run   # convert 4-digit to 3-digit
-else
-   rm -f $home/data/plugin/hplip-$${ver}-plugin.run
-fi
+ver=`echo $version | sed 's/\([0-9]*.[0-9]*.[0-9]*\).*/\1/'`
+rm -f $home/data/plugin/hplip-$${ver}-plugin.run
 EOF
 %endif
 #end PLUGIN

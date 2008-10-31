@@ -97,9 +97,9 @@ class BalloonTip(QDialog):
         self.msgLabel.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         layout = QGridLayout(self)
-        if msg_icon is not None: 
+        if msg_icon is not None:
             self.iconLabel = QLabel(self)
-            self.iconLabel.setPixmap(msg_icon) 
+            self.iconLabel.setPixmap(msg_icon)
             self.iconLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
             self.iconLabel.setMargin(2)
             layout.addWidget(self.iconLabel, 0, 0)
@@ -183,8 +183,8 @@ def hideBalloon():
 
 
 class SystrayIcon(QLabel):
-    """ On construction, you have to supply a QPixmap instance holding the 
-        application icon.  The pixmap should not be bigger than 32x32, 
+    """ On construction, you have to supply a QPixmap instance holding the
+        application icon.  The pixmap should not be bigger than 32x32,
         preferably 22x22. Currently, no check is made.
 
         The class can emits two signals:
@@ -196,9 +196,9 @@ class SystrayIcon(QLabel):
     """
 
     def __init__(self, icon, parent=None, name=""):
-        QLabel.__init__(self, parent, name, Qt.WMouseNoMask | Qt.WRepaintNoErase | 
-                           Qt.WType_TopLevel | Qt.WStyle_Customize | 
-                           Qt.WStyle_NoBorder | Qt.WStyle_StaysOnTop)  
+        QLabel.__init__(self, parent, name, Qt.WMouseNoMask | Qt.WRepaintNoErase |
+                           Qt.WType_TopLevel | Qt.WStyle_Customize |
+                           Qt.WStyle_NoBorder | Qt.WStyle_StaysOnTop)
 
         self.setMinimumSize(22, 22)
         self.setBackgroundMode(Qt.X11ParentRelative)
@@ -241,7 +241,7 @@ class SystrayIcon(QLabel):
         XSync.argtypes = [c.c_void_p, c.c_int]
 
         XChangeProperty = self.libX11.XChangeProperty
-        XChangeProperty.argtypes = [c.c_void_p, c.c_long, c.c_int, c.c_int, 
+        XChangeProperty.argtypes = [c.c_void_p, c.c_long, c.c_int, c.c_int,
                                     c.c_int, c.c_int, c.c_char_p, c.c_int]
 
         dpy = int(qt_xdisplay())
@@ -291,7 +291,7 @@ class SystrayIcon(QLabel):
                                      0, # send_event
                                      dpy, # display
                                      managerWin, # systray manager
-                                     self.XternAtom(dpy, "_NET_SYSTEM_TRAY_OPCODE", 0), # message type  
+                                     self.XternAtom(dpy, "_NET_SYSTEM_TRAY_OPCODE", 0), # message type
                                      32, # format
                                      k) # message data
             XSendEvent(dpy, managerWin, 0, 0, c.addressof(ev))
@@ -334,7 +334,7 @@ class SystrayIcon(QLabel):
 
     def mousePressEvent(self, e):
         if e.button() == Qt.RightButton:
-            self.emit(PYSIGNAL("contextMenuRequested(const QPoint&)"), (e.globalPos(),))  
+            self.emit(PYSIGNAL("contextMenuRequested(const QPoint&)"), (e.globalPos(),))
 
         elif e.button() == Qt.LeftButton:
             self.emit(PYSIGNAL("activated()"), ())
@@ -346,8 +346,8 @@ class SystrayIcon(QLabel):
 
     def showMessage(self, title, msg, icon, msecs):
         g = self.mapToGlobal(QPoint(0, 0))
-        showBalloon(icon, msg, title, self, 
-            QPoint(g.x() + self.width()/2, g.y() + self.height()/2), msecs) 
+        showBalloon(icon, msg, title, self,
+            QPoint(g.x() + self.width()/2, g.y() + self.height()/2), msecs)
 
 
 
@@ -375,10 +375,9 @@ class TitleItem(QCustomMenuItem):
 
 
 class SystemTrayApp(QApplication):
-    def __init__(self, args, read_pipe, child_pid):
+    def __init__(self, args, read_pipe):
         QApplication.__init__(self, args)
 
-        self.child_pid = child_pid
         self.read_pipe = read_pipe
         self.fmt = "64s64sI32sI64sf"
         self.fmt_size = struct.calcsize(self.fmt)
@@ -415,7 +414,7 @@ class SystemTrayApp(QApplication):
         self.icon_error = load_pixmap('error', '16x16')
 
         self.ERROR_STATE_TO_ICON = {
-            ERROR_STATE_CLEAR: self.icon_info, 
+            ERROR_STATE_CLEAR: self.icon_info,
             ERROR_STATE_OK: self.icon_info,
             ERROR_STATE_WARNING: self.icon_warn,
             ERROR_STATE_ERROR: self.icon_error,
@@ -426,7 +425,7 @@ class SystemTrayApp(QApplication):
             ERROR_STATE_SCANNING: self.icon_info,
             ERROR_STATE_PHOTOCARD: self.icon_info,
             ERROR_STATE_FAXING: self.icon_info,
-            ERROR_STATE_COPYING: self.icon_info,    
+            ERROR_STATE_COPYING: self.icon_info,
         }
 
 
@@ -435,6 +434,7 @@ class SystemTrayApp(QApplication):
 
 
     def quit_triggered(self):
+        device.Event('', '', EVENT_SYSTEMTRAY_EXIT).send_via_dbus(SessionBus())
         self.quit()
 
 
@@ -456,7 +456,7 @@ class SystemTrayApp(QApplication):
             else:
                 log.error("Unable to find hp-toolbox on PATH.")
 
-                self.tray_icon.showMessage("HPLIP Status Service", 
+                self.tray_icon.showMessage("HPLIP Status Service",
                                 self.__tr("Unable to locate hp-toolbox on system PATH."),
                                 self.icon_error, 5000)
 
@@ -466,11 +466,7 @@ class SystemTrayApp(QApplication):
             os.spawnlp(os.P_NOWAIT, path, 'hp-toolbox')
 
         else: # ...already running, raise it
-            args = ['', '', EVENT_RAISE_DEVICE_MANAGER, prop.username, 0, '', '']
-            msg = lowlevel.SignalMessage('/', 'com.hplip.Toolbox', 'Event')
-            msg.append(signature='ssisiss', *args)
-
-            SessionBus().send_message(msg)
+            device.Event('', '', EVENT_RAISE_DEVICE_MANAGER).send_via_dbus(SessionBus(), 'com.hplip.Toolbox')
 
 
     def preferences_triggered(self):
@@ -487,21 +483,24 @@ class SystemTrayApp(QApplication):
                 m = ''.join([m, os.read(self.read_pipe, self.fmt_size)])
                 if len(m) == self.fmt_size:
                     event = device.Event(*struct.unpack(self.fmt, m))
-                    desc = device.queryString(event.event_code)
 
+                    if event.event_code > EVENT_MAX_USER_EVENT:
+                        continue
+
+                    desc = device.queryString(event.event_code)
                     #print "BUBBLE:", event.device_uri, event.event_code, event.username
                     error_state = STATUS_TO_ERROR_STATE_MAP.get(event.event_code, ERROR_STATE_CLEAR)
                     icon = self.ERROR_STATE_TO_ICON.get(error_state, self.icon_info)
 
                     if self.tray_icon.supportsMessages():
                         if event.job_id and event.title:
-                            self.tray_icon.showMessage("HPLIP Device Status", 
+                            self.tray_icon.showMessage("HPLIP Device Status",
                                 QString("%1\n%2\n%3\n(%4/%5/%6)").\
                                 arg(event.device_uri).arg(event.event_code).\
                                 arg(desc).arg(event.username).arg(event.job_id).arg(event.title),
                                 icon, 5000)
                         else:
-                            self.tray_icon.showMessage("HPLIP Device Status", 
+                            self.tray_icon.showMessage("HPLIP Device Status",
                                 QString("%1\n%2\n%3").arg(event.device_uri).\
                                 arg(event.event_code).arg(desc),
                                 icon, 5000)
@@ -516,11 +515,10 @@ class SystemTrayApp(QApplication):
 
 
 
-def run(read_pipe, child_pid):
+def run(read_pipe):
     log.set_module("hp-systray(qt3)")
-    log.debug("Child PID=%d" % child_pid)
 
-    app = SystemTrayApp(sys.argv, read_pipe, child_pid)
+    app = SystemTrayApp(sys.argv, read_pipe)
 
     notifier = QSocketNotifier(read_pipe, QSocketNotifier.Read)
     QObject.connect(notifier, SIGNAL("activated(int)"), app.notifier_activated)

@@ -58,6 +58,7 @@ from coloradjform import ColorAdjForm  # Type 5 and 6 color adj
 from colorcalform2 import ColorCalForm2 # Type 2 color cal
 from colorcal4form import ColorCal4Form # Type 4 color cal
 from align10form import Align10Form # Type 10 and 11 alignment
+from align13form import Align13Form # Type 13 alignment
 
 # Misc forms
 from loadpaperform import LoadPaperForm
@@ -1654,6 +1655,12 @@ class DevMgr4(DevMgr4_base):
         return dlg.getValues()
 
 
+    def Align13UI(self):
+        dlg = Align13Form(self)
+        dlg.exec_loop()
+        return True
+
+
     def AlignPensButton_clicked(self):
         d = self.cur_device
         align_type = d.align_type
@@ -1700,6 +1707,9 @@ class DevMgr4(DevMgr4_base):
 
                     elif align_type == ALIGN_TYPE_OJ_PRO:
                         maint.AlignType12(d, self.LoadPaperUI)
+
+                    elif align_type == ALIGN_TYPE_AIO:
+                        maint.AlignType13(d, self.LoadPaperUI, self.Align13UI)
 
                 else:
                     self.CheckDeviceUI()
@@ -3013,15 +3023,18 @@ class ScrollTestpageView(ScrollView):
             except Error:
                 self.CheckDeviceUI()
             else:
-                if d.isIdleAndNoError():
-                    QApplication.restoreOverrideCursor()
-                    d.close()
+                try:
+                    if d.isIdleAndNoError():
+                        QApplication.restoreOverrideCursor()
+                        d.close()
 
-                    d.printTestPage(printer_name)
-                    printed = True
+                        d.printTestPage(printer_name)
+                        printed = True
 
-                else:
-                    d.close()
+                    else:
+                        d.close()
+                        self.CheckDeviceUI()
+                except Error:
                     self.CheckDeviceUI()
 
         finally:

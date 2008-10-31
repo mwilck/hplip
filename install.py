@@ -54,6 +54,8 @@ USAGE = [(__doc__, "", "name", True),
          ("[OPTIONS] (FOR TESTING ONLY)", "", "header", False),
          ("Force install of all dependencies:", "-x", "option", False),
          ("Force unknown distro mode:", "-d", "option", False),
+         ("Force installation of Qt4 support:", "--qt4 (same as --enable=qt4)", "option", False),
+         ("Force configure enable/disable flag:", "--enable=<flag> or --disable=<flag>, where <flag> is 'fax-build', 'qt4', pp-build', etc. See ./configure --help for more info.", "option", False),
         ]
 
 def usage(typ='text'):
@@ -61,7 +63,7 @@ def usage(typ='text'):
         utils.log_title(__title__, __version__)
 
     utils.format_text(USAGE, typ, __title__, __mod__, __version__)
-    sys.exit(0)        
+    sys.exit(0)
 
 
 log.set_module(__mod__)
@@ -75,12 +77,14 @@ language = None
 assume_network = False
 max_retries = 3
 restricted_override = False
+enable = []
+disable = []
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'hl:giatxdq:nr:b', 
+    opts, args = getopt.getopt(sys.argv[1:], 'hl:giatxdq:nr:b',
         ['help', 'help-rest', 'help-man', 'help-desc', 'gui', 'lang=',
-        'logging=', 'interactive', 'auto', 'text', 
-        'network', 'retries=']) 
+        'logging=', 'interactive', 'auto', 'text', 'qt4',
+        'network', 'retries=', 'enable=', 'disable='])
 
 except getopt.GetoptError, e:
     log.error(e.msg)
@@ -99,7 +103,7 @@ for o, a in opts:
 
     elif o == '--help-man':
         usage('man')
-        
+
     elif o in ('-q', '--lang'):
         language = a.lower()
 
@@ -128,21 +132,43 @@ for o, a in opts:
     elif o == '-d':
         log.warn("Unknown distro (-d) is for TESTING ONLY")
         test_unknown = True
-        
+
     elif o in ('-n', '--network'):
         assume_network = True
-        
+
     elif o in ('-r', '--retries'):
         try:
             max_retries = int(a)
         except ValueError:
             log.error("Invalid value for retries. Set to default of 3.")
             max_retries = 3
-            
+
     elif o == '-b':
         restricted_override = True
-        
-        
+
+    elif o == '--qt4':
+        if 'qt4' not in enable and 'qt4' not in disable:
+            enable.append('qt4')
+        else:
+            log.error("Duplicate configuration flag: %s" % a)
+            sys.exit(1)
+
+    elif o == '--enable':
+        if a not in enable and a not in disable:
+            enable.append(a)
+        else:
+            log.error("Duplicate configuration flag: %s" % a)
+            sys.exit(1)
+
+    elif o == '--disable':
+        if a not in enable and a not in disable:
+            disable.append(a)
+        else:
+            log.error("Duplicate configuration flag: %s" % a)
+            sys.exit(1)
+
+
+
 if os.getuid() == 0:
     log.warn("hplip-install should not be run as root.")
 
@@ -190,15 +216,15 @@ else:
             value = match.group(1)
             bb_build_value = utils.to_bool(value)
             break
-            
+
     if bb_build_value and not restricted_override:
         log.error("This is a restricted build. The installer is disabled. Exiting.")
         sys.exit(1)
-    
+
 try:
     from installer import text_install
     log.debug("Starting text installer...")
-    text_install.start(language, auto, test_depends, test_unknown, assume_network, max_retries)
+    text_install.start(language, auto, test_depends, test_unknown, assume_network, max_retries, enable, disable)
 except KeyboardInterrupt:
     log.error("User exit")
 

@@ -41,7 +41,7 @@ from dcheck import *
 DISTRO_UNKNOWN = 0
 DISTRO_VER_UNKNOWN = '0.0'
 
-MODE_INSTALLER = 0 # hplip-install
+MODE_INSTALLER = 0 # hplip-install/hp-setup
 MODE_CHECK = 1 # hp-check
 MODE_CREATE_DOCS = 2 # create_docs
 
@@ -80,10 +80,10 @@ for s in PASSWORD_LIST:
     else:
         PASSWORD_EXPECT_LIST.append(p)
 
-OK_PROCESS_LIST = ['adpept-notifier', 
+OK_PROCESS_LIST = ['adpept-notifier',
                    'yum-updatesd',
                    ]
-                   
+
 CONFIGURE_ERRORS = { 1 : "General/unknown error",
                      2 : "libusb not found",
                      3 : "cups-devel not found",
@@ -150,12 +150,13 @@ class CoreInstall(object):
         self.restart_required = False
         self.network_connected = False
         self.ui_toolkit = 'qt3'
-        
+        self.enable = None
+        self.disable = None
         self.plugin_path = os.path.join(prop.home_dir, "data", "plugin")
         self.plugin_version = '0.0.0'
         self.plugin_name = ''
-        
-        
+
+
         self.FIELD_TYPES = {
             'distros' : TYPE_LIST,
             'index' : TYPE_INT,
@@ -178,7 +179,7 @@ class CoreInstall(object):
             'drv_dir' : TYPE_STRING,
             'fix_ppd_symlink': TYPE_BOOL,
             'code_name': TYPE_STRING,
-            'supported': TYPE_BOOL, # Supported by installer 
+            'supported': TYPE_BOOL, # Supported by installer
             'release_date': TYPE_STRING,
             'packages': TYPE_LIST,
             'commands': TYPE_LIST,
@@ -207,7 +208,7 @@ class CoreInstall(object):
 
         # options
         # name: (<required>, "<display_name>", [<dependency list>]), ...
-        self.options = { 
+        self.options = {
             'base':     (True,  'Required HPLIP base components', []), # HPLIP
             'network' : (False, 'Network/JetDirect I/O', []),
             'gui' :     (False, 'Graphical User Interfaces (GUIs)', []),
@@ -245,16 +246,17 @@ class CoreInstall(object):
             # Required base packages
             'libjpeg':          (True,  ['base', 'hpijs'], "libjpeg - JPEG library", self.check_libjpeg, DEPENDENCY_RUN_AND_COMPILE_TIME),
             'libtool':          (True,  ['base'], "libtool - Library building support services", self.check_libtool, DEPENDENCY_COMPILE_TIME),
-            'cups' :            (True,  ['base', 'hpijs-cups'], 'cups - Common Unix Printing System', self.check_cups, DEPENDENCY_RUN_TIME), 
+            'cups' :            (True,  ['base', 'hpijs-cups'], 'cups - Common Unix Printing System', self.check_cups, DEPENDENCY_RUN_TIME),
             'cups-devel':       (True,  ['base'], 'cups-devel- Common Unix Printing System development files', self.check_cups_devel, DEPENDENCY_COMPILE_TIME),
             'gcc' :             (True,  ['base', 'hpijs'], 'gcc - GNU Project C and C++ Compiler', self.check_gcc, DEPENDENCY_COMPILE_TIME),
             'make' :            (True,  ['base', 'hpijs'], "make - GNU make utility to maintain groups of programs", self.check_make, DEPENDENCY_COMPILE_TIME),
             'python-devel' :    (True,  ['base'], "python-devel - Python development files", self.check_python_devel, DEPENDENCY_COMPILE_TIME),
             'libpthread' :      (True,  ['base'], "libpthread - POSIX threads library", self.check_libpthread, DEPENDENCY_RUN_AND_COMPILE_TIME),
             'python2x':         (True,  ['base'], "Python 2.2 or greater - Python programming language", self.check_python2x, DEPENDENCY_RUN_AND_COMPILE_TIME),
+            'python-xml'  :     (True, ['base'], "Python XML libraries", self.check_python_xml, DEPENDENCY_RUN_TIME),
             'gs':               (True,  ['base', 'hpijs'], "GhostScript - PostScript and PDF language interpreter and previewer", self.check_gs, DEPENDENCY_RUN_TIME),
             'libusb':           (True,  ['base'], "libusb - USB library", self.check_libusb, DEPENDENCY_RUN_AND_COMPILE_TIME),
-            
+
 
 
             # Optional base packages
@@ -267,7 +269,7 @@ class CoreInstall(object):
             # Optional scan packages
             'xsane':            (False, ['scan'], "xsane - Graphical scanner frontend for SANE", self.check_xsane, DEPENDENCY_RUN_TIME),
             'scanimage':        (False, ['scan'], "scanimage - Shell scanning program", self.check_scanimage, DEPENDENCY_RUN_TIME),
-            'pil':              (False, ['scan'], "PIL - Python Imaging Library (required for commandline scanning with hp-scan)", self.check_pil, DEPENDENCY_RUN_TIME), 
+            'pil':              (False, ['scan'], "PIL - Python Imaging Library (required for commandline scanning with hp-scan)", self.check_pil, DEPENDENCY_RUN_TIME),
 
             # Required fax packages
             'python23':         (True,  ['fax'], "Python 2.3 or greater - Required for fax functionality", self.check_python23, DEPENDENCY_RUN_TIME),
@@ -276,7 +278,7 @@ class CoreInstall(object):
             'python-ctypes':    (True,  ['fax'], "python-ctypes - A foreign function library for Python", self.check_python_ctypes, DEPENDENCY_RUN_TIME),
 
             # Optional fax packages
-            'reportlab':        (False, ['fax'], "Reportlab - PDF library for Python", self.check_reportlab, DEPENDENCY_RUN_TIME), 
+            'reportlab':        (False, ['fax'], "Reportlab - PDF library for Python", self.check_reportlab, DEPENDENCY_RUN_TIME),
 
             # Required parallel I/O packages
             'ppdev':            (True,  ['parallel'], "ppdev - Parallel port support kernel module.", self.check_ppdev, DEPENDENCY_RUN_TIME),
@@ -300,7 +302,7 @@ class CoreInstall(object):
 
         self.distros_index = {}
         for d in self.distros:
-            self.distros_index[self.distros[d]['index']] = d        
+            self.distros_index[self.distros[d]['index']] = d
 
 
     def init(self, callback=None):
@@ -319,7 +321,7 @@ class CoreInstall(object):
                     self.package_mgrs.append(a)
 
         self.version_description, self.version_public, self.version_internal = self.get_hplip_version()
-        log.debug("HPLIP Description=%s Public version=%s Internal version = %s"  % 
+        log.debug("HPLIP Description=%s Public version=%s Internal version = %s"  %
             (self.version_description, self.version_public, self.version_internal))
 
         # have_dependencies
@@ -361,8 +363,8 @@ class CoreInstall(object):
         self.distro_name = self.distros_index[self.distro]
         self.distro_version_supported = self.get_distro_ver_data('supported', False)
 
-        log.debug("Distro = %s Distro Name = %s Display Name= %s Version = %s Supported = %s" % 
-            (self.distro, self.distro_name, self.distros[self.distro_name]['display_name'], 
+        log.debug("Distro = %s Distro Name = %s Display Name= %s Version = %s Supported = %s" %
+            (self.distro, self.distro_name, self.distros[self.distro_name]['display_name'],
              self.distro_version, self.distro_version_supported))
 
         self.hpoj_present = self.check_hpoj()
@@ -384,8 +386,8 @@ class CoreInstall(object):
         self.sys_uname_info = self.sys_uname_info.replace('\n', '')
         log.debug(self.sys_uname_info)
 
-            
-        
+
+
         self.distro_changed()
 
         # Record the installation time/date and version.
@@ -418,7 +420,7 @@ class CoreInstall(object):
         self.ppd_dir = self.get_distro_ver_data('ppd_dir')
         self.drv_dir = self.get_distro_ver_data('drv_dir')
 
-        self.distro_version_supported = True # for manual installs    
+        self.distro_version_supported = True # for manual installs
 
 
     def check_dependencies(self, callback=None):
@@ -449,7 +451,7 @@ class CoreInstall(object):
 
 
     def run(self, cmd, callback=None, timeout=300):
-        if cmd is None: 
+        if cmd is None:
             return 1, ''
         output = cStringIO.StringIO()
         ok, ret = False, ''
@@ -517,7 +519,7 @@ class CoreInstall(object):
             except OSError:
                 pass
 
-        if ok:        
+        if ok:
             return child.exitstatus, ret
         else:
             return 1, ''
@@ -573,7 +575,7 @@ class CoreInstall(object):
                         break
 
                 if found:
-                    for n in name.split(): 
+                    for n in name.split():
                         m= n
                         if '.' in n:
                             m = '.'.join(n.split('.')[:2])
@@ -612,11 +614,11 @@ class CoreInstall(object):
 
         self.ppd_dir = self.get_distro_ver_data('ppd_dir')
 
-        if not self.ppd_dir: 
+        if not self.ppd_dir:
             log.warning("Invalid ppd_dir value: %s" % self.ppd_dir)
 
         self.drv_dir = self.get_distro_ver_data('drv_dir')
-        if not self.enable_ppds and not self.drv_dir: 
+        if not self.enable_ppds and not self.drv_dir:
             log.warning("Invalid drv_dir value: %s" % self.drv_dir)
 
         self.distro_version_supported = self.get_distro_ver_data('supported', False)
@@ -625,7 +627,7 @@ class CoreInstall(object):
         self.selected_options['network'] = self.get_distro_ver_data('network-supported', True)
         self.selected_options['scan'] = self.get_distro_ver_data('scan-supported', True)
         self.selected_options['parallel'] = self.get_distro_ver_data('parallel-supported', False)
-        
+
         # Adjust required flag based on the distro ver ui_toolkit value
         if self.get_distro_ver_data('ui_toolkit',  'qt3').lower() == 'qt4':
             log.debug("UI toolkit: Qt4")
@@ -638,12 +640,12 @@ class CoreInstall(object):
             self.dependencies['pyqt'][0] = True
             self.dependencies['pyqt4'][0] = False
         # todo: gtk
-                
+
 
     def __fixup_data(self, key, data):
         field_type = self.FIELD_TYPES.get(key, TYPE_STRING)
         #log.debug("%s (%s) %d" % (key, data, field_type))
-        
+
         if field_type == TYPE_BOOL:
             return utils.to_bool(data)
 
@@ -707,7 +709,7 @@ class CoreInstall(object):
 
                 for key in ver_section:
                     v[key] = self.__fixup_data(key, ver_section[key])
-                
+
                 self.distros[distro]['versions'][ver] = v
                 self.distros[distro]['versions'][ver]['dependency_cmds'] = {}
 
@@ -722,13 +724,13 @@ class CoreInstall(object):
 
                     for key in dep_section:
                         dd[key] = self.__fixup_data(key, dep_section[key])
-                    
+
                     self.distros[distro]['versions'][ver]['dependency_cmds'][dep] = dd
-            
+
             versions = self.distros[distro]['versions']
             for ver in versions:
                 ver_section = distros_dat["%s:%s" % (distro, ver)]
-                
+
                 if 'same_as_version' in ver_section:
                     v = self.__fixup_data("same_as_version", ver_section['same_as_version'])
                     log.debug("Setting %s:%s to %s:%s" % (distro, ver, distro, v))
@@ -740,8 +742,8 @@ class CoreInstall(object):
                     except KeyError:
                         log.debug("Missing 'same_as_version=' version in distros.dat for section [%s:%s]." % (distro, v))
                         continue
-                
-            
+
+
     def pre_install(self):
         pass
 
@@ -819,6 +821,15 @@ class CoreInstall(object):
         return py_major_ver >= 2 and py_minor_ver >= 3
 
 
+    def check_python_xml(self):
+        try:
+            import xml.parsers.expat
+        except ImportError:
+            return False
+        else:
+            return True
+
+
     def check_sane(self):
         return check_lib('libsane')
 
@@ -869,7 +880,7 @@ class CoreInstall(object):
                 if pyqtVersion.find('snapshot') >= 0:
                     log.debug("A non-stable snapshot version of PyQt is installed.")
                     pass
-                else:    
+                else:
                     try:
                         maj_ver = int(maj_ver)
                         min_ver = int(min_ver)
@@ -911,22 +922,22 @@ class CoreInstall(object):
                 ver = dbus.version
                 log.debug("Version: %s" % '.'.join([str(x) for x in dbus.version]))
                 return ver >= (0,80,0)
-            
+
             except AttributeError:
                 try:
                     ver = dbus.__version__
                     log.debug("Version: %s" % dbus.__version__)
                     log.debug("HPLIP requires dbus version > 0.80.")
                     return False
-                
+
                 except AttributeError:
                     log.debug("Unknown version. HPLIP requires dbus version > 0.80.")
                     return False
-        
+
         except ImportError:
             return False
-            
-    
+
+
     def check_python_ctypes(self):
         try:
             import ctypes
@@ -989,7 +1000,7 @@ class CoreInstall(object):
         log.debug("Checking for cups-ddk...")
         # TODO: Compute these paths some way or another...
         #return check_tool("/usr/lib/cups/driver/drv list") and os.path.exists("/usr/share/cupsddk/include/media.defs")
-        return check_file('drv', "/usr/lib/cups/driver") and check_file('media.defs', "/usr/share/cupsddk/include")        
+        return check_file('drv', "/usr/lib/cups/driver") and check_file('media.defs', "/usr/share/cupsddk/include")
 
     def check_pkg_mgr(self):
         """
@@ -998,7 +1009,7 @@ class CoreInstall(object):
         log.debug("Searching for '%s' in running processes..." % self.package_mgrs)
 
         processes = get_process_list()
-        
+
         for pid, cmdline in processes:
             for p in self.package_mgrs:
                 if p in cmdline:
@@ -1006,10 +1017,10 @@ class CoreInstall(object):
                         if k not in cmdline:
                             log.debug("Found: %s (%d)" % (cmdline, pid))
                             return (pid, cmdline)
-        
+
         log.debug("Not found")
         return (0, '')
-        
+
 
     def get_hplip_version(self):
         self.version_description, self.version_public, self.version_internal = '', '', ''
@@ -1045,74 +1056,54 @@ class CoreInstall(object):
             except KeyError:
                 self.version_description, self.version_public, self.version_internal = '', '', ''
 
-        return self.version_description, self.version_public, self.version_internal            
+        return self.version_description, self.version_public, self.version_internal
 
 
-    def configure(self): 
+    def configure(self):
         configure_cmd = './configure'
-        
+        configuration = {}
+
         dbus_avail = self.have_dependencies['dbus'] and self.have_dependencies['python-dbus']
 
-        if self.selected_options['network']:
-            configure_cmd += ' --enable-network-build'
-        else:
-            configure_cmd += ' --disable-network-build'
-
-        if self.selected_options['parallel']:
-            configure_cmd += ' --enable-pp-build'
-        else:
-            configure_cmd += ' --disable-pp-build'
-
-        if self.selected_options['fax'] and dbus_avail:
-            configure_cmd += ' --enable-fax-build'
-        else:
-            configure_cmd += ' --disable-fax-build'
-            
-        if dbus_avail:
-            configure_cmd += ' --enable-dbus-build'
-        else:
-            configure_cmd += ' --disable-dbus-build'
+        configuration['network-build'] = self.selected_options['network']
+        configuration['pp-build'] = self.selected_options['parallel']
+        configuration['fax-build'] = self.selected_options['fax'] and dbus_avail
+        configuration['dbus-build'] = dbus_avail
 
         if self.selected_options['gui']:
-            configure_cmd += ' --enable-gui-build'
+            configuration['gui-build'] = True
             if self.ui_toolkit == 'qt4':
-                configure_cmd += ' --enable-qt4 --disable-qt3'
+                configuration['qt4'] = True
+                configuration['qt3'] = False
             else:
-                configure_cmd += ' --enable-qt3 --disable-qt4'
+                configuration['qt3'] = True
+                configuration['qt4'] = False
         else:
-            configure_cmd += ' --disable-gui-build'
+            configuration['gui-build'] = False
 
-        if self.selected_options['scan']:
-            configure_cmd += ' --enable-scan-build'
-        else:
-            configure_cmd += ' --disable-scan-build'
-
-        if self.selected_options['docs']:
-            configure_cmd += ' --enable-doc-build'
-        else:
-            configure_cmd += ' --disable-doc-build'
+        configuration['scan-build'] = self.selected_options['scan']
+        configuration['doc-build'] = self.selected_options['docs']
 
         if self.enable_ppds: # Use ppd install if cups 1.1 or ppd_install=ppd
-            configure_cmd += ' --enable-foomatic-ppd-install --disable-foomatic-drv-install'
+            configuration['foomatic-ppd-install'] = True
+            configuration['foomatic-drv-install'] = False
 
         else: # otherwise, use drv if cups ddk is avail, otherwise fall back to .ppds
-
             if self.have_dependencies['cups-ddk']:
-                configure_cmd += ' --disable-foomatic-ppd-install --enable-foomatic-drv-install'
+                configuration['foomatic-ppd-install'] = False
+                configuration['foomatic-drv-install'] = True
 
                 if self.drv_dir is not None:
                     configure_cmd += ' --with-drvdir=%s' % self.drv_dir
 
             else:
-                configure_cmd += ' --enable-foomatic-ppd-install --disable-foomatic-drv-install'
+                configuration['foomatic-ppd-install'] = True
+                configuration['foomatic-drv-install'] = False
 
         if self.ppd_dir is not None:
             configure_cmd += ' --with-hpppddir=%s' % self.ppd_dir
 
-        if self.hpijs_build:
-            configure_cmd += ' --enable-hpijs-only-build'
-        else:
-            configure_cmd += ' --disable-hpijs-only-build'
+        configuration['hpijs-only-build'] = self.hpijs_build
 
         if self.bitness == 64:
             configure_cmd += ' --libdir=/usr/lib64'
@@ -1120,10 +1111,24 @@ class CoreInstall(object):
         configure_cmd += ' --prefix=%s' % self.install_location
 
         if self.cups11:
-            configure_cmd += ' --enable-cups11-build'
-            
+            configuration['cups11-build'] = True
+
         if self.get_distro_ver_data('cups_path_with_bitness', False) and self.bitness == 64:
             configure_cmd += ' --with-cupsbackenddir=/usr/lib64/cups/backend --with-cupsfilterdir=/usr/lib64/cups/filter'
+
+        if self.enable is not None:
+            for c in self.enable:
+                configuration[c] = True
+
+        if self.disable is not None:
+            for c in self.disable:
+                configuration[c] = False
+
+        for c in configuration:
+            if configuration[c]:
+                configure_cmd += ' --enable-%s' % c
+            else:
+                configure_cmd += ' --disable-%s' % c
 
         return configure_cmd
 
@@ -1163,10 +1168,10 @@ class CoreInstall(object):
         return self.get_distro_data('su_sudo', 'su')
 
 
-    def build_cmds(self): 
-        return [self.configure(), 
-                'make clean', 
-                'make', 
+    def build_cmds(self):
+        return [self.configure(),
+                'make clean',
+                'make',
                 self.su_sudo() % 'make install']
 
 
@@ -1234,7 +1239,7 @@ class CoreInstall(object):
 
         if not overall_commands_to_run:
             log.error("No cmds/pkgs")
-            
+
         return overall_commands_to_run
 
 
@@ -1312,7 +1317,7 @@ class CoreInstall(object):
                           if not self.have_dependencies[d]: # missing
                               log.debug("Missing optional dependency: %s" % d)
                               yield d, self.dependencies[d][2], self.dependencies[d][0], opt
-                              # depend, desc, option  
+                              # depend, desc, option
 
 
     def select_options(self, answer_callback):
@@ -1465,7 +1470,7 @@ class CoreInstall(object):
                 kill = os.path.join(utils.which("kill"), "kill") + " %d" % pid
 
                 cmds.append(self.su_sudo() % kill)
-                
+
         # Record the UI toolkit in use
         # Now, done in configure!
         #sys_cfg.configure['ui-toolkit'] = self.ui_toolkit
@@ -1504,7 +1509,7 @@ class CoreInstall(object):
             return os.getenv('DISPLAY') and self.selected_options['gui'] and utils.checkPyQtImport4()
         else:
             return os.getenv('DISPLAY') and self.selected_options['gui'] and utils.checkPyQtImport()
-    
+
 
     def run_hp_setup(self):
         status = 0
@@ -1617,27 +1622,29 @@ class CoreInstall(object):
             self.run("sudo -K")
 
 
-            
+
     # PLUGIN HELPERS
-    
+
     def set_plugin_version(self):
         self.plugin_version = '.'.join(sys_cfg.hplip.version.split('.')[:3])
+        log.debug("Plug-in version=%s" % self.plugin_version)
         self.plugin_name = 'hplip-%s-plugin.run' % self.plugin_version
-        
-    
+        log.debug("Plug-in=%s" % self.plugin_name)
+
+
     def get_plugin_conf_url(self):
         url = "http://hplip.sf.net/plugin.conf"
-        
+
         if os.path.exists('/etc/hp/plugin.conf'):
             url = "file:///etc/hp/plugin.conf"
-            
+
         elif os.path.exists(os.path.join(sys_cfg.dirs.home, 'plugin.conf')):
             url = "file://" + os.path.join(sys_cfg.dirs.home, 'plugin.conf')
-            
+
         log.debug("Plugin.conf url: %s" % url)
         return url
-        
-        
+
+
     def get_plugin_info(self, plugin_conf_url, callback):
         ok, size, checksum, timestamp, url = False, 0, 0, 0.0, ''
 
@@ -1646,23 +1653,23 @@ class CoreInstall(object):
             return '', 0, 0, 0, False
 
         local_conf_fp, local_conf = utils.make_temp_file()
-        
+
         if os.path.exists(local_conf):
             os.remove(local_conf)
-        
+
         try:
             try:
                 filename, headers = urllib.urlretrieve(plugin_conf_url, local_conf, callback)
             except IOError, e:
                 log.error("I/O Error: %s" % e.strerror)
                 return '', 0, 0, 0, False
-            
+
             if not os.path.exists(local_conf):
                 log.error("plugin.conf not found.")
                 return '', 0, 0, 0, False
-            
+
             plugin_conf_p = ConfigParser.ConfigParser()
-            
+
             try:
                 plugin_conf_p.read(local_conf)
             except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError):
@@ -1675,15 +1682,16 @@ class CoreInstall(object):
                 checksum = plugin_conf_p.get(self.plugin_version, 'checksum')
                 timestamp = plugin_conf_p.getfloat(self.plugin_version, 'timestamp')
                 ok = True
-            except KeyError:
-                log.error("Error reading plugin.conf")
-            
+            except (KeyError, ConfigParser.NoSectionError):
+                log.error("Error reading plugin.conf: Missing section [%s]" % self.plugin_version)
+                return '', 0, 0, 0, False
+
         finally:
             os.close(local_conf_fp)
             os.remove(local_conf)
 
         return url, size, checksum, timestamp, ok
-        
+
 
     def create_plugin_dir(self):
         if not os.path.exists(self.plugin_path):
@@ -1706,13 +1714,13 @@ class CoreInstall(object):
             return False, "Failed to create plug-in directory: %s" % self.plugin_path
 
         plugin_file = os.path.join(self.plugin_path, self.plugin_name)
-        
+
         try:
             filename, headers = urllib.urlretrieve(url, plugin_file, callback)
         except IOError, e:
             log.error("Plug-in download failed: %s" % e.strerror)
             return False, e.strerror
-        
+
         calc_checksum = sha.new(file(plugin_file, 'r').read()).hexdigest()
         log.debug("D/L file checksum=%s" % calc_checksum)
 
@@ -1723,18 +1731,18 @@ class CoreInstall(object):
         return os.path.exists(os.path.join(self.plugin_path, self.plugin_name)) and \
             utils.to_bool(sys_cfg.hplip.plugin)
 
-    
+
     def run_plugin(self, mode=GUI_MODE, callback=None):
         plugin_file = os.path.join(self.plugin_path, self.plugin_name)
-        
+
         if not os.path.exists(plugin_file):
             return False
-        
+
         if mode == GUI_MODE:
             return os.system("sh %s -- -u" % plugin_file) == 0
         else:
             return os.system("sh %s -- -i" % plugin_file) == 0
-    
-        
-       
-        
+
+
+
+

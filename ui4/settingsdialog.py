@@ -38,8 +38,15 @@ class SettingsDialog(QDialog, Ui_SettingsDialog_base):
         
         self.SetDefaultsButton.setEnabled(False)
         self.connect(self.SetDefaultsButton, SIGNAL("clicked()"),  self.SetDefaultsButton_clicked)
+        
         self.user_settings = UserSettings()
         self.user_settings.load()
+        
+        self.SystemTraySettings.initUi(self.user_settings.systray_visible, 
+                                       self.user_settings.polling, 
+                                       self.user_settings.polling_interval, 
+                                       self.user_settings.device_list)
+        
         self.updateControls()
 
 

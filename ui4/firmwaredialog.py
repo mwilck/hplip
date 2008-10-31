@@ -44,19 +44,19 @@ class FirmwareDialog(QDialog, Ui_Dialog):
         self.device_uri = device_uri
         self.initUi()
         QTimer.singleShot(0, self.updateUi)
-        
-        
+
+
     def initUi(self):
         self.DeviceComboBox.setFilter({'fw-download' : (operator.gt, 0)})
-        
+
         self.connect(self.DeviceComboBox, SIGNAL("DeviceUriComboBox_noDevices"), self.DeviceUriComboBox_noDevices)
         self.connect(self.DeviceComboBox, SIGNAL("DeviceUriComboBox_currentChanged"), self.DeviceUriComboBox_currentChanged)
         self.connect(self.CancelButton, SIGNAL("clicked()"), self.close)
         self.connect(self.DownloadFirmwareButton, SIGNAL("clicked()"), self.downloadFirmware)
-        
+
         # Application icon
         self.setWindowIcon(QIcon(load_pixmap('prog', '48x48')))
-        
+
         if self.device_uri:
             self.DeviceComboBox.setInitialDevice(self.device_uri)
 
@@ -73,13 +73,36 @@ class FirmwareDialog(QDialog, Ui_Dialog):
     def DeviceUriComboBox_noDevices(self):
         FailureUI(self, self.__tr("<b>No devices that support firmware download found.</b>"))
         self.close()
-        
-        
+
+
     def downloadFirmware(self):
-        print "download!"
-    
-    
+        d = None
+
+        try:    
+            try:
+                d = device.Device(self.device_uri)
+            except Error:
+                CheckDeviceUI(self)
+                return
+
+            try:
+                d.open()
+            except Error:
+                CheckDeviceUI(self)
+            else:
+                if d.isIdleAndNoError():
+                    ok = d.downloadFirmware()
+
+                else:
+                    CheckDeviceUI(self)
+
+        finally:
+            if d is not None:
+                d.close()
+
+        self.close()
+
+
     def __tr(self,s,c = None):
         return qApp.translate("FirmwareDialog",s,c)
-        
-        
+

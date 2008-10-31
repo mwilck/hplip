@@ -32,11 +32,19 @@ from PyQt4.QtGui import *
 class SystrayFrame(QFrame):
     def __init__(self, parent):
         QFrame.__init__(self, parent)
-        self.systray_visible = 0
-        self.initUi()
+#        self.systray_visible = 0
+#        self.polling = polling
+#        self.polling_interval = polling_interval
+#        self.device_list = device_list
+        #self.initUi()
         
 
-    def initUi(self):
+    def initUi(self, systray_visible, polling, polling_interval, device_list):
+        self.systray_visible = systray_visible
+        self.polling = polling
+        self.polling_interval = polling_interval
+        self.device_list = device_list
+        
         self.GridLayout = QGridLayout(self)
         self.GridLayout.setObjectName("GridLayout")
 
@@ -88,7 +96,7 @@ class SystrayFrame(QFrame):
         self.connect(self.HideWhenInactiveRadioButton, SIGNAL("clicked(bool)"), self.HideWhenInactiveRadioButton_clicked)
         self.connect(self.HideAlwaysRadioButton, SIGNAL("clicked(bool)"), self.HideAlwaysRadioButton_clicked)
         
-        self.GroupBox.setEnabled(False)
+        self.GroupBox.setEnabled(False) # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
     def updateUi(self):

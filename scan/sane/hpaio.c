@@ -258,11 +258,7 @@ static int DevDiscovery(int localOnly)
       scan_type = 0;
       GetUriLine(tail, uri, &tail);
       hpmud_query_model(uri, &ma);
-#ifdef BB_SOURCES
       if (ma.scantype > 0)
-#else
-      if (ma.scantype == HPMUD_SCANTYPE_SCL || ma.scantype == HPMUD_SCANTYPE_PML || ma.scantype == HPMUD_SCANTYPE_MARVELL)
-#endif
       {
          hpmud_get_uri_model(uri, model, sizeof(model));
          AddDeviceList(uri, model, &DeviceList);
@@ -279,11 +275,7 @@ static int DevDiscovery(int localOnly)
    for (i=0; i<cnt; i++)
    {
       hpmud_query_model(cups_printer[i], &ma);
-#ifdef BB_SOURCES
       if (ma.scantype > 0)
-#else
-      if (ma.scantype == HPMUD_SCANTYPE_SCL || ma.scantype == HPMUD_SCANTYPE_PML || ma.scantype == HPMUD_SCANTYPE_MARVELL)
-#endif
       {
          hpmud_get_uri_model(cups_printer[i], model, sizeof(model));
          AddDeviceList(cups_printer[i], model, &DeviceList);
@@ -1625,12 +1617,10 @@ extern SANE_Status sane_hpaio_open(SANE_String_Const devicename, SANE_Handle * p
     hpmud_query_model(devname, &ma);
     if (ma.scantype == HPMUD_SCANTYPE_MARVELL)
        return marvell_open(devicename, pHandle);
-#ifdef BB_SOURCES
     if (ma.scantype == HPMUD_SCANTYPE_SOAP)
        return soap_open(devicename, pHandle);
     if (ma.scantype == HPMUD_SCANTYPE_SOAPHT)
        return soapht_open(devicename, pHandle);
-#endif
 
     DBG(8, "sane_hpaio_open(%s): %s %d\n", devicename, __FILE__, __LINE__);
 
@@ -2315,12 +2305,10 @@ extern void sane_hpaio_close(SANE_Handle handle)
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_close(handle);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_close(handle);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_close(handle);
-#endif
 
     DBG(8, "sane_hpaio_close(): %s %d\n", __FILE__, __LINE__); 
 
@@ -2345,12 +2333,10 @@ extern const SANE_Option_Descriptor * sane_hpaio_get_option_descriptor(SANE_Hand
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_get_option_descriptor(handle, option);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_get_option_descriptor(handle, option);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_get_option_descriptor(handle, option);
-#endif
 
     DBG(8, "sane_hpaio_get_option_descriptor(option=%s): %s %d\n", hpaio->option[option].name, __FILE__, __LINE__);
 
@@ -2373,12 +2359,10 @@ extern SANE_Status sane_hpaio_control_option(SANE_Handle handle, SANE_Int option
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_control_option(handle, option, action, pValue, pInfo);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_control_option(handle, option, action, pValue, pInfo);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_control_option(handle, option, action, pValue, pInfo);
-#endif
 
     if( !pInfo )
     {
@@ -2756,12 +2740,10 @@ extern SANE_Status sane_hpaio_get_parameters(SANE_Handle handle, SANE_Parameters
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_get_parameters(handle, pParams);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_get_parameters(handle, pParams);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_get_parameters(handle, pParams);
-#endif
 
     if( !hpaio->hJob )
     {
@@ -2788,12 +2770,10 @@ extern SANE_Status sane_hpaio_start(SANE_Handle handle)
         
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_start(handle);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_start(handle);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_start(handle);
-#endif
 
     DBG(8, "sane_hpaio_start(): %s %d\n", __FILE__, __LINE__);
 
@@ -3131,12 +3111,10 @@ extern SANE_Status sane_hpaio_read(SANE_Handle handle, SANE_Byte *data, SANE_Int
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_read(handle, data, maxLength, pLength);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_read(handle, data, maxLength, pLength);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_read(handle, data, maxLength, pLength);
-#endif
 
     *pLength = 0;
 
@@ -3295,12 +3273,10 @@ extern void sane_hpaio_cancel( SANE_Handle handle )
 
     if (strcmp(*((char **)handle), "MARVELL") == 0)
        return marvell_cancel(handle);
-#ifdef BB_SOURCES
     if (strcmp(*((char **)handle), "SOAP") == 0)
        return soap_cancel(handle);
     if (strcmp(*((char **)handle), "SOAPHT") == 0)
        return soapht_cancel(handle);
-#endif
 
     DBG(8, "sane_hpaio_cancel(): %s %d\n", __FILE__, __LINE__); 
 

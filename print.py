@@ -119,8 +119,12 @@ if ui_toolkit == 'qt3':
 
 
 else: # qt4
-    from PyQt4.QtGui import QApplication
-    from ui4.printdialog import PrintDialog
+    try:
+        from PyQt4.QtGui import QApplication
+        from ui4.printdialog import PrintDialog
+    except ImportError:
+        log.error("Unable to load Qt4 support. Is it installed?")
+        sys.exit(1)        
     
     if 1:
         app = QApplication(sys.argv)

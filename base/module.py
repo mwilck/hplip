@@ -484,6 +484,7 @@ class Module(object):
 
         elif len(devices) == 1: # Nothing specified, and only 1 device avail.
             device_uri_ret = devices.keys()[0]
+            log.info("Using device: %s\n" % device_uri_ret)
 
         if device_uri_ret is None and self.mode in (INTERACTIVE_MODE, NON_INTERACTIVE_MODE) and len(devices):
             device_uri_ret = tui.device_table(devices, scan_uri_flag)

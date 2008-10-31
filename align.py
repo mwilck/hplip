@@ -139,7 +139,7 @@ try:
     opts, device_uri, printer_name, mode, ui_toolkit, lang = \
         mod.parseStdOpts()
 
-    printer_name, device_uri = mod.getPrinterName(printer_name, device_uri, 
+    device_uri = mod.getDeviceUri(device_uri, printer_name, 
         filter={'align-type': (operator.gt, 0)})
         
     if mode == GUI_MODE:
@@ -172,6 +172,9 @@ try:
 
                 if align_type == ALIGN_TYPE_AUTO:
                     maint.AlignType1PML(d, tui.load_paper_prompt)
+
+                elif align_type == ALIGN_TYPE_AIO:
+                    maint.AlignType13(d, tui.load_paper_prompt, tui.load_scanner_for_align_prompt)
 
                 elif align_type == ALIGN_TYPE_8XX:
                     maint.AlignType2(d, tui.load_paper_prompt, enterAlignmentNumber,
@@ -211,8 +214,13 @@ try:
             d.close()
 
     else: # GUI_MODE (qt4)
-        from PyQt4.QtGui import QApplication
-        from ui4.aligndialog import AlignDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.aligndialog import AlignDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
+            
 
         #try:
         if 1:

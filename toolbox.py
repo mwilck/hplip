@@ -50,22 +50,18 @@ def handle_session_signal(*args, **kwds):
         kwds['member'] == 'Event':
 
         event = device.Event(*args)
-
+        event.debug()
+        
         if event.event_code > EVENT_MAX_EVENT:
             event.event_code = status.MapPJLErrorCode(event.event_code)
 
         # regular user/device status event
         log.debug("Received event notifier: %d" % event.event_code)
 
-        if w is not None:
-            log.debug("Sending event to toolbox UI...")
-            try:
-                os.write(w, event.pack())
-            except OSError:
-                log.debug("Failed. Exiting...")
-                # if this fails, then hp-toolbox must be killed.
-                # No need to continue running...
-                sys.exit(1)
+        if not event.send_via_pipe(w, 'toolbox ui'):
+            sys.exit(1)
+            # if this fails, then hp-toolbox must be killed.
+            # No need to continue running...
 
 
 mod = module.Module(__mod__, __title__, __version__, __doc__, None,
@@ -237,12 +233,17 @@ if ui_toolkit == 'qt3':
         sys.exit(0)        
 
 else: # qt4 
-    from PyQt4.QtGui import QApplication
-    from ui4.devmgr5 import DevMgr5
+    try:
+        from PyQt4.QtGui import QApplication
+        from ui4.devmgr5 import DevMgr5
+    except ImportError:
+        log.error("Unable to load Qt4 support. Is it installed?")
+        sys.exit(1)        
+    
     log.set_module("hp-toolbox(UI)")
 
-    if 1:
-        #try:
+    #if 1:
+    try:
         app = QApplication(sys.argv)
 
         toolbox = DevMgr5(__version__, device_uri,  None)
@@ -253,7 +254,7 @@ else: # qt4
         except KeyboardInterrupt:
             sys.exit(0)
 
-    if 1:
-        #finally:
+    #if 1:
+    finally:
         mod.unlockInstance()
         sys.exit(0)

@@ -35,20 +35,27 @@
    <item row="2" column="0" colspan="3" >
     <widget class="DeviceUriComboBox" name="DeviceComboBox" />
    </item>
-   <item row="3" column="0" >
+   <item row="3" column="0" colspan="3" >
+    <widget class="LoadPaperGroupBox" name="LoadPaper" >
+     <property name="title" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" >
       <size>
-       <width>20</width>
-       <height>301</height>
+       <width>410</width>
+       <height>81</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item row="4" column="0" >
+   <item row="5" column="0" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
@@ -61,14 +68,14 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="1" >
+   <item row="5" column="1" >
     <widget class="QPushButton" name="CalibrateButton" >
      <property name="text" >
       <string>Calibrate</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="2" >
+   <item row="5" column="2" >
     <widget class="QPushButton" name="CancelButton" >
      <property name="text" >
       <string>Cancel</string>
@@ -82,6 +89,12 @@
    <class>DeviceUriComboBox</class>
    <extends>QComboBox</extends>
    <header>deviceuricombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadPaperGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>loadpapergroupbox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

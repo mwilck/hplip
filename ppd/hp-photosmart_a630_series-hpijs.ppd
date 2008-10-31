@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.9.0"
+*FileVersion: "hpijs 2.8.10.33"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a630_series-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a630 series Foomatic/hpijs"
 *ShortNickName: "HP Photosmart a630 series Foomatic/hpijs"
-*NickName: "HP Photosmart a630 series Foomatic/hpijs, hpijs 2.8.9.0"
+*NickName: "HP Photosmart a630 series Foomatic/hpijs, hpijs 2.8.10.33"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -138,6 +138,15 @@ Bleed=1"
 *PaperDimension L/3.5x5in, L: "252.00 360.00"
 *PaperDimension 4x8/4x8in, 10x20cm: "288.00 576.00"
 *PaperDimension 4x12/4x12in, 10x30cm: "288.00 864.00"
+*MaxMediaWidth: "360.00"
+*MaxMediaHeight: "504.00"
+*HWMargins: 0.00 0.00 0.00 0.00
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 72.00 360.00
+*ParamCustomPageSize Height: 2 points 288.00 504.00
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *MediaType/Media Type : PickOne
 *OrderDependency: 105.0 AnySetup *MediaType
 *DefaultMediaType: Automatic
@@ -211,4 +220,4 @@ Bleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_a630_series-hpijs.ppd, 09563 bytes.
+*% End of hp-photosmart_a630_series-hpijs.ppd, 09982 bytes.

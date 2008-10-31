@@ -51,7 +51,7 @@ class FaxSetupDialog(QDialog, Ui_Dialog):
     def initUi(self):
         # connect signals/slots
         self.connect(self.CancelButton, SIGNAL("clicked()"), self.CancelButton_clicked)
-        self.connect(self.ApplyButton, SIGNAL("clicked()"), self.ApplyButton_clicked)
+        #self.connect(self.ApplyButton, SIGNAL("clicked()"), self.ApplyButton_clicked)
         self.connect(self.FaxComboBox, SIGNAL("DeviceUriComboBox_noDevices"), self.FaxComboBox_noDevices)
         self.connect(self.FaxComboBox, SIGNAL("DeviceUriComboBox_currentChanged"), self.FaxComboBox_currentChanged)
         self.FaxComboBox.setType(DEVICEURICOMBOBOX_TYPE_FAX_ONLY)
@@ -65,11 +65,12 @@ class FaxSetupDialog(QDialog, Ui_Dialog):
     
     def updateUi(self):
         self.FaxComboBox.updateUi()
-
+        
 
     def FaxComboBox_currentChanged(self, device_uri):
         self.device_uri = device_uri
-        # Update
+        self.updateHeaderTab()
+        self.updateCoverpageTab()
     
     
     def FaxComboBox_noDevices(self):
@@ -81,7 +82,11 @@ class FaxSetupDialog(QDialog, Ui_Dialog):
         self.close()
         
         
-    def ApplyButton_clicked(self):
+    def updateHeaderTab(self):
+        pass
+        
+        
+    def updateCoverpageTab(self):
         pass
 
     #

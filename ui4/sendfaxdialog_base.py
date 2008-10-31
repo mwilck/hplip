@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/sendfaxdialog_base.ui'
 #
-# Created: Thu Sep  4 15:43:40 2008
+# Created: Thu Oct 30 15:47:09 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!

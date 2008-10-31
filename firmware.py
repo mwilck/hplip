@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '2.2'
+__version__ = '2.4'
 __title__ = 'Firmware Download Utility'
 __mod__ = 'hp-firmware'
 __doc__ = "Download firmware to a device."
@@ -73,7 +73,7 @@ try:
                 sys.exit(1)
                 
             if len(usb_bus_id) != 3 or len(usb_device_id) != 3:
-                log.error("Invalid USB IDs: %s" % a)
+                log.error("Invalid USB IDs '%s'. Must be the format: bbb.ddd" % a)
                 sys.exit(1)
                 
             usb_bus_node = a
@@ -98,8 +98,13 @@ try:
         mod.quiet = False
     
     if mode == GUI_MODE:
-        from PyQt4.QtGui import QApplication
-        from ui4.firmwaredialog import FirmwareDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.firmwaredialog import FirmwareDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
+            
 
         mod.showTitle()
         
@@ -121,9 +126,6 @@ try:
     
     mod.showTitle()
     
-    device_uri = mod.getDeviceUri(device_uri, printer_name, 
-        filter={'fw-download': (operator.gt, 0)})
-    
     if usb_bus_node is not None:
         log.debug("USB bus node: %s" % usb_bus_node)
         device_uri, sane_uri, fax_uri = device.makeURI(usb_bus_node, 1)
@@ -132,6 +134,10 @@ try:
             log.error("Invalid USB Device ID or USB bus ID. No device found.")
             sys.exit(1)
      
+    else:
+        device_uri = mod.getDeviceUri(device_uri, printer_name, 
+            filter={'fw-download': (operator.gt, 0)})
+
     try:
         d = device.Device(device_uri, printer_name)
     except Error:

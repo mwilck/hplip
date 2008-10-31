@@ -833,14 +833,24 @@ def uniqueList(input):
 
 
 def list_move_up(l, m, cmp=None):
+    if cmp is None:
+        f = lambda x: l[x] == m
+    else:
+        f = lambda x: cmp(l[x], m)
+    
     for i in range(1, len(l)):
-        if (cmp is None and l[i] == m) or cmp(l[i], m):
+        if f(i):
             l[i-1], l[i] = l[i], l[i-1]
 
 
 def list_move_down(l, m, cmp=None):
+    if cmp is None:
+        f = lambda x: l[x] == m
+    else:
+        f = lambda x: cmp(l[x], m)
+    
     for i in range(len(l)-2, -1, -1):
-        if (cmp is None and l[i] == m) or cmp(l[i], m):
+        if f(i):
             l[i], l[i+1] = l[i+1], l[i] 
         
 

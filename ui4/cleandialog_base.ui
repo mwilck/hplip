@@ -35,20 +35,55 @@
    <item row="2" column="0" colspan="3" >
     <widget class="DeviceUriComboBox" name="DeviceComboBox" />
    </item>
-   <item row="3" column="0" >
+   <item row="3" column="0" colspan="3" >
+    <widget class="LoadPaperGroupBox" name="LoadPaper" >
+     <property name="title" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3" >
+    <widget class="QFrame" name="frame" >
+     <property name="frameShape" >
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="0" column="0" >
+       <widget class="QLabel" name="Prompt" >
+        <property name="text" >
+         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'DejaVu Sans'; font-size:10pt;">Click&lt;span style=" font-style:italic;"> Clean&lt;/span> to begin the level %1 cleaning process.&lt;/p>&lt;/body>&lt;/html></string>
+        </property>
+        <property name="textFormat" >
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" >
       <size>
-       <width>20</width>
-       <height>301</height>
+       <width>571</width>
+       <height>71</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item row="4" column="0" >
+   <item row="6" column="0" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
@@ -61,14 +96,14 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="1" >
+   <item row="6" column="1" >
     <widget class="QPushButton" name="CleanButton" >
      <property name="text" >
       <string>Clean</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="2" >
+   <item row="6" column="2" >
     <widget class="QPushButton" name="CancelButton" >
      <property name="text" >
       <string>Cancel</string>
@@ -82,6 +117,12 @@
    <class>DeviceUriComboBox</class>
    <extends>QComboBox</extends>
    <header>deviceuricombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadPaperGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>loadpapergroupbox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

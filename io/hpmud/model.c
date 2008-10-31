@@ -489,6 +489,10 @@ static int parse_key_value_pair(char *buf, int len, struct hpmud_model_attribute
       {
          ma->support = strtol(value, &tail2, 10);
       }
+      else if(strcasecmp(key, "plugin") == 0)
+      {
+         ma->plugin = strtol(value, &tail2, 10);
+      }
       else
       {
          /* Unknown keys are ignored (R_AOK). */

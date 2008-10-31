@@ -80,7 +80,7 @@
 # ****************************************
 
 [distros]
-distros=unknown,mepis,debian,suse,mandriva,fedora,redhat,rhel,slackware,gentoo,turbo,redflag,ubuntu,xandros,freebsd,linspire,ark,pclinuxos,asianux,pcbsd,sunwah,miracle,xteam,centos,cocreate,haansoft,neoshine,darwin,openbsd,netbsd,dragonflybsd,igos,freespire
+distros=unknown,mepis,debian,suse,mandriva,fedora,redhat,rhel,slackware,gentoo,turbo,redflag,ubuntu,xandros,freebsd,linspire,ark,pclinuxos,asianux,pcbsd,sunwah,miracle,xteam,centos,cocreate,haansoft,neoshine,darwin,openbsd,netbsd,dragonflybsd,igos,freespire,linuxmint,linpus,gos
 
 # ****************************************
 
@@ -284,6 +284,9 @@ packages=
 [suse:10.0:python-ctypes]
 # packages=python-ctypes-1.0.0
 
+[suse:10.0:python-xml]
+packages=python-xml
+
 [suse:10]
 same_as_version= 10.0
 
@@ -383,6 +386,10 @@ packages=
 [suse:10.1:python-ctypes]
 # packages=python-ctypes-1.0.0
 
+[suse:10.1:python-xml]
+packages=python-xml
+
+
 # ********************
 [suse:10.2]
 code_name=
@@ -478,6 +485,10 @@ packages=
 
 [suse:10.2:python-ctypes]
 # packages=python-ctypes
+
+[suse:10.2:python-xml]
+packages=python-xml
+
 
 # ********************
 [suse:10.3]
@@ -578,6 +589,10 @@ packages=dbus-1-devel,python-gobject2
 
 [suse:10.3:python-ctypes]
 packages=python-ctypes
+
+[suse:10.3:python-xml]
+packages=python-xml
+
 
 # ********************
 [suse:11.0]
@@ -682,6 +697,10 @@ packages=dbus-1-devel,python-gobject2
 
 [suse:11.0:python-ctypes]
 packages=python-ctypes
+
+[suse:11.0:python-xml]
+packages=python-xml
+
 
 # ****************************************
 [redhat]
@@ -1874,7 +1893,7 @@ release_date=
 notes=
 ppd_install=
 udev_mode_fix=True
-ppd_dir=/usr/share/cups/model/hplip-ppds
+ppd_dir=/usr/share/cups/model/HP
 fix_ppd_symlink=False
 drv_dir=/usr/share/cups/drv/hp/
 
@@ -5123,7 +5142,7 @@ packages=
 # ****************************************
 [mandriva]
 index=4
-versions=9.1,9.2,10.0,10.1,10.2,2006.0,2007.0,2007.1,2008.0
+versions=9.1,9.2,10.0,10.1,10.2,2006.0,2007.0,2007.1,2008.0,2008.1
 display_name=Mandriva Linux
 alt_names=Mandrakelinux,Mandrake Linux
 display=True
@@ -5132,7 +5151,7 @@ package_mgrs=urpmi
 package_mgr_cmd=su - -c "urpmi --allow-force --force --auto $packages_to_install"
 pre_install_cmd=su - -c "/etc/init.d/cups restart",su - -c "touch /etc/security/console.perms.d/60-hplip.perms && echo '<usb>=/dev/usb/dabusb* /dev/usb/mdc800* /dev/usb/rio500 /dev/ttyUSB*' | tee /etc/security/console.perms.d/60-hplip.perms"
 pre_depend_cmd=su - -c "rm /etc/hp/hplip.conf"
-post_depend_cmd=su - -c "/etc/init.d/cups restart"
+post_depend_cmd=su - -c "/etc/init.d/cups restart", su - -c "chmod 700 /usr/lib/cups/backend/hp"
 hpoj_remove_cmd=
 hplip_remove_cmd=su - -c "urpme hplip task-printing-hp"
 su_sudo=su
@@ -5794,3 +5813,683 @@ packages=libdbus-1_3-devel
 [mandriva:2008.0:python-ctypes]
 packages=python-ctypes
 
+# ********************
+[mandriva:2008.1]
+code_name=2k8
+supported=True 
+gui_supported=1
+scan_supported=1
+fax_supported=1
+pcard_supported=1
+network_supported=1
+parallel_supported=1
+usb_supported=1
+packaged_version=2.7.12
+release_date=2007-4-17
+notes=Before proceeding, please add the "contrib", "main", and "updates" installation sources to your URPMI configuration./n Open your browser and go to http://easyurpmi.zarb.org/ and follow the instructions provided and then proceed with the HPLIP install. Also you may wish to turn off the cdrom1-12 media sources to speed up the process.
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+
+[mandriva:2008.1:cups]
+packages=cups
+
+[mandriva:2008.1:cups-devel]
+packages=cups-devel
+
+[mandriva:2008.1:gcc]
+packages=gcc-c++
+
+[mandriva:2008.1:gs]
+packages=ghostscript
+
+[mandriva:2008.1:libcrypto]
+packages=libcryptopp5,libcryptopp5-devel
+
+[mandriva:2008.1:libjpeg]
+packages=libjpeg62-dev
+
+[mandriva:2008.1:libnetsnmp-devel]
+packages=libsnmp0-devel
+
+[mandriva:2008.1:libpthread]
+packages=glibc-i18ndata-2.4-4mdk,glibc_lsb-2.3.6-1mdk
+
+[mandriva:2008.1:libtool]
+packages=libtool
+
+[mandriva:2008.1:libusb]
+packages=libusb0.1_4-devel
+
+[mandriva:2008.1:make]
+packages=make
+
+[mandriva:2008.1:pil]
+packages=python-imaging
+
+[mandriva:2008.1:ppdev]
+packages=
+commands=su -c "modprobe ppdev"
+
+[mandriva:2008.1:pyqt]
+packages=PyQt
+
+[mandriva:2008.1:python-devel]
+packages=python-devel
+
+[mandriva:2008.1:python23]
+packages=python
+
+[mandriva:2008.1:python2x]
+packages=python
+
+[mandriva:2008.1:reportlab]
+packages=python-reportlab
+
+[mandriva:2008.1:sane]
+packages=sane
+
+[mandriva:2008.1:sane-devel]
+packages=libsane1-devel
+
+[mandriva:2008.1:scanimage]
+packages=sane-utils
+
+[mandriva:2008.1:xsane]
+packages=xsane
+
+[mandriva:2008.1:cups-ddk]
+packages=cupsddk,cupsddk-drivers
+
+[mandriva:2008.1:python-dbus]
+packages=python-dbus
+
+[mandriva:2008.1:dbus]
+packages=libdbus-1_3-devel
+
+
+[mandriva:2008.1:python-ctypes]
+packages=python-ctypes
+
+# ****************************************
+[linuxmint]
+index=22
+versions=5,6
+display_name=Linux Mint
+alt_names=mint, mint linux
+display=True
+notes=
+package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude,adept-updater
+package_mgr_cmd=sudo aptitude install --assume-yes $packages_to_install
+pre_depend_cmd=sudo dpkg --configure -a,sudo apt-get install --yes --force-yes -f,sudo aptitude update
+post_depend_cmd=
+hpoj_remove_cmd=sudo aptitude remove --assume-yes hpoj
+hplip_remove_cmd=sudo aptitude remove --assume-yes hplip hpijs
+su_sudo=sudo
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=
+fix_ppd_symlink=False
+usermod_params=-a -Glp
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[linuxmint:5]
+code_name=Elyssa
+supported=True
+gui_supported=1
+scan_supported=1
+fax_supported=1
+pcard_supported=1
+network_supported=1
+parallel_supported=1
+usb_supported=1
+packaged_version=2.8.2
+release_date=2008
+notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[linuxmint:5:cups]
+packages=libcupsys2
+
+[linuxmint:5:cups-devel]
+packages=libcupsys2-dev,cupsys-bsd
+
+[linuxmint:5:gcc]
+packages=build-essential
+
+[linuxmint:5:gs]
+packages=gs-esp
+
+[linuxmint:5:libcrypto]
+packages=openssl
+
+[linuxmint:5:libjpeg]
+packages=libjpeg62-dev
+
+[linuxmint:5:libnetsnmp-devel]
+packages=libsnmp-dev
+
+[linuxmint:5:libpthread]
+packages=build-essential
+
+[linuxmint:5:libtool]
+packages=libtool
+
+[linuxmint:5:libusb]
+packages=libusb-dev
+
+[linuxmint:5:make]
+packages=build-essential
+
+[linuxmint:5:pil]
+packages=python-imaging
+
+[linuxmint:5:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[linuxmint:5:pyqt]
+packages=python-qt3
+
+[linuxmint:5:pyqt4]
+packages=python-qt4
+
+[linuxmint:5:python-devel]
+packages=python2.5-dev
+
+[linuxmint:5:python23]
+packages=python
+
+[linuxmint:5:python2x]
+packages=python
+
+[linuxmint:5:reportlab]
+packages=python-reportlab
+
+[linuxmint:5:sane]
+packages=libsane
+
+[linuxmint:5:sane-devel]
+packages=libsane-dev
+
+[linuxmint:5:scanimage]
+packages=sane-utils
+
+[linuxmint:5:xsane]
+packages=xsane
+
+[linuxmint:5:cups-ddk]
+packages=cupsddk,cupsddk-drivers
+
+[linuxmint:5:python-dbus]
+packages=python-dbus
+
+[linuxmint:5:dbus]
+packages=libdbus-1-dev
+
+[linuxmint:5:python-ctypes]
+packages=python-ctypes
+
+# ********************
+[linuxmint:6]
+code_name=
+supported=False
+gui_supported=1
+scan_supported=1
+fax_supported=1
+pcard_supported=1
+network_supported=1
+parallel_supported=1
+usb_supported=1
+packaged_version=2.8.7
+release_date=2008
+notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[linuxmint:6:cups]
+packages=libcupsys2
+
+[linuxmint:6:cups-devel]
+packages=libcupsys2-dev,cupsys-bsd
+
+[linuxmint:6:gcc]
+packages=build-essential
+
+[linuxmint:6:gs]
+packages=gs-esp
+
+[linuxmint:6:libcrypto]
+packages=openssl
+
+[linuxmint:6:libjpeg]
+packages=libjpeg62-dev
+
+[linuxmint:6:libnetsnmp-devel]
+packages=libsnmp-dev
+
+[linuxmint:6:libpthread]
+packages=build-essential
+
+[linuxmint:6:libtool]
+packages=libtool
+
+[linuxmint:6:libusb]
+packages=libusb-dev
+
+[linuxmint:6:make]
+packages=build-essential
+
+[linuxmint:6:pil]
+packages=python-imaging
+
+[linuxmint:6:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[linuxmint:6:pyqt]
+packages=python-qt3
+
+[linuxmint:6:pyqt4]
+packages=python-qt4
+
+[linuxmint:6:python-devel]
+packages=python2.5-dev
+
+[linuxmint:6:python23]
+packages=python
+
+[linuxmint:6:python2x]
+packages=python
+
+[linuxmint:6:reportlab]
+packages=python-reportlab
+
+[linuxmint:6:sane]
+packages=libsane
+
+[linuxmint:6:sane-devel]
+packages=libsane-dev
+
+[linuxmint:6:scanimage]
+packages=sane-utils
+
+[linuxmint:6:xsane]
+packages=xsane
+
+[linuxmint:6:cups-ddk]
+packages=cupsddk,cupsddk-drivers
+
+[linuxmint:6:python-dbus]
+packages=python-dbus
+
+[linuxmint:6:dbus]
+packages=libdbus-1-dev
+
+[linuxmint:6:python-ctypes]
+packages=python-ctypes
+
+# ****************************************
+[linpus]
+index=25
+versions=9.4,9.5
+display_name=Linpus Linux
+alt_names=Linpus, Linpus Lite, Linpus Linux
+display=False
+notes=
+package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude,adept-updater,rpm
+package_mgr_cmd=sudo apt-get install --assume-yes $packages_to_install
+pre_depend_cmd=sudo apt-get install --yes --force-yes -f,sudo apt-get update
+post_depend_cmd=
+hpoj_remove_cmd=sudo apt-get remove --assume-yes hpoj
+hplip_remove_cmd=sudo apt-get remove --assume-yes hplip hpijs
+su_sudo=sudo
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=
+fix_ppd_symlink=False
+usermod_params=
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[linpus:9.5]
+code_name=Linpus
+supported=False
+gui_supported=0
+scan_supported=0
+fax_supported=0
+pcard_supported=0
+network_supported=0
+parallel_supported=0
+usb_supported=1
+packaged_version=
+release_date=
+notes=Add to the file /etc/apt/sources.list the following lines (each on a seperate line should start with the "rpm": rpm http://update.linpus.com/LinpusUpdate/ 9.5 main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.5-Critical main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.5-DevDr main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.5-SoftApp main desktop
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[linpus:9.5:cups]
+packages=cups
+
+[linpus:9.5:cups-devel]
+packages=
+
+[linpus:9.5:gcc]
+packages=glibc
+
+[linpus:9.5:gs]
+packages=ghostscript
+
+[linpus:9.5:libcrypto]
+packages=openssl
+
+[linpus:9.5:libjpeg]
+packages=libjpeg
+
+[linpus:9.5:libnetsnmp-devel]
+packages=
+
+[linpus:9.5:libpthread]
+packages=glibc
+
+[linpus:9.5:libtool]
+packages=
+
+[linpus:9.5:libusb]
+packages=
+
+[linpus:9.5:make]
+packages=glibc
+
+[linpus:9.5:pil]
+packages=
+
+[linpus:9.5:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[linpus:9.5:pyqt]
+packages=
+
+[linpus:9.5:pyqt4]
+packages=
+
+[linpus:9.5:python-devel]
+packages=
+
+[linpus:9.5:python23]
+packages=python
+
+[linpus:9.5:python2x]
+packages=python
+
+[linpus:9.5:reportlab]
+packages=
+
+[linpus:9.5:sane]
+packages=
+
+[linpus:9.5:sane-devel]
+packages=
+
+[linpus:9.5:scanimage]
+packages=
+
+[linpus:9.5:xsane]
+packages=
+
+[linpus:9.5:cups-ddk]
+packages=
+
+[linpus:9.5:python-dbus]
+packages=dbus-python
+
+[linpus:9.5:dbus]
+packages=dbus
+
+[linpus:9.5:python-ctypes]
+packages=
+
+# ********************
+[linpus:9.4]
+code_name=Linpus
+supported=False
+gui_supported=0
+scan_supported=0
+fax_supported=0
+pcard_supported=0
+network_supported=0
+parallel_supported=0
+usb_supported=1
+packaged_version=
+release_date=
+notes=Add to the file /etc/apt/sources.list the following lines (each on a seperate line should start with the "rpm": rpm http://update.linpus.com/LinpusUpdate/ 9.4 main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.4-Critical main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.4-DevDr main desktop rpm http://update.linpus.com/LinpusUpdate/ 9.4-SoftApp main desktop
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[linpus:9.4:cups]
+packages=cups
+
+[linpus:9.4:cups-devel]
+packages=
+
+[linpus:9.4:gcc]
+packages=glibc
+
+[linpus:9.4:gs]
+packages=ghostscript
+
+[linpus:9.4:libcrypto]
+packages=openssl
+
+[linpus:9.4:libjpeg]
+packages=libjpeg
+
+[linpus:9.4:libnetsnmp-devel]
+packages=
+
+[linpus:9.4:libpthread]
+packages=glibc
+
+[linpus:9.4:libtool]
+packages=
+
+[linpus:9.4:libusb]
+packages=
+
+[linpus:9.4:make]
+packages=glibc
+
+[linpus:9.4:pil]
+packages=
+
+[linpus:9.4:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[linpus:9.4:pyqt]
+packages=
+
+[linpus:9.4:pyqt4]
+packages=
+
+[linpus:9.4:python-devel]
+packages=
+
+[linpus:9.4:python23]
+packages=python
+
+[linpus:9.4:python2x]
+packages=python
+
+[linpus:9.4:reportlab]
+packages=
+
+[linpus:9.4:sane]
+packages=
+
+[linpus:9.4:sane-devel]
+packages=
+
+[linpus:9.4:scanimage]
+packages=
+
+[linpus:9.4:xsane]
+packages=
+
+[linpus:9.4:cups-ddk]
+packages=
+
+[linpus:9.4:python-dbus]
+packages=dbus-python
+
+[linpus:9.4:dbus]
+packages=dbus
+
+[linpus:9.4:python-ctypes]
+packages=
+
+# ****************************************
+[gos]
+index=24
+versions=8.04.1
+display_name=gOS
+alt_names=gos, gOS
+display=True
+notes=
+package_mgrs=dpkg,apt-get,synaptic,update-manager,adept,aptitude,adept-updater
+package_mgr_cmd=sudo aptitude install --assume-yes $packages_to_install
+pre_depend_cmd=sudo dpkg --configure -a,sudo apt-get install --yes --force-yes -f,sudo aptitude update
+post_depend_cmd=
+hpoj_remove_cmd=sudo aptitude remove --assume-yes hpoj
+hplip_remove_cmd=sudo aptitude remove --assume-yes hplip hpijs
+su_sudo=sudo
+ppd_install=ppd
+udev_mode_fix=True
+ppd_dir=
+fix_ppd_symlink=False
+usermod_params=-a -Glp
+drv_dir=/usr/share/cups/drv/hp/
+
+# ********************
+[gos:8.04.1]
+code_name=Elyssa
+supported=True
+gui_supported=1
+scan_supported=1
+fax_supported=1
+pcard_supported=1
+network_supported=1
+parallel_supported=1
+usb_supported=1
+packaged_version=2.8.2
+release_date=2008
+notes=Enable the universe/multiverse repositories. Also be sure you are using the Ubuntu "Main" Repositories. See: https://help.ubuntu.com/community/Repositories/Ubuntu for more information.  Disable the CD-ROM/DVD source if you do not have the Ubunbtu installation media inserted in the drive.
+ppd_install=drv
+udev_mode_fix=True
+ppd_dir=/usr/share/ppd/hpijs/HP
+fix_ppd_symlink=False
+drv_dir=/usr/share/cups/drv/hp/
+ui_toolkit=qt3
+
+[gos:8.04.1:cups]
+packages=libcupsys2
+
+[gos:8.04.1:cups-devel]
+packages=libcupsys2-dev,cupsys-bsd
+
+[gos:8.04.1:gcc]
+packages=build-essential
+
+[gos:8.04.1:gs]
+packages=gs-esp
+
+[gos:8.04.1:libcrypto]
+packages=openssl
+
+[gos:8.04.1:libjpeg]
+packages=libjpeg62-dev
+
+[gos:8.04.1:libnetsnmp-devel]
+packages=libsnmp-dev
+
+[gos:8.04.1:libpthread]
+packages=build-essential
+
+[gos:8.04.1:libtool]
+packages=libtool
+
+[gos:8.04.1:libusb]
+packages=libusb-dev
+
+[gos:8.04.1:make]
+packages=build-essential
+
+[gos:8.04.1:pil]
+packages=python-imaging
+
+[gos:8.04.1:ppdev]
+packages=
+commands=sudo modprobe ppdev,sudo cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
+
+[gos:8.04.1:pyqt]
+packages=python-qt3
+
+[gos:8.04.1:pyqt4]
+packages=python-qt4
+
+[gos:8.04.1:python-devel]
+packages=python2.5-dev
+
+[gos:8.04.1:python23]
+packages=python
+
+[gos:8.04.1:python2x]
+packages=python
+
+[gos:8.04.1:reportlab]
+packages=python-reportlab
+
+[gos:8.04.1:sane]
+packages=libsane
+
+[gos:8.04.1:sane-devel]
+packages=libsane-dev
+
+[gos:8.04.1:scanimage]
+packages=sane-utils
+
+[gos:8.04.1:xsane]
+packages=xsane
+
+[gos:8.04.1:cups-ddk]
+packages=cupsddk,cupsddk-drivers
+
+[gos:8.04.1:python-dbus]
+packages=python-dbus
+
+[gos:8.04.1:dbus]
+packages=libdbus-1-dev
+
+[gos:8.04.1:python-ctypes]
+packages=python-ctypes

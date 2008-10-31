@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/devmgr5_base.ui'
 #
-# Created: Thu Sep  4 15:43:39 2008
+# Created: Thu Oct 30 15:47:07 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,6 +89,11 @@ class Ui_MainWindow(object):
         self.gridlayout2.addLayout(self.hboxlayout,0,0,1,1)
 
         self.StatusTable = QtGui.QTableWidget(self.Status)
+        self.StatusTable.setAlternatingRowColors(True)
+        self.StatusTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.StatusTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.StatusTable.setShowGrid(False)
+        self.StatusTable.setCornerButtonEnabled(False)
         self.StatusTable.setObjectName("StatusTable")
         self.gridlayout2.addWidget(self.StatusTable,1,0,1,1)
         self.Tabs.addTab(self.Status,"")
@@ -100,6 +105,11 @@ class Ui_MainWindow(object):
         self.gridlayout3.setObjectName("gridlayout3")
 
         self.SuppliesTable = QtGui.QTableWidget(self.Supplies)
+        self.SuppliesTable.setAlternatingRowColors(True)
+        self.SuppliesTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.SuppliesTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.SuppliesTable.setShowGrid(False)
+        self.SuppliesTable.setCornerButtonEnabled(False)
         self.SuppliesTable.setObjectName("SuppliesTable")
         self.gridlayout3.addWidget(self.SuppliesTable,0,0,1,1)
         self.Tabs.addTab(self.Supplies,"")
@@ -191,7 +201,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0,0,720,26))
+        self.menubar.setGeometry(QtCore.QRect(0,0,720,31))
         self.menubar.setObjectName("menubar")
 
         self.menuDevice = QtGui.QMenu(self.menubar)
@@ -263,7 +273,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.ContentsAction)
 
         self.retranslateUi(MainWindow)
-        self.Tabs.setCurrentIndex(3)
+        self.Tabs.setCurrentIndex(0)
         self.PrintSettingsToolbox.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

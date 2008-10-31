@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.9.0"
+*FileVersion: "hpijs 2.8.10.33"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_320_series-hpijs.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 320 series Foomatic/hpijs"
 *ShortNickName: "HP Photosmart 320 series Foomatic/hpijs"
-*NickName: "HP Photosmart 320 series Foomatic/hpijs, hpijs 2.8.9.0"
+*NickName: "HP Photosmart 320 series Foomatic/hpijs, hpijs 2.8.10.33"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -145,6 +145,15 @@ ity:PenSet=1,Quality:FullBleed=1"
 *PaperDimension A6TearOff/A6 with tear-off tab: "297.00 420.00"
 *PaperDimension CDDVD80/CD or DVD 80 mm: "237.00 237.00"
 *PaperDimension Hagaki/Hagaki: "283.00 420.00"
+*MaxMediaWidth: "297.00"
+*MaxMediaHeight: "420.00"
+*HWMargins: 0.00 0.00 0.00 0.00
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 72.00 297.00
+*ParamCustomPageSize Height: 2 points 288.00 420.00
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *PrintoutMode/Printout Mode: PickOne
 *OrderDependency: 10.0 AnySetup *PrintoutMode
 *DefaultPrintoutMode: Photo
@@ -201,4 +210,4 @@ ity:PenSet=1,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_320_series-hpijs.ppd, 09945 bytes.
+*% End of hp-photosmart_320_series-hpijs.ppd, 10364 bytes.

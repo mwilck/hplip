@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.9.0"
+*FileVersion: "hpijs 2.8.10.33"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_k7100-hpijs.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet k7100 Foomatic/hpijs"
 *ShortNickName: "HP Officejet k7100 Foomatic/hpijs"
-*NickName: "HP Officejet k7100 Foomatic/hpijs, hpijs 2.8.9.0"
+*NickName: "HP Officejet k7100 Foomatic/hpijs, hpijs 2.8.10.33"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -335,7 +335,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *ImageableArea Ledger/Ledger: "14.40 36.00 777.60 1215.00"
 *ImageableArea SuperB/Super B: "14.40 36.00 921.60 1359.00"
 *ImageableArea w774h1116/8K: "18.00 36.00 756.00 1107.00"
-*ImageableArea A3/A3: "18.00 14.40 824.00 1175.60"
+*ImageableArea A3/A3: "18.00 36.00 824.00 1181.00"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612.00 792.00"
 *PaperDimension A4/A4: "595.00 842.00"
@@ -368,6 +368,15 @@ lity:PenSet=2,Quality:FullBleed=1"
 *PaperDimension SuperB/Super B: "936.00 1368.00"
 *PaperDimension w774h1116/8K: "774.00 1116.00"
 *PaperDimension A3/A3: "842.00 1190.00"
+*MaxMediaWidth: "936.00"
+*MaxMediaHeight: "1368.00"
+*HWMargins: 18.00 36.00 18.00 9.00
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 72.00 936.00
+*ParamCustomPageSize Height: 2 points 288.00 1368.00
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *PrintoutMode/Printout Mode: PickOne
 *OrderDependency: 10.0 AnySetup *PrintoutMode
 *DefaultPrintoutMode: Normal
@@ -465,4 +474,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_k7100-hpijs.ppd, 24508 bytes.
+*% End of hp-officejet_k7100-hpijs.ppd, 24932 bytes.

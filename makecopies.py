@@ -223,8 +223,12 @@ if mode == GUI_MODE:
             pass
 
     else: # qt4   
-        from PyQt4.QtGui import QApplication
-        from ui4.makecopiesdialog import MakeCopiesDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.makecopiesdialog import MakeCopiesDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
 
         #try:
         if 1:

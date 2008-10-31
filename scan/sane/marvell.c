@@ -67,7 +67,7 @@ static int bb_load(struct marvell_session *ps, const char *so)
    } 
 
    /* Load math library manually with symbols exported (Ubuntu 8.04). Otherwise the plugin will not find it. */ 
-   if ((ps->hpmud_handle = dlopen("libm.so", RTLD_LAZY|RTLD_GLOBAL)) == NULL)
+   if ((ps->math_handle = dlopen("libm.so", RTLD_LAZY|RTLD_GLOBAL)) == NULL)
    {
       BUG("unable to load restricted library: %s\n", dlerror());
       goto bugout;
@@ -140,6 +140,11 @@ static int bb_unload(struct marvell_session *ps)
    {   
       dlclose(ps->hpmud_handle);
       ps->hpmud_handle = NULL;
+   }  
+   if (ps->math_handle)
+   {   
+      dlclose(ps->math_handle);
+      ps->math_handle = NULL;
    }  
    return 0;
 }

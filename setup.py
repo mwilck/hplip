@@ -275,9 +275,13 @@ if mode == GUI_MODE:
         app.exec_loop()
     
     else: # qt4
-        from PyQt4.QtGui import QApplication
-        from ui4.setupdialog import SetupDialog
-        
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.setupdialog import SetupDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)
+            
         if 1:
             app = QApplication(sys.argv)
             

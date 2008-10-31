@@ -189,8 +189,12 @@ if mode == GUI_MODE:
             pass
 
     else: # qt4
-        from PyQt4.QtGui import QApplication
-        from ui4.sendfaxdialog import SendFaxDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.sendfaxdialog import SendFaxDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)            
 
         app = QApplication(sys.argv)
 
@@ -324,7 +328,6 @@ else: # NON_INTERACTIVE_MODE
                     sys.exit(1)
 
             if not mod.args:
-                log.error()
                 mod.usage(error_msg=["No files specfied to send. Please specify the file(s) to send on the command line."])
 
             file_list = []

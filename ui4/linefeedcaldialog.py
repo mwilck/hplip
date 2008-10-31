@@ -24,7 +24,7 @@ import operator
 
 # Local
 from base.g import *
-from base import device, utils
+from base import device, utils, maint
 #from prnt import cups
 from base.codes import *
 from ui_utils import *
@@ -64,6 +64,8 @@ class LineFeedCalDialog(QDialog, Ui_Dialog):
 
     def updateUi(self):
         self.DeviceComboBox.updateUi()
+        self.LoadPaper.setButtonName(self.__tr("Calibrate"))
+        self.LoadPaper.updateUi()
         
         
     def DeviceUriComboBox_currentChanged(self, device_uri):
@@ -81,7 +83,37 @@ class LineFeedCalDialog(QDialog, Ui_Dialog):
         
         
     def CalibrateButton_clicked(self):
-        pass
+        d = None
+        
+        try:    
+            try:
+                d = device.Device(self.device_uri)
+            except Error:
+                CheckDeviceUI(self)
+                return
+                
+            linefeed_type = d.linefeed_cal_type
+            
+            try:
+                d.open()
+            except Error:
+                CheckDeviceUI(self)
+            else:
+                if d.isIdleAndNoError():
+                    if linefeed_type == LINEFEED_CAL_TYPE_OJ_K550: # 1
+                        maint.linefeedCalType1(d, lambda : True)
+
+                    elif linefeed_type == LINEFEED_CAL_TYPE_OJ_PRO_L7XXX: # 2
+                        maint.linefeedCalType2(d, lambda : True)
+
+                else:
+                    CheckDeviceUI(self)
+
+        finally:
+            if d is not None:
+                d.close()
+            
+        self.close()
 
     #
     # Misc

@@ -139,8 +139,12 @@ try:
             d.close()
 
     else: # GUI mode
-        from PyQt4.QtGui import QApplication
-        from ui4.infodialog import InfoDialog
+        try:
+            from PyQt4.QtGui import QApplication
+            from ui4.infodialog import InfoDialog
+        except ImportError:
+            log.error("Unable to load Qt4 support. Is it installed?")
+            sys.exit(1)        
         
         if 1:
             app = QApplication(sys.argv)

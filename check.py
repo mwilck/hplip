@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '14.0'
+__version__ = '14.1'
 __title__ = 'Dependency/Version Check Utility'
 __mod__ = 'hp-check'
 __doc__ = "Check the existence and versions of HPLIP dependencies."
@@ -233,9 +233,9 @@ try:
 
 
     log.info()
-    log.info(log.bold("Checking PyQt version..."))
+    log.info(log.bold("Checking PyQt 3.x version..."))
 
-    # PyQt
+    # PyQt 3
     try:
         import qt
     except ImportError:
@@ -277,24 +277,40 @@ try:
                     log.error("Ver. %d.%d or greater required." % (MINIMUM_PYQT_MAJOR_VER, MINIMUM_PYQT_MINOR_VER))
                 else:
                     log.info("OK, version %d.%d installed." % (maj_ver, min_ver))
+        del qt
 
-
+    
+    
     log.info()
-    log.info(log.bold("Checking SIP version..."))
+    log.info(log.bold("Checking PyQt 4.x version..."))
 
-    sip_ver = None
-    try:
-        import pyqtconfig
-    except ImportError:
-        pass
-    else:
-        sip_ver = pyqtconfig.Configuration().sip_version_str 
+#    # PyQt 4
+#    try:
+#        import PyQt4
+#    except ImportError:
+#        num_errors += 1
+#        log.error("NOT FOUND OR FAILED TO LOAD!")
+#    else:
+#        from PyQt4 import QtCore
+#        log.info("OK, version %s installed." % QtCore.PYQT_VERSION_STR)
 
-    if sip_ver is not None:
-        log.info("OK, Version %s installed" % sip_ver)
-    else:
-        num_errors += 1
-        log.error("SIP not installed or version not found.")
+
+#    log.info()
+#    log.info(log.bold("Checking SIP version..."))
+#
+#    sip_ver = None
+#    try:
+#        import pyqtconfig
+#    except ImportError:
+#        pass
+#    else:
+#        sip_ver = pyqtconfig.Configuration().sip_version_str 
+#
+#    if sip_ver is not None:
+#        log.info("OK, Version %s installed" % sip_ver)
+#    else:
+#        num_errors += 1
+#        log.error("SIP not installed or version not found.")
 
     log.info()
     log.info(log.bold("Checking for CUPS..."))
@@ -453,8 +469,21 @@ try:
 
             log.info()
             log.info(log.bold("Current contents of '/etc/hp/hplip.conf' file:"))
-            output = file('/etc/hp/hplip.conf', 'r').read()
-            log.info(output)
+            try:
+                output = file('/etc/hp/hplip.conf', 'r').read()
+            except (IOError, OSError), e:
+                log.error("Could not access file: %s" % e.strerror) 
+            else:
+                log.info(output)
+            
+            log.info()
+            log.info(log.bold("Current contents of '~/.hplip/hplip.conf' file:"))
+            try:
+                output = file(os.path.expanduser('~/.hplip/hplip.conf'), 'r').read()
+            except (IOError, OSError), e:
+                log.error("Could not access file: %s" % e.strerror) 
+            else:
+                log.info(output)
 
         else:
             log.info("Not found.")  
@@ -567,11 +596,11 @@ try:
                     status, output = utils.run('lpstat -p%s' % printer_name)
                     log.info("Printer status: %s" % output.replace("\n", ""))
 
-                    if back_end == 'hpfax' and desc != 'HP Fax':
+                    if back_end == 'hpfax' and not 'HP Fax' in desc:
                         num_errors += 1
                         log.error("Incorrect PPD file for fax queue '%s'. Fax queues must use 'HP-Fax-hplip.ppd'." % printer_name)
 
-                    elif back_end == 'hp' and desc == 'HP Fax':
+                    elif back_end == 'hp' and 'HP Fax' in desc:
                         num_errors += 1
                         log.error("Incorrect PPD file for a print queue '%s'. Print queues must not use 'HP-Fax-hplip.ppd'." % printer_name)
 

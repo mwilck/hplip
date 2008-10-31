@@ -38,14 +38,14 @@ LOADPAPER_TYPE_PHOTO_PAPER = 1
 class LoadPaperGroupBox(QGroupBox):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
-        
+
         self.initUi()
         self.typ = LOADPAPER_TYPE_PLAIN_PAPER
         self.button_name = self.__tr("Next >")
-    
-    
+
+
     def initUi(self):
-        print "LoadPaperWidget.initUi()"
+        #print "LoadPaperWidget.initUi()"
 
         self.GridLayout = QGridLayout(self)
         self.GridLayout.setObjectName("GridLayout")
@@ -76,27 +76,28 @@ class LoadPaperGroupBox(QGroupBox):
         self.Text.setWordWrap(True)
         self.Text.setObjectName("Text")
         self.GridLayout.addWidget(self.Text,0,2,1,1)
-        
+
         self.LoadPaperPix.setPixmap(load_pixmap("load_paper", "other"))
-        
-        
+
+
     def updateUi(self):
-        print "LoadPaperWidget.updateUi()"
+        #print "LoadPaperWidget.updateUi()"
         if self.typ == LOADPAPER_TYPE_PLAIN_PAPER:
             paper_name = self.__tr("plain paper")
         else:
             paper_name = self.__tr("photo paper")
-            
+
         self.Text.setText(self.__tr("Please load <b>%1</b> in the printer and then click <i>%2</i> to continue.").arg(paper_name).arg(self.button_name))
-                
-    
+
+
     def setType(self, typ):
         if typ in (LOADPAPER_TYPE_PHOTO_PAPER, LOADPAPER_TYPE_PHOTO_PAPER):
             self.typ = typ
-        
-        
+
+
     def setButtonName(self, b):
         self.button_name = b
-        
+
+
     def __tr(self,s,c = None):
         return qApp.translate("LoadPaperWidget",s,c)

@@ -290,6 +290,7 @@ class FaxAddressBook(object): # Pickle based address book
     def delete(self, name):
         if name in self._data:
             del self._data[name]
+            self.save()
             return True
 
         return False
@@ -310,12 +311,14 @@ class FaxAddressBook(object): # Pickle based address book
             else:
                 if group in v['groups']:
                     v['groups'].remove(unicode(group))
+        self.save()
 
 
     def delete_group(self, group):
         for e, v in self._data.items():
             if group in v['groups']:
                 v['groups'].remove(unicode(group))
+        self.save()
 
 
     def group_members(self, group):
@@ -387,7 +390,7 @@ class FaxAddressBook(object): # Pickle based address book
                 
                 self.set(card['name'], '', card.get('first name', ''), card.get('last name', ''), 
                     fax, org, card.get('notes', ''))
-        
+
         return True, ''
 
 

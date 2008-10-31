@@ -53,6 +53,7 @@ dbus_avail = False
 dbus_disabled = False
 try:
     import dbus
+    from dbus import lowlevel, SessionBus
     dbus_avail = True
 except ImportError:
     log.warn("python-dbus not installed.")
@@ -88,7 +89,10 @@ usb_pat = re.compile(r"""(\d+):(\d+)""", re.IGNORECASE)
 #
 
 class Event(object):
-    def __init__(self, device_uri, printer_name, event_code, username, job_id, title, timedate=0):
+    def __init__(self, device_uri, printer_name, event_code, 
+                 username=prop.username, job_id=0, title='', 
+                 timedate=0):
+                     
         self.device_uri = str(device_uri).replace('\x00', '')
         self.printer_name = str(printer_name).replace('\x00', '')
         self.event_code = int(event_code)
@@ -101,8 +105,10 @@ class Event(object):
         else:
             self.timedate = time.time()
 
-        self.fmt = "64s64sI32sI64sf"
-
+        self.pipe_fmt = "64s64sI32sI64sf"
+        self.dbus_fmt = "ssisisd"
+        
+        
     def debug(self):
         log.debug("    device_uri=%s" % self.device_uri)
         log.debug("    printer_name=%s" % self.printer_name)
@@ -112,9 +118,35 @@ class Event(object):
         log.debug("    title=%s" % self.title)
         log.debug("    timedate=%s" % self.timedate)
 
-    def pack(self): # pack up for transport in pipe between hpssd and systemtray_ui and between toolbox and toolbox dbus receiver
-        return struct.pack(self.fmt, self.device_uri[:64], self.printer_name[:64],
-                self.event_code, self.username[:32], self.job_id, self.title[:64], self.timedate)
+
+    def pack_for_pipe(self):
+        return struct.pack(self.pipe_fmt, self.device_uri[:64], self.printer_name[:64],
+                self.event_code, self.username[:32], self.job_id, self.title[:64], 
+                self.timedate)
+                
+                
+    def send_via_pipe(self, fd, recipient='hpssd'):
+        if fd is not None:
+            log.debug("Sending event %d to %s (via pipe %d)..." % (self.event_code, recipient, fd))
+            try:
+                os.write(fd, self.pack_for_pipe())
+                return True
+            except OSError:
+                log.debug("Failed.")
+                return False
+                
+            
+    def send_via_dbus(self, session_bus, interface='com.hplip.StatusService'):
+        if session_bus is not None and dbus_avail:
+            log.debug("Sending event %d to %s (via dbus)..." % (self.event_code, interface))
+            msg = lowlevel.SignalMessage('/', interface, 'Event')
+            msg.append(signature=self.dbus_fmt, *self.as_tuple())
+            session_bus.send_message(msg)
+            
+            
+    def copy(self):
+        return Event(*self.as_tuple())
+        
 
     def __str__(self):
         return "<Event('%s', '%s', %d, '%s', %d, '%s', %f)>" % self.as_tuple()
@@ -123,6 +155,56 @@ class Event(object):
     def as_tuple(self):
         return (self.device_uri, self.printer_name, self.event_code,
              self.username, self.job_id, self.title, self.timedate)
+
+
+class FaxEvent(Event):
+    def __init__(self, temp_file, event):
+        Event.__init__(self, *event.as_tuple())
+        self.temp_file = temp_file
+        self.pipe_fmt = "64s64sI32sI64sfs"
+        self.dbus_fmt = "ssisisfs"
+
+
+    def debug(self):
+        log.debug("FAX:")
+        Event.debug(self)
+        log.debug("    temp_file=%s" % self.temp_file)
+
+
+    def __str__(self):
+        return "<FaxEvent('%s', '%s', %d, '%s', %d, '%s', %f, '%s')>" % self.as_tuple()      
+
+
+    def as_tuple(self):
+        return (self.device_uri, self.printer_name, self.event_code, 
+             self.username, self.job_id, self.title, self.timedate,
+             self.temp_file)
+
+
+
+class DeviceIOEvent(Event):
+    def __init__(self, bytes_written, event):
+        Event.__init__(self, *event.as_tuple())
+        self.bytes_written = bytes_written
+        self.pipe_fmt = "64s64sI32sI64sfI"
+        self.dbus_fmt = "ssisisfi"
+        
+        
+    def debug(self):
+        log.debug("DEVIO:")
+        Event.debug(self)
+        log.debug("    bytes_written=%d" % self.bytes_written)
+
+
+    def __str__(self):
+        return "<DeviceIOEvent('%s', '%s', %d, '%s', %d, '%s', %f, '%d')>" % self.as_tuple()      
+
+
+    def as_tuple(self):
+        return (self.device_uri, self.printer_name, self.event_code, 
+             self.username, self.job_id, self.title, self.timedate,
+             self.bytes_written)
+        
 
 #
 # DBus Support
@@ -935,6 +1017,9 @@ class Device(object):
         self.device_uri = device_uri
         self.callback = callback
         self.device_type = DEVICE_TYPE_UNKNOWN
+        
+        if self.device_uri is None:
+            raise Error(ERROR_DEVICE_NOT_FOUND)            
 
         if self.device_uri.startswith('hp:'):
             self.device_type = DEVICE_TYPE_PRINTER
@@ -975,6 +1060,7 @@ class Device(object):
         self.panel_check = True
         self.io_state = IO_STATE_HP_READY
         self.is_local = isLocal(self.bus)
+        self.hist = []
 
         self.supported = False
 
@@ -1049,6 +1135,7 @@ class Device(object):
     def sendEvent(self, event_code, printer_name='', job_id=0, title=''):
         if self.dbus_avail and self.service is not None:
             try:
+                log.debug("Sending event %d to hpssd..." % event_code)
                 self.service.SendEvent(self.device_uri, printer_name, event_code, prop.username, job_id, title)
             except dbus.exceptions.DBusException, e:
                 log.debug("dbus call to SendEvent() failed.")
@@ -1390,6 +1477,10 @@ class Device(object):
 
 
     def __queryFax(self, quick=False, reread_cups_printers=False):
+#       print "__queryFax()"
+#       raise Error(ERROR_DEVICE_IO_ERROR)
+#       return
+
         io_mode = self.mq.get('io-mode', IO_MODE_UNI)
         self.status_code = STATUS_PRINTER_IDLE
 
@@ -1506,7 +1597,10 @@ class Device(object):
 
 
     def queryDevice(self, quick=False, reread_cups_printers=False):
-        #print "queryDevice()"
+#       print "queryDevice()"
+#       raise Error(ERROR_DEVICE_IO_ERROR)
+#       return
+
         if not self.supported:
             self.dq = {}
 
@@ -1870,12 +1964,19 @@ class Device(object):
 
 
     def isBusyOrInErrorState(self):
-        self.queryDevice(quick=True)
+        try:
+            self.queryDevice(quick=True)
+            #print self.error_state
+        except Error:
+            return True
         return self.error_state > ERROR_STATE_MAX_OK
 
     def isIdleAndNoError(self):
-        self.queryDevice(quick=True)
-        #print self.error_state
+        try:
+            self.queryDevice(quick=True)
+            #print self.error_state
+        except Error:
+            return False
         return self.error_state <= ERROR_STATE_MAX_OK
 
     def getPML(self, oid, desired_int_size=pml.INT_SIZE_INT): # oid => ( 'dotted oid value', pml type )
@@ -2000,6 +2101,9 @@ class Device(object):
 
     def __readChannel(self, opener, bytes_to_read, stream=None,
                       timeout=prop.read_timeout, allow_short_read=False):
+#       print "__readChannel()"
+#       raise Error(ERROR_DEVICE_IO_ERROR)
+#       return 0
 
         channel_id = opener()
 
@@ -2074,6 +2178,10 @@ class Device(object):
 
 
     def __writeChannel(self, opener, data):
+#       print "__writeChannel()"
+#       raise Error(ERROR_DEVICE_IO_ERROR)
+#       return 0
+
         channel_id = opener()
 
         buffer, bytes_out, total_bytes_to_write = data, 0, len(data)
@@ -2251,10 +2359,10 @@ class Device(object):
 
         if self.dbus_avail:
             try:
-                history = list(self.service.GetHistory(self.device_uri))
+                device_uri, history = self.service.GetHistory(self.device_uri)
             except dbus.exceptions.DBusException, e:
-                log.debug("dbus call to GetHistory() failed.")
-                history = []
+                log.error("dbus call to GetHistory() failed.")
+                return []
 
             history.reverse()
 
@@ -2304,7 +2412,7 @@ class Device(object):
             self.closeEWS()
 
 
-    def downloadFirmware(self, usb_bus_id=None, usb_device_id=None):
+    def downloadFirmware(self, usb_bus_id=None, usb_device_id=None): # Note: IDs not currently used
         ok = False
         filename = os.path.join(prop.data_dir, "firmware", self.model.lower() + '.fw.gz')
         log.debug(filename)

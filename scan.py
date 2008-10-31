@@ -22,7 +22,7 @@
 
 from __future__ import division
 
-__version__ = '2.0'
+__version__ = '2.1'
 __mod__ = 'hp-scan'
 __title__ = 'Scan Utility'
 __doc__ = "SANE-based scan utility for HPLIP." 
@@ -180,7 +180,7 @@ try:
         ("[OPTIONS] ('email' dest)", "", "header", False),
         ("From: address for 'email' dest:", "--email-from=<email_from_address> (required for 'email' dest.)", "option", False),
         ("To: address for 'email' dest:", "--email-to=<email__to_address> (required for 'email' dest.)", "option", False),
-        ("Email subject for 'email' dest:", '--email-subject="<subject>"', "option", False),
+        ("Email subject for 'email' dest:", '--email-subject="<subject>" or --subject="<subject>"', "option", False),
         ("", 'Use double quotes (") around the subject if it contains space characters.', "option", False),
         ("Note or message for the 'email' dest:", '--email-msg="<msg>" or --email-note="<note>"', "option", False),
         ("", 'Use double quotes (") around the note/message if it contains space characters.', "option", False),
@@ -201,13 +201,16 @@ try:
                           'resize=', 'contrast=', 'adf', 'unit=',
                           'units=', 'area=', 'box=', 'tlx=',
                           'tly=', 'brx=', 'bry=', 'size=',
-                          'file=', 'output=', 'pdf', 'viewer=',
+                          'file=', 'output=', 'pdf=', 'viewer=',
                           'email-from=', 'from=', 'email-to=',
                           'to=', 'email-msg=', 'msg=', 'fax=',
                           'printer=', 'compression=' , 'raw',
                           'jpeg', 'color', 'lineart', 'colour',
                           'bw', 'gray', 'grayscale', 'grey',
-                          'greyscale'])
+                          'greyscale', 'email-subject=',
+                          'subject=', 'to=', 'from=', 'jpg',
+                          'grey-scale', 'gray-scale', 'about=',
+                         ])
                           
  
 

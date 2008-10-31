@@ -1,3 +1,4 @@
+
 /************************************************************************************\
 
   marvelli.h - HP SANE backend support for Marvell based multi-function peripherals
@@ -115,6 +116,8 @@ struct marvell_session
    int (*bb_get_image_data)(struct marvell_session *ps, int max_length); /* see cnt and buf above */
    int (*bb_end_page)(struct marvell_session *ps, int io_error);
    int (*bb_end_scan)(struct marvell_session *ps, int io_error);
+/* Add new elements here. */
+   void *math_handle;         /* returned by dlopen */
 };
 
 #endif  // _MARVELLI_H

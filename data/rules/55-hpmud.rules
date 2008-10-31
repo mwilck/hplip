@@ -114,6 +114,8 @@ SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="be02", OWNER="root", GROUP="lp", MOD
 SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="d002", OWNER="root", GROUP="lp", MODE="0666", ENV{sane_hpaio}="yes"
 # photosmart_pro_b9100_series
 SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="bd02", OWNER="root", GROUP="lp", MODE="0666", ENV{sane_hpaio}="yes"
+# Photosmart_B8500_series
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="d102", OWNER="root", GROUP="lp", MODE="0666", ENV{sane_hpaio}="yes"
 
 # Check for Business Inkjet products (0x03f0xx12).
 SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="??12", OWNER="root", GROUP="lp", MODE="0666", ENV{sane_hpaio}="yes"

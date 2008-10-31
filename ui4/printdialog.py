@@ -133,7 +133,13 @@ class PrintDialog(QDialog, Ui_Dialog):
         try:
             self.PrinterName.updateUi()
             self.BackButton.setEnabled(True)
-            self.NextButton.setText(self.__tr("Print"))
+            num_files = len(self.Files.file_list)
+            
+            if  num_files > 1:
+                self.NextButton.setText(self.__tr("Print %1 Files").arg(num_files))
+            else:
+                self.NextButton.setText(self.__tr("Print File"))
+            
             self.updateStepText(PAGE_OPTIONS)
             # TODO: Enable print button only if printer is accepting and all options are OK (esp. page range)
         finally:
@@ -159,10 +165,14 @@ class PrintDialog(QDialog, Ui_Dialog):
     #
 
     def executePrint(self):
-        print "print"
-        print self.OptionsToolBox.getPrintCommands(self.Files.file_list)
-        print file('/home/dwelch/.cups/lpoptions', 'r').read()
-        # Ask OptionsToolBox for current job params (copies, etc)
+        for cmd in self.OptionsToolBox.getPrintCommands(self.Files.file_list):
+            log.debug(cmd)
+            status, output = utils.run(cmd, log_output=True, password_func=None, timeout=1)
+            if status != 0:
+                FailureUI(self, self.__tr("<b>Print command failed with status code %1.</b><p>%2</p>").arg(status).arg(cmd))
+           
+        self.close()
+        #print file('/home/dwelch/.cups/lpoptions', 'r').read()
         
     #
     # Misc    
@@ -175,7 +185,7 @@ class PrintDialog(QDialog, Ui_Dialog):
     def BackButton_clicked(self):
         p = self.StackedWidget.currentIndex()
         if p == PAGE_OPTIONS:
-            self.StackedWidget.setCurrentIndex(0)
+            self.StackedWidget.setCurrentIndex(PAGE_FILE)
             self.updateFilePage()
 
         else:
@@ -185,7 +195,7 @@ class PrintDialog(QDialog, Ui_Dialog):
     def NextButton_clicked(self):
         p = self.StackedWidget.currentIndex()
         if p == PAGE_FILE:
-            self.StackedWidget.setCurrentIndex(1)
+            self.StackedWidget.setCurrentIndex(PAGE_OPTIONS)
             self.updateOptionsPage()
 
         elif p == PAGE_OPTIONS:

@@ -44,6 +44,7 @@ class DeviceUriComboBox(QWidget):
         self.updating = False
         self.typ = DEVICEURICOMBOBOX_TYPE_PRINTER_ONLY
         self.filter = None
+        self.devices = None
         self.initUi()
 
 
@@ -89,9 +90,9 @@ class DeviceUriComboBox(QWidget):
 
     def setInitialDevice(self, device_uri):
         self.initial_device = device_uri
-
-
-    def updateUi(self):
+        
+    
+    def setDevices(self):
         if self.typ == DEVICEURICOMBOBOX_TYPE_PRINTER_ONLY:
             be_filter = ['hp']
 
@@ -103,6 +104,13 @@ class DeviceUriComboBox(QWidget):
             be_filter = ['hp', 'hpfax']
 
         self.devices = device.getSupportedCUPSDevices(be_filter, self.filter)
+        return len(self.devices)
+
+
+    def updateUi(self):
+        if self.devices is None:
+            self.setDevices()
+
         self.device_index = {}
 
         if self.devices:
@@ -124,6 +132,9 @@ class DeviceUriComboBox(QWidget):
                 self.updating = False
                 
             self.ComboBox.setCurrentIndex(k)
+            
+            if len(self.devices) == 1:
+                self.emit(SIGNAL("DeviceUriComboBox_oneDevice"))
             
         else:
             self.emit(SIGNAL("DeviceUriComboBox_noDevices"))

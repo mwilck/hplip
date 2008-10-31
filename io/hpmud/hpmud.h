@@ -94,6 +94,13 @@ enum HPMUD_SUPPORT_TYPE
    HPMUD_SUPPORT_TYPE_HPLIP = 2,   /* supported by hpijs and "hp" backend */
 };
 
+enum HPMUD_PLUGIN_TYPE
+{
+   HPMUD_PLUGIN_TYPE_NONE = 0,
+   HPMUD_PLUGIN_TYPE_REQUIRED = 1,  
+   HPMUD_PLUGIN_TYPE_OPTIONAL = 2,   
+};
+
 #define HPMUD_S_PRINT_CHANNEL "PRINT"
 #define HPMUD_S_PML_CHANNEL "HP-MESSAGE"
 #define HPMUD_S_SCAN_CHANNEL "HP-SCAN"
@@ -132,6 +139,8 @@ struct hpmud_model_attributes
    enum HPMUD_SCANTYPE scantype;       /* 0=none */
    enum HPMUD_STATUSTYPE statustype;
    enum HPMUD_SUPPORT_TYPE support;
+   enum HPMUD_PLUGIN_TYPE plugin;
+   enum HPMUD_SUPPORT_TYPE reserved[5];
 };
 
 #ifdef __cplusplus

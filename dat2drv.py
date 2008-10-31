@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = "2.2"
+__version__ = "2.3"
 __title__ = 'DAT to DRV.IN converter. Also creates Foomatic XML files.'
 __doc__ = "Create DRV.IN file and Foomatic XML files from MODELS.DAT data. Processes all *.in.template files in prnt/drv directory."
 
@@ -433,18 +433,20 @@ def main(args):
                     continue
                 
                 for m in models_dict:
-                    if tech_class in models_dict[m]['tech-class']:
-                        include = True
+                    include = False
+                    
+                    if tech_class in models_dict[m]['tech-class'] and \
+                        len(models_dict[m]['tech-subclass']) == len(tech_subclass):
                         
-                        for sc in tech_subclass:
-                            for msc in models_dict[m]['tech-subclass']:
-                                if msc not in sc:
-                                    include = False
-                                    break
-                            
-                        if include:
-                            models_placement[m] += 1
-                            matches.append(m)
+                        for msc in models_dict[m]['tech-subclass']:
+                            if msc not in tech_subclass:
+                               break
+                        else:
+                            include = True
+                    
+                    if include:
+                        models_placement[m] += 1
+                        matches.append(m)
                             
                     
                 if matches:
