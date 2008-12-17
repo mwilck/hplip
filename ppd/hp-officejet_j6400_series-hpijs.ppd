@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP Officejet j6400 series Foomatic/hpijs with CUPS.
+*% PPD file for HP Officejet j6400 Series Foomatic/hpijs with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.10.33"
+*FileVersion: "hpijs 2.8.12.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_j6400_series-hpijs.ppd"
@@ -12,9 +12,9 @@
 *Product: "HP Officejet j6450 All-in-one"
 *Product: "HP Officejet j6480 All-in-one"
 *Manufacturer: "HP"
-*ModelName: "HP Officejet j6400 series Foomatic/hpijs"
-*ShortNickName: "HP Officejet j6400 series Foomatic/hpijs"
-*NickName: "HP Officejet j6400 series Foomatic/hpijs, hpijs 2.8.10.33"
+*ModelName: "HP Officejet j6400 Series Foomatic/hpijs"
+*ShortNickName: "HP Officejet j6400 Series Foomatic/hpijs"
+*NickName: "HP Officejet j6400 Series Foomatic/hpijs, hpijs 2.8.12.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

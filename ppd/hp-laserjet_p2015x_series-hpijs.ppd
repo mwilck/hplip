@@ -1,17 +1,17 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP LaserJet p2015x series Foomatic/hpijs with CUPS.
+*% PPD file for HP LaserJet p2015x Series Foomatic/hpijs with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.10.33"
+*FileVersion: "hpijs 2.8.12.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_p2015x_series-hpijs.ppd"
 *Product: "HP LaserJet p2015x"
 *Manufacturer: "HP"
-*ModelName: "HP LaserJet p2015x series Foomatic/hpijs"
-*ShortNickName: "HP LaserJet p2015x series Foomatic/hpijs"
-*NickName: "HP LaserJet p2015x series Foomatic/hpijs, hpijs 2.8.10.33"
+*ModelName: "HP LaserJet p2015x Series Foomatic/hpijs"
+*ShortNickName: "HP LaserJet p2015x Series Foomatic/hpijs"
+*NickName: "HP LaserJet p2015x Series Foomatic/hpijs, hpijs 2.8.12.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

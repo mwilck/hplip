@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.10.33"
+*FileVersion: "hpijs 2.8.12.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_2600-hpijs-pcl3.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 2600 Foomatic/hpijs"
 *ShortNickName: "HP Business Inkjet 2600 Foomatic/hpijs"
-*NickName: "HP Business Inkjet 2600 Foomatic/hpijs, hpijs 2.8.10.33"
+*NickName: "HP Business Inkjet 2600 Foomatic/hpijs, hpijs 2.8.12.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

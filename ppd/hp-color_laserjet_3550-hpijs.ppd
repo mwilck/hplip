@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 2.8.10.33"
+*FileVersion: "hpijs 2.8.12.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_3550-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet 3550 Foomatic/hpijs"
 *ShortNickName: "HP Color LaserJet 3550 Foomatic/hpijs"
-*NickName: "HP Color LaserJet 3550 Foomatic/hpijs, hpijs 2.8.10.33"
+*NickName: "HP Color LaserJet 3550 Foomatic/hpijs, hpijs 2.8.12.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -37,16 +37,19 @@ facturer=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;hp color Lase&&
 rJet 3500&quot;"
 *End
 *FoomaticRIPOption PrintoutMode: "enum Composite B"
-*FoomaticRIPOptionSetting PrintoutMode=Normal: "Quality=600ColorCMYK"
-*FoomaticRIPOptionSetting PrintoutMode=Normal.Gray: "Quality=600Graysc&&
-aleK"
+*FoomaticRIPOptionSetting PrintoutMode=NormalColor: "Quality=NormalColorCMYK"
+*FoomaticRIPOptionSetting PrintoutMode=NormalGray: "Quality=NormalGraysc&&
+aleCMYK"
+*End
+*FoomaticRIPOptionSetting PrintoutMode=BestColor: "Quality=BestColorCMYK"
+*FoomaticRIPOptionSetting PrintoutMode=BestGray: "Quality=BestGraysc&&
+aleCMYK"
 *End
 *FoomaticRIPOption InputSlot: "enum CmdLine C"
 *FoomaticRIPOptionSetting InputSlot=Default: ",PS:MediaPosition=7"
 *FoomaticRIPOptionSetting InputSlot=PhotoTray: ",PS:MediaPosition=6"
 *FoomaticRIPOptionSetting InputSlot=Upper: ",PS:MediaPosition=1"
 *FoomaticRIPOptionSetting InputSlot=Lower: ",PS:MediaPosition=4"
-*FoomaticRIPOptionSetting InputSlot=CDDVDTray: ",PS:MediaPosition=14"
 *FoomaticRIPOptionSetting InputSlot=Envelope: ",PS:MediaPosition=3"
 *FoomaticRIPOptionSetting InputSlot=LargeCapacity: ",PS:MediaPosition=&&
 5"
@@ -80,12 +83,6 @@ ICEHEIGHTPOINTS=420"
 *End
 *FoomaticRIPOptionSetting PageSize=B5JIS: " -dDEVICEWIDTHPOINTS=516 -d&&
 DEVICEHEIGHTPOINTS=729"
-*End
-*FoomaticRIPOptionSetting PageSize=CDDVD80: " -dDEVICEWIDTHPOINTS=237 &&
--dDEVICEHEIGHTPOINTS=237"
-*End
-*FoomaticRIPOptionSetting PageSize=CDDVD120: " -dDEVICEWIDTHPOINTS=360&&
- -dDEVICEHEIGHTPOINTS=360"
 *End
 *FoomaticRIPOptionSetting PageSize=Env10: " -dDEVICEWIDTHPOINTS=297 -d&&
 DEVICEHEIGHTPOINTS=684"
@@ -135,12 +132,20 @@ e=true"
 *End
 *FoomaticRIPOptionSetting Duplex=None: " -dDuplex=false"
 *FoomaticRIPOption Quality: "enum CmdLine B"
-*FoomaticRIPOptionSetting Quality=600ColorCMYK: " -r600 -sIjsParams=Qu&&
+*FoomaticRIPOptionSetting Quality=NormalColorCMYK: " -r600 -sIjsParams=Qu&&
 ality:Quality=0,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet&&
 =2"
 *End
-*FoomaticRIPOptionSetting Quality=600GrayscaleK: " -r600 -sIjsParam&&
+*FoomaticRIPOptionSetting Quality=NormalGrayscaleCMYK: " -r600 -sIjsParam&&
 s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
+nSet=2"
+*End
+*FoomaticRIPOptionSetting Quality=BestColorCMYK: " -r600 -sIjsParams=Qu&&
+ality:Quality=2,Quality:ColorMode=2,Quality:MediaType=0,Quality:PenSet&&
+=2"
+*End
+*FoomaticRIPOptionSetting Quality=BestGrayscaleCMYK: " -r600 -sIjsParam&&
+s=Quality:Quality=2,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
 nSet=2"
 *End
 *1284DeviceID: "MFG:HP;MDL:hp_color_laserjet_3550;DES:hp_color_laserjet_3550;"
@@ -154,15 +159,13 @@ nSet=2"
 *DefaultPageSize: Letter
 *PageSize Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageSize A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
-*PageSize Photo/Photo or 4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
-*PageSize Photo5x7/Photo or 5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
+*PageSize Photo/Photo/4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
+*PageSize Photo5x7/Photo/5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
 *PageSize 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *PageSize 5x8/5x8 inch index card: "%% FoomaticRIPOptionSetting: PageSize=5x8"
 *PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageSize B5JIS/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5JIS"
-*PageSize CDDVD80/CD or DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
-*PageSize CDDVD120/CD or DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
 *PageSize Env10/Envelope #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageSize EnvC5/Envelope C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *PageSize EnvC6/Envelope C6: "%% FoomaticRIPOptionSetting: PageSize=EnvC6"
@@ -182,15 +185,13 @@ nSet=2"
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
-*PageRegion Photo/Photo or 4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
-*PageRegion Photo5x7/Photo or 5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
+*PageRegion Photo/Photo/4x6 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo"
+*PageRegion Photo5x7/Photo/5x7 inch index card: "%% FoomaticRIPOptionSetting: PageSize=Photo5x7"
 *PageRegion 3x5/3x5 inch index card: "%% FoomaticRIPOptionSetting: PageSize=3x5"
 *PageRegion 5x8/5x8 inch index card: "%% FoomaticRIPOptionSetting: PageSize=5x8"
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageRegion B5JIS/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5JIS"
-*PageRegion CDDVD80/CD or DVD 80 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD80"
-*PageRegion CDDVD120/CD or DVD 120 mm: "%% FoomaticRIPOptionSetting: PageSize=CDDVD120"
 *PageRegion Env10/Envelope #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageRegion EnvC5/Envelope C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *PageRegion EnvC6/Envelope C6: "%% FoomaticRIPOptionSetting: PageSize=EnvC6"
@@ -208,15 +209,13 @@ nSet=2"
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "18.00 14.40 594.00 777.60"
 *ImageableArea A4/A4: "18.00 14.40 577.00 827.60"
-*ImageableArea Photo/Photo or 4x6 inch index card: "18.00 14.40 270.00 417.60"
-*ImageableArea Photo5x7/Photo or 5x7 inch index card: "18.00 14.40 342.00 489.60"
+*ImageableArea Photo/Photo/4x6 inch index card: "18.00 14.40 270.00 417.60"
+*ImageableArea Photo5x7/Photo/5x7 inch index card: "18.00 14.40 342.00 489.60"
 *ImageableArea 3x5/3x5 inch index card: "18.00 14.40 198.00 345.60"
 *ImageableArea 5x8/5x8 inch index card: "18.00 14.40 342.00 561.60"
 *ImageableArea A5/A5: "18.00 14.40 402.00 580.60"
 *ImageableArea A6/A6: "18.00 14.40 279.00 405.60"
 *ImageableArea B5JIS/B5 (JIS): "18.00 14.40 498.00 714.60"
-*ImageableArea CDDVD80/CD or DVD 80 mm: "18.00 14.40 219.00 222.60"
-*ImageableArea CDDVD120/CD or DVD 120 mm: "18.00 14.40 342.00 345.60"
 *ImageableArea Env10/Envelope #10: "18.00 14.40 279.00 669.60"
 *ImageableArea EnvC5/Envelope C5: "18.00 14.40 441.00 634.60"
 *ImageableArea EnvC6/Envelope C6: "18.00 14.40 305.00 444.60"
@@ -233,15 +232,13 @@ nSet=2"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612.00 792.00"
 *PaperDimension A4/A4: "595.00 842.00"
-*PaperDimension Photo/Photo or 4x6 inch index card: "288.00 432.00"
-*PaperDimension Photo5x7/Photo or 5x7 inch index card: "360.00 504.00"
+*PaperDimension Photo/Photo/4x6 inch index card: "288.00 432.00"
+*PaperDimension Photo5x7/Photo/5x7 inch index card: "360.00 504.00"
 *PaperDimension 3x5/3x5 inch index card: "216.00 360.00"
 *PaperDimension 5x8/5x8 inch index card: "360.00 576.00"
 *PaperDimension A5/A5: "420.00 595.00"
 *PaperDimension A6/A6: "297.00 420.00"
 *PaperDimension B5JIS/B5 (JIS): "516.00 729.00"
-*PaperDimension CDDVD80/CD or DVD 80 mm: "237.00 237.00"
-*PaperDimension CDDVD120/CD or DVD 120 mm: "360.00 360.00"
 *PaperDimension Env10/Envelope #10: "297.00 684.00"
 *PaperDimension EnvC5/Envelope C5: "459.00 649.00"
 *PaperDimension EnvC6/Envelope C6: "323.00 459.00"
@@ -255,20 +252,22 @@ nSet=2"
 *PaperDimension Oufuku/Oufuku-Hagaki: "420.00 567.00"
 *PaperDimension w558h774/16K: "558.00 774.00"
 *PaperDimension w612h935/Executive (JIS): "612.00 935.00"
-*MaxMediaWidth: "612.00"
-*MaxMediaHeight: "1008.00"
+*MaxMediaWidth: "792.00"
+*MaxMediaHeight: "1224.00"
 *HWMargins: 18.00 14.40 18.00 14.40
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 72.00 612.00
-*ParamCustomPageSize Height: 2 points 288.00 1008.00
+*ParamCustomPageSize Width: 1 points 72.00 792.00
+*ParamCustomPageSize Height: 2 points 288.00 1224.00
 *ParamCustomPageSize WidthOffset: 3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *PrintoutMode/Printout Mode: PickOne
 *OrderDependency: 10.0 AnySetup *PrintoutMode
-*DefaultPrintoutMode: Normal
-*PrintoutMode Normal: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal"
-*PrintoutMode Normal.Gray/Normal Grayscale: "%% FoomaticRIPOptionSetting: PrintoutMode=Normal.Gray"
+*DefaultPrintoutMode: NormalColor
+*PrintoutMode NormalColor/Normal Color: "%% FoomaticRIPOptionSetting: PrintoutMode=NormalColor"
+*PrintoutMode NormalGray/Normal Grayscale: "%% FoomaticRIPOptionSetting: PrintoutMode=NormalGray"
+*PrintoutMode BestColor/Best Color: "%% FoomaticRIPOptionSetting: PrintoutMode=BestColor"
+*PrintoutMode BestGray/Best Grayscale: "%% FoomaticRIPOptionSetting: PrintoutMode=BestGray"
 *CloseUI: *PrintoutMode
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 100.0 AnySetup *InputSlot
@@ -277,7 +276,6 @@ nSet=2"
 *InputSlot PhotoTray/Photo Tray: "%% FoomaticRIPOptionSetting: InputSlot=PhotoTray"
 *InputSlot Upper/Upper Tray: "%% FoomaticRIPOptionSetting: InputSlot=Upper"
 *InputSlot Lower/Lower Tray: "%% FoomaticRIPOptionSetting: InputSlot=Lower"
-*InputSlot CDDVDTray/CD or DVD Tray: "%% FoomaticRIPOptionSetting: InputSlot=CDDVDTray"
 *InputSlot Envelope/Envelope Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Envelope"
 *InputSlot LargeCapacity/Large Capacity Tray: "%% FoomaticRIPOptionSetting: InputSlot=LargeCapacity"
 *InputSlot Manual/Manual Feeder: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
@@ -295,8 +293,10 @@ nSet=2"
 *OrderDependency: 100.0 AnySetup *Quality
 *DefaultQuality: FromPrintoutMode
 *Quality FromPrintoutMode/Controlled by 'Printout Mode': "%% FoomaticRIPOptionSetting: Quality=@PrintoutMode"
-*Quality 600ColorCMYK/600 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMYK"
-*Quality 600GrayscaleK/600 dpi, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
+*Quality NormalColorCMYK/600 dpi, Normal, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=NormalColorCMYK"
+*Quality NormalGrayscaleCMYK/600 dpi, Normal, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=NormalGrayscaleCMYK"
+*Quality BestColorCMYK/600 dpi, Best, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=BestColorCMYK"
+*Quality BestGrayscaleCMYK/600 dpi, Best, Grayscale, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=BestGrayscaleCMYK"
 *CloseUI: *Quality
 *CloseGroup: PrintoutMode
 *DefaultFont: Courier
@@ -335,4 +335,4 @@ nSet=2"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_laserjet_3550-hpijs.ppd, 17112 bytes.
+*% End of hp-color_laserjet_3550-hpijs.ppd, 17124 bytes.
