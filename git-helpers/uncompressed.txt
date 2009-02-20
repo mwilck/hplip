@@ -46,8 +46,10 @@
 ./ppd/hp-business_inkjet_3000-hpijs-pcl3.ppd
 ./ppd/hp-color_inkjet_cp1700-hpijs.ppd
 ./ppd/hp-color_inkjet_printer_cp1700-hpijs.ppd
+./ppd/hp-color_laserjet_1600-hpijs.ppd
 ./ppd/hp-color_laserjet_2500-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_2500_series-hpijs.ppd
+./ppd/hp-color_laserjet_2600n-hpijs.ppd
 ./ppd/hp-color_laserjet_3000-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_3500-hpijs.ppd
 ./ppd/hp-color_laserjet_3500n-hpijs.ppd
@@ -83,6 +85,7 @@
 ./ppd/hp-color_laserjet_cm4730_mfp-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_cm6030_mfp-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_cm6040_mfp-hpijs.ppd
+./ppd/hp-color_laserjet_cp1215-hpijs.ppd
 ./ppd/hp-color_laserjet_cp1514n-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_cp1515n-hpijs-pcl3.ppd
 ./ppd/hp-color_laserjet_cp1518ni-hpijs-pcl3.ppd
@@ -439,6 +442,10 @@
 ./ppd/hp-officejet_lx-hpijs.ppd
 ./ppd/hp-officejet_pro_1150c-hpijs.ppd
 ./ppd/hp-officejet_pro_1170c_series-hpijs.ppd
+./ppd/hp-officejet_pro_8000_a809-hpijs.ppd
+./ppd/hp-officejet_pro_8500_a909a-hpijs.ppd
+./ppd/hp-officejet_pro_8500_a909g-hpijs.ppd
+./ppd/hp-officejet_pro_8500_a909n-hpijs.ppd
 ./ppd/hp-officejet_pro_k5300-hpijs.ppd
 ./ppd/hp-officejet_pro_k5400-hpijs.ppd
 ./ppd/hp-officejet_pro_k550-hpijs.ppd
@@ -530,6 +537,7 @@
 ./ppd/hp-photosmart_a710_series-hpijs.ppd
 ./ppd/hp-photosmart_a820_series-hpijs.ppd
 ./ppd/hp-photosmart_b8500_series-hpijs.ppd
+./ppd/hp-photosmart_c309a_series-hpijs.ppd
 ./ppd/hp-photosmart_c3100_series-hpijs.ppd
 ./ppd/hp-photosmart_c4100_series-hpijs.ppd
 ./ppd/hp-photosmart_c4200_series-hpijs.ppd
@@ -613,6 +621,7 @@
 ./prnt/ps/hp-color_laserjet_2500_series-ps.ppd
 ./prnt/ps/hp-color_laserjet_2550-ps.ppd
 ./prnt/ps/HP_Color_LaserJet_2550-ps.ppd
+./prnt/ps/hp-color_laserjet_2550_series-ps.ppd
 ./prnt/ps/hp-color_laserjet_2605dn-ps.ppd
 ./prnt/ps/hp-color_laserjet_2605dtn-ps.ppd
 ./prnt/ps/hp-color_laserjet_2605-ps.ppd
