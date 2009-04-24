@@ -59,6 +59,8 @@
 #include <font.defs>
 #include <media.defs>
 
+#define VERSION "@VERSION@"
+
 // Copyright for all drivers...
 Copyright "(c) 2004-2008 Copyright Hewlett-Packard Development Company, LP"
 
@@ -66,7 +68,7 @@ Copyright "(c) 2004-2008 Copyright Hewlett-Packard Development Company, LP"
 Manufacturer "HP"
 
 // Driver version
-Version "hpijs @VERSION@"
+Version "hpijs $VERSION"
 
 // Custom driver
 DriverType ps

@@ -35,11 +35,18 @@
 #include <stdio.h>
 #include <math.h>
 
+#define EVENT_PRINT_FAILED_MISSING_PLUGIN 502
+
 #include "global_types.h"
 
 APDK_USING_NAMESPACE
 
 #define BUFFER_CHUNK_SIZE 1024 * 1024 * 2
+
+#define ADDITIONAL_LOG 1
+#define SAVE_PCL_FILE  2
+#define SAVE_INPUT_RASTERS 4
+#define SEND_TO_PRINTER    8
 
 class UXServices:public SystemServices
 {
@@ -158,6 +165,8 @@ public:
 
   PrintContext *pPC;
   Job *pJob;
+  FILE    *outfp;
+  int     m_iLogLevel;
 
 protected:
   

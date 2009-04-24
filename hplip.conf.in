@@ -28,10 +28,11 @@ shadow-build=@shadow_build@
 foomatic-drv-install=@foomatic_drv_install@
 foomatic-ppd-install=@foomatic_ppd_install@
 foomatic-rip-hplip-install=@foomatic_rip_hplip_install@
+cups-ppd-install=@cups_ppd_install@
+cups-drv-install=@cups_drv_install@
 internal-tag=@PACKAGE_BUGREPORT@
 restricted-build=no
 ui-toolkit=@ui_toolkit@
 qt3=@qt3@
 qt4=@qt4@
-
-
+policy-kit=@policykit@

@@ -54,6 +54,9 @@ from g import *
 from codes import *
 import pexpect
 
+BIG_ENDIAN = 0
+LITTLE_ENDIAN = 1
+
 
 
 def lock(f):
@@ -302,7 +305,6 @@ class Queue(Stack):
 
 
 
-
 # RingBuffer class
 # Source: Python Cookbook 1st Ed., sec. 5.18, pg. 201
 # Credit: Sebastien Keim
@@ -393,7 +395,6 @@ except AttributeError:
 
 
 
-
 def which(command, return_full_path=False):
     path = os.getenv('PATH').split(':')
 
@@ -422,7 +423,7 @@ def which(command, return_full_path=False):
         return found_path
 
 
-class UserSettings(object): # Note: Deprecated after 2.8.8 (see ui4/ui_utils.py)
+class UserSettings(object): # Note: Deprecated after 2.8.8 in Qt4 (see ui4/ui_utils.py)
     def __init__(self):
         self.load()
 
@@ -570,6 +571,7 @@ def canEnterGUIMode(): # qt3
 
     return True
 
+
 def canEnterGUIMode4(): # qt4
     if not prop.gui_build:
         log.warn("GUI mode disabled in build.")
@@ -584,6 +586,7 @@ def canEnterGUIMode4(): # qt4
         return False
 
     return True
+
 
 def checkPyQtImport(): # qt3
     # PyQt
@@ -633,6 +636,7 @@ def checkPyQtImport(): # qt3
             return True
 
     return True
+
 
 def checkPyQtImport4():
     try:
@@ -737,6 +741,7 @@ except ImportError:
                                  self.pattern)
             return self.pattern.sub(convert, self.template)
 
+
         def safe_substitute(self, *args, **kws):
             if len(args) > 1:
                 raise TypeError('Too many positional arguments')
@@ -785,8 +790,10 @@ def cat(s):
 
     return Template(s).substitute(sys._getframe(1).f_globals, **locals)
 
+
 identity = string.maketrans('','')
 unprintable = identity.translate(identity, string.printable)
+
 
 def printable(s):
     return s.translate(identity, unprintable)
@@ -797,13 +804,16 @@ def any(S,f=lambda x:x):
         if f(x): return True
     return False
 
+
 def all(S,f=lambda x:x):
     for x in S:
         if not f(x): return False
     return True
 
+
 BROWSERS = ['firefox', 'mozilla', 'konqueror', 'galeon', 'skipstone'] # in preferred order
 BROWSER_OPTS = {'firefox': '-new-window', 'mozilla' : '', 'konqueror': '', 'galeon': '-w', 'skipstone': ''}
+
 
 def find_browser():
     if platform_avail and platform.system() == 'Darwin':
@@ -815,7 +825,8 @@ def find_browser():
         else:
             return None
 
-def openURL(url):
+
+def openURL(url, use_browser_opts=True):
     if platform_avail and platform.system() == 'Darwin':
         cmd = 'open "%s"' % url
         log.debug(cmd)
@@ -825,7 +836,10 @@ def openURL(url):
             bb = which(b)
             if bb:
                 bb = os.path.join(bb, b)
-                cmd = """%s %s "%s" &""" % (bb, BROWSER_OPTS[b], url)
+                if use_browser_opts:
+                    cmd = """%s %s "%s" &""" % (bb, BROWSER_OPTS[b], url)
+                else:
+                    cmd = """%s "%s" &""" % (bb, url)
                 log.debug(cmd)
                 os.system(cmd)
                 break
@@ -938,6 +952,7 @@ class XMLToDictParser:
 def dquote(s):
     return ''.join(['"', s, '"'])
 
+
 # Python 2.2.x compatibility functions (strip() family with char argument added in Python 2.2.3)
 if sys.hexversion < 0x020203f0:
     def xlstrip(s, chars=' '):
@@ -971,21 +986,13 @@ def getBitness():
     else:
         return struct.calcsize("P") << 3
 
+
 def getProcessor():
     if platform_avail:
         return platform.machine().replace(' ', '_').lower() # i386, i686, power_macintosh, etc.
     else:
         return "i686" # TODO: Need a fix here
 
-
-BIG_ENDIAN = 0
-LITTLE_ENDIAN = 1
-
-#def getEndian():
-    #if struct.pack("@I", 0x01020304)[0] == '\x01':
-        #return BIG_ENDIAN
-    #else:
-        #return LITTLE_ENDIAN
 
 def getEndian():
     if sys.byteorder == 'big':
@@ -1528,7 +1535,7 @@ encoding: utf8
         log.info("contact the HPLIP Team.")
 
         log.info(".SH COPYRIGHT")
-        log.info("Copyright (c) 2001-8 Hewlett-Packard Development Company, L.P.")
+        log.info("Copyright (c) 2001-9 Hewlett-Packard Development Company, L.P.")
         log.info(".LP")
         log.info("This software comes with ABSOLUTELY NO WARRANTY.")
         log.info("This is free software, and you are welcome to distribute it")
@@ -1547,7 +1554,7 @@ def log_title(program_name, version, show_ver=True): # TODO: Move to base/module
 
     log.info(log.bold("%s ver. %s" % (program_name, version)))
     log.info("")
-    log.info("Copyright (c) 2001-8 Hewlett-Packard Development Company, LP")
+    log.info("Copyright (c) 2001-9 Hewlett-Packard Development Company, LP")
     log.info("This software comes with ABSOLUTELY NO WARRANTY.")
     log.info("This is free software, and you are welcome to distribute it")
     log.info("under certain conditions. See COPYING file for more details.")
@@ -1559,6 +1566,16 @@ def ireplace(old, search, replace):
     return re.sub(regex, replace, old)
 
 
+def su_sudo():
+    su_sudo_str = None
 
+    if which('kdesu'):
+        su_sudo_str = 'kdesu -- %s'
 
+    elif which('gnomesu'):
+        su_sudo_str = 'gnomesu -c "%s"'
 
+    elif which('gksu'):
+        su_sudo_str = 'gksu "%s"'
+
+    return su_sudo_str

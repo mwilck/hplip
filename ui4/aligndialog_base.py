@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/aligndialog_base.ui'
 #
-# Created: Tue Feb 17 11:36:12 2009
+# Created: Thu Apr  9 13:51:52 2009
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -423,10 +423,6 @@ class Ui_Dialog(object):
         spacerItem25 = QtGui.QSpacerItem(191,29,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
         self.gridlayout.addItem(spacerItem25,4,1,1,1)
 
-        self.BackButton = QtGui.QPushButton(Dialog)
-        self.BackButton.setObjectName("BackButton")
-        self.gridlayout.addWidget(self.BackButton,4,2,1,1)
-
         self.NextButton = QtGui.QPushButton(Dialog)
         self.NextButton.setObjectName("NextButton")
         self.gridlayout.addWidget(self.NextButton,4,3,1,1)
@@ -468,7 +464,6 @@ class Ui_Dialog(object):
         "</style></head><body style=\" font-family:\'DejaVu Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Cartridge alignment on this printer is only available by accessing the front panel of the printer. </span>Please refer to the user guide for the printer for more information. Click <span style=\" font-style:italic;\">Finish</span> to exit.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.StepText.setText(QtGui.QApplication.translate("Dialog", "Step %1 of %2", None, QtGui.QApplication.UnicodeUTF8))
-        self.BackButton.setText(QtGui.QApplication.translate("Dialog", "< Back", None, QtGui.QApplication.UnicodeUTF8))
         self.NextButton.setText(QtGui.QApplication.translate("Dialog", "Next >", None, QtGui.QApplication.UnicodeUTF8))
         self.CancelButton.setText(QtGui.QApplication.translate("Dialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 

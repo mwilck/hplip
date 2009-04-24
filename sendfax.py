@@ -92,10 +92,6 @@ if not prop.fax_build:
 printer_name, device_uri = mod.getPrinterName(printer_name, device_uri,
     filter={'fax-type': (operator.gt, 0)}, back_end_filter=['hpfax'])
 
-#if printer_name is not None:
-#    mod.lockInstance(printer_name)
-
-
 if mode == GUI_MODE:
     if ui_toolkit == 'qt3':
         if not utils.canEnterGUIMode():
@@ -289,8 +285,9 @@ else: # NON_INTERACTIVE_MODE
 
         for p in recipient_list:
             a = db.get(p)
-            phone_num_list.append(a)
-            log.debug("Name=%s Number=%s" % (a['name'], a['fax']))
+            if a['fax']:
+                phone_num_list.append(a)
+                log.debug("Name=%s Number=%s" % (a['name'], a['fax']))
 
         for p in faxnum_list:
             phone_num_list.append({'fax': p, 'name': u'Unknown'})
@@ -379,22 +376,27 @@ else: # NON_INTERACTIVE_MODE
                     if nup > 1:
                         cups.addOption('number-up=%d' % nup)
 
-                    cups_printers = cups.getPrinters()
-                    printer_state = cups.IPP_PRINTER_STATE_STOPPED
-                    for p in cups_printers:
-                        if p.name == printer_name:
-                            printer_state = p.state
+                    while True:
 
-                    log.debug("Printer state = %d" % printer_state)
+                        cups_printers = cups.getPrinters()
+                        printer_state = cups.IPP_PRINTER_STATE_STOPPED
+                        for p in cups_printers:
+                            if p.name == printer_name:
+                                printer_state = p.state
 
-                    if printer_state == cups.IPP_PRINTER_STATE_IDLE:
-                        log.debug("Printer name = %s file = %s" % (printer_name, path))
-                        sent_job_id = cups.printFile(printer_name, path, os.path.basename(path))
-                        log.info("\nRendering file '%s' (job %d)..." % (path, sent_job_id))
-                        log.debug("Job ID=%d" % sent_job_id)
-                    else:
-                        log.error("The CUPS queue for '%s' is in a stopped or busy state. Please check the queue and try again." % printer_name)
-                        sys.exit(1)
+                        log.debug("Printer state = %d" % printer_state)
+
+                        if printer_state == cups.IPP_PRINTER_STATE_IDLE:
+                            log.debug("Printer name = %s file = %s" % (printer_name, path))
+                            sent_job_id = cups.printFile(printer_name, path, os.path.basename(path))
+                            log.info("\nRendering file '%s' (job %d)..." % (path, sent_job_id))
+                            log.debug("Job ID=%d" % sent_job_id)
+                            break
+                        elif printer_state == cups.IPP_PRINTER_STATE_PROCESSING:
+                            log.debug("Waiting for CUPS queue '%s' to become idle." % printer_name)
+                        else:
+                            log.error("The CUPS queue for '%s' is in a stopped or busy state (%d). Please check the queue and try again." % (printer_name, printer_state))
+                            sys.exit(1)
 
                     cups.resetOptions()
 

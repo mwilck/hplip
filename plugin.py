@@ -134,6 +134,23 @@ if mode == GUI_MODE:
             sys.exit(1)
 
 
+PKIT = utils.to_bool(sys_conf.get('configure', 'policy-kit'))
+if PKIT:
+    try:
+        from base.pkit import *
+        try:
+            pkit = PolicyKit()
+            pkit_installed = True
+        except dbus.DBusException, ex:
+            log.error("PolicyKit support requires DBUS or PolicyKit support files missing")
+            pkit_installed = False
+    except:
+        log.error("Unable to load pkit...is HPLIP installed?")
+        pkit_installed = False
+else:
+    pkit_installed = False
+
+
 if mode == GUI_MODE:
     if ui_toolkit == 'qt3':
         try:
@@ -184,7 +201,7 @@ if mode == GUI_MODE:
             except locale.Error:
                 pass
 
-        if not os.geteuid() == 0:
+        if not pkit_installed and not os.geteuid() == 0:
             log.error("You must be root to run this utility.")
 
             QMessageBox.critical(None,
@@ -212,7 +229,7 @@ if mode == GUI_MODE:
 
         app = QApplication(sys.argv)
 
-        if not os.geteuid() == 0:
+        if not pkit_installed and not os.geteuid() == 0:
             log.error("You must be root to run this utility.")
 
             QMessageBox.critical(None,
@@ -237,7 +254,7 @@ if mode == GUI_MODE:
 
 else: # INTERACTIVE_MODE
     try:
-        if not os.geteuid() == 0:
+        if not pkit_installed and not os.geteuid() == 0:
             log.error("You must be root to run this utility.")
             sys.exit(1)
 
@@ -351,12 +368,37 @@ else: # INTERACTIVE_MODE
         log.info("Downloading plug-in from: %s" % plugin_path)
         pm = tui.ProgressMeter("Downloading plug-in:")
 
-        ok, local_plugin = core.download_plugin(plugin_path, size, checksum, timestamp, plugin_download_callback)
+        status, ret = core.download_plugin(plugin_path, size, checksum, timestamp, plugin_download_callback)
         print
 
-        if not ok:
-            log.error("Plug-in download failed: %s" % local_plugin)
+        if status in (core_install.PLUGIN_INSTALL_ERROR_UNABLE_TO_RECV_KEYS, core_install.PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND):
+            log.error("Digital signature file download failed. Without this file, it is not possible to authenticate and validate the plug-in prior to installation.")
+            cont, ans = tui.enter_yes_no("Do you still want to install the plug-in?", 'n')
+
+            if not cont or not ans:
+                sys.exit(0)
+
+        elif status != core_install.PLUGIN_INSTALL_ERROR_NONE:
+
+            if status == core_install.PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND:
+                desc = "Plug-in file not found (server returned 404 or similar error). Error code: %s" % str(ret)
+
+            elif status == core_install.PLUGIN_INSTALL_ERROR_DIGITAL_SIG_BAD:
+                desc = "Plug-in file does not match its digital signature. File may have been corrupted or altered. Error code: %s" % str(ret)
+
+            elif status == core_install.PLUGIN_INSTALL_ERROR_PLUGIN_FILE_CHECKSUM_ERROR:
+                desc = "Plug-in file does not match its checksum. File may have been corrupted or altered."
+
+            elif status == core_install.PLUGIN_INSTALL_ERROR_NO_NETWORK:
+                desc = "Unable to connect to network to download the plug-in. Please check your network connection and try again."
+
+            elif status == core_install.PLUGIN_INSTALL_ERROR_DIRECTORY_ERROR:
+                desc = "Unable to create the plug-in directory. Please check your permissions and try again."
+
+            core.delete_plugin()
+            log.error(desc)
             sys.exit(1)
+
 
         tui.header("INSTALLING PLUG-IN")
 

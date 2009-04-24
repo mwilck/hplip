@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/printsettingsdialog_base.ui'
 #
-# Created: Tue Feb 17 11:36:14 2009
+# Created: Thu Apr  9 13:51:54 2009
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!

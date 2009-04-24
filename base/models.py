@@ -280,7 +280,9 @@ class ModelData:
             'usb-pid' : TYPE_HEX,
             'usb-vid' : TYPE_HEX,
             'job-storage' : TYPE_INT,
+            }
 
+        self.FIELD_TYPES_DYN = {
             # Dynamic model data (from device query)
             'dev-file' : TYPE_STR,
             'fax-uri' : TYPE_STR,
@@ -332,7 +334,7 @@ class ModelData:
             re.compile('^agent(\d+)-sku', re.IGNORECASE) : TYPE_STR,
             re.compile('^in-tray(\d+)', re.IGNORECASE) : TYPE_BOOL,
             re.compile('^out-tray(\d+)', re.IGNORECASE) : TYPE_BOOL,
-            re.compile('model(\d+)', re.IGNORECASE) : TYPE_STR,
+            re.compile('^model(\d+)', re.IGNORECASE) : TYPE_STR,
             }
 
         self.TYPE_CACHE = {}
@@ -476,16 +478,19 @@ class ModelData:
             return self.FIELD_TYPES[key]
         except KeyError:
             try:
-                return self.TYPE_CACHE[key]
+                return self.FIELD_TYPES_DYN[key]
             except KeyError:
-                for pat, typ in self.RE_FIELD_TYPES.items():
-                    match = pat.match(key)
-                    if match is not None:
-                        self.TYPE_CACHE[key] = typ
-                        return typ
+                try:
+                    return self.TYPE_CACHE[key]
+                except KeyError:
+                    for pat, typ in self.RE_FIELD_TYPES.items():
+                        match = pat.match(key)
+                        if match is not None:
+                            self.TYPE_CACHE[key] = typ
+                            return typ
 
-        log.warn("get_data_type(): Defaulted to TYPE_STR for key %s" % key)
-        return TYPE_STR
+        log.error("get_data_type(): Field type lookup failed for key %s" % key)
+        return None
 
 
     def convert_data(self, key, value, typ=None):

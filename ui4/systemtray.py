@@ -174,11 +174,13 @@ class HistoryDevice(QObject):
 
 class SystraySettingsDialog(QDialog):
     def __init__(self, parent, systray_visible, polling,
-                 polling_interval, device_list=None):
+                 polling_interval, systray_messages,
+                 device_list=None):
 
         QDialog.__init__(self, parent)
 
         self.systray_visible = systray_visible
+        self.systray_messages = systray_messages
 
         if device_list is not None:
             self.device_list = device_list
@@ -202,7 +204,8 @@ class SystraySettingsDialog(QDialog):
         self.SystemTraySettings = SystrayFrame(self)
         self.SystemTraySettings.initUi(self.systray_visible,
                                        self.polling, self.polling_interval,
-                                       self.device_list)
+                                       self.device_list,
+                                       self.systray_messages)
 
         sizePolicy = QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -234,6 +237,7 @@ class SystraySettingsDialog(QDialog):
         self.polling = self.SystemTraySettings.polling
         self.polling_interval = self.SystemTraySettings.polling_interval
         self.device_list = self.SystemTraySettings.device_list
+        self.systray_messages = self.SystemTraySettings.systray_messages
         self.accept()
 
 
@@ -254,10 +258,11 @@ class SystemTrayApp(QApplication):
         self.active_icon = False
         self.user_settings = UserSettings()
         self.user_settings.load()
+        self.user_settings.debug()
 
         self.tray_icon = QSystemTrayIcon()
 
-        pm = load_pixmap("prog", "48x48") #, (22, 22))
+        pm = load_pixmap("hp_logo", "32x32")
         self.prop_icon = QIcon(pm)
 
         a = load_pixmap('active', '16x16')
@@ -276,14 +281,10 @@ class SystemTrayApp(QApplication):
             self.addDevice(d)
 
         self.tray_icon.setToolTip(self.__tr("HPLIP Status Service"))
-
         QObject.connect(self.tray_icon, SIGNAL("messageClicked()"), self.messageClicked)
-
         notifier = QSocketNotifier(self.read_pipe, QSocketNotifier.Read)
         QObject.connect(notifier, SIGNAL("activated(int)"), self.notifierActivated)
-
         QObject.connect(self.tray_icon, SIGNAL("activated(QSystemTrayIcon::ActivationReason)"), self.trayActivated)
-
         self.tray_icon.show()
 
         if self.user_settings.systray_visible == SYSTRAY_VISIBLE_SHOW_ALWAYS:
@@ -389,11 +390,14 @@ class SystemTrayApp(QApplication):
         try:
             dlg = SystraySettingsDialog(self.menu, self.user_settings.systray_visible,
                                         self.user_settings.polling, self.user_settings.polling_interval,
+                                        self.user_settings.systray_messages,
                                         self.user_settings.polling_device_list)
 
             if dlg.exec_() == QDialog.Accepted:
                 self.user_settings.systray_visible = dlg.systray_visible
+                self.user_settings.systray_messages = dlg.systray_messages
 
+                print "Saving"
                 self.user_settings.save()
 
                 if self.user_settings.systray_visible == SYSTRAY_VISIBLE_SHOW_ALWAYS:
@@ -566,22 +570,36 @@ class SystemTrayApp(QApplication):
                             icon = ERROR_STATE_TO_ICON.get(error_state, QSystemTrayIcon.Information)
                             desc = device.queryString(event.event_code)
 
-                            if event.job_id and event.title:
-                                log.debug("Bubble: uri=%s desc=%s title=%s user=%s job_id=%d code=%d" %
-                                          (event.device_uri, desc, event.title, event.username, event.job_id, event.event_code))
-                                self.tray_icon.showMessage(self.__tr("HPLIP Device Status"),
-                                    QString("%1\n%2: %3\n(%4/%5)").\
-                                    arg(event.device_uri).\
-                                    arg(desc).arg(event.title).\
-                                    arg(event.username).arg(event.job_id),
-                                    icon, TRAY_MESSAGE_DELAY)
+                            show_message = False
+                            if self.user_settings.systray_messages == SYSTRAY_MESSAGES_SHOW_ALL: # OK, Busy
+                                show_message = True
 
-                            else:
-                                log.debug("Bubble: uri=%s desc=%s code=%d" % (event.device_uri, desc, event.event_code))
-                                self.tray_icon.showMessage(self.__tr("HPLIP Device Status"),
-                                    QString("%1\n%2 (%3)").arg(event.device_uri).\
-                                    arg(desc).arg(event.event_code),
-                                    icon, TRAY_MESSAGE_DELAY)
+                            elif self.user_settings.systray_messages in (SYSTRAY_MESSAGES_SHOW_ERRORS_AND_WARNINGS, SYSTRAY_MESSAGES_SHOW_ERRORS_ONLY):
+                                if error_state == ERROR_STATE_ERROR:
+                                    show_message = True
+
+                                elif self.user_settings.systray_messages == SYSTRAY_MESSAGES_SHOW_ERRORS_AND_WARNINGS and \
+                                    error_state in (ERROR_STATE_WARNING, ERROR_STATE_LOW_SUPPLIES, ERROR_STATE_LOW_PAPER):
+
+                                    show_message = True
+
+                            if show_message:
+                                if event.job_id and event.title:
+                                    log.debug("Bubble: uri=%s desc=%s title=%s user=%s job_id=%d code=%d" %
+                                            (event.device_uri, desc, event.title, event.username, event.job_id, event.event_code))
+                                    self.tray_icon.showMessage(self.__tr("HPLIP Device Status"),
+                                        QString("%1\n%2: %3\n(%4/%5)").\
+                                        arg(event.device_uri).\
+                                        arg(desc).arg(event.title).\
+                                        arg(event.username).arg(event.job_id),
+                                        icon, TRAY_MESSAGE_DELAY)
+
+                                else:
+                                    log.debug("Bubble: uri=%s desc=%s code=%d" % (event.device_uri, desc, event.event_code))
+                                    self.tray_icon.showMessage(self.__tr("HPLIP Device Status"),
+                                        QString("%1\n%2 (%3)").arg(event.device_uri).\
+                                        arg(desc).arg(event.event_code),
+                                        icon, TRAY_MESSAGE_DELAY)
 
             else:
                 break

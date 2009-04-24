@@ -382,10 +382,10 @@ class SystemTrayApp(QApplication):
         self.fmt = "64s64sI32sI64sf"
         self.fmt_size = struct.calcsize(self.fmt)
 
-        self.tray_icon = SystrayIcon(load_pixmap("prog", "48x48", (22, 22)))
+        self.tray_icon = SystrayIcon(load_pixmap("hp_logo", "32x32", (22, 22)))
         self.menu = QPopupMenu()
 
-        title_item = TitleItem(load_pixmap('prog', '48x48', (16, 16)), "HP Status Service")
+        title_item = TitleItem(load_pixmap('hp_logo', '16x16', (16, 16)), "HP Status Service")
         i = self.menu.insertItem(title_item)
         self.menu.setItemEnabled(i, False)
 

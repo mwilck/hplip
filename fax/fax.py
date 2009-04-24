@@ -250,6 +250,7 @@ class FaxAddressBook(object): # Pickle based address book
                 self._data[new_name]
             except KeyError:
                 self._data[new_name] = self._data[old_name].copy()
+                self._data[new_name]['name'] = new_name
                 del self._data[old_name]
                 self.save()
 
@@ -329,7 +330,12 @@ class FaxAddressBook(object): # Pickle based address book
 
     def add_to_group(self, group, members):
         group_members = self.group_members(group)
-        self.update_groups(group, group_members + members)
+        new_group_members = []
+        for m in members:
+            if m not in group_members:
+                new_group_members.append(m)
+
+        self.update_groups(group, group_members + new_group_members)
 
 
     def remove_from_group(self, group, remove_members):
@@ -832,6 +838,7 @@ class FaxSendThread(threading.Thread):
                          "application/x-perl",
                          "application/x-python",
                          "application/x-shell",
+                         "application/x-sh",
                          "text/plain",]:
 
             cups.addOption('prettyprint')

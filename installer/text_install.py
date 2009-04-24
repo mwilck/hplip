@@ -795,17 +795,19 @@ def start(language, auto=True, test_depends=False,
                 #log.error("Unable to load DBus")
                 pass
             else:
-                args = ['', '', EVENT_SYSTEMTRAY_EXIT, prop.username, 0, '', '']
-                msg = lowlevel.SignalMessage('/', 'com.hplip.StatusService', 'Event')
-                msg.append(signature='ssisiss', *args)
-                log.info("Sending close message to hp-systray...")
-                SessionBus().send_message(msg)
-
+                try:
+                    args = ['', '', EVENT_SYSTEMTRAY_EXIT, prop.username, 0, '', '']
+                    msg = lowlevel.SignalMessage('/', 'com.hplip.StatusService', 'Event')
+                    msg.append(signature='ssisiss', *args)
+                    log.info("Sending close message to hp-systray...")
+                    SessionBus().send_message(msg)
+                except:
+                    pass
 
         # Restart or re-plugin if necessary (always True in 2.7.9+)
         if core.restart_required and core.selected_component != 'hpijs':
             tui.title("RESTART OR RE-PLUG IS REQUIRED")
-            cmd = core.su_sudo() % "hp-setup"
+            cmd = "hp-setup"
             paragraph = """If you are installing a USB connected printer, and the printer was plugged in when you started this installer, you will need to either restart your PC or unplug and re-plug in your printer (USB cable only). If you choose to restart, run this command after restarting: %s  (Note: If you are using a parallel connection, you will have to restart your PC. If you are using network/wireless, you can ignore and continue).""" % cmd
 
             for p in tui.format_paragraph(paragraph):

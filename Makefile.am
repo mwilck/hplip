@@ -19,6 +19,7 @@ lib_LTLIBRARIES =
 
 include foomatic_drv.inc
 include unreleased.inc
+include cups_drv.inc
 
 if DOC_BUILD
 wwwsrc = doc
@@ -39,7 +40,7 @@ dist_noinst_SCRIPTS += dat2drv.py install.py hplip-install
 cmddir = $(hplipdir)
 dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
 	sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py scan.py systray.py plugin.py linefeedcal.py pqdiag.py \
-	faxsetup.py devicesetup.py printsettings.py query.py
+	faxsetup.py devicesetup.py printsettings.py query.py pkservice.py
 
 # hp backend.
 hpdir = $(cupsbackenddir)
@@ -61,37 +62,12 @@ dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/statu
 	base/__init__.py base/mfpdtf.py base/utils.py \
 	base/device.py base/logger.py base/slp.py base/exif.py base/strings.py base/magic.py \
 	base/imagesize.py base/pexpect.py base/models.py base/mdns.py base/tui.py base/dime.py \
-	base/ldif.py base/vcard.py base/module.py
+	base/ldif.py base/vcard.py base/module.py base/pkit.py
 
 # installer
 installdir = $(hplipdir)/installer
 dist_install_SCRIPTS = installer/__init__.py installer/dcheck.py installer/distros.dat installer/core_install.py
 dist_noinst_SCRIPTS += installer/text_install.py
-
-# installer/web_install.py installer/trigger.py  installer/fix_symlink.py
-#dist_noinst_SCRIPTS += installer/pages/__init__.py installer/pages/install_required.tmpl installer/pages/installation_path.tmpl
-#installer/pages/component.tmpl \
-#	installer/pages/mode.tmpl installer/pages/confirm_distro.tmpl installer/pages/notes.tmpl installer/pages/error.tmpl
-#installer/pages/options.tmpl \
-#	installer/pages/error_package_manager.tmpl installer/pages/password.tmpl installer/pages/error_required_missing.tmpl
-#installer/pages/progress.tmpl \
-#	installer/pages/error_unsupported_distro.tmpl installer/pages/ready_to_build.tmpl installer/pages/finished.tmpl
-#installer/pages/select_distro.tmpl \
-#	installer/pages/hplip_remove.tmpl installer/pages/hpoj_remove.tmpl installer/pages/unsupported.tmpl installer/pages/turn_off_options.tmpl \
-#	installer/pages/index.tmpl installer/pages/welcome.tmpl installer/pages/install_optional.tmpl installer/pages/quit.tmpl \
-#	installer/pages/install_required.tmpl installer/pages/replug.tmpl installer/pages/restart.tmpl installer/pages/network_unavailable.tmpl \
-#	installer/pages/warning.tmpl
-#dist_noinst_SCRIPTS += installer/scripts/hplip.js installer/scripts/encode.js installer/scripts/misc_code.js
-#dist_noinst_DATA += installer/images/button.png installer/images/favicon.ico installer/images/topbar.png installer/images/view.png \
-#	installer/images/back.png installer/images/circular.gif installer/images/hplogo.png installer/images/tux.png \
-#	installer/images/button1.png installer/images/button1d.png installer/images/replug1.png installer/images/replug2.png \
-#	installer/images/replug3.png installer/images/button2.png
-#dist_noinst_DATA += installer/localization/gui_strings_de_DE.ts installer/localization/gui_strings_en_US.ts
-#installer/localization/gui_strings_es_MX.ts \
-#	installer/localization/gui_strings_fr_FR.ts installer/localization/gui_strings_it_IT.ts installer/localization/gui_strings_pt_BR.ts \
-#	installer/localization/gui_strings_ru_RU.ts installer/localization/gui_strings_zh_CN.ts
-
-#dist_noinst_SCRIPTS += installer/styles/hplip.css installer/styles/misc.css
 
 # makecopies
 copierdir = $(hplipdir)/copier
@@ -117,8 +93,9 @@ modelsdir = $(hplipdir)/data/models
 images_16x16dir = $(hplipdir)/data/images/16x16
 images_24x24dir = $(hplipdir)/data/images/24x24
 images_32x32dir = $(hplipdir)/data/images/32x32
-images_48x48dir = $(hplipdir)/data/images/48x48
+images_64x64dir = $(hplipdir)/data/images/64x64
 images_128x128dir = $(hplipdir)/data/images/128x128
+images_256x256dir = $(hplipdir)/data/images/256x256
 images_devicesdir = $(hplipdir)/data/images/devices
 images_otherdir = $(hplipdir)/data/images/other
 pcldir = $(hplipdir)/data/pcl
@@ -132,8 +109,9 @@ if GUI_BUILD
 dist_images_16x16_DATA = data/images/16x16/*
 dist_images_24x24_DATA = data/images/24x24/*
 dist_images_32x32_DATA = data/images/32x32/*
-dist_images_48x48_DATA = data/images/48x48/*
+dist_images_64x64_DATA = data/images/64x64/*
 dist_images_128x128_DATA = data/images/128x128/*
+dist_images_256x256_DATA = data/images/256x256/*
 dist_images_devices_DATA = data/images/devices/*
 dist_images_other_DATA = data/images/other/*
 endif
@@ -174,7 +152,8 @@ cupsext_la_LIBADD = -lcups
 
 # ip library
 lib_LTLIBRARIES += libhpip.la
-libhpip_la_LDFLAGS = -lm -version-info 0:1:0
+libhpip_la_LDFLAGS = -version-info 0:1:0
+libhpip_la_LIBADD = -lm
 libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
 	ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
 	ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
@@ -195,7 +174,7 @@ else
 libsane_hpaio_la_LDFLAGS = -version-info 1:0:0
 endif
 # The following is a interlibrary dependency that must be compiled first.
-libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la $(DBUS_LIBS) -lcups
+libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la $(DBUS_LIBS) -lcups -ldl
 #libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
 libsane_hpaio_la_CFLAGS = $(DBUS_CFLAGS)
 
@@ -305,37 +284,21 @@ dist_plugins4_SCRIPTS =
 endif
 endif
 
-
-# cheetah
-#dist_noinst_SCRIPTS += Cheetah/Filters.py Cheetah/SettingsManager.py Cheetah/CheetahWrapper.py Cheetah/ImportHooks.py \
-#	Cheetah/SourceReader.py Cheetah/Compiler.py Cheetah/ImportManager.py Cheetah/Template.py Cheetah/DummyTransaction.py \
-#	Cheetah/NameMapper.py Cheetah/TemplateCmdLineIface.py Cheetah/ErrorCatchers.py Cheetah/Parser.py Cheetah/Version.py \
-#	Cheetah/FileUtils.py Cheetah/Servlet.py Cheetah/CacheRegion.py Cheetah/__init__.py
-#dist_noinst_SCRIPTS += Cheetah/Utils/Indenter.py Cheetah/Utils/Misc.py Cheetah/Utils/VerifyType.py \
-#	Cheetah/Utils/WebInputMixin.py Cheetah/Utils/__init__.py
-#dist_noinst_SCRIPTS += Cheetah/Utils/optik/errors.py Cheetah/Utils/optik/option_parser.py Cheetah/Utils/optik/option.py \
-#	Cheetah/Utils/optik/__init__.py
-
-# cherrypy
-#dist_noinst_SCRIPTS += cherrypy/_cphttptools.py cherrypy/_cpwsgi.py cherrypy/__init__.py cherrypy/_cpserver.py cherrypy/_cpwsgiserver.py \
-#	cherrypy/_cpcgifs.py cherrypy/_cpthreadinglocal.py cherrypy/config.py cherrypy/_cpengine.py cherrypy/_cptree.py cherrypy/_cperror.py \
-#	cherrypy/_cputil.py
-#dist_noinst_SCRIPTS += cherrypy/lib/covercp.py cherrypy/lib/form.py cherrypy/lib/__init__.py cherrypy/lib/cptools.py \
-#	cherrypy/lib/httptools.py cherrypy/lib/autoreload.py cherrypy/lib/defaultformmask.py cherrypy/lib/profiler.py
-#dist_noinst_SCRIPTS += cherrypy/filters/nsgmlsfilter.py cherrypy/filters/__init__.py \
-#	cherrypy/filters/responseheadersfilter.py \
-#	cherrypy/filters/basefilter.py cherrypy/filters/sessionauthenticatefilter.py cherrypy/filters/baseurlfilter.py \
-#	cherrypy/filters/sessionfilter.py cherrypy/filters/cachefilter.py cherrypy/filters/staticfilter.py \
-#	cherrypy/filters/decodingfilter.py cherrypy/filters/tidyfilter.py cherrypy/filters/encodingfilter.py \
-#	cherrypy/filters/virtualhostfilter.py cherrypy/filters/gzipfilter.py cherrypy/filters/wsgiappfilter.py \
-#	cherrypy/filters/logdebuginfofilter.py cherrypy/filters/xmlrpcfilter.py
+# PolicyKit
+if POLICYKIT_INSTALL
+policykit_dbus_etcdir = /etc/dbus-1/system.d
+dist_policykit_dbus_etc_DATA = data/policykit/com.hp.hplip.conf
+policykit_dbus_sharedir = /usr/share/dbus-1/system-services
+dist_policykit_dbus_share_DATA = data/policykit/com.hp.hplip.service
+policykit_policydir = /usr/share/PolicyKit/policy
+dist_policykit_policy_DATA = data/policykit/com.hp.hplip.policy
+endif
 
 # hppgsz
 noinst_PROGRAMS += hppgsz
-hppgsz_SOURCES = $(apdk_SOURCES) prnt/hpijs/PrinterProperties.cpp prnt/hpijs/PrinterProperties.h
-hppgsz_CXXFLAGS = $(hpijs_CXXFLAGS)
-#hppgsz_CFLAGS = $(hpijs_CXXFLAGS) -Iprnt/hpijs
-hppgsz_CFLAGS = $(hpijs_CFLAGS)
+hppgsz_SOURCES = prnt/hpijs/PrinterProperties.cpp prnt/hpijs/PrinterProperties.h prnt/hpijs/bug.h
+hppgsz_CXXFLAGS = $(libapdk_la_CXXFLAGS)
+hppgsz_CFLAGS = $(libapdk_la_CFLAGS)
 hppgsz_LDADD = $(hpijs_LDADD)
 
 # hplip.desktop
@@ -367,9 +330,9 @@ ripdir = $(cupsfilterdir)
 dist_rip_SCRIPTS = prnt/hpijs/foomatic-rip-hplip
 endif
 
-# hpijs
-bin_PROGRAMS = hpijs
-apdk_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
+# apdk
+noinst_LTLIBRARIES = libapdk.la
+libapdk_la_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
 	prnt/hpijs/dj9xxvip.cpp prnt/hpijs/dj9xx.cpp prnt/hpijs/capture.cpp prnt/hpijs/colormatch.cpp prnt/hpijs/colormatcher_open.cpp \
 	prnt/hpijs/compression.cpp prnt/hpijs/context.cpp prnt/hpijs/create_so.cpp prnt/hpijs/creator.cpp \
 	prnt/hpijs/dj600.cpp prnt/hpijs/dj630.cpp prnt/hpijs/dj660.cpp prnt/hpijs/dj690.cpp prnt/hpijs/dj6xx.cpp prnt/hpijs/dj8xx.cpp prnt/hpijs/dj600_maps.cpp \
@@ -398,21 +361,33 @@ apdk_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
 	prnt/hpijs/jinclude.h prnt/hpijs/jpegint.h prnt/hpijs/dj55xx.h prnt/hpijs/hpijsfax.h prnt/hpijs/ojprokx50.h \
 	prnt/hpijs/ljzjs.cpp prnt/hpijs/ljzjs.h prnt/hpijs/ljzjsmono.cpp prnt/hpijs/ljm1005.cpp prnt/hpijs/ljm1005.h \
 	prnt/hpijs/ljzjsmono.h prnt/hpijs/hpjbig_wrapper.h prnt/hpijs/quickconnect.cpp prnt/hpijs/quickconnect.h prnt/hpijs/ljp1xxx.h prnt/hpijs/ljzjscolor.cpp prnt/hpijs/ljzjscolor.h
-hpijs_SOURCES = $(apdk_SOURCES) prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c prnt/hpijs/hpijsfax.cpp prnt/hpijs/services.cpp \
-	prnt/hpijs/hpijs.h prnt/hpijs/ijs.h prnt/hpijs/ijs_server.h prnt/hpijs/services.h prnt/hpijs/ijs_client.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h
-hpijs_CXXFLAGS = -DAPDK_DJ660 -DAPDK_DJ6xx -DAPDK_DJ6xxPhoto -DAPDK_DJ8xx -DAPDK_DJ9xx -DAPDK_DJ9xxVIP -DAPDK_DJ630 \
+libapdk_la_CXXFLAGS = -DAPDK_DJ660 -DAPDK_DJ6xx -DAPDK_DJ6xxPhoto -DAPDK_DJ8xx -DAPDK_DJ9xx -DAPDK_DJ9xxVIP -DAPDK_DJ630 \
 	-DAPDK_APOLLO2XXX -DAPDK_APOLLO21XX -DAPDK_APOLLO2560 -DAPDK_DJ600 -DAPDK_DJ350 -DAPDK_DJ8x5 -DAPDK_PSP100 -DAPDK_AUTODUPLEX \
 	-DAPDK_HIGH_RES_MODES -DAPDK_LJMONO -DAPDK_DJ540 -DAPDK_DJ850 -DAPDK_DJ890 -DAPDK_DJ3320 -DAPDK_LJCOLOR -DAPDK_DJGENERICVIP \
 	-DAPDK_LJJETREADY  -DAPDK_LJFASTRASTER -DAPDK_BUFFER_SEND -DAPDK_LDL_COMPRESS -DAPDK_EXTENDED_MEDIASIZE \
 	-DAPDK_MLC_PRINTER -DAPDK_DJ3600 -DAPDK_LJZJS_MONO -DAPDK_LJZJS_COLOR -DAPDK_LJM1005 -DAPDK_QUICKCONNECT \
                 $(APDK_ENDIAN_FLAG) $(APDK_AUTO_INCLUDE_FLAG) -DAPDK_LINUX -DNDEBUG $(DBUS_CFLAGS)
-hpijs_CFLAGS = $(hpijs_CXXFLAGS) -Iprnt/hpijs
+libapdk_la_CFLAGS = $(libapdk_la_CXXFLAGS) -Iprnt/hpijs
 
+# hpijs
+bin_PROGRAMS = hpijs
+hpijs_SOURCES = prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c prnt/hpijs/hpijsfax.cpp prnt/hpijs/services.cpp prnt/hpijs/bug.h \
+	prnt/hpijs/hpijs.h prnt/hpijs/ijs.h prnt/hpijs/ijs_server.h prnt/hpijs/services.h prnt/hpijs/ijs_client.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h
+hpijs_CXXFLAGS = $(libapdk_la_CXXFLAGS)
+hpijs_CFLAGS = $(libapdk_la_CFLAGS)
 if HPLIP_BUILD
-hpijs_LDADD = -ljpeg -ldl libhpip.la libhpmud.la $(DBUS_LIBS)
+hpijs_LDADD = -ljpeg -ldl libhpip.la libhpmud.la libapdk.la $(DBUS_LIBS)
 else
-hpijs_LDADD = -ljpeg -ldl
+hpijs_LDADD = -ljpeg -ldl libapdk.la
 endif
+
+# hpcups
+hpcupsdir = $(cupsfilterdir)
+hpcups_PROGRAMS = hpcups
+hpcups_SOURCES = prnt/hpijs/hpcups.cpp prnt/hpijs/hpcups.h prnt/hpijs/services.cpp prnt/hpijs/services.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h prnt/hpijs/bug.h prnt/hpijs/hpimage.cpp prnt/hpijs/hpimage.h
+hpcups_CXXFLAGS = $(libapdk_la_CXXFLAGS)
+hpcups_CFLAGS = $(libapdk_la_CFLAGS)
+hpcups_LDADD = $(hpijs_LDADD) -lcups -lcupsimage
 
 # PPDs
 ppddir = $(hpppddir)
@@ -422,7 +397,15 @@ dist_ppd_DATA += $(foomatic_ppd_printers)
 endif
 if FOOMATIC_DRV_INSTALL
 cupsdrvdir = $(drvdir)
-dist_cupsdrv_DATA = $(foomatic_drv)
+cupsdrv_DATA = $(foomatic_drv)
+endif
+if CUPS_PPD_INSTALL
+dist_ppd_DATA += $(cups_ppd_printers)
+endif
+if CUPS_DRV_INSTALL
+cupsdrv2dir = $(drvdir)
+dist_cupsdrv2_DATA = prnt/drv/hplip_media.defs
+cupsdrv2_DATA = $(cups_drv)
 endif
 
 install-data-hook:

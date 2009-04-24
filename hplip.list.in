@@ -4,10 +4,10 @@
 #
 #  (c) 2008-2009 Copyright Hewlett-Packard Development Company, LP
 #
-#  Use this configuration for new distributions that support CUPSDDK drv files.
+#  Use this configuration for new distributions that support CUPSDDK 1.2.3 or higher.
 #    ./configure --prefix=/usr
 #
-#  Use this configuration for old distributions that do *not* support CUPSDDK drv files.
+#  Use this configuration for old distributions that do *not* support CUPSDDK 1.2.3 or higher.
 #    ./configure --prefix=/usr --disable-foomatic-drv-install --enable-foomatic-ppd-install --enable-foomatic-rip-hplip-install
 #
 #  Use this command to build the hplipfull package (print, scan, fax, hp-toolbox, hp-setup).
@@ -58,6 +58,7 @@ $scan-build=@scan_build@
 $hpaio-version=libsane-hpaio.so.1.0.0
 $foomatic-rip-install=@epm_foomatic_rip_hplip_install@
 $foomatic-ppd-install=@epm_foomatic_ppd_install@
+$cups-ppd-install=@epm_cups_ppd_install@
 $qt4-install=@epm_qt4_install@
 $machine=@platform@
 
@@ -75,7 +76,10 @@ f 0644 root root $drv/hpijs.drv prnt/drv/hpijs.drv
 f 0755 root root $cupsfilter/foomatic-rip-hplip prnt/hpijs/foomatic-rip-hplip
 %endif
 %if foomatic-ppd-install
-f 0644 root root $ppd/HP ppd/*.ppd.gz
+f 0644 root root $ppd/HP ppd/hpijs/*.ppd.gz
+%endif
+%if cups-ppd-install
+f 0644 root root $ppd/HP ppd/hpcups/*.ppd.gz
 %endif
 f 0644 root root $ppd/HP prnt/ps/*.ppd.gz
 
@@ -109,7 +113,7 @@ if [ -f /etc/sane.d/dll.conf ]; then
       sed -i -e s/^#hpaio/hpaio/ /etc/sane.d/dll.conf
    else
       grep -q ^hpaio /etc/sane.d/dll.conf
-      if [ $$? -ne 0 ]; then 
+      if [ $$? -ne 0 ]; then
 	 echo hpaio >>/etc/sane.d/dll.conf
       fi
    fi
@@ -138,8 +142,14 @@ f 644 root root $ppd/HP fax/ppd/*.ppd.gz
 f 755 root root $home/levels.py levels.py
 f 755 root root $home/toolbox.py toolbox.py
 f 755 root root $home/probe.py probe.py
+f 755 root root $home/devicesetup.py devicesetup.py
+f 755 root root $home/faxsetup.py faxsetup.py
+f 755 root root $home/hpdio.py hpdio.py
+f 755 root root $home/linefeedcal.py linefeedcal.py
+f 755 root root $home/pqdiag.py pqdiag.py
+f 755 root root $home/printsettings.py printsettings.py
+f 755 root root $home/query.py query.py
 f 755 root root $home/__init__.py __init__.py
-f 755 root root $home/hplip-install hplip-install
 d 775 root root $home/fax -
 f 755 root root $home/fax/__init__.py fax/__init__.py
 f 755 root root $home/fax/pmlfax.py fax/pmlfax.py
@@ -147,8 +157,8 @@ f 755 root root $home/fax/soapfax.py fax/soapfax.py
 f 755 root root $home/fax/coverpages.py fax/coverpages.py
 f 755 root root $home/fax/fax.py fax/fax.py
 f 755 root root $home/fax/faxdevice.py fax/faxdevice.py
-f 755 root root $home/install.py install.py
 f 755 root root $home/fab.py fab.py
+f 755 root root $home/pkservice.py pkservice.py
 f 755 root root $home/hpssd.py hpssd.py
 d 775 root root $home/base -
 f 755 root root $home/base base/*.py
@@ -164,42 +174,13 @@ f 755 root root $home/scan.py scan.py
 f 755 root root $home/sendfax.py sendfax.py
 d 775 root root $home/data -
 d 775 root root $home/data/pcl -
-f 644 root root $home/data/pcl/align3_9xx.pcl.gz data/pcl/align3_9xx.pcl.gz
-f 644 root root $home/data/pcl/align2_8xx.pcl.gz data/pcl/align2_8xx.pcl.gz
-f 644 root root $home/data/pcl/align2_9xx.pcl.gz data/pcl/align2_9xx.pcl.gz
-f 644 root root $home/data/pcl/align1_8xx.pcl.gz data/pcl/align1_8xx.pcl.gz
-f 644 root root $home/data/pcl/align6_450.pcl.gz data/pcl/align6_450.pcl.gz
-f 644 root root $home/data/pcl/align3_8xx.pcl.gz data/pcl/align3_8xx.pcl.gz
-f 644 root root $home/data/pcl/crccal.pcl.gz data/pcl/crccal.pcl.gz
-f 644 root root $home/data/pcl/crpcal.pcl.gz data/pcl/crpcal.pcl.gz
-f 644 root root $home/data/pcl/align4_450.pcl.gz data/pcl/align4_450.pcl.gz
-f 644 root root $home/data/pcl/colorcal1_450.pcl.gz data/pcl/colorcal1_450.pcl.gz
-f 644 root root $home/data/pcl/align4_8xx.pcl.gz data/pcl/align4_8xx.pcl.gz
-f 644 root root $home/data/pcl/crcaldone.pcl.gz data/pcl/crcaldone.pcl.gz
-f 644 root root $home/data/pcl/align5_8xx.pcl.gz data/pcl/align5_8xx.pcl.gz
-f 644 root root $home/data/pcl/align1_9xx.pcl.gz data/pcl/align1_9xx.pcl.gz
-f 644 root root $home/data/pcl/crbcal.pcl.gz data/pcl/crbcal.pcl.gz
-f 644 root root $home/data/pcl/crcbcal.pcl.gz data/pcl/crcbcal.pcl.gz
-f 644 root root $home/data/pcl/crcpcal.pcl.gz data/pcl/crcpcal.pcl.gz
-f 644 root root $home/data/pcl/colorcal2_450.pcl.gz data/pcl/colorcal2_450.pcl.gz
+f 644 root root $home/data/pcl data/pcl/*.pcl.gz
 d 775 root root $home/data/ldl -
-f 644 root root $home/data/ldl/cb2pcal.ldl.gz data/ldl/cb2pcal.ldl.gz
-f 644 root root $home/data/ldl/cbcpcal.ldl.gz data/ldl/cbcpcal.ldl.gz
-f 644 root root $home/data/ldl/cbccal.ldl.gz data/ldl/cbccal.ldl.gz
-f 644 root root $home/data/ldl/cbccal_done.ldl.gz data/ldl/cbccal_done.ldl.gz
-f 644 root root $home/data/ldl/cbbcal.ldl.gz data/ldl/cbbcal.ldl.gz
-f 644 root root $home/data/ldl/cb2pcal_done.ldl.gz data/ldl/cb2pcal_done.ldl.gz
-f 644 root root $home/data/ldl/cbpcal.ldl.gz data/ldl/cbpcal.ldl.gz
+f 644 root root $home/data/ldl data/ldl/*.ldl.gz
 d 775 root root $home/data/models -
 f 644 root root $home/data/models/models.dat data/models/models.dat
 d 775 root root $home/data/localization -
-f 644 root root $home/data/localization/hplip_de.qm data/localization/hplip_de.qm
-f 644 root root $home/data/localization/hplip_es.qm data/localization/hplip_es.qm
-f 644 root root $home/data/localization/hplip_zh.qm data/localization/hplip_zh.qm
-f 644 root root $home/data/localization/hplip_it.qm data/localization/hplip_it.qm
-f 644 root root $home/data/localization/hplip_fr.qm data/localization/hplip_fr.qm
-f 644 root root $home/data/localization/hplip_ru.qm data/localization/hplip_ru.qm
-f 644 root root $home/data/localization/hplip_pt.qm data/localization/hplip_pt.qm
+f 644 root root $home/data/localization data/localization/*.qm
 d 775 root root $home/data/images -
 d 775 root root $home/data/images/other -
 f 644 root root $home/data/images/other data/images/other/*
@@ -211,8 +192,10 @@ d 775 root root $home/data/images/32x32 -
 f 644 root root $home/data/images/32x32 data/images/32x32/*
 d 775 root root $home/data/images/128x128 -
 f 644 root root $home/data/images/128x128 data/images/128x128/*
-d 775 root root $home/data/images/48x48 -
-f 644 root root $home/data/images/48x48 data/images/48x48/*
+d 775 root root $home/data/images/64x64 -
+f 644 root root $home/data/images/64x64 data/images/64x64/*
+d 775 root root $home/data/images/256x256 -
+f 644 root root $home/data/images/256x256 data/images/256x256/*
 d 775 root root $home/data/ps -
 f 644 root root $home/data/ps/clean_page.pdf.gz data/ps/clean_page.pdf.gz
 f 644 root root $home/data/ps/testpage.ps.gz data/ps/testpage.ps.gz
@@ -269,6 +252,7 @@ l 755 root root $bindir/hp-systray ../share/hplip/systray.py
 l 755 root root $bindir/hp-firmware ../share/hplip/firmware.py
 l 755 root root $bindir/hp-makeuri ../share/hplip/makeuri.py
 l 755 root root $bindir/hp-fab ../share/hplip/fab.py
+l 755 root root $bindir/hp-pkservice ../share/hplip/pkservice.py
 l 755 root root $bindir/hp-align ../share/hplip/align.py
 l 755 root root $bindir/hp-print ../share/hplip/print.py
 l 755 root root $bindir/hp-setup ../share/hplip/setup.py
@@ -281,6 +265,11 @@ l 755 root root $bindir/hp-check ../share/hplip/check.py
 l 755 root root $bindir/hp-info ../share/hplip/info.py
 l 755 root root $bindir/hp-makecopies ../share/hplip/makecopies.py
 l 755 root root $bindir/hp-scan ../share/hplip/scan.py
+l 755 root root $bindir/hp-devicesetup ../share/hplip/devicesetup.py
+l 755 root root $bindir/hp-faxsetup ../share/hplip/faxsetup.py
+l 755 root root $bindir/hp-linefeedcal ../share/hplip/linefeedcal.py
+l 755 root root $bindir/hp-printsettings ../share/hplip/printsettings.py
+l 755 root root $bindir/hp-query ../share/hplip/query.py
 %endif
 # end !UNLEADED
 
@@ -294,11 +283,26 @@ d 775 root root $home/ui -
 f 755 root root $home/ui ui/*.py
 %endif
 
-%system !darwin
 # Use LINPUS8 for Acer Aspire One
 %ifdef LINPUS8
 f 0644 root root /etc/udev/rules.d/55-hpmud_pam.rules data/rules/55-hpmud_pam.rules
-%else
+%endif
+
+%ifdef RHEL3
+f 0755 root root /etc/hotplug/usb/hpmud data/rules/hpmud
+l 0644 root root /usr/share/cups/model/foomatic-ppds $ppd/HP
+%postinstall <<EOF
+if [ -f /etc/hotplug/usb.usermap ]; then
+   grep -q ^hpmud /etc/hotplug/usb.usermap
+   if [ $$? -ne 0 ]; then
+      echo "hpmud 0x0001 0x03f0 0x0000 0x0000 0x0000 0x00 0x00 0x00 0x00 0x00 0x00 0x00000000" >>/etc/hotplug/usb.usermap
+   fi
+fi
+EOF
+%endif
+
+%system !darwin
+%if !LINPUS8 !RHEL3 !UBUNTU804_DEPENDENCY
 f 0644 root root /etc/udev/rules.d/55-hpmud.rules data/rules/55-hpmud.rules
 f 0644 root root /usr/share/hal/fdi/preprobe/10osvendor/20-hplip-devices.fdi data/rules/20-hplip-devices.fdi
 %endif
@@ -321,11 +325,16 @@ f 0644 root root /usr/share/hal/fdi/preprobe/10osvendor/20-hplip-devices.fdi dat
 %endif
 
 %ifdef UBUNTU804_DEPENDENCY
-%requires python-qt3
+%requires python-qt4
+%requires python-qt4-dbus
 %replaces foomatic-db-hpijs
 %replaces hpijs
 %replaces hplip
 %replaces hplip-data
+f 0644 root root /usr/share/hal/fdi/preprobe/10osvendor/20-hplip-devices.fdi data/rules/20-hplip-devices.fdi
+%postinstall <<EOF
+install -m 644 data/rules/55-hpmud.rules /etc/udev/rules.d
+EOF
 %endif
 
 %ifdef UBUNTU804_UNLEADED_DEPENDENCY
@@ -333,6 +342,53 @@ f 0644 root root /usr/share/hal/fdi/preprobe/10osvendor/20-hplip-devices.fdi dat
 %replaces hpijs
 %replaces hplip
 %replaces hplip-data
+f 0644 root root /usr/share/hal/fdi/preprobe/10osvendor/20-hplip-devices.fdi data/rules/20-hplip-devices.fdi
+%postinstall <<EOF
+install -m 644 data/rules/55-hpmud.rules /etc/udev/rules.d
+EOF
+%endif
+
+%ifdef DEBIAN5
+%requires python-qt4
+%requires python-qt4-dbus
+%requires libc6
+%requires libcups2
+%requires cups-ddk
+%requires libdbus-1-3
+%requires libsane
+%requires libsnmp15
+%requires libusb-0.1-4
+%requires libgcc1
+%requires libjpeg62
+%requires libstdc++6
+%replaces foomatic-db-hpijs
+%replaces hpijs
+%replaces hplip
+%replaces hplip-data
+%replaces hplip-gui
+%postinstall <<EOF
+sed -i -e s/GROUP=\"lp\"/GROUP=\"scanner\"/ /etc/udev/rules.d/55-hpmud.rules
+EOF
+%endif
+
+%ifdef DEBIAN5_UNLEADED
+%requires libc6
+%requires libcups2
+%requires cups-ddk
+%requires libdbus-1-3
+%requires libsane
+%requires libsnmp15
+%requires libusb-0.1-4
+%requires libgcc1
+%requires libjpeg62
+%requires libstdc++6
+%replaces foomatic-db-hpijs
+%replaces hpijs
+%replaces hplip
+%replaces hplip-data
+%postinstall <<EOF
+sed -i -e s/GROUP=\"lp\"/GROUP=\"scanner\"/ /etc/udev/rules.d/55-hpmud.rules
+EOF
 %endif
 
 %if PLUGIN

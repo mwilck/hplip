@@ -193,7 +193,7 @@ sys_conf = SysConfig()
 # System State File: System-wide runtime settings
 sys_state = State()
 
-# Per-user Settings File:
+# Per-user Settings File: (Note: For Qt4 code, limit the use of this to non-GUI apps. only)
 user_conf = UserConfig()
 
 

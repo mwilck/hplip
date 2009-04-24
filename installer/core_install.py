@@ -70,12 +70,24 @@ DEPENDENCY_RUN_TIME = 1
 DEPENDENCY_COMPILE_TIME = 2
 DEPENDENCY_RUN_AND_COMPILE_TIME = 3
 
+# Plug-in download errors
+PLUGIN_INSTALL_ERROR_NONE = 0
+PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND = 1
+PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND = 2
+PLUGIN_INSTALL_ERROR_DIGITAL_SIG_BAD = 3
+PLUGIN_INSTALL_ERROR_PLUGIN_FILE_CHECKSUM_ERROR = 4
+PLUGIN_INSTALL_ERROR_NO_NETWORK = 5
+PLUGIN_INSTALL_ERROR_DIRECTORY_ERROR = 6
+PLUGIN_INSTALL_ERROR_UNABLE_TO_RECV_KEYS = 7
+
+
 PING_TARGET = "www.google.com"
 HTTP_GET_TARGET = "http://www.google.com"
 
-PASSWORD_LIST = [
+EXPECT_WORD_LIST = [
     pexpect.EOF, # 0
     pexpect.TIMEOUT, # 1
+    "Continue?", # 2 (for zypper)
     "passwor[dt]", # en/de/it/ru
     "kennwort", # de?
     "password for", # en
@@ -87,16 +99,41 @@ PASSWORD_LIST = [
     "heslo", # czech
 ]
 
-PASSWORD_EXPECT_LIST = []
-for s in PASSWORD_LIST:
+# Mapping from patterns to probability contribution of pattern
+# Example code from David Mertz' Text Processing in Python.
+# Released in the Public Domain.
+err_pats = {r'(?is)<TITLE>.*?(404|403).*?ERROR.*?</TITLE>': 0.95,
+            r'(?is)<TITLE>.*?ERROR.*?(404|403).*?</TITLE>': 0.95,
+            r'(?is)<TITLE>ERROR</TITLE>': 0.30,
+            r'(?is)<TITLE>.*?ERROR.*?</TITLE>': 0.10,
+            r'(?is)<META .*?(404|403).*?ERROR.*?>': 0.80,
+            r'(?is)<META .*?ERROR.*?(404|403).*?>': 0.80,
+            r'(?is)<TITLE>.*?File Not Found.*?</TITLE>': 0.80,
+            r'(?is)<TITLE>.*?Not Found.*?</TITLE>': 0.40,
+            r'(?is)<BODY.*(404|403).*</BODY>': 0.10,
+            r'(?is)<H1>.*?(404|403).*?</H1>': 0.15,
+            r'(?is)<BODY.*not found.*</BODY>': 0.10,
+            r'(?is)<H1>.*?not found.*?</H1>': 0.15,
+            r'(?is)<BODY.*the requested URL.*</BODY>': 0.10,
+            r'(?is)<BODY.*the page you requested.*</BODY>': 0.10,
+            r'(?is)<BODY.*page.{1,50}unavailable.*</BODY>': 0.10,
+            r'(?is)<BODY.*request.{1,50}unavailable.*</BODY>': 0.10,
+            r'(?i)does not exist': 0.10,
+           }
+# end
+
+
+EXPECT_LIST = []
+for s in EXPECT_WORD_LIST:
     try:
         p = re.compile(s, re.I)
     except TypeError:
-        PASSWORD_EXPECT_LIST.append(s)
+        EXPECT_LIST.append(s)
     else:
-        PASSWORD_EXPECT_LIST.append(p)
+        EXPECT_LIST.append(p)
 
-OK_PROCESS_LIST = ['adpept-notifier',
+OK_PROCESS_LIST = ['adept-notifier',
+                   'adept_notifier',
                    'yum-updatesd',
                    ]
 
@@ -168,7 +205,8 @@ class CoreInstall(object):
         self.ui_toolkit = ui_toolkit
         self.enable = None
         self.disable = None
-        self.plugin_path = os.path.join(prop.home_dir, "data", "plugin")
+#       self.plugin_path = os.path.join(prop.home_dir, "data", "plugin")
+        self.plugin_path = "/tmp"
         self.plugin_version = '0.0.0'
         self.plugin_name = ''
 
@@ -210,7 +248,8 @@ class CoreInstall(object):
             'packaged_version': TYPE_STRING, # Version of HPLIP pre-packaged in distro
             'cups_path_with_bitness' : TYPE_BOOL,
             'ui_toolkit' : TYPE_STRING,  # qt3 or qt4 [or gtk]
-
+            'foomatic_rip_hplip' : TYPE_BOOL,
+            'policykit' : TYPE_BOOL,
         }
 
         # components
@@ -234,6 +273,7 @@ class CoreInstall(object):
             'scan':     (False, 'Scanning support', []),
             'parallel': (False, 'Parallel I/O (LPT)', []),
             'docs':     (False, 'HPLIP documentation (HTML)', []),
+            'policykit': (False, 'Administrative policy framework', []),
 
             # hpijs only
             'hpijs':       (True,  'Required HPIJS base components', []),
@@ -252,6 +292,7 @@ class CoreInstall(object):
             'scan':        True,
             'parallel':    False,
             'docs':        True,
+            'policykit':   False,
 
             # hpijs only
             'hpijs':       True,
@@ -267,19 +308,19 @@ class CoreInstall(object):
             'libtool':          (True,  ['base'], "libtool - Library building support services", self.check_libtool, DEPENDENCY_COMPILE_TIME),
             'cups' :            (True,  ['base', 'hpijs-cups'], 'CUPS - Common Unix Printing System', self.check_cups, DEPENDENCY_RUN_TIME),
             'cups-devel':       (True,  ['base'], 'CUPS devel- Common Unix Printing System development files', self.check_cups_devel, DEPENDENCY_COMPILE_TIME),
+            'cups-image':       (True,  ['base'], "CUPS image - CUPS image development files", self.check_cups_image, DEPENDENCY_COMPILE_TIME),
             'gcc' :             (True,  ['base', 'hpijs'], 'gcc - GNU Project C and C++ Compiler', self.check_gcc, DEPENDENCY_COMPILE_TIME),
             'make' :            (True,  ['base', 'hpijs'], "make - GNU make utility to maintain groups of programs", self.check_make, DEPENDENCY_COMPILE_TIME),
             'python-devel' :    (True,  ['base'], "Python devel - Python development files", self.check_python_devel, DEPENDENCY_COMPILE_TIME),
             'libpthread' :      (True,  ['base'], "libpthread - POSIX threads library", self.check_libpthread, DEPENDENCY_RUN_AND_COMPILE_TIME),
             'python2x':         (True,  ['base'], "Python 2.2 or greater - Python programming language", self.check_python2x, DEPENDENCY_RUN_AND_COMPILE_TIME),
-            'python-xml'  :     (True, ['base'], "Python XML libraries", self.check_python_xml, DEPENDENCY_RUN_TIME),
+            'python-xml'  :     (True,  ['base'], "Python XML libraries", self.check_python_xml, DEPENDENCY_RUN_TIME),
             'gs':               (True,  ['base', 'hpijs'], "GhostScript - PostScript and PDF language interpreter and previewer", self.check_gs, DEPENDENCY_RUN_TIME),
             'libusb':           (True,  ['base'], "libusb - USB library", self.check_libusb, DEPENDENCY_RUN_AND_COMPILE_TIME),
 
-
-
             # Optional base packages
             'cups-ddk':          (False, ['base'], "CUPS DDK - CUPS driver development kit", self.check_cupsddk, DEPENDENCY_RUN_TIME), # req. for .drv PPD installs
+            'policykit':         (False, ['base'], "PolicyKit - Administrative policy framework", self.check_policykit, DEPENDENCY_RUN_TIME), # optional for non-sudo behavior of plugins
 
             # Required scan packages
             'sane':             (True,  ['scan'], "SANE - Scanning library", self.check_sane, DEPENDENCY_RUN_TIME),
@@ -471,7 +512,7 @@ class CoreInstall(object):
             return ''
 
 
-    def run(self, cmd, callback=None, timeout=300):
+    def run(self, cmd, callback=None, timeout=300): # ==> status, output
         if cmd is None:
             return 1, ''
         output = cStringIO.StringIO()
@@ -491,7 +532,7 @@ class CoreInstall(object):
                 while True:
                     update_spinner()
 
-                    i = child.expect_list(PASSWORD_EXPECT_LIST)
+                    i = child.expect_list(EXPECT_LIST)
 
                     cb = child.before
                     if cb:
@@ -525,6 +566,9 @@ class CoreInstall(object):
 
                     elif i == 1: # TIMEOUT
                         continue
+
+                    elif i == 2: # zypper "Continue?"
+                        child.sendline("YES")
 
                     else: # password
                         child.sendline(self.password)
@@ -647,6 +691,7 @@ class CoreInstall(object):
         self.selected_options['network'] = self.get_distro_ver_data('network_supported', True)
         self.selected_options['scan'] = self.get_distro_ver_data('scan_supported', True)
         self.selected_options['parallel'] = self.get_distro_ver_data('parallel_supported', False)
+        self.selected_options['policykit'] = self.get_distro_ver_data('policykit', False)
 
         gui_supported = self.get_distro_ver_data('gui_supported', True)
 
@@ -1057,6 +1102,8 @@ class CoreInstall(object):
             log.debug("CUPS is running.")
             return True
 
+    def check_cups_image(self):
+      return check_file("raster.h", "/usr/include/cups")
 
     def check_hpoj(self):
         log.debug("Checking for 'HPOJ'...")
@@ -1096,6 +1143,11 @@ class CoreInstall(object):
             check_file('media.defs', "/usr/share/cupsddk/include")
 
 
+    def check_policykit(self):
+        log.debug("Checking for PolicyKit...")
+        return check_file('PolicyKit.conf', "/etc/PolicyKit") and check_file('org.gnome.PolicyKit.AuthorizationManager.service', "/usr/share/dbus-1/services")
+
+
     def check_pkg_mgr(self):
         """
             Check if any pkg mgr processes are running
@@ -1108,9 +1160,13 @@ class CoreInstall(object):
             for p in self.package_mgrs:
                 if p in cmdline:
                     for k in OK_PROCESS_LIST:
-                        if k not in cmdline:
-                            log.debug("Found: %s (%d)" % (cmdline, pid))
-                            return (pid, cmdline)
+                        #print k, cmdline
+                        if k in cmdline:
+                            break
+
+                    else:
+                        log.debug("Found: %s (%d)" % (cmdline, pid))
+                        return (pid, cmdline)
 
         log.debug("Not found")
         return (0, '')
@@ -1167,6 +1223,7 @@ class CoreInstall(object):
         configuration['qt4'] = self.selected_options['gui_qt4']
         configuration['scan-build'] = self.selected_options['scan']
         configuration['doc-build'] = self.selected_options['docs']
+        configuration['policykit'] = self.selected_options['policykit']
 
         if self.enable_ppds: # Use ppd install if cups 1.1 or ppd_install=ppd
             configuration['foomatic-ppd-install'] = True
@@ -1199,6 +1256,9 @@ class CoreInstall(object):
 
         if self.get_distro_ver_data('cups_path_with_bitness', False) and self.bitness == 64:
             configure_cmd += ' --with-cupsbackenddir=/usr/lib64/cups/backend --with-cupsfilterdir=/usr/lib64/cups/filter'
+
+        if self.get_distro_ver_data('foomatic_rip_hplip', False):
+            configure_cmd += ' --enable-foomatic-rip-hplip-install'
 
         if self.enable is not None:
             for c in self.enable:
@@ -1593,11 +1653,10 @@ class CoreInstall(object):
         hpsetup = utils.which("hp-setup")
 
         if hpsetup:
-            c = 'hp-setup'
+            cmd = 'hp-setup'
         else:
-            c = './setup.py'
+            cmd = './setup.py'
 
-        cmd = self.su_sudo() % c
         log.debug(cmd)
         status, output = self.run(cmd)
         return status == 0
@@ -1644,7 +1703,7 @@ class CoreInstall(object):
                 status, output = self.run(hpoj_remove_cmd)
 
             if status == 0:
-                self.hpoj_present = check_hpoj()
+                self.hpoj_present = self.check_hpoj()
 
                 if not self.hpoj_present:
                     failed = False
@@ -1772,34 +1831,94 @@ class CoreInstall(object):
         return True
 
 
+    def isErrorPage(self, page):
+        """
+        Example code from David Mertz' Text Processing in Python.
+        Released in the Public Domain.
+        """
+        err_score = 0.0
+
+        for pat, prob in err_pats.items():
+            if err_score > 0.9: break
+            if re.search(pat, page):
+                err_score += prob
+
+        log.debug("File error page score: %f" % (err_score))
+
+        return err_score > 0.50
+
+
     def download_plugin(self, url, size, checksum, timestamp, callback=None):
-        log.debug("Downloading %s plug-in from %s to %s" % (self.plugin_version, url, self.plugin_path))
+        log.debug("Downloading %s plug-in file from '%s' to '%s'..." % (self.plugin_version, url, self.plugin_path))
 
         if not self.create_plugin_dir():
-            return False, "Failed to create plug-in directory: %s" % self.plugin_path
+            return PLUGIN_INSTALL_ERROR_DIRECTORY_ERROR, self.plugin_path
 
         plugin_file = os.path.join(self.plugin_path, self.plugin_name)
 
         try:
             filename, headers = urllib.urlretrieve(url, plugin_file, callback)
         except IOError, e:
-            log.error("Plug-in download failed: %s" % e.strerror)
-            return False, e.strerror
+            #log.error("Plug-in download failed: %s" % e.strerror)
+            return PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND, e.strerror
+
+        if self.isErrorPage(file(plugin_file, 'r').read(1024)):
+            log.debug(file(plugin_file, 'r').read(1024))
+            os.remove(plugin_file)
+            return PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND, -1
 
         calc_checksum = get_checksum(file(plugin_file, 'r').read())
         log.debug("D/L file checksum=%s" % calc_checksum)
 
-        return True, plugin_file
+        # Try to download and check the GPG digital signature
+        digsig_url = url + '.asc'
+        digsig_file = plugin_file + '.asc'
+
+        log.debug("Downloading %s plug-in digital signature file from '%s' to '%s'..." % (self.plugin_version, digsig_url, digsig_file))
+
+        try:
+            filename, headers = urllib.urlretrieve(digsig_url, digsig_file, callback)
+        except IOError, e:
+            #log.error("Plug-in GPG file download failed: %s" % e.strerror)
+            return PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND, e.strerror
+
+        if self.isErrorPage(file(digsig_file, 'r').read(1024)):
+            log.debug(file(digsig_file, 'r').read())
+            os.remove(digsig_file)
+            return PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND, -1
+
+        gpg = utils.which('gpg')
+        if gpg:
+            gpg = os.path.join(gpg, 'gpg')
+            cmd = '%s --no-permission-warning --keyserver pgp.mit.edu --recv-keys 0x9013c005' % gpg
+            log.info("Receiving digital keys: %s" % cmd)
+            status, output = self.run(cmd)
+            #log.debug(output)
+
+            if status != 0:
+                return PLUGIN_INSTALL_ERROR_UNABLE_TO_RECV_KEYS, status
+
+            cmd = '%s --no-permission-warning --verify %s %s' % (gpg, digsig_file, plugin_file)
+            log.debug("Verifying plugin with digital keys: %s" % cmd)
+            status, output = self.run(cmd)
+            log.debug(output)
+            log.debug("%s status: %d" % (gpg, status))
+
+            if status != 0:
+                return PLUGIN_INSTALL_ERROR_DIGITAL_SIG_BAD, status
+
+
+        return PLUGIN_INSTALL_ERROR_NONE, plugin_file
 
 
     def check_for_plugin(self):
-        if not self.plugin_name:
-            self.plugin_name = 'hplip-%s-plugin.run' % self.plugin_version
-
-        plugin = os.path.join(self.plugin_path, self.plugin_name)
-        log.debug("Checking for plugin: %s" % plugin)
-        return os.path.exists(plugin) and \
-            utils.to_bool(sys_state.get('plugin', 'installed', '0'))
+        sys_state.read()
+        is_installed = utils.to_bool(sys_state.get('plugin', 'installed', '0'))
+        if is_installed:
+            log.debug("plugin is installed")
+        else:
+            log.debug("plugin is not installed")
+        return is_installed
 
 
     def run_plugin(self, mode=GUI_MODE, callback=None):
@@ -1814,5 +1933,11 @@ class CoreInstall(object):
             return os.system("sh %s -- -i" % plugin_file) == 0
 
 
+    def delete_plugin(self):
+        plugin_file = os.path.join(self.plugin_path, self.plugin_name)
+        digsig_file = plugin_file + ".asc"
 
-
+        if os.path.exists(plugin_file):
+            os.unlink(plugin_file)
+        if os.path.exists(digsig_file):
+            os.unlink(digsig_file)

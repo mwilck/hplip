@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui4/setupdialog_base.ui'
 #
-# Created: Tue Feb 17 11:36:14 2009
+# Created: Thu Apr  9 13:51:55 2009
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -367,10 +367,39 @@ class Ui_Dialog(object):
         self.gridlayout7.addItem(spacerItem3,4,0,1,1)
 
         self.SendTestPageCheckBox = QtGui.QCheckBox(self.page_3)
-        self.SendTestPageCheckBox.setChecked(True)
+        self.SendTestPageCheckBox.setChecked(False)
         self.SendTestPageCheckBox.setObjectName("SendTestPageCheckBox")
         self.gridlayout7.addWidget(self.SendTestPageCheckBox,5,0,1,1)
         self.StackedWidget.addWidget(self.page_3)
+
+        self.page_5 = QtGui.QWidget()
+        self.page_5.setObjectName("page_5")
+
+        self.gridlayout10 = QtGui.QGridLayout(self.page_5)
+        self.gridlayout10.setObjectName("gridlayout10")
+
+        self.label_15 = QtGui.QLabel(self.page_5)
+
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.label_15.setFont(font)
+        self.label_15.setObjectName("label_15")
+        self.gridlayout10.addWidget(self.label_15,0,0,1,1)
+
+        self.line_4 = QtGui.QFrame(self.page_5)
+        self.line_4.setFrameShape(QtGui.QFrame.HLine)
+        self.line_4.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_4.setObjectName("line_4")
+        self.gridlayout10.addWidget(self.line_4,1,0,1,1)
+
+        self.RemoveDevicesTableWidget = QtGui.QTableWidget(self.page_5)
+        self.RemoveDevicesTableWidget.setAlternatingRowColors(True)
+        self.RemoveDevicesTableWidget.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.RemoveDevicesTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.RemoveDevicesTableWidget.setSortingEnabled(False)
+        self.RemoveDevicesTableWidget.setObjectName("RemoveDevicesTableWidget")
+        self.gridlayout10.addWidget(self.RemoveDevicesTableWidget,2,0,1,1)
+        self.StackedWidget.addWidget(self.page_5)
         self.gridlayout.addWidget(self.StackedWidget,0,0,1,5)
 
         self.StepText = QtGui.QLabel(Dialog)
@@ -435,6 +464,10 @@ class Ui_Dialog(object):
         self.label_12.setText(QtGui.QApplication.translate("Dialog", "Description:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_13.setText(QtGui.QApplication.translate("Dialog", "Location:", None, QtGui.QApplication.UnicodeUTF8))
         self.SendTestPageCheckBox.setText(QtGui.QApplication.translate("Dialog", "Send test page to printer", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_15.setText(QtGui.QApplication.translate("Dialog", "Select Printer/Fax Queues to Remove", None, QtGui.QApplication.UnicodeUTF8))
+        self.RemoveDevicesTableWidget.clear()
+        self.RemoveDevicesTableWidget.setColumnCount(0)
+        self.RemoveDevicesTableWidget.setRowCount(0)
         self.StepText.setText(QtGui.QApplication.translate("Dialog", "Step %1 of %2", None, QtGui.QApplication.UnicodeUTF8))
         self.BackButton.setText(QtGui.QApplication.translate("Dialog", "< Back", None, QtGui.QApplication.UnicodeUTF8))
         self.NextButton.setText(QtGui.QApplication.translate("Dialog", "Next >", None, QtGui.QApplication.UnicodeUTF8))

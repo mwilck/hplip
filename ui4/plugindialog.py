@@ -27,6 +27,14 @@ from prnt import cups
 from base.codes import *
 from ui_utils import *
 from installer.core_install import CoreInstall
+from installer.core_install import  PLUGIN_INSTALL_ERROR_NONE, \
+                                    PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND, \
+                                    PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND, \
+                                    PLUGIN_INSTALL_ERROR_DIGITAL_SIG_BAD, \
+                                    PLUGIN_INSTALL_ERROR_PLUGIN_FILE_CHECKSUM_ERROR, \
+                                    PLUGIN_INSTALL_ERROR_NO_NETWORK, \
+                                    PLUGIN_INSTALL_ERROR_DIRECTORY_ERROR, \
+                                    PLUGIN_INSTALL_ERROR_UNABLE_TO_RECV_KEYS
 
 # Qt
 from PyQt4.QtCore import *
@@ -51,6 +59,11 @@ class PluginDialog(QDialog, Ui_Dialog):
         self.core = CoreInstall()
         self.core.set_plugin_version()
         self.setupUi(self)
+
+        self.user_settings = UserSettings()
+        self.user_settings.load()
+        self.user_settings.debug()
+
         self.initUi()
 
         QTimer.singleShot(0, self.showSourcePage)
@@ -66,7 +79,7 @@ class PluginDialog(QDialog, Ui_Dialog):
         self.connect(self.NextButton, SIGNAL("clicked()"), self.NextButton_clicked)
 
         # Application icon
-        self.setWindowIcon(QIcon(load_pixmap('prog', '48x48')))
+        self.setWindowIcon(QIcon(load_pixmap('hp_logo', '128x128')))
 
 
     #
@@ -157,13 +170,16 @@ class PluginDialog(QDialog, Ui_Dialog):
 
         if not os.path.exists(t):
             path = unicode(QFileDialog.getOpenFileName(self, self.__tr("Select Plug-in File"),
-                                                user_conf.workingDirectory(),
+                                                #user_conf.workingDirectory(),
+                                                self.user_settings.working_dir,
                                                 self.__tr("Plugin Files (*.run)")))
 
         if path:
             self.plugin_path = path
             self.PathLineEdit.setText(self.plugin_path)
-            user_conf.setWorkingDirectory(self.plugin_path)
+            #user_conf.setWorkingDirectory(self.plugin_path)
+            self.user_settings.working_dir = self.plugin_path
+            self.user_settings.save()
 
         self.setPathIndicators()
 
@@ -186,11 +202,43 @@ class PluginDialog(QDialog, Ui_Dialog):
             self.close()
             return
 
-        if self.plugin_path is None: # download
-            # read plugin.conf (local or on sf.net) to get plugin_path (http://)
-            plugin_conf_url = self.core.get_plugin_conf_url()
+        beginWaitCursor()
+        try:
 
-            if plugin_conf_url.startswith('file://'):
+            if self.plugin_path is None: # download
+                # read plugin.conf (local or on sf.net) to get plugin_path (http://)
+                plugin_conf_url = self.core.get_plugin_conf_url()
+
+                if plugin_conf_url.startswith('file://'):
+                    pass
+                else:
+                    log.info("Checking for network connection...")
+                    ok = self.core.check_network_connection()
+
+                    if not ok:
+                        log.error("Network connection not detected.")
+                        endWaitCursor()
+                        FailureUI(self, self.__tr("Network connection not detected."))
+                        self.close()
+                        return
+
+                log.info("Downloading configuration file from: %s" % plugin_conf_url)
+                self.plugin_path, size, checksum, timestamp, ok = self.core.get_plugin_info(plugin_conf_url,
+                    self.plugin_download_callback)
+
+                log.debug("path=%s, size=%d, checksum=%s, timestamp=%f, ok=%s" %
+                        (self.plugin_path, size, checksum, timestamp, ok))
+
+                if not self.plugin_path.startswith('http://') and not self.plugin_path.startswith('file://'):
+                    self.plugin_path = 'file://' + self.plugin_path
+
+            else: # path
+                if not self.plugin_path.startswith('http://'):
+                    self.plugin_path = 'file://' + self.plugin_path
+
+                size, checksum, timestamp = 0, '', 0
+
+            if self.plugin_path.startswith('file://'):
                 pass
             else:
                 log.info("Checking for network connection...")
@@ -198,79 +246,87 @@ class PluginDialog(QDialog, Ui_Dialog):
 
                 if not ok:
                     log.error("Network connection not detected.")
+                    endWaitCursor()
                     FailureUI(self, self.__tr("Network connection not detected."))
                     self.close()
                     return
 
-            log.info("Downloading configuration file from: %s" % plugin_conf_url)
-            self.plugin_path, size, checksum, timestamp, ok = self.core.get_plugin_info(plugin_conf_url,
+            log.info("Downloading plug-in from: %s" % self.plugin_path)
+
+            status, ret = self.core.download_plugin(self.plugin_path, size, checksum, timestamp,
                 self.plugin_download_callback)
 
-            print self.plugin_path, size, checksum, timestamp, ok
+            if status in (PLUGIN_INSTALL_ERROR_UNABLE_TO_RECV_KEYS, PLUGIN_INSTALL_ERROR_DIGITAL_SIG_NOT_FOUND):
+                endWaitCursor()
+                if QMessageBox.question(self, self.__tr("Digital signature download failed"),
+                        self.__tr("<b>The download of the digital signature file failed.</b><p>Without this file, it is not possible to authenticate and validate the plug-in prior to installation.</p>Do you still want to install the plug-in?"),
+                        QMessageBox.Yes | QMessageBox.No) != QMessageBox.Yes:
 
-            log.debug("path=%s, size=%d, checksum=%s, timestamp=%f, ok=%s" %
-                      (self.plugin_path, size, checksum, timestamp, ok))
+                    self.core.delete_plugin()
+                    self.close()
+                    return
 
-            if not self.plugin_path.startswith('http://') and not self.plugin_path.startswith('file://'):
-                self.plugin_path = 'file://' + self.plugin_path
+            elif status != PLUGIN_INSTALL_ERROR_NONE:
 
-        else: # path
-            if not self.plugin_path.startswith('http://'):
-                self.plugin_path = 'file://' + self.plugin_path
+                if status == PLUGIN_INSTALL_ERROR_PLUGIN_FILE_NOT_FOUND:
+                    desc = self.__tr("<b>ERROR: Plug-in file not found (server returned 404 or similar error).</b><p>Error code: %1</p>").arg(str(ret))
 
-            size, checksum, timestamp = 0, '', 0
+                elif status == PLUGIN_INSTALL_ERROR_DIGITAL_SIG_BAD:
+                    desc = self.__tr("<b>ERROR: Plug-in file does not match its digital signature.</b><p>File may have been corrupted or altered.</p><p>Error code: %1</p>").arg(str(ret))
 
-        if self.plugin_path.startswith('file://'):
-            pass
-        else:
-            log.info("Checking for network connection...")
-            ok = self.core.check_network_connection()
+                elif status == PLUGIN_INSTALL_ERROR_PLUGIN_FILE_CHECKSUM_ERROR:
+                    desc = self.__tr("<b>ERROR: Plug-in file does not match its checksum. File may have been corrupted or altered.")
 
-            if not ok:
-                log.error("Network connection not detected.")
-                FailureUI(self, self.__tr("Network connection not detected."))
+                elif status == PLUGIN_INSTALL_ERROR_NO_NETWORK:
+                    desc = self.__tr("<b>ERROR: Unable to connect to network to download the plug-in.</b><p>Please check your network connection and try again.</p>")
+
+                elif status == PLUGIN_INSTALL_ERROR_DIRECTORY_ERROR:
+                    desc = self.__tr("<b>ERROR: Unable to create the plug-in directory.</b><p>Please check your permissions and try again.</p>")
+
+                self.core.delete_plugin()
+                endWaitCursor()
+                FailureUI(self, desc)
                 self.close()
                 return
 
-        log.info("Downloading plug-in from: %s" % self.plugin_path)
+            if not self.core.run_plugin(GUI_MODE, self.plugin_install_callback):
+                self.core.delete_plugin()
+                endWaitCursor()
+                FailureUI(self, self.__tr("Plug-in install failed."))
+                self.close()
+                return
 
-        ok, local_plugin = self.core.download_plugin(self.plugin_path, size, checksum, timestamp,
-            self.plugin_download_callback)
+            cups_devices = device.getSupportedCUPSDevices(['hp'])
+            for dev in cups_devices:
+                mq = device.queryModelByURI(dev)
 
-        if not ok:
-            log.error("Plug-in download failed: %s" % local_plugin)
-            FailureUI(self, self.__tr("Plug-in download failed."))
-            self.close()
-            return
-
-        if not self.core.run_plugin(GUI_MODE, self.plugin_install_callback):
-            FailureUI(self, self.__tr("Plug-in install failed."))
-            self.close()
-            return
-
-        cups_devices = device.getSupportedCUPSDevices(['hp'])
-        for dev in cups_devices:
-            mq = device.queryModelByURI(dev)
-
-            if mq.get('fw-download', False):
-                # Download firmware if needed
-                log.info(log.bold("\nDownloading firmware to device %s..." % dev))
-                try:
-                    d = None
+                if mq.get('fw-download', False):
+                    # Download firmware if needed
+                    log.info(log.bold("\nDownloading firmware to device %s..." % dev))
                     try:
-                        d = device.Device(dev)
-                    except Error:
-                        log.error("Error opening device.")
-                        continue
+                        d = None
+                        try:
+                            d = device.Device(dev)
+                        except Error:
+                            log.error("Error opening device.")
+                            endWaitCursor()
+                            FailureUI(self, self.__tr("<b>Firmware download to device failed.</b><p>%1</p>").arg(dev))
+                            continue
 
-                    if d.downloadFirmware():
-                        log.info("Firmware download successful.\n")
+                        if d.downloadFirmware():
+                            log.info("Firmware download successful.\n")
+                        else:
+                            endWaitCursor()
+                            FailureUI(self, self.__tr("<b>Firmware download to device failed.</b><p>%1</p>").arg(dev))
 
-                finally:
-                    if d is not None:
-                        d.close()
+                    finally:
+                        if d is not None:
+                            d.close()
+        finally:
+            endWaitCursor()
 
-        SuccessUI(self, self.__tr("Plug-in install successful."))
+        self.core.delete_plugin()
+        SuccessUI(self, self.__tr("<b>Plug-in installation successful.</b>"))
         self.result = True
         self.close()
 

@@ -23,7 +23,7 @@ from __future__ import division
 
 # Std Lib
 import struct
-import cStringIO 
+import cStringIO
 import xml.parsers.expat as expat
 import re
 
@@ -288,7 +288,7 @@ def parseVStatus(s):
 
     try:
         fields[2]
-    except IndexError: 
+    except IndexError:
         top_lid = 1 # something went wrong!
     else:
         if fields[2] == 'DN':
@@ -312,7 +312,7 @@ def parseVStatus(s):
              'in-tray2' :   IN_TRAY_NOT_PRESENT,
              'media-path' : MEDIA_PATH_CUT_SHEET, # ?
            }
-           
+
 
 def parseStatus(DeviceID):
     if 'VSTATUS' in DeviceID:
@@ -653,9 +653,9 @@ setup_panel_translator()
 
 def PanelCheck(dev):
     line1, line2 = '', ''
-    
+
     if dev.io_mode not in (IO_MODE_RAW, IO_MODE_UNI):
-    
+
         try:
             dev.openPML()
         except Error:
@@ -725,7 +725,7 @@ def BatteryCheck(dev, status_block, battery_check):
         else:
             if battery_check == STATUS_BATTERY_CHECK_PML:
                 result, battery_level = dev.getPML(pml.OID_BATTERY_LEVEL_2)
-                
+
                 if result > pml.ERROR_MAX_OK:
                     status_block['agents'].append({
                         'kind'   : AGENT_KIND_INT_BATTERY,
@@ -735,7 +735,7 @@ def BatteryCheck(dev, status_block, battery_check):
                         'level-trigger' : AGENT_LEVEL_TRIGGER_SUFFICIENT_0,
                         })
                     return
-                
+
                 else:
                     status_block['agents'].append({
                         'kind'   : AGENT_KIND_INT_BATTERY,
@@ -745,7 +745,7 @@ def BatteryCheck(dev, status_block, battery_check):
                         'level-trigger' : AGENT_LEVEL_TRIGGER_SUFFICIENT_0,
                         })
                     return
-            
+
             else: # STATUS_BATTERY_CHECK_STD
                 result, battery_level = dev.getPML(pml.OID_BATTERY_LEVEL)
                 result, power_mode =  dev.getPML(pml.OID_POWER_MODE)
@@ -778,7 +778,7 @@ def BatteryCheck(dev, status_block, battery_check):
                             'level-trigger' : battery_trigger_level,
                             })
                         return
-                        
+
                     else:
                         status_block['agents'].append({
                             'kind'   : AGENT_KIND_INT_BATTERY,
@@ -795,7 +795,7 @@ def BatteryCheck(dev, status_block, battery_check):
     finally:
         dev.closePML()
 
-    
+
     if battery_check == STATUS_BATTERY_CHECK_STD and \
         try_dynamic_counters:
 
@@ -822,7 +822,7 @@ def BatteryCheck(dev, status_block, battery_check):
                     })
         finally:
             dev.closePrint()
-            
+
     else:
         status_block['agents'].append({
             'kind'   : AGENT_KIND_INT_BATTERY,
@@ -831,7 +831,7 @@ def BatteryCheck(dev, status_block, battery_check):
             'level'  : 0,
             'level-trigger' : AGENT_LEVEL_TRIGGER_SUFFICIENT_0,
             })
-        
+
 
 
 # this works for 2 pen products that allow 1 or 2 pens inserted
@@ -875,7 +875,7 @@ def getPenConfiguration(s): # s=status dict from parsed device ID
 
 def getFaxStatus(dev):
     tx_active, rx_active = False, False
-    
+
     if dev.io_mode not in (IO_MODE_UNI, IO_MODE_RAW):
         try:
             dev.openPML()
@@ -896,8 +896,8 @@ def getFaxStatus(dev):
             dev.closePML()
 
     return tx_active, rx_active
-    
-  
+
+
 
 
 TYPE6_STATUS_CODE_MAP = {
@@ -917,7 +917,7 @@ TYPE6_STATUS_CODE_MAP = {
     -19730: STATUS_PRINTER_OUT_OF_PAPER,
     -19729: STATUS_PRINTER_OUT_OF_PAPER,
     -19933: STATUS_PRINTER_HARD_ERROR, # out of memory
-    -17984: STATUS_PRINTER_DOOR_OPEN, 
+    -17984: STATUS_PRINTER_DOOR_OPEN,
     -19694: STATUS_PRINTER_DOOR_OPEN,
     -18992: STATUS_PRINTER_MANUAL_FEED_BLOCKED, # ?
     -19690: STATUS_PRINTER_MEDIA_JAM, # tray 1
@@ -1021,7 +1021,7 @@ TYPE6_STATUS_CODE_MAP = {
     -13848: STATUS_PRINTER_BUSY, #</DevStatusFaxMemoryFullReceive>
     -13849: STATUS_PRINTER_BUSY, #</DevStatusFaxReceiveError>
 
-}    
+}
 
 def StatusType6(dev): #  LaserJet Status (XML)
     info_device_status = cStringIO.StringIO()
@@ -1054,7 +1054,7 @@ def StatusType6(dev): #  LaserJet Status (XML)
             ssp = utils.XMLToDictParser().parseXML(info_ssp)
             log.debug(ssp)
         except expat.ExpatError:
-            log.error("SSP XML parse error")            
+            log.error("SSP XML parse error")
             ssp = {}
 
     status_code = device_status.get('devicestatuspage-devicestatus-statuslist-status-code-0', 0)
@@ -1108,7 +1108,7 @@ def StatusType6(dev): #  LaserJet Status (XML)
              'in-tray2' :    1,
              'media-path' :  1,
              'status-code' : TYPE6_STATUS_CODE_MAP.get(status_code, STATUS_PRINTER_IDLE),
-           }     
+           }
 
 # PJL status codes
 PJL_STATUS_MAP = {
@@ -1219,7 +1219,7 @@ def MapPJLErrorCode(error_code, str_code=None):
 
     if str_code is None:
         str_code = str(error_code)
-        
+
     if len(str_code) < 5:
         return STATUS_PRINTER_BUSY
 
@@ -1340,18 +1340,18 @@ def StatusType8(dev): #  LaserJet PJL (B&W only)
                 dev.closePrint()
             except Error:
                 pass
-    
+
     agents = []
 
     # TODO: Only handles mono lasers...
     if status_code in (STATUS_PRINTER_LOW_TONER, STATUS_PRINTER_LOW_BLACK_TONER):
         health = AGENT_HEALTH_OK
-        level_trigger = AGENT_LEVEL_TRIGGER_ALMOST_DEFINITELY_OUT
+        level_trigger = AGENT_LEVEL_TRIGGER_MAY_BE_LOW
         level = 0
 
     elif status_code == STATUS_PRINTER_NO_TONER:
         health = AGENT_HEALTH_MISINSTALLED
-        level_trigger = AGENT_LEVEL_TRIGGER_ALMOST_DEFINITELY_OUT
+        level_trigger = AGENT_LEVEL_TRIGGER_MAY_BE_LOW
         level = 0
 
     else:
@@ -1361,13 +1361,58 @@ def StatusType8(dev): #  LaserJet PJL (B&W only)
 
     log.debug("Agent: health=%d, level=%d, trigger=%d" % (health, level, level_trigger))
 
-
     agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
                      'type' : AGENT_TYPE_BLACK,
                      'health' : health,
                      'level' : level,
                      'level-trigger' : level_trigger,
                   })
+
+    if dev.tech_type == TECH_TYPE_COLOR_LASER:
+        level = 100
+        level_trigger = AGENT_LEVEL_TRIGGER_SUFFICIENT_0
+        if status_code == STATUS_PRINTER_LOW_CYAN_TONER:
+            level = 0
+            level_trigger = AGENT_LEVEL_TRIGGER_MAY_BE_LOW
+
+        log.debug("Agent: health=%d, level=%d, trigger=%d" % (health, level, level_trigger))
+
+        agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
+                         'type' : AGENT_TYPE_CYAN,
+                         'health' : AGENT_HEALTH_OK,
+                         'level' : level,
+                         'level-trigger' : level_trigger,
+                      })
+
+        level = 100
+        level_trigger = AGENT_LEVEL_TRIGGER_SUFFICIENT_0
+        if status_code == STATUS_PRINTER_LOW_MAGENTA_TONER:
+            level = 0
+            level_trigger = AGENT_LEVEL_TRIGGER_MAY_BE_LOW
+
+        log.debug("Agent: health=%d, level=%d, trigger=%d" % (health, level, level_trigger))
+
+        agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
+                         'type' : AGENT_TYPE_MAGENTA,
+                         'health' : AGENT_HEALTH_OK,
+                         'level' : level,
+                         'level-trigger' : level_trigger,
+                      })
+
+        level = 100
+        level_trigger = AGENT_LEVEL_TRIGGER_SUFFICIENT_0
+        if status_code == STATUS_PRINTER_LOW_YELLOW_TONER:
+            level = 0
+            level_trigger = AGENT_LEVEL_TRIGGER_MAY_BE_LOW
+
+        log.debug("Agent: health=%d, level=%d, trigger=%d" % (health, level, level_trigger))
+
+        agents.append({  'kind' : AGENT_KIND_TONER_CARTRIDGE,
+                         'type' : AGENT_TYPE_YELLOW,
+                         'health' : AGENT_HEALTH_OK,
+                         'level' : level,
+                         'level-trigger' : level_trigger,
+                      })
 
     if status_code == 40021:
         top_door = 0
@@ -1386,7 +1431,7 @@ def StatusType8(dev): #  LaserJet PJL (B&W only)
              'in-tray2' :    1,
              'media-path' :  1,
              'status-code' : status_code,
-           }     
+           }
 
 
 

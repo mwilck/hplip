@@ -31,7 +31,7 @@ import struct
 
 # Local
 from base.g import *
-from base import device, utils, pml, maint, models
+from base import device, utils, pml, maint, models, pkit
 from prnt import cups
 from base.codes import *
 from ui_utils import *
@@ -41,9 +41,13 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 # dbus
-import dbus
-from dbus.mainloop.qt import DBusQtMainLoop
-from dbus import lowlevel
+try:
+    import dbus
+    from dbus.mainloop.qt import DBusQtMainLoop
+    from dbus import lowlevel
+except ImportError:
+    log.error("Unable to load DBus libraries. Please check your installation and try again.")
+    sys.exit(1)
 
 # Main form
 from devmgr5_base import Ui_MainWindow
@@ -117,33 +121,22 @@ class PluginInstall(QObject):
         install_plugin = True
 
         if self.plugin_installed:
-            i = QMessageBox.warning(self.parent,
-                self.parent.windowTitle(),
-                self.__tr("<b>The HPLIP plugin is already installed.</b><p>Do you want to continue and re-install it?"),
-                QMessageBox.Yes,
-                QMessageBox.No,
-                QMessageBox.NoButton)
-
-            install_plugin = (i == QMessageBox.Yes)
+            install_plugin = QMessageBox.warning(self.parent,
+                                self.parent.windowTitle(),
+                                self.__tr("<b>The HPLIP plugin is already installed.</b><p>Do you want to continue and re-install it?"),
+                                QMessageBox.Yes,
+                                QMessageBox.No,
+                                QMessageBox.NoButton) == QMessageBox.Yes
 
         if install_plugin:
-            su_sudo_str = su_sudo()
-            if su_sudo_str is None:
+            ok = pkit.run_plugin_command(self.plugin_type == PLUGIN_REQUIRED)
+            if not ok:
                 QMessageBox.critical(self.parent,
                     self.parent.windowTitle(),
-                    self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-plugin.</b>"),
+                    self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-plugin.</b><p>Install kdesu, gnomesu, or gksu.</p>"),
                     QMessageBox.Ok,
                     QMessageBox.NoButton,
                     QMessageBox.NoButton)
-
-            else:
-                if utils.which('hp-plugin'):
-                    cmd = su_sudo_str % 'hp-plugin'
-                else:
-                    cmd = su_sudo_str % 'python ./plugin.py'
-
-                log.debug(cmd)
-                utils.run(cmd, log_output=True, password_func=None, timeout=1)
 
 
     def __tr(self,s,c = None):
@@ -227,7 +220,7 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         self.device_icons = {}
 
          # Application icon
-        self.setWindowIcon(QIcon(load_pixmap('prog', '48x48')))
+        self.setWindowIcon(QIcon(load_pixmap('hp_logo', '128x128')))
 
         self.fax_icon = load_pixmap("fax2", "other")
 
@@ -259,6 +252,9 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         self.connect(self.QuitAction, SIGNAL("triggered()"), self.quit)
 
         self.connect(self.AboutAction, SIGNAL("triggered()"), self.helpAbout)
+
+        self.connect(self.PrintControlPrinterNameCombo, SIGNAL("activated(const QString &)"), self.PrintControlPrinterNameCombo_activated)
+        self.connect(self.PrintSettingsPrinterNameCombo, SIGNAL("activated(const QString &)"), self.PrintSettingsPrinterNameCombo_activated)
 
 
          # Init tabs/controls
@@ -678,7 +674,9 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                     self.updatePrinterCombos()
 
                     if self.cur_device_uri:
-                        user_conf.set('last_used', 'device_uri',self.cur_device_uri)
+                        #user_conf.set('last_used', 'device_uri',self.cur_device_uri)
+                        self.user_settings.last_used_device_uri = self.cur_device_uri
+                        self.user_settings.save()
 
                     for d in updates + adds:
                         if d not in removals:
@@ -756,7 +754,9 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         if i is not None and not self.updating:
             self.cur_device_uri = self.DeviceList.currentItem().device_uri
             self.cur_device = device_list[self.cur_device_uri]
-            user_conf.set('last_used', 'device_uri', self.cur_device_uri)
+            #user_conf.set('last_used', 'device_uri', self.cur_device_uri)
+            self.user_settings.last_used_device_uri = self.cur_device_uri
+            self.user_settings.save()
 
             self.updateDevice()
             self.updateWindowTitle()
@@ -876,17 +876,11 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
     def PrintSettingsPrinterNameCombo_activated(self, s):
         self.cur_printer = unicode(s)
-        self.PrintControlPrinterNameCombo.setCurrentText(self.cur_printer.encode("latin1")) # TODO: ?
-        return self.PrinterCombo_activated(self.cur_printer)
+        self.updateCurrentTab()
 
 
     def PrintControlPrinterNameCombo_activated(self, s):
         self.cur_printer = unicode(s)
-        self.PrintSettingsPrinterNameCombo.setCurrentText(self.cur_printer.encode("latin1")) # TODO: ?
-        return self.PrinterCombo_activated(self.cur_printer)
-
-
-    def PrinterCombo_activated(self, printer):
         self.updateCurrentTab()
 
 
@@ -918,6 +912,12 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                 printer = d.device_type == DEVICE_TYPE_PRINTER and avail
                 req_plugin = d.plugin == PLUGIN_REQUIRED
                 opt_plugin = d.plugin == PLUGIN_OPTIONAL
+
+                try:
+                    back_end, is_hp, bus, model, serial, dev_file, host, port = \
+                        device.parseDeviceURI(self.cur_device_uri)
+                except Error:
+                    return
 
                 hplip_conf = ConfigParser.ConfigParser()
                 fp = open("/etc/hp/hplip.conf", "r")
@@ -960,16 +960,14 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                     self.__tr("Print documents or files."),    # Tooltip
                     lambda : PrintDialog(self, self.cur_printer)),  # command/action
 
-                    (lambda : d.scan_type and prop.scan_build and \
-                        d.device_type == DEVICE_TYPE_PRINTER and avail and \
-                        self.user_settings.cmd_scan,
+                    (lambda : d.scan_type > SCAN_TYPE_NONE and prop.scan_build and \
+                        printer and self.user_settings.cmd_scan,
                     self.__tr("Scan"),
                     "scan",
                     self.__tr("Scan a document, image, or photograph.<br>"),
                     self.user_settings.cmd_scan),
 
-                    (lambda : d.copy_type and d.device_type == DEVICE_TYPE_PRINTER and \
-                        avail,
+                    (lambda : d.copy_type and printer,
                     self.__tr("Make Copies"),
                     "makecopies",
                     self.__tr("Make copies on the device controlled by the PC.<br>"),
@@ -1061,23 +1059,31 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
                     # PLUGIN
 
-                    (lambda : req_plugin,
+                    (lambda : printer and req_plugin,
                     self.__tr("Install Required Plugin"),
                     "plugin",
                     x,
                     lambda : PluginInstall(self, d.plugin, plugin_installed)),
 
-                    (lambda : opt_plugin,
+                    (lambda : printer and opt_plugin,
                     self.__tr("Install Optional Plugin"),
                     "plugin",
                     x,
                     lambda : PluginInstall(self, d.plugin, plugin_installed)),
 
+                    # EWS
+
+                    (lambda : printer and d.embedded_server_type > EWS_NONE and bus == 'net',
+                     self.__tr("Open printer's web page in a browser"),
+                     "ews",
+                     self.__tr("The printer's web page has supply, status, and other information."),
+                     "http://%s" % host),
+
                     # HELP/WEBSITE
 
                     (lambda : True,
                     self.__tr("Visit HPLIP Support Website"),
-                    "support2",
+                    "hp_logo",
                     self.__tr("Visit HPLIP Support Website."),
                     self.support),
 
@@ -1122,17 +1128,12 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
             else:
                 beginWaitCursor()
-                #try:
-                if 1:
-                    if item.cmd.split(':')[0] in ('http', 'https', 'file'):
-                        log.debug("Opening browser to: %s" % item.cmd)
-                        utils.openURL(item.cmd)
-                    else:
-                        self.runExternalCommand(item.cmd)
-                #finally:
-                #    endWaitCursor()
+                if item.cmd.split(':')[0] in ('http', 'https', 'file'):
+                    log.debug("Opening browser to: %s" % item.cmd)
+                    utils.openURL(item.cmd)
+                else:
+                    self.runExternalCommand(item.cmd)
 
-            #self.click_lock = item
             QTimer.singleShot(1000, self.unlockClick)
 
 
@@ -1144,7 +1145,6 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
     def ActionsList_customContextMenuRequested(self, p):
         print p
         #pass
-
 
 
     # ***********************************************************************************
@@ -1384,14 +1384,15 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                         try:
                             agent_type = int(self.cur_device.dq['agent%d-type' % a])
                             agent_kind = int(self.cur_device.dq['agent%d-kind' % a])
+                            agent_sku = self.cur_device.dq['agent%d-sku' % a]
                         except KeyError:
                             break
                         else:
-                            self.cur_device.sorted_supplies.append((a, agent_kind, agent_type))
+                            self.cur_device.sorted_supplies.append((a, agent_kind, agent_type, agent_sku))
 
                         a += 1
 
-                    self.cur_device.sorted_supplies.sort(lambda x, y: cmp(x[2], y[2]) or cmp(x[1], y[1]))
+                    self.cur_device.sorted_supplies.sort(lambda x, y: cmp(x[1], y[1]) or cmp(x[3], y[3]))
 
                 self.SuppliesTable.setRowCount(len(self.cur_device.sorted_supplies))
                 self.SuppliesTable.setColumnCount(len(self.supplies_headers))
@@ -1401,9 +1402,8 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                 self.SuppliesTable.setIconSize(QSize(100, 18))
 
                 for row, x in enumerate(self.cur_device.sorted_supplies):
-                    a, agent_kind, agent_type = x
+                    a, agent_kind, agent_type, agent_sku = x
                     agent_level = int(self.cur_device.dq['agent%d-level' % a])
-                    agent_sku = str(self.cur_device.dq['agent%d-sku' % a])
                     agent_desc = self.cur_device.dq['agent%d-desc' % a]
                     agent_health_desc = self.cur_device.dq['agent%d-health-desc' % a]
 
@@ -1957,56 +1957,28 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
     # ***********************************************************************************
 
     def SetupDeviceAction_activated(self):
-        su_sudo_str = su_sudo()
-        if su_sudo_str is None:
-            QMessageBox.critical(self,
-                self.windowTitle(),
-                self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-setup.</b>"),
-                QMessageBox.Ok,
-                QMessageBox.NoButton,
-                QMessageBox.NoButton)
-
+        if utils.which('hp-setup'):
+            cmd = 'hp-setup --gui'
         else:
-            if utils.which('hp-setup'):
-                cmd = su_sudo_str % 'hp-setup -u'
-            else:
-                cmd = su_sudo_str % 'python ./setup.py -u'
+            cmd = 'python ./setup.py --gui'
 
-            log.debug(cmd)
-            utils.run(cmd, log_output=True, password_func=None, timeout=1)
-            self.rescanDevices()
+        log.debug(cmd)
+        utils.run(cmd, log_output=True, password_func=None, timeout=1)
+        self.rescanDevices()
 
 
     def RemoveDeviceAction_activated(self):
-        if self.cur_device is not None:
-            x = QMessageBox.critical(self,
-           self.windowTitle(),
-           self.__tr("<b>Annoying Confirmation: Are you sure you want to remove this device?</b>"),
-            QMessageBox.Yes,
-            QMessageBox.No | QMessageBox.Default,
-            QMessageBox.NoButton)
-            if x == QMessageBox.Yes:
-                beginWaitCursor()
-                print_uri = self.cur_device.device_uri
-                fax_uri = print_uri.replace('hp:', 'hpfax:')
+        if utils.which('hp-setup'):
+            cmd = 'hp-setup --gui --remove'
+        else:
+            cmd = 'python ./setup.py --gui --remove'
 
-                log.debug(print_uri)
-                log.debug(fax_uri)
+        if self.cur_device_uri is not None:
+            cmd += ' --device=%s' % self.cur_device_uri
 
-                self.cups_devices = device.getSupportedCUPSDevices(['hp', 'hpfax'])
-
-                for d in self.cups_devices:
-                    if d in (print_uri, fax_uri):
-                        for p in self.cups_devices[d]:
-                            log.debug("Removing %s" % p)
-                            cups.delPrinter(p)
-
-                self.cur_device = None
-                self.cur_device_uri = ''
-                user_conf.set('last_used', 'device_uri', '')
-                endWaitCursor()
-
-                self.rescanDevices()
+        log.debug(cmd)
+        utils.run(cmd, log_output=True, password_func=None, timeout=1)
+        self.rescanDevices()
 
 
     # ***********************************************************************************
@@ -2063,52 +2035,59 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
 class PasswordDialog(QDialog):
     def __init__(self, prompt, parent=None, name=None, modal=0, fl=0):
-        log.debug("PasswordDialog")
-        QDialog.__init__(self)
+        QDialog.__init__(self, parent)
 
-        if not name:
-            self.setObjectName("PasswordDialog")
+        Layout= QGridLayout(self)
+        Layout.setMargin(11)
+        Layout.setSpacing(6)
 
-        passwordDlg_baseLayout = QGridLayout(self)
-        passwordDlg_baseLayout.setMargin(11)
-        passwordDlg_baseLayout.setSpacing(6)
-        passwordDlg_baseLayout.setObjectName("passwordDlg_baseLayout")
+        self.PromptTextLabel = QLabel(self)
+        Layout.addWidget(self.PromptTextLabel,0,0,1,3)
 
-        self.promptTextLabel = QLabel(self)
-        self.promptTextLabel.setObjectName("promptTextLabel")
-        self.promptTextLabel.setText(prompt)
-        passwordDlg_baseLayout.addWidget(self.promptTextLabel,0,0)
+        self.UsernameTextLabel = QLabel(self)
+        Layout.addWidget(self.UsernameTextLabel,1,0)
 
-        self.passwordLineEdit = QLineEdit(self)
-        self.passwordLineEdit.setObjectName("passwordLineEdit")
-        self.passwordLineEdit.setEchoMode(QLineEdit.Password)
-        passwordDlg_baseLayout.addWidget(self.passwordLineEdit,1,0,1,2)
+        self.UsernameLineEdit = QLineEdit(self)
+        self.UsernameLineEdit.setEchoMode(QLineEdit.Normal)
+        Layout.addWidget(self.UsernameLineEdit,1,1,1,2)
 
-        spacer1 = QSpacerItem(20,61,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        passwordDlg_baseLayout.addItem(spacer1,2,0)
+        self.PasswordTextLabel = QLabel(self)
+        Layout.addWidget(self.PasswordTextLabel,2,0)
 
-        spacer2 = QSpacerItem(321,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
-        passwordDlg_baseLayout.addItem(spacer2,3,0)
+        self.PasswordLineEdit = QLineEdit(self)
+        self.PasswordLineEdit.setEchoMode(QLineEdit.Password)
+        Layout.addWidget(self.PasswordLineEdit,2,1,1,2)
 
-        self.okPushButton = QPushButton(self)
-        self.okPushButton.setObjectName("okPushButton")
-        passwordDlg_baseLayout.addWidget(self.okPushButton,3,1)
+        self.OkPushButton = QPushButton(self)
+        Layout.addWidget(self.OkPushButton,3,2)
 
         self.languageChange()
 
         self.resize(QSize(420,163).expandedTo(self.minimumSizeHint()))
 
-        self.connect(self.okPushButton,SIGNAL("clicked()"),self.accept)
-        self.connect(self.passwordLineEdit,SIGNAL("returnPressed()"),self.accept)
+        self.connect(self.OkPushButton, SIGNAL("clicked()"), self.accept)
+        self.connect(self.PasswordLineEdit, SIGNAL("returnPressed()"), self.accept)
+
+
+    def getUsername(self):
+        return unicode(self.UsernameLineEdit.text())
+
+
     def getPassword(self):
-        return unicode(self.passwordLineEdit.text())
+        return unicode(self.PasswordLineEdit.text())
+
 
     def languageChange(self):
         self.setWindowTitle(self.__tr("HP Device Manager - Enter Password"))
-        self.okPushButton.setText(self.__tr("OK"))
+        self.PromptTextLabel.setText(self.__tr("You do not have authorization for this function."))
+        self.UsernameTextLabel.setText(self.__tr("Username:"))
+        self.PasswordTextLabel.setText(self.__tr("Password:"))
+        self.OkPushButton.setText(self.__tr("OK"))
+
 
     def __tr(self,s,c = None):
-        return qApp.translate("PasswordDialog",s,c)
+        return qApp.translate("DevMgr5",s,c)
+
 
 
 def showPasswordUI(prompt):
@@ -2116,9 +2095,9 @@ def showPasswordUI(prompt):
         dlg = PasswordDialog(prompt, None)
 
         if dlg.exec_() == QDialog.Accepted:
-            return dlg.getPassword()
+            return (dlg.getUsername(), dlg.getPassword())
 
     finally:
         pass
 
-    return ""
+    return ("", "")

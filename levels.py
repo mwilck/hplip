@@ -152,20 +152,20 @@ try:
                 try:
                     agent_type = int(d.dq['agent%d-type' % a])
                     agent_kind = int(d.dq['agent%d-kind' % a])
+                    agent_sku = d.dq['agent%d-sku' % a]
+                    log.error("%d: agent_type %d agent_kind %d agent_sku '%s'" % (a, agent_type, agent_kind, agent_sku))
                 except KeyError:
                     break
                 else:
-                    sorted_supplies.append((a, agent_kind, agent_type))
-
+                    sorted_supplies.append((a, agent_kind, agent_type, agent_sku))
                 a += 1
 
-            sorted_supplies.sort(lambda x, y: cmp(x[2], y[2]) or cmp(x[1], y[1]))
+            sorted_supplies.sort(lambda x, y: cmp(x[1], y[1]) or cmp(x[3], y[3]))
 
             for x in sorted_supplies:
-                a, agent_kind, agent_type = x
+                a, agent_kind, agent_type, agent_sku = x
                 agent_health = d.dq['agent%d-health' % a]
                 agent_level = d.dq['agent%d-level' % a]
-                agent_sku = str(d.dq['agent%d-sku' % a])
                 agent_desc = d.dq['agent%d-desc' % a]
                 agent_health_desc = d.dq['agent%d-health-desc' % a]
 
