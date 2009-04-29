@@ -254,7 +254,7 @@ if mode == GUI_MODE:
 
 else: # INTERACTIVE_MODE
     try:
-        if not pkit_installed and not os.geteuid() == 0:
+        if not os.geteuid() == 0:
             log.error("You must be root to run this utility.")
             sys.exit(1)
 

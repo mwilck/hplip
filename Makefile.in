@@ -75,6 +75,7 @@ DIST_COMMON = $(am__configure_deps) $(am__dist_base_SCRIPTS_DIST) \
 	$(srcdir)/hplip-systray.desktop.in $(srcdir)/hplip.conf.in \
 	$(srcdir)/hplip.desktop.in $(srcdir)/hplip.list.in \
 	$(srcdir)/unreleased.inc $(top_srcdir)/configure \
+	$(top_srcdir)/data/policykit/com.hp.hplip.service.in \
 	$(top_srcdir)/prnt/drv/hpcups.drv.in \
 	$(top_srcdir)/prnt/drv/hpijs.drv.in COPYING config.guess \
 	config.sub depcomp install-sh ltmain.sh missing
@@ -124,7 +125,8 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES = hplip.conf hplip.desktop hplip-systray.desktop \
-	prnt/drv/hpijs.drv prnt/drv/hpcups.drv hplip.list
+	prnt/drv/hpijs.drv prnt/drv/hpcups.drv hplip.list \
+	data/policykit/com.hp.hplip.service
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -344,8 +346,8 @@ am_hpcups_OBJECTS = hpcups-hpcups.$(OBJEXT) hpcups-services.$(OBJEXT) \
 	hpcups-hpiom.$(OBJEXT) hpcups-hpimage.$(OBJEXT)
 hpcups_OBJECTS = $(am_hpcups_OBJECTS)
 @HPLIP_BUILD_FALSE@am__DEPENDENCIES_2 = libapdk.la
-@HPLIP_BUILD_TRUE@am__DEPENDENCIES_2 = libhpip.la libhpmud.la \
-@HPLIP_BUILD_TRUE@	libapdk.la $(am__DEPENDENCIES_1)
+@HPLIP_BUILD_TRUE@am__DEPENDENCIES_2 = libapdk.la libhpip.la \
+@HPLIP_BUILD_TRUE@	libhpmud.la $(am__DEPENDENCIES_1)
 hpcups_DEPENDENCIES = $(am__DEPENDENCIES_2)
 hpcups_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(hpcups_CXXFLAGS) $(CXXFLAGS) \
@@ -355,8 +357,8 @@ am_hpijs_OBJECTS = hpijs-hpijs.$(OBJEXT) hpijs-ijs_server.$(OBJEXT) \
 	hpijs-services.$(OBJEXT) hpijs-hpiom.$(OBJEXT)
 hpijs_OBJECTS = $(am_hpijs_OBJECTS)
 @HPLIP_BUILD_FALSE@hpijs_DEPENDENCIES = libapdk.la
-@HPLIP_BUILD_TRUE@hpijs_DEPENDENCIES = libhpip.la libhpmud.la \
-@HPLIP_BUILD_TRUE@	libapdk.la $(am__DEPENDENCIES_1)
+@HPLIP_BUILD_TRUE@hpijs_DEPENDENCIES = libapdk.la libhpip.la \
+@HPLIP_BUILD_TRUE@	libhpmud.la $(am__DEPENDENCIES_1)
 hpijs_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(hpijs_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -3759,8 +3761,8 @@ hpijs_SOURCES = prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c pr
 
 hpijs_CXXFLAGS = $(libapdk_la_CXXFLAGS)
 hpijs_CFLAGS = $(libapdk_la_CFLAGS)
-@HPLIP_BUILD_FALSE@hpijs_LDADD = -ljpeg -ldl libapdk.la
-@HPLIP_BUILD_TRUE@hpijs_LDADD = -ljpeg -ldl libhpip.la libhpmud.la libapdk.la $(DBUS_LIBS)
+@HPLIP_BUILD_FALSE@hpijs_LDADD = libapdk.la -ljpeg -ldl
+@HPLIP_BUILD_TRUE@hpijs_LDADD = libapdk.la -ljpeg -ldl libhpip.la libhpmud.la $(DBUS_LIBS)
 
 # hpcups
 hpcupsdir = $(cupsfilterdir)
@@ -3826,6 +3828,8 @@ prnt/drv/hpijs.drv: $(top_builddir)/config.status $(top_srcdir)/prnt/drv/hpijs.d
 prnt/drv/hpcups.drv: $(top_builddir)/config.status $(top_srcdir)/prnt/drv/hpcups.drv.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 hplip.list: $(top_builddir)/config.status $(srcdir)/hplip.list.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+data/policykit/com.hp.hplip.service: $(top_builddir)/config.status $(top_srcdir)/data/policykit/com.hp.hplip.service.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-cupsextLTLIBRARIES: $(cupsext_LTLIBRARIES)
 	@$(NORMAL_INSTALL)

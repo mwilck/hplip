@@ -2248,7 +2248,7 @@ packages=python-ctypes
 [fedora:11:cups-image]
 packages=cups-devel
 
-[fedora:10:policykit]
+[fedora:11:policykit]
 packages=PolicyKit,PolicyKit-gnome
 
 # ********************

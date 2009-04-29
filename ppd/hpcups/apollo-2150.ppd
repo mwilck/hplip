@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.4.102"
+*FileVersion: "hpcups 3.9.4b.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "apollo-2150.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "Apollo"
 *ModelName: "Apollo 2150"
 *ShortNickName: "Apollo 2150"
-*NickName: "Apollo 2150, hpcups 3.9.4.102"
+*NickName: "Apollo 2150, hpcups 3.9.4b.10"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

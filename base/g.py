@@ -205,7 +205,7 @@ except ValueError:
     prop.encoding = 'UTF8'
 
 prop.version = sys_conf.get('hplip', 'version', '0.0.0') # e.g., 3.9.2b.10
-_p, _x = re.compile(r'(\d*)', re.I), []
+_p, _x = re.compile(r'(\d\w*)', re.I), []
 for _y in prop.version.split('.')[:3]:
     _z = _p.match(_y)
     if _z is not None:

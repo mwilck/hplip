@@ -26,7 +26,7 @@
 #   104 = no libdl
 
 AC_PREREQ(2.59)
-AC_INIT([HP Linux Imaging and Printing], [3.9.4], [3.9.4.102], [hplip])
+AC_INIT([HP Linux Imaging and Printing], [3.9.4b], [3.9.4b.10], [hplip])
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -452,6 +452,7 @@ AC_SUBST(epm_foomatic_ppd_install)
 AC_SUBST(epm_cups_ppd_install)
 AC_SUBST(epm_qt4_install)
 AC_SUBST(policykit)
+AC_SUBST(prefix)
 
-AC_CONFIG_FILES(Makefile hplip.conf hplip.desktop hplip-systray.desktop prnt/drv/hpijs.drv prnt/drv/hpcups.drv hplip.list)
+AC_CONFIG_FILES(Makefile hplip.conf hplip.desktop hplip-systray.desktop prnt/drv/hpijs.drv prnt/drv/hpcups.drv hplip.list data/policykit/com.hp.hplip.service)
 AC_OUTPUT

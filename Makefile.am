@@ -376,9 +376,9 @@ hpijs_SOURCES = prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c pr
 hpijs_CXXFLAGS = $(libapdk_la_CXXFLAGS)
 hpijs_CFLAGS = $(libapdk_la_CFLAGS)
 if HPLIP_BUILD
-hpijs_LDADD = -ljpeg -ldl libhpip.la libhpmud.la libapdk.la $(DBUS_LIBS)
+hpijs_LDADD = libapdk.la -ljpeg -ldl libhpip.la libhpmud.la $(DBUS_LIBS)
 else
-hpijs_LDADD = -ljpeg -ldl libapdk.la
+hpijs_LDADD = libapdk.la -ljpeg -ldl
 endif
 
 # hpcups

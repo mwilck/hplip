@@ -209,6 +209,7 @@ class CoreInstall(object):
         self.plugin_path = "/tmp"
         self.plugin_version = '0.0.0'
         self.plugin_name = ''
+        self.reload_dbus = False
 
 
         self.FIELD_TYPES = {
@@ -445,6 +446,10 @@ class CoreInstall(object):
 
         self.cups11 = output.startswith('1.1')
         log.debug("Is CUPS 1.1.x? %s" % self.cups11)
+
+        if self.distro_name == "ubuntu":
+            self.reload_dbus = True
+        log.debug("DBUS configuration reload possible? %s" % self.reload_dbus)
 
         status, self.sys_uname_info = self.run('uname -a')
         self.sys_uname_info = self.sys_uname_info.replace('\n', '')
@@ -1610,6 +1615,12 @@ class CoreInstall(object):
         # Restart CUPS if necessary
         if self.cups11:
             cmds.append(self.restart_cups())
+
+        # Reload DBUS configuration if distro supports it and PolicyKit
+        # support installed
+        if self.reload_dbus and self.selected_options['policykit']:
+            cmds.append(self.su_sudo() % "sh /etc/init.d/dbus reload")
+            log.debug("Will reload DBUS configuration for PolicyKit support")
 
         # Kill any running hpssd.py instance from a previous install
         if self.check_hpssd():
