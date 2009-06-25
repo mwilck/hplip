@@ -49,6 +49,12 @@ except ImportError:
     log.error("Unable to load DBus libraries. Please check your installation and try again.")
     sys.exit(1)
 
+import warnings
+# Ignore: .../dbus/connection.py:242: DeprecationWarning: object.__init__() takes no parameters
+# (occurring on Python 2.6/dBus 0.83/Ubuntu 9.04)
+warnings.simplefilter("ignore", DeprecationWarning)
+
+
 # Main form
 from devmgr5_base import Ui_MainWindow
 
@@ -82,7 +88,7 @@ MAX_AUTO_REFRESH_RATE = 60
 DEF_AUTO_REFRESH_RATE = 30
 
 
-device_list = {}    # { Device_URI : device.Device(, ... }
+device_list = {}    # { Device_URI : device.Device(), ... }
 model_obj = models.ModelData() # Used to convert dbus xformed data back to plain Python types
 
 
@@ -99,7 +105,7 @@ class FuncViewItem(QListWidgetItem):
         self.tooltip_text = tooltip_text
         self.cmd = cmd
 
-
+# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 class DeviceViewItem(QListWidgetItem):
     def __init__(self, parent, text, pixmap, device_uri, is_avail=True):
@@ -108,7 +114,7 @@ class DeviceViewItem(QListWidgetItem):
         self.is_avail = is_avail
         self.setTextAlignment(Qt.AlignHCenter)
 
-
+# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 class PluginInstall(QObject):
     def __init__(self, parent, plugin_type, plugin_installed):
@@ -129,8 +135,8 @@ class PluginInstall(QObject):
                                 QMessageBox.NoButton) == QMessageBox.Yes
 
         if install_plugin:
-            ok = pkit.run_plugin_command(self.plugin_type == PLUGIN_REQUIRED)
-            if not ok:
+            ok, sudo_ok = pkit.run_plugin_command(self.plugin_type == PLUGIN_REQUIRED, self.parent.cur_device.mq['plugin-reason'])
+            if not sudo_ok:
                 QMessageBox.critical(self.parent,
                     self.parent.windowTitle(),
                     self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-plugin.</b><p>Install kdesu, gnomesu, or gksu.</p>"),
@@ -228,6 +234,13 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
     def initUI(self):
         # Setup device icon list
         self.DeviceList.setSortingEnabled(True)
+        self.DeviceList.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.setDeviceListViewMode(QListView.IconMode)
+
+        self.connect(self.ViewAsIconsAction, SIGNAL("triggered()"), lambda: self.setDeviceListViewMode(QListView.IconMode))
+        self.connect(self.ViewAsListAction, SIGNAL("triggered()"), lambda: self.setDeviceListViewMode(QListView.ListMode))
+
+        self.connect(self.DeviceList, SIGNAL("customContextMenuRequested(const QPoint &)"), self.DeviceList_customContextMenuRequested)
 
         # Setup main menu
         self.DeviceRefreshAction.setIcon(QIcon(load_pixmap("refresh1", "16x16")))
@@ -511,6 +524,17 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         self.rescanDevices()
 
 
+    def setDeviceListViewMode(self, mode):
+        if mode == QListView.ListMode:
+            self.DeviceList.setViewMode(QListView.ListMode)
+            self.ViewAsListAction.setEnabled(False)
+            self.ViewAsIconsAction.setEnabled(True)
+        else:
+            self.DeviceList.setViewMode(QListView.IconMode)
+            self.ViewAsListAction.setEnabled(True)
+            self.ViewAsIconsAction.setEnabled(False)
+
+
     def createDeviceIcon(self, dev=None):
         if dev is None:
             dev = self.cur_device
@@ -713,7 +737,6 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                 self.updateWindowTitle()
 
 
-
     def updateWindowTitle(self):
         if self.cur_device.device_type == DEVICE_TYPE_FAX:
                 self.setWindowTitle(self.__tr("HP Device Manager - %1 (Fax)").arg(self.cur_device.model_ui))
@@ -821,36 +844,75 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
     #
     # ***********************************************************************************
 
-    def DeviceList_rightButtonClicked(self, item, pos):
-        popup = QPopupMenu(self)
+    def DeviceList_customContextMenuRequested(self, p):
+        d = self.cur_device
 
-        if item is not None and item is self.DeviceList.currentItem():
-            if self.cur_device.error_state != ERROR_STATE_ERROR:
-                if self.cur_device.device_type == DEVICE_TYPE_PRINTER:
-                    popup.insertItem(self.__tr("Print..."), self.PrintButton_clicked)
+        if d is not None:
+            avail = d.device_state != DEVICE_STATE_NOT_FOUND and d.supported
+            printer = d.device_type == DEVICE_TYPE_PRINTER and avail
 
-                    if self.cur_device.scan_type:
-                        popup.insertItem(self.__tr("Scan..."), self.ScanButton_clicked)
+            fax = d.fax_type > FAX_TYPE_NONE and prop.fax_build and d.device_type == DEVICE_TYPE_FAX and \
+                sys.hexversion >= 0x020300f0 and avail
 
-                    if self.cur_device.pcard_type:
-                        popup.insertItem(self.__tr("Access Photo Cards..."), self.PCardButton_clicked)
+            scan = d.scan_type > SCAN_TYPE_NONE and prop.scan_build and \
+                            printer and self.user_settings.cmd_scan
 
-                    if self.cur_device.copy_type:
-                        popup.insertItem(self.__tr("Make Copies..."), self.MakeCopiesButton_clicked)
+            cpy = d.copy_type > COPY_TYPE_NONE and printer
 
-                elif self.cur_device.device_type == DEVICE_TYPE_FAX:
-                    if self.cur_device.fax_type:
-                        popup.insertItem(self.__tr("Send Fax..."), self.SendFaxButton_clicked)
+            popup = QMenu(self)
 
-                popup.insertSeparator()
+            item = self.DeviceList.currentItem()
+            if item is not None:
+                if self.cur_device.error_state != ERROR_STATE_ERROR:
+                    if printer:
+                        popup.addAction(self.__tr("Print..."), lambda: self.contextMenuFunc(PrintDialog(self, self.cur_printer)))
+
+                        if scan:
+                            popup.addAction(self.__tr("Scan..."),  lambda: self.contextMenuFunc(self.user_settings.cmd_scan)) #self.ScanButton_clicked)
+
+                        if cpy:
+                            popup.addAction(self.__tr("Make Copies..."),  lambda: MakeCopiesDialog(self, self.cur_device_uri)) #self.MakeCopiesButton_clicked)
+
+                    else: # self.cur_device.device_type == DEVICE_TYPE_FAX:
+                        if fax:
+                            popup.addAction(self.__tr("Send Fax..."),  lambda: self.contextMenuFunc(SendFaxDialog(self, self.cur_printer, self.cur_device_uri))) #self.SendFaxButton_clicked)
+
+                    popup.addSeparator()
+
+                if not self.updating:
+                    popup.addAction(self.__tr("Refresh Device"),  self.requestDeviceUpdate) #self.DeviceRefreshAction_activated)
 
             if not self.updating:
-                popup.insertItem(self.__tr("Refresh Device"), self.DeviceRefreshAction_activated)
+                popup.addAction(self.__tr("Refresh All"),  self.rescanDevices) #self.RefreshAllAction_activated)
 
-        if not self.updating:
-            popup.insertItem(self.__tr("Refresh All"), self.RefreshAllAction_activated)
+            popup.addSeparator()
 
-        popup.popup(pos)
+            if self.DeviceList.viewMode() == QListView.IconMode:
+                popup.addAction(self.__tr("View as List"), lambda: self.setDeviceListViewMode(QListView.ListMode))
+            else:
+                popup.addAction(self.__tr("View as Icons"), lambda: self.setDeviceListViewMode(QListView.IconMode))
+
+            popup.exec_(self.DeviceList.mapToGlobal(p))
+
+
+    def contextMenuFunc(self, f):
+        self.sendMessage('', '', EVENT_DEVICE_STOP_POLLING)
+        try:
+            try:
+                f.exec_() # Dialog
+            except AttributeError:
+                beginWaitCursor()
+
+                if f.split(':')[0] in ('http', 'https', 'file'):
+                    log.debug("Opening browser to: %s" % item.cmd)
+                    utils.openURL(f)
+                else:
+                    self.runExternalCommand(f)
+
+                QTimer.singleShot(1000, self.unlockClick)
+        finally:
+            self.sendMessage('', '', EVENT_DEVICE_START_POLLING)
+
 
 
     # ***********************************************************************************
@@ -866,6 +928,8 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
         if self.cur_device is not None and \
             self.cur_device.supported:
+
+            self.cur_device.updateCUPSPrinters()
 
             for c in self.cur_device.cups_printers:
                 self.PrintSettingsPrinterNameCombo.insertItem(0, c.decode("utf-8"))
@@ -907,9 +971,12 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
 
             if d is not None:
                 avail = d.device_state != DEVICE_STATE_NOT_FOUND and d.supported
-                fax = d.fax_type and prop.fax_build and d.device_type == DEVICE_TYPE_FAX and \
+                fax = d.fax_type > FAX_TYPE_NONE and prop.fax_build and d.device_type == DEVICE_TYPE_FAX and \
                     sys.hexversion >= 0x020300f0 and avail
                 printer = d.device_type == DEVICE_TYPE_PRINTER and avail
+                scan = d.scan_type > SCAN_TYPE_NONE and prop.scan_build and \
+                        printer and self.user_settings.cmd_scan
+                cpy = d.copy_type > COPY_TYPE_NONE and printer
                 req_plugin = d.plugin == PLUGIN_REQUIRED
                 opt_plugin = d.plugin == PLUGIN_OPTIONAL
 
@@ -960,14 +1027,13 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                     self.__tr("Print documents or files."),    # Tooltip
                     lambda : PrintDialog(self, self.cur_printer)),  # command/action
 
-                    (lambda : d.scan_type > SCAN_TYPE_NONE and prop.scan_build and \
-                        printer and self.user_settings.cmd_scan,
+                    (lambda :scan,
                     self.__tr("Scan"),
                     "scan",
                     self.__tr("Scan a document, image, or photograph.<br>"),
                     self.user_settings.cmd_scan),
 
-                    (lambda : d.copy_type and printer,
+                    (lambda : cpy,
                     self.__tr("Make Copies"),
                     "makecopies",
                     self.__tr("Make copies on the device controlled by the PC.<br>"),
@@ -1048,6 +1114,12 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
                     "pq_diag",
                     self.__tr("Your printer can print a test page <br>to help diagnose print quality problems."),
                     lambda : PQDiagDialog(self, self.cur_device_uri)),
+
+                    (lambda: printer and d.wifi_config >= WIFI_CONFIG_USB_XML and bus == 'usb',
+                     self.__tr("Wireless/wifi setup using USB"),
+                     "wireless",
+                     self.__tr("Configure your wireless capable printer using a temporary USB connection."),
+                     'hp-wificonfig -d %s' % self.cur_device_uri),
 
                     # FIRMWARE
 
@@ -1965,6 +2037,7 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         log.debug(cmd)
         utils.run(cmd, log_output=True, password_func=None, timeout=1)
         self.rescanDevices()
+        self.updatePrinterCombos()
 
 
     def RemoveDeviceAction_activated(self):
@@ -1979,6 +2052,7 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         log.debug(cmd)
         utils.run(cmd, log_output=True, password_func=None, timeout=1)
         self.rescanDevices()
+        self.updatePrinterCombos()
 
 
     # ***********************************************************************************
@@ -2033,9 +2107,12 @@ class DevMgr5(QMainWindow,  Ui_MainWindow):
         return qApp.translate("DevMgr5",s,c)
 
 
+# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 class PasswordDialog(QDialog):
     def __init__(self, prompt, parent=None, name=None, modal=0, fl=0):
         QDialog.__init__(self, parent)
+        self.prompt = prompt
 
         Layout= QGridLayout(self)
         Layout.setMargin(11)
@@ -2078,8 +2155,8 @@ class PasswordDialog(QDialog):
 
 
     def languageChange(self):
-        self.setWindowTitle(self.__tr("HP Device Manager - Enter Password"))
-        self.PromptTextLabel.setText(self.__tr("You do not have authorization for this function."))
+        self.setWindowTitle(self.__tr("HP Device Manager - Enter Username/Password"))
+        self.PromptTextLabel.setText(self.__tr(self.prompt))
         self.UsernameTextLabel.setText(self.__tr("Username:"))
         self.PasswordTextLabel.setText(self.__tr("Password:"))
         self.OkPushButton.setText(self.__tr("OK"))
@@ -2088,7 +2165,7 @@ class PasswordDialog(QDialog):
     def __tr(self,s,c = None):
         return qApp.translate("DevMgr5",s,c)
 
-
+# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 def showPasswordUI(prompt):
     try:

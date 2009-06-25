@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.9.4b.10"
+*FileVersion: "hpijs 3.9.6b.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_4ml-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 4ml hpijs"
 *ShortNickName: "HP LaserJet 4ml hpijs"
-*NickName: "HP LaserJet 4ml hpijs, 3.9.4b.10"
+*NickName: "HP LaserJet 4ml hpijs, 3.9.6b.4"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -315,4 +315,4 @@ PenSet=0"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_4ml-hpijs.ppd, 15926 bytes.
+*% End of hp-laserjet_4ml-hpijs.ppd, 15924 bytes.

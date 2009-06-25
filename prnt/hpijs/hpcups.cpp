@@ -119,6 +119,7 @@ int HPCups::initPrintJob ()
 {
 //    MediaSize       msMedia = sizeUSLetter;
     COLORMODE       colormode;
+    int r;
     if (m_iLogLevel & ADDITIONAL_LOG)
     {
         printcupsHeader ();
@@ -128,10 +129,6 @@ int HPCups::initPrintJob ()
     {
         m_pSys->FullBleed = 1;
     }
-    /*
-    m_pSys->ph.width  = m_cupsHeader.cupsWidth;
-    m_pSys->ph.height = m_cupsHeader.cupsHeight;
-    */
 
 /*
  *  cupsRowStep represents colormode
@@ -151,9 +148,16 @@ int HPCups::initPrintJob ()
 	    colormode = COLOR;
 	    break;
     }
-    m_pSys->pPC->SelectPrintMode ((QUALITY_MODE) m_cupsHeader.cupsCompression,
-                                  (MEDIATYPE) m_cupsHeader.cupsMediaType,
-				  colormode);
+    if ((r = m_pSys->pPC->SelectPrintMode ((QUALITY_MODE) m_cupsHeader.cupsCompression,
+                                  (MEDIATYPE) m_cupsHeader.cupsMediaType, colormode)) != NO_ERROR)
+    {
+       BOOL        bDevText;
+       BUG("unable to set Quality=%d, MediaType=%d, ColorMode=%d, err=%d\n", 
+                m_cupsHeader.cupsCompression, m_cupsHeader.cupsMediaType, colormode, r);
+       m_pSys->pPC->GetPrintModeSettings((QUALITY_MODE &)m_pSys->Quality, (MEDIATYPE &)m_pSys->MediaType, (COLORMODE &)m_pSys->ColorMode, bDevText);
+       BUG("following will be used Quality=%d, MediaType=%d, ColorMode=%d, \n", m_pSys->Quality, m_pSys->MediaType, m_pSys->ColorMode);
+    }
+
     m_pSys->pPC->SetMediaSource ((MediaSource) m_cupsHeader.MediaPosition);
     if (m_cupsHeader.Duplex)
     {
@@ -166,9 +170,21 @@ int HPCups::initPrintJob ()
     {
         m_pSys->pPC->SelectDuplexPrinting (DUPLEXMODE_NONE);
     }
-    float    fWidth  = (float) m_cupsHeader.PageSize[0] / (float) 72.0;
-    float    fHeight = (float) m_cupsHeader.PageSize[1] / (float) 72.0;
-    m_pSys->MapPaperSize (fWidth, fHeight);
+
+//    int      xRes = m_cupsHeader.HWResolution[0];
+//    int      yRes = m_cupsHeader.HWResolution[1];
+    JobAttributes    ja;
+
+    memset (&ja, 0, sizeof (ja));
+    ja.media_attributes.fPhysicalWidth   = (float) m_cupsHeader.PageSize[0] / (float) 72.0;
+    ja.media_attributes.fPhysicalHeight  = (float) m_cupsHeader.PageSize[1] / (float) 72.0;
+    ja.media_attributes.fPrintableWidth  = (float) (m_cupsHeader.ImagingBoundingBox[2] -
+                                   m_cupsHeader.ImagingBoundingBox[0]) / (float) 72.0;
+    ja.media_attributes.fPrintableHeight = (float) (m_cupsHeader.ImagingBoundingBox[3] -
+                                   m_cupsHeader.ImagingBoundingBox[1]) / (float) 72.0;
+    ja.media_attributes.fPrintableStartX = (float) m_cupsHeader.ImagingBoundingBox[0] / (float) 72.0;
+    ja.media_attributes.fPrintableStartY = (float) m_cupsHeader.ImagingBoundingBox[1] / (float) 72.0;
+    m_pSys->MapPaperSize (ja.media_attributes.fPhysicalWidth, ja.media_attributes.fPhysicalHeight);
 
     m_pSys->pPC->SetPixelsPerRow (m_cupsHeader.cupsWidth, m_cupsHeader.cupsWidth);
 
@@ -176,7 +192,9 @@ int HPCups::initPrintJob ()
     if (m_cupsHeader.cupsInteger[0])
     {
         // Papersize as PCL id
+	ja.media_attributes.pcl_id = m_cupsHeader.cupsInteger[0];
     }
+    m_pSys->pPC->SetJobAttributes (&ja);
 
     PRINTER_HINT    eHint;
     int             iValue;
@@ -234,7 +252,7 @@ int HPCups::ProcessJob (int argc, char **argv)
         m_fd = open (argv[6], O_RDONLY);
 	if (m_fd == -1)
 	{
-	    BUG ("ERROR: Unable to open raster file %s\n", argv[6]);
+	    BUG ("ERROR: Unable to open raster file %s: %m\n", argv[6]);
 	    return 1;
 	}
     }
@@ -242,7 +260,7 @@ int HPCups::ProcessJob (int argc, char **argv)
     cups_raster = cupsRasterOpen (m_fd, CUPS_RASTER_READ);
     if (cups_raster == NULL)
     {
-	BUG ("cupsRasterOpen failed, fd = %d\n", m_fd);
+	BUG ("cupsRasterOpen failed, fd = %d: %m\n", m_fd);
 	return 1;
     }
 
@@ -586,6 +604,7 @@ void HPCups::printcupsHeader ()
     BUG("DEBUG: cupsWidth = %d\n", m_cupsHeader.cupsWidth);
     BUG("DEBUG: cupsHeight = %d\n", m_cupsHeader.cupsHeight);
     BUG("DEBUG: cupsMediaType = %d\n", m_cupsHeader.cupsMediaType);
+    BUG("DEBUG: cupsRowCount = %d\n", m_cupsHeader.cupsRowCount);
     BUG("DEBUG: cupsRowStep = %d\n", m_cupsHeader.cupsRowStep);
     BUG("DEBUG: cupsBitsPerColor = %d\n", m_cupsHeader.cupsBitsPerColor);
     BUG("DEBUG: cupsBitsPerPixel = %d\n", m_cupsHeader.cupsBitsPerPixel);

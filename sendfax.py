@@ -236,6 +236,11 @@ else: # NON_INTERACTIVE_MODE
             log.error("PC send fax requires dBus and python-dbus")
             sys.exit(1)
 
+        import warnings
+        # Ignore: .../dbus/connection.py:242: DeprecationWarning: object.__init__() takes no parameters
+        # (occurring on Python 2.6/dBus 0.83/Ubuntu 9.04)
+        warnings.simplefilter("ignore", DeprecationWarning)
+
         dbus_avail, service, session_bus = device.init_dbus()
 
         if not dbus_avail or service is None:

@@ -28,7 +28,6 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \*****************************************************************************/
 
-
 // PrintContext
 
 #include "header.h"
@@ -37,6 +36,7 @@
 
 #include "halftoner.h"
 #include "colormatch.h"
+//#include "bug.h"
 
 APDK_BEGIN_NAMESPACE
 extern ColorMatcher* Create_ColorMatcher
@@ -156,35 +156,35 @@ const PrintContext::PaperSizeMetrics PrintContext::PSM[MAX_PAPER_SIZE] =
         (float)0.0, (float)0.0,   (float)0.0,  (float)0.0,   (float)0.125
     },
 
-	// No. 10 Envelope (4.12 x 9.5 in.)
-	{
-		(float)4.12, (float)9.5, (float)3.875, (float)8.875,  (float)0.125
-	},
+    // No. 10 Envelope (4.12 x 9.5 in.)
+    {
+        (float)4.12, (float)9.5, (float)3.875, (float)8.875,  (float)0.125
+    },
 
-	// A2 Envelope (4.37 x 5.75 in.)
-	{
-		(float)4.37, (float)5.75, (float)4.12, (float)5.125,  (float)0.125
-	},
+    // A2 Envelope (4.37 x 5.75 in.)
+    {
+        (float)4.37, (float)5.75, (float)4.12, (float)5.125,  (float)0.125
+    },
 
-	// C6 Envelope (114 x 162 mm)
-	{
-		(float)4.49, (float)6.38, (float)4.24, (float)5.755,  (float)0.125
-	},
+    // C6 Envelope (114 x 162 mm)
+    {
+        (float)4.49, (float)6.38, (float)4.24, (float)5.755,  (float)0.125
+    },
 
-	// DL Envelope (110 x 220 mm)
-	{
-		(float)4.33, (float)8.66, (float)4.08, (float)8.035,  (float)0.125
-	},
+    // DL Envelope (110 x 220 mm)
+    {
+        (float)4.33, (float)8.66, (float)4.08, (float)8.035,  (float)0.125
+    },
 
-	// Japanese Envelope #3 (120 x 235 mm)
-	{
-		(float)4.72, (float)9.25, (float)4.47, (float)8.625,  (float)0.125
-	},
+    // Japanese Envelope #3 (120 x 235 mm)
+    {
+        (float)4.72, (float)9.25, (float)4.47, (float)8.625,  (float)0.125
+    },
 
-	// Japanese Envelope #4 (90 x 205 mm)
-	{
-		(float)3.54, (float)8.07, (float)3.29, (float)7.445,  (float)0.125
-	},
+    // Japanese Envelope #4 (90 x 205 mm)
+    {
+        (float)3.54, (float)8.07, (float)3.29, (float)7.445,  (float)0.125
+    },
 
 #endif // APDK_EXTENDED_MEDIASIZE
 
@@ -274,6 +274,7 @@ PrintContext::PrintContext
 
     DR = pSS->DR;
 
+    m_job_attributes = NULL;
     bDoFullBleed = FALSE;
 
     UsePageWidth = (OutputPixelsPerRow == 0);     // flag to set width to width of page
@@ -427,6 +428,7 @@ DRIVER_ERROR PrintContext::SelectPrintMode
     {
         return NO_PRINTER_SELECTED;
     }
+
     // variables of  printmode container class
     ModeSet* Modes;
     ModeSet* tempModeSet;
@@ -680,7 +682,7 @@ DRIVER_ERROR PrintContext::SelectPrintMode
         return WARN_MODE_MISMATCH;
     }
 
-	return NO_ERROR;
+    return NO_ERROR;
 } //SelectPrintMode
 
 
@@ -853,6 +855,10 @@ DBG1("deleting PrintContext\n");
         pSS->FreeMem((BYTE*)CurrentMode->cmap.ulMap1);
         delete CurrentMode;
     }
+    if (m_job_attributes)
+    {
+        delete [] m_job_attributes;
+    }
 } //~PrintContext
 
 
@@ -866,13 +872,18 @@ DBG1("deleting PrintContext\n");
 //! Retrieves information about the physical width of the currently selected paper size.
 float PrintContext::PhysicalPageSizeX()   // returned in inches
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPhysicalWidth;
+    }
+
     if (thePrinter == NULL)
     {
         return 0.0;
     }
 
     float   xOverSpray, yOverSpray;
-	FullbleedType    fbType;
+    FullbleedType    fbType;
 #ifdef APDK_EXTENDED_MEDIASIZE
     float PhysicalPageX = (thePaperSize == CUSTOM_SIZE) ? CustomWidth : PSM[thePaperSize].fPhysicalPageX;
 #else
@@ -891,13 +902,18 @@ float PrintContext::PhysicalPageSizeX()   // returned in inches
 //! Retrieves information about the physical height of the currently selected paper size.
 float PrintContext::PhysicalPageSizeY()   // returned in inches
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPhysicalHeight;
+    }
+
     if (thePrinter == NULL)
     {
         return 0.0;
     }
 
     float   xOverSpray, yOverSpray;
-	FullbleedType   fbType;
+    FullbleedType   fbType;
 
 #ifdef APDK_EXTENDED_MEDIASIZE
     float PhysicalPageY = (thePaperSize == CUSTOM_SIZE) ? CustomHeight : PSM[thePaperSize].fPhysicalPageY;
@@ -930,13 +946,18 @@ float PrintContext::PrintableWidth()    // returned in inches
 float PrintContext::printablewidth()
 // for internal use
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPrintableWidth;
+    }
+
     if (thePrinter == NULL)
     {
         return 0.0;
     }
 
     float   xOverSpray, yOverSpray;
-	FullbleedType  fbType;
+    FullbleedType  fbType;
 
 #ifdef APDK_EXTENDED_MEDIASIZE
     float PhysicalPageX = (thePaperSize == CUSTOM_SIZE) ? CustomWidth : PSM[thePaperSize].fPhysicalPageX;
@@ -972,6 +993,11 @@ float PrintContext::PrintableHeight()     // returned in inches
 float PrintContext::printableheight()
 // for internal use
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPrintableHeight;
+    }
+
     if (thePrinter == NULL)
     {
         return 0.0;
@@ -989,7 +1015,7 @@ float PrintContext::printableheight()
  */
 
     float   xOverSpray, yOverSpray;
-	FullbleedType   fbType;
+    FullbleedType   fbType;
 #ifdef APDK_EXTENDED_MEDIASIZE
     float PhysicalPageY = (thePaperSize == CUSTOM_SIZE) ? CustomHeight : PSM[thePaperSize].fPhysicalPageY;
     float PrintablePageY = (thePaperSize == CUSTOM_SIZE) ? CustomHeight - (float) (0.125+0.5) : PSM[thePaperSize].fPrintablePageY;
@@ -1000,16 +1026,16 @@ float PrintContext::printableheight()
 
     if (bDoFullBleed  && (thePrinter->FullBleedCapable (thePaperSize, &fbType, &xOverSpray, &yOverSpray)))
     {
-		if (fbType == fullbleed3EdgeAllMedia || 
-			fbType == fullbleed3EdgeNonPhotoMedia || 
-			fbType == fullbleed3EdgePhotoMedia)
-			return (PhysicalPageY - (float) 0.5);
-		else if (fbType == fullbleed4EdgePhotoMedia || 
-			     fbType == fullbleed4EdgeNonPhotoMedia || 
-				 fbType == fullbleed4EdgeAllMedia)
-			return (PhysicalPageY + yOverSpray);
-		else
-			return (PhysicalPageY - (float) 0.5);
+        if (fbType == fullbleed3EdgeAllMedia || 
+            fbType == fullbleed3EdgeNonPhotoMedia || 
+            fbType == fullbleed3EdgePhotoMedia)
+            return (PhysicalPageY - (float) 0.5);
+        else if (fbType == fullbleed4EdgePhotoMedia || 
+                 fbType == fullbleed4EdgeNonPhotoMedia || 
+                 fbType == fullbleed4EdgeAllMedia)
+            return (PhysicalPageY + yOverSpray);
+        else
+            return (PhysicalPageY - (float) 0.5);
     }
 
 /*
@@ -1035,13 +1061,18 @@ float PrintContext::printableheight()
 //! Returns the left margin or distance from the top edge of the page.
 float PrintContext::PrintableStartX() // returned in inches
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPrintableStartX;
+    }
+
     if (thePrinter==NULL)
     {
         return 0;
     }
 
     float   xOverSpray, yOverSpray;
-	FullbleedType  fbType;
+    FullbleedType  fbType;
     if (bDoFullBleed && (thePrinter->FullBleedCapable (thePaperSize, &fbType, &xOverSpray, &yOverSpray)))
     {
         return (0.0);
@@ -1068,13 +1099,18 @@ float PrintContext::PrintableStartX() // returned in inches
 //! Returns the top margin or distance from the top edge of the page.
 float PrintContext::PrintableStartY() // returned in inches
 {
+    if (m_job_attributes)
+    {
+        return m_job_attributes->media_attributes.fPrintableStartY;
+    }
+
     if (thePrinter == NULL)
     {
         return 0;
     }
 
     float   xOverSpray, yOverSpray;
-	FullbleedType fbType;
+    FullbleedType fbType;
 
     if (bDoFullBleed && (thePrinter->FullBleedCapable (thePaperSize, &fbType, &xOverSpray, &yOverSpray)))
     {
@@ -1355,21 +1391,21 @@ DRIVER_ERROR PrintContext::setpixelsperrow
     OutputWidth = OutputPixelsPerRow;
 
 /*
- *	Adjust OutputWidth to avoid fractional scaling.
+ *    Adjust OutputWidth to avoid fractional scaling.
  */
 
-	int	iScaleFactor = (int) (((float) OutputWidth / (float) InputWidth) + 0.02);
-	int	iDiff = OutputWidth - InputWidth * iScaleFactor;
-	if (iDiff > 0 && iDiff < ((12 * (int) baseres) / 300))
-	{
-		OutputWidth = InputWidth * iScaleFactor;
-		if (OutputWidth > PageWidth)
-		{
-			OutputWidth = PageWidth;
-		}
-	}
+    int    iScaleFactor = (int) (((float) OutputWidth / (float) InputWidth) + 0.02);
+    int    iDiff = OutputWidth - InputWidth * iScaleFactor;
+    if (iDiff > 0 && iDiff < ((12 * (int) baseres) / 300))
+    {
+        OutputWidth = InputWidth * iScaleFactor;
+        if (OutputWidth > PageWidth)
+        {
+            OutputWidth = PageWidth;
+        }
+    }
 
-	return NO_ERROR;
+    return NO_ERROR;
 } //setpixelsperrow
 
 
@@ -1574,7 +1610,7 @@ DRIVER_ERROR PrintContext::SetPaperSize (PAPER_SIZE ps, BOOL bFullBleed)
     if (err == NO_ERROR && bFullBleed)
     {
         float   x;
-		FullbleedType   fbType;
+        FullbleedType   fbType;
 
 //      Does this printer support full-bleed printing
 
@@ -1582,34 +1618,34 @@ DRIVER_ERROR PrintContext::SetPaperSize (PAPER_SIZE ps, BOOL bFullBleed)
             return WARN_FULL_BLEED_UNSUPPORTED;
 
 //      Media with tear-off tab can do full-bleed on all 4 sides
-		if (fbType == fullbleedNotSupported)
-		{
-			return WARN_FULL_BLEED_UNSUPPORTED;
-		}
-		else if (fbType == fullbleed3EdgeAllMedia)
-		{
-			return WARN_FULL_BLEED_3SIDES;
-		}
-		else if (fbType == fullbleed3EdgeNonPhotoMedia)  // Treat non photo case as all media
-		{
-			return WARN_FULL_BLEED_3SIDES;
-		}
-		else if (fbType == fullbleed3EdgePhotoMedia)
-		{
-			return WARN_FULL_BLEED_3SIDES_PHOTOPAPER_ONLY;
-		}
-		else if (fbType == fullbleed4EdgePhotoMedia)
-		{
-			return WARN_FULL_BLEED_PHOTOPAPER_ONLY;
-		}
-		else if (fbType == fullbleed4EdgeAllMedia)
-		{
-			return NO_ERROR;
-		}
-		else if (fbType == fullbleed4EdgeNonPhotoMedia) // Treat non photo case as all media
-		{
-			return NO_ERROR;
-		}
+        if (fbType == fullbleedNotSupported)
+        {
+            return WARN_FULL_BLEED_UNSUPPORTED;
+        }
+        else if (fbType == fullbleed3EdgeAllMedia)
+        {
+            return WARN_FULL_BLEED_3SIDES;
+        }
+        else if (fbType == fullbleed3EdgeNonPhotoMedia)  // Treat non photo case as all media
+        {
+            return WARN_FULL_BLEED_3SIDES;
+        }
+        else if (fbType == fullbleed3EdgePhotoMedia)
+        {
+            return WARN_FULL_BLEED_3SIDES_PHOTOPAPER_ONLY;
+        }
+        else if (fbType == fullbleed4EdgePhotoMedia)
+        {
+            return WARN_FULL_BLEED_PHOTOPAPER_ONLY;
+        }
+        else if (fbType == fullbleed4EdgeAllMedia)
+        {
+            return NO_ERROR;
+        }
+        else if (fbType == fullbleed4EdgeNonPhotoMedia) // Treat non photo case as all media
+        {
+            return NO_ERROR;
+        }
     }
 
     return err;
@@ -1730,21 +1766,21 @@ This is the method for use to check if the printer support a separate 1 bit blac
 */
 BOOL PrintContext::SupportSeparateBlack()
 {
-	if (thePrinter == NULL || CurrentMode == NULL)
-	{
-		return FALSE;
-	}
-	else
-	{
-		if (CurrentMode->dyeCount == 3 || CurrentMode->dyeCount == 6)
-		{
-			return FALSE;
-		}
-		else
-		{
-			return thePrinter->SupportSeparateBlack (CurrentMode);
-		}
-	}
+    if (thePrinter == NULL || CurrentMode == NULL)
+    {
+        return FALSE;
+    }
+    else
+    {
+        if (CurrentMode->dyeCount == 3 || CurrentMode->dyeCount == 6)
+        {
+            return FALSE;
+        }
+        else
+        {
+            return thePrinter->SupportSeparateBlack (CurrentMode);
+        }
+    }
 }
 
 #ifdef APDK_AUTODUPLEX
@@ -1913,7 +1949,7 @@ DRIVER_ERROR PrintContext::SetCompGrayMode
         return SYSTEM_ERROR;
     }
     cm.ulMap2 = NULL;
-	cm.ulMap3 = NULL;
+    cm.ulMap3 = NULL;
 
     PEN_TYPE pen = thePrinter->ActualPens();
     unsigned int numinks;
@@ -1998,7 +2034,7 @@ is relevant for those printers that have multiple input bins. All other printers
 will ignore the bin number. The typical bin numbers are
     1 - Upper Tray
     4 - Lower Tray
-	5 - Duplexer Hagaki Feed
+    5 - Duplexer Hagaki Feed
     7 - Auto Select
 Any value between 1 and 50 is valid where there are more than 2 trays.
 ******************************************************************************/
@@ -2009,17 +2045,17 @@ DRIVER_ERROR PrintContext::SetMediaSource
 )
 {
     if ((num > sourceTrayMax) || (num < sourceTrayMin))
-	     return WARN_INVALID_MEDIA_SOURCE;
+         return WARN_INVALID_MEDIA_SOURCE;
     m_MediaSource = num;
 
-	if (thePrinter != NULL)
-	{
-		BOOL bQueryHagakiTray = TRUE;
-		if (num == sourceDuplexerNHagakiFeed && !thePrinter->HagakiFeedPresent(bQueryHagakiTray))
-		{
-			m_MediaSource = sourceTrayAuto;
-		}
-	}
+    if (thePrinter != NULL)
+    {
+        BOOL bQueryHagakiTray = TRUE;
+        if (num == sourceDuplexerNHagakiFeed && !thePrinter->HagakiFeedPresent(bQueryHagakiTray))
+        {
+            m_MediaSource = sourceTrayAuto;
+        }
+    }
     return NO_ERROR;
 }
 
@@ -2037,9 +2073,9 @@ PEN_TYPE PrintContext::GetDefaultPenSet()
 
 PEN_TYPE PrintContext::GetInstalledPens()
 {
-	if(!thePrinter)
-		return NO_PEN;
-	return thePrinter->ePen;
+    if(!thePrinter)
+        return NO_PEN;
+    return thePrinter->ePen;
 }
 
 void PrintContext::ResetIOMode (BOOL bDevID, BOOL bStatus)
@@ -2068,4 +2104,34 @@ DRIVER_ERROR PrintContext::SetMediaType (MEDIATYPE eMediaType)
     return CurrentMode->SetMediaType (eMediaType);
 }
 
+void PrintContext::SetJobAttributes (JobAttributes *pJA)
+{
+    if (m_job_attributes == NULL)
+    {
+        m_job_attributes = (JobAttributes *) new BYTE[sizeof (JobAttributes)];
+    }
+    if (m_job_attributes == NULL)
+    {
+        return;
+    }
+
+    memcpy(m_job_attributes, pJA, sizeof(JobAttributes));
+    InputWidth = (int) (pJA->media_attributes.fPrintableWidth * EffectiveResolutionX ());
+    OutputWidth = InputWidth;
+//BUG("CurrentPrintMode=%d\n", CurrentPrintMode());
+//BUG("fPrintableWidth=%0.5g EffectiveResolutionX=%d\n", pJA->media_attributes.fPrintableWidth, EffectiveResolutionX());
+//BUG("InputWidth=%d OutputWidth=%d\n", InputWidth, OutputWidth);
+}
+
+int PrintContext::GetJobAttributes (int getWhat)
+{
+    if (m_job_attributes == NULL)
+        return -1;
+
+    if (getWhat == MEDIASIZE_PCL)
+        return m_job_attributes->media_attributes.pcl_id;
+    return -1;
+}
+
 APDK_END_NAMESPACE
+

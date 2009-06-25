@@ -37,16 +37,18 @@
 #define _GNU_SOURCE
 #endif
 
+#define ADDITIONAL_LOG     1
+#define SAVE_PCL_FILE      2
+#define SAVE_INPUT_RASTERS 4
+#define SEND_TO_PRINTER    8
+
 #include <syslog.h>
 #include <stdio.h>
 
 #define _STRINGIZE(x) #x
 #define STRINGIZE(x) _STRINGIZE(x)
 
-#ifdef BUG_SYSLOG
-   #define BUG(args...) syslog(LOG_ERR, __FILE__ " " STRINGIZE(__LINE__) ": " args)
-#else
-   #define BUG(args...) fprintf(stderr, __FILE__ " " STRINGIZE(__LINE__) ": " args)
-#endif
+#define BUG(args...) {syslog(LOG_ERR, __FILE__ " " STRINGIZE(__LINE__) ": " args); \
+fprintf(stderr, __FILE__ " " STRINGIZE(__LINE__) ": " args);}
 
 #endif /* _BUG_H */

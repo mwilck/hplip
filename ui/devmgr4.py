@@ -154,6 +154,7 @@ class SuppliesListViewItem(QListViewItem):
 class PasswordDialog(QDialog):
     def __init__(self,prompt, parent=None, name=None, modal=0, fl=0):
         QDialog.__init__(self,parent,name,modal,fl)
+        self.prompt = prompt
 
         if not name:
             self.setName("PasswordDialog")
@@ -194,8 +195,8 @@ class PasswordDialog(QDialog):
         return unicode(self.passwordLineEdit.text())
 
     def languageChange(self):
-        self.setCaption(self.__tr("HP Device Manager - Enter Password"))
-        self.promptTextLabel.setText(self.__tr("You do not have authorization for this function."))
+        self.setCaption(self.__tr("HP Device Manager - Enter Username/Password"))
+        self.promptTextLabel.setText(self.__tr(self.prompt))
         self.usernameTextLabel.setText(self.__tr("Username"))
         self.passwordTextLabel.setText(self.__tr("Password"))
         self.okPushButton.setText(self.__tr("OK"))
@@ -1383,8 +1384,8 @@ class DevMgr4(DevMgr4_base):
 
 
     def downloadPlugin(self):
-        ok = pkit.run_plugin_command(self.cur_device.plugin == PLUGIN_REQUIRED)
-        if not ok:
+        ok, sudo_ok = pkit.run_plugin_command(self.cur_device.plugin == PLUGIN_REQUIRED, self.cur_device.mq['plugin-reason'])
+        if not sudo_ok:
             QMessageBox.critical(self,
                 self.caption(),
                 self.__tr("<b>Unable to find an appropriate su/sudo utility to run hp-plugin.</b><p>Install kdesu, gnomesu, or gksu.</p>"),

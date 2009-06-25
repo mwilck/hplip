@@ -572,10 +572,13 @@ int UXServices::MapPaperSize (float width, float height)
     if ((r = pPC->SetPaperSize ((PAPER_SIZE)size, FullBleed)) != NO_ERROR)
     {
         if (r > 0)
-            BUG("unable to set paper size=%d, err=%d\n", size, r);
+        {
+            BUG("unable to set paper size=%d, err=%d, width=%0.5g, height=%0.5g\n", size, r, width, height);
+        }
         else 
-            BUG("warning setting paper size=%d, err=%d\n", size, r);
-
+        {
+            BUG("warning setting paper size=%d, err=%d, width=%0.5g, height=%0.5g\n", size, r, width, height);
+        }
 /*
  *      Call failed, reset our PaperWidth and PaperHeight values.
  *      This ensures that we return correct values when gs queries for printable area.

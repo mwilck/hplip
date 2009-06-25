@@ -76,12 +76,13 @@ mod = module.Module(__mod__, __title__, __version__, __doc__, USAGE,
                     (UI_TOOLKIT_QT3, UI_TOOLKIT_QT4), True)
 
 opts, device_uri, printer_name, mode, ui_toolkit, loc = \
-    mod.parseStdOpts('p:', ['path=', 'plugin=', 'plug-in=',
+    mod.parseStdOpts('p:', ['path=', 'plugin=', 'plug-in=', 'reason=',
                             'generic', 'optional', 'required'],
                      handle_device_printer=False)
 
 plugin_path = None
 install_mode = PLUGIN_NONE # reuse plugin types for mode (PLUGIN_NONE = generic)
+plugin_reason = PLUGIN_REASON_NONE
 
 for o, a in opts:
     if o in ('-p', '--path', '--plugin', '--plug-in'):
@@ -96,6 +97,9 @@ for o, a in opts:
         install_mode = PLUGIN_OPTIONAL
         if ui_toolkit == 'qt3':
             log.warn("--optional switch ignored.")
+
+    elif o == '--reason':
+        plugin_reason = int(a)
 
 
 version = prop.installed_version
@@ -242,7 +246,7 @@ if mode == GUI_MODE:
             sys.exit(1)
 
 
-        dialog = PluginDialog(None, install_mode)
+        dialog = PluginDialog(None, install_mode, plugin_reason)
         dialog.show()
         try:
             log.debug("Starting GUI loop...")

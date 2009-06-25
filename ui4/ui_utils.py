@@ -28,6 +28,7 @@ import os
 from base.g import *
 from base.codes import *
 from base import utils
+from prnt import cups
 
 # Qt
 from PyQt4.QtCore import *
@@ -91,6 +92,12 @@ def load_pixmap(name, subdir=None, resize_to=None):
     return QPixmap()
 
 loadPixmap = load_pixmap
+
+
+def getPynotifyIcon(name, subdir='32x32'):
+    name = ''.join([os.path.splitext(name)[0], '.png'])
+    return "file://" + os.path.join(prop.image_dir, subdir, name)
+
 
 
 class UserSettings(QSettings):
@@ -311,7 +318,7 @@ class PrinterNameValidator(QValidator):
         if not input:
             return QValidator.Acceptable, pos
 
-        if input[pos-1] in u"""~`!@#$%^&*()-=+[]{}()\\/,.<>?'\";:| """:
+        if input[pos-1] in cups.INVALID_PRINTER_NAME_CHARS:
             return QValidator.Invalid, pos
 
         # TODO: How to determine if unicode char is "printable" and acceptable

@@ -33,15 +33,6 @@ endif
 
 if HPLIP_BUILD
 
-dist_hplip_SCRIPTS = hpssd.py __init__.py hpdio.py
-dist_noinst_DATA += scan/sane/hpaio.desc prnt/drv/hpijs.drv.in.template
-dist_noinst_SCRIPTS += dat2drv.py install.py hplip-install
-
-cmddir = $(hplipdir)
-dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
-	sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py scan.py systray.py plugin.py linefeedcal.py pqdiag.py \
-	faxsetup.py devicesetup.py printsettings.py query.py pkservice.py
-
 # hp backend.
 hpdir = $(cupsbackenddir)
 hp_PROGRAMS = hp
@@ -49,17 +40,84 @@ hp_SOURCES = prnt/backend/hp.c
 hp_LDADD = libhpmud.la $(DBUS_LIBS)
 hp_CFLAGS = $(DBUS_CFLAGS)
 
+# hpaio sane backend
+if SCAN_BUILD
+libsane_hpaiodir = $(libdir)/sane
+libsane_hpaio_LTLIBRARIES = libsane-hpaio.la
+libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
+	  scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
+	  scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/soapht.h scan/sane/sanei_debug.h scan/sane/sanei.h \
+	  scan/sane/sanei_init_debug.c scan/sane/marvell.h scan/sane/marvelli.h scan/sane/marvell.c scan/sane/soapht.c scan/sane/soap.c \
+          scan/sane/soaphti.h scan/sane/soapi.h scan/sane/xml.c scan/sane/xml.h
+if DARWIN_BUILD
+libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation -version-info 1:0:0
+else
+libsane_hpaio_la_LDFLAGS = -version-info 1:0:0
+endif
+# The following is a interlibrary dependency that must be compiled first.
+libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la $(DBUS_LIBS) -lcups -ldl
+#libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
+libsane_hpaio_la_CFLAGS = $(DBUS_CFLAGS)
+endif # SCAN_BUILD
+
+# hpmud library
+MUDNAME=hpmud
+lib_LTLIBRARIES += libhpmud.la
+libhpmud_la_SOURCES = io/hpmud/hpmud.c io/hpmud/mlc.c io/hpmud/model.c io/hpmud/musb.c io/hpmud/pml.c \
+	  io/hpmud/hpmud.h io/hpmud/hpmudi.h io/hpmud/list.h io/hpmud/mlc.h io/hpmud/musb.h io/hpmud/pml.h io/hpmud/dot4.c \
+	  io/hpmud/dot4.h io/hpmud/jd.c io/hpmud/jd.h io/hpmud/pp.c io/hpmud/pp.h
+if NETWORK_BUILD
+libhpmud_la_LDFLAGS = -version-info 0:5:0 -lusb -lpthread -l$(SNMPLIB) -lcrypto
+else
+libhpmud_la_LDFLAGS = -version-info 0:5:0 -lusb -lpthread
+endif
+libhpmud_la_CFLAGS = -DMUDNAME=\"$(MUDNAME)\" -DCONFDIR=\"$(hplip_confdir)\"
+
+# ip library
+lib_LTLIBRARIES += libhpip.la
+libhpip_la_LDFLAGS = -version-info 0:1:0
+libhpip_la_LIBADD = -lm
+libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
+	ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
+	ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
+	ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h
+
 # hp-mkuri.
 hp_mkuridir = $(bindir)
 hp_mkuri_PROGRAMS = hp-mkuri
 hp_mkuri_SOURCES = io/hpmud/hp-mkuri.c
 hp_mkuri_LDADD = -ldl libhpmud.la
 
+# hpmud.rules
+rulesdir = /etc/udev/rules.d
+dist_rules_DATA = data/rules/55-hpmud.rules data/rules/56-hpmud_support.rules
+halpredir = /usr/share/hal/fdi/preprobe/10osvendor
+dist_halpre_DATA = data/rules/20-hplip-devices.fdi
+
+# hplip.conf
+hplip_confdir = /etc/hp
+hplip_conf_DATA = hplip.conf
+
+# hplip.state
+hplip_statedir = /var/lib/hp
+dist_hplip_state_DATA = hplip.state
+
+if FULL_BUILD
+
+dist_hplip_SCRIPTS = hpssd.py __init__.py hpdio.py
+dist_noinst_DATA += scan/sane/hpaio.desc prnt/drv/hpijs.drv.in.template
+dist_noinst_SCRIPTS += dat2drv.py install.py hplip-install
+
+cmddir = $(hplipdir)
+dist_cmd_SCRIPTS = align.py info.py print.py toolbox.py clean.py colorcal.py unload.py testpage.py makeuri.py check.py fab.py levels.py \
+	sendfax.py setup.py makecopies.py probe.py timedate.py firmware.py scan.py systray.py plugin.py linefeedcal.py pqdiag.py \
+	faxsetup.py devicesettings.py printsettings.py query.py pkservice.py wificonfig.py
+
 # base
 basedir = $(hplipdir)/base
 
 dist_base_SCRIPTS = base/maint.py base/codes.py base/g.py base/pml.py base/status.py  \
-	base/__init__.py base/mfpdtf.py base/utils.py \
+	base/__init__.py base/mfpdtf.py base/utils.py base/wifi.py \
 	base/device.py base/logger.py base/slp.py base/exif.py base/strings.py base/magic.py \
 	base/imagesize.py base/pexpect.py base/models.py base/mdns.py base/tui.py base/dime.py \
 	base/ldif.py base/vcard.py base/module.py base/pkit.py
@@ -79,9 +137,15 @@ faxdir = $(hplipdir)/fax
 dist_fax_SCRIPTS = fax/fax.py fax/__init__.py fax/coverpages.py fax/pmlfax.py fax/soapfax.py fax/faxdevice.py
 hpfaxdir = $(cupsbackenddir)
 dist_hpfax_SCRIPTS = fax/backend/hpfax.py
-faxppddir = $(hpppddir)
-dist_faxppd_DATA = fax/ppd/HP-Fax-hplip.ppd.gz fax/ppd/HP-Fax2-hplip.ppd.gz
-endif
+hpijsfaxppddir = $(hpppddir)
+hpcupsfaxppddir = $(hpppddir)
+if HPIJS_INSTALL
+dist_hpijsfaxppd_DATA = fax/ppd/HP-Fax-hpijs.ppd.gz fax/ppd/HP-Fax2-hpijs.ppd.gz
+endif # HPIJS_INSTALL
+if HPCUPS_INSTALL
+dist_hpcupsfaxppd_DATA = fax/ppd/HP-Fax-hpcups.ppd.gz fax/ppd/HP-Fax2-hpcups.ppd.gz
+endif # HPCUPS_INSTALL
+endif # FAX_BUILD
 
 # ptest
 noinst_PROGRAMS += ptest
@@ -150,34 +214,7 @@ cupsext_la_SOURCES =  prnt/cupsext/cupsext.c
 cupsext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
 cupsext_la_LIBADD = -lcups
 
-# ip library
-lib_LTLIBRARIES += libhpip.la
-libhpip_la_LDFLAGS = -version-info 0:1:0
-libhpip_la_LIBADD = -lm
-libhpip_la_SOURCES = ip/xconvolve.c ip/xfax.c ip/xgrayout.c ip/xjpg_dct.c ip/xjpg_fix.c ip/xpad.c ip/xrotate.c ip/xskel.c ip/xtiff.c \
-	ip/ipmain.c ip/xchgbpp.c ip/xcrop.c ip/xgamma.c ip/xjpg_dec.c ip/xjpg_huf.c ip/xpcx.c ip/xsaturation.c ip/xtable.c ip/xtonemap.c \
-	ip/xbi2gray.c ip/xcolrspc.c ip/xfakemono.c ip/xgray2bi.c ip/xinvert.c ip/xjpg_enc.c ip/xmatrix.c ip/xpnm.c ip/xscale.c ip/xthumb.c ip/xyxtract.c \
-	ip/hpip.h ip/ipdefs.h ip/xform.h ip/xjpg_dct.h ip/xjpg_huf.h ip/xjpg_mrk.h
-
-# hpaio sane backend
 if SCAN_BUILD
-libsane_hpaiodir = $(libdir)/sane
-libsane_hpaio_LTLIBRARIES = libsane-hpaio.la
-libsane_hpaio_la_SOURCES = scan/sane/hpaio.c scan/sane/mfpdtf.c scan/sane/pml.c scan/sane/scl.c scan/sane/io.c scan/sane/hpaio.h \
-	  scan/sane/pml.h scan/sane/saneopts.h scan/sane/io.h scan/sane/mfpdtf.h scan/sane/sane.h scan/sane/scl.h scan/sane/tables.h \
-	  scan/sane/common.c scan/sane/common.h scan/sane/soap.h scan/sane/soapht.h scan/sane/sanei_debug.h scan/sane/sanei.h \
-	  scan/sane/sanei_init_debug.c scan/sane/marvell.h scan/sane/marvelli.h scan/sane/marvell.c scan/sane/soapht.c scan/sane/soap.c \
-          scan/sane/soaphti.h scan/sane/soapi.h scan/sane/xml.c scan/sane/xml.h
-if DARWIN_BUILD
-libsane_hpaio_la_LDFLAGS = -module -framework CoreFoundation -version-info 1:0:0
-else
-libsane_hpaio_la_LDFLAGS = -version-info 1:0:0
-endif
-# The following is a interlibrary dependency that must be compiled first.
-libsane_hpaio_la_LIBADD = libhpip.la libhpmud.la $(DBUS_LIBS) -lcups -ldl
-#libsane_hpaio_la_CFLAGS = -DWITH_NONAMESPACES -DSOAP_DEBUG
-libsane_hpaio_la_CFLAGS = $(DBUS_CFLAGS)
-
 # scan
 scandir = $(hplipdir)/scan
 dist_scan_SCRIPTS = scan/__init__.py scan/sane.py
@@ -190,19 +227,6 @@ scanext_la_SOURCES =  scan/scanext/scanext.c
 scanext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
 endif
 
-# hpmud library
-MUDNAME=hpmud
-lib_LTLIBRARIES += libhpmud.la
-libhpmud_la_SOURCES = io/hpmud/hpmud.c io/hpmud/mlc.c io/hpmud/model.c io/hpmud/musb.c io/hpmud/pml.c \
-	  io/hpmud/hpmud.h io/hpmud/hpmudi.h io/hpmud/list.h io/hpmud/mlc.h io/hpmud/musb.h io/hpmud/pml.h io/hpmud/dot4.c \
-	  io/hpmud/dot4.h io/hpmud/jd.c io/hpmud/jd.h io/hpmud/pp.c io/hpmud/pp.h
-if NETWORK_BUILD
-libhpmud_la_LDFLAGS = -version-info 0:4:0 -lusb -lpthread -lnetsnmp -lcrypto
-else
-libhpmud_la_LDFLAGS = -version-info 0:4:0 -lusb -lpthread
-endif
-libhpmud_la_CFLAGS = -DMUDNAME=\"$(MUDNAME)\" -DCONFDIR=\"$(hplip_confdir)\"
-
 # hpmudext
 hpmudextdir = $(pyexecdir)
 hpmudext_LTLIBRARIES = hpmudext.la
@@ -210,12 +234,6 @@ hpmudext_la_LDFLAGS = -module -avoid-version
 hpmudext_la_SOURCES = io/mudext/hpmudext.c
 hpmudext_la_LIBADD = libhpmud.la
 hpmudext_la_CFLAGS = -I$(PYTHONINCLUDEDIR)
-
-# hpmud.rules
-rulesdir = /etc/udev/rules.d
-dist_rules_DATA = data/rules/55-hpmud.rules data/rules/56-hpmud_support.rules
-halpredir = /usr/share/hal/fdi/preprobe/10osvendor
-dist_halpre_DATA = data/rules/20-hplip-devices.fdi
 
 # ui (qt3)
 if GUI_BUILD
@@ -299,19 +317,11 @@ noinst_PROGRAMS += hppgsz
 hppgsz_SOURCES = prnt/hpijs/PrinterProperties.cpp prnt/hpijs/PrinterProperties.h prnt/hpijs/bug.h
 hppgsz_CXXFLAGS = $(libapdk_la_CXXFLAGS)
 hppgsz_CFLAGS = $(libapdk_la_CFLAGS)
-hppgsz_LDADD = $(hpijs_LDADD)
+hppgsz_LDADD = libapdk.la -ljpeg -ldl
 
 # hplip.desktop
 hplip_desktopdir = $(icondir)
 hplip_desktop_DATA = hplip.desktop
-
-# hplip.conf
-hplip_confdir = /etc/hp
-hplip_conf_DATA = hplip.conf
-
-# hplip.state
-hplip_statedir = /var/lib/hp
-dist_hplip_state_DATA = hplip.state
 
 # hplip-systray.desktop
 hplip_systraydir = $(systraydir)
@@ -322,7 +332,12 @@ hplipjsdir = $(cupsfilterdir)
 hplipjs_PROGRAMS = hplipjs
 hplipjs_SOURCES = prnt/filters/hplipjs.c
 
-endif	# if HPLIP_BUILD
+# hpcac (CUPS filter, Color Access Control, ie: CLJ 4700)
+cacdir = $(cupsfilterdir)
+dist_cac_SCRIPTS = prnt/filters/hpcac
+
+endif   # FULL_BUILD
+endif	# HPLIP_BUILD
 
 # foomatic-rip-hplip
 if RIP_INSTALL
@@ -334,12 +349,12 @@ endif
 noinst_LTLIBRARIES = libapdk.la
 libapdk_la_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
 	prnt/hpijs/dj9xxvip.cpp prnt/hpijs/dj9xx.cpp prnt/hpijs/capture.cpp prnt/hpijs/colormatch.cpp prnt/hpijs/colormatcher_open.cpp \
-	prnt/hpijs/compression.cpp prnt/hpijs/context.cpp prnt/hpijs/create_so.cpp prnt/hpijs/creator.cpp \
+	prnt/hpijs/compression.cpp prnt/hpijs/context2.cpp prnt/hpijs/create_so.cpp prnt/hpijs/creator.cpp \
 	prnt/hpijs/dj600.cpp prnt/hpijs/dj630.cpp prnt/hpijs/dj660.cpp prnt/hpijs/dj690.cpp prnt/hpijs/dj6xx.cpp prnt/hpijs/dj8xx.cpp prnt/hpijs/dj600_maps.cpp \
 	prnt/hpijs/dj660_maps.cpp prnt/hpijs/dj690_maps.cpp prnt/hpijs/dj895_maps.cpp prnt/hpijs/dj895_maps2.cpp prnt/hpijs/dj970_maps.cpp \
 	prnt/hpijs/dj970_maps2.cpp prnt/hpijs/dj970_maps3.cpp prnt/hpijs/filterhpa.cpp prnt/hpijs/apollo21xx.cpp prnt/hpijs/apollo2560.cpp prnt/hpijs/apollo2xxx.cpp \
 	prnt/hpijs/dj8x5.cpp prnt/hpijs/psp100.cpp prnt/hpijs/phobos_cmaps.cpp prnt/hpijs/dj350.cpp prnt/hpijs/halftoner.cpp prnt/hpijs/halftoner_open.cpp \
-	prnt/hpijs/globals.cpp prnt/hpijs/header.cpp prnt/hpijs/htmtxhi.cpp prnt/hpijs/pmselect.cpp \
+	prnt/hpijs/globals.cpp prnt/hpijs/header2.cpp prnt/hpijs/htmtxhi.cpp prnt/hpijs/pmselect.cpp \
 	prnt/hpijs/job.cpp prnt/hpijs/printer.cpp prnt/hpijs/registry.cpp prnt/hpijs/scaler.cpp \
 	prnt/hpijs/scaler_open.cpp prnt/hpijs/script.cpp prnt/hpijs/systemservices.cpp \
 	prnt/hpijs/translator.cpp prnt/hpijs/version.cpp prnt/hpijs/versioncode.cpp \
@@ -354,7 +369,7 @@ libapdk_la_SOURCES = prnt/hpijs/models.cpp prnt/hpijs/breaks_open.cpp \
 	prnt/hpijs/interp.h prnt/hpijs/interp_data_50.h prnt/hpijs/io_defs.h prnt/hpijs/job.h prnt/hpijs/models.h prnt/hpijs/modes.h prnt/hpijs/pmselect.h \
 	prnt/hpijs/printer.h prnt/hpijs/psp100.h prnt/hpijs/psp470.h prnt/hpijs/resources.h prnt/hpijs/scaler_open.h prnt/hpijs/scaler_prop.h prnt/hpijs/script.h \
 	prnt/hpijs/systemservices.h prnt/hpijs/unistd_.h prnt/hpijs/djgenericvip.h prnt/hpijs/ljmono.h prnt/hpijs/ljmono.cpp \
-	prnt/hpijs/dj3320.cpp prnt/hpijs/dj3320.h prnt/hpijs/dj3320_cmap.cpp prnt/hpijs/dj3600.cpp prnt/hpijs/dj3600.h prnt/hpijs/dj3600_cmap.cpp prnt/hpijs/dj4100.h \
+	prnt/hpijs/dj3320.cpp prnt/hpijs/dj3320.h prnt/hpijs/dj3320_cmap.cpp prnt/hpijs/dj3600.cpp prnt/hpijs/dj3600.h prnt/hpijs/dj3600_cmap.cpp prnt/hpijs/dj4100.h prnt/hpijs/djd2600.h \
 	prnt/hpijs/dj4100_cmap.cpp prnt/hpijs/ldlencap.h prnt/hpijs/ljcolor.cpp prnt/hpijs/ljcolor.h prnt/hpijs/pscript.h \
 	prnt/hpijs/printerproxy.cpp prnt/hpijs/printerfactory.cpp prnt/hpijs/printerproxy.h prnt/hpijs/printerfactory.h \
 	prnt/hpijs/ljjetready.cpp prnt/hpijs/ljjetready.h prnt/hpijs/jdatadbf.c prnt/hpijs/jccolor.c prnt/hpijs/ljfastraster.cpp prnt/hpijs/ljfastraster.h \
@@ -369,6 +384,7 @@ libapdk_la_CXXFLAGS = -DAPDK_DJ660 -DAPDK_DJ6xx -DAPDK_DJ6xxPhoto -DAPDK_DJ8xx -
                 $(APDK_ENDIAN_FLAG) $(APDK_AUTO_INCLUDE_FLAG) -DAPDK_LINUX -DNDEBUG $(DBUS_CFLAGS)
 libapdk_la_CFLAGS = $(libapdk_la_CXXFLAGS) -Iprnt/hpijs
 
+if HPIJS_INSTALL
 # hpijs
 bin_PROGRAMS = hpijs
 hpijs_SOURCES = prnt/hpijs/hpijs.cpp prnt/hpijs/ijs_server.c prnt/hpijs/ijs.c prnt/hpijs/hpijsfax.cpp prnt/hpijs/services.cpp prnt/hpijs/bug.h \
@@ -380,14 +396,24 @@ hpijs_LDADD = libapdk.la -ljpeg -ldl libhpip.la libhpmud.la $(DBUS_LIBS)
 else
 hpijs_LDADD = libapdk.la -ljpeg -ldl
 endif
+endif # HPIJS_INSTALL
 
+if HPCUPS_INSTALL
 # hpcups
 hpcupsdir = $(cupsfilterdir)
 hpcups_PROGRAMS = hpcups
 hpcups_SOURCES = prnt/hpijs/hpcups.cpp prnt/hpijs/hpcups.h prnt/hpijs/services.cpp prnt/hpijs/services.h prnt/hpijs/hpiom.c prnt/hpijs/hpiom.h prnt/hpijs/bug.h prnt/hpijs/hpimage.cpp prnt/hpijs/hpimage.h
 hpcups_CXXFLAGS = $(libapdk_la_CXXFLAGS)
 hpcups_CFLAGS = $(libapdk_la_CFLAGS)
-hpcups_LDADD = $(hpijs_LDADD) -lcups -lcupsimage
+hpcups_LDADD = libapdk.la -ljpeg -ldl libhpip.la libhpmud.la $(DBUS_LIBS) -lcups -lcupsimage
+if FAX_BUILD
+# hpcupsfax
+hpcupsfaxdir = $(cupsfilterdir)
+hpcupsfax_PROGRAMS = hpcupsfax
+hpcupsfax_SOURCES = prnt/hpijs/hpcupsfax.cpp prnt/hpijs/hpcupsfax.h
+hpcupsfax_LDADD = libhpip.la -lcups -lcupsimage
+endif # FAX_BUILD
+endif # HPCUPS_INSTALL
 
 # PPDs
 ppddir = $(hpppddir)
@@ -404,7 +430,6 @@ dist_ppd_DATA += $(cups_ppd_printers)
 endif
 if CUPS_DRV_INSTALL
 cupsdrv2dir = $(drvdir)
-dist_cupsdrv2_DATA = prnt/drv/hplip_media.defs
 cupsdrv2_DATA = $(cups_drv)
 endif
 
@@ -421,6 +446,7 @@ if HPLIP_BUILD
 		  echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
 	   fi \
 	fi
+if FULL_BUILD
 #	   Create hp-xxx commands in bindir.
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	for i in $(dist_cmd_SCRIPTS); do \
@@ -438,7 +464,8 @@ if HPLIP_BUILD
 #
 #       Make backend run as root.
 #	chmod 700 $(DESTDIR)$(hpdir)/hp
-endif # if HPLIP_BUILD
+endif # FULL_BUILD
+endif # HPLIP_BUILD
 
 uninstall-hook:
 if HPLIP_BUILD
@@ -452,15 +479,16 @@ if HPLIP_BUILD
 	rm -f $(DESTDIR)$(hpfaxdir)/hpfax
 endif
 
-rpm_unleaded:
-	epm -f rpm hpliplite UNLEADED=1 hplip.list
-rpm_regular:
+rpm:
+if FULL_BUILD
 	epm -f rpm hplipfull hplip.list
-deb_unleaded:
-	epm -f deb hpliplite UNLEADED=1 hplip.list
-deb_regular:
+else
+	epm -f rpm hpliplite hplip.list
+endif
+
+deb:
+if FULL_BUILD
 	epm -f deb hplipfull hplip.list
-epm_unleaded:
-	epm hpliplite UNLEADED=1 hplip.list
-epm_regular:
-	epm hplipfull hplip.list
+else
+	epm -f deb hpliplite hplip.list
+endif

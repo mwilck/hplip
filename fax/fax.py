@@ -47,6 +47,11 @@ try:
 except ImportError:
     log.error("dbus is required for PC send fax.")
 
+import warnings
+# Ignore: .../dbus/connection.py:242: DeprecationWarning: object.__init__() takes no parameters
+# (occurring on Python 2.6/dBus 0.83/Ubuntu 9.04)
+warnings.simplefilter("ignore", DeprecationWarning)
+
 
 # Update queue values (Send thread ==> UI)
 STATUS_IDLE = 0

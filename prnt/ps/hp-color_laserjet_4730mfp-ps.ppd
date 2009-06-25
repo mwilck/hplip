@@ -26,9 +26,6 @@
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
 
-*% PPD Version for Apple Macintosh
-*% =================================
-
 *% =================================
 *% Product/PPD Version Information
 *% =================================
@@ -39,17 +36,6 @@
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP4730.PPD"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpColorOptions.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpWatermarks.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpJobStorage.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpServices.plugin"
-*APPrinterUtilityPath: "/Library/Printers/hp/Utilities/HP Printer Selector.app"
-
-*cupsICCProfile RGB../sRGB Matching Profile: "/Library/Printers/hp/Profiles/sRGB_A.icc"
-*cupsICCProfile CMYK../CMYK Matching Profile: "/Library/Printers/hp/Profiles/CMYK_A.icc"
-*cupsICCProfile Gray../Gray Matching Profile: "/Library/Printers/hp/Profiles/Gray_A.icc"
-*APPrinterIconPath: "/Library/Printers/hp/Icons/HP Color LaserJet 4730 MFP.icns"
 
 *% Product Name and Version Information
 *Manufacturer:	"HP"
@@ -58,6 +44,9 @@
 *ShortNickName: "HP Color LaserJet 4730mfp"
 *NickName:	"HP Color LaserJet 4730mfp Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
+
+*% Enable color access control accounting information
+*cupsFilter: application/vnd.cups-postscript 0 hpcac
 
 *% =================================
 *% Basic Device Capabilities
@@ -214,14 +203,6 @@ WEB;;http://www.hp.com/post-embed/ordersupplies-na?Product_Name=HP Color LaserJe
 *UIConstraints: *HPMailboxOptions Bin1 *HPOption_MBM_Mixed HP3BinMB_StackerMode 
 *UIConstraints: *HPMailboxOptions Bin2 *HPOption_MBM_Mixed HP3BinMB_StackerMode 
 *UIConstraints: *HPMailboxOptions Bin3 *HPOption_MBM_Mixed HP3BinMB_StackerMode 
-
-*UIConstraints: *HPMailboxMode Standard 	*HPMailboxOptions Bin1
-*UIConstraints: *HPMailboxMode Standard 	*HPMailboxOptions Bin2
-*UIConstraints: *HPMailboxMode Standard 	*HPMailboxOptions Bin3
-
-*UIConstraints: *HPMailboxOptions Bin1 	*HPMailboxMode Standard 
-*UIConstraints: *HPMailboxOptions Bin2 	*HPMailboxMode Standard 
-*UIConstraints: *HPMailboxOptions Bin3 	*HPMailboxMode Standard 
 
 *UIConstraints: *HPOption_MBM_Mixed HP3BinMB_FunctionMode 	*HPMailboxOptions Bin1
 *UIConstraints: *HPOption_MBM_Mixed HP3BinMB_FunctionMode 	*HPMailboxOptions Bin2
@@ -718,7 +699,7 @@ WEB;;http://www.hp.com/post-embed/ordersupplies-na?Product_Name=HP Color LaserJe
 *%======================================================
 *UIConstraints: *HPColorSmart Automatic *HPTextHalftone Smooth
 *UIConstraints: *HPColorSmart Automatic *HPTextNeutralGrays ProcessBlack
-*UIConstraints: *HPColorSmart Automatic *HPTextRGB Custom
+*UIConstraints: *HPColorSmart Automatic *HPTextRGB CustomProfile
 *UIConstraints: *HPColorSmart Automatic *HPTextRGB None
 *UIConstraints: *HPColorSmart Automatic *HPTextRGB Adobe
 *UIConstraints: *HPColorSmart Automatic *HPTextRGB ImageOptimization
@@ -728,14 +709,14 @@ WEB;;http://www.hp.com/post-embed/ordersupplies-na?Product_Name=HP Color LaserJe
 *UIConstraints: *HPColorSmart Automatic *HPGraphicsRGB ImageOptimization
 *UIConstraints: *HPColorSmart Automatic *HPGraphicsRGB Adobe
 *UIConstraints: *HPColorSmart Automatic *HPGraphicsRGB None
-*UIConstraints: *HPColorSmart Automatic *HPGraphicsRGB Custom
+*UIConstraints: *HPColorSmart Automatic *HPGraphicsRGB CustomProfile
 
 *UIConstraints: *HPColorSmart Automatic *HPPhotoHalftone Smooth
 *UIConstraints: *HPColorSmart Automatic *HPPhotoNeutralGrays Black
 *UIConstraints: *HPColorSmart Automatic *HPPhotoRGB ImageOptimization
 *UIConstraints: *HPColorSmart Automatic *HPPhotoRGB Adobe
 *UIConstraints: *HPColorSmart Automatic *HPPhotoRGB None
-*UIConstraints: *HPColorSmart Automatic *HPPhotoRGB Custom
+*UIConstraints: *HPColorSmart Automatic *HPPhotoRGB CustomProfile
 
 *UIConstraints: *HPColorSmart Automatic *HPEdgeControl Max
 *UIConstraints: *HPColorSmart Automatic *HPEdgeControl Light
@@ -783,6 +764,8 @@ WEB;;http://www.hp.com/post-embed/ordersupplies-na?Product_Name=HP Color LaserJe
 	0x04c7 0x04c8, 0x04cb 0x04cc, 0x04d0 0x04eb, 0x04ef 0x04f5, 0x04f8 0x04f9
 	"
 
+
+*HPAccountingInfo: 1
 *OpenGroup: HPJobRetention/Job Storage
 
 *% =================================

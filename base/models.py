@@ -89,6 +89,7 @@ TECH_CLASSES = [
     "DJ55xx",
     "OJProKx50",
     'LJP1XXX',
+    'DJD2600',
 ]
 
 TECH_CLASSES.sort()
@@ -256,6 +257,7 @@ class ModelData:
             'io-mfp-mode' : TYPE_INT,
             'io-mode' : TYPE_INT,
             'io-support' : TYPE_BITFIELD,
+            'job-storage' : TYPE_INT,
             'monitor-type' : TYPE_INT,
             'linefeed-cal-type' : TYPE_INT,
             'panel-check-type' : TYPE_INT,
@@ -279,7 +281,7 @@ class ModelData:
             'tech-type' : TYPE_INT,
             'usb-pid' : TYPE_HEX,
             'usb-vid' : TYPE_HEX,
-            'job-storage' : TYPE_INT,
+            'wifi-config': TYPE_INT,
             }
 
         self.FIELD_TYPES_DYN = {
@@ -290,7 +292,7 @@ class ModelData:
             'is-hp' : TYPE_BOOL,
             'host' : TYPE_STR,
             'status-desc' : TYPE_STR,
-            'cups-printer' : TYPE_STR,
+            'cups-printers' : TYPE_STR,
             'serial' : TYPE_STR,
             'error-state' : TYPE_INT,
             'device-state' : TYPE_INT,

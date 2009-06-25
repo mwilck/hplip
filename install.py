@@ -20,7 +20,7 @@
 # Author: Don Welch
 #
 
-__version__ = '5.0'
+__version__ = '5.1'
 __title__ = 'HPLIP Installer'
 __mod__ = 'hplip-install'
 __doc__ = "Installer for HPLIP tarball (called automatically after invoking the .run file)."
@@ -56,8 +56,8 @@ USAGE = [(__doc__, "", "name", True),
          ("Force unknown distro mode:", "-d", "option", False),
          ("Force installation of Qt4 support:", "--qt4 (same as --enable=qt4)", "option", False),
          ("Force disable Qt4 support:", "--no-qt4 (same as --disable=qt4", "option", False),
-         ("Force installation of Qt3 support:", "--qt3 (same as --enable=qt3)", "option", False),
-         ("Force disable Qt3 support:", "--no-qt3 (same as --disable=qt3", "option", False),
+         #("Force installation of Qt3 support:", "--qt3 (same as --enable=qt3)", "option", False),
+         #("Force disable Qt3 support:", "--no-qt3 (same as --disable=qt3", "option", False),
          ("Force installation of PolicyKit support:", "--policykit (same as --enable=policykit)", "option", False),
          ("Force disable PolicyKit support:", "--no-policykit (same as --disable=policykit)", "option", False),
          ("Force configure enable/disable flag:", "--enable=<flag> or --disable=<flag>, where <flag> is 'fax-build', 'qt4', 'pp-build', etc. See ./configure --help for more info.", "option", False),
@@ -88,9 +88,9 @@ disable = []
 try:
     opts, args = getopt.getopt(sys.argv[1:], 'hl:giatxdq:nr:b',
         ['help', 'help-rest', 'help-man', 'help-desc', 'gui', 'lang=',
-        'logging=', 'interactive', 'auto', 'text', 'qt4', 'qt3',
+        'logging=', 'interactive', 'auto', 'text', 'qt4',
         'network', 'retries=', 'enable=', 'disable=',
-        'no-qt3', 'no-qt4', 'policykit', 'no-policykit', 'debug'])
+        'no-qt4', 'policykit', 'no-policykit', 'debug'])
 
 except getopt.GetoptError, e:
     log.error(e.msg)
@@ -162,20 +162,6 @@ for o, a in opts:
     elif o == '--no-qt4':
         if 'qt4' not in disable and 'qt4' not in enable:
             disable.append('qt4')
-        else:
-            log.error("Duplicate configuration flag: %s" % a)
-            sys.exit(1)
-
-    elif o == '--qt3':
-        if 'qt3' not in enable and 'qt3' not in disable:
-            enable.append('qt3')
-        else:
-            log.error("Duplicate configuration flag: %s" % a)
-            sys.exit(1)
-
-    elif o == '--no-qt3':
-        if 'qt3' not in disable and 'qt3' not in enable:
-            disable.append('qt3')
         else:
             log.error("Duplicate configuration flag: %s" % a)
             sys.exit(1)

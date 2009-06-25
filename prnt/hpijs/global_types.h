@@ -175,6 +175,7 @@ enum MediaSource
     sourceTray2 = 4,
 	sourceDuplexerNHagakiFeed = 5,
     sourceOptionalEnv = 6,
+    sourceTrayPhoto = 6,
     sourceTrayAuto = 7,
     sourceTrayCDDVD = 14,
     sourceTrayMax = 50

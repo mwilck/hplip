@@ -208,13 +208,13 @@ try:
     log.info(log.bold("Distribution:"))
     log.info("%s %s" % (core.distro_name, core.distro_version))
 
-    log.info(log.bold("\nHPOJ running?"))
+    #log.info(log.bold("\nHPOJ running?"))
 
-    if core.hpoj_present:
-        log.error("Yes, HPOJ is running. HPLIP is not compatible with HPOJ. To run HPLIP, please remove HPOJ.")
-        num_errors += 1
-    else:
-        log.info("No, HPOJ is not running (OK).")
+    #if core.hpoj_present:
+        #log.error("Yes, HPOJ is running. HPLIP is not compatible with HPOJ. To run HPLIP, please remove HPOJ.")
+        #num_errors += 1
+    #else:
+        #log.info("No, HPOJ is not running (OK).")
 
 
     log.info()
@@ -506,25 +506,25 @@ try:
 
 
         if device_avail:
-            if prop.par_build:
-                tui.header("DISCOVERED PARALLEL DEVICES")
+            #if prop.par_build:
+                #tui.header("DISCOVERED PARALLEL DEVICES")
 
-                devices = device.probeDevices(['par'])
+                #devices = device.probeDevices(['par'])
 
-                if devices:
-                    f = tui.Formatter()
-                    f.header = ("Device URI", "Model")
+                #if devices:
+                    #f = tui.Formatter()
+                    #f.header = ("Device URI", "Model")
 
-                    for d, dd in devices.items():
-                        f.add((d, dd[0]))
+                    #for d, dd in devices.items():
+                        #f.add((d, dd[0]))
 
-                    f.output()
+                    #f.output()
 
-                else:
-                    log.info("No devices found.")
+                #else:
+                    #log.info("No devices found.")
 
-                    if not core.have_dependencies['ppdev']:
-                        log.error("'ppdev' kernel module not loaded.")
+                    #if not core.have_dependencies['ppdev']:
+                        #log.error("'ppdev' kernel module not loaded.")
 
             if prop.usb_build:
                 tui.header("DISCOVERED USB DEVICES")
@@ -546,8 +546,7 @@ try:
 
         tui.header("INSTALLED CUPS PRINTER QUEUES")
 
-        lpstat_pat = re.compile(r"""^device for (.*): (.*)""", re.IGNORECASE)
-
+        lpstat_pat = re.compile(r"""(\S*): (.*)""", re.IGNORECASE)
         status, output = utils.run('lpstat -v')
         log.info()
 
@@ -796,19 +795,27 @@ try:
                         match = lsusb_pat.search(o)
 
                         if match is not None:
-                            bus, device, vid, pid, mfg = match.groups()
-                            log.info("\nHP Device 0x%x at %s:%s: " % (int(pid, 16), bus, device))
-                            result_code, deviceuri = hpmudext.make_usb_uri(bus, device)
+                            bus, dev, vid, pid, mfg = match.groups()
+                            log.info("\nHP Device 0x%x at %s:%s: " % (int(pid, 16), bus, dev))
+                            result_code, deviceuri = hpmudext.make_usb_uri(bus, dev)
 
                             if result_code == hpmudext.HPMUD_R_OK:
                                 log.info("    Device URI: %s" %  deviceuri)
+                                d = None
+                                try:
+                                    d = device.Device(deviceuri)
+                                except Error:
+                                    continue
+                                if not d.supported:
+                                    continue
                             else:
                                 log.warn("    Device URI: (Makeuri FAILED)")
+                                continue
 
-                            devnode = os.path.join("/", "dev", "bus", "usb", bus, device)
+                            devnode = os.path.join("/", "dev", "bus", "usb", bus, dev)
 
                             if not os.path.exists(devnode):
-                                devnode = os.path.join("/", "proc", "bus", "usb", bus, device)
+                                devnode = os.path.join("/", "proc", "bus", "usb", bus, dev)
 
                             if os.path.exists(devnode):
                                 log.info("    Device node: %s" % devnode)

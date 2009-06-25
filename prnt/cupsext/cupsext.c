@@ -1717,6 +1717,7 @@ PyObject * printFileWithOptions( PyObject * self, PyObject * args )
 // ***************************************************************************************************
 
 static PyObject * passwordFunc = NULL;
+static char *passwordPrompt = NULL;
 
 const char * password_callback(const char * prompt)
 {
@@ -1729,6 +1730,9 @@ const char * password_callback(const char * prompt)
 
     if (passwordFunc != NULL)  {
 
+        if (passwordPrompt)
+	    prompt = passwordPrompt;
+
         result = PyObject_CallFunction(passwordFunc, "s", prompt);
         if (!result)
 	    return "";
@@ -1737,7 +1741,7 @@ const char * password_callback(const char * prompt)
         if (!usernameObj)
             return "";
         username = PyString_AsString(usernameObj);
-	/*      printf("usernameObj=%p, username='%s'\n", usernameObj, username); */
+/*      printf("usernameObj=%p, username='%s'\n", usernameObj, username); */
         if (!username)
 	    return "";
 
@@ -1755,6 +1759,23 @@ const char * password_callback(const char * prompt)
     }
 
     return "";
+
+}
+
+PyObject *setPasswordPrompt(PyObject *self, PyObject *args)
+{
+
+    char *userPrompt = NULL;
+
+    if (!PyArg_ParseTuple(args, "z", &userPrompt))
+        return Py_BuildValue("");
+
+    if (strlen(userPrompt) != 0)
+        passwordPrompt = userPrompt;
+    else
+        passwordPrompt = NULL;
+
+    return Py_BuildValue("");
 
 }
 
@@ -1834,6 +1855,7 @@ static PyMethodDef cupsext_methods[] =
         { "getChoice", ( PyCFunction ) getChoice, METH_VARARGS },
         { "setOptions", ( PyCFunction ) setOptions, METH_VARARGS },
         { "getOptions", ( PyCFunction ) getOptions, METH_VARARGS },
+        { "setPasswordPrompt", (PyCFunction) setPasswordPrompt, METH_VARARGS },
         { "setPasswordCallback", ( PyCFunction ) setPasswordCallback, METH_VARARGS },
         { "getPassword", ( PyCFunction ) getPassword, METH_VARARGS },
         { NULL, NULL }

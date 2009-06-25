@@ -107,7 +107,10 @@ void Header::SetMediaSize(PAPER_SIZE psize)
 {
     int msizeCode;
 
-    msizeCode = PaperToMediaSize(psize);
+    if ((msizeCode = thePrintContext->GetJobAttributes(MEDIASIZE_PCL)) < 0)
+    {
+        msizeCode = PaperToMediaSize(psize);
+    }
 
     mscount=EscAmplCopy((BYTE*)mediasize,msizeCode,'A');
 }

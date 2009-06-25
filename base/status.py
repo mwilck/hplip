@@ -127,96 +127,111 @@ STATUS_POS = {STATUS_REV_00 : 14,
                STATUS_REV_04 : 20}
 
 def parseSStatus(s, z=''):
+    revision = ''
+    pens = []
+    top_door = TOP_DOOR_NOT_PRESENT
+    stat = STATUS_UNKNOWN
+    supply_door = SUPPLY_DOOR_NOT_PRESENT
+    duplexer = DUPLEXER_NOT_PRESENT
+    photo_tray = PHOTO_TRAY_NOT_PRESENT
+    in_tray1 = IN_TRAY_NOT_PRESENT
+    in_tray2 = IN_TRAY_NOT_PRESENT
+    media_path = MEDIA_PATH_NOT_PRESENT
     Z_SIZE = 6
 
-    z1 = []
-    if len(z) > 0:
-        z_fields = z.split(',')
+    try:
+        z1 = []
+        if len(z) > 0:
+            z_fields = z.split(',')
 
-        for z_field in z_fields:
+            for z_field in z_fields:
 
-            if len(z_field) > 2 and z_field[:2] == '05':
-                z1s = z_field[2:]
-                z1 = [int(x, 16) for x in z1s]
+                if len(z_field) > 2 and z_field[:2] == '05':
+                    z1s = z_field[2:]
+                    z1 = [int(x, 16) for x in z1s]
 
-    s1 = [int(x, 16) for x in s]
+        s1 = [int(x, 16) for x in s]
 
-    revision = s1[1]
+        revision = s1[1]
 
-    assert STATUS_REV_00 <= revision <= STATUS_REV_04
+        assert STATUS_REV_00 <= revision <= STATUS_REV_04
 
-    top_door = bool(s1[2] & 0x8L) + s1[2] & 0x1L
-    supply_door = bool(s1[3] & 0x8L) + s1[3] & 0x1L
-    duplexer = bool(s1[4] & 0xcL) +  s1[4] & 0x1L
-    photo_tray = bool(s1[5] & 0x8L) + s1[5] & 0x1L
+        top_door = bool(s1[2] & 0x8L) + s1[2] & 0x1L
+        supply_door = bool(s1[3] & 0x8L) + s1[3] & 0x1L
+        duplexer = bool(s1[4] & 0xcL) +  s1[4] & 0x1L
+        photo_tray = bool(s1[5] & 0x8L) + s1[5] & 0x1L
 
-    if revision == STATUS_REV_02:
-        in_tray1 = bool(s1[6] & 0x8L) + s1[6] & 0x1L
-        in_tray2 = bool(s1[7] & 0x8L) + s1[7] & 0x1L
-    else:
-        in_tray1 = bool(s1[6] & 0x8L)
-        in_tray2 = bool(s1[7] & 0x8L)
-
-    media_path = bool(s1[8] & 0x8L) + (s1[8] & 0x1L) + ((bool(s1[18] & 0x2L))<<1)
-    status_pos = STATUS_POS[revision]
-    status_byte = (s1[status_pos]<<4) + s1[status_pos + 1]
-    stat = status_byte + STATUS_PRINTER_BASE
-
-    pens, pen, c, d = [], {}, NUM_PEN_POS[revision]+1, 0
-    num_pens = s1[NUM_PEN_POS[revision]]
-    log.debug("Num pens=%d" % num_pens)
-    index = 0
-    pen_data_size = PEN_DATA_SIZE[revision]
-
-    for p in range(num_pens):
-        info = long(s[c : c + pen_data_size], 16)
-
-        pen['index'] = index
-
-        if pen_data_size == 4:
-            pen['type'] = REVISION_2_TYPE_MAP.get(int((info & 0xf000L) >> 12L), 0)
-
-            if index < (num_pens / 2):
-                pen['kind'] = AGENT_KIND_HEAD
-            else:
-                pen['kind'] = AGENT_KIND_SUPPLY
-
-            pen['level-trigger'] = int ((info & 0x0e00L) >> 9L)
-            pen['health'] = int((info & 0x0180L) >> 7L)
-            pen['level'] = int(info & 0x007fL)
-            pen['id'] = 0x1f
-
-        elif pen_data_size == 8:
-            pen['kind'] = bool(info & 0x80000000L) + ((bool(info & 0x40000000L))<<1L)
-            pen['type'] = int((info & 0x3f000000L) >> 24L)
-            pen['id'] = int((info & 0xf80000) >> 19L)
-            pen['level-trigger'] = int((info & 0x70000L) >> 16L)
-            pen['health'] = int((info & 0xc000L) >> 14L)
-            pen['level'] = int(info & 0xffL)
-
+        if revision == STATUS_REV_02:
+            in_tray1 = bool(s1[6] & 0x8L) + s1[6] & 0x1L
+            in_tray2 = bool(s1[7] & 0x8L) + s1[7] & 0x1L
         else:
-            log.error("Pen data size error")
+            in_tray1 = bool(s1[6] & 0x8L)
+            in_tray2 = bool(s1[7] & 0x8L)
 
-        if len(z1) > 0:
-            # TODO: Determine cause of IndexError for C6100 (defect #1111)
-            try:
-                pen['dvc'] = long(z1s[d+1:d+5], 16)
-                pen['virgin'] = bool(z1[d+5] & 0x8L)
-                pen['hp-ink'] = bool(z1[d+5] & 0x4L)
-                pen['known'] = bool(z1[d+5] & 0x2L)
-                pen['ack'] = bool(z1[d+5] & 0x1L)
-            except IndexError:
-                pen['dvc'] = 0
-                pen['virgin'] = 0
-                pen['hp-ink'] = 0
-                pen['known'] = 0
-                pen['ack'] = 0
+        media_path = bool(s1[8] & 0x8L) + (s1[8] & 0x1L) + ((bool(s1[18] & 0x2L))<<1)
+        status_pos = STATUS_POS[revision]
+        status_byte = (s1[status_pos]<<4) + s1[status_pos + 1]
+        stat = status_byte + STATUS_PRINTER_BASE
 
-        index += 1
-        pens.append(pen)
-        pen = {}
-        c += pen_data_size
-        d += Z_SIZE
+        pen, c, d = {}, NUM_PEN_POS[revision]+1, 0
+        num_pens = s1[NUM_PEN_POS[revision]]
+        log.debug("Num pens=%d" % num_pens)
+        index = 0
+        pen_data_size = PEN_DATA_SIZE[revision]
+
+        for p in range(num_pens):
+            info = long(s[c : c + pen_data_size], 16)
+
+            pen['index'] = index
+
+            if pen_data_size == 4:
+                pen['type'] = REVISION_2_TYPE_MAP.get(int((info & 0xf000L) >> 12L), 0)
+
+                if index < (num_pens / 2):
+                    pen['kind'] = AGENT_KIND_HEAD
+                else:
+                    pen['kind'] = AGENT_KIND_SUPPLY
+
+                pen['level-trigger'] = int ((info & 0x0e00L) >> 9L)
+                pen['health'] = int((info & 0x0180L) >> 7L)
+                pen['level'] = int(info & 0x007fL)
+                pen['id'] = 0x1f
+
+            elif pen_data_size == 8:
+                pen['kind'] = bool(info & 0x80000000L) + ((bool(info & 0x40000000L))<<1L)
+                pen['type'] = int((info & 0x3f000000L) >> 24L)
+                pen['id'] = int((info & 0xf80000) >> 19L)
+                pen['level-trigger'] = int((info & 0x70000L) >> 16L)
+                pen['health'] = int((info & 0xc000L) >> 14L)
+                pen['level'] = int(info & 0xffL)
+
+            else:
+                log.error("Pen data size error")
+
+            if len(z1) > 0:
+                # TODO: Determine cause of IndexError for C6100 (defect #1111)
+                try:
+                    pen['dvc'] = long(z1s[d+1:d+5], 16)
+                    pen['virgin'] = bool(z1[d+5] & 0x8L)
+                    pen['hp-ink'] = bool(z1[d+5] & 0x4L)
+                    pen['known'] = bool(z1[d+5] & 0x2L)
+                    pen['ack'] = bool(z1[d+5] & 0x1L)
+                except IndexError:
+                    pen['dvc'] = 0
+                    pen['virgin'] = 0
+                    pen['hp-ink'] = 0
+                    pen['known'] = 0
+                    pen['ack'] = 0
+
+            index += 1
+            pens.append(pen)
+            log.debug("Pen %d: %s" % (p, pen))
+            pen = {}
+            c += pen_data_size
+            d += Z_SIZE
+
+    except (IndexError, ValueError, TypeError), e:
+        log.warn("Status parsing error: %s" % str(e))
 
     return {'revision' :    revision,
              'agents' :      pens,
@@ -303,9 +318,9 @@ def parseVStatus(s):
 
     return {'revision' :   STATUS_REV_V,
              'agents' :     pens,
-             'top-lid' :    top_lid,
+             'top-door' :   top_lid,
              'status-code': stat,
-             'supply-lid' : SUPPLY_DOOR_NOT_PRESENT,
+             'supply-door': SUPPLY_DOOR_NOT_PRESENT,
              'duplexer' :   DUPLEXER_NOT_PRESENT,
              'photo-tray' : PHOTO_TRAY_NOT_PRESENT,
              'in-tray1' :   IN_TRAY_NOT_PRESENT,

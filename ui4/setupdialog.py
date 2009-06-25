@@ -39,6 +39,7 @@ from PyQt4.QtGui import *
 # Ui
 from setupdialog_base import Ui_Dialog
 from plugindialog import PluginDialog
+from wifisetupdialog import WifiSetupDialog, SUCCESS_CONNECTED
 
 # Fax
 try:
@@ -75,6 +76,7 @@ DEVICE_DESC_MULTI_FUNC = 2
 class PasswordDialog(QDialog):
     def __init__(self, prompt, parent=None, name=None, modal=0, fl=0):
         QDialog.__init__(self, parent)
+        self.prompt = prompt
 
         Layout= QGridLayout(self)
         Layout.setMargin(11)
@@ -117,8 +119,8 @@ class PasswordDialog(QDialog):
 
 
     def languageChange(self):
-        self.setWindowTitle(self.__tr("HP Device Manager - Enter Password"))
-        self.PromptTextLabel.setText(self.__tr("You do not have authorization for this function."))
+        self.setWindowTitle(self.__tr("HP Device Manager - Enter Username/Password"))
+        self.PromptTextLabel.setText(self.__tr(self.prompt))
         self.UsernameTextLabel.setText(self.__tr("Username:"))
         self.PasswordTextLabel.setText(self.__tr("Password:"))
         self.OkPushButton.setText(self.__tr("OK"))
@@ -211,6 +213,7 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.manual = False
         self.skip_discovery = False
         self.NetworkRadioButton.setEnabled(prop.net_build)
+        self.WirelessButton.setEnabled(prop.net_build)
         self.ParallelRadioButton.setEnabled(prop.par_build)
         self.devices = {}
         self.bus = 'usb'
@@ -292,6 +295,7 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.connect(self.AdvancedButton, SIGNAL("clicked()"), self.AdvancedButton_clicked)
         self.connect(self.UsbRadioButton, SIGNAL("toggled(bool)"), self.UsbRadioButton_toggled)
         self.connect(self.NetworkRadioButton, SIGNAL("toggled(bool)"), self.NetworkRadioButton_toggled)
+        self.connect(self.WirelessButton, SIGNAL("toggled(bool)"), self.WirelessButton_toggled)
         self.connect(self.ParallelRadioButton, SIGNAL("toggled(bool)"), self.ParallelRadioButton_toggled)
         self.connect(self.NetworkTTLSpinBox,  SIGNAL("valueChanged(int)"), self.NetworkTTLSpinBox_valueChanged)
         self.connect(self.NetworkTimeoutSpinBox,  SIGNAL("valueChanged(int)"),
@@ -381,6 +385,16 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.NetworkTTLSpinBox.setEnabled(enabled)
 
 
+    def setSearchOptions(self, enabled):
+        self.SearchLineEdit.setEnabled(enabled)
+        self.DeviceTypeComboBox.setEnabled(enabled)
+        self.DeviceTypeLabel.setEnabled(enabled)
+
+
+    def setManualDiscovery(self, enabled):
+        self.ManualGroupBox.setEnabled(enabled)
+
+
     def setNetworkDiscovery(self, enabled):
         self.NetworkDiscoveryMethodLabel.setEnabled(enabled and self.manual)
         self.NetworkDiscoveryMethodComboBox.setEnabled(enabled and self.manual)
@@ -394,6 +408,8 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.setNetworkDiscovery(not checked)
         self.setJetDirect(not checked)
         self.setNetworkOptions(not checked)
+        self.setSearchOptions(checked)
+        self.setManualDiscovery(checked)
 
         if checked:
             self.ManualParamLabel.setText(self.__tr("USB bus ID:device ID (bbb:ddd):"))
@@ -409,11 +425,30 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.setNetworkDiscovery(checked)
         self.setJetDirect(checked)
         self.setNetworkOptions(checked)
+        self.setSearchOptions(checked)
+        self.setManualDiscovery(checked)
+
 
         if checked:
             self.ManualParamLabel.setText(self.__tr("IP Address or network name:"))
             self.bus = 'net'
             # TODO: Reset validator
+
+    def WirelessButton_toggled(self, radio_enabled):
+        self.setWirelessButton(radio_enabled)
+
+
+    def setWirelessButton(self, checked):
+        self.setNetworkDiscovery(not checked)
+        self.setJetDirect(not checked)
+        self.setNetworkOptions(not checked)
+        self.setSearchOptions(not checked)
+        self.setManualDiscovery(not checked)
+
+
+        if checked:
+            self.ManualParamLabel.setText(self.__tr("IP Address or network name:"))
+            self.bus = 'net'
 
 
     def ParallelRadioButton_toggled(self, radio_enabled):
@@ -424,6 +459,9 @@ class SetupDialog(QDialog, Ui_Dialog):
         self.setNetworkDiscovery(not checked)
         self.setJetDirect(not checked)
         self.setNetworkOptions(not checked)
+        self.setSearchOptions(not checked)
+        self.setManualDiscovery(not checked)
+
 
         if checked:
             self.ManualParamLabel.setText(self.__tr("Device node (/dev/...):"))
@@ -587,11 +625,14 @@ class SetupDialog(QDialog, Ui_Dialog):
         # Install the plugin if needed...
         core = CoreInstall()
         plugin = self.mq.get('plugin', PLUGIN_NONE)
+        plugin_reason = self.mq.get('plugin-reason', PLUGIN_REASON_NONE)
         if plugin > PLUGIN_NONE:
 
             if not core.check_for_plugin():
-                ok = pkit.run_plugin_command(plugin == PLUGIN_REQUIRED)
-
+                ok, sudo_ok = pkit.run_plugin_command(plugin == PLUGIN_REQUIRED, plugin_reason)
+                if not sudo_ok:
+                    FailureUI(self, self.__tr("<b>Unable to find an appropriate su/sudo utiltity to run hp-plugin.</b><p>Install kdesu, gnomesu, or gksu.</p>"))
+                    return
                 if not ok or not core.check_for_plugin():
                     if plugin == PLUGIN_REQUIRED:
                         FailureUI(self, self.__tr("<b>The printer you are trying to setup requires a binary driver plug-in and it failed to install.</b><p>Please check your internet connection and try again.</p><p>Visit <u>http://hplipopensource.com</u> for more infomation.</p>"))
@@ -681,12 +722,21 @@ class SetupDialog(QDialog, Ui_Dialog):
         try:
             log.debug("Searching for fax PPD for model %s" % self.model)
 
-            if self.mq.get('fax-type', FAX_TYPE_NONE) == FAX_TYPE_SOAP:
-                fax_ppd_name = "HP-Fax2-hplip" # Fixed width (2528 pixels) and 300dpi rendering
-                nick = "HP Fax 2"
-            else:
-                fax_ppd_name = "HP-Fax-hplip" # Standard
-                nick = "HP Fax"
+            if prop.hpcups_build:
+                if self.mq.get('fax-type', FAX_TYPE_NONE) == FAX_TYPE_SOAP:
+                    fax_ppd_name = "HP-Fax2-hpcups" # Fixed width (2528 pixels) and 300dpi rendering
+                    nick = "HP Fax2 hpcups"
+                else:
+                    fax_ppd_name = "HP-Fax-hpcups" # Standard
+                    nick = "HP Fax hpcups"
+
+            else: # hpijs
+                if self.mq.get('fax-type', FAX_TYPE_NONE) == FAX_TYPE_SOAP:
+                    fax_ppd_name = "HP-Fax2-hpijs" # Fixed width (2528 pixels) and 300dpi rendering
+                    nick = "HP Fax2 hpijs"
+                else:
+                    fax_ppd_name = "HP-Fax-hpijs" # Standard
+                    nick = "HP Fax hpijs"
 
             ppds = []
 
@@ -702,6 +752,10 @@ class SetupDialog(QDialog, Ui_Dialog):
             else:
                 self.fax_ppd = None
                 self.fax_setup_ok = False
+                FailureUI(self, self.__tr("<b>Unable to locate the HPLIP Fax PPD file:</b><p>%1.ppd.gz</p><p>Fax setup has been disabled.").arg(fax_ppd_name))
+                self.fax_setup = False
+                self.SetupFaxGroupBox.setChecked(False)
+                self.SetupFaxGroupBox.setEnabled(False)
 
         finally:
             QApplication.restoreOverrideCursor()
@@ -854,8 +908,8 @@ class SetupDialog(QDialog, Ui_Dialog):
 
 
     def setAddPrinterButton(self):
-        self.NextButton.setEnabled(self.printer_name_ok and self.fax_name_ok and
-                                   self.print_ppd is not None and self.fax_setup_ok)
+        self.NextButton.setEnabled((self.printer_name_ok and self.print_ppd is not None) and
+                                   ((self.fax_setup and self.fax_name_ok) or not self.fax_setup))
 
 
     #
@@ -883,6 +937,7 @@ class SetupDialog(QDialog, Ui_Dialog):
     def setupPrinter(self):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
+            cups.setPasswordPrompt("You do not have permission to add a printer.")
             if not os.path.exists(self.print_ppd[0]): # assume foomatic: or some such
                 status, status_str = cups.addPrinter(self.printer_name.encode('utf8'), self.device_uri,
                     self.print_location, '', self.print_ppd[0], self.print_desc)
@@ -912,6 +967,7 @@ class SetupDialog(QDialog, Ui_Dialog):
     def setupFax(self):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
+            cups.setPasswordPrompt("You do not have permission to add a fax device.")
             if not os.path.exists(self.fax_ppd):
                 status, status_str = cups.addPrinter(self.fax_name.encode('utf8'),
                     self.fax_uri, self.fax_location, '', self.fax_ppd,  self.fax_desc)
@@ -1126,6 +1182,16 @@ class SetupDialog(QDialog, Ui_Dialog):
             self.jd_port = self.JetDirectSpinBox.value()
             self.search = unicode(self.SearchLineEdit.text())
             self.device_desc = int(self.DeviceTypeComboBox.itemData(self.DeviceTypeComboBox.currentIndex()).toInt()[0])
+
+            if self.WirelessButton.isChecked():
+                dlg = WifiSetupDialog(self, device_uri=None, standalone=False)
+                dlg.exec_()
+
+                if dlg.success == SUCCESS_CONNECTED:
+                    self.manual = True
+                    self.param = dlg.ip
+                    self.bus = 'net'
+
             self.showDevicesPage()
 
         elif p == PAGE_DEVICES:

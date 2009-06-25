@@ -2919,6 +2919,23 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "Product" "" "(HP Photosmart c4388 All-in-one Printer)"
   }
   {
+    ModelName "HP Deskjet f4400 Series hpijs"
+    Attribute "NickName" "" "HP Deskjet f4400 Series hpijs, $Version"
+    Attribute "ShortNickName" "" "HP Deskjet f4400 Series hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet f4400 series;DES:deskjet f4400 series;"
+    PCFileName "hp-deskjet_f4400_series-hpijs.ppd"
+    Attribute "Product" "" "(HP Deskjet f4440 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4435 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4450 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4470 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4472 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4473 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4480 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4483 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4488 All-in-one Printer)"
+    Attribute "Product" "" "(HP Deskjet f4492 All-in-one Printer)"
+  }
+  {
     ModelName "HP Photosmart c4400 Series hpijs"
     Attribute "NickName" "" "HP Photosmart c4400 Series hpijs, $Version"
     Attribute "ShortNickName" "" "HP PS c4400 Series hpijs"
@@ -2975,6 +2992,23 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "Product" "" "(HP Photosmart c4588 All-in-one Printer)"
     Attribute "Product" "" "(HP Photosmart c4593 All-in-one Printer)"
     Attribute "Product" "" "(HP Photosmart c4599 All-in-one Printer)"
+  }
+  {
+    ModelName "HP Photosmart c4600 Series hpijs"
+    Attribute "NickName" "" "HP Photosmart c4600 Series hpijs, $Version"
+    Attribute "ShortNickName" "" "HP PS c4600 Series hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:photosmart c4600 series;DES:photosmart c4600 series;"
+    PCFileName "hp-photosmart_c4600_series-hpijs.ppd"
+    Attribute "Product" "" "(HP Photosmart c4640 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4650 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4680 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4610 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4635 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4670 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4673 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4680 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4683 All-in-one Printer)"
+    Attribute "Product" "" "(HP Photosmart c4688 All-in-one Printer)"
   }
   {
     ModelName "HP Officejet j4660 Series hpijs"
@@ -3225,6 +3259,22 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "Product" "" "(HP Deskjet 5943 Photo Printer)"
   }
   {
+    ModelName "HP Officejet 6000 e609n hpijs"
+    Attribute "NickName" "" "HP Officejet 6000 e609n hpijs, $Version"
+    Attribute "ShortNickName" "" "HP Officejet 6000 e609n hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet 6000 e609n;DES:officejet 6000 e609n;"
+    PCFileName "hp-officejet_6000_e609n-hpijs.ppd"
+    Attribute "Product" "" "(HP Officejet 6000 Wireless Printer - e609n)"
+  }
+  {
+    ModelName "HP Officejet 6000 e609a hpijs"
+    Attribute "NickName" "" "HP Officejet 6000 e609a hpijs, $Version"
+    Attribute "ShortNickName" "" "HP Officejet 6000 e609a hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet 6000 e609a;DES:officejet 6000 e609a;"
+    PCFileName "hp-officejet_6000_e609a-hpijs.ppd"
+    Attribute "Product" "" "(HP Officejet 6000 Printer - e609a)"
+  }
+  {
     ModelName "HP Photosmart c6100 Series hpijs"
     Attribute "NickName" "" "HP Photosmart c6100 Series hpijs, $Version"
     Attribute "ShortNickName" "" "HP PS c6100 Series hpijs"
@@ -3359,6 +3409,7 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet 6500 e709a;DES:officejet 6500 e709a;"
     PCFileName "hp-officejet_6500_e709a-hpijs.ppd"
     Attribute "Product" "" "(HP Officejet 6500 All-in-one Printer - e709a)"
+    Attribute "Product" "" "(HP Officejet 6500 All-in-one Printer - e709c)"
   }
   {
     ModelName "HP Officejet 6500 e709n hpijs"
@@ -3367,6 +3418,7 @@ lity:PenSet=2,Quality:FullBleed=1"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:officejet 6500 e709n;DES:officejet 6500 e709n;"
     PCFileName "hp-officejet_6500_e709n-hpijs.ppd"
     Attribute "Product" "" "(HP Officejet 6500 Wireless All-in-one Printer - e709n)"
+    Attribute "Product" "" "(HP Officejet 6500 Wireless All-in-one Printer - e709q)"
   }
   {
     ModelName "HP Deskjet 6500 hpijs"
@@ -3894,7 +3946,11 @@ aleK"
   Attribute "FoomaticRIPOptionSetting" "PrintoutMode=High" "Quality=600ColorCMYK"
   Attribute "FoomaticRIPOptionSetting" "PrintoutMode=High.Gray" "Quality=600Grayscal&&
 eK"
-  Attribute "FoomaticRIPOptionSetting" "PrintoutMode=Photo" "Quality=1200PhotoCMYK"
+  Attribute "FoomaticRIPOptionSetting" "PrintoutMode=Photo" "Quality=600PhotoCMYK"
+
+  Attribute "FoomaticRIPOptionSetting" "PrintoutMode=PhotoBest" "Quality=1200PhotoCMYK"
+  Attribute "FoomaticRIPOptionSetting" "PrintoutMode=PhotoNormal" "Quality=600PhotoNormalCMYK"
+
   Attribute "FoomaticRIPOption" "InputSlot" "enum CmdLine C"
   Attribute "FoomaticRIPOptionSetting" "InputSlot=Default" ",PS:MediaPosition=7"
   Attribute "FoomaticRIPOptionSetting" "InputSlot=PhotoTray" ",PS:MediaPosition=6"
@@ -5333,41 +5389,63 @@ ty:PenSet=2,Quality:FullBleed=1"
   CustomMedia "Oufuku/Oufuku-Hagaki" 420.00 567.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=Oufuku" "%% FoomaticRIPOptionSetting: PageSize=Oufuku"
   CustomMedia "w558h774/16K" 558.00 774.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w558h774" "%% FoomaticRIPOptionSetting: PageSize=w558h774"
   CustomMedia "w612h935/Executive (JIS)" 612.00 935.00 18.00 36.00 18.00 9.00 "%% FoomaticRIPOptionSetting: PageSize=w612h935" "%% FoomaticRIPOptionSetting: PageSize=w612h935"
-  // <%DJ4100:Normal%>
   {
-    ModelName "HP Deskjet d4100 Series hpijs"
-    Attribute "NickName" "" "HP Deskjet d4100 Series hpijs, $Version"
-    Attribute "ShortNickName" "" "HP Deskjet d4100 Series hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4100 series;DES:deskjet d4100 series;"
-    PCFileName "hp-deskjet_d4100_series-hpijs.ppd"
-    Attribute "Product" "" "(HP Deskjet d4145 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4145 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4155 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4155 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4160 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4163 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4168 Printer)"
+    Attribute "FoomaticRIPOptionSetting" "Model=HP-DeskJet_D4100" " -sDeviceManufactur&&
+er=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;Deskjet D4100&quot;"
+    // <%DJ4100:Normal%>
+    {
+      ModelName "HP Deskjet d4100 Series hpijs"
+      Attribute "NickName" "" "HP Deskjet d4100 Series hpijs, $Version"
+      Attribute "ShortNickName" "" "HP Deskjet d4100 Series hpijs"
+      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4100 series;DES:deskjet d4100 series;"
+      PCFileName "hp-deskjet_d4100_series-hpijs.ppd"
+      Attribute "Product" "" "(HP Deskjet d4145 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4145 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4155 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4155 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4160 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4163 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4168 Printer)"
+    }
+    {
+      ModelName "HP Deskjet d4200 Series hpijs"
+      Attribute "NickName" "" "HP Deskjet d4200 Series hpijs, $Version"
+      Attribute "ShortNickName" "" "HP Deskjet d4200 Series hpijs"
+      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4200 series;DES:deskjet d4200 series;"
+      PCFileName "hp-deskjet_d4200_series-hpijs.ppd"
+      Attribute "Product" "" "(HP Deskjet d4245 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4260 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4266 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4268 Printer)"
+    }
+    {
+      ModelName "HP Deskjet d4300 Series hpijs"
+      Attribute "NickName" "" "HP Deskjet d4300 Series hpijs, $Version"
+      Attribute "ShortNickName" "" "HP Deskjet d4300 Series hpijs"
+      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4300 series;DES:deskjet d4300 series;"
+      PCFileName "hp-deskjet_d4300_series-hpijs.ppd"
+      Attribute "Product" "" "(HP Deskjet d4360 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4363 Printer)"
+      Attribute "Product" "" "(HP Deskjet d4368 Printer)"
+    }
   }
   {
-    ModelName "HP Deskjet d4200 Series hpijs"
-    Attribute "NickName" "" "HP Deskjet d4200 Series hpijs, $Version"
-    Attribute "ShortNickName" "" "HP Deskjet d4200 Series hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4200 series;DES:deskjet d4200 series;"
-    PCFileName "hp-deskjet_d4200_series-hpijs.ppd"
-    Attribute "Product" "" "(HP Deskjet d4245 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4260 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4266 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4268 Printer)"
-  }
-  {
-    ModelName "HP Deskjet d4300 Series hpijs"
-    Attribute "NickName" "" "HP Deskjet d4300 Series hpijs, $Version"
-    Attribute "ShortNickName" "" "HP Deskjet d4300 Series hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d4300 series;DES:deskjet d4300 series;"
-    PCFileName "hp-deskjet_d4300_series-hpijs.ppd"
-    Attribute "Product" "" "(HP Deskjet d4360 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4363 Printer)"
-    Attribute "Product" "" "(HP Deskjet d4368 Printer)"
+    Attribute "FoomaticRIPOptionSetting" "Model=HP-DeskJet_D2600" " -sDeviceManufactur&&
+er=&quot;HEWLETT-PACKARD&quot; -sDeviceModel=&quot;Deskjet D2600&quot;"
+    // <%DJD2600:Normal%>
+    {
+      ModelName "HP Deskjet d2600 Series hpijs"
+      Attribute "NickName" "" "HP Deskjet d2600 Series hpijs, $Version"
+      Attribute "ShortNickName" "" "HP Deskjet d2600 Series hpijs"
+      Attribute "1284DeviceID" "" "MFG:HP;MDL:deskjet d2600 series;DES:deskjet d2600 series;"
+      PCFileName "hp-deskjet_d2600_series-hpijs.ppd"
+      Attribute "Product" "" "(HP Deskjet d2660 Printer)"
+      Attribute "Product" "" "(HP Deskjet d2645 Printer)"
+      Attribute "Product" "" "(HP Deskjet d2663 Printer)"
+      Attribute "Product" "" "(HP Deskjet d2666 Printer)"
+      Attribute "Product" "" "(HP Deskjet d2668 Printer)"
+      Attribute "Product" "" "(HP Deskjet d2680 Printer)"
+    }
   }
 }
 
@@ -6657,6 +6735,15 @@ t=0"
     Attribute "Product" "" "(HP LaserJet p3005dtn Printer)"
   }
   {
+    ModelName "HP LaserJet p3010 Series hpijs"
+    Attribute "NickName" "" "HP LaserJet p3010 Series hpijs, $Version"
+    Attribute "ShortNickName" "" "HP LaserJet p3010 Series hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet p3010 series;DES:hp laserjet p3010 series;"
+    PCFileName "hp-laserjet_p3010_series-hpijs.ppd"
+    Attribute "Product" "" "(HP LaserJet p3015 Printer)"
+    Attribute "Product" "" "(HP LaserJet p3011 Printer)"
+  }
+  {
     ModelName "HP LaserJet 3015 hpijs"
     Attribute "NickName" "" "HP LaserJet 3015 hpijs pcl3, $Version"
     Attribute "ShortNickName" "" "HP LaserJet 3015 hpijs"
@@ -6991,6 +7078,14 @@ t=0"
     Attribute "Product" "" "(HP LaserJet m4345xm Multifunction Printer)"
   }
   {
+    ModelName "HP LaserJet m4349 MFP hpijs"
+    Attribute "NickName" "" "HP LaserJet m4349 MFP hpijs pcl3, $Version"
+    Attribute "ShortNickName" "" "HP LaserJet m4349 MFP hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet m4349 mfp;DES:hp laserjet m4349 mfp;"
+    PCFileName "hp-laserjet_m4349_mfp-hpijs-pcl3.ppd"
+    Attribute "Product" "" "(HP LaserJet m4349 MFP)"
+  }
+  {
     ModelName "HP LaserJet 4350 hpijs"
     Attribute "NickName" "" "HP LaserJet 4350 hpijs pcl3, $Version"
     Attribute "ShortNickName" "" "HP LaserJet 4350 hpijs"
@@ -7098,6 +7193,14 @@ t=0"
     PCFileName "hp-laserjet_m9050_mfp-hpijs-pcl3.ppd"
     Attribute "Product" "" "(HP LaserJet m9050 Multifunction Printer)"
     Attribute "Product" "" "(HP LaserJet m9059 Multifunction Printer)"
+  }
+  {
+    ModelName "HP LaserJet m9059 MFP hpijs"
+    Attribute "NickName" "" "HP LaserJet m9059 MFP hpijs pcl3, $Version"
+    Attribute "ShortNickName" "" "HP LaserJet m9059 MFP hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet m9059 mfp;DES:hp laserjet m9059 mfp;"
+    PCFileName "hp-laserjet_m9059_mfp-hpijs-pcl3.ppd"
+    Attribute "Product" "" "(HP LaserJet m9059 MFP)"
   }
   {
     // Large format A3 paper support
@@ -7987,6 +8090,30 @@ nSet=2"
     Attribute "Product" "" "(HP Color LaserJet 4730 Multifunction Printer)"
   }
   {
+    ModelName "HP Color LaserJet cp5225 hpijs"
+    Attribute "NickName" "" "HP Color LaserJet cp5225 hpijs pcl3, $Version"
+    Attribute "ShortNickName" "" "HP Color LaserJet cp5225 hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp color laserjet cp5225;DES:hp color laserjet cp5225;"
+    PCFileName "hp-color_laserjet_cp5225-hpijs-pcl3.ppd"
+    Attribute "Product" "" "(HP Color LaserJet cp5225)"
+  }
+  {
+    ModelName "HP Color LaserJet cp5225n hpijs"
+    Attribute "NickName" "" "HP Color LaserJet cp5225n hpijs pcl3, $Version"
+    Attribute "ShortNickName" "" "HP Color LaserJet cp5225n hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp color laserjet cp5225n;DES:hp color laserjet cp5225n;"
+    PCFileName "hp-color_laserjet_cp5225n-hpijs-pcl3.ppd"
+    Attribute "Product" "" "(HP Color LaserJet cp5225n)"
+  }
+  {
+    ModelName "HP Color LaserJet cp5225dn hpijs"
+    Attribute "NickName" "" "HP Color LaserJet cp5225dn hpijs pcl3, $Version"
+    Attribute "ShortNickName" "" "HP Color LJ cp5225dn hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp color laserjet cp5225dn;DES:hp color laserjet cp5225dn;"
+    PCFileName "hp-color_laserjet_cp5225dn-hpijs-pcl3.ppd"
+    Attribute "Product" "" "(HP Color LaserJet cp5225dn)"
+  }
+  {
     ModelName "HP Officejet 9100 Series hpijs"
     Attribute "NickName" "" "HP Officejet 9100 Series hpijs pcl3, $Version"
     Attribute "ShortNickName" "" "HP Officejet 9100 Series hpijs"
@@ -8095,6 +8222,14 @@ nSet=2"
       Attribute "Product" "" "(HP Color LaserJet cm6040 Multifunction Printer)"
       Attribute "Product" "" "(HP Color LaserJet cm6040f Multifunction Printer)"
       Attribute "Product" "" "(HP Color LaserJet cm6049f Multifunction Printer)"
+    }
+    {
+      ModelName "HP Color LaserJet cm6049 MFP hpijs"
+      Attribute "NickName" "" "HP Color LaserJet cm6049 MFP hpijs, $Version"
+      Attribute "ShortNickName" "" "HP Color LJ cm6049 MFP hpijs"
+      Attribute "1284DeviceID" "" "MFG:HP;MDL:hp color laserjet cm6049 mfp;DES:hp color laserjet cm6049 mfp;"
+      PCFileName "hp-color_laserjet_cm6049_mfp-hpijs.ppd"
+      Attribute "Product" "" "(HP Color LaserJet cm6049 MFP)"
     }
     {
       ModelName "HP Color LaserJet 8500 hpijs"
@@ -11283,7 +11418,6 @@ Transparency"
       *Choice "FromPrintoutMode/Controlled by 'Printout Mode'" "%% FoomaticRIPOptionSetting: Quality=@PrintoutMode"
       Choice "600DraftGrayscaleK/600 dpi, Draft, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600DraftGrayscaleK"
       Choice "600GrayscaleK/600 dpi, Normal, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
-      Choice "600BestGrayscaleK/600 dpi, Best, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600BestGrayscaleK"
   *CustomMedia "Letter/Letter" 612.00 792.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=Letter" "%% FoomaticRIPOptionSetting: PageSize=Letter"
   CustomMedia "A4/A4" 595.00 842.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A4" "%% FoomaticRIPOptionSetting: PageSize=A4"
   CustomMedia "Photo/Photo/4x6 inch index card" 288.00 432.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=Photo" "%% FoomaticRIPOptionSetting: PageSize=Photo"
@@ -11322,6 +11456,14 @@ Transparency"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet p1505n;DES:hp laserjet p1505n;"
     PCFileName "hp-laserjet_p1505n-hpijs-zxs.ppd"
     Attribute "Product" "" "(HP LaserJet p1505n Printer)"
+  }
+  {
+    ModelName "HP LaserJet p1505 hpijs"
+    Attribute "NickName" "" "HP LaserJet p1505 hpijs, $Version"
+    Attribute "ShortNickName" "" "HP LaserJet p1505 hpijs"
+    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet p1505;DES:hp laserjet p1505;"
+    PCFileName "hp-laserjet_p1505-hpijs.ppd"
+    Attribute "Product" "" "(HP LaserJet p1505 Printer)"
   }
   {
     ModelName "HP LaserJet p2014 hpijs"
@@ -11595,7 +11737,6 @@ Transparency"
       *Choice "FromPrintoutMode/Controlled by 'Printout Mode'" "%% FoomaticRIPOptionSetting: Quality=@PrintoutMode"
       Choice "600DraftGrayscaleK/600 dpi, Draft, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600DraftGrayscaleK"
       Choice "600GrayscaleK/600 dpi, Normal, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
-      Choice "600BestGrayscaleK/600 dpi, Best, Grayscale, Black Toner" "%% FoomaticRIPOptionSetting: Quality=600BestGrayscaleK"
   *CustomMedia "Letter/Letter" 612.00 792.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=Letter" "%% FoomaticRIPOptionSetting: PageSize=Letter"
   CustomMedia "A4/A4" 595.00 842.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=A4" "%% FoomaticRIPOptionSetting: PageSize=A4"
   CustomMedia "Photo/Photo/4x6 inch index card" 288.00 432.00 18.00 14.40 18.00 14.40 "%% FoomaticRIPOptionSetting: PageSize=Photo" "%% FoomaticRIPOptionSetting: PageSize=Photo"
@@ -11658,14 +11799,6 @@ Transparency"
     Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet p1009;DES:hp laserjet p1009;"
     PCFileName "hp-laserjet_p1009-hpijs.ppd"
     Attribute "Product" "" "(HP LaserJet p1009 Printer)"
-  }
-  {
-    ModelName "HP LaserJet p1505 hpijs"
-    Attribute "NickName" "" "HP LaserJet p1505 hpijs, $Version"
-    Attribute "ShortNickName" "" "HP LaserJet p1505 hpijs"
-    Attribute "1284DeviceID" "" "MFG:HP;MDL:hp laserjet p1505;DES:hp laserjet p1505;"
-    PCFileName "hp-laserjet_p1505-hpijs.ppd"
-    Attribute "Product" "" "(HP LaserJet p1505 Printer)"
   }
 } // end LJP1XXX (for proprietary plugin)
 

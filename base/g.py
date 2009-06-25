@@ -249,6 +249,8 @@ prop.fax_build = to_bool(sys_conf.get('configure', 'fax-build', '0'))
 prop.doc_build = to_bool(sys_conf.get('configure', 'doc-build', '0'))
 prop.foomatic_xml_install = to_bool(sys_conf.get('configure', 'foomatic-xml-install', '0'))
 prop.foomatic_ppd_install = to_bool(sys_conf.get('configure', 'foomatic-ppd-install', '0'))
+prop.hpcups_build = to_bool(sys_conf.get('configure', 'hpcups-install', '0'))
+prop.hpijs_build = to_bool(sys_conf.get('configure', 'hpijs-install', '0'))
 
 # Spinner, ala Gentoo Portage
 spinner = "\|/-\|/-"

@@ -41,6 +41,11 @@ import dbus
 import dbus.service
 import gobject
 
+import warnings
+# Ignore: .../dbus/connection.py:242: DeprecationWarning: object.__init__() takes no parameters
+# (occurring on Python 2.6/dBus 0.83/Ubuntu 9.04)
+warnings.simplefilter("ignore", DeprecationWarning)
+
 
 class AccessDeniedException(dbus.DBusException):
     _dbus_error_name = 'com.hp.hplip.AccessDeniedException'
@@ -365,7 +370,7 @@ def copyPluginFiles(src_dir):
     return True
 
 
-def run_plugin_command(required=True):
+def run_plugin_command(required=True, plugin_reason=PLUGIN_REASON_NONE):
     su_sudo = None
     need_sudo = True
 
@@ -386,18 +391,18 @@ def run_plugin_command(required=True):
         su_sudo = utils.su_sudo()
         if su_sudo is None:
             log.error("Unable to find a suitable sudo command to run 'hp-plugin'")
-            return False
+            return (False, False)
 
     req = '--required'
     if not required:
         req = '--optional'
 
     if utils.which("hp-plugin"):
-        cmd = su_sudo % ("hp-plugin -u %s" % req)
+        cmd = su_sudo % ("hp-plugin -u %s --reason %s" % (req, plugin_reason))
     else:
-        cmd = su_sudo % ("python ./plugin.py -u %s" % req)
+        cmd = su_sudo % ("python ./plugin.py -u %s --reason %s" % (req, plugin_reason))
 
     log.debug("%s" % cmd)
     status, output = utils.run(cmd, log_output=True, password_func=None, timeout=1)
 
-    return status == 0
+    return (status == 0, True)

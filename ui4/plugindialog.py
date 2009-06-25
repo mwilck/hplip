@@ -51,9 +51,10 @@ PAGE_MAX = 1
 
 
 class PluginDialog(QDialog, Ui_Dialog):
-    def __init__(self, parent, install_mode=PLUGIN_NONE):
+    def __init__(self, parent, install_mode=PLUGIN_NONE, plugin_reason=PLUGIN_REASON_NONE):
         QDialog.__init__(self, parent)
         self.install_mode = install_mode
+        self.plugin_reason = plugin_reason
         self.plugin_path = None
         self.result = False
         self.core = CoreInstall()
@@ -86,12 +87,14 @@ class PluginDialog(QDialog, Ui_Dialog):
     # SOURCE PAGE
     #
     def showSourcePage(self):
+        reason_text = self.plugin_reason_text()
+
         if self.install_mode == PLUGIN_REQUIRED:
-            self.TitleLabel.setText(self.__tr("An additional driver plug-in is required to operate this printer. You may download the plug-in directly from an HP authorized server (recommended), or, if you already have a copy of the file, you can specify a path to the file (advanced)."))
+            self.TitleLabel.setText(self.__tr("An additional driver plug-in is required to operate this printer. You may download the plug-in directly from an HP authorized server (recommended), or, if you already have a copy of the file, you can specify a path to the file (advanced). <br><br>%1").arg(reason_text))
             self.SkipRadioButton.setEnabled(False)
 
         elif self.install_mode == PLUGIN_OPTIONAL:
-            self.TitleLabel.setText(self.__tr("An optional driver plug-in is available to enhance the operation of this printer. You may download the plug-in directly from an HP authorized server (recommended), skip this installation (not recommended), or, if you already have a copy of the file, you can specify a path to the file (advanced)."))
+            self.TitleLabel.setText(self.__tr("An optional driver plug-in is available to enhance the operation of this printer. You may download the plug-in directly from an HP authorized server (recommended), skip this installation (not recommended), or, if you already have a copy of the file, you can specify a path to the file (advanced).<br><br>%1").arg(reason_text))
 
         self.connect(self.DownloadRadioButton, SIGNAL("toggled(bool)"), self.DownloadRadioButton_toggled)
         self.connect(self.CopyRadioButton, SIGNAL("toggled(bool)"), self.CopyRadioButton_toggled)
@@ -341,6 +344,43 @@ class PluginDialog(QDialog, Ui_Dialog):
 
     def updateStepText(self, p):
         self.StepText.setText(self.__tr("Step %1 of %2").arg(p+1).arg(PAGE_MAX+1))
+
+
+    def plugin_reason_text(self):
+        if self.plugin_reason == PLUGIN_REASON_NONE:
+            return None
+        elif self.plugin_reason == PLUGIN_REASON_PRINTING_SUPPORT:
+            return self.__tr("This plugin will enable printing support.")
+        elif self.plugin_reason == PLUGIN_REASON_FASTER_PRINTING:
+            return self.__tr("This plugin will enhance print speed.")
+        elif self.plugin_reason == PLUGIN_REASON_BETTER_PRINTING_PQ:
+            return self.__tr("This plugin will enhance print quality.")
+        elif self.plugin_reason == PLUGIN_REASON_PRINTING_FEATURES:
+            return self.__tr("This plugin will add printing features.")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_10:
+            return self.__tr("Unsupported plugin reason 10")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_20:
+            return self.__tr("Unsupported plugin reason 20")
+        elif self.plugin_reason == PLUGIN_REASON_SCANNING_SUPPORT:
+            return self.__tr("This plugin will enable scanning support.")
+        elif self.plugin_reason == PLUGIN_REASON_FASTER_SCANNING:
+            return self.__tr("This plugin will enhance scanning speed.")
+        elif self.plugin_reason == PLUGIN_REASON_BETTER_SCANNING_IQ:
+            return self.__tr("This plugin will enhance scanning image quality.")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_200:
+            return self.__tr("Unsupported plugin reason 200")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_400:
+            return self.__tr("Unsupported plugin reason 400")
+        elif self.plugin_reason == PLUGIN_REASON_FAXING_SUPPORT:
+            return self.__tr("This plugin will enable faxing support.")
+        elif self.plugin_reason == PLUGIN_REASON_FAX_FEATURES:
+            return self.__tr("This plugin will enhnace faxing features.")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_20000:
+            return self.__tr("Unsupported plugin reason 20000")
+        elif self.plugin_reason == PLUGIN_REASON_RESERVED_40000:
+            return self.__tr("Unsupported plugin reason 40000")
+        else:
+            return self.__tr("Unknown plugin reason %s" % self.plugin_reason)
 
 
     def __tr(self,s,c = None):

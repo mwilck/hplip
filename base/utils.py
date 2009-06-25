@@ -42,6 +42,7 @@ import re
 import xml.parsers.expat as expat
 import getpass
 import locale
+import htmlentitydefs
 
 try:
     import platform
@@ -105,7 +106,7 @@ def lock_app(application, suppress_error=False):
     return True, lock_file_f
 
 
-xml_basename_pat = re.compile(r"""HPLIP-(\d*)_(\d*)_(\d*).xml""", re.IGNORECASE)
+#xml_basename_pat = re.compile(r"""HPLIP-(\d*)_(\d*)_(\d*).xml""", re.IGNORECASE)
 
 
 def Translator(frm='', to='', delete='', keep=None):
@@ -884,12 +885,12 @@ class XMLToDictParser:
 
     def startElement(self, name, attrs):
         #print "START:", name, attrs
-        self.stack.append(str(name).lower())
-        self.last_start = str(name).lower()
+        self.stack.append(unicode(name).lower())
+        self.last_start = unicode(name).lower()
 
         if len(attrs):
             for a in attrs:
-                self.stack.append(str(a).lower())
+                self.stack.append(unicode(a).lower())
                 self.addData(attrs[a])
                 self.stack.pop()
 
@@ -901,7 +902,7 @@ class XMLToDictParser:
         self.stack.pop()
 
     def charData(self, data):
-        data = str(data).strip()
+        data = unicode(data).strip()
 
         if data and self.stack:
             self.addData(data)
@@ -912,7 +913,7 @@ class XMLToDictParser:
         try:
             data = int(data)
         except ValueError:
-            data = str(data)
+            data = unicode(data)
 
         stack_str = '-'.join(self.stack)
         stack_str_0 = '-'.join([stack_str, '0'])
@@ -928,9 +929,9 @@ class XMLToDictParser:
                 j = 2
                 while True:
                     try:
-                        self.data['-'.join([stack_str, str(j)])]
+                        self.data['-'.join([stack_str, unicode(j)])]
                     except KeyError:
-                        self.data['-'.join([stack_str, str(j)])] = data
+                        self.data['-'.join([stack_str, unicode(j)])] = data
                         break
                     j += 1
 
@@ -945,7 +946,7 @@ class XMLToDictParser:
         parser.StartElementHandler = self.startElement
         parser.EndElementHandler = self.endElement
         parser.CharacterDataHandler = self.charData
-        parser.Parse(text, True)
+        parser.Parse(text.encode('utf-8'), True)
         return self.data
 
 
@@ -1579,3 +1580,50 @@ def su_sudo():
         su_sudo_str = 'gksu "%s"'
 
     return su_sudo_str
+
+
+#
+# Removes HTML or XML character references and entities from a text string.
+#
+
+def unescape(text):
+    def fixup(m):
+        text = m.group(0)
+        if text[:2] == "&#":
+            # character reference
+            try:
+                if text[:3] == "&#x":
+                    #return unichr(int(text[3:-1], 16))
+                    return chr(int(text[3:-1], 16))
+                else:
+                    #return unichr(int(text[2:-1]))
+                    return chr(int(text[2:-1]))
+            except ValueError:
+                pass
+        else:
+            # named entity
+            try:
+                #text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
+                text = chr(htmlentitydefs.name2codepoint[text[1:-1]])
+            except KeyError:
+                pass
+        return text # leave as is
+    return re.sub("&#?\w+;", fixup, text)
+
+
+# Adds HTML or XML character references and entities from a text string
+
+def escape(s):
+    if not isinstance(s, unicode):
+        s = unicode(s) # hmmm...
+
+    s = s.replace(u"&", u"&amp;")
+
+    for c in htmlentitydefs.codepoint2name:
+        if c != 0x26: # exclude &
+            s = s.replace(unichr(c), u"&%s;" % htmlentitydefs.codepoint2name[c])
+
+    for c in range(0x20) + range(0x7f, 0xa0):
+        s = s.replace(unichr(c), u"&#%d;" % c)
+
+    return s

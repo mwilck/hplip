@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
+# (c) Copyright 2003-2009 Hewlett-Packard Development Company, L.P.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,10 +20,10 @@
 # Author: Don Welch
 #
 
-__version__ = '0.1'
-__title__ = 'Device Setup Utility'
-__mod__ = 'hp-devicesetup'
-__doc__ = "Device setup utility for HPLIP supported printers. (Note: Not all printers require the use of this utility)."
+__version__ = '1.1'
+__title__ = 'Wifi Configuration Utility'
+__mod__ = 'hp-wificonfig'
+__doc__ = "Wifi/Wireless/802.11 configuration utility for HPLIP supported printers. (Note: Only select wireless capable printers are supported by this utility)."
 
 #Std Lib
 import sys
@@ -44,14 +44,14 @@ try:
                        (GUI_MODE,), (UI_TOOLKIT_QT4,))
 
     mod.setUsage(module.USAGE_FLAG_DEVICE_ARGS,
-                 see_also_list=['hp-toolbox'])
-
+                 see_also_list=['hp-setup'])
 
     opts, device_uri, printer_name, mode, ui_toolkit, lang = \
         mod.parseStdOpts()
 
     device_uri = mod.getDeviceUri(device_uri, printer_name,
-                                  filter={'power-settings': (operator.gt, 0)})
+                                  filter={'wifi-config': (operator.gt, 0)},
+                                  restrict_to_installed_devices=False)
 
     if not utils.canEnterGUIMode4():
         log.error("%s -u/--gui requires Qt4 GUI support. Exiting." % __mod__)
@@ -59,24 +59,20 @@ try:
 
     try:
         from PyQt4.QtGui import QApplication
-        from ui4.devicesetupdialog import DeviceSetupDialog
+        from ui4.wifisetupdialog import WifiSetupDialog
     except ImportError:
         log.error("Unable to load Qt4 support. Is it installed?")
         sys.exit(1)
 
-    #try:
-    if 1:
-        app = QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
-        dlg = DeviceSetupDialog(None, device_uri)
-        dlg.show()
-        try:
-            log.debug("Starting GUI loop...")
-            app.exec_()
-        except KeyboardInterrupt:
-            sys.exit(0)
-
-
+    dlg = WifiSetupDialog(None, device_uri, standalone=True)
+    dlg.show()
+    try:
+        log.debug("Starting GUI loop...")
+        app.exec_()
+    except KeyboardInterrupt:
+        sys.exit(0)
 
 except KeyboardInterrupt:
     log.error("User exit")

@@ -109,7 +109,8 @@ USAGE = [ (__doc__, "", "name", True),
 
 def showPasswordUI(prompt):
     import getpass
-    log.bold(prompt)
+    print ""
+    print log.bold(prompt)
     username = raw_input("Username: ")
     password = getpass.getpass("Password: ")
 
@@ -446,7 +447,7 @@ else: # INTERACTIVE_MODE
                                     break
 
                         for c in printer_name:
-                            if c in (' ', '#', '/', '%'):
+                            if c in cups.INVALID_PRINTER_NAME_CHARS:
                                 log.error("Invalid character '%s' in printer name. Please enter a name that does not contain this character." % c)
                                 name_ok = False
 
@@ -564,6 +565,7 @@ else: # INTERACTIVE_MODE
             status, output = utils.run(restart_cups())
             log.debug("Restart CUPS returned: exit=%d output=%s" % (status, output))
 
+            cups.setPasswordPrompt("You do not have permission to add a printer.")
             if not os.path.exists(print_ppd): # assume foomatic: or some such
                 status, status_str = cups.addPrinter(printer_name.encode('utf8'), print_uri,
                     location, '', print_ppd, info)
@@ -671,10 +673,16 @@ else: # INTERACTIVE_MODE
 
             fax_type = mq.get('fax-type', FAX_TYPE_NONE)
 
-            if fax_type == FAX_TYPE_SOAP:
-                fax_ppd_name = 'HP-Fax2-hplip'
-            else:
-                fax_ppd_name = 'HP-Fax-hplip'
+            if prop.hpcups_build:
+                if fax_type == FAX_TYPE_SOAP:
+                    fax_ppd_name = 'HP-Fax2-hpcups'
+                else:
+                    fax_ppd_name = 'HP-Fax-hpcups'
+            else: # hpijs
+                if fax_type == FAX_TYPE_SOAP:
+                    fax_ppd_name = 'HP-Fax2-hpijs'
+                else:
+                    fax_ppd_name = 'HP-Fax-hpijs'
 
             for f in ppds:
                 if f.find(fax_ppd_name) >= 0:
@@ -715,6 +723,7 @@ else: # INTERACTIVE_MODE
             log.info("Location: %s" % location)
             log.info("Information: %s" % info)
 
+            cups.setPasswordPrompt("You do not have permission to add a fax device.")
             if not os.path.exists(fax_ppd): # assume foomatic: or some such
                 status, status_str = cups.addPrinter(fax_name.encode('utf8'), fax_uri,
                     location, '', fax_ppd, info)

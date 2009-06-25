@@ -71,6 +71,41 @@ int bug(const char *fmt, ...)
 }
 #endif
 
+void setLogLevel(UXServices *pSS)
+{
+    FILE    *fp;
+    char    str[258];
+    char    *p;
+    fp = fopen ("/etc/cups/cupsd.conf", "r");
+    if (fp == NULL)
+        return;
+    while (!feof (fp))
+    {
+        if (!fgets (str, 256, fp))
+	{
+	    break;
+	}
+	if ((p = strstr (str, "hpLogLevel")))
+	{
+	    p += strlen ("hpLogLevel") + 1;
+	    pSS->m_iLogLevel = atoi (p);
+	    break;
+	}
+    }
+    fclose (fp);
+
+    if (pSS->m_iLogLevel & SAVE_PCL_FILE)
+    {
+        char    szFileName[32];
+	sprintf (szFileName, "/tmp/hpijs_%d.out", getpid());
+	pSS->outfp = fopen (szFileName, "w");
+	if (pSS->outfp)
+	{
+	    chmod (szFileName, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	}
+    }
+}
+
 /* Set Print Context. */
 int hpijs_set_context(UXServices *pSS)
 {
@@ -512,6 +547,8 @@ int main (int argc, char *argv[], char *evenp[])
    int status = EXIT_FAILURE;
    int ret, n, i, kn=0, width, k_width;
 
+   openlog("hpijs", LOG_PID,  LOG_DAEMON);
+
    if (argc > 1)
    {
       const char *arg = argv[1];
@@ -545,6 +582,8 @@ int main (int argc, char *argv[], char *evenp[])
       BUG("unable to open Services object err=%d\n", pSS->constructor_error);
       goto BUGOUT;
    }
+
+   setLogLevel(pSS);
 
 #ifdef CAPTURE
    if ((pSS->InitScript("/tmp/capout", TRUE)) != NO_ERROR)
