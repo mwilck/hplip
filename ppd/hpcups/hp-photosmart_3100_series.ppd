@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_3100_series.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 3100 Series"
 *ShortNickName: "HP Photosmart 3100 Series"
-*NickName: "HP Photosmart 3100 Series, hpcups 3.9.6b.4"
+*NickName: "HP Photosmart 3100 Series, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -43,6 +43,8 @@
 *UIConstraints: *hpInkSet Photo *ColorModel Gray
 *UIConstraints: *ColorModel RGB *hpInkSet Black
 *UIConstraints: *hpInkSet Black *ColorModel RGB
+*UIConstraints: *ColorModel Gray *OutputMode Photo
+*UIConstraints: *OutputMode Photo *ColorModel Gray
 *UIConstraints: *MediaType Automatic *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Automatic
 *UIConstraints: *MediaType Glossy *OutputMode FastDraft
@@ -111,16 +113,6 @@
 *UIConstraints: *Duplex *PageSize EnvChou4
 *UIConstraints: *PageSize EnvMonarch *Duplex
 *UIConstraints: *Duplex *PageSize EnvMonarch
-*UIConstraints: *PageSize A3 *Duplex
-*UIConstraints: *Duplex *PageSize A3
-*UIConstraints: *PageSize B4 *Duplex
-*UIConstraints: *Duplex *PageSize B4
-*UIConstraints: *PageSize Ledger *Duplex
-*UIConstraints: *Duplex *PageSize Ledger
-*UIConstraints: *PageSize SuperB *Duplex
-*UIConstraints: *Duplex *PageSize SuperB
-*UIConstraints: *PageSize 8k *Duplex
-*UIConstraints: *Duplex *PageSize 8k
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -151,7 +143,7 @@
 *PageSize EnvC5/C5 Envelope 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize EnvB5/B5 Envelope 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageSize Card4x6Duplex/Index Card AutoDuplex 4x6in: "<</PageSize[288 423]/ImagingBBox null>>setpagedevice"
-*PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*PageSize HagakiDuplex/Hagaki AutoDuplex 100x148mm: "<</PageSize[284 411]/ImagingBBox null>>setpagedevice"
 *PageSize Card5x8Duplex/Index Card AutoDuplex 5x8in: "<</PageSize[360 567]/ImagingBBox null>>setpagedevice"
 *PageSize OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "<</PageSize[420 558]/ImagingBBox null>>setpagedevice"
 *PageSize LetterDuplex/Letter AutoDuplex 8.5x11in: "<</PageSize[612 783]/ImagingBBox null>>setpagedevice"
@@ -205,7 +197,7 @@
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 100/PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageRegion Card4x6Duplex/Index Card AutoDuplex 4x6in: "<</cupsInteger0 74/PageSize[288 423]/ImagingBBox null>>setpagedevice"
-*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*PageRegion HagakiDuplex/Hagaki AutoDuplex 100x148mm: "<</cupsInteger0 71/PageSize[284 411]/ImagingBBox null>>setpagedevice"
 *PageRegion Card5x8Duplex/Index Card AutoDuplex 5x8in: "<</cupsInteger0 75/PageSize[360 567]/ImagingBBox null>>setpagedevice"
 *PageRegion OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "<</cupsInteger0 72/PageSize[420 558]/ImagingBBox null>>setpagedevice"
 *PageRegion LetterDuplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 783]/ImagingBBox null>>setpagedevice"
@@ -257,7 +249,7 @@
 *ImageableArea EnvC5/C5 Envelope 162x229mm: "9.00 41.00 450.00 640.00"
 *ImageableArea EnvB5/B5 Envelope 176x250mm: "9.00 41.00 490.00 700.00"
 *ImageableArea Card4x6Duplex/Index Card AutoDuplex 4x6in: "9.00 27.00 279.00 387.00"
-*ImageableArea Hagaki/Hagaki 100x148mm: "9.00 27.00 275.00 375.00"
+*ImageableArea HagakiDuplex/Hagaki AutoDuplex 100x148mm: "9.00 27.00 275.00 375.00"
 *ImageableArea Card5x8Duplex/Index Card AutoDuplex 5x8in: "9.00 27.00 351.00 531.00"
 *ImageableArea OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "9.00 27.00 411.00 522.00"
 *ImageableArea LetterDuplex/Letter AutoDuplex 8.5x11in: "9.00 27.00 603.00 747.00"
@@ -308,7 +300,7 @@
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459.00 649.00"
 *PaperDimension EnvB5/B5 Envelope 176x250mm: "499.00 709.00"
 *PaperDimension Card4x6Duplex/Index Card AutoDuplex 4x6in: "288.00 423.00"
-*PaperDimension Hagaki/Hagaki 100x148mm: "284.00 411.00"
+*PaperDimension HagakiDuplex/Hagaki AutoDuplex 100x148mm: "284.00 411.00"
 *PaperDimension Card5x8Duplex/Index Card AutoDuplex 5x8in: "360.00 567.00"
 *PaperDimension OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "420.00 558.00"
 *PaperDimension LetterDuplex/Letter AutoDuplex 8.5x11in: "612.00 783.00"
@@ -437,4 +429,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_3100_series.ppd, 28644 bytes.
+*% End of hp-photosmart_3100_series.ppd, 28428 bytes.

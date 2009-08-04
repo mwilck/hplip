@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-dj350.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP dj350"
 *ShortNickName: "HP dj350"
-*NickName: "HP dj350, hpcups 3.9.6b.4"
+*NickName: "HP dj350, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -31,12 +31,8 @@
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *ColorModel Gray *hpInkSet Color
 *UIConstraints: *hpInkSet Color *ColorModel Gray
-*UIConstraints: *ColorModel Gray *hpInkSet Photo
-*UIConstraints: *hpInkSet Photo *ColorModel Gray
 *UIConstraints: *ColorModel RGB *hpInkSet Black
 *UIConstraints: *hpInkSet Black *ColorModel RGB
 *UIConstraints: *ColorModel RGB *OutputMode Best
@@ -238,4 +234,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-dj350.ppd, 14919 bytes.
+*% End of hp-dj350.ppd, 14733 bytes.

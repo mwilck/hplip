@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_400l.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 400l"
 *ShortNickName: "HP Deskjet 400l"
-*NickName: "HP Deskjet 400l, hpcups 3.9.6b.4"
+*NickName: "HP Deskjet 400l, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -30,12 +30,8 @@
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *ColorModel Gray *hpInkSet Color
 *UIConstraints: *hpInkSet Color *ColorModel Gray
-*UIConstraints: *ColorModel Gray *hpInkSet Photo
-*UIConstraints: *hpInkSet Photo *ColorModel Gray
 *UIConstraints: *ColorModel RGB *hpInkSet Black
 *UIConstraints: *hpInkSet Black *ColorModel RGB
 *UIConstraints: *ColorModel RGB *OutputMode Best
@@ -237,4 +233,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_400l.ppd, 14941 bytes.
+*% End of hp-deskjet_400l.ppd, 14755 bytes.

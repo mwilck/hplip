@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_2300-pcl3.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 2300"
 *ShortNickName: "HP Business Inkjet 2300"
-*NickName: "HP Business Inkjet 2300 pcl3, hpcups 3.9.6b.4"
+*NickName: "HP Business Inkjet 2300 pcl3, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -182,7 +182,7 @@
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: RGB
 *ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 3/cupsRowStep 1>>setpagedevice"
-*ColorModel RGB/Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 0>>setpagedevice"
+*ColorModel RGB/Color: "<</cupsColorSpace 17/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 0>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
@@ -241,4 +241,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-business_inkjet_2300-pcl3.ppd, 15219 bytes.
+*% End of hp-business_inkjet_2300-pcl3.ppd, 15220 bytes.

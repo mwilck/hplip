@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_1320tn.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 1320tn"
 *ShortNickName: "HP LaserJet 1320tn"
-*NickName: "HP LaserJet 1320tn, hpcups 3.9.6b.4"
+*NickName: "HP LaserJet 1320tn, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

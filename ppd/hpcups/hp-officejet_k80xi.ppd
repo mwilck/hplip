@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_k80xi.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet k80xi"
 *ShortNickName: "HP Officejet k80xi"
-*NickName: "HP Officejet k80xi, hpcups 3.9.6b.4"
+*NickName: "HP Officejet k80xi, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -35,14 +35,28 @@
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *UIConstraints: *Duplex *OptionDuplex False
 *UIConstraints: *OptionDuplex False *Duplex
-*UIConstraints: *ColorModel Gray *hpInkSet Color
-*UIConstraints: *hpInkSet Color *ColorModel Gray
-*UIConstraints: *ColorModel Gray *hpInkSet Photo
-*UIConstraints: *hpInkSet Photo *ColorModel Gray
-*UIConstraints: *ColorModel RGB *hpInkSet Black
-*UIConstraints: *hpInkSet Black *ColorModel RGB
-*UIConstraints: *MediaType Glossy *OutputMode Draft
-*UIConstraints: *OutputMode Draft *MediaType Glossy
+*UIConstraints: *hpInkSet Color *OutputMode NormalGray
+*UIConstraints: *OutputMode NormalGray *hpInkSet Color
+*UIConstraints: *hpInkSet Color *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *hpInkSet Color
+*UIConstraints: *hpInkSet Color *OutputMode BestGray
+*UIConstraints: *OutputMode BestGray *hpInkSet Color
+*UIConstraints: *hpInkSet Photo *OutputMode NormalGray
+*UIConstraints: *OutputMode NormalGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Photo *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Photo *OutputMode BestGray
+*UIConstraints: *OutputMode BestGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Black *OutputMode NormalRGB
+*UIConstraints: *OutputMode NormalRGB *hpInkSet Black
+*UIConstraints: *hpInkSet Black *OutputMode DraftRGB
+*UIConstraints: *OutputMode DraftRGB *hpInkSet Black
+*UIConstraints: *hpInkSet Black *OutputMode BestRGB
+*UIConstraints: *OutputMode BestRGB *hpInkSet Black
+*UIConstraints: *hpInkSet Black *OutputMode Photo
+*UIConstraints: *OutputMode Photo *hpInkSet Black
+*UIConstraints: *MediaType Glossy *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *MediaType Glossy
 *UIConstraints: *MediaType Plain *OutputMode Photo
 *UIConstraints: *OutputMode Photo *MediaType Plain
 *UIConstraints: *PageSize Letter *Duplex
@@ -95,16 +109,6 @@
 *UIConstraints: *Duplex *PageSize EnvChou4
 *UIConstraints: *PageSize EnvMonarch *Duplex
 *UIConstraints: *Duplex *PageSize EnvMonarch
-*UIConstraints: *PageSize A3 *Duplex
-*UIConstraints: *Duplex *PageSize A3
-*UIConstraints: *PageSize B4 *Duplex
-*UIConstraints: *Duplex *PageSize B4
-*UIConstraints: *PageSize Ledger *Duplex
-*UIConstraints: *Duplex *PageSize Ledger
-*UIConstraints: *PageSize SuperB *Duplex
-*UIConstraints: *Duplex *PageSize SuperB
-*UIConstraints: *PageSize 8k *Duplex
-*UIConstraints: *Duplex *PageSize 8k
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -135,7 +139,7 @@
 *PageSize EnvC5/C5 Envelope 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize EnvB5/B5 Envelope 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageSize Card4x6Duplex/Index Card AutoDuplex 4x6in: "<</PageSize[288 423]/ImagingBBox null>>setpagedevice"
-*PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*PageSize HagakiDuplex/Hagaki AutoDuplex 100x148mm: "<</PageSize[284 411]/ImagingBBox null>>setpagedevice"
 *PageSize Card5x8Duplex/Index Card AutoDuplex 5x8in: "<</PageSize[360 567]/ImagingBBox null>>setpagedevice"
 *PageSize OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "<</PageSize[420 558]/ImagingBBox null>>setpagedevice"
 *PageSize LetterDuplex/Letter AutoDuplex 8.5x11in: "<</PageSize[612 783]/ImagingBBox null>>setpagedevice"
@@ -177,7 +181,7 @@
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 100/PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageRegion Card4x6Duplex/Index Card AutoDuplex 4x6in: "<</cupsInteger0 74/PageSize[288 423]/ImagingBBox null>>setpagedevice"
-*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*PageRegion HagakiDuplex/Hagaki AutoDuplex 100x148mm: "<</cupsInteger0 71/PageSize[284 411]/ImagingBBox null>>setpagedevice"
 *PageRegion Card5x8Duplex/Index Card AutoDuplex 5x8in: "<</cupsInteger0 75/PageSize[360 567]/ImagingBBox null>>setpagedevice"
 *PageRegion OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "<</cupsInteger0 72/PageSize[420 558]/ImagingBBox null>>setpagedevice"
 *PageRegion LetterDuplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 783]/ImagingBBox null>>setpagedevice"
@@ -217,7 +221,7 @@
 *ImageableArea EnvC5/C5 Envelope 162x229mm: "18.00 41.00 441.00 640.00"
 *ImageableArea EnvB5/B5 Envelope 176x250mm: "18.00 41.00 481.00 700.00"
 *ImageableArea Card4x6Duplex/Index Card AutoDuplex 4x6in: "9.00 27.00 279.00 387.00"
-*ImageableArea Hagaki/Hagaki 100x148mm: "9.00 27.00 275.00 375.00"
+*ImageableArea HagakiDuplex/Hagaki AutoDuplex 100x148mm: "9.00 27.00 275.00 375.00"
 *ImageableArea Card5x8Duplex/Index Card AutoDuplex 5x8in: "9.00 27.00 351.00 531.00"
 *ImageableArea OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "9.00 27.00 411.00 522.00"
 *ImageableArea LetterDuplex/Letter AutoDuplex 8.5x11in: "18.00 27.00 594.00 747.00"
@@ -256,7 +260,7 @@
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459.00 649.00"
 *PaperDimension EnvB5/B5 Envelope 176x250mm: "499.00 709.00"
 *PaperDimension Card4x6Duplex/Index Card AutoDuplex 4x6in: "288.00 423.00"
-*PaperDimension Hagaki/Hagaki 100x148mm: "284.00 411.00"
+*PaperDimension HagakiDuplex/Hagaki AutoDuplex 100x148mm: "284.00 411.00"
 *PaperDimension Card5x8Duplex/Index Card AutoDuplex 5x8in: "360.00 567.00"
 *PaperDimension OufukuDuplex/Oufuku-Hagaki AutoDuplex 148x200mm: "420.00 558.00"
 *PaperDimension LetterDuplex/Letter AutoDuplex 8.5x11in: "612.00 783.00"
@@ -296,12 +300,6 @@
 *InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
 *InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
 *CloseUI: *InputSlot
-*OpenUI *ColorModel/Output Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: RGB
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1>>setpagedevice"
-*ColorModel RGB/Color: "<</cupsColorSpace 1]/cupsBitsPerColor 8/cupsRowStep 0>>setpagedevice"
-*CloseUI: *ColorModel
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
 *DefaultMediaType: Plain
@@ -310,11 +308,14 @@
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10.0 AnySetup *OutputMode
-*DefaultOutputMode: Normal
-*OutputMode Normal: "<</cupsCompression 0/HWResolution[300 300]>>setpagedevice"
-*OutputMode Draft: "<</cupsCompression 1/HWResolution[300 300]>>setpagedevice"
-*OutputMode Best: "<</cupsCompression 2/HWResolution[600 600]>>setpagedevice"
-*OutputMode Photo/High-Resolution Photo: "<</cupsCompression 3/HWResolution[1200 1200]>>setpagedevice"
+*DefaultOutputMode: NormalRGB
+*OutputMode NormalRGB/Normal Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 0/HWResolution[300 300]>>setpagedevice"
+*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 0/HWResolution[600 600]>>setpagedevice"
+*OutputMode DraftRGB/Draft Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 1/HWResolution[300 300]>>setpagedevice"
+*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 1/HWResolution[300 300]>>setpagedevice"
+*OutputMode BestRGB/Best Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 2/HWResolution[600 600]>>setpagedevice"
+*OutputMode BestGray/Best Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 2/HWResolution[600 600]>>setpagedevice"
+*OutputMode Photo/High-Resolution Photo: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 3/HWResolution[1200 1200]>>setpagedevice"
 *CloseUI: *OutputMode
 *OpenUI *hpInkSet/Installed Inks: PickOne
 *OrderDependency: 10.0 AnySetup *hpInkSet
@@ -368,4 +369,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_k80xi.ppd, 23008 bytes.
+*% End of hp-officejet_k80xi.ppd, 23844 bytes.

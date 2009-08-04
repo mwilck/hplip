@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.6b.4"
+*FileVersion: "hpcups 3.9.8.36"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_842c.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 842c"
 *ShortNickName: "HP Deskjet 842c"
-*NickName: "HP Deskjet 842c, hpcups 3.9.6b.4"
+*NickName: "HP Deskjet 842c, hpcups 3.9.8.36"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -30,16 +30,28 @@
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
-*UIConstraints: *ColorModel Gray *hpInkSet Color
-*UIConstraints: *hpInkSet Color *ColorModel Gray
-*UIConstraints: *ColorModel Gray *hpInkSet Photo
-*UIConstraints: *hpInkSet Photo *ColorModel Gray
-*UIConstraints: *ColorModel RGB *hpInkSet Black
-*UIConstraints: *hpInkSet Black *ColorModel RGB
-*UIConstraints: *ColorModel RGB *OutputMode Best
-*UIConstraints: *OutputMode Best *ColorModel RGB
-*UIConstraints: *MediaType Glossy *OutputMode Draft
-*UIConstraints: *OutputMode Draft *MediaType Glossy
+*UIConstraints: *hpInkSet Color *OutputMode NormalGray
+*UIConstraints: *OutputMode NormalGray *hpInkSet Color
+*UIConstraints: *hpInkSet Color *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *hpInkSet Color
+*UIConstraints: *hpInkSet Color *OutputMode BestGray
+*UIConstraints: *OutputMode BestGray *hpInkSet Color
+*UIConstraints: *hpInkSet Photo *OutputMode NormalGray
+*UIConstraints: *OutputMode NormalGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Photo *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Photo *OutputMode BestGray
+*UIConstraints: *OutputMode BestGray *hpInkSet Photo
+*UIConstraints: *hpInkSet Black *OutputMode NormalRGB
+*UIConstraints: *OutputMode NormalRGB *hpInkSet Black
+*UIConstraints: *hpInkSet Black *OutputMode DraftRGB
+*UIConstraints: *OutputMode DraftRGB *hpInkSet Black
+*UIConstraints: *hpInkSet Black *OutputMode Photo
+*UIConstraints: *OutputMode Photo *hpInkSet Black
+*UIConstraints: *MediaType Glossy *OutputMode DraftGray
+*UIConstraints: *OutputMode DraftGray *MediaType Glossy
+*UIConstraints: *MediaType Glossy *OutputMode DraftRGB
+*UIConstraints: *OutputMode DraftRGB *MediaType Glossy
 *UIConstraints: *MediaType Plain *OutputMode Photo
 *UIConstraints: *OutputMode Photo *MediaType Plain
 *OpenUI *PageSize/Media Size: PickOne
@@ -178,12 +190,6 @@
 *InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
 *InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
 *CloseUI: *InputSlot
-*OpenUI *ColorModel/Output Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: RGB
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1>>setpagedevice"
-*ColorModel RGB/Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0>>setpagedevice"
-*CloseUI: *ColorModel
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
 *DefaultMediaType: Plain
@@ -192,11 +198,13 @@
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10.0 AnySetup *OutputMode
-*DefaultOutputMode: Normal
-*OutputMode Normal: "<</cupsCompression 0/HWResolution[300 300]>>setpagedevice"
-*OutputMode Draft: "<</cupsCompression 1/HWResolution[300 300]>>setpagedevice"
-*OutputMode Best: "<</cupsCompression 2/HWResolution[600 600]>>setpagedevice"
-*OutputMode Photo/High-Resolution Photo: "<</cupsCompression 3/HWResolution[600 600]>>setpagedevice"
+*DefaultOutputMode: NormalRGB
+*OutputMode NormalRGB/Normal Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 0/HWResolution[300 300]>>setpagedevice"
+*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 0/HWResolution[600 600]>>setpagedevice"
+*OutputMode DraftRGB/Draft Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 1/HWResolution[300 300]>>setpagedevice"
+*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 1/HWResolution[300 300]>>setpagedevice"
+*OutputMode BestGray/Best Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowStep 1/cupsCompression 2/HWResolution[600 600]>>setpagedevice"
+*OutputMode Photo/High-Resolution Photo: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsCompression 3/HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
 *OpenUI *hpInkSet/Installed Inks: PickOne
 *OrderDependency: 10.0 AnySetup *hpInkSet
@@ -242,4 +250,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_842c.ppd, 15277 bytes.
+*% End of hp-deskjet_842c.ppd, 16198 bytes.
