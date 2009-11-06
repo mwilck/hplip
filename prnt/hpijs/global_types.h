@@ -129,7 +129,7 @@ enum MediaType
     mediaSpecial = 2,
     mediaGlossy = 3,
     mediaTransparency = 4,
-    mediaHighresPhoto = 5,       // used by vip printers for 2400 mode
+    mediaHighresPhoto = 3,       // used by vip printers for 2400 mode
     mediaCDDVD = 7
 };
 

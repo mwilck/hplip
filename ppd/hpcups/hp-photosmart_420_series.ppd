@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.8.36"
+*FileVersion: "hpcups 3.9.10.72"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_420_series.ppd"
@@ -19,7 +19,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 420 Series"
 *ShortNickName: "HP Photosmart 420 Series"
-*NickName: "HP Photosmart 420 Series, hpcups 3.9.8.36"
+*NickName: "HP Photosmart 420 Series, hpcups 3.9.10.72"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -32,6 +32,9 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
+*RequiresPageRegion All: True
+*hpPrinterLanguage: "pcl3gui2"
+*HPMechOffset: "70"
 *cupsModelName: "deskjet 5600"
 *1284DeviceID: "MFG:HP;MDL:photosmart 420 series;DES:photosmart 420 series;"
 *cupsVersion: 1.3
@@ -42,50 +45,50 @@
 *UIConstraints: *OutputMode Photo *MediaType Plain
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
-*DefaultPageSize: PhotoFB
-*PageSize Photo/Photo 4x6in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageSize A6/A6 105x148mm: "<</PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
-*PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*DefaultPageSize: Photo4x6.FB
 *PageSize Card3x5/Index Card 3x5in: "<</PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 420]/ImagingBBox null>>setpagedevice"
+*PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</PageSize[294 430]/ImagingBBox null>>setpagedevice"
+*PageSize Photo4x6/Photo 4x6in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize Photo4x6.FB/Photo Borderless 4x6 in: "<</PageSize[298 442]/ImagingBBox null>>setpagedevice"
+*PageSize A6/A6 105x148mm: "<</PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
+*PageSize A6.FB/A6 Borderless 105x148mm: "<</PageSize[307 430]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou4/#4 Japanese Envelope 90x205mm: "<</PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
 *PageSize EnvMonarch/Monarch Envelope 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
-*PageSize PhotoFB/Photo Borderless 4x6 in: "<</PageSize[298 442]/ImagingBBox null>>setpagedevice"
-*PageSize A6FB/A6 Borderless 105x148mm: "<</PageSize[307 430]/ImagingBBox null>>setpagedevice"
-*PageSize HagakiFB/Hagaki Borderless 100x148mm: "<</PageSize[294 430]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
-*DefaultPageRegion: PhotoFB
-*PageRegion Photo/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageRegion A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
-*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 411]/ImagingBBox null>>setpagedevice"
+*DefaultPageRegion: Photo4x6.FB
 *PageRegion Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 420]/ImagingBBox null>>setpagedevice"
+*PageRegion Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[294 430]/ImagingBBox null>>setpagedevice"
+*PageRegion Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion Photo4x6.FB/Photo Borderless 4x6 in: "<</cupsInteger0 74/PageSize[298 442]/ImagingBBox null>>setpagedevice"
+*PageRegion A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
+*PageRegion A6.FB/A6 Borderless 105x148mm: "<</cupsInteger0 73/PageSize[307 430]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou4/#4 Japanese Envelope 90x205mm: "<</cupsInteger0 111/PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279 540]/ImagingBBox null>>setpagedevice"
-*PageRegion PhotoFB/Photo Borderless 4x6 in: "<</cupsInteger0 74/PageSize[298 442]/ImagingBBox null>>setpagedevice"
-*PageRegion A6FB/A6 Borderless 105x148mm: "<</cupsInteger0 73/PageSize[307 430]/ImagingBBox null>>setpagedevice"
-*PageRegion HagakiFB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[294 430]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
-*DefaultImageableArea: PhotoFB
-*ImageableArea Photo/Photo 4x6in: "9.00 9.00 279.00 423.00"
-*ImageableArea A6/A6 105x148mm: "9.00 9.00 288.36 410.76"
-*ImageableArea Hagaki/Hagaki 100x148mm: "9.00 9.00 275.00 402.00"
+*DefaultImageableArea: Photo4x6.FB
 *ImageableArea Card3x5/Index Card 3x5in: "9.00 9.00 207.00 351.00"
-*ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.00 41.00 246.88 572.04"
+*ImageableArea Hagaki/Hagaki 100x148mm: "9.00 9.00 275.00 411.00"
+*ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0.00 0.00 294.00 430.00"
+*ImageableArea Photo4x6/Photo 4x6in: "9.00 9.00 279.00 423.00"
+*ImageableArea Photo4x6.FB/Photo Borderless 4x6 in: "0.00 0.00 298.00 442.00"
+*ImageableArea A6/A6 105x148mm: "9.00 9.00 288.36 410.76"
+*ImageableArea A6.FB/A6 Borderless 105x148mm: "0.00 0.00 307.00 430.00"
+*ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.00 41.00 245.88 572.04"
 *ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "9.00 41.00 270.00 531.00"
-*ImageableArea PhotoFB/Photo Borderless 4x6 in: "0.00 0.00 298.00 442.00"
-*ImageableArea A6FB/A6 Borderless 105x148mm: "0.00 0.00 307.00 430.00"
-*ImageableArea HagakiFB/Hagaki Borderless 100x148mm: "0.00 0.00 294.00 430.00"
-*DefaultPaperDimension: PhotoFB
-*PaperDimension Photo/Photo 4x6in: "288.00 432.00"
-*PaperDimension A6/A6 105x148mm: "297.36 419.76"
-*PaperDimension Hagaki/Hagaki 100x148mm: "284.00 411.00"
+*DefaultPaperDimension: Photo4x6.FB
 *PaperDimension Card3x5/Index Card 3x5in: "216.00 360.00"
+*PaperDimension Hagaki/Hagaki 100x148mm: "284.00 420.00"
+*PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "294.00 430.00"
+*PaperDimension Photo4x6/Photo 4x6in: "288.00 432.00"
+*PaperDimension Photo4x6.FB/Photo Borderless 4x6 in: "298.00 442.00"
+*PaperDimension A6/A6 105x148mm: "297.36 419.76"
+*PaperDimension A6.FB/A6 Borderless 105x148mm: "307.00 430.00"
 *PaperDimension EnvChou4/#4 Japanese Envelope 90x205mm: "254.88 581.04"
 *PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279.00 540.00"
-*PaperDimension PhotoFB/Photo Borderless 4x6 in: "298.00 442.00"
-*PaperDimension A6FB/A6 Borderless 105x148mm: "307.00 430.00"
-*PaperDimension HagakiFB/Hagaki Borderless 100x148mm: "294.00 430.00"
 *MaxMediaWidth: "297.00"
 *MaxMediaHeight: "420.00"
 *HWMargins: 9.00 9.00 9.00 9.00
@@ -116,25 +119,20 @@
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
 *DefaultMediaType: Automatic
-*MediaType Automatic: "<</MediaType(Automatic)/cupsMediaType 5>>setpagedevice"
+*MediaType Automatic: "<</MediaType(Automatic)/cupsMediaType -1>>setpagedevice"
 *MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
-*MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 2>>setpagedevice"
+*MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
 *MediaType TransparencyFilm/Transparency Film: "<</MediaType(TransparencyFilm)/cupsMediaType 4>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10.0 AnySetup *OutputMode
 *DefaultOutputMode: Auto
-*OutputMode Normal: "<</cupsCompression 0/HWResolution[600 600]>>setpagedevice"
-*OutputMode FastNormal: "<</cupsCompression 6/HWResolution[600 600]>>setpagedevice"
-*OutputMode Best: "<</cupsCompression 2/HWResolution[600 600]>>setpagedevice"
-*OutputMode Photo/High-Resolution Photo: "<</cupsCompression 3/HWResolution[1200 1200]>>setpagedevice"
-*OutputMode Auto/Automatic: "<</cupsCompression 5/HWResolution[600 600]>>setpagedevice"
+*OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode FastNormal: "<</OutputType(3)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
+*OutputMode Auto/Automatic: "<</OutputType(-3)/HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
-*OpenUI *hpInkSet/Installed Inks: PickOne
-*OrderDependency: 10.0 AnySetup *hpInkSet
-*DefaulthpInkSet: Color
-*hpInkSet Color/Color Only: "<</cupsRowCount 2>>setpagedevice"
-*CloseUI: *hpInkSet
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -171,4 +169,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_420_series.ppd, 09649 bytes.
+*% End of hp-photosmart_420_series.ppd, 09575 bytes.

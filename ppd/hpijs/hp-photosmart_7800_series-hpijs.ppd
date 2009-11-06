@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.9.8.36"
+*FileVersion: "hpijs 3.9.10.72"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_7800_series-hpijs.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 7800 Series hpijs"
 *ShortNickName: "HP Photosmart 7800 Series hpijs"
-*NickName: "HP Photosmart 7800 Series hpijs, 3.9.8.36"
+*NickName: "HP Photosmart 7800 Series hpijs, 3.9.10.72"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -29,7 +29,7 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
-*DefaultResolution: 1200dpi
+*DefaultResolution: 600dpi
 *FoomaticRIPOptionSetting PageSize=Custom: " -dDEVICEWIDTHPOINTS=0 -dD&&
 EVICEHEIGHTPOINTS=0"
 *End
@@ -57,7 +57,7 @@ aleK"
 *FoomaticRIPOptionSetting PrintoutMode=High.Gray: "Quality=600Grayscal&&
 eK"
 *End
-*FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=1200PhotoCMYKFu&&
+*FoomaticRIPOptionSetting PrintoutMode=Photo: "Quality=600PhotoCMYKFu&&
 llBleed"
 *End
 *FoomaticRIPOption InputSlot: "enum CmdLine C"
@@ -142,8 +142,8 @@ dDEVICEHEIGHTPOINTS=420"
 *FoomaticRIPOptionSetting PageSize=Legal: " -dDEVICEWIDTHPOINTS=612 -d&&
 DEVICEHEIGHTPOINTS=1008"
 *End
-*FoomaticRIPOptionSetting PageSize=Oufuku: " -dDEVICEWIDTHPOINTS=420 -&&
-dDEVICEHEIGHTPOINTS=567"
+*FoomaticRIPOptionSetting PageSize=Oufuku: " -dDEVICEWIDTHPOINTS=567 -&&
+dDEVICEHEIGHTPOINTS=420"
 *End
 *FoomaticRIPOptionSetting PageSize=w558h774: " -dDEVICEWIDTHPOINTS=558&&
  -dDEVICEHEIGHTPOINTS=774"
@@ -223,12 +223,12 @@ ty:PenSet=2,Quality:FullBleed=1"
 s=Quality:Quality=0,Quality:ColorMode=0,Quality:MediaType=0,Quality:Pe&&
 nSet=2"
 *End
-*FoomaticRIPOptionSetting Quality=1200PhotoCMYK: " -r1200 -sIjsParams=&&
-Quality:Quality=3,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenS&&
+*FoomaticRIPOptionSetting Quality=600PhotoCMYK: " -r600 -sIjsParams=&&
+Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Quality:PenS&&
 et=2"
 *End
-*FoomaticRIPOptionSetting Quality=1200PhotoCMYKFullBleed: " -r1200 -sI&&
-jsParams=Quality:Quality=3,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
+*FoomaticRIPOptionSetting Quality=600PhotoCMYKFullBleed: " -r600 -sI&&
+jsParams=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
 lity:PenSet=2,Quality:FullBleed=1"
 *End
 *1284DeviceID: "MFG:HP;MDL:photosmart 7800 series;DES:photosmart 7800 series;"
@@ -321,7 +321,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *ImageableArea FLSA/American Foolscap: "18.00 36.00 594.00 927.00"
 *ImageableArea Hagaki/Hagaki: "0.00 36.00 283.00 420.00"
 *ImageableArea Legal/Legal: "18.00 36.00 594.00 999.00"
-*ImageableArea Oufuku/Oufuku-Hagaki: "0.00 36.00 420.00 567.00"
+*ImageableArea Oufuku/Oufuku-Hagaki: "0.00 36.00 567.00 420.00"
 *ImageableArea w558h774/16K: "18.00 36.00 540.00 765.00"
 *ImageableArea w612h935/Executive (JIS): "18.00 36.00 594.00 926.00"
 *DefaultPaperDimension: Letter
@@ -348,7 +348,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *PaperDimension FLSA/American Foolscap: "612.00 936.00"
 *PaperDimension Hagaki/Hagaki: "283.00 420.00"
 *PaperDimension Legal/Legal: "612.00 1008.00"
-*PaperDimension Oufuku/Oufuku-Hagaki: "420.00 567.00"
+*PaperDimension Oufuku/Oufuku-Hagaki: "567.00 420.00"
 *PaperDimension w558h774/16K: "558.00 774.00"
 *PaperDimension w612h935/Executive (JIS): "612.00 935.00"
 *MaxMediaWidth: "936.00"
@@ -417,8 +417,8 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Quality 600ColorCMYK/600 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMYK"
 *Quality 600ColorCMYKFullBleed/600 dpi, Color, Full Bleed, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=600ColorCMYKFullBleed"
 *Quality 600GrayscaleK/600 dpi, Grayscale, Black Cartr.: "%% FoomaticRIPOptionSetting: Quality=600GrayscaleK"
-*Quality 1200PhotoCMYK/1200 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=1200PhotoCMYK"
-*Quality 1200PhotoCMYKFullBleed/1200 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=1200PhotoCMYKFullBleed"
+*Quality 600PhotoCMYK/600 dpi, Photo, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYK"
+*Quality 600PhotoCMYKFullBleed/600 dpi, Photo, Full Bleed, Black + Color Cartr., Photo Paper: "%% FoomaticRIPOptionSetting: Quality=600PhotoCMYKFullBleed"
 *CloseUI: *Quality
 *CloseGroup: PrintoutMode
 *DefaultFont: Courier
@@ -457,4 +457,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_7800_series-hpijs.ppd, 23853 bytes.
+*% End of hp-photosmart_7800_series-hpijs.ppd, 23843 bytes.

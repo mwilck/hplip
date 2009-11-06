@@ -177,7 +177,7 @@ char* Version(BOOL bCompressed)
 #endif
 
 		char modelstring[300];
-		pPFI->GetModelString(modelstring);
+		pPFI->GetModelString(modelstring, sizeof(modelstring));
         HP_strcat(result, modelstring);
 
     }

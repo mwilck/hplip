@@ -1,8 +1,6 @@
 *PPD-Adobe: "4.3"
 *% =================================
-*% Adobe Systems PostScript(R) Printer Description File
-*% Copyright 1992-2003 Hewlett-Packard Company
-*%
+*% Copyright 1992-2009 Hewlett-Packard Company
 *% Permission is hereby granted, free of charge, to any person obtaining
 *% a copy of this software and associated documentation files (the
 *% "Software"), to deal in the Software without restriction, including
@@ -10,10 +8,10 @@
 *% distribute, sublicense, and/or sell copies of the Software, and to
 *% permit persons to whom the Software is furnished to do so, subject to
 *% the following conditions:
-*% 
+*%
 *% The above copyright notice and this permission notice shall be
 *% included in all copies or substantial portions of the Software.
-*% 
+*%
 *% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 *% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 *% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -21,10 +19,11 @@
 *% LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 *% OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 *% WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*% 
+*%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-
+*% Adobe Systems PostScript(R) Printer Description File
+*% (c) Copyright 2002-2009 Hewlett-Packard Development Company, L.P.
 *% PPD Version For Apple Macintosh
 
 *% Date Code: 20020716
@@ -33,25 +32,26 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "1.0"
+*FileVersion: "PPD-VERSION-STRING"
 *LanguageVersion: English
+*cupsLanguages: "de es fr it ko zh_CN zh_TW"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP3000.PPD"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpColorOptions.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpEdgeToEdge.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpImageQuality.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpProofAndPrint.plugin"
-*cupsICCProfile RGB../sRGB Matching Profile: "/Library/Printers/hp/Profiles/sRGB_A.icc"
-*APPrinterIconPath: "/Library/Printers/hp/Icons/HP Business Inkjet 3000.icns"
+
+*HPPDEPanel: "HPColorOptionsPanel"
+*HPPDEPanel: "HPFinishingPanel"
+*HPPDEPanel: "HPImagingOptions"
+
 
 *% Product Name and Version Information
 *Manufacturer: "HP"
 *Product:      "(hp business inkjet 3000)"
+*Product: "(Hewlett-Packard hp business inkjet 3000)"
+*Product: "(HP business inkjet 3000)"
 *ModelName:     "HP Business Inkjet 3000 PS"
 *ShortNickName: "HP Business Inkjet 3000 PS"
 
-*NickName:      "HP Business Inkjet 3000 PS - RC1.1 Postscript (recommended)"
+*NickName: "HP Business Inkjet 3000 PS - RC1.1 Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
 
 *% =================================
@@ -66,7 +66,7 @@
 *TTRasterizer: Type42
 
 *1284Modes Parallel: Compat Nibble ECP
-*1284DeviceId: "MFG:HP;MODEL:hp3000;COMMAND SET: POSTSCRIPT,PJL,PCL"
+*1284DeviceID: "MFG:HP;MODEL:hp3000;COMMAND SET: POSTSCRIPT,PJL,PCL"
 
 
 *% =================================
@@ -106,6 +106,14 @@
 *% Installable Options
 *% =================================
 *OpenGroup: InstallableOptions/Options Installed
+*de.Translation InstallableOptions/Options Installed: ""
+*es.Translation InstallableOptions/Options Installed: ""
+*fr.Translation InstallableOptions/Options Installed: ""
+*it.Translation InstallableOptions/Options Installed: ""
+*ko.Translation InstallableOptions/Options Installed: ""
+*zh_CN.Translation InstallableOptions/Options Installed: ""
+*zh_TW.Translation InstallableOptions/Options Installed: ""
+
 
 *% =================================
 *% Memory
@@ -113,14 +121,86 @@
 
 *OpenUI *InstalledMemory/Memory Configuration: PickOne
 *DefaultInstalledMemory: 64Meg
+*de.Translation InstalledMemory/Speicher installiert: ""
+*es.Translation InstalledMemory/Memoria instalada: ""
+*fr.Translation InstalledMemory/Mémoire installée: ""
+*it.Translation InstalledMemory/Memoria installata: ""
+*ko.Translation InstalledMemory/내장된 메모리: ""
+*zh_CN.Translation InstalledMemory/内存配置: ""
+*zh_TW.Translation InstalledMemory/印表機記憶體總數: ""
+
 *InstalledMemory 64Meg/64 MB: ""
+*de.InstalledMemory 64Meg/64 MB: ""
+*es.InstalledMemory 64Meg/64 MB: ""
+*fr.InstalledMemory 64Meg/64 Mo: ""
+*it.InstalledMemory 64Meg/64 MB: ""
+*ko.InstalledMemory 64Meg/64 MB: ""
+*zh_CN.InstalledMemory 64Meg/64 MB: ""
+*zh_TW.InstalledMemory 64Meg/64 MB: ""
+
 *InstalledMemory 96Meg/96 MB: ""
+*de.InstalledMemory 96Meg/96 MB: ""
+*es.InstalledMemory 96Meg/96 MB: ""
+*fr.InstalledMemory 96Meg/96 Mo: ""
+*it.InstalledMemory 96Meg/96 MB: ""
+*ko.InstalledMemory 96Meg/96 MB: ""
+*zh_CN.InstalledMemory 96Meg/96 MB: ""
+*zh_TW.InstalledMemory 96Meg/96 MB: ""
+
 *InstalledMemory 128Meg/128 MB: ""
+*de.InstalledMemory 128Meg/128 MB: ""
+*es.InstalledMemory 128Meg/128 MB: ""
+*fr.InstalledMemory 128Meg/128 Mo: ""
+*it.InstalledMemory 128Meg/128 MB: ""
+*ko.InstalledMemory 128Meg/128 MB: ""
+*zh_CN.InstalledMemory 128Meg/128 MB: ""
+*zh_TW.InstalledMemory 128Meg/128 MB: ""
+
 *InstalledMemory 160Meg/160 MB: ""
+*de.InstalledMemory 160Meg/160 MB: ""
+*es.InstalledMemory 160Meg/160 MB: ""
+*fr.InstalledMemory 160Meg/160 Mo: ""
+*it.InstalledMemory 160Meg/160 MB: ""
+*ko.InstalledMemory 160Meg/160 MB: ""
+*zh_CN.InstalledMemory 160Meg/160 MB: ""
+*zh_TW.InstalledMemory 160Meg/160 MB: ""
+
 *InstalledMemory 192Meg/192 MB: ""
+*de.InstalledMemory 192Meg/192 MB: ""
+*es.InstalledMemory 192Meg/192 MB: ""
+*fr.InstalledMemory 192Meg/192 Mo: ""
+*it.InstalledMemory 192Meg/192 MB: ""
+*ko.InstalledMemory 192Meg/192 MB: ""
+*zh_CN.InstalledMemory 192Meg/192 MB: ""
+*zh_TW.InstalledMemory 192Meg/192 MB: ""
+
 *InstalledMemory 224Meg/224 MB: ""
+*de.InstalledMemory 224Meg/224 MB: ""
+*es.InstalledMemory 224Meg/224 MB: ""
+*fr.InstalledMemory 224Meg/224 Mo: ""
+*it.InstalledMemory 224Meg/224 MB: ""
+*ko.InstalledMemory 224Meg/224 MB: ""
+*zh_CN.InstalledMemory 224Meg/224 MB: ""
+*zh_TW.InstalledMemory 224Meg/224 MB: ""
+
 *InstalledMemory 256Meg/256 MB: ""
+*de.InstalledMemory 256Meg/256 MB: ""
+*es.InstalledMemory 256Meg/256 MB: ""
+*fr.InstalledMemory 256Meg/256 Mo: ""
+*it.InstalledMemory 256Meg/256 MB: ""
+*ko.InstalledMemory 256Meg/256 MB: ""
+*zh_CN.InstalledMemory 256Meg/256 MB: ""
+*zh_TW.InstalledMemory 256Meg/256 MB: ""
+
 *InstalledMemory 320Meg/320 MB: ""
+*de.InstalledMemory 320Meg/320 MB: ""
+*es.InstalledMemory 320Meg/320 MB: ""
+*fr.InstalledMemory 320Meg/320 Mo: ""
+*it.InstalledMemory 320Meg/320 MB: ""
+*ko.InstalledMemory 320Meg/320 MB: ""
+*zh_CN.InstalledMemory 320Meg/320 MB: ""
+*zh_TW.InstalledMemory 320Meg/320 MB: ""
+
 
 *?InstalledMemory: "
   save
@@ -169,9 +249,33 @@
 
 *OpenUI *HPOption_Duplexer/Duplex Unit (for 2-Sided Printing): Boolean
 *DefaultHPOption_Duplexer: False
+*de.Translation HPOption_Duplexer/Duplexer (für beidseitigen Druck): ""
+*es.Translation HPOption_Duplexer/Unidad dúplex (imprimir a doble cara): ""
+*fr.Translation HPOption_Duplexer/Unité recto verso: ""
+*it.Translation HPOption_Duplexer/Unità duplex: ""
+*ko.Translation HPOption_Duplexer/양면 인쇄 장치: ""
+*zh_CN.Translation HPOption_Duplexer/双面打印装置（用于双面打印）: ""
+*zh_TW.Translation HPOption_Duplexer/雙面列印裝置（用於雙面列印）: ""
+
 *HPOption_Duplexer True/Installed: ""
+*de.HPOption_Duplexer True/Installiert: ""
+*es.HPOption_Duplexer True/Instalada: ""
+*fr.HPOption_Duplexer True/Installé: ""
+*it.HPOption_Duplexer True/Installato: ""
+*ko.HPOption_Duplexer True/설치됨: ""
+*zh_CN.HPOption_Duplexer True/已安装: ""
+*zh_TW.HPOption_Duplexer True/已安裝: ""
+
 *HPOption_Duplexer False/Not Installed: ""
-*?Duplexer: "
+*de.HPOption_Duplexer False/Nicht installiert: ""
+*es.HPOption_Duplexer False/No instalada: ""
+*fr.HPOption_Duplexer False/Non Installé: ""
+*it.HPOption_Duplexer False/Non installato: ""
+*ko.HPOption_Duplexer False/설치되지 않았음: ""
+*zh_CN.HPOption_Duplexer False/未安装: ""
+*zh_TW.HPOption_Duplexer False/未安裝: ""
+
+*?HPOption_Duplexer: "
   save
    currentpagedevice /Duplex known
    {(True)}{(False)}ifelse = flush
@@ -182,8 +286,32 @@
 
 *OpenUI *PrinterHardDisk/Printer Disk: PickOne
 *DefaultPrinterHardDisk:  None
+*de.Translation PrinterHardDisk/Druckerfestplatte: ""
+*es.Translation PrinterHardDisk/Disco de la impresora: ""
+*fr.Translation PrinterHardDisk/disque dur d'imprimante: ""
+*it.Translation PrinterHardDisk/Disco stampante: ""
+*ko.Translation PrinterHardDisk/프린터 디스크: ""
+*zh_CN.Translation PrinterHardDisk/打印机磁盘: ""
+*zh_TW.Translation PrinterHardDisk/印表機磁碟: ""
+
 *PrinterHardDisk None/Not Installed: ""
+*de.PrinterHardDisk None/Nicht installiert: ""
+*es.PrinterHardDisk None/No instalado: ""
+*fr.PrinterHardDisk None/Non Installé: ""
+*it.PrinterHardDisk None/Non installato : ""
+*ko.PrinterHardDisk None/설치되지 않음: ""
+*zh_CN.PrinterHardDisk None/未安装: ""
+*zh_TW.PrinterHardDisk None/未安裝: ""
+
 *PrinterHardDisk HardDisk/Installed: ""
+*de.PrinterHardDisk HardDisk/Installiert: ""
+*es.PrinterHardDisk HardDisk/Instalado: ""
+*fr.PrinterHardDisk HardDisk/Installé: ""
+*it.PrinterHardDisk HardDisk/Installato: ""
+*ko.PrinterHardDisk HardDisk/설치됨: ""
+*zh_CN.PrinterHardDisk HardDisk/已安装: ""
+*zh_TW.PrinterHardDisk HardDisk/已安裝: ""
+
 *?PrinterHardDisk: "
    save
      (HardDisk)
@@ -209,17 +337,49 @@
 *OpenUI *HPPaperPolicy/Fit to Page: PickOne
 *OrderDependency: 10 AnySetup *HPPaperPolicy
 *DefaultHPPaperPolicy: PromptUser
+*de.Translation HPPaperPolicy/An Seite anpassen: ""
+*es.Translation HPPaperPolicy/Ajustar a página: ""
+*fr.Translation HPPaperPolicy/Adapter à la page: ""
+*it.Translation HPPaperPolicy/Adatta pagina: ""
+*ko.Translation HPPaperPolicy/페이지에 맞추기: ""
+*zh_CN.Translation HPPaperPolicy/适合页面: ""
+*zh_TW.Translation HPPaperPolicy/符合頁面: ""
+
 *HPPaperPolicy PromptUser/Prompt User: "
    <</DeferredMediaSelection true>> setpagedevice"
 *End
+*de.HPPaperPolicy PromptUser/Eingabeaufforderung: ""
+*es.HPPaperPolicy PromptUser/Solicitar a usuario: ""
+*fr.HPPaperPolicy PromptUser/Demander à líutilisateur: ""
+*it.HPPaperPolicy PromptUser/Richiedi utente: ""
+*ko.HPPaperPolicy PromptUser/프롬프트 사용자: ""
+*zh_CN.HPPaperPolicy PromptUser/提示用户: ""
+*zh_TW.HPPaperPolicy PromptUser/提示使用者: ""
+
 *HPPaperPolicy NearestSizeAdjust/Nearest Size and Scale: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 3 >> >> setpagedevice"
 *End
+*de.HPPaperPolicy NearestSizeAdjust/Beste Größenannäherung und Skalieren: ""
+*es.HPPaperPolicy NearestSizeAdjust/Tamaño y escala más próximos: ""
+*fr.HPPaperPolicy NearestSizeAdjust/Taille et échelle les plus proches: ""
+*it.HPPaperPolicy NearestSizeAdjust/Formato più simile e scala: ""
+*ko.HPPaperPolicy NearestSizeAdjust/근접한 크기 및 비율: ""
+*zh_CN.HPPaperPolicy NearestSizeAdjust/最接近的尺寸和缩放度: ""
+*zh_TW.HPPaperPolicy NearestSizeAdjust/最接近的尺寸按比例縮放: ""
+
 *HPPaperPolicy NearestSizeNoAdjust/Nearest Size and Crop: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 5 >> >> setpagedevice"
 *End
+*de.HPPaperPolicy NearestSizeNoAdjust/Beste Größenannäherung und Zuschneiden: ""
+*es.HPPaperPolicy NearestSizeNoAdjust/Tamaño y recorte más próximos: ""
+*fr.HPPaperPolicy NearestSizeNoAdjust/Taille et découpe les plus proches: ""
+*it.HPPaperPolicy NearestSizeNoAdjust/Formato più simile e ritaglia: ""
+*ko.HPPaperPolicy NearestSizeNoAdjust/근접한 크기 및 자르기: ""
+*zh_CN.HPPaperPolicy NearestSizeNoAdjust/最接近的尺寸和剪裁: ""
+*zh_TW.HPPaperPolicy NearestSizeNoAdjust/最接近的尺寸並裁剪: ""
+
 *HPPaperPolicy Letter/Letter: "
 userdict begin
   /HPppX1 0 def
@@ -238,6 +398,14 @@ userdict begin
       <</PageSize [612 792] /ImagingBBox null>> setpagedevice}{setpagedevice}ifelse end} bind def
 end"
 *End
+*de.HPPaperPolicy Letter/US-Letter: ""
+*es.HPPaperPolicy Letter/Letter : ""
+*fr.HPPaperPolicy Letter/Letter US: ""
+*it.HPPaperPolicy Letter/Lettera USA: ""
+*ko.HPPaperPolicy Letter/Letter: ""
+*zh_CN.HPPaperPolicy Letter/Letter: ""
+*zh_TW.HPPaperPolicy Letter/Letter: ""
+
 *HPPaperPolicy A4/A4: "
 userdict begin
   /HPppX1 0 def
@@ -256,32 +424,62 @@ userdict begin
       <</PageSize [595 842] /ImagingBBox null>> setpagedevice}{setpagedevice}ifelse end} bind def
 end"
 *End
+*de.HPPaperPolicy A4/A4: ""
+*es.HPPaperPolicy A4/A4: ""
+*fr.HPPaperPolicy A4/A4: ""
+*it.HPPaperPolicy A4/A4: ""
+*ko.HPPaperPolicy A4/A4: ""
+*zh_CN.HPPaperPolicy A4/A4: ""
+*zh_TW.HPPaperPolicy A4/A4: ""
+
 *?HPPaperPolicy: "
 currentpagedevice /Policies get /PageSize get 5 eq {(Crop)}{(Prompt)} ifelse = flush
 "
 *End
 *CloseUI: *HPPaperPolicy
 
-
-
-
 *CloseGroup: InstallableOptions
+
+*OpenUI *HPStraightPaperPath/Use Straight Paper Path: Boolean
+*DefaultHPStraightPaperPath: False
+*de.Translation HPStraightPaperPath/Geraden Papierpfad verwenden: ""
+*es.Translation HPStraightPaperPath/Utilizar ruta de papel recta: ""
+*fr.Translation HPStraightPaperPath/Insérer le papier droit: ""
+*it.Translation HPStraightPaperPath/Usa percorso carta diretto: ""
+*ko.Translation HPStraightPaperPath/곧은 용지 경로를 사용하십시오: ""
+*zh_CN.Translation HPStraightPaperPath/使用直线馈纸路径: ""
+*zh_TW.Translation HPStraightPaperPath/使用直接出紙路徑: ""
+
+*HPStraightPaperPath True/On: ""
+*de.HPStraightPaperPath True/Ein: ""
+*es.HPStraightPaperPath True/Activado: ""
+*fr.HPStraightPaperPath True/Activé: ""
+*it.HPStraightPaperPath True/Attiva: ""
+*ko.HPStraightPaperPath True/켜짐: ""
+*zh_CN.HPStraightPaperPath True/开: ""
+*zh_TW.HPStraightPaperPath True/開啟: ""
+
+*HPStraightPaperPath False/Off: ""
+*de.HPStraightPaperPath False/Aus: ""
+*es.HPStraightPaperPath False/Desactivado: ""
+*fr.HPStraightPaperPath False/Désactivé: ""
+*it.HPStraightPaperPath False/Disattivata: ""
+*ko.HPStraightPaperPath False/꺼짐: ""
+*zh_CN.HPStraightPaperPath False/关: ""
+*zh_TW.HPStraightPaperPath False/關閉: ""
+
+*CloseUI: *HPStraightPaperPath
+*HPStraightPaperPathDS True: "HPSTRAIGHTPAPERPATH_DS"
+*HPStraightPaperPathDS False: "HPSTRAIGHTPAPERPATH_DS"
+
 
 
 *% =================================
 *% User Interface Constraints
 *% =================================
 
-*% For Job Retention to be enabled, the printer hard disk must also be installed
-*UIConstraints: *PrinterHardDisk False *JobStorage True
-*UIConstraints: *JobStorage True *PrinterHardDisk False
-
 *% Installable tray options
 *% If optional trays are not installed, disable access to Trays.
-*UIConstraints: *Tray1 False *InputSlot Tray1
-*UIConstraints: *InputSlot Tray1 *Tray1 False
-*UIConstraints: *Tray3 False *InputSlot Tray3
-*UIConstraints: *InputSlot Tray3 *Tray3 False
 
 *% If optional Duplexer is not installed, disable access to Duplex
 *UIConstraints: *HPOption_Duplexer False *Duplex DuplexNoTumble
@@ -309,19 +507,8 @@ currentpagedevice /Policies get /PageSize get 5 eq {(Crop)}{(Prompt)} ifelse = f
 *UIConstraints: *InputSlot Tray2		*PageRegion EnvDL
 *UIConstraints: *PageRegion EnvC5 		*InputSlot Tray2
 *UIConstraints: *InputSlot Tray2		*PageRegion EnvC5
-
-
-*UIConstraints: *InputSlot Tray2 *PageSize Env10
-*UIConstraints: *PageSize Env10  *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2 *PageSize EnvMonarch
-*UIConstraints: *PageSize EnvMonarch *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2 *PageSize EnvDL
-*UIConstraints: *PageSize EnvDL *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2 *PageSize EnvC5
-*UIConstraints: *PageSize EnvC5 *InputSlot Tray2
-
-*UIConstraints: *InputSlot Tray2 		*PageRegion A6Card
 *UIConstraints: *PageRegion A6Card		*InputSlot Tray2
+*UIConstraints: *InputSlot Tray2 		*PageRegion A6Card
 
 *% Do not allow following Paper Sizes in Tray3
 *UIConstraints: *PageSize ISOB5 		*InputSlot Tray3
@@ -431,449 +618,153 @@ currentpagedevice /Policies get /PageSize get 5 eq {(Crop)}{(Prompt)} ifelse = f
 *UIConstraints: *Duplex DuplexTumble  			*MediaType PhotoGloss
 
 
-*% REMOVE Ignore ColorSmart manual settings in automatic mode
-
-*%Job Retention not allowed unless printer has a hard disk
-*UIConstraints: *PrinterHardDisk None *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *PrinterHardDisk None *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *PrinterHardDisk None *HPJobRetentionOption HPJobRetentionStore
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionStore
-
-*% Job Retention not allowed from RAM disk
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionStore
-*UIConstraints: *PrinterHardDisk RAMDisk *HPJobRetentionOption HPJobRetentionPrivate
-
-*% PIN is not required when Job Retention is HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey0067 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey0089 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey0403 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey0989 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1073 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1100 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1117 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1299 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1362 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1465 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1518 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey1636 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2065 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2080 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2213 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2226 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2377 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2400 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2486 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2846 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey2951 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey3246 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey3429 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey3559 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey3767 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey4114 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey4447 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey4743 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey4757 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5161 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5200 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5333 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5696 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5952 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey5975 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey6250 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey6582 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey7286 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey7846 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey7921 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8455 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8509 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8601 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8643 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8865 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey8941 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey9531 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey HoldKey9835 *HPJobRetentionOption HPJobRetentionOff
-*UIConstraints: *HPJobHoldKey Set *HPJobRetentionOption HPJobRetentionOff
-
-*% PIN is not required when Job Retention is HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey0067 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey0089 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey0403 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey0989 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1073 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1100 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1117 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1299 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1362 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1465 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1518 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey1636 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2065 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2080 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2213 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2226 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2377 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2400 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2486 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2846 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey2951 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey3246 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey3429 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey3559 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey3767 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey4114 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey4447 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey4743 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey4757 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5161 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5200 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5333 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5696 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5952 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey5975 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey6250 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey6582 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey7286 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey7846 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey7921 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8455 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8509 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8601 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8643 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8865 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey8941 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey9531 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey HoldKey9835 *HPJobRetentionOption HPJobRetentionQuickCopy
-*UIConstraints: *HPJobHoldKey Set *HPJobRetentionOption HPJobRetentionQuickCopy
-
-*% PIN is not required when Job Retention is HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey0067 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey0089 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey0403 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey0989 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1073 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1100 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1117 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1299 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1362 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1465 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1518 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey1636 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2065 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2080 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2213 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2226 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2377 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2400 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2486 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2846 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey2951 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey3246 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey3429 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey3559 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey3767 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey4114 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey4447 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey4743 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey4757 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5161 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5200 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5333 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5696 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5952 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey5975 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey6250 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey6582 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey7286 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey7846 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey7921 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8455 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8509 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8601 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8643 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8865 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey8941 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey9531 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey HoldKey9835 *HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPJobHoldKey Set *HPJobRetentionOption HPJobRetentionProof
-
-*%=== Proof and Hold =======================
-*% The UserName setting is obtained from the print job. This may not work on non-Mac drivers.
-*OpenUI *HPJobRetentionOption/Job Retention: PickOne
-*OrderDependency: 14 Prolog *HPJobRetentionOption
-*DefaultHPJobRetentionOption: HPJobRetentionOff
-*HPJobRetentionOption HPJobRetentionQuickCopy/Quick Copy: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 1 >>
-	>> setpagedevice
-"
-*End
-*HPJobRetentionOption HPJobRetentionProof/Proof and Hold: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 3 >>
-	>> setpagedevice
-"
-*End
-*HPJobRetentionOption HPJobRetentionStore/Stored Job: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 2 >>
-	>> setpagedevice
-"
-*End
-*HPJobRetentionOption HPJobRetentionOff/Off: "
-	<< /CollateDetails
-	<< /Type 8 /Hold 0 >> >> setpagedevice
-"
-*End
-*CloseUI: *HPJobRetentionOption
-
-*% Removed HPJobHoldKey features for OSX
-
-*OpenUI *HPUserName/User Name: PickOne
-*% The UserName setting is obtained from the print job. This will not work unchanged on non-Mac drivers.
-*% The PS code has been written to put in default user and job names if they are not available from the job.
-*% User specification of UserName works only with LW 8.5.1 or later. It will not work with non-Mac drivers.
-*% If the driver does not support text entry UI the UserName will always be obtained from the print job.
-*% The user is allowed to set the user name to allow organization of jobs in the printer.
-*% For example, all forms could be stored under UserName "Forms".
-*OrderDependency: 15 Prolog *HPUserName
-*DefaultHPUserName: FileSharingName
-*HPUserName FileSharingName/Use file sharing name: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName /dscInfo where
-				{ /dscInfo get dup /For known
-					{/For get}
-					{pop (No User Name)} ifelse}
-				{(No User Name)}ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*HPUserName Forms/Forms: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName (Forms)
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*HPUserName Set/Custom user name: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName /dscInfo where
-				{ /dscInfo get dup /For known
-					{/For get}
-					{pop (No User Name)} ifelse}
-				{(No User Name)}ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*CloseUI: *HPUserName
-*% Allows LW 8.5.1 and above to use custom strings
-*RBISetHPUserName Data: "() 80"
-*RBISetHPUserName Code: "
-	<< /CollateDetails
-		<< /Type 8 /UserName 7 -1 roll
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-
-*OpenUI *HPJobName/Job Name: PickOne
-*% The JobMgrName setting is obtained from the print job. This may not work on non-Mac drivers.
-*% User specification of Jobname works only with LW 8.5.1 or later. It will not work with non-Mac drivers.
-*% If the driver does not support text entry UI the JobMgrName will always be obtained from the print job.
-*OrderDependency: 16 Prolog *HPJobName
-*DefaultHPJobName: DocName
-*HPJobName DocName/Use Document Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/JobMgrName /dscInfo where
-				{ /dscInfo get dup /Title known
-					{/Title get}
-					{pop ()} ifelse}
-				{()}ifelse
-			/dscInfo where
-				{ /dscInfo get dup /Creator known
-					{
-						/Creator get dup 0 exch
-						{ dup 32 eq exch dup 64 gt exch 122 le and or { 1 add } { exit } ifelse } forall
-						0 exch getinterval anchorsearch { pop } if
-					}
-					{pop} ifelse
-				} if
-			{ (:) search
-				{ pop pop }
-				{ exit }
-				ifelse
-			} loop
-			dup 0 exch { false ( -) { 2 index eq or } forall exch pop { 1 add } { exit } ifelse } forall
-			dup 0 eq { pop } { dup 2 index length exch sub getinterval } ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*HPJobName Set/User Specified Job Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/JobMgrName /dscInfo where
-				{ /dscInfo get dup /Title known
-					{/Title get}
-					{pop ()} ifelse}
-				{()}ifelse
-			/dscInfo where
-				{ /dscInfo get dup /Creator known
-					{
-						/Creator get dup 0 exch
-						{ dup 32 eq exch dup 64 gt exch 122 le and or { 1 add } { exit } ifelse } forall
-						0 exch getinterval anchorsearch { pop } if
-					}
-					{pop} ifelse
-				} if
-			{ (:) search
-				{ pop pop }
-				{ exit }
-				ifelse
-			} loop
-			dup 0 exch { false ( -) { 2 index eq or } forall exch pop { 1 add } { exit } ifelse } forall
-			dup 0 eq { pop } { dup 2 index length exch sub getinterval } ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*CloseUI: *HPJobName
-*% Allows LW 8.5.1 and above to use custom strings
-*RBISetHPJobName Data: "() 80"
-*RBISetHPJobName Code: "
-	<< /CollateDetails
-		<< /Type 8 /JobMgrName 7 -1 roll
-			{ (:) search
-				{ pop pop
-					{ ( ) anchorsearch
-						{ pop }
-						{ exit }
-						ifelse
-					} loop
-				}
-				{ exit }
-				ifelse
-			} loop dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-
-
-
 *% ===================================
 *% Page Size Selection
 *% ===================================
 
 *LandscapeOrientation: Plus90
 *VariablePaperSize: True
-*OpenUI *PageSize: PickOne
+*OpenUI *PageSize/Page Size: PickOne
 *OrderDependency: 30 AnySetup *PageSize
 *DefaultPageSize: Letter
+*de.Translation PageSize/Papierformat: ""
+*es.Translation PageSize/Tamaño del papel: ""
+*fr.Translation PageSize/Format de page: ""
+*it.Translation PageSize/Dimensioni pagina: ""
+*ko.Translation PageSize/용지 크기: ""
+*zh_CN.Translation PageSize/页面大小: ""
+*zh_TW.Translation PageSize/頁面尺寸: ""
+
 *PageSize Letter/Letter: "
 	<</PageSize [612 792] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Letter/US-Letter: ""
+*es.PageSize Letter/Letter : ""
+*fr.PageSize Letter/Letter US: ""
+*it.PageSize Letter/Lettera USA: ""
+*ko.PageSize Letter/레터: ""
+*zh_CN.PageSize Letter/信纸: ""
+*zh_TW.PageSize Letter/Letter: ""
+
 
 *PageSize Legal/Legal: "
 	<</PageSize [612 1008] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Legal/US-Legal: ""
+*es.PageSize Legal/Legal: ""
+*fr.PageSize Legal/Légal US: ""
+*it.PageSize Legal/Legale USA: ""
+*ko.PageSize Legal/리갈: ""
+*zh_CN.PageSize Legal/Legal: ""
+*zh_TW.PageSize Legal/Legal: ""
+
 
 *PageSize Executive/Executive: "
 	<</PageSize [522 756] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Executive/US-Executive: ""
+*es.PageSize Executive/Ejecutivo: ""
+*fr.PageSize Executive/Exécutif: ""
+*it.PageSize Executive/Executive: ""
+*ko.PageSize Executive/Executive: ""
+*zh_CN.PageSize Executive/Executive: ""
+*zh_TW.PageSize Executive/Executive: ""
+
 
 *PageSize A4/A4: "
 	<</PageSize [595 842] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize A4/A4: ""
+*es.PageSize A4/A4: ""
+*fr.PageSize A4/A4: ""
+*it.PageSize A4/A4: ""
+*ko.PageSize A4/A4: ""
+*zh_CN.PageSize A4/A4: ""
+*zh_TW.PageSize A4/A4: ""
+
 
 *PageSize ISOB5/B5 (ISO): "
       <</PageSize [499 709] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize ISOB5/B5(ISO): ""
+*es.PageSize ISOB5/B5(ISO): ""
+*fr.PageSize ISOB5/B5(ISO): ""
+*it.PageSize ISOB5/B5(ISO): ""
+*ko.PageSize ISOB5/B5(ISO): ""
+*zh_CN.PageSize ISOB5/B5 (ISO): ""
+*zh_TW.PageSize ISOB5/B5 (ISO): ""
+
 
 *PageSize B5/B5 (JIS): "
       <</PageSize [516 729] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize B5/B5 (JIS): ""
+*es.PageSize B5/JIS B5: ""
+*fr.PageSize B5/JIS B5: ""
+*it.PageSize B5/JIS B5: ""
+*ko.PageSize B5/JIS B5: ""
+*zh_CN.PageSize B5/JIS B5: ""
+*zh_TW.PageSize B5/JIS B5: ""
+
 
 *PageSize Env10/Envelope #10: "
 	<</PageSize [297 684] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Env10/Umschlag Nr. 10: ""
+*es.PageSize Env10/Sobre No. 10: ""
+*fr.PageSize Env10/Enveloppe nº 10: ""
+*it.PageSize Env10/Busta 10: ""
+*ko.PageSize Env10/봉투 #10: ""
+*zh_CN.PageSize Env10/#10 信封: ""
+*zh_TW.PageSize Env10/10 號信封: ""
+
 
 *PageSize EnvMonarch/Envelope Monarch: "
 	<</PageSize [279 540] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvMonarch/Umschlag Monarch: ""
+*es.PageSize EnvMonarch/Sobre Monarch: ""
+*fr.PageSize EnvMonarch/Enveloppe Monarch: ""
+*it.PageSize EnvMonarch/Busta Monarch: ""
+*ko.PageSize EnvMonarch/Monarch 봉투: ""
+*zh_CN.PageSize EnvMonarch/Monarch 信封: ""
+*zh_TW.PageSize EnvMonarch/Monarch 信封: ""
+
 
 *PageSize EnvDL/Envelope DL: "
 	<</PageSize [312 624] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvDL/Umschlag DL: ""
+*es.PageSize EnvDL/Sobre DL: ""
+*fr.PageSize EnvDL/Enveloppe DL: ""
+*it.PageSize EnvDL/Busta DL: ""
+*ko.PageSize EnvDL/봉투 DL: ""
+*zh_CN.PageSize EnvDL/DL 信封: ""
+*zh_TW.PageSize EnvDL/DL 信封: ""
+
 
 *PageSize EnvC5/Envelope C5: "
 	<</PageSize [459 649] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvC5/Umschlag C5: ""
+*es.PageSize EnvC5/Sobre C5: ""
+*fr.PageSize EnvC5/Enveloppe C5: ""
+*it.PageSize EnvC5/Busta C5: ""
+*ko.PageSize EnvC5/봉투 C5: ""
+*zh_CN.PageSize EnvC5/C5 信封: ""
+*zh_TW.PageSize EnvC5/信封 C5: ""
+
 
 *PageSize A6Card/A6 Card: "
 	<</PageSize [297 420] /ImagingBBox null>> setpagedevice"
 *End
-
-
+*de.PageSize A6Card/A6 Card: ""
+*es.PageSize A6Card/Tarjeta A6: ""
+*fr.PageSize A6Card/A6 Card: ""
+*it.PageSize A6Card/Scheda A6 : ""
+*ko.PageSize A6Card/A6 Card: ""
+*zh_CN.PageSize A6Card/A6 卡片: ""
+*zh_TW.PageSize A6Card/A6 卡: ""
 *?PageSize: "
  save
    currentpagedevice /PageSize get aload pop
@@ -905,52 +796,148 @@ restore
 *% ===================================
 *% Page Region
 *% ===================================
-*OpenUI *PageRegion:  PickOne
+*OpenUI *PageRegion/Page Region:  PickOne
 *OrderDependency: 30 AnySetup *PageRegion
 *DefaultPageRegion: Letter
+*de.Translation PageRegion/Seitenbereich: ""
+*es.Translation PageRegion/Dimensión de papel: ""
+*fr.Translation PageRegion/Région de page: ""
+*it.Translation PageRegion/Dimensioni regione: ""
+*ko.Translation PageRegion/Page Region: ""
+*zh_CN.Translation PageRegion/Page Region: ""
+*zh_TW.Translation PageRegion/Page Region: ""
+
 *PageRegion Letter/Letter: "
       <</PageSize [612 792] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion Letter/US-Letter: ""
+*es.PageRegion Letter/Letter : ""
+*fr.PageRegion Letter/Letter US: ""
+*it.PageRegion Letter/Lettera USA: ""
+*ko.PageRegion Letter/레터: ""
+*zh_CN.PageRegion Letter/信纸: ""
+*zh_TW.PageRegion Letter/Letter: ""
+
 
 *PageRegion Legal/Legal: "
 	<</PageSize [612 1008] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion Legal/US-Legal: ""
+*es.PageRegion Legal/Legal: ""
+*fr.PageRegion Legal/Légal US: ""
+*it.PageRegion Legal/Legale USA: ""
+*ko.PageRegion Legal/리갈: ""
+*zh_CN.PageRegion Legal/Legal: ""
+*zh_TW.PageRegion Legal/Legal: ""
+
 
 *PageRegion Executive/Executive: "
 	<</PageSize [522 756] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion Executive/US-Executive: ""
+*es.PageRegion Executive/Ejecutivo: ""
+*fr.PageRegion Executive/Exécutif: ""
+*it.PageRegion Executive/Executive: ""
+*ko.PageRegion Executive/Executive: ""
+*zh_CN.PageRegion Executive/Executive: ""
+*zh_TW.PageRegion Executive/Executive: ""
+
 
 *PageRegion A4/A4: "
 	<</PageSize [595 842] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion A4/A4: ""
+*es.PageRegion A4/A4: ""
+*fr.PageRegion A4/A4: ""
+*it.PageRegion A4/A4: ""
+*ko.PageRegion A4/A4: ""
+*zh_CN.PageRegion A4/A4: ""
+*zh_TW.PageRegion A4/A4: ""
+
 
 *PageRegion ISOB5/B5 (ISO): "
       <</PageSize [499 709] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion ISOB5/B5(ISO): ""
+*es.PageRegion ISOB5/B5(ISO): ""
+*fr.PageRegion ISOB5/B5(ISO): ""
+*it.PageRegion ISOB5/B5(ISO): ""
+*ko.PageRegion ISOB5/B5(ISO): ""
+*zh_CN.PageRegion ISOB5/B5 (ISO): ""
+*zh_TW.PageRegion ISOB5/B5 (ISO): ""
+
 
 *PageRegion B5/B5 (JIS): "
       <</PageSize [516 729] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion B5/B5 (JIS): ""
+*es.PageRegion B5/JIS B5: ""
+*fr.PageRegion B5/JIS B5: ""
+*it.PageRegion B5/JIS B5: ""
+*ko.PageRegion B5/JIS B5: ""
+*zh_CN.PageRegion B5/JIS B5: ""
+*zh_TW.PageRegion B5/JIS B5: ""
+
 
 *PageRegion Env10/Envelope #10: "
 	<</PageSize [297 684] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion Env10/Umschlag Nr. 10: ""
+*es.PageRegion Env10/Sobre No. 10: ""
+*fr.PageRegion Env10/Enveloppe nº 10: ""
+*it.PageRegion Env10/Busta 10: ""
+*ko.PageRegion Env10/봉투 #10: ""
+*zh_CN.PageRegion Env10/#10 信封: ""
+*zh_TW.PageRegion Env10/10 號信封: ""
+
 
 *PageRegion EnvMonarch/Envelope Monarch: "
 	<</PageSize [279 540] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion EnvMonarch/Umschlag Monarch: ""
+*es.PageRegion EnvMonarch/Sobre Monarch: ""
+*fr.PageRegion EnvMonarch/Enveloppe Monarch: ""
+*it.PageRegion EnvMonarch/Busta Monarch: ""
+*ko.PageRegion EnvMonarch/Monarch 봉투: ""
+*zh_CN.PageRegion EnvMonarch/Monarch 信封: ""
+*zh_TW.PageRegion EnvMonarch/Monarch 信封: ""
+
 
 *PageRegion EnvDL/Envelope DL: "
 	<</PageSize [312 624] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion EnvDL/Umschlag DL: ""
+*es.PageRegion EnvDL/Sobre DL: ""
+*fr.PageRegion EnvDL/Enveloppe DL: ""
+*it.PageRegion EnvDL/Busta DL: ""
+*ko.PageRegion EnvDL/봉투 DL: ""
+*zh_CN.PageRegion EnvDL/DL 信封: ""
+*zh_TW.PageRegion EnvDL/DL 信封: ""
+
 
 *PageRegion EnvC5/Envelope C5: "
 	<</PageSize [459 649] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion EnvC5/Umschlag C5: ""
+*es.PageRegion EnvC5/Sobre C5: ""
+*fr.PageRegion EnvC5/Enveloppe C5: ""
+*it.PageRegion EnvC5/Busta C5: ""
+*ko.PageRegion EnvC5/봉투 C5: ""
+*zh_CN.PageRegion EnvC5/C5 信封: ""
+*zh_TW.PageRegion EnvC5/信封 C5: ""
+
 
 *PageRegion A6Card/A6 Card: "
 	<</PageSize [297 420] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion A6Card/A6 Card: ""
+*es.PageRegion A6Card/Tarjeta A6: ""
+*fr.PageRegion A6Card/A6 Card: ""
+*it.PageRegion A6Card/Scheda A6 : ""
+*ko.PageRegion A6Card/A6 Card: ""
+*zh_CN.PageRegion A6Card/A6 卡片: ""
+*zh_TW.PageRegion A6Card/A6 卡: ""
+
 
 *CloseUI: *PageRegion
 
@@ -963,16 +950,104 @@ restore
 *DefaultImageableArea: Letter
 
 *ImageableArea Letter/Letter:				"11.80 11.80 600.08 780.10"
+*de.ImageableArea Letter/US-Letter: ""
+*es.ImageableArea Letter/Letter : ""
+*fr.ImageableArea Letter/Letter US: ""
+*it.ImageableArea Letter/Lettera USA: ""
+*ko.ImageableArea Letter/레터: ""
+*zh_CN.ImageableArea Letter/信纸: ""
+*zh_TW.ImageableArea Letter/Letter: ""
+
 *ImageableArea Legal/Legal:				"11.80 11.80 600.08 996.10"
+*de.ImageableArea Legal/US-Legal: ""
+*es.ImageableArea Legal/Legal: ""
+*fr.ImageableArea Legal/Légal US: ""
+*it.ImageableArea Legal/Legale USA: ""
+*ko.ImageableArea Legal/리갈: ""
+*zh_CN.ImageableArea Legal/Legal: ""
+*zh_TW.ImageableArea Legal/Legal: ""
+
 *ImageableArea Executive/Executive:			"11.80 11.80 510.08 744.10"
+*de.ImageableArea Executive/US-Executive: ""
+*es.ImageableArea Executive/Ejecutivo: ""
+*fr.ImageableArea Executive/Exécutif: ""
+*it.ImageableArea Executive/Executive: ""
+*ko.ImageableArea Executive/Executive: ""
+*zh_CN.ImageableArea Executive/Executive: ""
+*zh_TW.ImageableArea Executive/Executive: ""
+
 *ImageableArea A4/A4:				"11.80 12.00 583.28 829.80"
+*de.ImageableArea A4/A4: ""
+*es.ImageableArea A4/A4: ""
+*fr.ImageableArea A4/A4: ""
+*it.ImageableArea A4/A4: ""
+*ko.ImageableArea A4/A4: ""
+*zh_CN.ImageableArea A4/A4: ""
+*zh_TW.ImageableArea A4/A4: ""
+
 *ImageableArea ISOB5/B5 (ISO):				"11.80 12.20 487.20 696.80"
+*de.ImageableArea ISOB5/B5(ISO): ""
+*es.ImageableArea ISOB5/B5(ISO): ""
+*fr.ImageableArea ISOB5/B5(ISO): ""
+*it.ImageableArea ISOB5/B5(ISO): ""
+*ko.ImageableArea ISOB5/B5(ISO): ""
+*zh_CN.ImageableArea ISOB5/B5 (ISO): ""
+*zh_TW.ImageableArea ISOB5/B5 (ISO): ""
+
 *ImageableArea B5/B5 (JIS):				"11.80 12.00 503.80 716.80"
+*de.ImageableArea B5/B5 (JIS): ""
+*es.ImageableArea B5/JIS B5: ""
+*fr.ImageableArea B5/JIS B5: ""
+*it.ImageableArea B5/JIS B5: ""
+*ko.ImageableArea B5/JIS B5: ""
+*zh_CN.ImageableArea B5/JIS B5: ""
+*zh_TW.ImageableArea B5/JIS B5: ""
+
 *ImageableArea Env10/Envelope #10:				"11.80 11.80 285.06 672.10"
+*de.ImageableArea Env10/Umschlag Nr. 10: ""
+*es.ImageableArea Env10/Sobre No. 10: ""
+*fr.ImageableArea Env10/Enveloppe nº 10: ""
+*it.ImageableArea Env10/Busta 10: ""
+*ko.ImageableArea Env10/봉투 #10: ""
+*zh_CN.ImageableArea Env10/#10 信封: ""
+*zh_TW.ImageableArea Env10/10 號信封: ""
+
 *ImageableArea EnvMonarch/Envelope Monarch:			"11.80 11.80 267.06 528.10"
+*de.ImageableArea EnvMonarch/Umschlag Monarch: ""
+*es.ImageableArea EnvMonarch/Sobre Monarch: ""
+*fr.ImageableArea EnvMonarch/Enveloppe Monarch: ""
+*it.ImageableArea EnvMonarch/Busta Monarch: ""
+*ko.ImageableArea EnvMonarch/Monarch 봉투: ""
+*zh_CN.ImageableArea EnvMonarch/Monarch 信封: ""
+*zh_TW.ImageableArea EnvMonarch/Monarch 信封: ""
+
 *ImageableArea EnvDL/Envelope DL:				"12.00 11.80 299.80 611.80"
+*de.ImageableArea EnvDL/Umschlag DL: ""
+*es.ImageableArea EnvDL/Sobre DL: ""
+*fr.ImageableArea EnvDL/Enveloppe DL: ""
+*it.ImageableArea EnvDL/Busta DL: ""
+*ko.ImageableArea EnvDL/봉투 DL: ""
+*zh_CN.ImageableArea EnvDL/DL 信封: ""
+*zh_TW.ImageableArea EnvDL/DL 信封: ""
+
 *ImageableArea EnvC5/Envelope C5:				"12.00 12.00 447.00 636.90"
+*de.ImageableArea EnvC5/Umschlag C5: ""
+*es.ImageableArea EnvC5/Sobre C5: ""
+*fr.ImageableArea EnvC5/Enveloppe C5: ""
+*it.ImageableArea EnvC5/Busta C5: ""
+*ko.ImageableArea EnvC5/봉투 C5: ""
+*zh_CN.ImageableArea EnvC5/C5 信封: ""
+*zh_TW.ImageableArea EnvC5/信封 C5: ""
+
 *ImageableArea A6Card/A6 Card:			"11.90 12.00 284.90 407.90"
+*de.ImageableArea A6Card/A6 Card: ""
+*es.ImageableArea A6Card/Tarjeta A6: ""
+*fr.ImageableArea A6Card/A6 Card: ""
+*it.ImageableArea A6Card/Scheda A6 : ""
+*ko.ImageableArea A6Card/A6 Card: ""
+*zh_CN.ImageableArea A6Card/A6 卡片: ""
+*zh_TW.ImageableArea A6Card/A6 卡: ""
+
 *?ImageableArea: "
  save
    /cvp { (                ) cvs print ( ) print } bind def
@@ -991,18 +1066,106 @@ restore
 *% These provide the physical dimensions of the paper (by keyword)
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter:				"612 792"
+*de.PaperDimension Letter/US-Letter: ""
+*es.PaperDimension Letter/Letter : ""
+*fr.PaperDimension Letter/Letter US: ""
+*it.PaperDimension Letter/Lettera USA: ""
+*ko.PaperDimension Letter/레터: ""
+*zh_CN.PaperDimension Letter/信纸: ""
+*zh_TW.PaperDimension Letter/Letter: ""
+
 *PaperDimension Legal/Legal:				      "612 1008"
+*de.PaperDimension Legal/US-Legal: ""
+*es.PaperDimension Legal/Legal: ""
+*fr.PaperDimension Legal/Légal US: ""
+*it.PaperDimension Legal/Legale USA: ""
+*ko.PaperDimension Legal/리갈: ""
+*zh_CN.PaperDimension Legal/Legal: ""
+*zh_TW.PaperDimension Legal/Legal: ""
+
 *PaperDimension Executive/Executive:					"522 756"
+*de.PaperDimension Executive/US-Executive: ""
+*es.PaperDimension Executive/Ejecutivo: ""
+*fr.PaperDimension Executive/Exécutif: ""
+*it.PaperDimension Executive/Executive: ""
+*ko.PaperDimension Executive/Executive: ""
+*zh_CN.PaperDimension Executive/Executive: ""
+*zh_TW.PaperDimension Executive/Executive: ""
+
 *PaperDimension A4/A4:						"595 842"
+*de.PaperDimension A4/A4: ""
+*es.PaperDimension A4/A4: ""
+*fr.PaperDimension A4/A4: ""
+*it.PaperDimension A4/A4: ""
+*ko.PaperDimension A4/A4: ""
+*zh_CN.PaperDimension A4/A4: ""
+*zh_TW.PaperDimension A4/A4: ""
+
 *PaperDimension ISOB5/B5 (ISO):					"499 709"
+*de.PaperDimension ISOB5/B5(ISO): ""
+*es.PaperDimension ISOB5/B5(ISO): ""
+*fr.PaperDimension ISOB5/B5(ISO): ""
+*it.PaperDimension ISOB5/B5(ISO): ""
+*ko.PaperDimension ISOB5/B5(ISO): ""
+*zh_CN.PaperDimension ISOB5/B5 (ISO): ""
+*zh_TW.PaperDimension ISOB5/B5 (ISO): ""
+
 *PaperDimension B5/B5 (JIS):						"516 729"
+*de.PaperDimension B5/B5 (JIS): ""
+*es.PaperDimension B5/JIS B5: ""
+*fr.PaperDimension B5/JIS B5: ""
+*it.PaperDimension B5/B5 JIS: ""
+*ko.PaperDimension B5/JIS B5: ""
+*zh_CN.PaperDimension B5/JIS B5: ""
+*zh_TW.PaperDimension B5/JIS B5: ""
+
 
 *PaperDimension Env10/Envelope #10:					"297 684"
+*de.PaperDimension Env10/Umschlag Nr. 10: ""
+*es.PaperDimension Env10/Sobre No. 10: ""
+*fr.PaperDimension Env10/Enveloppe nº 10: ""
+*it.PaperDimension Env10/Busta 10: ""
+*ko.PaperDimension Env10/봉투 #10: ""
+*zh_CN.PaperDimension Env10/#10 信封: ""
+*zh_TW.PaperDimension Env10/10 號信封: ""
+
 *PaperDimension EnvMonarch/Envelope Monarch:				"279 540"
+*de.PaperDimension EnvMonarch/Umschlag Monarch: ""
+*es.PaperDimension EnvMonarch/Sobre Monarch: ""
+*fr.PaperDimension EnvMonarch/Enveloppe Monarch: ""
+*it.PaperDimension EnvMonarch/Busta Monarch: ""
+*ko.PaperDimension EnvMonarch/Monarch 봉투: ""
+*zh_CN.PaperDimension EnvMonarch/Monarch 信封: ""
+*zh_TW.PaperDimension EnvMonarch/Monarch 信封: ""
+
 *PaperDimension EnvDL/Envelope DL:					"312 624"
+*de.PaperDimension EnvDL/Umschlag DL: ""
+*es.PaperDimension EnvDL/Sobre DL: ""
+*fr.PaperDimension EnvDL/Enveloppe DL: ""
+*it.PaperDimension EnvDL/Busta DL: ""
+*ko.PaperDimension EnvDL/봉투 DL: ""
+*zh_CN.PaperDimension EnvDL/DL 信封: ""
+*zh_TW.PaperDimension EnvDL/DL 信封: ""
+
 *PaperDimension EnvC5/Envelope C5:					"459 649"
+*de.PaperDimension EnvC5/Umschlag C5: ""
+*es.PaperDimension EnvC5/Sobre C5: ""
+*fr.PaperDimension EnvC5/Enveloppe C5: ""
+*it.PaperDimension EnvC5/Busta C5: ""
+*ko.PaperDimension EnvC5/봉투 C5: ""
+*zh_CN.PaperDimension EnvC5/C5 信封: ""
+*zh_TW.PaperDimension EnvC5/信封 C5: ""
+
 
 *PaperDimension A6Card/A6 Card:					"297 420"
+*de.PaperDimension A6Card/A6 Card: ""
+*es.PaperDimension A6Card/Tarjeta A6: ""
+*fr.PaperDimension A6Card/A6 Card: ""
+*it.PaperDimension A6Card/Scheda A6 : ""
+*ko.PaperDimension A6Card/A6 Card: ""
+*zh_CN.PaperDimension A6Card/A6 卡片: ""
+*zh_TW.PaperDimension A6Card/A6 卡: ""
+
 
 *RequiresPageRegion All: True
 
@@ -1035,6 +1198,7 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *%Select custom page margins according to OS
 *HWMargins:   12.00 12.00 12.00 12.00
 
+*%CustomPageRegion True: ""
 *CustomPageSize True: "
         pop pop pop
         <</DeferredMediaSelection true /PageSize [ 7 -2 roll ]
@@ -1042,6 +1206,7 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
         setpagedevice
 "
 *End
+
 
 *ParamCustomPageSize Width: 1 points 252 612
 *ParamCustomPageSize Height: 2 points 396 1008
@@ -1055,19 +1220,69 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *OpenUI *InputSlot/Paper Source: PickOne
 *OrderDependency: 20 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic: "<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*InputSlot Auto/Automatic: "
+	<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*End
+*de.InputSlot Auto/Automatisch: ""
+*es.InputSlot Auto/Automático: ""
+*fr.InputSlot Auto/Automatique: ""
+*it.InputSlot Auto/Automatico: ""
+*ko.InputSlot Auto/자동: ""
+*zh_CN.InputSlot Auto/自动: ""
+*zh_TW.InputSlot Auto/自動: ""
+
+*de.Translation InputSlot/Papierquelle: ""
+*es.Translation InputSlot/Alimentación de papel: ""
+*fr.Translation InputSlot/Source du papier: ""
+*it.Translation InputSlot/Alimentazione della carta: ""
+*ko.Translation InputSlot/용지함: ""
+*zh_CN.Translation InputSlot/纸张来源: ""
+*zh_TW.Translation InputSlot/紙張來源: ""
+
 *InputSlot Tray1/Tray 1: "
 	<</ManualFeed false /MediaPosition 3>> setpagedevice"
 *End
+*de.InputSlot Tray1/Zufuhrfach 1: ""
+*es.InputSlot Tray1/Bandeja 1: ""
+*fr.InputSlot Tray1/Bac 1: ""
+*it.InputSlot Tray1/Cassetto 1: ""
+*ko.InputSlot Tray1/용지함 1: ""
+*zh_CN.InputSlot Tray1/纸盒 1: ""
+*zh_TW.InputSlot Tray1/1 號紙匣: ""
+
 *InputSlot Tray2/Tray 2: "
 	<</ManualFeed false /MediaPosition 0>> setpagedevice"
 *End
+*de.InputSlot Tray2/Zufuhrfach 2: ""
+*es.InputSlot Tray2/Bandeja 2: ""
+*fr.InputSlot Tray2/Bac 2: ""
+*it.InputSlot Tray2/Cassetto 2: ""
+*ko.InputSlot Tray2/용지함 2: ""
+*zh_CN.InputSlot Tray2/纸盒 2: ""
+*zh_TW.InputSlot Tray2/2 號紙匣: ""
+
 *InputSlot Tray3/Tray 3: "
 	<</ManualFeed false /MediaPosition 1>> setpagedevice"
 *End
+*de.InputSlot Tray3/Zufuhrfach 3: ""
+*es.InputSlot Tray3/Bandeja 3: ""
+*fr.InputSlot Tray3/Bac 3: ""
+*it.InputSlot Tray3/Cassetto 3: ""
+*ko.InputSlot Tray3/용지함 3: ""
+*zh_CN.InputSlot Tray3/纸盒 3: ""
+*zh_TW.InputSlot Tray3/3 號紙匣: ""
+
 *InputSlot ManualFeed/Manual Feed: "
 	<</ManualFeed true /MediaPosition 2>> setpagedevice"
 *End
+*de.InputSlot ManualFeed/Manueller Einzug: ""
+*es.InputSlot ManualFeed/Alimentación manual: ""
+*fr.InputSlot ManualFeed/Alimentation manuelle: ""
+*it.InputSlot ManualFeed/Alimentazione manuale: ""
+*ko.InputSlot ManualFeed/수동 공급 슬롯: ""
+*zh_CN.InputSlot ManualFeed/Manual Feed: ""
+*zh_TW.InputSlot ManualFeed/Manual Feed: ""
+
 
 *?InputSlot: "
 save
@@ -1088,15 +1303,47 @@ restore
 *OpenUI *Duplex/2-Sided Printing: PickOne
 *OrderDependency: 50 AnySetup *Duplex
 *DefaultDuplex: None
+*de.Translation Duplex/Beidseitiger Druck: ""
+*es.Translation Duplex/Impresión a 2 caras: ""
+*fr.Translation Duplex/Impression double face: ""
+*it.Translation Duplex/Stampa su due facciate: ""
+*ko.Translation Duplex/양면 인쇄: ""
+*zh_CN.Translation Duplex/双面打印: ""
+*zh_TW.Translation Duplex/雙面列印: ""
+
 *Duplex None/Off: "
 	<</Duplex false /Tumble false>> setpagedevice"
 *End
+*de.Duplex None/Aus: ""
+*es.Duplex None/Desactivado: ""
+*fr.Duplex None/Non: ""
+*it.Duplex None/Disattivata: ""
+*ko.Duplex None/해제: ""
+*zh_CN.Duplex None/关闭: ""
+*zh_TW.Duplex None/關閉: ""
+
 *Duplex DuplexNoTumble/Long-Edge Binding: "
 	<</Duplex true /Tumble false>> setpagedevice"
 *End
+*de.Duplex DuplexNoTumble/Bindung an langer Kante: ""
+*es.Duplex DuplexNoTumble/Encuadernación por el borde largo: ""
+*fr.Duplex DuplexNoTumble/Reliure sur la longueur: ""
+*it.Duplex DuplexNoTumble/Rilegatura lato lungo: ""
+*ko.Duplex DuplexNoTumble/가로 바인딩: ""
+*zh_CN.Duplex DuplexNoTumble/长边装订: ""
+*zh_TW.Duplex DuplexNoTumble/長邊裝訂: ""
+
 *Duplex DuplexTumble/Short-Edge Binding: "
 	<</Duplex true /Tumble true>> setpagedevice"
 *End
+*de.Duplex DuplexTumble/Bindung an kurzer Kante: ""
+*es.Duplex DuplexTumble/Encuadernación por el borde corto: ""
+*fr.Duplex DuplexTumble/Reliure sur la largeur: ""
+*it.Duplex DuplexTumble/Rilegatura lato corto: ""
+*ko.Duplex DuplexTumble/세로 바인딩: ""
+*zh_CN.Duplex DuplexTumble/短边装订: ""
+*zh_TW.Duplex DuplexTumble/短邊裝訂: ""
+
 *?Duplex: "save
    currentpagedevice dup /Duplex known
      {dup /Duplex get
@@ -1117,8 +1364,32 @@ restore
 *OpenUI *HPColorAsGray/Print Color as Gray:  Boolean
 *OrderDependency: 20 DocumentSetup *HPColorAsGray
 *DefaultHPColorAsGray: False
+*de.Translation HPColorAsGray/In Graustufen drucken: ""
+*es.Translation HPColorAsGray/Imprimir colores en gris: ""
+*fr.Translation HPColorAsGray/Imprimer couleur en gris: ""
+*it.Translation HPColorAsGray/Stampa colore in grigio: ""
+*ko.Translation HPColorAsGray/컬러를 흑백음영으로 인쇄: ""
+*zh_CN.Translation HPColorAsGray/打印颜色为灰色: ""
+*zh_TW.Translation HPColorAsGray/用灰色列印彩色: ""
+
 *HPColorAsGray True/On: "<</ProcessColorModel /DeviceGray>> setpagedevice"
+*de.HPColorAsGray True/Ein: ""
+*es.HPColorAsGray True/Activado: ""
+*fr.HPColorAsGray True/Oui: ""
+*it.HPColorAsGray True/Attivata: ""
+*ko.HPColorAsGray True/설정: ""
+*zh_CN.HPColorAsGray True/打开: ""
+*zh_TW.HPColorAsGray True/開啟: ""
+
 *HPColorAsGray False/Off: "<</ProcessColorModel /DeviceCMY>> setpagedevice"
+*de.HPColorAsGray False/Aus: ""
+*es.HPColorAsGray False/Desactivado: ""
+*fr.HPColorAsGray False/Non: ""
+*it.HPColorAsGray False/Disattivata: ""
+*ko.HPColorAsGray False/해제: ""
+*zh_CN.HPColorAsGray False/关闭: ""
+*zh_TW.HPColorAsGray False/關閉: ""
+
 *?HPColorAsGray: "
   save
     currentpagedevice /ProcessColorModel get
@@ -1170,59 +1441,192 @@ restore
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 50 AnySetup *MediaType
 *DefaultMediaType: Plain
+*de.Translation MediaType/Medientyp: ""
+*es.Translation MediaType/Tipo de sustrato: ""
+*fr.Translation MediaType/Type de support: ""
+*it.Translation MediaType/Tipo di supporto: ""
+*ko.Translation MediaType/용지 종류: ""
+*zh_CN.Translation MediaType/介质类型: ""
+*zh_TW.Translation MediaType/媒體類型: ""
+
 
 *MediaType Plain/Plain Paper:  "
     <</MediaType (Plain)>> setpagedevice"
 *End
+*de.MediaType Plain/Plain Paper: ""
+*es.MediaType Plain/Plain Paper: ""
+*fr.MediaType Plain/Plain Paper: ""
+*it.MediaType Plain/Plain Paper: ""
+*ko.MediaType Plain/Plain Paper: ""
+*zh_CN.MediaType Plain/Plain Paper: ""
+*zh_TW.MediaType Plain/Plain Paper: ""
+
 *MediaType PremIJPaper/HP Premium Inkjet Paper:  "
     <</MediaType (PremIJPaper)>> setpagedevice"
 *End
+*de.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*es.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*fr.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*it.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*ko.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*zh_CN.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+*zh_TW.MediaType PremIJPaper/HP Premium Inkjet Paper: ""
+
 *MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper:  "
     <</MediaType (PremIJHeavy)>> setpagedevice"
 *End
+*de.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*es.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*fr.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*it.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*ko.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*zh_CN.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+*zh_TW.MediaType PremIJHeavy/HP Premium Inkjet Heavyweight Paper: ""
+
 *MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss:  "
     <</MediaType (PhotoSemiGloss)>> setpagedevice"
 *End
+*de.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*es.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*fr.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*it.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*ko.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*zh_CN.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+*zh_TW.MediaType PhotoSemiGloss/HP Photo Quality Paper, Semi Gloss: ""
+
 *MediaType PhotoMatte/HP Photo Quality Paper, Matte:  "
     <</MediaType (PhotoMatte)>> setpagedevice"
 *End
+*de.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*es.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*fr.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*it.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*ko.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*zh_CN.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+*zh_TW.MediaType PhotoMatte/HP Photo Quality Paper, Matte: ""
+
 *MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss:  "
     <</MediaType (EDPhotoSemiGloss)>> setpagedevice"
 *End
+*de.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*es.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*fr.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*it.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*ko.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*zh_CN.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+*zh_TW.MediaType EDPhotoSemiGloss/HP Everyday Photo Paper, Semi Gloss: ""
+
 *MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte:  "
     <</MediaType (EDPhotoMatte)>> setpagedevice"
 *End
+*de.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*es.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*fr.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*it.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*ko.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*zh_CN.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+*zh_TW.MediaType EDPhotoMatte/HP Everyday Photo Paper, Matte: ""
+
 *MediaType PremPLTrans/HP Premium Plus Transparency:  "
     <</MediaType (PremPLTrans)>> setpagedevice"
 *End
+*de.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*es.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*fr.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*it.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*ko.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*zh_CN.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+*zh_TW.MediaType PremPLTrans/HP Premium Plus Transparency: ""
+
 *MediaType PremIJTrans/HP Premium Transparency:  "
     <</MediaType (PremIJTrans)>> setpagedevice"
 *End
+*de.MediaType PremIJTrans/HP Premium Transparency: ""
+*es.MediaType PremIJTrans/HP Premium Transparency: ""
+*fr.MediaType PremIJTrans/HP Premium Transparency: ""
+*it.MediaType PremIJTrans/HP Premium Transparency: ""
+*ko.MediaType PremIJTrans/HP Premium Transparency: ""
+*zh_CN.MediaType PremIJTrans/HP Premium Transparency: ""
+*zh_TW.MediaType PremIJTrans/HP Premium Transparency: ""
+
 *MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy:  "
     <</MediaType (ClrFastPhotoGloss)>> setpagedevice"
 *End
+*de.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*es.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*fr.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*it.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*ko.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*zh_CN.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+*zh_TW.MediaType ClrFastPhotoGloss/HP Colorfast Photo Paper, Glossy: ""
+
 *MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy:  "
     <</MediaType (PPLPhotGlos)>> setpagedevice"
 *End
+*de.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*es.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*fr.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*it.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*ko.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*zh_CN.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+*zh_TW.MediaType PPLPhotGlos/HP Premium Plus Photo Paper, Glossy: ""
+
 *MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte:  "
     <</MediaType (PPLPhotMatte)>> setpagedevice"
 *End
+*de.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*es.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*fr.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*it.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*ko.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*zh_CN.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+*zh_TW.MediaType PPLPhotMatte/HP Premium Plus Photo Paper, Matte: ""
+
 
 *MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy:  "
     <</MediaType (PremPhotoGloss)>> setpagedevice"
 *End
+*de.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*es.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*fr.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*it.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*ko.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*zh_CN.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+*zh_TW.MediaType PremPhotoGloss/HP Premium Photo Paper, Glossy: ""
+
 *MediaType PhotoGloss/HP Photo Paper, Glossy:  "
     <</MediaType (PhotoGloss)>> setpagedevice"
 *End
+*de.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*es.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*fr.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*it.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*ko.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*zh_CN.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+*zh_TW.MediaType PhotoGloss/HP Photo Paper, Glossy: ""
+
 
 *MediaType BrochGloss/HP Brochure & Flyer, Gloss:  "
     <</MediaType (BrochGloss)>> setpagedevice"
 *End
+*de.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*es.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*fr.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*it.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*ko.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*zh_CN.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+*zh_TW.MediaType BrochGloss/HP Brochure & Flyer, Gloss: ""
+
 *MediaType BrochMatte/HP Brochure & Flyer, Matte:  "
     <</MediaType (BrochMatte)>> setpagedevice"
 *End
-
-
+*de.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*es.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*fr.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*it.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*ko.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*zh_CN.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
+*zh_TW.MediaType BrochMatte/HP Brochure & Flyer, Matte: ""
 *?MediaType: "
  save
     currentpagedevice /MediaType get
@@ -1232,31 +1636,62 @@ restore
 "
 *End
 *CloseUI: *MediaType
-
 *% ===================================
 *% Print Quality
 *% ===================================
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 30.0 AnySetup *OutputMode
 *DefaultOutputMode: Normal
-*OutputMode Best/Best:"
+*de.Translation OutputMode/Druckqualität: ""
+*es.Translation OutputMode/Calidad de impresión: ""
+*fr.Translation OutputMode/Qualité díimpression: ""
+*it.Translation OutputMode/Qualità di stampa: ""
+*ko.Translation OutputMode/인쇄 품질: ""
+*zh_CN.Translation OutputMode/打印质量: ""
+*zh_TW.Translation OutputMode/列印品質: ""
+
+*OutputMode Best/Best: "
 <<
 /PrintQuality 1
 >> setpagedevice
 "
 *End
-*OutputMode Normal/Normal:"
+*de.OutputMode Best/Höchste: ""
+*es.OutputMode Best/Óptima: ""
+*fr.OutputMode Best/Supérieure: ""
+*it.OutputMode Best/Ottima: ""
+*ko.OutputMode Best/고품질: ""
+*zh_CN.OutputMode Best/最佳: ""
+*zh_TW.OutputMode Best/最佳: ""
+
+*OutputMode Normal/Normal: "
 <<
 /PrintQuality 0
 >> setpagedevice
 "
 *End
-*OutputMode Fast/Fast:"
+*de.OutputMode Normal/Normal: ""
+*es.OutputMode Normal/Normal: ""
+*fr.OutputMode Normal/Normale: ""
+*it.OutputMode Normal/Normale: ""
+*ko.OutputMode Normal/보통: ""
+*zh_CN.OutputMode Normal/正常: ""
+*zh_TW.OutputMode Normal/普通: ""
+
+*OutputMode Fast/Fast: "
 <<
 /PrintQuality -1
 >> setpagedevice
 "
 *End
+*de.OutputMode Fast/Schnell: ""
+*es.OutputMode Fast/Rápida: ""
+*fr.OutputMode Fast/Rapide: ""
+*it.OutputMode Fast/Veloce: ""
+*ko.OutputMode Fast/고속: ""
+*zh_CN.OutputMode Fast/快速: ""
+*zh_TW.OutputMode Fast/快速: ""
+
 *?OutputMode: "
   save
   3 dict
@@ -1268,301 +1703,6 @@ restore
   restore"
 *End
 *CloseUI: *OutputMode
-
-
-
-*% =================================
-*%  Watermark Printing
-*% =================================
-*OpenUI *HPwmSwitch/Watermark/Overlay:  PickOne
-*OrderDependency: 10000 AnySetup *HPwmSwitch
-*DefaultHPwmSwitch: Off
-*HPwmSwitch Off/None: ""
-*HPwmSwitch Watermark/Watermark: "
-% Copyright (c) Hewlett-Packard Co 1997
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
-  end
-
-  /HPwminitialize
-	{ HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /por where {
-	      	pop /por load dup type /booleantype eq { not { -90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-   } bind def
-
-  /md where {
-  	pop /initializepage where {
-  		/LWinitializepage /initializepage load def
-  		/initializepage { HPwminitialize LWinitializepage } put
-  	}if
-  } if
-
-  /LWinitializepage where { pop }{
-  <<
-  /BeginPage
-  { pop HPwminitialize } bind
-  >> setpagedevice
-  } ifelse
-} ifelse"
-*End
-*HPwmSwitch Overlay/Overlay: "
-% Copyright (c) Hewlett-Packard Co 1997
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
- end
-
-  <<
-  /EndPage
-    {
-  	  2 eq { pop false }{
-  		pop HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /por where {
-	      	pop /por load dup type /booleantype eq { not { -90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-	    true
-	  } ifelse
-    } bind
-  >> setpagedevice
-} ifelse"
-*End
-*CloseUI: *HPwmSwitch
-
-
-*% =================================
-*%  Watermark Pages
-*% =================================
-*OpenUI *HPwmPages/Print Watermark:  PickOne
-*OrderDependency: 67 AnySetup *HPwmPages
-*DefaultHPwmPages: AllPages
-*HPwmPages AllPages/All Pages: "userdict /HPwmLocation true put"
-*HPwmPages FirstPage/First Page Only: "userdict /HPwmLocation false put"
-*CloseUI: *HPwmPages
-
-*% =================================
-*%  Watermark Text
-*% =================================
-*OpenUI *HPwmTextMessage/Watermark:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextMessage
-*DefaultHPwmTextMessage:Draft
-*HPwmTextMessage Draft/Draft: "userdict /HPwmText (Draft) put"
-*HPwmTextMessage CompanyConfidential/Company Confidential: "userdict /HPwmText (Company Confidential) put"
-*HPwmTextMessage CompanyProprietary/Company Proprietary: "userdict /HPwmText (Company Proprietary) put"
-*HPwmTextMessage CompanyPrivate/Company Private: "userdict /HPwmText (Company Private) put"
-*HPwmTextMessage Confidential/Confidential: "userdict /HPwmText (Confidential) put"
-*HPwmTextMessage Copy/Copy: "userdict /HPwmText (Copy) put"
-*HPwmTextMessage Copyright/Copyright: "userdict /HPwmText (Copyright) put"
-*HPwmTextMessage FileCopy/File Copy: "userdict /HPwmText (File Copy) put"
-*HPwmTextMessage Final/Final: "userdict /HPwmText (Final) put"
-*HPwmTextMessage ForInternalUse/For Internal Use Only: "userdict /HPwmText (For Internal Use Only) put"
-*HPwmTextMessage Preliminary/Preliminary: "userdict /HPwmText (Preliminary) put"
-*HPwmTextMessage Proof/Proof: "userdict /HPwmText (Proof) put"
-*HPwmTextMessage ReviewCopy/Review Copy: "userdict /HPwmText (Review Copy) put"
-*HPwmTextMessage Sample/Sample: "userdict /HPwmText (Sample) put"
-*HPwmTextMessage TopSecret/Top Secret: "userdict /HPwmText (Top Secret) put"
-*HPwmTextMessage Urgent/Urgent: "userdict /HPwmText (Urgent) put"
-*HPwmTextMessage Set/Custom: "userdict /HPwmText (Custom) put"
-*CloseUI: *HPwmTextMessage
-*% Allows LW 8.5.1 to use custom strings
-*RBISetHPwmTextMessage Data: "(Custom) 50"
-*RBISetHPwmTextMessage Code: "userdict /HPwmText 3 -1 roll put"
-
-*% =================================
-*%  Watermark Font
-*% =================================
-*OpenUI *HPwmFontName/Watermark Font:  PickOne
-*OrderDependency: 65 AnySetup *HPwmFontName
-*DefaultHPwmFontName: HelveticaB
-*HPwmFontName CourierB/Courier Bold: "
-  /Courier-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName HelveticaB/Helvetica Bold: "
-  /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName TimesB/Times Bold: "
-  /Times-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*CloseUI: *HPwmFontName
-
-*% =================================
-*%  Watermark Size
-*% =================================
-*OpenUI *HPwmFontSize/Watermark Size:  PickOne
-*OrderDependency: 65 AnySetup *HPwmFontSize
-*DefaultHPwmFontSize: pt48
-*HPwmFontSize pt24/24 Points: "userdict /HPwmSize 24 put"
-*HPwmFontSize pt30/30 Points: "userdict /HPwmSize 30 put"
-*HPwmFontSize pt36/36 Points: "userdict /HPwmSize 36 put"
-*HPwmFontSize pt42/42 Points: "userdict /HPwmSize 42 put"
-*HPwmFontSize pt48/48 Points: "userdict /HPwmSize 48 put"
-*HPwmFontSize pt54/54 Points: "userdict /HPwmSize 54 put"
-*HPwmFontSize pt60/60 Points: "userdict /HPwmSize 60 put"
-*HPwmFontSize pt66/66 Points: "userdict /HPwmSize 66 put"
-*HPwmFontSize pt72/72 Points: "userdict /HPwmSize 72 put"
-*HPwmFontSize pt78/78 Points: "userdict /HPwmSize 78 put"
-*HPwmFontSize pt84/84 Points: "userdict /HPwmSize 84 put"
-*HPwmFontSize pt90/90 Points: "userdict /HPwmSize 90 put"
-*CloseUI: *HPwmFontSize
-
-*% =================================
-*%  Watermark Angle
-*% =================================
-*OpenUI *HPwmTextAngle/Watermark Angle:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextAngle
-*DefaultHPwmTextAngle: Deg45
-*HPwmTextAngle Deg90/90 Degrees:  "userdict /HPwmAngle 90 put"
-*HPwmTextAngle Deg75/75 Degrees:  "userdict /HPwmAngle 75 put"
-*HPwmTextAngle Deg60/60 Degrees:  "userdict /HPwmAngle 60 put"
-*HPwmTextAngle Deg45/45 Degrees:  "userdict /HPwmAngle 45 put"
-*HPwmTextAngle Deg30/30 Degrees:  "userdict /HPwmAngle 30 put"
-*HPwmTextAngle Deg15/15 Degrees:  "userdict /HPwmAngle 15 put"
-*HPwmTextAngle Deg0/0 Degrees:   "userdict /HPwmAngle 0 put"
-*HPwmTextAngle DegN15/-15 Degrees: "userdict /HPwmAngle -15 put"
-*HPwmTextAngle DegN30/-30 Degrees: "userdict /HPwmAngle -30 put"
-*HPwmTextAngle DegN45/-45 Degrees: "userdict /HPwmAngle -45 put"
-*HPwmTextAngle DegN60/-60 Degrees: "userdict /HPwmAngle -60 put"
-*HPwmTextAngle DegN75/-75 Degrees: "userdict /HPwmAngle -75 put"
-*HPwmTextAngle DegN90/-90 Degrees: "userdict /HPwmAngle -90 put"
-*CloseUI: *HPwmTextAngle
-
-*% =================================
-*%  Watermark Style
-*% =================================
-*OpenUI *HPwmTextStyle/Watermark Style:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextStyle
-*DefaultHPwmTextStyle: Medium
-*HPwmTextStyle Thin/Narrow Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .24 setlinewidth stroke } bind put"
-*HPwmTextStyle Medium/Medium Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } bind put"
-*HPwmTextStyle Thick/Wide Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .96 setlinewidth stroke } bind put"
-*HPwmTextStyle Halo/Wide Halo Outline: "userdict /HPwmStyle
-     { HPwmText false charpath gsave /DeviceGray setcolorspace 1 setgray 1.8 setlinewidth stroke grestore
-     HPwmColor .96 setlinewidth stroke } bind put"
-*End
-*HPwmTextStyle Fill/Filled: "userdict /HPwmStyle { HPwmColor HPwmText show } bind put"
-*CloseUI: *HPwmTextStyle
-
-*% =================================
-*%  Watermark Color
-*% =================================
-*OpenUI *HPwmTextColor/Watermark Color:  PickOne
-*OrderDependency: 64 AnySetup *HPwmTextColor
-*DefaultHPwmTextColor: Black
-*HPwmTextColor Black/Gray: "userdict /HPwmColor { 0 setgray HPwmSaturation } bind put"
-*HPwmTextColor Red/Red: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 1 .3 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Orange/Orange: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 .5 1 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Yellow/Yellow: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 0 1 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Green/Green: "userdict /HPwmColor { /DeviceCMYK setcolorspace .9 0 .9 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Blue/Blue: "userdict /HPwmColor { /DeviceCMYK setcolorspace 1 .1 0 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Purple/Violet: "userdict /HPwmColor { /DeviceCMYK setcolorspace .8 .8 0 0 setcolor HPwmSaturation } bind put"
-*CloseUI: *HPwmTextColor
-
-*% =================================
-*%  WaterMark Brightness
-*% =================================
-*OpenUI *HPwmBrightness/Watermark Intensity:  PickOne
-*OrderDependency: 63 AnySetup *HPwmBrightness
-*DefaultHPwmBrightness: Medium
-*HPwmBrightness Darkest/Darkest:          "userdict /HPwmSaturation { null pop } put"
-*HPwmBrightness Darker/Darker:           "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .88 mul } forall setcolor } put"
-*HPwmBrightness Dark/Dark:             "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .77 mul } forall setcolor } put"
-*HPwmBrightness MediumDark/Medium Dark:       "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .66 mul } forall setcolor } put"
-*HPwmBrightness Medium/Medium:           "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } put"
-*HPwmBrightness MediumLight/Medium Light:      "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .44 mul } forall setcolor } put"
-*HPwmBrightness Light/Light:            "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .33 mul } forall setcolor } put"
-*HPwmBrightness Lighter/Lighter:          "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .22 mul } forall setcolor } put"
-*HPwmBrightness Lightest/Lightest:         "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .11 mul } forall setcolor } put"
-*CloseUI: *HPwmBrightness
 
 *% =================================
 *% Font Information
@@ -1824,13 +1964,77 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 
 *% VM
 *VMOption 64Meg/64 MB:  "6701488"
+*de.VMOption 64Meg/64 MB: ""
+*es.VMOption 64Meg/64 MB: ""
+*fr.VMOption 64Meg/64 Mo: ""
+*it.VMOption 64Meg/64 MB: ""
+*ko.VMOption 64Meg/64 MB: ""
+*zh_CN.VMOption 64Meg/64 MB: ""
+*zh_TW.VMOption 64Meg/64 MB: ""
+
 *VMOption 96Meg/96 MB:  "10858412"
+*de.VMOption 96Meg/96 MB: ""
+*es.VMOption 96Meg/96 MB: ""
+*fr.VMOption 96Meg/96 Mo: ""
+*it.VMOption 96Meg/96 MB: ""
+*ko.VMOption 96Meg/96 MB: ""
+*zh_CN.VMOption 96Meg/96 MB: ""
+*zh_TW.VMOption 96Meg/96 MB: ""
+
 *VMOption 128Meg/128 MB: "12800000"
+*de.VMOption 128Meg/128 MB: ""
+*es.VMOption 128Meg/128 MB: ""
+*fr.VMOption 128Meg/128 Mo: ""
+*it.VMOption 128Meg/128 MB: ""
+*ko.VMOption 128Meg/128 MB: ""
+*zh_CN.VMOption 128Meg/128 MB: ""
+*zh_TW.VMOption 128Meg/128 MB: ""
+
 *VMOption 160Meg/160 MB: "13401953"
+*de.VMOption 160Meg/160 MB: ""
+*es.VMOption 160Meg/160 MB: ""
+*fr.VMOption 160Meg/160 Mo: ""
+*it.VMOption 160Meg/160 MB: ""
+*ko.VMOption 160Meg/160 MB: ""
+*zh_CN.VMOption 160Meg/160 MB: ""
+*zh_TW.VMOption 160Meg/160 MB: ""
+
 *VMOption 192Meg/192 MB: "19300000"
+*de.VMOption 192Meg/192 MB: ""
+*es.VMOption 192Meg/192 MB: ""
+*fr.VMOption 192Meg/192 Mo: ""
+*it.VMOption 192Meg/192 MB: ""
+*ko.VMOption 192Meg/192 MB: ""
+*zh_CN.VMOption 192Meg/192 MB: ""
+*zh_TW.VMOption 192Meg/192 MB: ""
+
 *VMOption 224Meg/224 MB: "20104464"
+*de.VMOption 224Meg/224 MB: ""
+*es.VMOption 224Meg/224 MB: ""
+*fr.VMOption 224Meg/224 Mo: ""
+*it.VMOption 224Meg/224 MB: ""
+*ko.VMOption 224Meg/224 MB: ""
+*zh_CN.VMOption 224Meg/224 MB: ""
+*zh_TW.VMOption 224Meg/224 MB: ""
+
 *VMOption 256Meg/256 MB: "28200000"
+*de.VMOption 256Meg/256 MB: ""
+*es.VMOption 256Meg/256 MB: ""
+*fr.VMOption 256Meg/256 Mo: ""
+*it.VMOption 256Meg/256 MB: ""
+*ko.VMOption 256Meg/256 MB: ""
+*zh_CN.VMOption 256Meg/256 MB: ""
+*zh_TW.VMOption 256Meg/256 MB: ""
+
 *VMOption 320Meg/320 MB: "32000000"
+*de.VMOption 320Meg/320 MB: ""
+*es.VMOption 320Meg/320 MB: ""
+*fr.VMOption 320Meg/320 Mo: ""
+*it.VMOption 320Meg/320 MB: ""
+*ko.VMOption 320Meg/320 MB: ""
+*zh_CN.VMOption 320Meg/320 MB: ""
+*zh_TW.VMOption 320Meg/320 MB: ""
+
 
 *% Font Cache
 *FCacheSize 64Meg/64 MB:  1000000
@@ -1850,4 +2054,3 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *% Last Edit Date : 16th July, 2002
 *% End of PPD file
 *% For "HP Business Inkjet 3000 PS"
-*% =================================

@@ -1,9 +1,6 @@
 *PPD-Adobe: "4.3"
-
 *% =================================
-*% Adobe Systems PostScript(R) Printer Description File
-*% Copyright 1992-2003 Hewlett-Packard Company
-*%
+*% Copyright 1992-2009 Hewlett-Packard Company
 *% Permission is hereby granted, free of charge, to any person obtaining
 *% a copy of this software and associated documentation files (the
 *% "Software"), to deal in the Software without restriction, including
@@ -11,10 +8,10 @@
 *% distribute, sublicense, and/or sell copies of the Software, and to
 *% permit persons to whom the Software is furnished to do so, subject to
 *% the following conditions:
-*% 
+*%
 *% The above copyright notice and this permission notice shall be
 *% included in all copies or substantial portions of the Software.
-*% 
+*%
 *% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 *% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 *% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,10 +19,12 @@
 *% LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 *% OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 *% WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*% 
+*%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-
+*% =================================
+*% Adobe Systems PostScript(R) Printer Description File
+*% (c) Copyright 2005-2008 Hewlett-Packard Development Company, L.P.
 *% PPD Version for Apple Macintosh
 *% =================================
 
@@ -34,27 +33,19 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "1.0.1 X"
+*FileVersion: "PPD-VERSION-STRING"
 *HPBuildNumber: "002"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP4610.PPD"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpColorOptions.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpEdgeToEdge.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpImageQuality.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpProofAndPrint.plugin"
-*cupsICCProfile RGB../sRGB Matching Profile: "/Library/Printers/hp/Profiles/sRGB_A.icc"
-*cupsICCProfile CMYK../CMYK Matching Profile: "/Library/Printers/hp/Profiles/CMYK_A.icc"
-*cupsICCProfile Gray../Gray Matching Profile: "/Library/Printers/hp/Profiles/Gray_A.icc"
-*APPrinterIconPath: "/Library/Printers/hp/Icons/hp color LaserJet 4650.icns"
+
 
 *% Product Name and Version Information
 *Manufacturer:	"HP"
 *Product: 	"(hp color LaserJet 4610)"
 *ModelName:	"HP Color LaserJet 4610"
 *ShortNickName: "HP Color LaserJet 4610"
-*NickName:	"HP Color LaserJet 4610 Postscript (recommended)"
+*NickName: "HP Color LaserJet 4610 Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
 
 *% =================================
@@ -255,7 +246,7 @@
 *% =================================
 *% The UserName setting is obtained from the print job. This may not work on non-Mac drivers.
 *OpenUI *HPJobRetentionOption/Job Retention: PickOne
-*OrderDependency: 14 Prolog *HPJobRetentionOption
+*OrderDependency: 13 Prolog *HPJobRetentionOption
 *DefaultHPJobRetentionOption: HPJobRetentionOff
 *HPJobRetentionOption HPJobRetentionProof/Proof and Hold: "
 	<< /Collate true /CollateDetails
@@ -264,12 +255,12 @@
 "
 *End
 
-*%HPJobRetention HPJobRetentionPrivate/Private Job: "
-*%	<< /Collate true /CollateDetails
-*%		<< /Type 8 /Hold 1 /HoldType 1 >>
-*%	>> setpagedevice
-*%"
-*%End
+*HPJobRetentionOption HPJobRetentionPrivate/Private Job: "
+	<< /Collate true /CollateDetails
+		<< /Type 8 /Hold 1 /HoldType 1 >>
+	>> setpagedevice
+"
+*End
 
 *HPJobRetentionOption HPJobRetentionOff/Off: "
 	<< /CollateDetails
@@ -277,6 +268,34 @@
 "
 *End
 *CloseUI: *HPJobRetentionOption
+
+*% ================= Job Storage Descriptions ====================
+
+*HPJobRetentionOptionDS HPJobRetentionProof: HPJOBRETENTIONOPTION_PROOFANDPRINT_DS
+
+
+*HPJobRetentionOptionDS HPJobRetentionPrivate: HPJOBRETENTIONOPTION_PRIVATE_DS
+
+
+*HPJobRetentionOptionDS HPJobRetentionOff: HPJOBRETENTIONOPTION_OFF_DS
+
+*% ===========================================================
+
+*OpenUI *HPDuplicateJobMode/If Job Name Exists: PickOne
+*OrderDependency: 14 Prolog *HPDuplicateJobMode
+*DefaultHPDuplicateJobMode: Unique
+
+*HPDuplicateJobMode Unique/Use Job Name + (1 - 99): "
+	<< /CollateDetails << /Type 8 /DuplicateJob 0 >> >> setpagedevice
+"
+*End
+*HPDuplicateJobMode Overwrite/Replace Existing File: "
+	<< /CollateDetails << /Type 8 /DuplicateJob 1 >> >> setpagedevice
+"
+*End
+*CloseUI: *HPDuplicateJobMode
+
+
 
 
 *OpenUI *HPUserName/User Name: PickOne
@@ -723,7 +742,9 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *OpenUI *InputSlot/Paper Source: PickOne
 *OrderDependency: 40 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic: "<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*InputSlot Auto/Automatic: "
+	<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*End
 *InputSlot Tray1/Tray 1: "
 	<</ManualFeed false /MediaPosition 3>> setpagedevice"
 *End
@@ -1214,299 +1235,6 @@ globaldict /HPColorTrapping known {
 
 *CloseGroup: HPColorOptionsPanel
 
-*% =================================
-*%  Watermark Printing
-*% =================================
-*OpenGroup: HPWaterOverlayPanel/Watermark/Overlay
-
-*OpenUI *HPwmSwitch/Watermark/Overlay:  PickOne
-*OrderDependency: 10000 AnySetup *HPwmSwitch
-*DefaultHPwmSwitch: Off
-*HPwmSwitch Off/None: ""
-*HPwmSwitch Watermark/Watermark: "
-% Copyright (c) Hewlett-Packard Co 1997
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
-  end
-
-  /HPwminitialize
-	{ HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /por where {
-	      	pop /por load dup type /booleantype eq { not { 90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-   } bind def
-  /md where {
-  	pop /initializepage where {
-  		/LWinitializepage /initializepage load def
-  		/initializepage { HPwminitialize LWinitializepage } put
-  	}if
-  } if
-
-  /LWinitializepage where { pop }{
-  <<
-  /BeginPage
-  { pop HPwminitialize } bind
-  >> setpagedevice
-  } ifelse
-} ifelse"
-*End
-*HPwmSwitch Overlay/Overlay: "
-% Copyright (c) Hewlett-Packard Co 1997
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
- end
-  <<
-  /EndPage
-    {
-  	  2 eq { pop false }{
-  		pop HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /por where {
-	      	pop /por load dup type /booleantype eq { not { 90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-	    true
-	  } ifelse
-    } bind
-  >> setpagedevice
-} ifelse"
-*End
-*CloseUI: *HPwmSwitch
-
-*% =================================
-*%  Watermark Pages
-*% =================================
-*OpenUI *HPwmPages/Watermark Pages:  PickOne
-*OrderDependency: 67 AnySetup *HPwmPages
-*DefaultHPwmPages: AllPages
-*HPwmPages AllPages/All: "userdict /HPwmLocation true put"
-*HPwmPages FirstPage/First Only: "userdict /HPwmLocation false put"
-*CloseUI: *HPwmPages
-
-*% =================================
-*%  Watermark Text
-*% =================================
-*OpenUI *HPwmTextMessage/Watermark Text:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextMessage
-*DefaultHPwmTextMessage: Draft
-*HPwmTextMessage Draft/Draft: "userdict /HPwmText (Draft) put"
-*HPwmTextMessage CompanyConfidential/Company Confidential: "userdict /HPwmText (Company Confidential) put"
-*HPwmTextMessage CompanyProprietary/Company Proprietary: "userdict /HPwmText (Company Proprietary) put"
-*HPwmTextMessage CompanyPrivate/Company Private: "userdict /HPwmText (Company Private) put"
-*HPwmTextMessage Confidential/Confidential: "userdict /HPwmText (Confidential) put"
-*HPwmTextMessage Copy/Copy: "userdict /HPwmText (Copy) put"
-*HPwmTextMessage Copyright/Copyright: "userdict /HPwmText (Copyright) put"
-*HPwmTextMessage FileCopy/File Copy: "userdict /HPwmText (File Copy) put"
-*HPwmTextMessage Final/Final: "userdict /HPwmText (Final) put"
-*HPwmTextMessage ForInternalUse/For Internal Use Only: "userdict /HPwmText (For Internal Use Only) put"
-*HPwmTextMessage Preliminary/Preliminary: "userdict /HPwmText (Preliminary) put"
-*HPwmTextMessage Proof/Proof: "userdict /HPwmText (Proof) put"
-*HPwmTextMessage ReviewCopy/Review Copy: "userdict /HPwmText (Review Copy) put"
-*HPwmTextMessage Sample/Sample: "userdict /HPwmText (Sample) put"
-*HPwmTextMessage TopSecret/Top Secret: "userdict /HPwmText (Top Secret) put"
-*HPwmTextMessage Urgent/Urgent: "userdict /HPwmText (Urgent) put"
-*HPwmTextMessage Set/Custom: "userdict /HPwmText (Custom) put"
-*CloseUI: *HPwmTextMessage
-*% Allows LW 8.5.1 to use custom strings
-*RBISetHPwmTextMessage Data: "(Custom) 50"
-*RBISetHPwmTextMessage Code: "userdict /HPwmText 3 -1 roll put"
-
-*% =================================
-*%  Watermark Font
-*% =================================
-*OpenUI *HPwmFontName/Watermark Font:  PickOne
-*OrderDependency: 65 AnySetup *HPwmFontName
-*DefaultHPwmFontName: HelveticaB
-*HPwmFontName CourierB/Courier Bold: "
-  /Courier-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName HelveticaB/Helvetica Bold: "
-  /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName TimesB/Times Bold: "
-  /Times-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*CloseUI: *HPwmFontName
-
-*% =================================
-*%  Watermark Size
-*% =================================
-*OpenUI *HPwmFontSize/Watermark Size (points):  PickOne
-*OrderDependency: 65 AnySetup *HPwmFontSize
-*DefaultHPwmFontSize: pt48
-*HPwmFontSize pt24/24: "userdict /HPwmSize 24 put"
-*HPwmFontSize pt30/30: "userdict /HPwmSize 30 put"
-*HPwmFontSize pt36/36: "userdict /HPwmSize 36 put"
-*HPwmFontSize pt42/42: "userdict /HPwmSize 42 put"
-*HPwmFontSize pt48/48: "userdict /HPwmSize 48 put"
-*HPwmFontSize pt54/54: "userdict /HPwmSize 54 put"
-*HPwmFontSize pt60/60: "userdict /HPwmSize 60 put"
-*HPwmFontSize pt66/66: "userdict /HPwmSize 66 put"
-*HPwmFontSize pt72/72: "userdict /HPwmSize 72 put"
-*HPwmFontSize pt78/78: "userdict /HPwmSize 78 put"
-*HPwmFontSize pt84/84: "userdict /HPwmSize 84 put"
-*HPwmFontSize pt90/90: "userdict /HPwmSize 90 put"
-*CloseUI: *HPwmFontSize
-
-*% =================================
-*%  Watermark Angle
-*% =================================
-*OpenUI *HPwmTextAngle/Watermark Angle:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextAngle
-*DefaultHPwmTextAngle: Deg45
-*HPwmTextAngle Deg90/90<B0>: "userdict /HPwmAngle 90 put"
-*HPwmTextAngle Deg75/75<B0>: "userdict /HPwmAngle 75 put"
-*HPwmTextAngle Deg60/60<B0>: "userdict /HPwmAngle 60 put"
-*HPwmTextAngle Deg45/45<B0>: "userdict /HPwmAngle 45 put"
-*HPwmTextAngle Deg30/30<B0>: "userdict /HPwmAngle 30 put"
-*HPwmTextAngle Deg15/15<B0>: "userdict /HPwmAngle 15 put"
-*HPwmTextAngle Deg0/0<B0>: "userdict /HPwmAngle 0 put"
-*HPwmTextAngle DegN15/<B0>15<B0>: "userdict /HPwmAngle -15 put"
-*HPwmTextAngle DegN30/<B0>30<B0>: "userdict /HPwmAngle -30 put"
-*HPwmTextAngle DegN45/<B0>45<B0>: "userdict /HPwmAngle -45 put"
-*HPwmTextAngle DegN60/<B0>60<B0>: "userdict /HPwmAngle -60 put"
-*HPwmTextAngle DegN75/<B0>75<B0>: "userdict /HPwmAngle -75 put"
-*HPwmTextAngle DegN90/<B0>90<B0>: "userdict /HPwmAngle -90 put"
-*CloseUI: *HPwmTextAngle
-
-*% =================================
-*%  Watermark Style
-*% =================================
-*OpenUI *HPwmTextStyle/Watermark Style:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextStyle
-*DefaultHPwmTextStyle: Medium
-*HPwmTextStyle Thin/Thin Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .24 setlinewidth stroke } bind put"
-*HPwmTextStyle Medium/Medium Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } bind put"
-*HPwmTextStyle Thick/Thick Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .96 setlinewidth stroke } bind put"
-*HPwmTextStyle Halo/Thick Outline with Halo: "userdict /HPwmStyle
-     { HPwmText false charpath gsave /DeviceGray setcolorspace 1 setgray 1.8 setlinewidth stroke grestore
-     HPwmColor .96 setlinewidth stroke } bind put"
-*End
-*HPwmTextStyle Fill/Filled: "userdict /HPwmStyle { HPwmColor HPwmText show } bind put"
-*CloseUI: *HPwmTextStyle
-
-*% =================================
-*%  Watermark Color
-*% =================================
-*OpenUI *HPwmTextColor/Watermark Color:  PickOne
-*OrderDependency: 64 AnySetup *HPwmTextColor
-*DefaultHPwmTextColor: Black
-*HPwmTextColor Black/Gray: "userdict /HPwmColor { 0 setgray HPwmSaturation } bind put"
-*HPwmTextColor Red/Red: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 1 .3 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Orange/Orange: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 .5 1 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Yellow/Yellow: "userdict /HPwmColor { /DeviceCMYK setcolorspace 0 0 1 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Green/Green: "userdict /HPwmColor { /DeviceCMYK setcolorspace .9 0 .9 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Blue/Blue: "userdict /HPwmColor { /DeviceCMYK setcolorspace 1 .1 0 0 setcolor HPwmSaturation } bind put"
-*HPwmTextColor Purple/Violet: "userdict /HPwmColor { /DeviceCMYK setcolorspace .8 .8 0 0 setcolor HPwmSaturation } bind put"
-*CloseUI: *HPwmTextColor
-
-*% =================================
-*%  WaterMark Brightness
-*% =================================
-*OpenUI *HPwmBrightness/Watermark Intensity:  PickOne
-*OrderDependency: 63 AnySetup *HPwmBrightness
-*DefaultHPwmBrightness: Medium
-*HPwmBrightness Darkest/Darkest:          "userdict /HPwmSaturation { null pop } put"
-*HPwmBrightness Darker/Darker:            "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .88 mul } forall setcolor } put"
-*HPwmBrightness Dark/Dark:                "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .77 mul } forall setcolor } put"
-*HPwmBrightness MediumDark/Medium Dark:   "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .66 mul } forall setcolor } put"
-*HPwmBrightness Medium/Medium:            "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } put"
-*HPwmBrightness MediumLight/Medium Light: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .44 mul } forall setcolor } put"
-*HPwmBrightness Light/Light:              "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .33 mul } forall setcolor } put"
-*HPwmBrightness Lighter/Lighter:          "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .22 mul } forall setcolor } put"
-*HPwmBrightness Lightest/Lightest:        "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .11 mul } forall setcolor } put"
-*CloseUI: *HPwmBrightness
-
-*CloseGroup: HPWaterOverlayPanel
 
 *% =================================
 *%  Control

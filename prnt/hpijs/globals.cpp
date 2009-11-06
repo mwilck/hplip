@@ -272,7 +272,8 @@ void *LoadPlugin (const char *szPluginName)
             p = szLine + 4;
             while (*p && *p != '/')
                 p++;
-            sprintf (p+strlen (p), "/prnt/plugins/%s", szPluginName);
+            i = sizeof(szLine) - (strlen (p) + (p - szLine));
+            snprintf (p+strlen (p), i, "/prnt/plugins/%s", szPluginName);
             ptemp = dlopen (p, RTLD_LAZY);
         }
     }

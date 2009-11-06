@@ -1,9 +1,6 @@
 *PPD-Adobe: "4.3"
-
-*% ===================================
-*% Adobe Systems PostScript(R) Printer Description File
-*% Copyright 1992-2003 Hewlett-Packard Company
-*%
+*% =================================
+*% Copyright 1992-2009 Hewlett-Packard Company
 *% Permission is hereby granted, free of charge, to any person obtaining
 *% a copy of this software and associated documentation files (the
 *% "Software"), to deal in the Software without restriction, including
@@ -11,10 +8,10 @@
 *% distribute, sublicense, and/or sell copies of the Software, and to
 *% permit persons to whom the Software is furnished to do so, subject to
 *% the following conditions:
-*% 
+*%
 *% The above copyright notice and this permission notice shall be
 *% included in all copies or substantial portions of the Software.
-*% 
+*%
 *% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 *% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 *% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,15 +19,17 @@
 *% LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 *% OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 *% WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*% 
+*%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-
+*% ===================================
+*% Adobe Systems PostScript(R) Printer Description File
+*% Copyright 1992-2001 Hewlett-Packard Company.
 *% PPD Version for Apple Macintosh only
 *% ===================================
 
 *FormatVersion: "4.3"
-*FileVersion: "1.1.0 X"
+*FileVersion: "PPD-VERSION-STRING"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "XXXXXXXX.XXX"
@@ -38,19 +37,13 @@
 *Product: "(LaserJet 4)"
 *PSVersion: "(2011.110) 1"
 *ModelName: "HP LaserJet 4 PostScript 600DPI"
-*NickName: "HP LaserJet 4/4M 600DPI Postscript (recommended)"
+*NickName: "HP LaserJet 4/4M PostScript 600DPI"
 *ShortNickName: "HP LaserJet 4/4M"
 *LanguageLevel: "2"
 *ColorDevice: False
 *DefaultColorSpace: Gray
 *FileSystem: False
 *Throughput: "8"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpColorOptions.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpEdgeToEdge.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpImageQuality.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpProofAndPrint.plugin"
-*APPrinterIconPath: "/Library/Printers/hp/Icons/LaserJet 4.icns"
 
 *OpenGroup: InstallableOptions/Options Installed
 
@@ -302,7 +295,9 @@
 *OpenUI *InputSlot: PickOne
 *OrderDependency: 20 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic: "<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*InputSlot Auto/Automatic: "
+	<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*End
 *InputSlot Upper/Multipurpose Tray: "
     1 dict
     dup /Policies 2 dict dup /PageSize 2 put dup /MediaType 0 put put

@@ -1,8 +1,6 @@
 *PPD-Adobe: "4.3"
 *% =================================
-*% Adobe Systems PostScript(R) Printer Description File
-*% Copyright 1992-2003 Hewlett-Packard Company
-*%
+*% Copyright 1992-2009 Hewlett-Packard Company
 *% Permission is hereby granted, free of charge, to any person obtaining
 *% a copy of this software and associated documentation files (the
 *% "Software"), to deal in the Software without restriction, including
@@ -10,10 +8,10 @@
 *% distribute, sublicense, and/or sell copies of the Software, and to
 *% permit persons to whom the Software is furnished to do so, subject to
 *% the following conditions:
-*% 
+*%
 *% The above copyright notice and this permission notice shall be
 *% included in all copies or substantial portions of the Software.
-*% 
+*%
 *% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 *% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 *% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -21,10 +19,11 @@
 *% LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 *% OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 *% WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*% 
+*%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-
+*% Adobe Systems PostScript(R) Printer Description File
+*% (c) Copyright 2002-2009 Hewlett-Packard Development Company, L.P.
 *% PPD Version For Mac(MacOSX)
 *% Date Code: 20030704
 *% =================================
@@ -34,22 +33,23 @@
 *FormatVersion: "4.3"
 *FileVersion: "032.4100"
 *LanguageVersion: English
+*cupsLanguages: "de es fr it ja ko nl pt sv zh_CN zh_TW"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HPW23006.PPD"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpColorOptions.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpEdgeToEdge.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpImageQuality.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpProofAndPrint.plugin"
-*cupsICCProfile RGB../sRGB Matching Profile: "/Library/Printers/hp/Profiles/sRGB_A.icc"
-*APPrinterIconPath: "/Library/Printers/hp/Icons/hp business inkjet 2300.icns"
+
+*HPPDEPanel: "HPColorOptionsPanel"
+*HPPDEPanel: "HPFinishingPanel"
+*HPPDEPanel: "HPImagingOptions"
+
 
 *% Product Name and Version Information
 *Manufacturer: "HP"
 *Product:      "(hp business inkjet 2300)"
+*Product: "(Hewlett-Packard hp business inkjet 2300)"
+*Product: "(HP business inkjet 2300)"
 *ModelName:     "HP Business Inkjet 2300 PS"
 *ShortNickName: "HP Business Inkjet 2300 PS"
-*NickName:      "HP Business Inkjet 2300 PS v3010.107 Postscript (recommended)"
+*NickName: "HP Business Inkjet 2300 PS v3010.107 Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
 *% =================================
 *% Basic Device Capabilities
@@ -58,14 +58,14 @@
 *%Throughput: "23"
 *FileSystem: False
 *ColorDevice: True
-*DefaultColorSpace: CMY
+*DefaultColorSpace: CMYK
 *TTRasterizer: Type42
 *1284Modes Parallel: Compat Nibble ECP
-*1284DeviceId: "MFG:HP;MODEL:hp2300;COMMAND SET: POSTSCRIPT,PJL,PCL"
+*1284DeviceID: "MFG:HP;MODEL:hp2300;COMMAND SET: POSTSCRIPT,PJL,PCL"
 *% =================================
 *% Emulations and Protocols
 *% =================================
-*Protocols: TBCP
+*Protocols:TBCP
 *%==========================================================
 *% Printer Specific Custom Data - HPDryTime - Removed for MAC
 *%==========================================================
@@ -77,13 +77,61 @@
 *% Installable Options
 *% =================================
 *OpenGroup: InstallableOptions/Installed Options
+*de.Translation InstallableOptions/Installierte Optionen: ""
+*es.Translation InstallableOptions/Opciones instaladas: ""
+*fr.Translation InstallableOptions/Options installées: ""
+*it.Translation InstallableOptions/Opzioni installate: ""
+*ja.Translation InstallableOptions/インストール済オプション: ""
+*ko.Translation InstallableOptions/설치된 선택사양: ""
+*nl.Translation InstallableOptions/Geïnstalleerde opties: ""
+*pt.Translation InstallableOptions/Versões instaladas: ""
+*sv.Translation InstallableOptions/Installerade tillbehör: ""
+*zh_CN.Translation InstallableOptions/已安装的选项: ""
+*zh_TW.Translation InstallableOptions/安裝的選項: ""
+
 *% =================================
 *% Tray2
 *% =================================
 *OpenUI *HPOption_Tray2/Tray 2: Boolean
 *DefaultHPOption_Tray2: True
+*de.Translation HPOption_Tray2/Fach 2: ""
+*es.Translation HPOption_Tray2/Bandeja 2: ""
+*fr.Translation HPOption_Tray2/Bac 2 : ""
+*it.Translation HPOption_Tray2/Vassoio 2: ""
+*ja.Translation HPOption_Tray2/トレイ 2: ""
+*ko.Translation HPOption_Tray2/용지함 2: ""
+*nl.Translation HPOption_Tray2/Lade 2: ""
+*pt.Translation HPOption_Tray2/Bandeja 2: ""
+*sv.Translation HPOption_Tray2/Fack 2: ""
+*zh_CN.Translation HPOption_Tray2/纸盒 2: ""
+*zh_TW.Translation HPOption_Tray2/2 號紙匣: ""
+
 *HPOption_Tray2 True/Installed: ""
+*de.HPOption_Tray2 True/Installiert: ""
+*es.HPOption_Tray2 True/Instalado: ""
+*fr.HPOption_Tray2 True/Installé: ""
+*it.HPOption_Tray2 True/Installata: ""
+*ja.HPOption_Tray2 True/取り付け済み: ""
+*ko.HPOption_Tray2 True/설치됨: ""
+*nl.HPOption_Tray2 True/Geïnstalleerd: ""
+*pt.HPOption_Tray2 True/Instalada: ""
+*sv.HPOption_Tray2 True/Installerat: ""
+*zh_CN.HPOption_Tray2 True/已安装: ""
+*zh_TW.HPOption_Tray2 True/已安裝: ""
+
 *HPOption_Tray2 False/Not Installed: ""
+*de.HPOption_Tray2 False/Nicht installiert: ""
+*es.HPOption_Tray2 False/No instalado: ""
+*fr.HPOption_Tray2 False/Non Installé: ""
+*it.HPOption_Tray2 False/Non installata: ""
+*ja.HPOption_Tray2 False/取り付けられていない: ""
+*ko.HPOption_Tray2 False/설치되지 않음: ""
+*nl.HPOption_Tray2 False/Niet geïnstalleerd: ""
+*pt.HPOption_Tray2 False/Não instalada: ""
+*sv.HPOption_Tray2 False/Ej installerat: ""
+*zh_CN.HPOption_Tray2 False/未安装: ""
+*zh_TW.HPOption_Tray2 False/未安裝: ""
+
 *?HPOption_Tray2: "
   save
     currentpagedevice /InputAttributes get dup 1 known
@@ -97,14 +145,122 @@
 *% =================================
 *OpenUI *InstalledMemory/Printer Memory: PickOne
 *DefaultInstalledMemory: 64Meg
+*de.Translation InstalledMemory/Druckerspeicher: ""
+*es.Translation InstalledMemory/Memoria de la impresora: ""
+*fr.Translation InstalledMemory/Mémoire de l'imprimante : ""
+*it.Translation InstalledMemory/Memoria stampante: ""
+*ja.Translation InstalledMemory/プリンタ メモリ容量: ""
+*ko.Translation InstalledMemory/프린터 총 메모리: ""
+*nl.Translation InstalledMemory/Printergeheugen: ""
+*pt.Translation InstalledMemory/Memória da impressora: ""
+*sv.Translation InstalledMemory/Skrivarminne: ""
+*zh_CN.Translation InstalledMemory/打印机内存: ""
+*zh_TW.Translation InstalledMemory/印表機記憶體: ""
+
 *InstalledMemory 64Meg/64 MB: ""
+*de.InstalledMemory 64Meg/64 MB: ""
+*es.InstalledMemory 64Meg/64 MB: ""
+*fr.InstalledMemory 64Meg/64 Mo: ""
+*it.InstalledMemory 64Meg/64 MB: ""
+*ja.InstalledMemory 64Meg/64MB: ""
+*ko.InstalledMemory 64Meg/64MB: ""
+*nl.InstalledMemory 64Meg/64 MB: ""
+*pt.InstalledMemory 64Meg/64 MB: ""
+*sv.InstalledMemory 64Meg/64 MB: ""
+*zh_CN.InstalledMemory 64Meg/64 MB: ""
+*zh_TW.InstalledMemory 64Meg/64 MB: ""
+
 *InstalledMemory 96Meg/96 MB: ""
+*de.InstalledMemory 96Meg/96 MB: ""
+*es.InstalledMemory 96Meg/96 MB: ""
+*fr.InstalledMemory 96Meg/96 Mo: ""
+*it.InstalledMemory 96Meg/96 MB: ""
+*ja.InstalledMemory 96Meg/96MB: ""
+*ko.InstalledMemory 96Meg/96MB: ""
+*nl.InstalledMemory 96Meg/96 MB: ""
+*pt.InstalledMemory 96Meg/96 MB: ""
+*sv.InstalledMemory 96Meg/96 MB: ""
+*zh_CN.InstalledMemory 96Meg/96 MB: ""
+*zh_TW.InstalledMemory 96Meg/96 MB: ""
+
 *InstalledMemory 128Meg/128 MB: ""
+*de.InstalledMemory 128Meg/128 MB: ""
+*es.InstalledMemory 128Meg/128 MB: ""
+*fr.InstalledMemory 128Meg/128 Mo: ""
+*it.InstalledMemory 128Meg/128 MB: ""
+*ja.InstalledMemory 128Meg/128MB: ""
+*ko.InstalledMemory 128Meg/128MB: ""
+*nl.InstalledMemory 128Meg/128 MB: ""
+*pt.InstalledMemory 128Meg/128 MB: ""
+*sv.InstalledMemory 128Meg/128 MB: ""
+*zh_CN.InstalledMemory 128Meg/128 MB: ""
+*zh_TW.InstalledMemory 128Meg/128 MB: ""
+
 *InstalledMemory 160Meg/160 MB: ""
+*de.InstalledMemory 160Meg/160 MB: ""
+*es.InstalledMemory 160Meg/160 MB: ""
+*fr.InstalledMemory 160Meg/160 Mo: ""
+*it.InstalledMemory 160Meg/160 MB: ""
+*ja.InstalledMemory 160Meg/160MB: ""
+*ko.InstalledMemory 160Meg/160MB: ""
+*nl.InstalledMemory 160Meg/160 MB: ""
+*pt.InstalledMemory 160Meg/160 MB: ""
+*sv.InstalledMemory 160Meg/160 MB: ""
+*zh_CN.InstalledMemory 160Meg/160 MB: ""
+*zh_TW.InstalledMemory 160Meg/160 MB: ""
+
 *InstalledMemory 192Meg/192 MB: ""
+*de.InstalledMemory 192Meg/192 MB: ""
+*es.InstalledMemory 192Meg/192 MB: ""
+*fr.InstalledMemory 192Meg/192 Mo: ""
+*it.InstalledMemory 192Meg/192 MB: ""
+*ja.InstalledMemory 192Meg/192MB: ""
+*ko.InstalledMemory 192Meg/192MB: ""
+*nl.InstalledMemory 192Meg/192 MB: ""
+*pt.InstalledMemory 192Meg/192 MB: ""
+*sv.InstalledMemory 192Meg/192 MB: ""
+*zh_CN.InstalledMemory 192Meg/192 MB: ""
+*zh_TW.InstalledMemory 192Meg/192 MB: ""
+
 *InstalledMemory 224Meg/224 MB: ""
+*de.InstalledMemory 224Meg/224 MB: ""
+*es.InstalledMemory 224Meg/224 MB: ""
+*fr.InstalledMemory 224Meg/224 Mo: ""
+*it.InstalledMemory 224Meg/224 MB: ""
+*ja.InstalledMemory 224Meg/224MB: ""
+*ko.InstalledMemory 224Meg/224MB: ""
+*nl.InstalledMemory 224Meg/224 MB: ""
+*pt.InstalledMemory 224Meg/224 MB: ""
+*sv.InstalledMemory 224Meg/224 MB: ""
+*zh_CN.InstalledMemory 224Meg/224 MB: ""
+*zh_TW.InstalledMemory 224Meg/224 MB: ""
+
 *InstalledMemory 256Meg/256 MB: ""
+*de.InstalledMemory 256Meg/256 MB: ""
+*es.InstalledMemory 256Meg/256 MB: ""
+*fr.InstalledMemory 256Meg/256 Mo: ""
+*it.InstalledMemory 256Meg/256 MB: ""
+*ja.InstalledMemory 256Meg/256MB: ""
+*ko.InstalledMemory 256Meg/256MB: ""
+*nl.InstalledMemory 256Meg/256 MB: ""
+*pt.InstalledMemory 256Meg/256 MB: ""
+*sv.InstalledMemory 256Meg/256 MB: ""
+*zh_CN.InstalledMemory 256Meg/256 MB: ""
+*zh_TW.InstalledMemory 256Meg/256 MB: ""
+
 *InstalledMemory 320Meg/320 MB: ""
+*de.InstalledMemory 320Meg/320 MB: ""
+*es.InstalledMemory 320Meg/320 MB: ""
+*fr.InstalledMemory 320Meg/320 Mo: ""
+*it.InstalledMemory 320Meg/320 MB: ""
+*ja.InstalledMemory 320Meg/320MB: ""
+*ko.InstalledMemory 320Meg/320MB: ""
+*nl.InstalledMemory 320Meg/320 MB: ""
+*pt.InstalledMemory 320Meg/320 MB: ""
+*sv.InstalledMemory 320Meg/320 MB: ""
+*zh_CN.InstalledMemory 320Meg/320 MB: ""
+*zh_TW.InstalledMemory 320Meg/320 MB: ""
+
 *?InstalledMemory: "
   save
 	currentsystemparams /RamSize get
@@ -150,8 +306,44 @@
 *% =================================
 *OpenUI *HPOption_Duplexer/Duplex Unit (for 2-Sided Printing): Boolean
 *DefaultHPOption_Duplexer: False
+*de.Translation HPOption_Duplexer/Modul für den beidseitigen Druck: ""
+*es.Translation HPOption_Duplexer/Unidad de impresión a doble cara: ""
+*fr.Translation HPOption_Duplexer/Unité d'impression recto verso (pour imprimer sur les deux côtés) : ""
+*it.Translation HPOption_Duplexer/Unità duplex (per stampa fronte/retro): ""
+*ja.Translation HPOption_Duplexer/両面印刷ユニット (両面印刷用): ""
+*ko.Translation HPOption_Duplexer/듀플렉서(양면 인쇄): ""
+*nl.Translation HPOption_Duplexer/Duplexeenheid (dubbelz. afdrukken): ""
+*pt.Translation HPOption_Duplexer/Unidade dúplex (para impressão nos 2 lados): ""
+*sv.Translation HPOption_Duplexer/Duplexenhet (för dubbelsidig utskrift: ""
+*zh_CN.Translation HPOption_Duplexer/双面打印器（用于双面打印）: ""
+*zh_TW.Translation HPOption_Duplexer/雙面列印裝置 (用於雙面列印): ""
+
 *HPOption_Duplexer True/Installed: ""
+*de.HPOption_Duplexer True/Installiert: ""
+*es.HPOption_Duplexer True/Instalado: ""
+*fr.HPOption_Duplexer True/Installé: ""
+*it.HPOption_Duplexer True/Installata: ""
+*ja.HPOption_Duplexer True/取り付け済み: ""
+*ko.HPOption_Duplexer True/설치됨: ""
+*nl.HPOption_Duplexer True/Geïnstalleerd: ""
+*pt.HPOption_Duplexer True/Instalada: ""
+*sv.HPOption_Duplexer True/Installerat: ""
+*zh_CN.HPOption_Duplexer True/已安装: ""
+*zh_TW.HPOption_Duplexer True/已安裝: ""
+
 *HPOption_Duplexer False/Not Installed: ""
+*de.HPOption_Duplexer False/Nicht installiert: ""
+*es.HPOption_Duplexer False/No instalado: ""
+*fr.HPOption_Duplexer False/Non Installé: ""
+*it.HPOption_Duplexer False/Non installata: ""
+*ja.HPOption_Duplexer False/取り付けられていない: ""
+*ko.HPOption_Duplexer False/설치되지 않음: ""
+*nl.HPOption_Duplexer False/Niet geïnstalleerd: ""
+*pt.HPOption_Duplexer False/Não instalada: ""
+*sv.HPOption_Duplexer False/Ej installerat: ""
+*zh_CN.HPOption_Duplexer False/未安装: ""
+*zh_TW.HPOption_Duplexer False/未安裝: ""
+
 *?HPOption_Duplexer: "
   save
    currentpagedevice /Duplex known
@@ -166,17 +358,65 @@
 *OpenUI *HPPaperPolicy/Fit to Page: PickOne
 *OrderDependency: 10 AnySetup *HPPaperPolicy
 *DefaultHPPaperPolicy: PromptUser
+*de.Translation HPPaperPolicy/An Seite anpassen: ""
+*es.Translation HPPaperPolicy/Ajustar al tamaño de la página: ""
+*fr.Translation HPPaperPolicy/Adapter à la page: ""
+*it.Translation HPPaperPolicy/Adatta alla pagina: ""
+*ja.Translation HPPaperPolicy/ページに合わせて調節: ""
+*ko.Translation HPPaperPolicy/페이지에 맞춤: ""
+*nl.Translation HPPaperPolicy/Passend maken: ""
+*pt.Translation HPPaperPolicy/Ajustar à página: ""
+*sv.Translation HPPaperPolicy/Anpassa sida: ""
+*zh_CN.Translation HPPaperPolicy/适合页面: ""
+*zh_TW.Translation HPPaperPolicy/符合頁面大小: ""
+
 *HPPaperPolicy PromptUser/Prompt User: "
    <</DeferredMediaSelection true>> setpagedevice"
 *End
+*de.HPPaperPolicy PromptUser/Benutzeraufforderung: ""
+*es.HPPaperPolicy PromptUser/Informar al usuario: ""
+*fr.HPPaperPolicy PromptUser/Demander à l'utilisateur: ""
+*it.HPPaperPolicy PromptUser/Avvisa utente: ""
+*ja.HPPaperPolicy PromptUser/正しいサイズを入力するよう要求: ""
+*ko.HPPaperPolicy PromptUser/프롬프트 사용자: ""
+*nl.HPPaperPolicy PromptUser/Gebruiker waarschuwen: ""
+*pt.HPPaperPolicy PromptUser/Avisar usuário: ""
+*sv.HPPaperPolicy PromptUser/Meddela användaren: ""
+*zh_CN.HPPaperPolicy PromptUser/提示用户: ""
+*zh_TW.HPPaperPolicy PromptUser/提示使用者: ""
+
 *HPPaperPolicy NearestSizeAdjust/Nearest Size & Scale: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 3 >> >> setpagedevice"
 *End
+*de.HPPaperPolicy NearestSizeAdjust/Nächstes Format und Skalieren: ""
+*es.HPPaperPolicy NearestSizeAdjust/Tamaño parecido, cambiar escala: ""
+*fr.HPPaperPolicy NearestSizeAdjust/Format/échelle plus proches: ""
+*it.HPPaperPolicy NearestSizeAdjust/Formato più vicino e scala: ""
+*ja.HPPaperPolicy NearestSizeAdjust/近似サイズに拡大/縮小: ""
+*ko.HPPaperPolicy NearestSizeAdjust/가장 근사한 크기로 맞추기: ""
+*nl.HPPaperPolicy NearestSizeAdjust/Beste formaat & schaal: ""
+*pt.HPPaperPolicy NearestSizeAdjust/Tamanho e escala mais próximos: ""
+*sv.HPPaperPolicy NearestSizeAdjust/Närmaste storlek och skala: ""
+*zh_CN.HPPaperPolicy NearestSizeAdjust/最接近的尺寸和缩放度: ""
+*zh_TW.HPPaperPolicy NearestSizeAdjust/最接近的尺寸並按比例縮放: ""
+
 *HPPaperPolicy NearestSizeNoAdjust/Nearest Size & Crop: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 5 >> >> setpagedevice"
 *End
+*de.HPPaperPolicy NearestSizeNoAdjust/Nächstes Format und Zuschneiden: ""
+*es.HPPaperPolicy NearestSizeNoAdjust/Tamaño parecido, recortar: ""
+*fr.HPPaperPolicy NearestSizeNoAdjust/Format/coupe plus proches: ""
+*it.HPPaperPolicy NearestSizeNoAdjust/Formato più vicino e ritaglio: ""
+*ja.HPPaperPolicy NearestSizeNoAdjust/近似サイズにトリミング: ""
+*ko.HPPaperPolicy NearestSizeNoAdjust/가장 근사한 크기로 자르기: ""
+*nl.HPPaperPolicy NearestSizeNoAdjust/Beste formaat & bijsnijden: ""
+*pt.HPPaperPolicy NearestSizeNoAdjust/Tamanho e corte mais próximos: ""
+*sv.HPPaperPolicy NearestSizeNoAdjust/Närmaste storlek och beskärning: ""
+*zh_CN.HPPaperPolicy NearestSizeNoAdjust/最接近的尺寸和剪裁: ""
+*zh_TW.HPPaperPolicy NearestSizeNoAdjust/最接近的尺寸並裁剪: ""
+
 *HPPaperPolicy Letter/Letter: "
 userdict begin
   /HPppX1 0 def
@@ -193,6 +433,18 @@ userdict begin
       <</PageSize [612 792] /ImagingBBox null>> setpagedevice}{setpagedevice}ifelse end} bind def
 end"
 *End
+*de.HPPaperPolicy Letter/Letter: ""
+*es.HPPaperPolicy Letter/Letter: ""
+*fr.HPPaperPolicy Letter/Lettre: ""
+*it.HPPaperPolicy Letter/Letter: ""
+*ja.HPPaperPolicy Letter/レター: ""
+*ko.HPPaperPolicy Letter/레터: ""
+*nl.HPPaperPolicy Letter/Letter: ""
+*pt.HPPaperPolicy Letter/carta: ""
+*sv.HPPaperPolicy Letter/Letter: ""
+*zh_CN.HPPaperPolicy Letter/Letter: ""
+*zh_TW.HPPaperPolicy Letter/Letter: ""
+
 *HPPaperPolicy A4/A4: "
 userdict begin
   /HPppX1 0 def
@@ -209,19 +461,88 @@ userdict begin
       <</PageSize [595 842] /ImagingBBox null>> setpagedevice}{setpagedevice}ifelse end} bind def
 end"
 *End
+*de.HPPaperPolicy A4/A4: ""
+*es.HPPaperPolicy A4/A4: ""
+*fr.HPPaperPolicy A4/A4: ""
+*it.HPPaperPolicy A4/A4: ""
+*ja.HPPaperPolicy A4/A4: ""
+*ko.HPPaperPolicy A4/A4: ""
+*nl.HPPaperPolicy A4/A4: ""
+*pt.HPPaperPolicy A4/A4: ""
+*sv.HPPaperPolicy A4/A4: ""
+*zh_CN.HPPaperPolicy A4/A4: ""
+*zh_TW.HPPaperPolicy A4/A4: ""
+
 *?HPPaperPolicy: "
 currentpagedevice /Policies get /PageSize get 5 eq {(Crop)}{(Prompt)} ifelse = flush
 "
 *End
 *CloseUI: *HPPaperPolicy
 *CloseGroup: InstallableOptions
+
+*OpenUI *HPStraightPaperPath/Use Straight Paper Path: Boolean
+*DefaultHPStraightPaperPath: False
+*de.Translation HPStraightPaperPath/Geraden Papierpfad verwenden: ""
+*es.Translation HPStraightPaperPath/Utilizar ruta de papel recta: ""
+*fr.Translation HPStraightPaperPath/Insérer le papier droit: ""
+*it.Translation HPStraightPaperPath/Usa percorso carta diretto: ""
+*ja.Translation HPStraightPaperPath/直線用紙経路の使用: ""
+*ko.Translation HPStraightPaperPath/곧은 용지 경로를 사용하십시오: ""
+*nl.Translation HPStraightPaperPath/Recht papierpad gebruiken: ""
+*pt.Translation HPStraightPaperPath/Usar caminho reto de papel: ""
+*sv.Translation HPStraightPaperPath/Använd rak pappersbana: ""
+*zh_CN.Translation HPStraightPaperPath/使用直线馈纸路径: ""
+*zh_TW.Translation HPStraightPaperPath/使用直接出紙路徑: ""
+
+*HPStraightPaperPath True/On: ""
+*de.HPStraightPaperPath True/Ein: ""
+*es.HPStraightPaperPath True/Activado: ""
+*fr.HPStraightPaperPath True/Activé: ""
+*it.HPStraightPaperPath True/Attiva: ""
+*ja.HPStraightPaperPath True/オン: ""
+*ko.HPStraightPaperPath True/켜짐: ""
+*nl.HPStraightPaperPath True/Aan: ""
+*pt.HPStraightPaperPath True/Ativado: ""
+*sv.HPStraightPaperPath True/På: ""
+*zh_CN.HPStraightPaperPath True/开: ""
+*zh_TW.HPStraightPaperPath True/開啟: ""
+
+*HPStraightPaperPath False/Off: ""
+*de.HPStraightPaperPath False/Aus: ""
+*es.HPStraightPaperPath False/Desactivado: ""
+*fr.HPStraightPaperPath False/Désactivé: ""
+*it.HPStraightPaperPath False/Disattivata: ""
+*ja.HPStraightPaperPath False/オフ: ""
+*ko.HPStraightPaperPath False/꺼짐: ""
+*nl.HPStraightPaperPath False/Uit: ""
+*pt.HPStraightPaperPath False/Desativado: ""
+*sv.HPStraightPaperPath False/Av: ""
+*zh_CN.HPStraightPaperPath False/关: ""
+*zh_TW.HPStraightPaperPath False/關閉: ""
+
+*CloseUI: *HPStraightPaperPath
+*HPStraightPaperPathDS True: "HPSTRAIGHTPAPERPATH_DS"
+*HPStraightPaperPathDS False: "HPSTRAIGHTPAPERPATH_DS"
+
 *% =================================
 *%  CMYK Ink Space
 *% =================================
 *OpenUI *HPCMYKInks/CMYK Inks:  PickOne
 *OrderDependency: 60 AnySetup *HPCMYKInks
 *DefaultHPCMYKInks: Default
-*HPCMYKInks Default/Default:"
+*de.Translation HPCMYKInks/CMYK-Druckfarben: ""
+*es.Translation HPCMYKInks/Tintas CMAN: ""
+*fr.Translation HPCMYKInks/Encres CMYK: ""
+*it.Translation HPCMYKInks/Inchiostri CMYK: ""
+*ja.Translation HPCMYKInks/CMYK インク: ""
+*ko.Translation HPCMYKInks/CMYK 잉크: ""
+*nl.Translation HPCMYKInks/CMYK-inkt: ""
+*pt.Translation HPCMYKInks/Tintas CMYK: ""
+*sv.Translation HPCMYKInks/CMYK-bläck: ""
+*zh_CN.Translation HPCMYKInks/CMYK 油墨: ""
+*zh_TW.Translation HPCMYKInks/CMYK 墨水: ""
+
+*HPCMYKInks Default/Default: "
 globaldict /HPTextCMYKInkSetEmulation known {
 	Fast HPTextCMYKInkSetEmulation
 	Fast HPGraphicsCMYKInkSetEmulation
@@ -229,7 +550,19 @@ globaldict /HPTextCMYKInkSetEmulation known {
 } if
 "
 *End
-*HPCMYKInks SWOP/SWOP:"
+*de.HPCMYKInks Default/Standard: ""
+*es.HPCMYKInks Default/Predeterminada: ""
+*fr.HPCMYKInks Default/Par défaut: ""
+*it.HPCMYKInks Default/Predefinito: ""
+*ja.HPCMYKInks Default/デフォルト: ""
+*ko.HPCMYKInks Default/기본값: ""
+*nl.HPCMYKInks Default/Standaard: ""
+*pt.HPCMYKInks Default/Padrão: ""
+*sv.HPCMYKInks Default/Standard: ""
+*zh_CN.HPCMYKInks Default/默认: ""
+*zh_TW.HPCMYKInks Default/預設值: ""
+
+*HPCMYKInks SWOP/SWOP: "
 globaldict /HPTextCMYKInkSetEmulation known {
 	SWOP HPTextCMYKInkSetEmulation
 	SWOP HPGraphicsCMYKInkSetEmulation
@@ -237,7 +570,19 @@ globaldict /HPTextCMYKInkSetEmulation known {
 } if
 "
 *End
-*HPCMYKInks EURO/Euroscale:"
+*de.HPCMYKInks SWOP/SWOP: ""
+*es.HPCMYKInks SWOP/SWOP: ""
+*fr.HPCMYKInks SWOP/SWOP: ""
+*it.HPCMYKInks SWOP/SWOP: ""
+*ja.HPCMYKInks SWOP/SWOP: ""
+*ko.HPCMYKInks SWOP/SWOP: ""
+*nl.HPCMYKInks SWOP/SWOP: ""
+*pt.HPCMYKInks SWOP/TROCA: ""
+*sv.HPCMYKInks SWOP/SWOP: ""
+*zh_CN.HPCMYKInks SWOP/SWOP: ""
+*zh_TW.HPCMYKInks SWOP/SWOP: ""
+
+*HPCMYKInks EURO/Euroscale: "
 globaldict /HPTextCMYKInkSetEmulation known {
 	Euro HPTextCMYKInkSetEmulation
 	Euro HPGraphicsCMYKInkSetEmulation
@@ -245,7 +590,19 @@ globaldict /HPTextCMYKInkSetEmulation known {
 } if
 "
 *End
-*HPCMYKInks DIC/DIC (dainippon):"
+*de.HPCMYKInks EURO/EuroScale: ""
+*es.HPCMYKInks EURO/EuroScale: ""
+*fr.HPCMYKInks EURO/EuroScale: ""
+*it.HPCMYKInks EURO/EuroScale: ""
+*ja.HPCMYKInks EURO/EuroScale: ""
+*ko.HPCMYKInks EURO/EuroScale: ""
+*nl.HPCMYKInks EURO/EuroScale: ""
+*pt.HPCMYKInks EURO/Escala européia: ""
+*sv.HPCMYKInks EURO/EuroScale: ""
+*zh_CN.HPCMYKInks EURO/EuroScale: ""
+*zh_TW.HPCMYKInks EURO/EuroScale: ""
+
+*HPCMYKInks DIC/DIC (dainippon): "
 globaldict /HPTextCMYKInkSetEmulation known {
 	DIC HPTextCMYKInkSetEmulation
 	DIC HPGraphicsCMYKInkSetEmulation
@@ -253,7 +610,19 @@ globaldict /HPTextCMYKInkSetEmulation known {
 } if
 "
 *End
-*HPCMYKInks NoAdj/Device:"
+*de.HPCMYKInks DIC/DIC (Dainippon): ""
+*es.HPCMYKInks DIC/DIC (dainippon): ""
+*fr.HPCMYKInks DIC/DIC (dainippon): ""
+*it.HPCMYKInks DIC/DIC (dainippon): ""
+*ja.HPCMYKInks DIC/DIC (dainippon): ""
+*ko.HPCMYKInks DIC/DIC(dainippon): ""
+*nl.HPCMYKInks DIC/DIC (dainippon): ""
+*pt.HPCMYKInks DIC/DIC (dainippon): ""
+*sv.HPCMYKInks DIC/DIC (dainippon): ""
+*zh_CN.HPCMYKInks DIC/DIC (dainippon): ""
+*zh_TW.HPCMYKInks DIC/DIC (dainippon): ""
+
+*HPCMYKInks NoAdj/Device: "
 globaldict /HPTextCMYKInkSetEmulation known {
 	NoAdj HPTextCMYKInkSetEmulation
 	NoAdj HPGraphicsCMYKInkSetEmulation
@@ -261,6 +630,18 @@ globaldict /HPTextCMYKInkSetEmulation known {
 } if
 "
 *End
+*de.HPCMYKInks NoAdj/Gerät: ""
+*es.HPCMYKInks NoAdj/Dispositivo: ""
+*fr.HPCMYKInks NoAdj/Périphérique: ""
+*it.HPCMYKInks NoAdj/Periferica: ""
+*ja.HPCMYKInks NoAdj/デバイス: ""
+*ko.HPCMYKInks NoAdj/장치: ""
+*nl.HPCMYKInks NoAdj/Apparaat: ""
+*pt.HPCMYKInks NoAdj/Dispositivo: ""
+*sv.HPCMYKInks NoAdj/Enhet: ""
+*zh_CN.HPCMYKInks NoAdj/设备: ""
+*zh_TW.HPCMYKInks NoAdj/裝置: ""
+
 *CloseUI: *HPCMYKInks
 *% ===================================
 *% Page Size Selection
@@ -270,75 +651,363 @@ globaldict /HPTextCMYKInkSetEmulation known {
 *OpenUI *PageSize/Page Size: PickOne
 *OrderDependency: 30 AnySetup *PageSize
 *DefaultPageSize: Letter
+*de.Translation PageSize/Papierformat: ""
+*es.Translation PageSize/Tamaño del papel: ""
+*fr.Translation PageSize/Format de page: ""
+*it.Translation PageSize/Dimensioni pagina: ""
+*ja.Translation PageSize/ページ サイズ: ""
+*ko.Translation PageSize/용지 크기: ""
+*nl.Translation PageSize/Papierformaat: ""
+*pt.Translation PageSize/Tamanho do papel: ""
+*sv.Translation PageSize/Sidstorlek: ""
+*zh_CN.Translation PageSize/页面大小: ""
+*zh_TW.Translation PageSize/頁面尺寸: ""
+
 *PageSize Letter/Letter: "
 	<</PageSize [612 792] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Letter/Letter: ""
+*es.PageSize Letter/Letter: ""
+*fr.PageSize Letter/Lettre: ""
+*it.PageSize Letter/Letter: ""
+*ja.PageSize Letter/レター: ""
+*ko.PageSize Letter/레터: ""
+*nl.PageSize Letter/Letter: ""
+*pt.PageSize Letter/carta: ""
+*sv.PageSize Letter/Letter: ""
+*zh_CN.PageSize Letter/信纸: ""
+*zh_TW.PageSize Letter/Letter: ""
+
 *PageSize Legal/Legal: "
 	<</PageSize [612 1008] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Legal/Legal: ""
+*es.PageSize Legal/Legal: ""
+*fr.PageSize Legal/Légal: ""
+*it.PageSize Legal/Legal: ""
+*ja.PageSize Legal/リーガル: ""
+*ko.PageSize Legal/리갈: ""
+*nl.PageSize Legal/Legal: ""
+*pt.PageSize Legal/ofício: ""
+*sv.PageSize Legal/Legal: ""
+*zh_CN.PageSize Legal/Legal: ""
+*zh_TW.PageSize Legal/Legal: ""
+
 *PageSize Executive/Executive: "
 	<</PageSize [522 756] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Executive/Executive: ""
+*es.PageSize Executive/Ejecutivo: ""
+*fr.PageSize Executive/Exécutif: ""
+*it.PageSize Executive/Executive: ""
+*ja.PageSize Executive/エグゼクティブ: ""
+*ko.PageSize Executive/Executive: ""
+*nl.PageSize Executive/Executive: ""
+*pt.PageSize Executive/executivo: ""
+*sv.PageSize Executive/Executive: ""
+*zh_CN.PageSize Executive/Executive: ""
+*zh_TW.PageSize Executive/Executive: ""
+
 *PageSize Statement/Statement: "
 <</PageSize [396 612] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Statement/Statement: ""
+*es.PageSize Statement/declaración: ""
+*fr.PageSize Statement/Relevé: ""
+*it.PageSize Statement/Dichiarazione: ""
+*ja.PageSize Statement/ステートメント: ""
+*ko.PageSize Statement/Statement: ""
+*nl.PageSize Statement/verklaring: ""
+*pt.PageSize Statement/declaração: ""
+*sv.PageSize Statement/Statement: ""
+*zh_CN.PageSize Statement/结算单: ""
+*zh_TW.PageSize Statement/Statement: ""
+
 *PageSize A4/A4: "
 	<</PageSize [595 842] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize A4/A4: ""
+*es.PageSize A4/A4: ""
+*fr.PageSize A4/A4: ""
+*it.PageSize A4/A4: ""
+*ja.PageSize A4/A4: ""
+*ko.PageSize A4/A4: ""
+*nl.PageSize A4/A4: ""
+*pt.PageSize A4/A4: ""
+*sv.PageSize A4/A4: ""
+*zh_CN.PageSize A4/A4: ""
+*zh_TW.PageSize A4/A4: ""
+
 *PageSize A5/A5: "
 	<</PageSize [420 596] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize A5/A5: ""
+*es.PageSize A5/A5: ""
+*fr.PageSize A5/A5: ""
+*it.PageSize A5/A5: ""
+*ja.PageSize A5/A5: ""
+*ko.PageSize A5/A5: ""
+*nl.PageSize A5/A5: ""
+*pt.PageSize A5/A5: ""
+*sv.PageSize A5/A5: ""
+*zh_CN.PageSize A5/A5: ""
+*zh_TW.PageSize A5/A5: ""
+
 *PageSize B5/B5 (JIS): "
       <</PageSize [516 729] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize B5/B5 (JIS): ""
+*es.PageSize B5/JIS B5: ""
+*fr.PageSize B5/JIS B5: ""
+*it.PageSize B5/JIS B5: ""
+*ja.PageSize B5/B5 (JIS): ""
+*ko.PageSize B5/B5(JIS): ""
+*nl.PageSize B5/JIS B5: ""
+*pt.PageSize B5/B5 JIS: ""
+*sv.PageSize B5/JIS B5: ""
+*zh_CN.PageSize B5/JIS B5: ""
+*zh_TW.PageSize B5/JIS B5: ""
+
 *PageSize ISOB5/B5 (ISO): "
       <</PageSize [499 709] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize ISOB5/B5 (ISO): ""
+*es.PageSize ISOB5/B5 (ISO): ""
+*fr.PageSize ISOB5/B5 (ISO): ""
+*it.PageSize ISOB5/B5 (ISO): ""
+*ja.PageSize ISOB5/B5 (ISO): ""
+*ko.PageSize ISOB5/B5(ISO): ""
+*nl.PageSize ISOB5/B5 (ISO): ""
+*pt.PageSize ISOB5/B5 (ISO): ""
+*sv.PageSize ISOB5/B5 (ISO): ""
+*zh_CN.PageSize ISOB5/B5 (ISO): ""
+*zh_TW.PageSize ISOB5/B5 (ISO): ""
+
 *PageSize Env10/Envelope #10: "
 	<</PageSize [297 684] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize Env10/Umschlag Nr. 10: ""
+*es.PageSize Env10/sobre nº 10: ""
+*fr.PageSize Env10/Enveloppe n° 10: ""
+*it.PageSize Env10/Busta n.10: ""
+*ja.PageSize Env10/封筒 10 号: ""
+*ko.PageSize Env10/#10 봉투: ""
+*nl.PageSize Env10/envelop nr. 10: ""
+*pt.PageSize Env10/envelope nº 10: ""
+*sv.PageSize Env10/Kuvert nr 10: ""
+*zh_CN.PageSize Env10/10 号信封: ""
+*zh_TW.PageSize Env10/10 號信封: ""
+
 *PageSize EnvA2/Envelope A2: "
 	<</PageSize [315 418] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvA2/Umschlag A2: ""
+*es.PageSize EnvA2/sobre A2: ""
+*fr.PageSize EnvA2/Enveloppe A2: ""
+*it.PageSize EnvA2/Busta A2: ""
+*ja.PageSize EnvA2/封筒 A2: ""
+*ko.PageSize EnvA2/봉투 A2: ""
+*nl.PageSize EnvA2/A2-envelop: ""
+*pt.PageSize EnvA2/envelope A2: ""
+*sv.PageSize EnvA2/A2-kuvert: ""
+*zh_CN.PageSize EnvA2/A2 信封: ""
+*zh_TW.PageSize EnvA2/A2 信封: ""
+
 *PageSize EnvMonarch/Envelope Monarch: "
 	<</PageSize [279 540] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvMonarch/Umschlag Monarch: ""
+*es.PageSize EnvMonarch/sobre Monarca: ""
+*fr.PageSize EnvMonarch/Enveloppe Monarch: ""
+*it.PageSize EnvMonarch/Busta Monarch: ""
+*ja.PageSize EnvMonarch/Monarch 封筒: ""
+*ko.PageSize EnvMonarch/Monarch 봉투: ""
+*nl.PageSize EnvMonarch/Monarch-envelop: ""
+*pt.PageSize EnvMonarch/envelope Monarch: ""
+*sv.PageSize EnvMonarch/Kuvert Monarch: ""
+*zh_CN.PageSize EnvMonarch/Monarch 信封: ""
+*zh_TW.PageSize EnvMonarch/Monarch信封: ""
+
 *PageSize EnvDL/Envelope DL: "
 	<</PageSize [312 624] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvDL/Umschlag DL: ""
+*es.PageSize EnvDL/sobre DL: ""
+*fr.PageSize EnvDL/Enveloppe DL: ""
+*it.PageSize EnvDL/Busta DL: ""
+*ja.PageSize EnvDL/DL 封筒: ""
+*ko.PageSize EnvDL/DL 봉투: ""
+*nl.PageSize EnvDL/DL-envelop: ""
+*pt.PageSize EnvDL/envelope DL: ""
+*sv.PageSize EnvDL/Kuvert DL: ""
+*zh_CN.PageSize EnvDL/DL 信封: ""
+*zh_TW.PageSize EnvDL/DL 信封: ""
+
 *PageSize EnvC5/Envelope C5: "
 	<</PageSize [459 649] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvC5/Umschlag C5: ""
+*es.PageSize EnvC5/sobre C5: ""
+*fr.PageSize EnvC5/Enveloppe C5: ""
+*it.PageSize EnvC5/Busta C5: ""
+*ja.PageSize EnvC5/C5 封筒: ""
+*ko.PageSize EnvC5/C5 봉투: ""
+*nl.PageSize EnvC5/C5-envelop: ""
+*pt.PageSize EnvC5/envelope C5: ""
+*sv.PageSize EnvC5/Kuvert, C5: ""
+*zh_CN.PageSize EnvC5/C5 信封: ""
+*zh_TW.PageSize EnvC5/C5 信封: ""
+
 *PageSize EnvC6/Envelope C6: "
 	<</PageSize [324 460] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvC6/Umschlag C6: ""
+*es.PageSize EnvC6/sobre C6 (114 x 162 mm): ""
+*fr.PageSize EnvC6/Enveloppe C6: ""
+*it.PageSize EnvC6/Busta C6: ""
+*ja.PageSize EnvC6/C6 封筒: ""
+*ko.PageSize EnvC6/C6 봉투: ""
+*nl.PageSize EnvC6/C6-envelop: ""
+*pt.PageSize EnvC6/Envelope C6: ""
+*sv.PageSize EnvC6/Kuvert, C6: ""
+*zh_CN.PageSize EnvC6/C6 信封: ""
+*zh_TW.PageSize EnvC6/C6 信封: ""
+
 *PageSize HPGreetCard/HP Greeting Card Envelope: "
 	<</PageSize [315 432] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize HPGreetCard/hp Grußkartenumschlag: ""
+*es.PageSize HPGreetCard/sobre tarjeta felicitación HP: ""
+*fr.PageSize HPGreetCard/Envel. pour cartes de voeux HP: ""
+*it.PageSize HPGreetCard/Busta hp per biglietti d'auguri: ""
+*ja.PageSize HPGreetCard/グリーティング カード封筒: ""
+*ko.PageSize HPGreetCard/HP 카드 봉투: ""
+*nl.PageSize HPGreetCard/HP wenskaartenvelop: ""
+*pt.PageSize HPGreetCard/envelope p/ cart. felicit. hp: ""
+*sv.PageSize HPGreetCard/HP gratulationskort, kuvert: ""
+*zh_CN.PageSize HPGreetCard/hp 贺卡信封: ""
+*zh_TW.PageSize HPGreetCard/HP 賀卡信封: ""
+
 *PageSize EnvJ3/Japanese Envelope Chou #3: "
 	<</PageSize [340 666] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvJ3/Japanischer Umschlag Chou Nr. 3: ""
+*es.PageSize EnvJ3/sobre japonés Chou nº 3: ""
+*fr.PageSize EnvJ3/Enveloppe japonaise Chou n° 3: ""
+*it.PageSize EnvJ3/Busta giapponese Chou n.3: ""
+*ja.PageSize EnvJ3/封筒 長形 3 号: ""
+*ko.PageSize EnvJ3/긴 규격 봉투 #3: ""
+*nl.PageSize EnvJ3/Japanse envelop Chou #3: ""
+*pt.PageSize EnvJ3/envelope japonês Chou nº 3: ""
+*sv.PageSize EnvJ3/Japanskt kuvert Chou #3: ""
+*zh_CN.PageSize EnvJ3/Chou #3 日本信封: ""
+*zh_TW.PageSize EnvJ3/Chou 3 號日式信封: ""
+
 *PageSize EnvJ4/Japanese Envelope Chou #4: "
 	<</PageSize [256 582] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize EnvJ4/Japanischer Umschlag Chou Nr. 4: ""
+*es.PageSize EnvJ4/sobre japonés Chou nº 4: ""
+*fr.PageSize EnvJ4/Enveloppe japonaise Chou n° 4: ""
+*it.PageSize EnvJ4/Busta giapponese Chou n.4: ""
+*ja.PageSize EnvJ4/封筒 長形 4 号: ""
+*ko.PageSize EnvJ4/긴 규격 봉투 #4: ""
+*nl.PageSize EnvJ4/Japanse envelop Chou #4: ""
+*pt.PageSize EnvJ4/envelope japonês Chou nº 4: ""
+*sv.PageSize EnvJ4/Japanskt kuvert Chou #4: ""
+*zh_CN.PageSize EnvJ4/Chou #4 日本信封: ""
+*zh_TW.PageSize EnvJ4/Chou 4 號日式信封: ""
+
 *PageSize 3x5/Index Card 3x5: "
 <</PageSize [216 360] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize 3x5/Karteikarte 76 x 127 mm: ""
+*es.PageSize 3x5/ficha 3 x 5 pulg.: ""
+*fr.PageSize 3x5/Fiche Bristol 3 x 5 pouces: ""
+*it.PageSize 3x5/Scheda 76x127 mm: ""
+*ja.PageSize 3x5/インデックス カード 3 x 5: ""
+*ko.PageSize 3x5/색인 카드 3x5in.: ""
+*nl.PageSize 3x5/indexkaart 3x5 inch: ""
+*pt.PageSize 3x5/cartão de índice 3 x 5: ""
+*sv.PageSize 3x5/Registerkort 76,2 x 127 mm: ""
+*zh_CN.PageSize 3x5/索引卡 3x5: ""
+*zh_TW.PageSize 3x5/3x5 索引卡: ""
+
 *PageSize 4x6/Index Card 4x6: "
 <</PageSize [288 432] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize 4x6/Karteikarte 102 x 152 mm: ""
+*es.PageSize 4x6/ficha 4 x 6 pulg.: ""
+*fr.PageSize 4x6/Fiche Bristol 4 x 6 pouces: ""
+*it.PageSize 4x6/Scheda 102x152 mm: ""
+*ja.PageSize 4x6/インデックス カード 4 x 6: ""
+*ko.PageSize 4x6/색인 카드 4x6in.: ""
+*nl.PageSize 4x6/indexkaart 4x6 inch: ""
+*pt.PageSize 4x6/cartão de índice 4 x 6: ""
+*sv.PageSize 4x6/Registerkort 102 x 153 mm: ""
+*zh_CN.PageSize 4x6/索引卡 4x6: ""
+*zh_TW.PageSize 4x6/4x6 索引卡: ""
+
 *PageSize 5x8/Index Card 5x8: "
 <</PageSize [360 576] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize 5x8/Karteikarte 127 x 203 mm: ""
+*es.PageSize 5x8/ficha 5 x 8 pulg.: ""
+*fr.PageSize 5x8/Fiche Bristol 5 x 8 pouces: ""
+*it.PageSize 5x8/Scheda 127x203 mm: ""
+*ja.PageSize 5x8/インデックス カード 5 x 8: ""
+*ko.PageSize 5x8/색인 카드 5x8in.: ""
+*nl.PageSize 5x8/indexkaart 5x8 inch: ""
+*pt.PageSize 5x8/cartão de índice 5 x 8: ""
+*sv.PageSize 5x8/Registerkort 127 x 203 mm: ""
+*zh_CN.PageSize 5x8/索引卡 5x8: ""
+*zh_TW.PageSize 5x8/5x8 索引卡: ""
+
 *PageSize JPost/Hagaki Card: "
 <</PageSize [284 420] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize JPost/Hagaki-Karte: ""
+*es.PageSize JPost/Tarjeta Hagaki: ""
+*fr.PageSize JPost/Carte Hagaki: ""
+*it.PageSize JPost/Scheda Hagaki: ""
+*ja.PageSize JPost/ハガキ: ""
+*ko.PageSize JPost/엽서 카드: ""
+*nl.PageSize JPost/Hagaki-kaart: ""
+*pt.PageSize JPost/cartão Hagaki: ""
+*sv.PageSize JPost/Hagakikort: ""
+*zh_CN.PageSize JPost/Hagaki 卡: ""
+*zh_TW.PageSize JPost/Hagaki 卡: ""
+
 *PageSize JPostD/Ofuku Hagaki: "
 <</PageSize [420 566] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize JPostD/Oufuku-Hagaki: ""
+*es.PageSize JPostD/Ofuku Hagaki 200 x 148 mm: ""
+*fr.PageSize JPostD/Ofuku Hagaki: ""
+*it.PageSize JPostD/Ofuku Hagaki: ""
+*ja.PageSize JPostD/往復ハガキ: ""
+*ko.PageSize JPostD/오푸쿠 엽서: ""
+*nl.PageSize JPostD/Ofuku Hagaki: ""
+*pt.PageSize JPostD/Ofuku Hagaki: ""
+*sv.PageSize JPostD/Ofuku Hagaki: ""
+*zh_CN.PageSize JPostD/Ofuku Hagaki: ""
+*zh_TW.PageSize JPostD/Ofuku Hagaki: ""
+
 *PageSize A6card/A6: "
 	<</PageSize [298 420] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageSize A6card/A6: ""
+*es.PageSize A6card/A6: ""
+*fr.PageSize A6card/A6: ""
+*it.PageSize A6card/A6: ""
+*ja.PageSize A6card/A6: ""
+*ko.PageSize A6card/A6: ""
+*nl.PageSize A6card/A6: ""
+*pt.PageSize A6card/A6: ""
+*sv.PageSize A6card/A6: ""
+*zh_CN.PageSize A6card/A6: ""
+*zh_TW.PageSize A6card/A6: ""
+
 *?PageSize: "
  save
    currentpagedevice /PageSize get aload pop
@@ -380,78 +1049,366 @@ restore
 *% ===================================
 *% Page Region
 *% ===================================
-*OpenUI *PageRegion:  PickOne
+*OpenUI *PageRegion/Page Region:  PickOne
 *OrderDependency: 30 AnySetup *PageRegion
 *DefaultPageRegion: Letter
+*de.Translation PageRegion/Seitenbereich: ""
+*es.Translation PageRegion/Dimensión de papel: ""
+*fr.Translation PageRegion/Région de page: ""
+*it.Translation PageRegion/Dimensioni regione: ""
+*ja.Translation PageRegion/Page Region: ""
+*ko.Translation PageRegion/Page Region: ""
+*nl.Translation PageRegion/Page Region: ""
+*pt.Translation PageRegion/Região do papel: ""
+*sv.Translation PageRegion/Page Region: ""
+*zh_CN.Translation PageRegion/Page Region: ""
+*zh_TW.Translation PageRegion/Page Region: ""
+
 *PageRegion  Letter/Letter: "
 	<</PageSize [612 792] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  Letter/Letter: ""
+*es.PageRegion  Letter/Letter: ""
+*fr.PageRegion  Letter/Lettre: ""
+*it.PageRegion  Letter/Letter: ""
+*ja.PageRegion  Letter/レター: ""
+*ko.PageRegion  Letter/레터: ""
+*nl.PageRegion  Letter/Letter: ""
+*pt.PageRegion  Letter/carta: ""
+*sv.PageRegion  Letter/Letter: ""
+*zh_CN.PageRegion  Letter/Letter: ""
+*zh_TW.PageRegion  Letter/Letter: ""
+
 *PageRegion  Legal/Legal: "
 	<</PageSize [612 1008] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  Legal/Legal: ""
+*es.PageRegion  Legal/Legal: ""
+*fr.PageRegion  Legal/Légal: ""
+*it.PageRegion  Legal/Legal: ""
+*ja.PageRegion  Legal/リーガル: ""
+*ko.PageRegion  Legal/리갈: ""
+*nl.PageRegion  Legal/Legal: ""
+*pt.PageRegion  Legal/ofício: ""
+*sv.PageRegion  Legal/Legal: ""
+*zh_CN.PageRegion  Legal/Legal: ""
+*zh_TW.PageRegion  Legal/Legal: ""
+
 *PageRegion  Executive/Executive: "
 	<</PageSize [522 756] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  Executive/Executive: ""
+*es.PageRegion  Executive/Ejecutivo: ""
+*fr.PageRegion  Executive/Exécutif: ""
+*it.PageRegion  Executive/Executive: ""
+*ja.PageRegion  Executive/エグゼクティブ: ""
+*ko.PageRegion  Executive/Executive: ""
+*nl.PageRegion  Executive/Executive: ""
+*pt.PageRegion  Executive/executivo: ""
+*sv.PageRegion  Executive/Executive: ""
+*zh_CN.PageRegion  Executive/Executive: ""
+*zh_TW.PageRegion  Executive/Executive: ""
+
 *PageRegion  Statement/Statement: "
 <</PageSize [396 612] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  Statement/Statement: ""
+*es.PageRegion  Statement/declaración: ""
+*fr.PageRegion  Statement/Relevé: ""
+*it.PageRegion  Statement/Dichiarazione: ""
+*ja.PageRegion  Statement/ステートメント: ""
+*ko.PageRegion  Statement/Statement: ""
+*nl.PageRegion  Statement/verklaring: ""
+*pt.PageRegion  Statement/declaração: ""
+*sv.PageRegion  Statement/Statement: ""
+*zh_CN.PageRegion  Statement/结算单: ""
+*zh_TW.PageRegion  Statement/Statement: ""
+
 *PageRegion  A4/A4: "
 	<</PageSize [595 842] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  A4/A4: ""
+*es.PageRegion  A4/A4: ""
+*fr.PageRegion  A4/A4: ""
+*it.PageRegion  A4/A4: ""
+*ja.PageRegion  A4/A4: ""
+*ko.PageRegion  A4/A4: ""
+*nl.PageRegion  A4/A4: ""
+*pt.PageRegion  A4/A4: ""
+*sv.PageRegion  A4/A4: ""
+*zh_CN.PageRegion  A4/A4: ""
+*zh_TW.PageRegion  A4/A4: ""
+
 *PageRegion  A5/A5: "
 	<</PageSize [420 596] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  A5/A5: ""
+*es.PageRegion  A5/A5: ""
+*fr.PageRegion  A5/A5: ""
+*it.PageRegion  A5/A5: ""
+*ja.PageRegion  A5/A5: ""
+*ko.PageRegion  A5/A5: ""
+*nl.PageRegion  A5/A5: ""
+*pt.PageRegion  A5/A5: ""
+*sv.PageRegion  A5/A5: ""
+*zh_CN.PageRegion  A5/A5: ""
+*zh_TW.PageRegion  A5/A5: ""
+
 *PageRegion  B5/B5 (JIS): "
       <</PageSize [516 729] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  B5/B5 (JIS): ""
+*es.PageRegion  B5/B5 (JIS): ""
+*fr.PageRegion  B5/B5 (JIS): ""
+*it.PageRegion  B5/B5 (JIS): ""
+*ja.PageRegion  B5/B5 (JIS): ""
+*ko.PageRegion  B5/B5(JIS): ""
+*nl.PageRegion  B5/B5 (JIS): ""
+*pt.PageRegion  B5/B5 (JIS): ""
+*sv.PageRegion  B5/B5 (JIS): ""
+*zh_CN.PageRegion  B5/B5 (JIS): ""
+*zh_TW.PageRegion  B5/B5 (JIS): ""
+
 *PageRegion ISOB5/B5 (ISO): "
       <</PageSize [499 709] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion ISOB5/B5 (ISO): ""
+*es.PageRegion ISOB5/B5 (ISO): ""
+*fr.PageRegion ISOB5/B5 (ISO): ""
+*it.PageRegion ISOB5/B5 (ISO): ""
+*ja.PageRegion ISOB5/B5 (ISO): ""
+*ko.PageRegion ISOB5/B5(ISO): ""
+*nl.PageRegion ISOB5/B5 (ISO): ""
+*pt.PageRegion ISOB5/B5 (ISO): ""
+*sv.PageRegion ISOB5/B5 (ISO): ""
+*zh_CN.PageRegion ISOB5/B5 (ISO): ""
+*zh_TW.PageRegion ISOB5/B5 (ISO): ""
+
 *PageRegion  Env10/Envelope #10: "
 	<</PageSize [297 684] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  Env10/Umschlag Nr. 10: ""
+*es.PageRegion  Env10/sobre nº 10: ""
+*fr.PageRegion  Env10/Enveloppe n° 10: ""
+*it.PageRegion  Env10/Busta n.10: ""
+*ja.PageRegion  Env10/封筒 10 号: ""
+*ko.PageRegion  Env10/#10 봉투: ""
+*nl.PageRegion  Env10/envelop nr. 10: ""
+*pt.PageRegion  Env10/envelope nº 10: ""
+*sv.PageRegion  Env10/Kuvert nr 10: ""
+*zh_CN.PageRegion  Env10/10 号信封: ""
+*zh_TW.PageRegion  Env10/10 號信封: ""
+
 *PageRegion  EnvA2/Envelope A2: "
 	<</PageSize [315 418] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvA2/Umschlag A2: ""
+*es.PageRegion  EnvA2/sobre A2: ""
+*fr.PageRegion  EnvA2/Enveloppe A2: ""
+*it.PageRegion  EnvA2/Busta A2: ""
+*ja.PageRegion  EnvA2/封筒 A2: ""
+*ko.PageRegion  EnvA2/봉투 A2: ""
+*nl.PageRegion  EnvA2/A2-envelop: ""
+*pt.PageRegion  EnvA2/envelope A2: ""
+*sv.PageRegion  EnvA2/A2-kuvert: ""
+*zh_CN.PageRegion  EnvA2/A2 信封: ""
+*zh_TW.PageRegion  EnvA2/A2 信封: ""
+
 *PageRegion  EnvMonarch/Envelope Monarch: "
 	<</PageSize [279 540] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvMonarch/Umschlag Monarch: ""
+*es.PageRegion  EnvMonarch/sobre Monarca: ""
+*fr.PageRegion  EnvMonarch/Enveloppe Monarch: ""
+*it.PageRegion  EnvMonarch/Busta Monarch: ""
+*ja.PageRegion  EnvMonarch/Monarch 封筒: ""
+*ko.PageRegion  EnvMonarch/Monarch 봉투: ""
+*nl.PageRegion  EnvMonarch/Monarch-envelop: ""
+*pt.PageRegion  EnvMonarch/envelope Monarch: ""
+*sv.PageRegion  EnvMonarch/Kuvert Monarch: ""
+*zh_CN.PageRegion  EnvMonarch/Monarch 信封: ""
+*zh_TW.PageRegion  EnvMonarch/Monarch信封: ""
+
 *PageRegion  EnvDL/Envelope DL: "
 	<</PageSize [312 624] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvDL/Umschlag DL: ""
+*es.PageRegion  EnvDL/sobre DL: ""
+*fr.PageRegion  EnvDL/Enveloppe DL: ""
+*it.PageRegion  EnvDL/Busta DL: ""
+*ja.PageRegion  EnvDL/DL 封筒: ""
+*ko.PageRegion  EnvDL/DL 봉투: ""
+*nl.PageRegion  EnvDL/DL-envelop: ""
+*pt.PageRegion  EnvDL/envelope DL: ""
+*sv.PageRegion  EnvDL/Kuvert DL: ""
+*zh_CN.PageRegion  EnvDL/DL 信封: ""
+*zh_TW.PageRegion  EnvDL/DL 信封: ""
+
 *PageRegion  EnvC5/Envelope C5: "
 	<</PageSize [459 649] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvC5/Umschlag C5: ""
+*es.PageRegion  EnvC5/sobre C5: ""
+*fr.PageRegion  EnvC5/Enveloppe C5: ""
+*it.PageRegion  EnvC5/Busta C5: ""
+*ja.PageRegion  EnvC5/C5 封筒: ""
+*ko.PageRegion  EnvC5/C5 봉투: ""
+*nl.PageRegion  EnvC5/C5-envelop: ""
+*pt.PageRegion  EnvC5/envelope C5: ""
+*sv.PageRegion  EnvC5/Kuvert, C5: ""
+*zh_CN.PageRegion  EnvC5/C5 信封: ""
+*zh_TW.PageRegion  EnvC5/C5 信封: ""
+
 *PageRegion  EnvC6/Envelope C6: "
 	<</PageSize [324 460] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvC6/Umschlag C6: ""
+*es.PageRegion  EnvC6/sobre C6 (114 x 162 mm): ""
+*fr.PageRegion  EnvC6/Enveloppe C6: ""
+*it.PageRegion  EnvC6/Busta C6: ""
+*ja.PageRegion  EnvC6/C6 封筒: ""
+*ko.PageRegion  EnvC6/C6 봉투: ""
+*nl.PageRegion  EnvC6/C6-envelop: ""
+*pt.PageRegion  EnvC6/Envelope C6: ""
+*sv.PageRegion  EnvC6/Kuvert, C6: ""
+*zh_CN.PageRegion  EnvC6/C6 信封: ""
+*zh_TW.PageRegion  EnvC6/C6 信封: ""
+
 *PageRegion  HPGreetCard/HP Greeting Card Envelope: "
 	<</PageSize [315 432] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  HPGreetCard/hp Grußkartenumschlag: ""
+*es.PageRegion  HPGreetCard/sobre para tarjeta de felicitación hp (4,38 x 6 pulg.): ""
+*fr.PageRegion  HPGreetCard/Enveloppe pour cartes de voeux HP: ""
+*it.PageRegion  HPGreetCard/Busta hp per biglietti d'auguri: ""
+*ja.PageRegion  HPGreetCard/グリーティング カード封筒: ""
+*ko.PageRegion  HPGreetCard/hp 카드 봉투: ""
+*nl.PageRegion  HPGreetCard/HP wenskaartenvelop: ""
+*pt.PageRegion  HPGreetCard/envelope para cartão de felicitações hp: ""
+*sv.PageRegion  HPGreetCard/HP gratulationskort, kuvert: ""
+*zh_CN.PageRegion  HPGreetCard/hp 贺卡信封: ""
+*zh_TW.PageRegion  HPGreetCard/HP 賀卡信封: ""
+
 *PageRegion  EnvJ3/Japanese Envelope Chou #3: "
 	<</PageSize [340 666] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvJ3/Japanischer Umschlag Chou Nr. 3: ""
+*es.PageRegion  EnvJ3/sobre japonés Chou nº 3: ""
+*fr.PageRegion  EnvJ3/Enveloppe japonaise Chou n° 3: ""
+*it.PageRegion  EnvJ3/Busta giapponese Chou n.3: ""
+*ja.PageRegion  EnvJ3/封筒 長形 3 号: ""
+*ko.PageRegion  EnvJ3/긴 규격 봉투 #3: ""
+*nl.PageRegion  EnvJ3/Japanse envelop Chou #3: ""
+*pt.PageRegion  EnvJ3/envelope japonês Chou nº 3: ""
+*sv.PageRegion  EnvJ3/Japanskt kuvert Chou #3: ""
+*zh_CN.PageRegion  EnvJ3/Chou #3 日本信封: ""
+*zh_TW.PageRegion  EnvJ3/Chou 3 號日式信封: ""
+
 *PageRegion  EnvJ4/Japanese Envelope Chou #4: "
 	<</PageSize [256 582] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  EnvJ4/Japanischer Umschlag Chou Nr. 4: ""
+*es.PageRegion  EnvJ4/sobre japonés Chou nº 4: ""
+*fr.PageRegion  EnvJ4/Enveloppe japonaise Chou n° 4: ""
+*it.PageRegion  EnvJ4/Busta giapponese Chou n.4: ""
+*ja.PageRegion  EnvJ4/封筒 長形 4 号: ""
+*ko.PageRegion  EnvJ4/긴 규격 봉투 #4: ""
+*nl.PageRegion  EnvJ4/Japanse envelop Chou #4: ""
+*pt.PageRegion  EnvJ4/envelope japonês Chou nº 4: ""
+*sv.PageRegion  EnvJ4/Japanskt kuvert Chou #4: ""
+*zh_CN.PageRegion  EnvJ4/Chou #4 日本信封: ""
+*zh_TW.PageRegion  EnvJ4/Chou 4 號日式信封: ""
+
 *PageRegion  3x5/Index Card 3x5: "
 <</PageSize [216 360] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  3x5/Karteikarte 76 x 127 mm: ""
+*es.PageRegion  3x5/ficha 3 x 5 pulg.: ""
+*fr.PageRegion  3x5/Fiche Bristol 3 x 5 pouces: ""
+*it.PageRegion  3x5/Scheda 76x127 mm: ""
+*ja.PageRegion  3x5/インデックス カード 3 x 5: ""
+*ko.PageRegion  3x5/색인 카드 3x5in.: ""
+*nl.PageRegion  3x5/indexkaart 3x5 inch: ""
+*pt.PageRegion  3x5/cartão de índice 3 x 5: ""
+*sv.PageRegion  3x5/Registerkort 76,2 x 127 mm: ""
+*zh_CN.PageRegion  3x5/索引卡 3x5: ""
+*zh_TW.PageRegion  3x5/3x5 索引卡: ""
+
 *PageRegion  4x6/Index Card 4x6: "
 <</PageSize [288 432] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  4x6/Karteikarte 102 x 152 mm: ""
+*es.PageRegion  4x6/ficha 4 x 6 pulg.: ""
+*fr.PageRegion  4x6/Fiche Bristol 4 x 6 pouces: ""
+*it.PageRegion  4x6/Scheda 102x152 mm: ""
+*ja.PageRegion  4x6/インデックス カード 4 x 6: ""
+*ko.PageRegion  4x6/색인 카드 4x6in.: ""
+*nl.PageRegion  4x6/indexkaart 4x6 inch: ""
+*pt.PageRegion  4x6/cartão de índice 4 x 6: ""
+*sv.PageRegion  4x6/Registerkort 102 x 153 mm: ""
+*zh_CN.PageRegion  4x6/索引卡 4x6: ""
+*zh_TW.PageRegion  4x6/4x6 索引卡: ""
+
 *PageRegion  5x8/Index Card 5x8: "
 <</PageSize [360 576] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  5x8/Karteikarte 127 x 203 mm: ""
+*es.PageRegion  5x8/ficha 5 x 8 pulg.: ""
+*fr.PageRegion  5x8/Fiche Bristol 5 x 8 pouces: ""
+*it.PageRegion  5x8/Scheda 127x203 mm: ""
+*ja.PageRegion  5x8/インデックス カード 5 x 8: ""
+*ko.PageRegion  5x8/색인 카드 5x8in.: ""
+*nl.PageRegion  5x8/indexkaart 5x8 inch: ""
+*pt.PageRegion  5x8/cartão de índice 5 x 8: ""
+*sv.PageRegion  5x8/Registerkort 127 x 203 mm: ""
+*zh_CN.PageRegion  5x8/索引卡 5x8: ""
+*zh_TW.PageRegion  5x8/5x8 索引卡: ""
+
 *PageRegion  JPost/Hagaki Card: "
 <</PageSize [284 420] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  JPost/Hagaki-Karte: ""
+*es.PageRegion  JPost/Tarjeta Hagaki: ""
+*fr.PageRegion  JPost/Carte Hagaki: ""
+*it.PageRegion  JPost/Scheda Hagaki: ""
+*ja.PageRegion  JPost/ハガキ: ""
+*ko.PageRegion  JPost/엽서 카드: ""
+*nl.PageRegion  JPost/Hagaki-kaart: ""
+*pt.PageRegion  JPost/cartão Hagaki: ""
+*sv.PageRegion  JPost/Hagakikort: ""
+*zh_CN.PageRegion  JPost/Hagaki 卡: ""
+*zh_TW.PageRegion  JPost/Hagaki 卡: ""
+
 *PageRegion  JPostD/Ofuku Hagaki: "
 <</PageSize [420 566] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  JPostD/Oufuku-Hagaki: ""
+*es.PageRegion  JPostD/Ofuku Hagaki 200 x 148 mm: ""
+*fr.PageRegion  JPostD/Ofuku Hagaki: ""
+*it.PageRegion  JPostD/Ofuku Hagaki: ""
+*ja.PageRegion  JPostD/往復ハガキ: ""
+*ko.PageRegion  JPostD/오푸쿠 엽서: ""
+*nl.PageRegion  JPostD/Ofuku Hagaki: ""
+*pt.PageRegion  JPostD/Ofuku Hagaki: ""
+*sv.PageRegion  JPostD/Ofuku Hagaki: ""
+*zh_CN.PageRegion  JPostD/Ofuku Hagaki: ""
+*zh_TW.PageRegion  JPostD/Ofuku Hagaki: ""
+
 *PageRegion  A6card/A6: "
 	<</PageSize [298 420] /ImagingBBox null>> setpagedevice"
 *End
+*de.PageRegion  A6card/A6: ""
+*es.PageRegion  A6card/A6: ""
+*fr.PageRegion  A6card/A6: ""
+*it.PageRegion  A6card/A6: ""
+*ja.PageRegion  A6card/A6: ""
+*ko.PageRegion  A6card/A6: ""
+*nl.PageRegion  A6card/A6: ""
+*pt.PageRegion  A6card/A6: ""
+*sv.PageRegion  A6card/A6: ""
+*zh_CN.PageRegion  A6card/A6: ""
+*zh_TW.PageRegion  A6card/A6: ""
+
 *CloseUI: *PageRegion
 *% ===================================
 *% Imageable Area
@@ -460,28 +1417,304 @@ restore
 *% see media specs LM BM X1(=W-LM) Z1(=L-TM)
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter:                            "18.00 36.00 594.00 783.36"
+*de.ImageableArea Letter/Letter: ""
+*es.ImageableArea Letter/Letter: ""
+*fr.ImageableArea Letter/Lettre: ""
+*it.ImageableArea Letter/Letter: ""
+*ja.ImageableArea Letter/レター: ""
+*ko.ImageableArea Letter/레터: ""
+*nl.ImageableArea Letter/Letter: ""
+*pt.ImageableArea Letter/carta: ""
+*sv.ImageableArea Letter/Letter: ""
+*zh_CN.ImageableArea Letter/信纸: ""
+*zh_TW.ImageableArea Letter/Letter: ""
+
 *ImageableArea Legal/Legal:                              "18.00 36.00 594.00 999.36"
+*de.ImageableArea Legal/Legal: ""
+*es.ImageableArea Legal/Legal: ""
+*fr.ImageableArea Legal/Légal: ""
+*it.ImageableArea Legal/Legal: ""
+*ja.ImageableArea Legal/リーガル: ""
+*ko.ImageableArea Legal/리갈: ""
+*nl.ImageableArea Legal/Legal: ""
+*pt.ImageableArea Legal/ofício: ""
+*sv.ImageableArea Legal/Legal: ""
+*zh_CN.ImageableArea Legal/Legal: ""
+*zh_TW.ImageableArea Legal/Legal: ""
+
 *ImageableArea Executive/Executive:                      "18.00 36.00 504.00 747.36"
+*de.ImageableArea Executive/Executive: ""
+*es.ImageableArea Executive/Ejecutivo: ""
+*fr.ImageableArea Executive/Exécutif: ""
+*it.ImageableArea Executive/Executive: ""
+*ja.ImageableArea Executive/エグゼクティブ: ""
+*ko.ImageableArea Executive/Executive: ""
+*nl.ImageableArea Executive/Executive: ""
+*pt.ImageableArea Executive/executivo: ""
+*sv.ImageableArea Executive/Executive: ""
+*zh_CN.ImageableArea Executive/Executive: ""
+*zh_TW.ImageableArea Executive/Executive: ""
+
 *ImageableArea Statement/Statement:                      "14.40 36.00 381.60 603.36"
+*de.ImageableArea Statement/Statement: ""
+*es.ImageableArea Statement/declaración: ""
+*fr.ImageableArea Statement/Relevé: ""
+*it.ImageableArea Statement/Dichiarazione: ""
+*ja.ImageableArea Statement/ステートメント: ""
+*ko.ImageableArea Statement/Statement: ""
+*nl.ImageableArea Statement/verklaring: ""
+*pt.ImageableArea Statement/declaração: ""
+*sv.ImageableArea Statement/Statement: ""
+*zh_CN.ImageableArea Statement/结算单: ""
+*zh_TW.ImageableArea Statement/Statement: ""
+
 *ImageableArea A4/A4:                                    "09.65 36.00 585.36 833.36"
+*de.ImageableArea A4/A4: ""
+*es.ImageableArea A4/A4: ""
+*fr.ImageableArea A4/A4: ""
+*it.ImageableArea A4/A4: ""
+*ja.ImageableArea A4/A4: ""
+*ko.ImageableArea A4/A4: ""
+*nl.ImageableArea A4/A4: ""
+*pt.ImageableArea A4/A4: ""
+*sv.ImageableArea A4/A4: ""
+*zh_CN.ImageableArea A4/A4: ""
+*zh_TW.ImageableArea A4/A4: ""
+
 *ImageableArea A5/A5:                                    "09.36 36.00 410.64 587.36"
+*de.ImageableArea A5/A5: ""
+*es.ImageableArea A5/A5: ""
+*fr.ImageableArea A5/A5: ""
+*it.ImageableArea A5/A5: ""
+*ja.ImageableArea A5/A5: ""
+*ko.ImageableArea A5/A5: ""
+*nl.ImageableArea A5/A5: ""
+*pt.ImageableArea A5/A5: ""
+*sv.ImageableArea A5/A5: ""
+*zh_CN.ImageableArea A5/A5: ""
+*zh_TW.ImageableArea A5/A5: ""
+
 *ImageableArea B5/B5 (JIS):                                "09.36 36.00 506.52 720.36"
+*de.ImageableArea B5/B5 (JIS): ""
+*es.ImageableArea B5/JIS B5: ""
+*fr.ImageableArea B5/JIS B5: ""
+*it.ImageableArea B5/JIS B5: ""
+*ja.ImageableArea B5/B5 (JIS): ""
+*ko.ImageableArea B5/B5(JIS): ""
+*nl.ImageableArea B5/JIS B5: ""
+*pt.ImageableArea B5/B5 JIS: ""
+*sv.ImageableArea B5/JIS B5: ""
+*zh_CN.ImageableArea B5/JIS B5: ""
+*zh_TW.ImageableArea B5/JIS B5: ""
+
 *ImageableArea ISOB5/B5 (ISO):				                  "09.36 36.00 489.64 700.36"
+*de.ImageableArea ISOB5/B5 (ISO): ""
+*es.ImageableArea ISOB5/B5 (ISO): ""
+*fr.ImageableArea ISOB5/B5 (ISO): ""
+*it.ImageableArea ISOB5/B5 (ISO): ""
+*ja.ImageableArea ISOB5/B5 (ISO): ""
+*ko.ImageableArea ISOB5/B5(ISO): ""
+*nl.ImageableArea ISOB5/B5 (ISO): ""
+*pt.ImageableArea ISOB5/B5 (ISO): ""
+*sv.ImageableArea ISOB5/B5 (ISO): ""
+*zh_CN.ImageableArea ISOB5/B5 (ISO): ""
+*zh_TW.ImageableArea ISOB5/B5 (ISO): ""
+
 *ImageableArea Env10/Envelope #10:                        "09.36 36.00 287.64 647.99"
+*de.ImageableArea Env10/Umschlag Nr. 10: ""
+*es.ImageableArea Env10/sobre nº 10: ""
+*fr.ImageableArea Env10/Enveloppe n° 10: ""
+*it.ImageableArea Env10/Busta n.10: ""
+*ja.ImageableArea Env10/封筒 10 号: ""
+*ko.ImageableArea Env10/#10 봉투: ""
+*nl.ImageableArea Env10/envelop nr. 10: ""
+*pt.ImageableArea Env10/envelope nº 10: ""
+*sv.ImageableArea Env10/Kuvert nr 10: ""
+*zh_CN.ImageableArea Env10/10 号信封: ""
+*zh_TW.ImageableArea Env10/10 號信封: ""
+
 *ImageableArea EnvA2/Envelope A2:                        "09.36 40.00 305.64 381.00"
+*de.ImageableArea EnvA2/Umschlag A2: ""
+*es.ImageableArea EnvA2/sobre A2: ""
+*fr.ImageableArea EnvA2/Enveloppe A2: ""
+*it.ImageableArea EnvA2/Busta A2: ""
+*ja.ImageableArea EnvA2/封筒 A2: ""
+*ko.ImageableArea EnvA2/봉투 A2: ""
+*nl.ImageableArea EnvA2/A2-envelop: ""
+*pt.ImageableArea EnvA2/envelope A2: ""
+*sv.ImageableArea EnvA2/A2-kuvert: ""
+*zh_CN.ImageableArea EnvA2/A2 信封: ""
+*zh_TW.ImageableArea EnvA2/A2 信封: ""
+
 *ImageableArea EnvMonarch/Envelope Monarch:              "09.36 36.00 269.64 503.99"
+*de.ImageableArea EnvMonarch/Umschlag Monarch: ""
+*es.ImageableArea EnvMonarch/sobre Monarca: ""
+*fr.ImageableArea EnvMonarch/Enveloppe Monarch: ""
+*it.ImageableArea EnvMonarch/Busta Monarch: ""
+*ja.ImageableArea EnvMonarch/Monarch 封筒: ""
+*ko.ImageableArea EnvMonarch/Monarch 봉투: ""
+*nl.ImageableArea EnvMonarch/Monarch-envelop: ""
+*pt.ImageableArea EnvMonarch/envelope Monarch: ""
+*sv.ImageableArea EnvMonarch/Kuvert Monarch: ""
+*zh_CN.ImageableArea EnvMonarch/Monarch 信封: ""
+*zh_TW.ImageableArea EnvMonarch/Monarch信封: ""
+
 *ImageableArea EnvDL/Envelope DL:                        "09.36 36.00 302.64 587.99"
+*de.ImageableArea EnvDL/Umschlag DL: ""
+*es.ImageableArea EnvDL/sobre DL: ""
+*fr.ImageableArea EnvDL/Enveloppe DL: ""
+*it.ImageableArea EnvDL/Busta DL: ""
+*ja.ImageableArea EnvDL/DL 封筒: ""
+*ko.ImageableArea EnvDL/DL 봉투: ""
+*nl.ImageableArea EnvDL/DL-envelop: ""
+*pt.ImageableArea EnvDL/envelope DL: ""
+*sv.ImageableArea EnvDL/Kuvert DL: ""
+*zh_CN.ImageableArea EnvDL/DL 信封: ""
+*zh_TW.ImageableArea EnvDL/DL 信封: ""
+
 *ImageableArea EnvC5/Envelope C5:                        "09.36 36.00 449.64 612.99"
+*de.ImageableArea EnvC5/Umschlag C5: ""
+*es.ImageableArea EnvC5/sobre C5: ""
+*fr.ImageableArea EnvC5/Enveloppe C5: ""
+*it.ImageableArea EnvC5/Busta C5: ""
+*ja.ImageableArea EnvC5/C5 封筒: ""
+*ko.ImageableArea EnvC5/C5 봉투: ""
+*nl.ImageableArea EnvC5/C5-envelop: ""
+*pt.ImageableArea EnvC5/envelope C5: ""
+*sv.ImageableArea EnvC5/Kuvert, C5: ""
+*zh_CN.ImageableArea EnvC5/C5 信封: ""
+*zh_TW.ImageableArea EnvC5/C5 信封: ""
+
 *ImageableArea EnvC6/Envelope C6:                        "09.36 36.00 313.99 423.99"
+*de.ImageableArea EnvC6/Umschlag C6: ""
+*es.ImageableArea EnvC6/sobre C6 (114 x 162 mm): ""
+*fr.ImageableArea EnvC6/Enveloppe C6: ""
+*it.ImageableArea EnvC6/Busta C6: ""
+*ja.ImageableArea EnvC6/C6 封筒: ""
+*ko.ImageableArea EnvC6/C6 봉투: ""
+*nl.ImageableArea EnvC6/C6-envelop: ""
+*pt.ImageableArea EnvC6/Envelope C6: ""
+*sv.ImageableArea EnvC6/Kuvert, C6: ""
+*zh_CN.ImageableArea EnvC6/C6 信封: ""
+*zh_TW.ImageableArea EnvC6/C6 信封: ""
+
 *ImageableArea HPGreetCard/HP Greeting Card Envelope:    "09.36 36.00 305.64 395.99"
+*de.ImageableArea HPGreetCard/hp Grußkartenumschlag: ""
+*es.ImageableArea HPGreetCard/sobre para tarjeta de felicitación hp (4,38 x 6 pulg.): ""
+*fr.ImageableArea HPGreetCard/Enveloppe pour cartes de voeux HP: ""
+*it.ImageableArea HPGreetCard/Busta hp per biglietti d'auguri: ""
+*ja.ImageableArea HPGreetCard/グリーティング カード封筒: ""
+*ko.ImageableArea HPGreetCard/hp 카드 봉투: ""
+*nl.ImageableArea HPGreetCard/HP wenskaartenvelop: ""
+*pt.ImageableArea HPGreetCard/envelope para cartão de felicitações hp: ""
+*sv.ImageableArea HPGreetCard/HP gratulationskort, kuvert: ""
+*zh_CN.ImageableArea HPGreetCard/hp 贺卡信封: ""
+*zh_TW.ImageableArea HPGreetCard/HP 賀卡信封: ""
+
 *ImageableArea EnvJ3/Japanese Envelope Chou #3:           "09.36 36.00 330.64 629.99"
+*de.ImageableArea EnvJ3/Japanischer Umschlag Chou Nr. 3: ""
+*es.ImageableArea EnvJ3/sobre japonés Chou nº 3: ""
+*fr.ImageableArea EnvJ3/Enveloppe japonaise Chou n° 3: ""
+*it.ImageableArea EnvJ3/Busta giapponese Chou n.3: ""
+*ja.ImageableArea EnvJ3/封筒 長形 3 号: ""
+*ko.ImageableArea EnvJ3/긴 규격 봉투 #3: ""
+*nl.ImageableArea EnvJ3/Japanse envelop Chou #3: ""
+*pt.ImageableArea EnvJ3/envelope japonês Chou nº 3: ""
+*sv.ImageableArea EnvJ3/Japanskt kuvert Chou #3: ""
+*zh_CN.ImageableArea EnvJ3/Chou #3 日本信封: ""
+*zh_TW.ImageableArea EnvJ3/Chou 3 號日式信封: ""
+
 *ImageableArea EnvJ4/Japanese Envelope Chou #4:           "09.36 36.01 245.65 545.99"
+*de.ImageableArea EnvJ4/Japanischer Umschlag Chou Nr. 4: ""
+*es.ImageableArea EnvJ4/sobre japonés Chou nº 4: ""
+*fr.ImageableArea EnvJ4/Enveloppe japonaise Chou n° 4: ""
+*it.ImageableArea EnvJ4/Busta giapponese Chou n.4: ""
+*ja.ImageableArea EnvJ4/封筒 長形 4 号: ""
+*ko.ImageableArea EnvJ4/긴 규격 봉투 #4: ""
+*nl.ImageableArea EnvJ4/Japanse envelop Chou #4: ""
+*pt.ImageableArea EnvJ4/envelope japonês Chou nº 4: ""
+*sv.ImageableArea EnvJ4/Japanskt kuvert Chou #4: ""
+*zh_CN.ImageableArea EnvJ4/Chou #4 日本信封: ""
+*zh_TW.ImageableArea EnvJ4/Chou 4 號日式信封: ""
+
 *ImageableArea 3x5/Index Card 3x5:            "09.36 36.00 206.64 351.36"
+*de.ImageableArea 3x5/Karteikarte 76 x 127 mm: ""
+*es.ImageableArea 3x5/ficha 3 x 5 pulg.: ""
+*fr.ImageableArea 3x5/Fiche Bristol 3 x 5 pouces: ""
+*it.ImageableArea 3x5/Scheda 76x127 mm: ""
+*ja.ImageableArea 3x5/インデックス カード 3 x 5: ""
+*ko.ImageableArea 3x5/색인 카드 3x5in.: ""
+*nl.ImageableArea 3x5/indexkaart 3x5 inch: ""
+*pt.ImageableArea 3x5/cartão de índice 3 x 5: ""
+*sv.ImageableArea 3x5/Registerkort 76,2 x 127 mm: ""
+*zh_CN.ImageableArea 3x5/索引卡 3x5: ""
+*zh_TW.ImageableArea 3x5/3x5 索引卡: ""
+
 *ImageableArea 4x6/Index Card 4x6:            "09.36 36.00 278.64 423.36"
+*de.ImageableArea 4x6/Karteikarte 102 x 152 mm: ""
+*es.ImageableArea 4x6/ficha 4 x 6 pulg.: ""
+*fr.ImageableArea 4x6/Fiche Bristol 4 x 6 pouces: ""
+*it.ImageableArea 4x6/Scheda 102x152 mm: ""
+*ja.ImageableArea 4x6/インデックス カード 4 x 6: ""
+*ko.ImageableArea 4x6/색인 카드 4x6in.: ""
+*nl.ImageableArea 4x6/indexkaart 4x6 inch: ""
+*pt.ImageableArea 4x6/cartão de índice 4 x 6: ""
+*sv.ImageableArea 4x6/Registerkort 102 x 153 mm: ""
+*zh_CN.ImageableArea 4x6/索引卡 4x6: ""
+*zh_TW.ImageableArea 4x6/4x6 索引卡: ""
+
 *ImageableArea 5x8/Index Card 5x8:            "09.36 36.00 350.64 567.36"
+*de.ImageableArea 5x8/Karteikarte 127 x 203 mm: ""
+*es.ImageableArea 5x8/ficha 5 x 8 pulg.: ""
+*fr.ImageableArea 5x8/Fiche Bristol 5 x 8 pouces: ""
+*it.ImageableArea 5x8/Scheda 127x203 mm: ""
+*ja.ImageableArea 5x8/インデックス カード 5 x 8: ""
+*ko.ImageableArea 5x8/색인 카드 5x8in.: ""
+*nl.ImageableArea 5x8/indexkaart 5x8 inch: ""
+*pt.ImageableArea 5x8/cartão de índice 5 x 8: ""
+*sv.ImageableArea 5x8/Registerkort 127 x 203 mm: ""
+*zh_CN.ImageableArea 5x8/索引卡 5x8: ""
+*zh_TW.ImageableArea 5x8/5x8 索引卡: ""
+
 *ImageableArea JPost/Hagaki Card:                        "09.36 36.00 274.64 411.36"
+*de.ImageableArea JPost/Hagaki-Karte: ""
+*es.ImageableArea JPost/Tarjeta Hagaki: ""
+*fr.ImageableArea JPost/Carte Hagaki: ""
+*it.ImageableArea JPost/Scheda Hagaki: ""
+*ja.ImageableArea JPost/ハガキ: ""
+*ko.ImageableArea JPost/엽서 카드: ""
+*nl.ImageableArea JPost/Hagaki-kaart: ""
+*pt.ImageableArea JPost/cartão Hagaki: ""
+*sv.ImageableArea JPost/Hagakikort: ""
+*zh_CN.ImageableArea JPost/Hagaki 卡: ""
+*zh_TW.ImageableArea JPost/Hagaki 卡: ""
+
 *ImageableArea JPostD/Ofuku Hagaki:                      "09.36 36.00 410.64 557.36"
+*de.ImageableArea JPostD/Oufuku-Hagaki: ""
+*es.ImageableArea JPostD/Ofuku Hagaki 200 x 148 mm: ""
+*fr.ImageableArea JPostD/Ofuku Hagaki: ""
+*it.ImageableArea JPostD/Ofuku Hagaki: ""
+*ja.ImageableArea JPostD/往復ハガキ: ""
+*ko.ImageableArea JPostD/오푸쿠 엽서: ""
+*nl.ImageableArea JPostD/Ofuku Hagaki: ""
+*pt.ImageableArea JPostD/Ofuku Hagaki: ""
+*sv.ImageableArea JPostD/Ofuku Hagaki: ""
+*zh_CN.ImageableArea JPostD/Ofuku Hagaki: ""
+*zh_TW.ImageableArea JPostD/Ofuku Hagaki: ""
+
 *ImageableArea A6card/A6:                                "09.36 36.00 288.64 411.36"
+*de.ImageableArea A6card/A6: ""
+*es.ImageableArea A6card/A6: ""
+*fr.ImageableArea A6card/A6: ""
+*it.ImageableArea A6card/A6: ""
+*ja.ImageableArea A6card/A6: ""
+*ko.ImageableArea A6card/A6: ""
+*nl.ImageableArea A6card/A6: ""
+*pt.ImageableArea A6card/A6: ""
+*sv.ImageableArea A6card/A6: ""
+*zh_CN.ImageableArea A6card/A6: ""
+*zh_TW.ImageableArea A6card/A6: ""
+
 *?ImageableArea: "
  save
    /cvp { (                ) cvs print ( ) print } bind def
@@ -499,28 +1732,304 @@ restore
 *% These provide the physical dimensions of the paper (by keyword)
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter:                           "612 792"
+*de.PaperDimension Letter/Letter: ""
+*es.PaperDimension Letter/Letter: ""
+*fr.PaperDimension Letter/Lettre: ""
+*it.PaperDimension Letter/Letter: ""
+*ja.PaperDimension Letter/レター: ""
+*ko.PaperDimension Letter/레터: ""
+*nl.PaperDimension Letter/Letter: ""
+*pt.PaperDimension Letter/carta: ""
+*sv.PaperDimension Letter/Letter: ""
+*zh_CN.PaperDimension Letter/信纸: ""
+*zh_TW.PaperDimension Letter/Letter: ""
+
 *PaperDimension Legal/Legal:                             "612 1008"
+*de.PaperDimension Legal/Legal: ""
+*es.PaperDimension Legal/Legal: ""
+*fr.PaperDimension Legal/Légal: ""
+*it.PaperDimension Legal/Legal: ""
+*ja.PaperDimension Legal/リーガル: ""
+*ko.PaperDimension Legal/리갈: ""
+*nl.PaperDimension Legal/Legal: ""
+*pt.PaperDimension Legal/ofício: ""
+*sv.PaperDimension Legal/Legal: ""
+*zh_CN.PaperDimension Legal/Legal: ""
+*zh_TW.PaperDimension Legal/Legal: ""
+
 *PaperDimension Executive/Executive:                     "522 756"
+*de.PaperDimension Executive/Executive: ""
+*es.PaperDimension Executive/Ejecutivo: ""
+*fr.PaperDimension Executive/Exécutif: ""
+*it.PaperDimension Executive/Executive: ""
+*ja.PaperDimension Executive/エグゼクティブ: ""
+*ko.PaperDimension Executive/Executive: ""
+*nl.PaperDimension Executive/Executive: ""
+*pt.PaperDimension Executive/executivo: ""
+*sv.PaperDimension Executive/Executive: ""
+*zh_CN.PaperDimension Executive/Executive: ""
+*zh_TW.PaperDimension Executive/Executive: ""
+
 *PaperDimension Statement/Statement:                     "396 612"
+*de.PaperDimension Statement/Statement: ""
+*es.PaperDimension Statement/declaración: ""
+*fr.PaperDimension Statement/Relevé: ""
+*it.PaperDimension Statement/Dichiarazione: ""
+*ja.PaperDimension Statement/ステートメント: ""
+*ko.PaperDimension Statement/Statement: ""
+*nl.PaperDimension Statement/verklaring: ""
+*pt.PaperDimension Statement/declaração: ""
+*sv.PaperDimension Statement/Statement: ""
+*zh_CN.PaperDimension Statement/结算单: ""
+*zh_TW.PaperDimension Statement/Statement: ""
+
 *PaperDimension A4/A4:                                   "595 842"
+*de.PaperDimension A4/A4: ""
+*es.PaperDimension A4/A4: ""
+*fr.PaperDimension A4/A4: ""
+*it.PaperDimension A4/A4: ""
+*ja.PaperDimension A4/A4: ""
+*ko.PaperDimension A4/A4: ""
+*nl.PaperDimension A4/A4: ""
+*pt.PaperDimension A4/A4: ""
+*sv.PaperDimension A4/A4: ""
+*zh_CN.PaperDimension A4/A4: ""
+*zh_TW.PaperDimension A4/A4: ""
+
 *PaperDimension A5/A5:                                   "420 596"
+*de.PaperDimension A5/A5: ""
+*es.PaperDimension A5/A5: ""
+*fr.PaperDimension A5/A5: ""
+*it.PaperDimension A5/A5: ""
+*ja.PaperDimension A5/A5: ""
+*ko.PaperDimension A5/A5: ""
+*nl.PaperDimension A5/A5: ""
+*pt.PaperDimension A5/A5: ""
+*sv.PaperDimension A5/A5: ""
+*zh_CN.PaperDimension A5/A5: ""
+*zh_TW.PaperDimension A5/A5: ""
+
 *PaperDimension B5/B5 (JIS):                               "516 729"
+*de.PaperDimension B5/B5 (JIS): ""
+*es.PaperDimension B5/JIS B5: ""
+*fr.PaperDimension B5/JIS B5: ""
+*it.PaperDimension B5/B5 JIS: ""
+*ja.PaperDimension B5/B5 (JIS): ""
+*ko.PaperDimension B5/B5(JIS): ""
+*nl.PaperDimension B5/JIS B5: ""
+*pt.PaperDimension B5/B5 JIS: ""
+*sv.PaperDimension B5/JIS B5: ""
+*zh_CN.PaperDimension B5/JIS B5: ""
+*zh_TW.PaperDimension B5/JIS B5: ""
+
 *PaperDimension ISOB5/B5 (ISO):					              "499 709"
+*de.PaperDimension ISOB5/B5 (ISO): ""
+*es.PaperDimension ISOB5/B5 (ISO): ""
+*fr.PaperDimension ISOB5/B5 (ISO): ""
+*it.PaperDimension ISOB5/B5 (ISO): ""
+*ja.PaperDimension ISOB5/B5 (ISO): ""
+*ko.PaperDimension ISOB5/B5(ISO): ""
+*nl.PaperDimension ISOB5/B5 (ISO): ""
+*pt.PaperDimension ISOB5/B5 (ISO): ""
+*sv.PaperDimension ISOB5/B5 (ISO): ""
+*zh_CN.PaperDimension ISOB5/B5 (ISO): ""
+*zh_TW.PaperDimension ISOB5/B5 (ISO): ""
+
 *PaperDimension Env10/Envelope #10:                       "297 684"
+*de.PaperDimension Env10/Umschlag Nr. 10: ""
+*es.PaperDimension Env10/sobre nº 10: ""
+*fr.PaperDimension Env10/Enveloppe n° 10: ""
+*it.PaperDimension Env10/Busta n.10: ""
+*ja.PaperDimension Env10/封筒 10 号: ""
+*ko.PaperDimension Env10/#10 봉투: ""
+*nl.PaperDimension Env10/envelop nr. 10: ""
+*pt.PaperDimension Env10/envelope nº 10: ""
+*sv.PaperDimension Env10/Kuvert nr 10: ""
+*zh_CN.PaperDimension Env10/10 号信封: ""
+*zh_TW.PaperDimension Env10/10 號信封: ""
+
 *PaperDimension EnvA2/Envelope A2:                       "315 418"
+*de.PaperDimension EnvA2/Umschlag A2: ""
+*es.PaperDimension EnvA2/sobre A2: ""
+*fr.PaperDimension EnvA2/Enveloppe A2: ""
+*it.PaperDimension EnvA2/Busta A2: ""
+*ja.PaperDimension EnvA2/封筒 A2: ""
+*ko.PaperDimension EnvA2/봉투 A2: ""
+*nl.PaperDimension EnvA2/A2-envelop: ""
+*pt.PaperDimension EnvA2/envelope A2: ""
+*sv.PaperDimension EnvA2/A2-kuvert: ""
+*zh_CN.PaperDimension EnvA2/A2 信封: ""
+*zh_TW.PaperDimension EnvA2/A2 信封: ""
+
 *PaperDimension EnvMonarch/Envelope Monarch:             "279 540"
+*de.PaperDimension EnvMonarch/Umschlag Monarch: ""
+*es.PaperDimension EnvMonarch/sobre Monarca: ""
+*fr.PaperDimension EnvMonarch/Enveloppe Monarch: ""
+*it.PaperDimension EnvMonarch/Busta Monarch: ""
+*ja.PaperDimension EnvMonarch/Monarch 封筒: ""
+*ko.PaperDimension EnvMonarch/Monarch 봉투: ""
+*nl.PaperDimension EnvMonarch/Monarch-envelop: ""
+*pt.PaperDimension EnvMonarch/envelope Monarch: ""
+*sv.PaperDimension EnvMonarch/Kuvert Monarch: ""
+*zh_CN.PaperDimension EnvMonarch/Monarch 信封: ""
+*zh_TW.PaperDimension EnvMonarch/Monarch信封: ""
+
 *PaperDimension EnvDL/Envelope DL:                       "312 624"
+*de.PaperDimension EnvDL/Umschlag DL: ""
+*es.PaperDimension EnvDL/sobre DL: ""
+*fr.PaperDimension EnvDL/Enveloppe DL: ""
+*it.PaperDimension EnvDL/Busta DL: ""
+*ja.PaperDimension EnvDL/DL 封筒: ""
+*ko.PaperDimension EnvDL/DL 봉투: ""
+*nl.PaperDimension EnvDL/DL-envelop: ""
+*pt.PaperDimension EnvDL/envelope DL: ""
+*sv.PaperDimension EnvDL/Kuvert DL: ""
+*zh_CN.PaperDimension EnvDL/DL 信封: ""
+*zh_TW.PaperDimension EnvDL/DL 信封: ""
+
 *PaperDimension EnvC5/Envelope C5:                       "459 649"
+*de.PaperDimension EnvC5/Umschlag C5: ""
+*es.PaperDimension EnvC5/sobre C5: ""
+*fr.PaperDimension EnvC5/Enveloppe C5: ""
+*it.PaperDimension EnvC5/Busta C5: ""
+*ja.PaperDimension EnvC5/C5 封筒: ""
+*ko.PaperDimension EnvC5/C5 봉투: ""
+*nl.PaperDimension EnvC5/C5-envelop: ""
+*pt.PaperDimension EnvC5/envelope C5: ""
+*sv.PaperDimension EnvC5/Kuvert, C5: ""
+*zh_CN.PaperDimension EnvC5/C5 信封: ""
+*zh_TW.PaperDimension EnvC5/C5 信封: ""
+
 *PaperDimension EnvC6/Envelope C6:                       "324 460"
+*de.PaperDimension EnvC6/Umschlag C6: ""
+*es.PaperDimension EnvC6/sobre C6 (114 x 162 mm): ""
+*fr.PaperDimension EnvC6/Enveloppe C6: ""
+*it.PaperDimension EnvC6/Busta C6: ""
+*ja.PaperDimension EnvC6/C6 封筒: ""
+*ko.PaperDimension EnvC6/C6 봉투: ""
+*nl.PaperDimension EnvC6/C6-envelop: ""
+*pt.PaperDimension EnvC6/Envelope C6: ""
+*sv.PaperDimension EnvC6/Kuvert, C6: ""
+*zh_CN.PaperDimension EnvC6/C6 信封: ""
+*zh_TW.PaperDimension EnvC6/C6 信封: ""
+
 *PaperDimension HPGreetCard/HP Greeting Card Envelope:   "315 432"
+*de.PaperDimension HPGreetCard/hp Grußkartenumschlag: ""
+*es.PaperDimension HPGreetCard/sobre para tarjeta de felicitación hp (4,38 x 6 pulg.): ""
+*fr.PaperDimension HPGreetCard/Enveloppe pour cartes de voeux HP: ""
+*it.PaperDimension HPGreetCard/Busta hp per biglietti d'auguri: ""
+*ja.PaperDimension HPGreetCard/グリーティング カード封筒: ""
+*ko.PaperDimension HPGreetCard/hp 카드 봉투: ""
+*nl.PaperDimension HPGreetCard/HP wenskaartenvelop: ""
+*pt.PaperDimension HPGreetCard/envelope para cartão de felicitações hp: ""
+*sv.PaperDimension HPGreetCard/HP gratulationskort, kuvert: ""
+*zh_CN.PaperDimension HPGreetCard/hp 贺卡信封: ""
+*zh_TW.PaperDimension HPGreetCard/HP 賀卡信封: ""
+
 *PaperDimension EnvJ3/Japanese Envelope Chou #3:                       "340 666"
+*de.PaperDimension EnvJ3/Japanischer Umschlag Chou Nr. 3: ""
+*es.PaperDimension EnvJ3/sobre japonés Chou nº 3: ""
+*fr.PaperDimension EnvJ3/Enveloppe japonaise Chou n° 3: ""
+*it.PaperDimension EnvJ3/Busta giapponese Chou n.3: ""
+*ja.PaperDimension EnvJ3/封筒 長形 3 号: ""
+*ko.PaperDimension EnvJ3/긴 규격 봉투 #3: ""
+*nl.PaperDimension EnvJ3/Japanse envelop Chou #3: ""
+*pt.PaperDimension EnvJ3/envelope japonês Chou nº 3: ""
+*sv.PaperDimension EnvJ3/Japanskt kuvert Chou #3: ""
+*zh_CN.PaperDimension EnvJ3/Chou #3 日本信封: ""
+*zh_TW.PaperDimension EnvJ3/Chou 3 號日式信封: ""
+
 *PaperDimension EnvJ4/Japanese Envelope Chou #4:                       "256 582"
+*de.PaperDimension EnvJ4/Japanischer Umschlag Chou Nr. 4: ""
+*es.PaperDimension EnvJ4/sobre japonés Chou nº 4: ""
+*fr.PaperDimension EnvJ4/Enveloppe japonaise Chou n° 4: ""
+*it.PaperDimension EnvJ4/Busta giapponese Chou n.4: ""
+*ja.PaperDimension EnvJ4/封筒 長形 4 号: ""
+*ko.PaperDimension EnvJ4/긴 규격 봉투 #4: ""
+*nl.PaperDimension EnvJ4/Japanse envelop Chou #4: ""
+*pt.PaperDimension EnvJ4/envelope japonês Chou nº 4: ""
+*sv.PaperDimension EnvJ4/Japanskt kuvert Chou #4: ""
+*zh_CN.PaperDimension EnvJ4/Chou #4 日本信封: ""
+*zh_TW.PaperDimension EnvJ4/Chou 4 號日式信封: ""
+
 *PaperDimension 3x5/Index Card 3x5:           "216 360"
+*de.PaperDimension 3x5/Karteikarte 76 x 127 mm: ""
+*es.PaperDimension 3x5/ficha 3 x 5 pulg.: ""
+*fr.PaperDimension 3x5/Fiche Bristol 3 x 5 pouces: ""
+*it.PaperDimension 3x5/Scheda 76x127 mm: ""
+*ja.PaperDimension 3x5/インデックス カード 3 x 5: ""
+*ko.PaperDimension 3x5/색인 카드 3x5in.: ""
+*nl.PaperDimension 3x5/indexkaart 3x5 inch: ""
+*pt.PaperDimension 3x5/cartão de índice 3 x 5: ""
+*sv.PaperDimension 3x5/Registerkort 76,2 x 127 mm: ""
+*zh_CN.PaperDimension 3x5/索引卡 3x5: ""
+*zh_TW.PaperDimension 3x5/3x5 索引卡: ""
+
 *PaperDimension 4x6/Index Card 4x6:           "288 432"
+*de.PaperDimension 4x6/Karteikarte 102 x 152 mm: ""
+*es.PaperDimension 4x6/ficha 4 x 6 pulg.: ""
+*fr.PaperDimension 4x6/Fiche Bristol 4 x 6 pouces: ""
+*it.PaperDimension 4x6/Scheda 102x152 mm: ""
+*ja.PaperDimension 4x6/インデックス カード 4 x 6: ""
+*ko.PaperDimension 4x6/색인 카드 4x6in.: ""
+*nl.PaperDimension 4x6/indexkaart 4x6 inch: ""
+*pt.PaperDimension 4x6/cartão de índice 4 x 6: ""
+*sv.PaperDimension 4x6/Registerkort 102 x 153 mm: ""
+*zh_CN.PaperDimension 4x6/索引卡 4x6: ""
+*zh_TW.PaperDimension 4x6/4x6 索引卡: ""
+
 *PaperDimension 5x8/Index Card 5x8:           "360 576"
+*de.PaperDimension 5x8/Karteikarte 127 x 203 mm: ""
+*es.PaperDimension 5x8/ficha 5 x 8 pulg.: ""
+*fr.PaperDimension 5x8/Fiche Bristol 5 x 8 pouces: ""
+*it.PaperDimension 5x8/Scheda 127x203 mm: ""
+*ja.PaperDimension 5x8/インデックス カード 5 x 8: ""
+*ko.PaperDimension 5x8/색인 카드 5x8in.: ""
+*nl.PaperDimension 5x8/indexkaart 5x8 inch: ""
+*pt.PaperDimension 5x8/cartão de índice 5 x 8: ""
+*sv.PaperDimension 5x8/Registerkort 127 x 203 mm: ""
+*zh_CN.PaperDimension 5x8/索引卡 5x8: ""
+*zh_TW.PaperDimension 5x8/5x8 索引卡: ""
+
 *PaperDimension JPost/Hagaki Card:                             "284 420"
+*de.PaperDimension JPost/Hagaki-Karte: ""
+*es.PaperDimension JPost/Tarjeta Hagaki: ""
+*fr.PaperDimension JPost/Carte Hagaki: ""
+*it.PaperDimension JPost/Scheda Hagaki: ""
+*ja.PaperDimension JPost/ハガキ: ""
+*ko.PaperDimension JPost/엽서 카드: ""
+*nl.PaperDimension JPost/Hagaki-kaart: ""
+*pt.PaperDimension JPost/cartão Hagaki: ""
+*sv.PaperDimension JPost/Hagakikort: ""
+*zh_CN.PaperDimension JPost/Hagaki 卡: ""
+*zh_TW.PaperDimension JPost/Hagaki 卡: ""
+
 *PaperDimension JPostD/Ofuku Hagaki:                           "420 566"
+*de.PaperDimension JPostD/Oufuku-Hagaki: ""
+*es.PaperDimension JPostD/Ofuku Hagaki 200 x 148 mm: ""
+*fr.PaperDimension JPostD/Ofuku Hagaki: ""
+*it.PaperDimension JPostD/Ofuku Hagaki: ""
+*ja.PaperDimension JPostD/往復ハガキ: ""
+*ko.PaperDimension JPostD/오푸쿠 엽서: ""
+*nl.PaperDimension JPostD/Ofuku Hagaki: ""
+*pt.PaperDimension JPostD/Ofuku Hagaki: ""
+*sv.PaperDimension JPostD/Ofuku Hagaki: ""
+*zh_CN.PaperDimension JPostD/Ofuku Hagaki: ""
+*zh_TW.PaperDimension JPostD/Ofuku Hagaki: ""
+
 *PaperDimension A6card/A6:                   "298 420"
+*de.PaperDimension A6card/A6: ""
+*es.PaperDimension A6card/A6: ""
+*fr.PaperDimension A6card/A6: ""
+*it.PaperDimension A6card/A6: ""
+*ja.PaperDimension A6card/A6: ""
+*ko.PaperDimension A6card/A6: ""
+*nl.PaperDimension A6card/A6: ""
+*pt.PaperDimension A6card/A6: ""
+*sv.PaperDimension A6card/A6: ""
+*zh_CN.PaperDimension A6card/A6: ""
+*zh_TW.PaperDimension A6card/A6: ""
+
 *RequiresPageRegion All: True
 *% ===================================
 *% Gray Levels and Halftoning
@@ -550,6 +2059,7 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *MaxMediaHeight: "1008"
 *%Select custom page margins according to OS
 *HWMargins:   36.00 48.00 48.64 18.00
+*%CustomPageRegion True: ""
 *CustomPageSize True: "
         pop pop pop
         <</DeferredMediaSelection true /PageSize [ 7 -2 roll ]
@@ -557,6 +2067,7 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
         setpagedevice
 "
 *End
+
 *ParamCustomPageSize Width: 1 points 216 612
 *ParamCustomPageSize Height: 2 points 360 1008
 *ParamCustomPageSize WidthOffset: 3 points 0 0
@@ -568,16 +2079,78 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *OpenUI *InputSlot/Paper Source: PickOne
 *OrderDependency: 20 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic: "<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*InputSlot Auto/Automatic: "
+	<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*End
+*de.InputSlot Auto/Automatisch: ""
+*es.InputSlot Auto/Automático: ""
+*fr.InputSlot Auto/Automatique: ""
+*it.InputSlot Auto/Automatico: ""
+*ja.InputSlot Auto/自動: ""
+*ko.InputSlot Auto/자동: ""
+*nl.InputSlot Auto/Automatisch: ""
+*pt.InputSlot Auto/Automático: ""
+*sv.InputSlot Auto/Automatiskt: ""
+*zh_CN.InputSlot Auto/自动: ""
+*zh_TW.InputSlot Auto/自動: ""
+
+*de.Translation InputSlot/Papierquelle: ""
+*es.Translation InputSlot/Alimentación de papel: ""
+*fr.Translation InputSlot/Source du papier: ""
+*it.Translation InputSlot/Alimentazione della carta: ""
+*ja.Translation InputSlot/給紙元: ""
+*ko.Translation InputSlot/용지함: ""
+*nl.Translation InputSlot/Papierbron: ""
+*pt.Translation InputSlot/Fonte de papel: ""
+*sv.Translation InputSlot/Papperskälla: ""
+*zh_CN.Translation InputSlot/纸张来源: ""
+*zh_TW.Translation InputSlot/紙張來源: ""
+
 *InputSlot Tray1/Tray 1: "
 	<</ManualFeed false /MediaPosition 0>> setpagedevice"
 *End
+*de.InputSlot Tray1/Zufuhrfach 1: ""
+*es.InputSlot Tray1/Bandeja 1: ""
+*fr.InputSlot Tray1/Bac 1: ""
+*it.InputSlot Tray1/Cassetto 1: ""
+*ja.InputSlot Tray1/トレイ 1: ""
+*ko.InputSlot Tray1/용지함 1: ""
+*nl.InputSlot Tray1/Lade 1: ""
+*pt.InputSlot Tray1/Bandeja 1: ""
+*sv.InputSlot Tray1/Fack 1: ""
+*zh_CN.InputSlot Tray1/纸盒 1: ""
+*zh_TW.InputSlot Tray1/1 號紙匣: ""
+
 *InputSlot Tray2/Tray 2: "
 	<</ManualFeed false /MediaPosition 1>> setpagedevice"
 *End
+*de.InputSlot Tray2/Zufuhrfach 2: ""
+*es.InputSlot Tray2/Bandeja 2: ""
+*fr.InputSlot Tray2/Bac 2: ""
+*it.InputSlot Tray2/Cassetto 2: ""
+*ja.InputSlot Tray2/トレイ 2: ""
+*ko.InputSlot Tray2/용지함 2: ""
+*nl.InputSlot Tray2/Lade 2: ""
+*pt.InputSlot Tray2/Bandeja 2: ""
+*sv.InputSlot Tray2/Fack 2: ""
+*zh_CN.InputSlot Tray2/纸盒 2: ""
+*zh_TW.InputSlot Tray2/2 號紙匣: ""
+
 *InputSlot ManualFeed/Manual Feed in Tray 1: "
 	<</ManualFeed true /MediaPosition 2>> setpagedevice"
 *End
+*de.InputSlot ManualFeed/Man. Zufuhr in Fach 1: ""
+*es.InputSlot ManualFeed/Alim. manual en band. 1: ""
+*fr.InputSlot ManualFeed/Alim. manuelle (bac 1): ""
+*it.InputSlot ManualFeed/Alim. manuale vass. 1: ""
+*ja.InputSlot ManualFeed/トレイ 1 で手差し: ""
+*ko.InputSlot ManualFeed/용지함 1에서 수동 공급: ""
+*nl.InputSlot ManualFeed/Handm. invoer in lade 1: ""
+*pt.InputSlot ManualFeed/Alim. manual na Band. 1: ""
+*sv.InputSlot ManualFeed/Manuell matn. i Fack 1: ""
+*zh_CN.InputSlot ManualFeed/在纸盒 1 中手动送纸: ""
+*zh_TW.InputSlot ManualFeed/在 1 號紙匣中手動送紙: ""
+
 *?InputSlot: "
 save
 	currentpagedevice /InputAttributes get
@@ -596,15 +2169,63 @@ restore
 *OpenUI *Duplex/Duplex Unit (for 2-Sided Printing): PickOne
 *OrderDependency: 50 AnySetup *Duplex
 *DefaultDuplex: None
+*de.Translation Duplex/Modul für den beidseitigen Druck: ""
+*es.Translation Duplex/Unidad de impresión a doble cara: ""
+*fr.Translation Duplex/Unité d'impression recto verso (pour imprimer sur les deux côtés) : ""
+*it.Translation Duplex/Unità duplex (per stampa fronte/retro): ""
+*ja.Translation Duplex/両面印刷ユニット (両面印刷用): ""
+*ko.Translation Duplex/듀플렉서(양면 인쇄): ""
+*nl.Translation Duplex/Duplexeenheid (dubbelz. afdrukken): ""
+*pt.Translation Duplex/Unidade dúplex (para impressão nos 2 lados): ""
+*sv.Translation Duplex/Duplexenhet (för dubbelsidig utskrift: ""
+*zh_CN.Translation Duplex/双面打印器（用于双面打印）: ""
+*zh_TW.Translation Duplex/雙面列印裝置 (用於雙面列印): ""
+
 *Duplex None/Off: "
 	<</Duplex false /Tumble false>> setpagedevice"
 *End
+*de.Duplex None/Aus: ""
+*es.Duplex None/Desactivado: ""
+*fr.Duplex None/Désactivé: ""
+*it.Duplex None/Disattivato: ""
+*ja.Duplex None/オフ: ""
+*ko.Duplex None/꺼짐: ""
+*nl.Duplex None/Uit: ""
+*pt.Duplex None/Desativado: ""
+*sv.Duplex None/Av: ""
+*zh_CN.Duplex None/关: ""
+*zh_TW.Duplex None/關閉: ""
+
 *Duplex DuplexNoTumble/Flip on Long Edge (Standard): "
 	<</Duplex true /Tumble false>> setpagedevice"
 *End
+*de.Duplex DuplexNoTumble/An langer Kante spiegeln (Standard): ""
+*es.Duplex DuplexNoTumble/Orientación horizontal (estándar): ""
+*fr.Duplex DuplexNoTumble/Retourner sur les bords longs (standard): ""
+*it.Duplex DuplexNoTumble/Ruota sul lato lungo (Standard): ""
+*ja.Duplex DuplexNoTumble/長辺綴じ (標準): ""
+*ko.Duplex DuplexNoTumble/가로 뒤집기(표준): ""
+*nl.Duplex DuplexNoTumble/Over lange zijde spiegelen (standaard): ""
+*pt.Duplex DuplexNoTumble/Virar na borda vertical (padrão): ""
+*sv.Duplex DuplexNoTumble/Vänd längs långsidan (standard): ""
+*zh_CN.Duplex DuplexNoTumble/长边翻转（标准）: ""
+*zh_TW.Duplex DuplexNoTumble/按長邊翻頁 (標準): ""
+
 *Duplex DuplexTumble/Flip on Short Edge: "
 	<</Duplex true /Tumble true>> setpagedevice"
 *End
+*de.Duplex DuplexTumble/An kurzer Kante spiegeln: ""
+*es.Duplex DuplexTumble/Orientación vertical: ""
+*fr.Duplex DuplexTumble/Retourner sur les bords courts: ""
+*it.Duplex DuplexTumble/Ruota sul lato corto: ""
+*ja.Duplex DuplexTumble/短辺綴じ: ""
+*ko.Duplex DuplexTumble/세로 뒤집기: ""
+*nl.Duplex DuplexTumble/Over korte zijde spiegelen: ""
+*pt.Duplex DuplexTumble/Virar na borda horizontal: ""
+*sv.Duplex DuplexTumble/Vänd längs kortsidan: ""
+*zh_CN.Duplex DuplexTumble/短边翻转: ""
+*zh_TW.Duplex DuplexTumble/按短邊翻頁: ""
+
 *?Duplex: "save
    currentpagedevice dup /Duplex known
      {dup /Duplex get
@@ -622,8 +2243,44 @@ restore
 *OpenUI *HPColorAsGray/Print Color as Gray:  Boolean
 *OrderDependency: 20 DocumentSetup *HPColorAsGray
 *DefaultHPColorAsGray: False
+*de.Translation HPColorAsGray/In Graustufen drucken: ""
+*es.Translation HPColorAsGray/Imprimir colores en gris: ""
+*fr.Translation HPColorAsGray/Imprimer couleur en gris: ""
+*it.Translation HPColorAsGray/Stampa colore in grigio: ""
+*ja.Translation HPColorAsGray/グレー印刷: ""
+*ko.Translation HPColorAsGray/컬러를 흑백음영으로 인쇄: ""
+*nl.Translation HPColorAsGray/Kleuren afdr. in grijs: ""
+*pt.Translation HPColorAsGray/Imprimir cor como cinza: ""
+*sv.Translation HPColorAsGray/Skriv ut färg i grått: ""
+*zh_CN.Translation HPColorAsGray/打印颜色为灰色: ""
+*zh_TW.Translation HPColorAsGray/用灰色列印彩色: ""
+
 *HPColorAsGray True/On: "<</ProcessColorModel /DeviceGray>> setpagedevice"
+*de.HPColorAsGray True/Ein: ""
+*es.HPColorAsGray True/Activado: ""
+*fr.HPColorAsGray True/Activé: ""
+*it.HPColorAsGray True/Attivato: ""
+*ja.HPColorAsGray True/オン: ""
+*ko.HPColorAsGray True/켜짐: ""
+*nl.HPColorAsGray True/Aan: ""
+*pt.HPColorAsGray True/Ativado: ""
+*sv.HPColorAsGray True/På: ""
+*zh_CN.HPColorAsGray True/开: ""
+*zh_TW.HPColorAsGray True/開啟: ""
+
 *HPColorAsGray False/Off: "<</ProcessColorModel /DeviceCMY>> setpagedevice"
+*de.HPColorAsGray False/Aus: ""
+*es.HPColorAsGray False/Desactivado: ""
+*fr.HPColorAsGray False/Désactivé: ""
+*it.HPColorAsGray False/Disattivato: ""
+*ja.HPColorAsGray False/オフ: ""
+*ko.HPColorAsGray False/꺼짐: ""
+*nl.HPColorAsGray False/Uit: ""
+*pt.HPColorAsGray False/Desativado: ""
+*sv.HPColorAsGray False/Av: ""
+*zh_CN.HPColorAsGray False/关: ""
+*zh_TW.HPColorAsGray False/關閉: ""
+
 *?HPColorAsGray: "
   save
     currentpagedevice /ProcessColorModel get
@@ -638,18 +2295,66 @@ restore
 *% =================================
 *%  Resolution
 *% =================================
-*OpenUI *Resolution/HP Resolution: PickOne
+*OpenUI *Resolution/Printer Resolution: PickOne
 *OrderDependency: 10 DocumentSetup *Resolution
 *DefaultResolution: 300dpi
-*Resolution 600dpi: "
+*de.Translation Resolution/Druckerauflösung: ""
+*es.Translation Resolution/Resol. de la impresora: ""
+*fr.Translation Resolution/Résolution d’imprimante: ""
+*it.Translation Resolution/Risoluzione: ""
+*ja.Translation Resolution/プリンタの解像度: ""
+*ko.Translation Resolution/프린터 해상도: ""
+*nl.Translation Resolution/Printer-resolutie: ""
+*pt.Translation Resolution/Resolução da impressora: ""
+*sv.Translation Resolution/Skrivarupplösning: ""
+*zh_CN.Translation Resolution/打印机分辨率: ""
+*zh_TW.Translation Resolution/印表機解析度: ""
+
+*Resolution 600dpi/600dpi: "
         <</HWResolution [600 600] >> setpagedevice"
 *End
-*Resolution 300dpi: "
+*de.Resolution 600dpi/600dpi: ""
+*es.Resolution 600dpi/600dpi: ""
+*fr.Resolution 600dpi/600dpi: ""
+*it.Resolution 600dpi/600dpi: ""
+*ja.Resolution 600dpi/600dpi: ""
+*ko.Resolution 600dpi/600dpi: ""
+*nl.Resolution 600dpi/600dpi: ""
+*pt.Resolution 600dpi/600dpi: ""
+*sv.Resolution 600dpi/600dpi: ""
+*zh_CN.Resolution 600dpi/600dpi: ""
+*zh_TW.Resolution 600dpi/600dpi: ""
+
+*Resolution 300dpi/300dpi: "
         <</HWResolution [300 300] >> setpagedevice"
 *End
+*de.Resolution 300dpi/300dpi: ""
+*es.Resolution 300dpi/300dpi: ""
+*fr.Resolution 300dpi/300dpi: ""
+*it.Resolution 300dpi/300dpi: ""
+*ja.Resolution 300dpi/300dpi: ""
+*ko.Resolution 300dpi/300dpi: ""
+*nl.Resolution 300dpi/300dpi: ""
+*pt.Resolution 300dpi/300dpi: ""
+*sv.Resolution 300dpi/300dpi: ""
+*zh_CN.Resolution 300dpi/300dpi: ""
+*zh_TW.Resolution 300dpi/300dpi: ""
+
 *Resolution 4800dpi/1200dpi: "
         <</HWResolution [1200 1200] >> setpagedevice"
 *End
+*de.Resolution 4800dpi/1200dpi: ""
+*es.Resolution 4800dpi/1.200dpi: ""
+*fr.Resolution 4800dpi/1200dpi: ""
+*it.Resolution 4800dpi/1200dpi: ""
+*ja.Resolution 4800dpi/1200dpi: ""
+*ko.Resolution 4800dpi/1200dpi: ""
+*nl.Resolution 4800dpi/1200dpi: ""
+*pt.Resolution 4800dpi/1200dpi: ""
+*sv.Resolution 4800dpi/1200dpi: ""
+*zh_CN.Resolution 4800dpi/1200dpi: ""
+*zh_TW.Resolution 4800dpi/1200dpi: ""
+
 *?Resolution: "
   save
     currentpagedevice /HWResolution get
@@ -670,49 +2375,229 @@ restore
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 50 AnySetup *MediaType
 *DefaultMediaType: Plain
+*de.Translation MediaType/Medientyp: ""
+*es.Translation MediaType/Tipo de sustrato: ""
+*fr.Translation MediaType/Type de support: ""
+*it.Translation MediaType/Tipo di supporto: ""
+*ja.Translation MediaType/用紙の種類: ""
+*ko.Translation MediaType/용지 종류: ""
+*nl.Translation MediaType/Type afdrukmateriaal: ""
+*pt.Translation MediaType/Tipo de mídia: ""
+*sv.Translation MediaType/Material: ""
+*zh_CN.Translation MediaType/介质类型: ""
+*zh_TW.Translation MediaType/媒體類型: ""
+
 *MediaType Plain/Plain Paper:  "
     currentpagedevice /PrintQuality get 0 eq { << /HWResolution [300 300] >> setpagedevice } if
     << /MediaType (Plain)>> setpagedevice"
 *End
+*de.MediaType Plain/Normalpapier: ""
+*es.MediaType Plain/papel normal: ""
+*fr.MediaType Plain/Papier ordinaire: ""
+*it.MediaType Plain/Carta comune : ""
+*ja.MediaType Plain/普通紙: ""
+*ko.MediaType Plain/일반 용지: ""
+*nl.MediaType Plain/gewoon papier: ""
+*pt.MediaType Plain/papel comum: ""
+*sv.MediaType Plain/Vanligt papper: ""
+*zh_CN.MediaType Plain/普通纸: ""
+*zh_TW.MediaType Plain/普通紙: ""
+
 *MediaType PremIJPaper/hp premium paper:  "
     <</MediaType (PremIJPaper)>> setpagedevice"
 *End
+*de.MediaType PremIJPaper/hp Premium Papier: ""
+*es.MediaType PremIJPaper/papel hp premium: ""
+*fr.MediaType PremIJPaper/Papier hp premium: ""
+*it.MediaType PremIJPaper/Carta alta qualità hp: ""
+*ja.MediaType PremIJPaper/プレミアム用紙: ""
+*ko.MediaType PremIJPaper/hp 고급 용지: ""
+*nl.MediaType PremIJPaper/hp premium papier: ""
+*pt.MediaType PremIJPaper/papel hp premium: ""
+*sv.MediaType PremIJPaper/hp premium-papper: ""
+*zh_CN.MediaType PremIJPaper/hp 高级纸: ""
+*zh_TW.MediaType PremIJPaper/HP 高級紙: ""
+
 *MediaType PremIJHeavy/hp premium heavyweight paper:  "
     <</MediaType (PremIJHeavy)>> setpagedevice"
 *End
+*de.MediaType PremIJHeavy/hp Premium Papier, schwer: ""
+*es.MediaType PremIJHeavy/papel de gramaje extra hp premium: ""
+*fr.MediaType PremIJHeavy/Papier à fort grammage hp premium: ""
+*it.MediaType PremIJHeavy/Carta pesante hp alta qualità: ""
+*ja.MediaType PremIJHeavy/両面プレミアム用紙: ""
+*ko.MediaType PremIJHeavy/hp 고급 중량지: ""
+*nl.MediaType PremIJHeavy/hp premium papier, extra zwaar: ""
+*pt.MediaType PremIJHeavy/papel pesado hp premium: ""
+*sv.MediaType PremIJHeavy/hp premium heavyweight-papper: ""
+*zh_CN.MediaType PremIJHeavy/hp 高级重磅纸: ""
+*zh_TW.MediaType PremIJHeavy/HP 高級重磅紙: ""
+
 *MediaType PremIJTrans/hp premium transparency film:  "
     <</MediaType (PremIJTrans)>> setpagedevice"
 *End
+*de.MediaType PremIJTrans/hp Premium Transparentfolie: ""
+*es.MediaType PremIJTrans/transparencia hp premium: ""
+*fr.MediaType PremIJTrans/Film transparent hp premium: ""
+*it.MediaType PremIJTrans/Pellicola per lucidi hp alta qualità: ""
+*ja.MediaType PremIJTrans/プレミアム OHP フィルム: ""
+*ko.MediaType PremIJTrans/hp 고급 투명 필름: ""
+*nl.MediaType PremIJTrans/hp premium transparant: ""
+*pt.MediaType PremIJTrans/transparências hp premium: ""
+*sv.MediaType PremIJTrans/hp premium OH-film: ""
+*zh_CN.MediaType PremIJTrans/hp 高级投影胶片: ""
+*zh_TW.MediaType PremIJTrans/HP 高級投影片: ""
+
 *MediaType PremPLTrans/hp premium plus transparency film:  "
     <</MediaType (PremPLTrans)>> setpagedevice"
 *End
+*de.MediaType PremPLTrans/hp Premium Plus Transparentfolie: ""
+*es.MediaType PremPLTrans/transparencia hp premium plus: ""
+*fr.MediaType PremPLTrans/Film transparent hp premium plus: ""
+*it.MediaType PremPLTrans/Pellicola per lucidi hp massima qualità: ""
+*ja.MediaType PremPLTrans/プレミアム プラス OHP フィルム: ""
+*ko.MediaType PremPLTrans/hp 최고급 투명 필름: ""
+*nl.MediaType PremPLTrans/hp premium plus transparant: ""
+*pt.MediaType PremPLTrans/transparências hp premium plus: ""
+*sv.MediaType PremPLTrans/hp premium plus OH-film: ""
+*zh_CN.MediaType PremPLTrans/hp 超高级投影胶片: ""
+*zh_TW.MediaType PremPLTrans/HP 特級投影片: ""
+
 *MediaType EDPhotoMatte/hp everyday photo paper, matte finish:  "
     <</MediaType (EDPhotoMatte)>> setpagedevice"
 *End
+*de.MediaType EDPhotoMatte/hp Fotopapier für den täglichen Gebrauch, matt: ""
+*es.MediaType EDPhotoMatte/papel fotográfico para uso diario hp, mate: ""
+*fr.MediaType EDPhotoMatte/Papier photo mat polyvalent hp: ""
+*it.MediaType EDPhotoMatte/Carta fotografica per uso quotidiano hp, opaca: ""
+*ja.MediaType EDPhotoMatte/エヴリデイ フォト用紙 (つや消し): ""
+*ko.MediaType EDPhotoMatte/hp 고속표준 인화지, 무광택: ""
+*nl.MediaType EDPhotoMatte/hp everyday fotopapier, mat: ""
+*pt.MediaType EDPhotoMatte/papel fotográfico para uso diário hp, mate: ""
+*sv.MediaType EDPhotoMatte/hp fotopapper för vardagsbruk, matt: ""
+*zh_CN.MediaType EDPhotoMatte/hp 普通照片纸，无光洁度: ""
+*zh_TW.MediaType EDPhotoMatte/HP 粗面常用相紙: ""
+
 *MediaType EDPhotoSemiGloss/hp everyday photo paper, semi gloss:  "
     <</MediaType (EDPhotoSemiGloss)>> setpagedevice"
 *End
+*de.MediaType EDPhotoSemiGloss/hp Fotopapier für den täglichen Gebrauch, seidenmatt: ""
+*es.MediaType EDPhotoSemiGloss/papel fotográfico para uso diario hp, semisatinado: ""
+*fr.MediaType EDPhotoSemiGloss/Papier photo polyvalent hp semi-brillant: ""
+*it.MediaType EDPhotoSemiGloss/Carta fotografica per uso quotidiano hp, semi lucida: ""
+*ja.MediaType EDPhotoSemiGloss/エヴリデイ フォト用紙 (半光沢): ""
+*ko.MediaType EDPhotoSemiGloss/hp 고속표준 인화지, 반광택: ""
+*nl.MediaType EDPhotoSemiGloss/hp everyday fotopapier, halfglanzend: ""
+*pt.MediaType EDPhotoSemiGloss/papel fotográfico para uso diário hp, semibrilhante: ""
+*sv.MediaType EDPhotoSemiGloss/hp fotopapper för vardagsbruk, medelglättat: ""
+*zh_CN.MediaType EDPhotoSemiGloss/hp 普通照片纸，半光泽: ""
+*zh_TW.MediaType EDPhotoSemiGloss/HP 半光面常用相紙: ""
+
 *MediaType ClrFastPhotoGloss/hp colorfast photo paper, glossy:  "
     <</MediaType (ClrFastPhotoGloss)>> setpagedevice"
 *End
+*de.MediaType ClrFastPhotoGloss/hp Colorfast Fotopapier, hochglänzend: ""
+*es.MediaType ClrFastPhotoGloss/papel fotográfico hp colorfast, satinado: ""
+*fr.MediaType ClrFastPhotoGloss/Papier photo hp colorfast, brillant: ""
+*it.MediaType ClrFastPhotoGloss/Carta fotografica hp ""colorfast"", lucida: ""
+*ja.MediaType ClrFastPhotoGloss/耐光プレミアム フォト用紙 (光沢): ""
+*ko.MediaType ClrFastPhotoGloss/hp colorfast 인화지, 광택: ""
+*nl.MediaType ClrFastPhotoGloss/hp colorfast fotopapier, glanzend: ""
+*pt.MediaType ClrFastPhotoGloss/papel fotográfico hp colorfast, brilhante: ""
+*sv.MediaType ClrFastPhotoGloss/hp colorfast-fotopapper, glättat: ""
+*zh_CN.MediaType ClrFastPhotoGloss/hp colorfast 照片纸，有光泽: ""
+*zh_TW.MediaType ClrFastPhotoGloss/HP 光面不褪色相紙: ""
+
 *MediaType PPLPhotGlos/hp premium plus photo paper, glossy:  "
     <</MediaType (PPLPhotGlos)>> setpagedevice"
 *End
+*de.MediaType PPLPhotGlos/hp Premium Plus Fotopapier, hochglänzend: ""
+*es.MediaType PPLPhotGlos/papel fotográfico hp premium plus, satinado: ""
+*fr.MediaType PPLPhotGlos/Papier photo brillant hp premium plus: ""
+*it.MediaType PPLPhotGlos/Carta fotografica hp massima qualità, lucida: ""
+*ja.MediaType PPLPhotGlos/プレミアム プラス フォト用紙 (光沢): ""
+*ko.MediaType PPLPhotGlos/hp 최고급 인화지, 광택: ""
+*nl.MediaType PPLPhotGlos/hp premium plus fotopapier, glanzend: ""
+*pt.MediaType PPLPhotGlos/papel fotográfico hp premium plus, brilhante: ""
+*sv.MediaType PPLPhotGlos/hp premium plus fotopapper, glättat: ""
+*zh_CN.MediaType PPLPhotGlos/hp 超高级照片纸，有光泽: ""
+*zh_TW.MediaType PPLPhotGlos/HP 光面特級相紙: ""
+
 *MediaType PPLPhotMatte/hp premium plus photo paper, matte:  "
     <</MediaType (PPLPhotMatte)>> setpagedevice"
 *End
+*de.MediaType PPLPhotMatte/hp Premium Plus Fotopapier, matt: ""
+*es.MediaType PPLPhotMatte/papel fotográfico hp premium plus, mate: ""
+*fr.MediaType PPLPhotMatte/Papier photo mat hp premium plus: ""
+*it.MediaType PPLPhotMatte/Carta fotografica hp massima qualità, opaca: ""
+*ja.MediaType PPLPhotMatte/プレミアム プラス フォト用紙 (つや消し): ""
+*ko.MediaType PPLPhotMatte/hp 최고급 인화지, 무광택: ""
+*nl.MediaType PPLPhotMatte/hp premium plus fotopapier, mat: ""
+*pt.MediaType PPLPhotMatte/papel fotográfico hp premium plus, fosco: ""
+*sv.MediaType PPLPhotMatte/hp premium plus fotopapper, matt: ""
+*zh_CN.MediaType PPLPhotMatte/hp 超高级照片纸，无光泽: ""
+*zh_TW.MediaType PPLPhotMatte/HP 粗面特級相紙: ""
+
 *MediaType PremPhotoGloss/hp premium photo paper, glossy:  "
     <</MediaType (PremPhotoGloss)>> setpagedevice"
 *End
+*de.MediaType PremPhotoGloss/hp Premium Fotopapier, hochglänzend: ""
+*es.MediaType PremPhotoGloss/papel fotográfico hp premium, satinado: ""
+*fr.MediaType PremPhotoGloss/Papier photo brillant hp premium: ""
+*it.MediaType PremPhotoGloss/Carta fotografica hp alta qualità, lucida: ""
+*ja.MediaType PremPhotoGloss/プレミアム フォト用紙 (光沢): ""
+*ko.MediaType PremPhotoGloss/hp 고급 인화지, 광택: ""
+*nl.MediaType PremPhotoGloss/hp premium fotopapier, glanzend: ""
+*pt.MediaType PremPhotoGloss/papel fotográfico hp premium, brilhante: ""
+*sv.MediaType PremPhotoGloss/hp premium-fotopapper, glättat: ""
+*zh_CN.MediaType PremPhotoGloss/hp 高级照片纸，有光泽: ""
+*zh_TW.MediaType PremPhotoGloss/HP 光面高級相紙: ""
+
 *MediaType PhotoGloss/hp photo paper, glossy:  "
     <</MediaType (PhotoGloss)>> setpagedevice"
 *End
+*de.MediaType PhotoGloss/hp Fotopapier, hochglänzend: ""
+*es.MediaType PhotoGloss/papel fotográfico hp, satinado: ""
+*fr.MediaType PhotoGloss/Papier photo hp brillant: ""
+*it.MediaType PhotoGloss/Carta fotografica hp: ""
+*ja.MediaType PhotoGloss/プレミアム フォト用紙 (光沢): ""
+*ko.MediaType PhotoGloss/hp 인화지, 광택: ""
+*nl.MediaType PhotoGloss/hp fotopapier, glanzend: ""
+*pt.MediaType PhotoGloss/papel fotográfico hp, brilhante: ""
+*sv.MediaType PhotoGloss/hp fotopapper, glättat: ""
+*zh_CN.MediaType PhotoGloss/hp 照片纸，有光泽: ""
+*zh_TW.MediaType PhotoGloss/HP 光面相紙: ""
+
 *MediaType BrochGloss/hp brochure & flyer, gloss:  "
     <</MediaType (BrochGloss)>> setpagedevice"
 *End
+*de.MediaType BrochGloss/hp Broschüren & Flyer-Papier, hochglänzend: ""
+*es.MediaType BrochGloss/folleto y octavilla hp, satinado: ""
+*fr.MediaType BrochGloss/Papier hp brillant pour brochures et dépliants: ""
+*it.MediaType BrochGloss/Carta hp per brochure e pieghevoli, lucida: ""
+*ja.MediaType BrochGloss/ブローシャ & フライヤ用紙 (光沢): ""
+*ko.MediaType BrochGloss/hp 브로셔 및 플라이어, 광택: ""
+*nl.MediaType BrochGloss/hp brochure & flyer, glanzend: ""
+*pt.MediaType BrochGloss/papel para brochura e folheto hp, brilhante: ""
+*sv.MediaType BrochGloss/hp papper för broschyrer och flygblad, glättat: ""
+*zh_CN.MediaType BrochGloss/hp 小册子和传单用纸，有光泽: ""
+*zh_TW.MediaType BrochGloss/HP 光面型錄與傳單紙: ""
+
 *MediaType BrochMatte/hp brochure & flyer, matte finish:  "
     <</MediaType (BrochMatte)>> setpagedevice"
 *End
+*de.MediaType BrochMatte/hp Broschüren & Flyer-Papier, matt: ""
+*es.MediaType BrochMatte/folleto y octavilla hp, mate: ""
+*fr.MediaType BrochMatte/Papier mat pour brochures et dépliants hp: ""
+*it.MediaType BrochMatte/Carta hp per brochure e pieghevoli, opaca: ""
+*ja.MediaType BrochMatte/ブローシャ & フライヤ用紙 (つや消し): ""
+*ko.MediaType BrochMatte/hp 브로셔 및 플라이어, 무광택: ""
+*nl.MediaType BrochMatte/hp brochure & flyer, mat: ""
+*pt.MediaType BrochMatte/papel para brochura e folheto hp, mate: ""
+*sv.MediaType BrochMatte/hp papper för broschyrer och flygblad, matt: ""
+*zh_CN.MediaType BrochMatte/hp 小册子和传单用纸，无光洁度: ""
+*zh_TW.MediaType BrochMatte/HP 粗面型錄與傳單紙: ""
+
 *?MediaType: "
  save
     currentpagedevice /MediaType get
@@ -722,36 +2607,417 @@ restore
 "
 *End
 *CloseUI: *MediaType
+*% ================================================
+*% Constraints on MediaType for Booklet printing
+*% ================================================
+
+*UIConstraints: *HPOption_Duplexer False *HPBookletFilter True
+*% ================================================
+*% Booklet
+*% ================================================
+*% Booklet printing is not allowed without Auto Duplex turned on
+*UIConstraints: *HPBookletFilter True *Duplex None
+*UIConstraints: *Duplex None *HPBookletFilter True
+*OpenUI *HPBookletFilter/Format Output As Booklet: Boolean
+*OrderDependency: 60 AnySetup *HPBookletFilter
+*DefaultHPBookletFilter: False
+*de.Translation HPBookletFilter/Ausgabeformat als Broschüre: ""
+*es.Translation HPBookletFilter/Formatear impr. como folleto: ""
+*fr.Translation HPBookletFilter/Formate la sortie comme brochure: ""
+*it.Translation HPBookletFilter/Output in formato di opuscolo: ""
+*ja.Translation HPBookletFilter/ブックレット印刷用フォーマット: ""
+*ko.Translation HPBookletFilter/소책자 형식으로 출력: ""
+*nl.Translation HPBookletFilter/Opmaakuitvoer als brochure: ""
+*pt.Translation HPBookletFilter/Formatar saída como folheto: ""
+*sv.Translation HPBookletFilter/Broschyr som utskriftsformat: ""
+*zh_CN.Translation HPBookletFilter/以小册子格式输出: ""
+*zh_TW.Translation HPBookletFilter/輸出格式為手冊: ""
+
+*HPBookletFilter True/Yes: ""
+*de.HPBookletFilter True/Ein: ""
+*es.HPBookletFilter True/Activado: ""
+*fr.HPBookletFilter True/Activé: ""
+*it.HPBookletFilter True/Attiva: ""
+*ja.HPBookletFilter True/オン: ""
+*ko.HPBookletFilter True/켜짐: ""
+*nl.HPBookletFilter True/Aan: ""
+*pt.HPBookletFilter True/Ativado: ""
+*sv.HPBookletFilter True/På: ""
+*zh_CN.HPBookletFilter True/开: ""
+*zh_TW.HPBookletFilter True/開啟: ""
+
+*HPBookletFilter False/No: ""
+*de.HPBookletFilter False/Aus: ""
+*es.HPBookletFilter False/Desactivado: ""
+*fr.HPBookletFilter False/Désactivé: ""
+*it.HPBookletFilter False/Disattivata: ""
+*ja.HPBookletFilter False/オフ: ""
+*ko.HPBookletFilter False/꺼짐: ""
+*nl.HPBookletFilter False/Uit: ""
+*pt.HPBookletFilter False/Desativado: ""
+*sv.HPBookletFilter False/Av: ""
+*zh_CN.HPBookletFilter False/关: ""
+*zh_TW.HPBookletFilter False/關閉: ""
+
+*CloseUI: *HPBookletFilter
+
+*OpenUI *HPBookletBackCover/Last Page Is Back Cover: Boolean
+*OrderDependency: 61 AnySetup *HPBookletBackCover
+*DefaultHPBookletBackCover: False
+*de.Translation HPBookletBackCover/Endseite = Broschürenrücken: ""
+*es.Translation HPBookletBackCover/La últ. pág. es la contraport.: ""
+*fr.Translation HPBookletBackCover/Dernière page page de garde: ""
+*it.Translation HPBookletBackCover/Ultima pag come retrocopertina: ""
+*ja.Translation HPBookletBackCover/最後のページを背表紙にする: ""
+*ko.Translation HPBookletBackCover/마지막 페이지는 뒤 표지입니다: ""
+*nl.Translation HPBookletBackCover/Laatste pagina is achterblad: ""
+*pt.Translation HPBookletBackCover/A última pág. é a quarta capa: ""
+*sv.Translation HPBookletBackCover/Sista sidan är bakre omslag: ""
+*zh_CN.Translation HPBookletBackCover/最后一页是封底: ""
+*zh_TW.Translation HPBookletBackCover/最後一頁為封底: ""
+
+*HPBookletBackCover True/Yes: ""
+*de.HPBookletBackCover True/Ein: ""
+*es.HPBookletBackCover True/Activado: ""
+*fr.HPBookletBackCover True/Activé: ""
+*it.HPBookletBackCover True/Attiva: ""
+*ja.HPBookletBackCover True/オン: ""
+*ko.HPBookletBackCover True/켜짐: ""
+*nl.HPBookletBackCover True/Aan: ""
+*pt.HPBookletBackCover True/Ativado: ""
+*sv.HPBookletBackCover True/På: ""
+*zh_CN.HPBookletBackCover True/开: ""
+*zh_TW.HPBookletBackCover True/開啟: ""
+
+*HPBookletBackCover False/No: ""
+*de.HPBookletBackCover False/Aus: ""
+*es.HPBookletBackCover False/Desactivado: ""
+*fr.HPBookletBackCover False/Désactivé: ""
+*it.HPBookletBackCover False/Disattivata: ""
+*ja.HPBookletBackCover False/オフ: ""
+*ko.HPBookletBackCover False/꺼짐: ""
+*nl.HPBookletBackCover False/Uit: ""
+*pt.HPBookletBackCover False/Desativado: ""
+*sv.HPBookletBackCover False/Av: ""
+*zh_CN.HPBookletBackCover False/关: ""
+*zh_TW.HPBookletBackCover False/關閉: ""
+
+*CloseUI: *HPBookletBackCover
+
+*OpenUI *HPBookletPageOrder/Page Order: PickOne
+*OrderDependency: 62 AnySetup *HPBookletPageOrder
+*DefaultHPBookletPageOrder: Normal
+*de.Translation HPBookletPageOrder/Seitenreihenfolge: ""
+*es.Translation HPBookletPageOrder/Orden de páginas: ""
+*fr.Translation HPBookletPageOrder/Ordre des pages: ""
+*it.Translation HPBookletPageOrder/Ordine delle pagine: ""
+*ja.Translation HPBookletPageOrder/ページ方向: ""
+*ko.Translation HPBookletPageOrder/페이지 순서: ""
+*nl.Translation HPBookletPageOrder/Paginavolgorde: ""
+*pt.Translation HPBookletPageOrder/Ordem das páginas: ""
+*sv.Translation HPBookletPageOrder/Sidföljd: ""
+*zh_CN.Translation HPBookletPageOrder/页面顺序: ""
+*zh_TW.Translation HPBookletPageOrder/頁序: ""
+
+*HPBookletPageOrder Normal/Pages Bound on the Left: ""
+*de.HPBookletPageOrder Normal/Seiten links gebunden: ""
+*es.HPBookletPageOrder Normal/Encuadernación a la izquierda: ""
+*fr.HPBookletPageOrder Normal/Pages reliées sur la gauche: ""
+*it.HPBookletPageOrder Normal/Pagine rilegate a sinistra: ""
+*ja.HPBookletPageOrder Normal/とじしろ左: ""
+*ko.HPBookletPageOrder Normal/왼쪽 제본 페이지: ""
+*nl.HPBookletPageOrder Normal/Links gebonden pagina’s: ""
+*pt.HPBookletPageOrder Normal/Páginas encadernadas à esquerda: ""
+*sv.HPBookletPageOrder Normal/Sidorna binds i vänsterkanten: ""
+*zh_CN.HPBookletPageOrder Normal/左侧装订: ""
+*zh_TW.HPBookletPageOrder Normal/左邊裝訂: ""
+
+*HPBookletPageOrder Asian/Pages Bound on the Right: ""
+*de.HPBookletPageOrder Asian/Seiten rechts gebunden: ""
+*es.HPBookletPageOrder Asian/Encuadernación a la derecha: ""
+*fr.HPBookletPageOrder Asian/Pages reliées sur la droite: ""
+*it.HPBookletPageOrder Asian/Pagine rilegate a destra: ""
+*ja.HPBookletPageOrder Asian/とじしろ右: ""
+*ko.HPBookletPageOrder Asian/오른쪽 제본 페이지: ""
+*nl.HPBookletPageOrder Asian/Rechts gebonden pagina’s: ""
+*pt.HPBookletPageOrder Asian/Páginas encadernadas à direita: ""
+*sv.HPBookletPageOrder Asian/Sidorna binds i högerkanten: ""
+*zh_CN.HPBookletPageOrder Asian/右侧装订: ""
+*zh_TW.HPBookletPageOrder Asian/右邊裝訂: ""
+
+*CloseUI: *HPBookletPageOrder
+
+*OpenUI *HPBookletScaling/Scaling: PickOne
+*OrderDependency: 63 AnySetup *HPBookletScaling
+*DefaultHPBookletScaling: Proportional
+*de.Translation HPBookletScaling/Skalierung: ""
+*es.Translation HPBookletScaling/Cambio de escala: ""
+*fr.Translation HPBookletScaling/Mise à l'échelle: ""
+*it.Translation HPBookletScaling/Scala: ""
+*ja.Translation HPBookletScaling/拡大縮小: ""
+*ko.Translation HPBookletScaling/스케일링: ""
+*nl.Translation HPBookletScaling/Schaal aanpassen: ""
+*pt.Translation HPBookletScaling/Escalonando: ""
+*sv.Translation HPBookletScaling/Skalning: ""
+*zh_CN.Translation HPBookletScaling/缩放: ""
+*zh_TW.Translation HPBookletScaling/縮放: ""
+
+*HPBookletScaling Proportional/Proportional: ""
+*de.HPBookletScaling Proportional/Proportional: ""
+*es.HPBookletScaling Proportional/Proporcional: ""
+*fr.HPBookletScaling Proportional/Proportionnel: ""
+*it.HPBookletScaling Proportional/Proporzionale: ""
+*ja.HPBookletScaling Proportional/自動均等調整: ""
+*ko.HPBookletScaling Proportional/비례: ""
+*nl.HPBookletScaling Proportional/Proportioneel: ""
+*pt.HPBookletScaling Proportional/Proporcional: ""
+*sv.HPBookletScaling Proportional/Proportionellt: ""
+*zh_CN.HPBookletScaling Proportional/按比例: ""
+*zh_TW.HPBookletScaling Proportional/比例: ""
+
+*HPBookletScaling FitPage/Fit To Page: ""
+*de.HPBookletScaling FitPage/Seite anpassen: ""
+*es.HPBookletScaling FitPage/Ajustar página: ""
+*fr.HPBookletScaling FitPage/Ajuster la page: ""
+*it.HPBookletScaling FitPage/Adattamento pagina: ""
+*ja.HPBookletScaling FitPage/全体表示: ""
+*ko.HPBookletScaling FitPage/페이지에 맞춤: ""
+*nl.HPBookletScaling FitPage/Passend op pagina: ""
+*pt.HPBookletScaling FitPage/Ajuste a página: ""
+*sv.HPBookletScaling FitPage/Anpassa sida: ""
+*zh_CN.HPBookletScaling FitPage/适合页面: ""
+*zh_TW.HPBookletScaling FitPage/符合頁面: ""
+
+*CloseUI: *HPBookletScaling
+
+*% These values are set of PageSize settings so we need find
+*% the way to refer on to PageSize values 
+
+
+*OpenUI *HPBookletPageSize/Paper For Booklet: PickOne
+*OrderDependency: 66 AnySetup *HPBookletPageSize
+*DefaultHPBookletPageSize: Letter
+*de.Translation HPBookletPageSize/Papier für Broschüre: ""
+*es.Translation HPBookletPageSize/Papel para folleto: ""
+*fr.Translation HPBookletPageSize/Papier pour brochure: ""
+*it.Translation HPBookletPageSize/Carta per opuscolo: ""
+*ja.Translation HPBookletPageSize/ブックレットの用紙: ""
+*ko.Translation HPBookletPageSize/소책자용 용지: ""
+*nl.Translation HPBookletPageSize/Papier voor brochure: ""
+*pt.Translation HPBookletPageSize/Papel para folheto: ""
+*sv.Translation HPBookletPageSize/Papper för broschyr: ""
+*zh_CN.Translation HPBookletPageSize/用于小册子的纸张: ""
+*zh_TW.Translation HPBookletPageSize/用於手冊的紙張: ""
+
+
+*HPBookletPageSize Letter/Letter: ""
+*de.HPBookletPageSize Letter/Letter: ""
+*es.HPBookletPageSize Letter/Letter: ""
+*fr.HPBookletPageSize Letter/Lettre: ""
+*it.HPBookletPageSize Letter/Letter: ""
+*ja.HPBookletPageSize Letter/レター: ""
+*ko.HPBookletPageSize Letter/레터: ""
+*nl.HPBookletPageSize Letter/Letter: ""
+*pt.HPBookletPageSize Letter/carta: ""
+*sv.HPBookletPageSize Letter/Letter: ""
+*zh_CN.HPBookletPageSize Letter/信纸: ""
+*zh_TW.HPBookletPageSize Letter/Letter: ""
+
+*HPBookletPageSize Executive/Executive: ""
+*de.HPBookletPageSize Executive/Executive: ""
+*es.HPBookletPageSize Executive/Ejecutivo: ""
+*fr.HPBookletPageSize Executive/Exécutif: ""
+*it.HPBookletPageSize Executive/Executive: ""
+*ja.HPBookletPageSize Executive/エグゼクティブ: ""
+*ko.HPBookletPageSize Executive/Executive: ""
+*nl.HPBookletPageSize Executive/Executive: ""
+*pt.HPBookletPageSize Executive/executivo: ""
+*sv.HPBookletPageSize Executive/Executive: ""
+*zh_CN.HPBookletPageSize Executive/Executive: ""
+*zh_TW.HPBookletPageSize Executive/Executive: ""
+
+*HPBookletPageSize A4/A4: ""
+*de.HPBookletPageSize A4/A4: ""
+*es.HPBookletPageSize A4/A4: ""
+*fr.HPBookletPageSize A4/A4: ""
+*it.HPBookletPageSize A4/A4: ""
+*ja.HPBookletPageSize A4/A4: ""
+*ko.HPBookletPageSize A4/A4: ""
+*nl.HPBookletPageSize A4/A4: ""
+*pt.HPBookletPageSize A4/A4: ""
+*sv.HPBookletPageSize A4/A4: ""
+*zh_CN.HPBookletPageSize A4/A4: ""
+*zh_TW.HPBookletPageSize A4/A4: ""
+
+*HPBookletPageSize A5/A5: ""
+*de.HPBookletPageSize A5/A5: ""
+*es.HPBookletPageSize A5/A5: ""
+*fr.HPBookletPageSize A5/A5: ""
+*it.HPBookletPageSize A5/A5: ""
+*ja.HPBookletPageSize A5/A5: ""
+*ko.HPBookletPageSize A5/A5: ""
+*nl.HPBookletPageSize A5/A5: ""
+*pt.HPBookletPageSize A5/A5: ""
+*sv.HPBookletPageSize A5/A5: ""
+*zh_CN.HPBookletPageSize A5/A5: ""
+*zh_TW.HPBookletPageSize A5/A5: ""
+
+*HPBookletPageSize B5/B5 (JIS): ""
+*de.HPBookletPageSize B5/B5 (JIS): ""
+*es.HPBookletPageSize B5/JIS B5: ""
+*fr.HPBookletPageSize B5/JIS B5: ""
+*it.HPBookletPageSize B5/JIS B5: ""
+*ja.HPBookletPageSize B5/B5 (JIS): ""
+*ko.HPBookletPageSize B5/B5(JIS): ""
+*nl.HPBookletPageSize B5/JIS B5: ""
+*pt.HPBookletPageSize B5/B5 JIS: ""
+*sv.HPBookletPageSize B5/JIS B5: ""
+*zh_CN.HPBookletPageSize B5/JIS B5: ""
+*zh_TW.HPBookletPageSize B5/JIS B5: ""
+
+*HPBookletPageSize ISOB5/B5 (ISO): ""
+*de.HPBookletPageSize ISOB5/B5 (ISO): ""
+*es.HPBookletPageSize ISOB5/B5 (ISO): ""
+*fr.HPBookletPageSize ISOB5/B5 (ISO): ""
+*it.HPBookletPageSize ISOB5/B5 (ISO): ""
+*ja.HPBookletPageSize ISOB5/B5 (ISO): ""
+*ko.HPBookletPageSize ISOB5/B5(ISO): ""
+*nl.HPBookletPageSize ISOB5/B5 (ISO): ""
+*pt.HPBookletPageSize ISOB5/B5 (ISO): ""
+*sv.HPBookletPageSize ISOB5/B5 (ISO): ""
+*zh_CN.HPBookletPageSize ISOB5/B5 (ISO): ""
+*zh_TW.HPBookletPageSize ISOB5/B5 (ISO): ""
+
+*HPBookletPageSize 5x8/Index Card 5x8: ""
+*de.HPBookletPageSize 5x8/Karteikarte 127 x 203 mm: ""
+*es.HPBookletPageSize 5x8/ficha 5 x 8 pulg.: ""
+*fr.HPBookletPageSize 5x8/Fiche Bristol 5 x 8 pouces: ""
+*it.HPBookletPageSize 5x8/Scheda 127x203 mm: ""
+*ja.HPBookletPageSize 5x8/インデックス カード 5 x 8: ""
+*ko.HPBookletPageSize 5x8/색인 카드 5x8in.: ""
+*nl.HPBookletPageSize 5x8/indexkaart 5x8 inch: ""
+*pt.HPBookletPageSize 5x8/cartão de índice 5 x 8: ""
+*sv.HPBookletPageSize 5x8/Registerkort 127 x 203 mm: ""
+*zh_CN.HPBookletPageSize 5x8/索引卡 5x8: ""
+*zh_TW.HPBookletPageSize 5x8/5x8 索引卡: ""
+
+*HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*de.HPBookletPageSize JPostD/Oufuku-Hagaki: ""
+*es.HPBookletPageSize JPostD/Ofuku Hagaki 200 x 148 mm: ""
+*fr.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*it.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*ja.HPBookletPageSize JPostD/往復ハガキ: ""
+*ko.HPBookletPageSize JPostD/오푸쿠 엽서: ""
+*nl.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*pt.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*sv.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*zh_CN.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+*zh_TW.HPBookletPageSize JPostD/Ofuku Hagaki: ""
+
+*CloseUI: *HPBookletPageSize
+
+*%Constraints on HPBookletPageSize
+*%=============================================
+*UIConstraints: *HPBookletPageSize A5                      *InputSlot Tray2
+*UIConstraints: *HPBookletPageSize 5x8                     *InputSlot Tray2
+*UIConstraints: *HPBookletPageSize JPostD                  *InputSlot Tray2
+*UIConstraints: *HPBookletPageSize ISOB5		              *InputSlot Tray2
+*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize A5
+*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize 5x8
+*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize JPostD
+*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize ISOB5
+
+
 *% ===================================
 *% Print Quality
 *% ===================================
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 30.0 AnySetup *OutputMode
 *DefaultOutputMode: Normal
-*OutputMode Best/Best:"
+*de.Translation OutputMode/Druckqualität: ""
+*es.Translation OutputMode/Calidad de impresión: ""
+*fr.Translation OutputMode/Qualité d'impression: ""
+*it.Translation OutputMode/Qualità di stampa: ""
+*ja.Translation OutputMode/印刷品質: ""
+*ko.Translation OutputMode/인쇄 품질: ""
+*nl.Translation OutputMode/Afdrukkwaliteit: ""
+*pt.Translation OutputMode/Qualidade de impressão: ""
+*sv.Translation OutputMode/Utskriftskvalitet: ""
+*zh_CN.Translation OutputMode/打印质量: ""
+*zh_TW.Translation OutputMode/列印品質: ""
+
+*OutputMode Best/Best: "
 <<
 /PrintQuality 1
 >> setpagedevice
 "
 *End
-*OutputMode Normal/Normal:"
+*de.OutputMode Best/Optimal: ""
+*es.OutputMode Best/Óptima: ""
+*fr.OutputMode Best/Optimale: ""
+*it.OutputMode Best/Ottimale: ""
+*ja.OutputMode Best/ベスト: ""
+*ko.OutputMode Best/최상: ""
+*nl.OutputMode Best/Best: ""
+*pt.OutputMode Best/Melhor: ""
+*sv.OutputMode Best/Bästa: ""
+*zh_CN.OutputMode Best/最佳: ""
+*zh_TW.OutputMode Best/最佳: ""
+
+*OutputMode Normal/Normal: "
 <<
 /PrintQuality 0
 >> setpagedevice
 "
 *End
-*OutputMode FastNormal/Fast Normal:"
+*de.OutputMode Normal/Normal: ""
+*es.OutputMode Normal/Normal: ""
+*fr.OutputMode Normal/Normale: ""
+*it.OutputMode Normal/Normale: ""
+*ja.OutputMode Normal/ノーマル: ""
+*ko.OutputMode Normal/보통: ""
+*nl.OutputMode Normal/Normaal: ""
+*pt.OutputMode Normal/Normal: ""
+*sv.OutputMode Normal/Normal: ""
+*zh_CN.OutputMode Normal/正常: ""
+*zh_TW.OutputMode Normal/正常: ""
+
+*OutputMode FastNormal/Fast Normal: "
 <<
 /PrintQuality -1
 >> setpagedevice
 "
 *End
-*OutputMode Fast/Fast:"
+*de.OutputMode FastNormal/Normal (schnell): ""
+*es.OutputMode FastNormal/Rápido normal: ""
+*fr.OutputMode FastNormal/Normale rapide: ""
+*it.OutputMode FastNormal/Normale veloce: ""
+*ja.OutputMode FastNormal/高速ノーマル: ""
+*ko.OutputMode FastNormal/고속 표준: ""
+*nl.OutputMode FastNormal/Snel normaal: ""
+*pt.OutputMode FastNormal/Normal rápido: ""
+*sv.OutputMode FastNormal/Snabb normal: ""
+*zh_CN.OutputMode FastNormal/比正常快: ""
+*zh_TW.OutputMode FastNormal/快速一般: ""
+
+*OutputMode Fast/Fast: "
 <<
 /PrintQuality -2
 >> setpagedevice
 "
 *End
+*de.OutputMode Fast/Schnell: ""
+*es.OutputMode Fast/Rápida: ""
+*fr.OutputMode Fast/Brouillon: ""
+*it.OutputMode Fast/Veloce: ""
+*ja.OutputMode Fast/高速: ""
+*ko.OutputMode Fast/고속: ""
+*nl.OutputMode Fast/Snel: ""
+*pt.OutputMode Fast/Rápida: ""
+*sv.OutputMode Fast/Snabb: ""
+*zh_CN.OutputMode Fast/快速: ""
+*zh_TW.OutputMode Fast/快速: ""
+
 *?OutputMode: "
   save
   3 dict
@@ -952,67 +3218,204 @@ restore
 *InkName: ProcessYellow/Process Yellow
 *%  For 60 lpi / 300 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.60lpi.300dpi/60 lpi / 300 dpi: "45"
+
 *ColorSepScreenAngle CustomColor.60lpi.300dpi/60 lpi / 300 dpi: "45"
+
 *ColorSepScreenAngle ProcessCyan.60lpi.300dpi/60 lpi / 300 dpi: "15"
+
 *ColorSepScreenAngle ProcessMagenta.60lpi.300dpi/60 lpi / 300 dpi: "75"
+
 *ColorSepScreenAngle ProcessYellow.60lpi.300dpi/60 lpi / 300 dpi: "0"
+
 *ColorSepScreenFreq ProcessBlack.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq CustomColor.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessCyan.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessMagenta.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessYellow.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *%  For 85 lpi / 600 dpi  (5,5,2,6,6,2,20/3,0) ====
 *ColorSepScreenAngle ProcessBlack.85lpi.600dpi/85 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.85lpi.600dpi/85 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.85lpi.600dpi/85 lpi / 600 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.85lpi.600dpi/85 lpi / 600 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "0.0"
+
 *ColorSepScreenFreq ProcessBlack.85lpi.600dpi/85 lpi / 600 dpi: "84.8528"
+
 *ColorSepScreenFreq CustomColor.85lpi.600dpi/85 lpi / 600 dpi: "84.8528"
+
 *ColorSepScreenFreq ProcessCyan.85lpi.600dpi/85 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.85lpi.600dpi/85 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "30.0"
+
 *ColorSepScreenProc ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "
 {1 add 2 div 3 mul dup floor sub 2 mul 1 sub exch
 1 add 2 div 3 mul dup floor sub 2 mul 1 sub exch
 abs exch abs 2 copy add 1 gt {1 sub dup mul exch 1 sub dup mul add 1
 sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *End
+
 *%  For 106 lpi / 300 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.106lpi.300dpi/106 lpi / 300 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.106lpi.300dpi/106 lpi / 300 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.106lpi.300dpi/106 lpi / 300 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.106lpi.300dpi/106 lpi / 300 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.106lpi.300dpi/106 lpi / 300 dpi: "0.0"
+
 *ColorSepScreenFreq ProcessBlack.106lpi.300dpi/106 lpi / 300 dpi: "106.066"
+
 *ColorSepScreenFreq CustomColor.106lpi.300dpi/106 lpi / 300 dpi: "106.066"
+
 *ColorSepScreenFreq ProcessCyan.106lpi.300dpi/106 lpi / 300 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.106lpi.300dpi/106 lpi / 300 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.106lpi.300dpi/106 lpi / 300 dpi: "100.0"
+
 *%  For 106 lpi / 600 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.106lpi.600dpi/106 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.106lpi.600dpi/106 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.106lpi.600dpi/106 lpi / 600 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.106lpi.600dpi/106 lpi / 600 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.106lpi.600dpi/106 lpi / 600 dpi: "0.0"
+
 *ColorSepScreenFreq ProcessBlack.106lpi.600dpi/106 lpi / 600 dpi: "106.066"
+
 *ColorSepScreenFreq CustomColor.106lpi.600dpi/106 lpi / 600 dpi: "106.066"
+
 *ColorSepScreenFreq ProcessCyan.106lpi.600dpi/106 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.106lpi.600dpi/106 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.106lpi.600dpi/106 lpi / 600 dpi: "100.0"
+
 *% ===================================
 *% Printer Memory
 *% ===================================
 *FreeVM: "6701488"
 *% VM
 *VMOption 64Meg/64 MB:  "6701488"
+*de.VMOption 64Meg/64 MB: ""
+*es.VMOption 64Meg/64 MB: ""
+*fr.VMOption 64Meg/64 Mo: ""
+*it.VMOption 64Meg/64 MB: ""
+*ja.VMOption 64Meg/64MB: ""
+*ko.VMOption 64Meg/64MB: ""
+*nl.VMOption 64Meg/64 MB: ""
+*pt.VMOption 64Meg/64 MB: ""
+*sv.VMOption 64Meg/64 MB: ""
+*zh_CN.VMOption 64Meg/64 MB: ""
+*zh_TW.VMOption 64Meg/64 MB: ""
+
 *VMOption 96Meg/96 MB:  "10858412"
+*de.VMOption 96Meg/96 MB: ""
+*es.VMOption 96Meg/96 MB: ""
+*fr.VMOption 96Meg/96 Mo: ""
+*it.VMOption 96Meg/96 MB: ""
+*ja.VMOption 96Meg/96MB: ""
+*ko.VMOption 96Meg/96MB: ""
+*nl.VMOption 96Meg/96 MB: ""
+*pt.VMOption 96Meg/96 MB: ""
+*sv.VMOption 96Meg/96 MB: ""
+*zh_CN.VMOption 96Meg/96 MB: ""
+*zh_TW.VMOption 96Meg/96 MB: ""
+
 *VMOption 128Meg/128 MB: "12800000"
+*de.VMOption 128Meg/128 MB: ""
+*es.VMOption 128Meg/128 MB: ""
+*fr.VMOption 128Meg/128 Mo: ""
+*it.VMOption 128Meg/128 MB: ""
+*ja.VMOption 128Meg/128MB: ""
+*ko.VMOption 128Meg/128MB: ""
+*nl.VMOption 128Meg/128 MB: ""
+*pt.VMOption 128Meg/128 MB: ""
+*sv.VMOption 128Meg/128 MB: ""
+*zh_CN.VMOption 128Meg/128 MB: ""
+*zh_TW.VMOption 128Meg/128 MB: ""
+
 *VMOption 160Meg/160 MB: "13401953"
+*de.VMOption 160Meg/160 MB: ""
+*es.VMOption 160Meg/160 MB: ""
+*fr.VMOption 160Meg/160 Mo: ""
+*it.VMOption 160Meg/160 MB: ""
+*ja.VMOption 160Meg/160MB: ""
+*ko.VMOption 160Meg/160MB: ""
+*nl.VMOption 160Meg/160 MB: ""
+*pt.VMOption 160Meg/160 MB: ""
+*sv.VMOption 160Meg/160 MB: ""
+*zh_CN.VMOption 160Meg/160 MB: ""
+*zh_TW.VMOption 160Meg/160 MB: ""
+
 *VMOption 192Meg/192 MB: "19300000"
+*de.VMOption 192Meg/192 MB: ""
+*es.VMOption 192Meg/192 MB: ""
+*fr.VMOption 192Meg/192 Mo: ""
+*it.VMOption 192Meg/192 MB: ""
+*ja.VMOption 192Meg/192MB: ""
+*ko.VMOption 192Meg/192MB: ""
+*nl.VMOption 192Meg/192 MB: ""
+*pt.VMOption 192Meg/192 MB: ""
+*sv.VMOption 192Meg/192 MB: ""
+*zh_CN.VMOption 192Meg/192 MB: ""
+*zh_TW.VMOption 192Meg/192 MB: ""
+
 *VMOption 224Meg/224 MB: "20104464"
+*de.VMOption 224Meg/224 MB: ""
+*es.VMOption 224Meg/224 MB: ""
+*fr.VMOption 224Meg/224 Mo: ""
+*it.VMOption 224Meg/224 MB: ""
+*ja.VMOption 224Meg/224MB: ""
+*ko.VMOption 224Meg/224MB: ""
+*nl.VMOption 224Meg/224 MB: ""
+*pt.VMOption 224Meg/224 MB: ""
+*sv.VMOption 224Meg/224 MB: ""
+*zh_CN.VMOption 224Meg/224 MB: ""
+*zh_TW.VMOption 224Meg/224 MB: ""
+
 *VMOption 256Meg/256 MB: "28200000"
+*de.VMOption 256Meg/256 MB: ""
+*es.VMOption 256Meg/256 MB: ""
+*fr.VMOption 256Meg/256 Mo: ""
+*it.VMOption 256Meg/256 MB: ""
+*ja.VMOption 256Meg/256MB: ""
+*ko.VMOption 256Meg/256MB: ""
+*nl.VMOption 256Meg/256 MB: ""
+*pt.VMOption 256Meg/256 MB: ""
+*sv.VMOption 256Meg/256 MB: ""
+*zh_CN.VMOption 256Meg/256 MB: ""
+*zh_TW.VMOption 256Meg/256 MB: ""
+
 *VMOption 320Meg/320 MB: "32000000"
+*de.VMOption 320Meg/320 MB: ""
+*es.VMOption 320Meg/320 MB: ""
+*fr.VMOption 320Meg/320 Mo: ""
+*it.VMOption 320Meg/320 MB: ""
+*ja.VMOption 320Meg/320MB: ""
+*ko.VMOption 320Meg/320MB: ""
+*nl.VMOption 320Meg/320 MB: ""
+*pt.VMOption 320Meg/320 MB: ""
+*sv.VMOption 320Meg/320 MB: ""
+*zh_CN.VMOption 320Meg/320 MB: ""
+*zh_TW.VMOption 320Meg/320 MB: ""
+
 *% Font Cache
 *FCacheSize 64Meg/64 MB:  1000000
 *FCacheSize 96Meg/96 MB:  1000000
@@ -1107,126 +3510,124 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *% Don't allow following paper size and media types to be duplexed
 *%======================================================================
 *UIConstraints: *PageSize Legal                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion Legal                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize Env10                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion Env10                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvA2                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvA2                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvMonarch            *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvMonarch            *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvDL                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvDL                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvC5                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvC5                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvC6                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvC6                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize HPGreetCard           *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion HPGreetCard           *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvJ3                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvJ3                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize EnvJ4                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion EnvJ4                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize 3x5                   *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion 3x5                   *Duplex DuplexNoTumble
 *UIConstraints: *PageSize 4x6                   *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion 4x6                   *Duplex DuplexNoTumble
 *UIConstraints: *PageSize JPost                 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion JPost                 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize A6card                *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion A6card                *Duplex DuplexNoTumble
 *UIConstraints: *PageSize Statement				*Duplex DuplexNoTumble
-*UIConstraints: *PageRegion Env10               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion Legal               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion Env10               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvA2               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvMonarch          *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvDL               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvC5               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvC6               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion HPGreetCard         *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvJ3               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion EnvJ4               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion 3x5                 *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion 4x6                 *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion JPost               *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion A6card              *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion Statement			*Duplex DuplexNoTumble
+*UIConstraints: *PageRegion Statement				*Duplex DuplexNoTumble
 *UIConstraints: *Duplex DuplexNoTumble          *PageSize Legal
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize Env10
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvA2
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvMonarch
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvDL
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvC5
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvC6
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize HPGreetCard
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvJ3
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvJ4
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize 3x5
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize 4x6
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize JPost
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize A6card
-*UIConstraints: *Duplex DuplexNoTumble          *PageSize Statement
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion Legal
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize Env10
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion Env10
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvA2
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvA2
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvMonarch
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvMonarch
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvDL
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvDL
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvC5
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvC5
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvC6
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvC6
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize HPGreetCard
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion HPGreetCard
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvJ3
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvJ3
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize EnvJ4
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion EnvJ4
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize 3x5
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion 3x5
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize 4x6
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion 4x6
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize JPost
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion JPost
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize A6card
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion A6card
+*UIConstraints: *Duplex DuplexNoTumble          *PageSize Statement
 *UIConstraints: *Duplex DuplexNoTumble          *PageRegion Statement
 *UIConstraints: *PageSize Legal                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion Legal                 *Duplex DuplexTumble
 *UIConstraints: *PageSize Env10                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion Env10                 *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvA2                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvA2                 *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvMonarch            *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvMonarch            *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvDL                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvDL                 *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvC5                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvC5                 *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvC6                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvC6                 *Duplex DuplexTumble
 *UIConstraints: *PageSize HPGreetCard           *Duplex DuplexTumble
+*UIConstraints: *PageRegion HPGreetCard           *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvJ3                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvJ3                 *Duplex DuplexTumble
 *UIConstraints: *PageSize EnvJ4                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion EnvJ4                 *Duplex DuplexTumble
 *UIConstraints: *PageSize 3x5                   *Duplex DuplexTumble
+*UIConstraints: *PageRegion 3x5                   *Duplex DuplexTumble
 *UIConstraints: *PageSize 4x6                   *Duplex DuplexTumble
+*UIConstraints: *PageRegion 4x6                   *Duplex DuplexTumble
 *UIConstraints: *PageSize JPost                 *Duplex DuplexTumble
+*UIConstraints: *PageRegion JPost                 *Duplex DuplexTumble
 *UIConstraints: *PageSize A6card                *Duplex DuplexTumble
+*UIConstraints: *PageRegion A6card                *Duplex DuplexTumble
 *UIConstraints: *PageSize Statement             *Duplex DuplexTumble
-*UIConstraints: *PageRegion Env10               *Duplex DuplexTumble
-*UIConstraints: *PageRegion Legal               *Duplex DuplexTumble
-*UIConstraints: *PageRegion Env10               *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvA2               *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvMonarch          *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvDL               *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvC5               *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvC6               *Duplex DuplexTumble
-*UIConstraints: *PageRegion HPGreetCard         *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvJ3               *Duplex DuplexTumble
-*UIConstraints: *PageRegion EnvJ4               *Duplex DuplexTumble
-*UIConstraints: *PageRegion 3x5                 *Duplex DuplexTumble
-*UIConstraints: *PageRegion 4x6                 *Duplex DuplexTumble
-*UIConstraints: *PageRegion JPost               *Duplex DuplexTumble
-*UIConstraints: *PageRegion A6card              *Duplex DuplexTumble
-*UIConstraints: *PageRegion Statement           *Duplex DuplexTumble
+*UIConstraints: *PageRegion Statement             *Duplex DuplexTumble
 *UIConstraints: *Duplex DuplexTumble          *PageSize Legal
-*UIConstraints: *Duplex DuplexTumble          *PageSize Env10
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvA2
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvMonarch
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvDL
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvC5
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvC6
-*UIConstraints: *Duplex DuplexTumble          *PageSize HPGreetCard
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvJ3
-*UIConstraints: *Duplex DuplexTumble          *PageSize EnvJ4
-*UIConstraints: *Duplex DuplexTumble          *PageSize 3x5
-*UIConstraints: *Duplex DuplexTumble          *PageSize 4x6
-*UIConstraints: *Duplex DuplexTumble          *PageSize JPost
-*UIConstraints: *Duplex DuplexTumble          *PageSize A6card
-*UIConstraints: *Duplex DuplexTumble          *PageSize Statement
 *UIConstraints: *Duplex DuplexTumble          *PageRegion Legal
+*UIConstraints: *Duplex DuplexTumble          *PageSize Env10
 *UIConstraints: *Duplex DuplexTumble          *PageRegion Env10
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvA2
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvA2
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvMonarch
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvMonarch
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvDL
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvDL
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvC5
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvC5
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvC6
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvC6
+*UIConstraints: *Duplex DuplexTumble          *PageSize HPGreetCard
 *UIConstraints: *Duplex DuplexTumble          *PageRegion HPGreetCard
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvJ3
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvJ3
+*UIConstraints: *Duplex DuplexTumble          *PageSize EnvJ4
 *UIConstraints: *Duplex DuplexTumble          *PageRegion EnvJ4
+*UIConstraints: *Duplex DuplexTumble          *PageSize 3x5
 *UIConstraints: *Duplex DuplexTumble          *PageRegion 3x5
+*UIConstraints: *Duplex DuplexTumble          *PageSize 4x6
 *UIConstraints: *Duplex DuplexTumble          *PageRegion 4x6
+*UIConstraints: *Duplex DuplexTumble          *PageSize JPost
 *UIConstraints: *Duplex DuplexTumble          *PageRegion JPost
+*UIConstraints: *Duplex DuplexTumble          *PageSize A6card
 *UIConstraints: *Duplex DuplexTumble          *PageRegion A6card
+*UIConstraints: *Duplex DuplexTumble          *PageSize Statement
 *UIConstraints: *Duplex DuplexTumble          *PageRegion Statement
 *UIConstraints: *MediaType PremIJPaper                *Duplex DuplexNoTumble
 *UIConstraints: *MediaType PremIJTrans                *Duplex DuplexNoTumble
@@ -1272,76 +3673,76 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *% Do not allow following Paper Sizes and Media Type in Tray2
 *%======================================================================
 *UIConstraints: *PageSize Statement               *InputSlot Tray2
+*UIConstraints: *PageRegion Statement               *InputSlot Tray2
 *UIConstraints: *PageSize A5                      *InputSlot Tray2
+*UIConstraints: *PageRegion A5                      *InputSlot Tray2
 *UIConstraints: *PageSize Env10                   *InputSlot Tray2
+*UIConstraints: *PageRegion Env10                   *InputSlot Tray2
 *UIConstraints: *PageSize EnvA2                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvA2                   *InputSlot Tray2
 *UIConstraints: *PageSize EnvMonarch              *InputSlot Tray2
+*UIConstraints: *PageRegion EnvMonarch              *InputSlot Tray2
 *UIConstraints: *PageSize EnvDL                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvDL                   *InputSlot Tray2
 *UIConstraints: *PageSize EnvC5                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvC5                   *InputSlot Tray2
 *UIConstraints: *PageSize EnvC6                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvC6                   *InputSlot Tray2
 *UIConstraints: *PageSize HPGreetCard             *InputSlot Tray2
+*UIConstraints: *PageRegion HPGreetCard             *InputSlot Tray2
 *UIConstraints: *PageSize EnvJ3                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvJ3                   *InputSlot Tray2
 *UIConstraints: *PageSize EnvJ4                   *InputSlot Tray2
+*UIConstraints: *PageRegion EnvJ4                   *InputSlot Tray2
 *UIConstraints: *PageSize 3x5                     *InputSlot Tray2
+*UIConstraints: *PageRegion 3x5                     *InputSlot Tray2
 *UIConstraints: *PageSize 4x6                     *InputSlot Tray2
+*UIConstraints: *PageRegion 4x6                     *InputSlot Tray2
 *UIConstraints: *PageSize 5x8                     *InputSlot Tray2
+*UIConstraints: *PageRegion 5x8                     *InputSlot Tray2
 *UIConstraints: *PageSize JPost                   *InputSlot Tray2
+*UIConstraints: *PageRegion JPost                   *InputSlot Tray2
 *UIConstraints: *PageSize JPostD                  *InputSlot Tray2
+*UIConstraints: *PageRegion JPostD                  *InputSlot Tray2
 *UIConstraints: *PageSize A6card                  *InputSlot Tray2
+*UIConstraints: *PageRegion A6card                  *InputSlot Tray2
 *UIConstraints: *PageSize ISOB5		              *InputSlot Tray2
 *UIConstraints: *InputSlot Tray2                  *PageSize Statement
+*UIConstraints: *InputSlot Tray2                  *PageRegion Statement
 *UIConstraints: *InputSlot Tray2                  *PageSize A5
+*UIConstraints: *InputSlot Tray2                  *PageRegion A5
 *UIConstraints: *InputSlot Tray2                  *PageSize Env10
+*UIConstraints: *InputSlot Tray2                  *PageRegion Env10
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvA2
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvA2
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvMonarch
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvMonarch
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvDL
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvDL
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvC5
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvC5
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvC6
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvC6
 *UIConstraints: *InputSlot Tray2                  *PageSize HPGreetCard
+*UIConstraints: *InputSlot Tray2                  *PageRegion HPGreetCard
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvJ3
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvJ3
 *UIConstraints: *InputSlot Tray2                  *PageSize EnvJ4
+*UIConstraints: *InputSlot Tray2                  *PageRegion EnvJ4
 *UIConstraints: *InputSlot Tray2                  *PageSize 3x5
+*UIConstraints: *InputSlot Tray2                  *PageRegion 3x5
 *UIConstraints: *InputSlot Tray2                  *PageSize 4x6
+*UIConstraints: *InputSlot Tray2                  *PageRegion 4x6
 *UIConstraints: *InputSlot Tray2                  *PageSize 5x8
+*UIConstraints: *InputSlot Tray2                  *PageRegion 5x8
 *UIConstraints: *InputSlot Tray2                  *PageSize JPost
+*UIConstraints: *InputSlot Tray2                  *PageRegion JPost
 *UIConstraints: *InputSlot Tray2                  *PageSize JPostD
+*UIConstraints: *InputSlot Tray2                  *PageRegion JPostD
 *UIConstraints: *InputSlot Tray2                  *PageSize A6card
+*UIConstraints: *InputSlot Tray2                  *PageRegion A6card
 *UIConstraints: *InputSlot Tray2                  *PageSize ISOB5
-*UIConstraints: *PageRegion Statement             *InputSlot Tray2
-*UIConstraints: *PageRegion A5                    *InputSlot Tray2
-*UIConstraints: *PageRegion Env10                 *InputSlot Tray2
-*UIConstraints: *PageRegion EnvA2                 *InputSlot Tray2
-*UIConstraints: *PageRegion EnvMonarch            *InputSlot Tray2
-*UIConstraints: *PageRegion EnvDL                 *InputSlot Tray2
-*UIConstraints: *PageRegion EnvC5                 *InputSlot Tray2
-*UIConstraints: *PageRegion EnvC6                 *InputSlot Tray2
-*UIConstraints: *PageRegion HPGreetCard           *InputSlot Tray2
-*UIConstraints: *PageRegion EnvJ3                 *InputSlot Tray2
-*UIConstraints: *PageRegion EnvJ4                 *InputSlot Tray2
-*UIConstraints: *PageRegion 3x5                   *InputSlot Tray2
-*UIConstraints: *PageRegion 4x6                   *InputSlot Tray2
-*UIConstraints: *PageRegion 5x8                   *InputSlot Tray2
-*UIConstraints: *PageRegion JPost                 *InputSlot Tray2
-*UIConstraints: *PageRegion JPostD                *InputSlot Tray2
-*UIConstraints: *PageRegion A6card                *InputSlot Tray2
 *UIConstraints: *PageRegion ISOB5	              *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2                *PageRegion Statement
-*UIConstraints: *InputSlot Tray2                *PageRegion A5
-*UIConstraints: *InputSlot Tray2                *PageRegion Env10
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvA2
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvMonarch
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvDL
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvC5
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvC6
-*UIConstraints: *InputSlot Tray2                *PageRegion HPGreetCard
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvJ3
-*UIConstraints: *InputSlot Tray2                *PageRegion EnvJ4
-*UIConstraints: *InputSlot Tray2                *PageRegion 3x5
-*UIConstraints: *InputSlot Tray2                *PageRegion 4x6
-*UIConstraints: *InputSlot Tray2                *PageRegion 5x8
-*UIConstraints: *InputSlot Tray2                *PageRegion JPost
-*UIConstraints: *InputSlot Tray2                *PageRegion JPostD
-*UIConstraints: *InputSlot Tray2                *PageRegion A6card
 *UIConstraints: *InputSlot Tray2                *PageRegion ISOB5
 *UIConstraints: *InputSlot Tray2                  *MediaType PremIJPaper
 *UIConstraints: *InputSlot Tray2                  *MediaType PremIJHeavy
@@ -1373,4 +3774,3 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *% Last Edit Date : 16th July, 2002
 *% End of PPD file
 *% For "HP Business Inkjet 2300 PS"
-*% =================================

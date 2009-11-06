@@ -1,14 +1,6 @@
 *PPD-Adobe: "4.3"
-*% =======================================================
-*% Disclaimer:  The above statement indicates
-*% that this PPD was written using the Adobe PPD
-*% File Format Specification 4.3, but does not
-*% intend to imply approval and acceptance by
-*% Adobe Systems, Inc.
-*% =======================================================
-*% Printer Description File
-*% (c) Copyright 2004-2006 Hewlett-Packard Development Company, L.P.
-*%
+*% =================================
+*% Copyright 1992-2009 Hewlett-Packard Company
 *% Permission is hereby granted, free of charge, to any person obtaining
 *% a copy of this software and associated documentation files (the
 *% "Software"), to deal in the Software without restriction, including
@@ -16,10 +8,10 @@
 *% distribute, sublicense, and/or sell copies of the Software, and to
 *% permit persons to whom the Software is furnished to do so, subject to
 *% the following conditions:
-*% 
+*%
 *% The above copyright notice and this permission notice shall be
 *% included in all copies or substantial portions of the Software.
-*% 
+*%
 *% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 *% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 *% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -27,10 +19,17 @@
 *% LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 *% OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 *% WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*% 
+*%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-
+*% Disclaimer:  The above statement indicates
+*% that this PPD was written using the Adobe PPD
+*% File Format Specification 4.3, but does not
+*% intend to imply approval and acceptance by
+*% Adobe Systems, Inc.
+*% =======================================================
+*% Printer Description File
+*% (c) Copyright 2004-2009 Hewlett-Packard Development Company, L.P.
 *% PPD for hp LaserJet 5200
 *% For Macintosh only
 *%========================================================
@@ -42,17 +41,17 @@
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
+*cupsLanguages: "ko zh_CN zh_TW"
 *PCFileName: "HP5200_1.PPD"
 
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpFinishing.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpImageQuality.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpJobStorage.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpWatermarks.plugin"
-*APDialogExtension: "/Library/Printers/hp/PDEs/hpServices.plugin"
+*HPPDEPanel: "HPFinishingPanel"
 
-*APPrinterUtilityPath: "/Library/Printers/hp/Utilities/HP Printer Selector.app"
+*HPPDEPanel: "HPImagingOptions"
+*HPPDEPanel: "HPJobRetention"
+*HPPDEPanel: "HPWatermarks"
+*HPPDEPanel: "HPServices"
 
-*APPrinterIconPath: "/Library/Printers/hp/Icons/HP LaserJet 5200.icns"
+
 
 *%=================================================
 *% 		 Product Version Information
@@ -61,6 +60,8 @@
 *ShortNickName: "HP LaserJet 5200L"
 *NickName: "HP LaserJet 5200L Postscript (recommended)"
 *Product: "(hp LaserJet 5200L)"
+*Product: "(Hewlett-Packard hp LaserJet 5200L)"
+*Product: "(HP LaserJet 5200L)"
 *Manufacturer: "HP"
 *PSVersion: "(3010.107) 0"
 *%=================================================
@@ -94,10 +95,26 @@
 *%			 Installable Options
 *%==============================================
 *OpenGroup: InstallableOptions/Installed Options
+*ko.Translation InstallableOptions/설치된 선택사양: ""
+*zh_CN.Translation InstallableOptions/已安装的选项: ""
+*zh_TW.Translation InstallableOptions/安裝的選項: ""
+
 *OpenUI *HPCollateSupported/Collation in Printer: PickOne
 *DefaultHPCollateSupported: False
+*ko.Translation HPCollateSupported/프린터의 데이터 정렬: ""
+*zh_CN.Translation HPCollateSupported/打印机中的分页: ""
+*zh_TW.Translation HPCollateSupported/印表機中的分頁: ""
+
 *HPCollateSupported True/Yes<3A> Total RAM <3E>= 80 MB or Hard Disk: ""
+*ko.HPCollateSupported True/예<3A> 총 RAM <3E>= 80MB 또는 하드 디스크: ""
+*zh_CN.HPCollateSupported True/是<3A>总内存 <3E>= 80MB 或使用硬盘: ""
+*zh_TW.HPCollateSupported True/是<3A>總隨機存取記憶體 <3E>= 80MB 或使用硬碟: ""
+
 *HPCollateSupported False/No<3A> Total RAM <3C>  80 MB and No Hard Disk: ""
+*ko.HPCollateSupported False/아니오<3A> 총 RAM <3C> 80MB 및 하드 디스크 없음: ""
+*zh_CN.HPCollateSupported False/否<3A>总内存 <3C> 80MB 且没有硬盘: ""
+*zh_TW.HPCollateSupported False/否<3A>總隨機存取記憶體 <3C> 80MB 且沒有硬碟: ""
+
 *?HPCollateSupported: "
 	save 
 		mark
@@ -118,17 +135,33 @@
 *OpenUI *HPPaperPolicy/Fit to Page: PickOne
 *OrderDependency: 10 AnySetup *HPPaperPolicy
 *DefaultHPPaperPolicy: PromptUser
+*ko.Translation HPPaperPolicy/페이지에 맞춤: ""
+*zh_CN.Translation HPPaperPolicy/适合页面: ""
+*zh_TW.Translation HPPaperPolicy/符合頁面大小: ""
+
 *HPPaperPolicy PromptUser/Prompt User: "
    <</DeferredMediaSelection true>> setpagedevice"
 *End
+*ko.HPPaperPolicy PromptUser/프롬프트 사용자: ""
+*zh_CN.HPPaperPolicy PromptUser/提示用户: ""
+*zh_TW.HPPaperPolicy PromptUser/提示使用者: ""
+
 *HPPaperPolicy NearestSizeAdjust/Nearest Size and Scale: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 3 >> >> setpagedevice"
 *End
+*ko.HPPaperPolicy NearestSizeAdjust/근사 크기와 축소/확대: ""
+*zh_CN.HPPaperPolicy NearestSizeAdjust/最接近之尺寸和缩放度: ""
+*zh_TW.HPPaperPolicy NearestSizeAdjust/最接近的尺寸並按比例縮放: ""
+
 *HPPaperPolicy NearestSizeNoAdjust/Nearest Size and Crop: "
    <</DeferredMediaSelection false>> setpagedevice
    <</Policies << /PageSize 5 >> >> setpagedevice"
 *End
+*ko.HPPaperPolicy NearestSizeNoAdjust/근사 크기와 자르기: ""
+*zh_CN.HPPaperPolicy NearestSizeNoAdjust/最接近之尺寸和剪裁: ""
+*zh_TW.HPPaperPolicy NearestSizeNoAdjust/最接近的尺寸並裁剪: ""
+
 *?HPPaperPolicy: "(PromptUser) = flush"
 *CloseUI: *HPPaperPolicy
 
@@ -136,65 +169,119 @@
 
 *FreeVM: "6000000"
 *VMOption Mem32/32 MB: "6000000"
+*ko.VMOption Mem32/32 MB: ""
+*zh_CN.VMOption Mem32/32 MB: ""
+*zh_TW.VMOption Mem32/32 MB: ""
+
 *VMOption Mem64/64 MB: "22000000"
+*ko.VMOption Mem64/64 MB: ""
+*zh_CN.VMOption Mem64/64 MB: ""
+*zh_TW.VMOption Mem64/64 MB: ""
+
 *VMOption Mem80/80 MB: "30000000"
+*ko.VMOption Mem80/80 MB: ""
+*zh_CN.VMOption Mem80/80 MB: ""
+*zh_TW.VMOption Mem80/80 MB: ""
+
 *VMOption Mem96/96 MB: "38000000"
+*ko.VMOption Mem96/96 MB: ""
+*zh_CN.VMOption Mem96/96 MB: ""
+*zh_TW.VMOption Mem96/96 MB: ""
+
 *VMOption Mem128/128 MB: "54000000"
+*ko.VMOption Mem128/128 MB: ""
+*zh_CN.VMOption Mem128/128 MB: ""
+*zh_TW.VMOption Mem128/128 MB: ""
+
 
 *% =================================
 *% Services Support
 *% =================================
 *OpenGroup: Services/Services
+*ko.Translation Services/서비스: ""
+*zh_CN.Translation Services/服务: ""
+*zh_TW.Translation Services/維修: ""
 
-*OpenUI *HPServicesWeb/Internet Services: PickOne
+
+*OpenUI *HPServicesWeb/Services on the Web: PickOne
 *OrderDependency: 50 AnySetup *HPServicesWeb
-*DefaultHPServicesWeb: OnlineDiagnosticTools
+*DefaultHPServicesWeb: SupportAndTroubleshooting
+*ko.Translation HPServicesWeb/인터넷 서비스: ""
+*zh_CN.Translation HPServicesWeb/互联网上的服务: ""
+*zh_TW.Translation HPServicesWeb/網際網路服務: ""
 
-*HPServicesWeb OnlineDiagnosticTools/Online Diagnostic Tools: ""
 *HPServicesWeb SupportAndTroubleshooting/Support and Troubleshooting: ""
+*ko.HPServicesWeb SupportAndTroubleshooting/지원 및 문제해결: ""
+*zh_CN.HPServicesWeb SupportAndTroubleshooting/支持和疑难排除: ""
+*zh_TW.HPServicesWeb SupportAndTroubleshooting/支援與疑難排解: ""
+
 *HPServicesWeb ProductManuals/Product Manuals: ""
-*HPServicesWeb CheckForDriverUpdates/Check for Driver Updates: ""
+*ko.HPServicesWeb ProductManuals/제품 설명서: ""
+*zh_CN.HPServicesWeb ProductManuals/产品手册: ""
+*zh_TW.HPServicesWeb ProductManuals/產品手冊: ""
+
+
 *HPServicesWeb OrderSupplies/Order Supplies: ""
+*ko.HPServicesWeb OrderSupplies/소모품 주문: ""
+*zh_CN.HPServicesWeb OrderSupplies/订购耗材: ""
+*zh_TW.HPServicesWeb OrderSupplies/訂購耗材: ""
+
 *HPServicesWeb ShowMeHow/Show me how: ""
+*ko.HPServicesWeb ShowMeHow/방법 표시: ""
+*zh_CN.HPServicesWeb ShowMeHow/显示如何操作: ""
+*zh_TW.HPServicesWeb ShowMeHow/使用說明: ""
+
 
 *CloseUI: *HPServicesWeb
 
-*OpenUI *HPServicesUtility/Select the maintenance task you wish to perform: PickOne
-*OrderDependency: 50 AnySetup *HPServicesWeb
+*OpenUI *HPServicesUtility/Device Maintenance: PickOne
+*OrderDependency: 50 AnySetup *HPServicesUtility
 *DefaultHPServicesUtility: DeviceAndSuppliesStatus
+*ko.Translation HPServicesUtility/장치 유지 보수: ""
+*zh_CN.Translation HPServicesUtility/设备维护: ""
+*zh_TW.Translation HPServicesUtility/裝置維護: ""
+
 
 *HPServicesUtility DeviceAndSuppliesStatus/Device and Supplies Status: ""
+*ko.HPServicesUtility DeviceAndSuppliesStatus/장치 및 소모품 상태: ""
+*zh_CN.HPServicesUtility DeviceAndSuppliesStatus/设备和耗材状态: ""
+*zh_TW.HPServicesUtility DeviceAndSuppliesStatus/裝置與耗材狀態: ""
+
 
 *CloseUI: *HPServicesUtility
 
 *CloseGroup: Services
 
-*HPServicesWebDS OnlineDiagnosticTools/Interactive tools and contacts for troubleshooting.: ""
 *HPServicesWebDS SupportAndTroubleshooting/The product's main support page on hp.com: ""
-*HPServicesWebDS ProductManuals/Online manuals that may be viewed or downloaded.: ""
-*HPServicesWebDS CheckForDriverUpdates/Automatically check to see if the correct driver is installed.: ""
-*HPServicesWebDS OrderSupplies/Online shopping of supplies for your HP printer.: ""
-*HPServicesWebDS ShowMeHow/Step-by-step instructions for performing most common printing tasks.: ""
+*ko.HPServicesWebDS SupportAndTroubleshooting/HP 웹 사이트의 제품 지원 페이지: ""
+*zh_CN.HPServicesWebDS SupportAndTroubleshooting/hp.com 上的产品支持主页。: ""
+*zh_TW.HPServicesWebDS SupportAndTroubleshooting/產品在 hp.com 上的主要支援網頁。: ""
 
-*HPServicesWebAction OnlineDiagnosticTools: "
-WEB;;http://www.hp.com/go/ispe?origin=dp
-"
-*End
+*HPServicesWebDS ProductManuals/Online manuals that may be viewed or downloaded.: ""
+*ko.HPServicesWebDS ProductManuals/열기 및 다운로드 가능한 온라인 설명서: ""
+*zh_CN.HPServicesWebDS ProductManuals/可供查阅或下载的联机手册。: ""
+*zh_TW.HPServicesWebDS ProductManuals/可供檢閱或下載的線上手冊。: ""
+
+*HPServicesWebDS OrderSupplies/Online shopping of supplies for your HP printer.: ""
+*ko.HPServicesWebDS OrderSupplies/해당 HP 프린터용 소모품 온라인 구입: ""
+*zh_CN.HPServicesWebDS OrderSupplies/在线购买 HP 打印机耗材: ""
+*zh_TW.HPServicesWebDS OrderSupplies/線上採購 HP 印表機耗材: ""
+
+*HPServicesWebDS ShowMeHow: HPSERVICEWEB_SHOWMEHOW_DS
+
+
 
 *HPServicesWebAction SupportAndTroubleshooting: "
-WEB;;http://h20180.www2.hp.com/apps/Nav?h_lang=ar&h_cc=us&h_pagetype=prodhomes&h_product=Q7547A&h_page=hpcom&h_client=S-S-E003-1
+WEB;;http://h20180.www2.hp.com/apps/Nav?h_lang=H_LANG&h_cc=H_CC&h_pagetype=prodhomes&h_product=Q7547A&h_page=hpcom&h_client=S-S-E003-1
 "
 *End
 
 *HPServicesWebAction ProductManuals: "
-WEB;;http://h20180.www2.hp.com/apps/Nav?h_lang=ar&h_cc=us&h_pagetype=manuals&h_product=Q7547A&h_page=hpcom&h_client=S-S-E003-1
+WEB;;http://h20180.www2.hp.com/apps/Nav?h_lang=H_LANG&h_cc=H_CC&h_pagetype=manuals&h_product=Q7547A&h_page=hpcom&h_client=S-S-E003-1
 "
 *End
 
-*HPServicesWebAction CheckForDriverUpdates: "
-WEB;;http://www.hp.com/go/drivercheck
-"
-*End
+
 
 *HPServicesWebAction OrderSupplies: "
 WEB;;http://www.hp.com/post-embed/ordersupplies-na?Product_Name=HP LaserJet 5200
@@ -212,9 +299,6 @@ EWS;;http://%s/
 *End
 
 *% =================================
-
-
-
 *%=================================================
 *%		 UI Constraints
 *%=================================================
@@ -226,6 +310,28 @@ EWS;;http://%s/
 *% ==================================================
 *% Tray 2
 *% ======
+*UIConstraints: *PageSize Env10 *HPManualDuplexSwitch True
+*UIConstraints: *PageRegion Env10 *HPManualDuplexSwitch True
+*UIConstraints: *PageSize EnvMonarch *HPManualDuplexSwitch True
+*UIConstraints: *PageRegion EnvMonarch *HPManualDuplexSwitch True
+*UIConstraints: *PageSize EnvC5 *HPManualDuplexSwitch True
+*UIConstraints: *PageRegion EnvC5 *HPManualDuplexSwitch True
+*UIConstraints: *PageSize EnvDL *HPManualDuplexSwitch True
+*UIConstraints: *PageRegion EnvDL *HPManualDuplexSwitch True
+*UIConstraints: *PageSize EnvISOB5 *HPManualDuplexSwitch True
+*UIConstraints: *PageRegion EnvISOB5 *HPManualDuplexSwitch True
+
+*UIConstraints: *HPManualDuplexSwitch True *PageSize Env10
+*UIConstraints: *HPManualDuplexSwitch True *PageRegion Env10
+*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvMonarch
+*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvMonarch
+*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvC5
+*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvC5
+*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvDL
+*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvDL
+*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvISOB5
+*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvISOB5
+
 *UIConstraints: *PageSize Env10       			*InputSlot Tray2
 *UIConstraints: *PageSize EnvMonarch  			*InputSlot Tray2
 *UIConstraints: *PageSize EnvDL       			*InputSlot Tray2
@@ -309,103 +415,222 @@ EWS;;http://%s/
 *% ===================================
 *%           Paper Sizes
 *% ===================================
-*OpenUI *PageSize: PickOne
+*OpenUI *PageSize/Page Size: PickOne
 *OrderDependency: 30 AnySetup *PageSize
 *DefaultPageSize: Letter
+*ko.Translation PageSize/용지 크기: ""
+*zh_CN.Translation PageSize/页面大小: ""
+*zh_TW.Translation PageSize/頁面尺寸: ""
+
 *PageSize Letter/Letter: "
     <</DeferredMediaSelection true /PageSize [612 792] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize Letter/레터: ""
+*zh_CN.PageSize Letter/信纸: ""
+*zh_TW.PageSize Letter/Letter: ""
+
 *PageSize Legal/Legal: "
     <</DeferredMediaSelection true /PageSize [612 1008] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize Legal/리갈: ""
+*zh_CN.PageSize Legal/Legal: ""
+*zh_TW.PageSize Legal/Legal: ""
+
 *PageSize Executive/Executive: "
     <</DeferredMediaSelection true /PageSize [522 756] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize Executive/Executive: ""
+*zh_CN.PageSize Executive/Executive: ""
+*zh_TW.PageSize Executive/Executive: ""
+
 *PageSize HalfLetter/Statement: "
     << /DeferredMediaSelection true /PageSize [396 612]  /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize HalfLetter/2절 레터: ""
+*zh_CN.PageSize HalfLetter/结算单: ""
+*zh_TW.PageSize HalfLetter/Statement: ""
+
 *PageSize w612h935/8.5x13: "
   	<</DeferredMediaSelection true /PageSize [612 935] /ImagingBBox null /MediaClass (8.5X13)>> setpagedevice"
 *End
+*ko.PageSize w612h935/8.5x13: ""
+*zh_CN.PageSize w612h935/8.5x13: ""
+*zh_TW.PageSize w612h935/8.5x13: ""
+
 *PageSize Tabloid/11x17: "
     <</DeferredMediaSelection true /PageSize [792 1224] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize Tabloid/11x17: ""
+*zh_CN.PageSize Tabloid/11x17: ""
+*zh_TW.PageSize Tabloid/11x17 : ""
+
 *PageSize 12X18/12x18: "
     <</DeferredMediaSelection true /PageSize [864 1296] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize 12X18/12x18: ""
+*zh_CN.PageSize 12X18/12x18: ""
+*zh_TW.PageSize 12X18/12x18: ""
+
 *PageSize A3/A3: "
     <</DeferredMediaSelection true /PageSize [842 1191] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize A3/A3: ""
+*zh_CN.PageSize A3/A3: ""
+*zh_TW.PageSize A3/A3: ""
+
 *PageSize A4/A4: "
     <</DeferredMediaSelection true /PageSize [595 842] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize A4/A4: ""
+*zh_CN.PageSize A4/A4: ""
+*zh_TW.PageSize A4/A4: ""
+
 *PageSize A5/A5: "
     <</DeferredMediaSelection true /PageSize [420 595] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize A5/A5: ""
+*zh_CN.PageSize A5/A5: ""
+*zh_TW.PageSize A5/A5: ""
+
 *PageSize A6/A6: "
 	<</PageSize [297 420] /ImagingBBox null>> setpagedevice"
 *End
+*ko.PageSize A6/A6: ""
+*zh_CN.PageSize A6/A6: ""
+*zh_TW.PageSize A6/A6: ""
+
 
 *PageSize RA3/RA3: "
     <</DeferredMediaSelection true /PageSize [865 1219] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize RA3/RA3: ""
+*zh_CN.PageSize RA3/RA3: ""
+*zh_TW.PageSize RA3/RA3: ""
+
 *PageSize B6/JIS B6: "
     <</DeferredMediaSelection true /PageSize [363 516] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize B6/JIS B6: ""
+*zh_CN.PageSize B6/JIS B6: ""
+*zh_TW.PageSize B6/JIS B6: ""
+
 *PageSize B5/JIS B5: "
     <</DeferredMediaSelection true /PageSize [516 729] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize B5/JIS B5: ""
+*zh_CN.PageSize B5/JIS B5: ""
+*zh_TW.PageSize B5/JIS B5: ""
+
 *PageSize B4/B4 (JIS): "
     <</DeferredMediaSelection true /PageSize [729 1032] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize B4/JIS B4: ""
+*zh_CN.PageSize B4/JIS B4: ""
+*zh_TW.PageSize B4/JIS B4: ""
+
 *PageSize w612h936/Executive (JIS): "
   	<</DeferredMediaSelection true /PageSize [612 936] /ImagingBBox null /MediaClass (JISEXEC) >> setpagedevice"
 *End
+*ko.PageSize w612h936/Executive (JIS): ""
+*zh_CN.PageSize w612h936/Executive (JIS): ""
+*zh_TW.PageSize w612h936/Executive (JIS): ""
+
 *PageSize DoublePostcardRotated/Double Japan Postcard Rotated: "
   	<</DeferredMediaSelection true /PageSize [567 419.5] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize DoublePostcardRotated/양면 규격 엽서 회전: ""
+*zh_CN.PageSize DoublePostcardRotated/双面旋转日本明信片: ""
+*zh_TW.PageSize DoublePostcardRotated/旋轉雙面日式明信片: ""
+
 *PageSize DoublePostcard/Japanese Postcard: "
   	<</DeferredMediaSelection true /PageSize [419.5 567] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize DoublePostcard/양면 엽서 (JIS): ""
+*zh_CN.PageSize DoublePostcard/大号明信片 (JIS): ""
+*zh_TW.PageSize DoublePostcard/雙面明信片 (JIS): ""
+
 *PageSize w765h1106/8K 270x390 mm: "
     <</DeferredMediaSelection true /PageSize [765 1106] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize w765h1106/8K (270x390 mm): ""
+*zh_CN.PageSize w765h1106/8K (270x390 毫米): ""
+*zh_TW.PageSize w765h1106/8K (270x390 公釐): ""
+
 *PageSize w553h765/16K 195x270 mm: "
   	<</DeferredMediaSelection true /PageSize [553 765] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize w553h765/16K (195x270 mm): ""
+*zh_CN.PageSize w553h765/16K (195x270 毫米): ""
+*zh_TW.PageSize w553h765/16K (195x270 公釐): ""
+
 *PageSize w737h1043/8K 260x368 mm: "
     <</DeferredMediaSelection true /PageSize [737 1043] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize w737h1043/8K (260x368 mm): ""
+*zh_CN.PageSize w737h1043/8K (260x368 毫米): ""
+*zh_TW.PageSize w737h1043/8K (260x368 公釐): ""
+
 *PageSize w522h737/16K 184x260 mm: "
   	<</DeferredMediaSelection true /PageSize [522 737] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize w522h737/16K (184x260 mm): ""
+*zh_CN.PageSize w522h737/16K (184x260 毫米): ""
+*zh_TW.PageSize w522h737/16K (184x260 公釐): ""
+
 *PageSize w774h1116/8K 10.75x15.50 in.: "
     <</DeferredMediaSelection true /PageSize [774 1116] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageSize w774h1116/8K: ""
+*zh_CN.PageSize w774h1116/8K: ""
+*zh_TW.PageSize w774h1116/8K: ""
+
 *PageSize w558h774/16K 7.75x10.75 in.: "
   	<</DeferredMediaSelection true /PageSize [558 774] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize w558h774/16K (7.75x10.75 in): ""
+*zh_CN.PageSize w558h774/16K (7.75x10.75 英寸): ""
+*zh_TW.PageSize w558h774/16K (7.75x10.75 英吋): ""
+
 *PageSize Env10/Env Comm10: "
     <</DeferredMediaSelection true /PageSize [297 684] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize Env10/Comm10 봉투: ""
+*zh_CN.PageSize Env10/信封 Comm10: ""
+*zh_TW.PageSize Env10/Comm10 信封: ""
+
 *PageSize EnvMonarch/Env Monarch: "
     <</DeferredMediaSelection true /PageSize [279 540] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize EnvMonarch/Monarch 봉투: ""
+*zh_CN.PageSize EnvMonarch/信封 Monarch: ""
+*zh_TW.PageSize EnvMonarch/Monarch 信封: ""
+
 *PageSize EnvC5/Env C5: "
     <</DeferredMediaSelection true /PageSize [459 649] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize EnvC5/C5 봉투: ""
+*zh_CN.PageSize EnvC5/信封 C5: ""
+*zh_TW.PageSize EnvC5/C5 信封: ""
+
 *PageSize EnvDL/Env DL: "
     <</DeferredMediaSelection true /PageSize [312 624] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageSize EnvDL/DL 봉투: ""
+*zh_CN.PageSize EnvDL/信封 DL: ""
+*zh_TW.PageSize EnvDL/DL 信封: ""
+
 *PageSize EnvISOB5/Env ISO B5: "
     <</DeferredMediaSelection true /PageSize [499 709] /ImagingBBox null /MediaClass (Envelope) >> setpagedevice"
 *End
+*ko.PageSize EnvISOB5/ISO B5 봉투: ""
+*zh_CN.PageSize EnvISOB5/信封 ISO B5: ""
+*zh_TW.PageSize EnvISOB5/ISO B5 信封: ""
+
 *?PageSize: "
   save
    currentpagedevice /DeferredMediaSelection true /PageSize get aload pop
    2 copy gt {exch} if
-   (Unknown)
-  
+   (Unknown)  
   29 dict
    dup [499 709] (EnvISOB5) put
    dup [312 624] (EnvDL) put
@@ -449,97 +674,217 @@ EWS;;http://%s/
 *% =================================
 *% Page Regions
 *% =================================
-*OpenUI *PageRegion: PickOne
+*OpenUI *PageRegion/Page Region: PickOne
 *OrderDependency: 40 AnySetup *PageRegion
 *DefaultPageRegion: Letter
+*ko.Translation PageRegion/Page Region: ""
+*zh_CN.Translation PageRegion/Page Region: ""
+*zh_TW.Translation PageRegion/Page Region: ""
+
 *PageRegion Letter/Letter: "
     <</DeferredMediaSelection true /PageSize [612 792] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion Letter/레터: ""
+*zh_CN.PageRegion Letter/信纸: ""
+*zh_TW.PageRegion Letter/Letter: ""
+
 *PageRegion Legal/Legal: "
     <</DeferredMediaSelection true /PageSize [612 1008] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion Legal/리갈: ""
+*zh_CN.PageRegion Legal/Legal: ""
+*zh_TW.PageRegion Legal/Legal: ""
+
 *PageRegion Executive/Executive: "
     <</DeferredMediaSelection true /PageSize [522 756] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion Executive/Executive: ""
+*zh_CN.PageRegion Executive/Executive: ""
+*zh_TW.PageRegion Executive/Executive: ""
+
 *PageRegion HalfLetter/Statement: "
     << /DeferredMediaSelection true /PageSize [396 612] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion HalfLetter/2절 레터: ""
+*zh_CN.PageRegion HalfLetter/结算单: ""
+*zh_TW.PageRegion HalfLetter/Statement: ""
+
 *PageRegion w612h935/8.5x13: "
   	<</DeferredMediaSelection true /PageSize [612 935] /ImagingBBox null /MediaClass (8.5X13)>> setpagedevice"
 *End
+*ko.PageRegion w612h935/8.5x13: ""
+*zh_CN.PageRegion w612h935/8.5x13: ""
+*zh_TW.PageRegion w612h935/8.5x13: ""
+
 *PageRegion Tabloid/11x17: "
     <</DeferredMediaSelection true /PageSize [792 1224] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion Tabloid/11x17: ""
+*zh_CN.PageRegion Tabloid/11x17: ""
+*zh_TW.PageRegion Tabloid/11x17 : ""
+
 *PageRegion 12X18/12x18: "
     <</DeferredMediaSelection true /PageSize [864 1296] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion 12X18/12x18: ""
+*zh_CN.PageRegion 12X18/12x18: ""
+*zh_TW.PageRegion 12X18/12x18: ""
+
 *PageRegion A3/A3: "
     <</DeferredMediaSelection true /PageSize [842 1191] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion A3/A3: ""
+*zh_CN.PageRegion A3/A3: ""
+*zh_TW.PageRegion A3/A3: ""
+
 *PageRegion A4/A4: "
     <</DeferredMediaSelection true /PageSize [595 842] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion A4/A4: ""
+*zh_CN.PageRegion A4/A4: ""
+*zh_TW.PageRegion A4/A4: ""
+
 *PageRegion A5/A5: "
     <</DeferredMediaSelection true /PageSize [420 595] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion A5/A5: ""
+*zh_CN.PageRegion A5/A5: ""
+*zh_TW.PageRegion A5/A5: ""
+
 *PageRegion A6/A6: "
 	<</PageSize [297 420] /ImagingBBox null>> setpagedevice"
 *End
+*ko.PageRegion A6/A6: ""
+*zh_CN.PageRegion A6/A6: ""
+*zh_TW.PageRegion A6/A6: ""
+
 
 *PageRegion RA3/RA3: "
     <</DeferredMediaSelection true /PageSize [865 1219] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion RA3/RA3: ""
+*zh_CN.PageRegion RA3/RA3: ""
+*zh_TW.PageRegion RA3/RA3: ""
+
 *PageRegion B6/JIS B6: "
     <</DeferredMediaSelection true /PageSize [363 516] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion B6/JIS B6: ""
+*zh_CN.PageRegion B6/JIS B6: ""
+*zh_TW.PageRegion B6/JIS B6: ""
+
 *PageRegion B5/JIS B5: "
     <</DeferredMediaSelection true /PageSize [516 729] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion B5/JIS B5: ""
+*zh_CN.PageRegion B5/JIS B5: ""
+*zh_TW.PageRegion B5/JIS B5: ""
+
 *PageRegion B4/B4 (JIS): "
     <</DeferredMediaSelection true /PageSize [729 1032] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion B4/JIS B4: ""
+*zh_CN.PageRegion B4/JIS B4: ""
+*zh_TW.PageRegion B4/JIS B4: ""
+
 *PageRegion w612h936/Executive (JIS): "
   	<</DeferredMediaSelection true /PageSize [612 936] /ImagingBBox null /MediaClass (JISEXEC) >> setpagedevice"
 *End
+*ko.PageRegion w612h936/Executive (JIS): ""
+*zh_CN.PageRegion w612h936/Executive (JIS): ""
+*zh_TW.PageRegion w612h936/Executive (JIS): ""
+
 *PageRegion DoublePostcardRotated/Double Japan Postcard Rotated: "
   	<</DeferredMediaSelection true /PageSize [567 419.5] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion DoublePostcardRotated/양면 규격 엽서 회전: ""
+*zh_CN.PageRegion DoublePostcardRotated/双面旋转日本明信片: ""
+*zh_TW.PageRegion DoublePostcardRotated/旋轉雙面日式明信片: ""
+
 *PageRegion DoublePostcard/Double Postcard (JIS): "
   	<</DeferredMediaSelection true /PageSize [419.5 567] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion DoublePostcard/양면 엽서 (JIS): ""
+*zh_CN.PageRegion DoublePostcard/大号明信片 (JIS): ""
+*zh_TW.PageRegion DoublePostcard/雙面明信片 (JIS): ""
+
 *PageRegion w765h1106/8K 270x390 mm: "
     <</DeferredMediaSelection true /PageSize [765 1106] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion w765h1106/8K (270x390 mm): ""
+*zh_CN.PageRegion w765h1106/8K (270x390 毫米): ""
+*zh_TW.PageRegion w765h1106/8K (270x390 公釐): ""
+
 *PageRegion w553h765/16K 195x270 mm: "
   	<</DeferredMediaSelection true /PageSize [553 765] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion w553h765/16K (195x270 mm): ""
+*zh_CN.PageRegion w553h765/16K (195x270 毫米): ""
+*zh_TW.PageRegion w553h765/16K (195x270 公釐): ""
+
 *PageRegion w737h1043/8K 260x368 mm: "
     <</DeferredMediaSelection true /PageSize [737 1043] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion w737h1043/8K (260x368 mm): ""
+*zh_CN.PageRegion w737h1043/8K (260x368 毫米): ""
+*zh_TW.PageRegion w737h1043/8K (260x368 公釐): ""
+
 *PageRegion w522h737/16K 184x260 mm: "
   	<</DeferredMediaSelection true /PageSize [522 737] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion w522h737/16K (184x260 mm): ""
+*zh_CN.PageRegion w522h737/16K (184x260 毫米): ""
+*zh_TW.PageRegion w522h737/16K (184x260 公釐): ""
+
 *PageRegion w774h1116/8K 10.75x15.50 in.: "
     <</DeferredMediaSelection true /PageSize [774 1116] /ImagingBBox null /MediaClass null>> setpagedevice"
 *End
+*ko.PageRegion w774h1116/8K: ""
+*zh_CN.PageRegion w774h1116/8K: ""
+*zh_TW.PageRegion w774h1116/8K: ""
+
 *PageRegion w558h774/16K 7.75x10.75 in.: "
   	<</DeferredMediaSelection true /PageSize [558 774] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion w558h774/PAGEREGION_W558H774_1: ""
+*zh_CN.PageRegion w558h774/PAGEREGION_W558H774_1: ""
+*zh_TW.PageRegion w558h774/PAGEREGION_W558H774_1: ""
+
 *PageRegion Env10/Env Comm10: "
     <</DeferredMediaSelection true /PageSize [297 684] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion Env10/Comm10 봉투: ""
+*zh_CN.PageRegion Env10/信封 Comm10: ""
+*zh_TW.PageRegion Env10/Comm10 信封: ""
+
 *PageRegion EnvMonarch/Env Monarch: "
     <</DeferredMediaSelection true /PageSize [279 540] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion EnvMonarch/Monarch 봉투: ""
+*zh_CN.PageRegion EnvMonarch/信封 Monarch: ""
+*zh_TW.PageRegion EnvMonarch/Monarch 信封: ""
+
 *PageRegion EnvC5/Env C5: "
     <</DeferredMediaSelection true /PageSize [459 649] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion EnvC5/C5 봉투: ""
+*zh_CN.PageRegion EnvC5/信封 C5: ""
+*zh_TW.PageRegion EnvC5/C5 信封: ""
+
 *PageRegion EnvDL/Env DL: "
     <</DeferredMediaSelection true /PageSize [312 624] /ImagingBBox null /MediaClass null >> setpagedevice"
 *End
+*ko.PageRegion EnvDL/DL 봉투: ""
+*zh_CN.PageRegion EnvDL/信封 DL: ""
+*zh_TW.PageRegion EnvDL/DL 信封: ""
+
 *PageRegion EnvISOB5/Env ISO B5: "
     <</DeferredMediaSelection true /PageSize [499 709] /ImagingBBox null /MediaClass (Envelope) >> setpagedevice"
 *End
+*ko.PageRegion EnvISOB5/ISO B5 봉투: ""
+*zh_CN.PageRegion EnvISOB5/信封 ISO B5: ""
+*zh_TW.PageRegion EnvISOB5/ISO B5 信封: ""
+
 *CloseUI: *PageRegion
 
 *% =================================
@@ -547,35 +892,151 @@ EWS;;http://%s/
 *% =================================
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: 				"12.00 12.12 599.88 780.00"
+*ko.ImageableArea Letter/레터: ""
+*zh_CN.ImageableArea Letter/信纸: ""
+*zh_TW.ImageableArea Letter/Letter: ""
+
 *ImageableArea Legal/Legal: 				"12.00 12.12 599.88 996.00"
+*ko.ImageableArea Legal/리갈: ""
+*zh_CN.ImageableArea Legal/Legal: ""
+*zh_TW.ImageableArea Legal/Legal: ""
+
 *ImageableArea Executive/Executive: 			"12.00 12.12 509.88 744.00"
+*ko.ImageableArea Executive/Executive: ""
+*zh_CN.ImageableArea Executive/Executive: ""
+*zh_TW.ImageableArea Executive/Executive: ""
+
 *ImageableArea HalfLetter/Statement:			"12.00 12.00 384.00 599.88" 
+*ko.ImageableArea HalfLetter/2절 레터: ""
+*zh_CN.ImageableArea HalfLetter/结算单: ""
+*zh_TW.ImageableArea HalfLetter/Statement: ""
+
 *ImageableArea w612h935/8.5x13: 			"12.00 12.00 599.76 922.76"
-*ImageableArea Tabloid/11x17: 				"12.00 12.00 717.00 1212.00"
+*ko.ImageableArea w612h935/8.5x13: ""
+*zh_CN.ImageableArea w612h935/8.5x13: ""
+*zh_TW.ImageableArea w612h935/8.5x13: ""
+
+*ImageableArea Tabloid/11x17: 				"12.00 12.00 780.00 1212.00"
+*ko.ImageableArea Tabloid/11x17: ""
+*zh_CN.ImageableArea Tabloid/11x17: ""
+*zh_TW.ImageableArea Tabloid/11x17 : ""
+
 *ImageableArea 12X18/12x18: 				"12.00 12.00 852.00 1284.00"
+*ko.ImageableArea 12X18/12x18: ""
+*zh_CN.ImageableArea 12X18/12x18: ""
+*zh_TW.ImageableArea 12X18/12x18: ""
+
 *ImageableArea A3/A3: 					"12.00 12.00 829.88 1178.90"
+*ko.ImageableArea A3/A3: ""
+*zh_CN.ImageableArea A3/A3: ""
+*zh_TW.ImageableArea A3/A3: ""
+
 *ImageableArea A4/A4: 					"12.00 12.12 583.08 829.68"
+*ko.ImageableArea A4/A4: ""
+*zh_CN.ImageableArea A4/A4: ""
+*zh_TW.ImageableArea A4/A4: ""
+
 *ImageableArea A5/A5: 					"12.00 12.12 407.40 583.20"
+*ko.ImageableArea A5/A5: ""
+*zh_CN.ImageableArea A5/A5: ""
+*zh_TW.ImageableArea A5/A5: ""
+
 *ImageableArea A6/A6:				"12.00 12.00 285.60 408.00"
+*ko.ImageableArea A6/A6: ""
+*zh_CN.ImageableArea A6/A6: ""
+*zh_TW.ImageableArea A6/A6: ""
+
 
 *ImageableArea RA3/RA3: 	                        "12.00 12.12 852.60 1206.86"
+*ko.ImageableArea RA3/RA3: ""
+*zh_CN.ImageableArea RA3/RA3: ""
+*zh_TW.ImageableArea RA3/RA3: ""
+
 *ImageableArea B6/JIS B6: 				"12.00 12.12 351.00 503.88"
+*ko.ImageableArea B6/JIS B6: ""
+*zh_CN.ImageableArea B6/JIS B6: ""
+*zh_TW.ImageableArea B6/JIS B6: ""
+
 *ImageableArea B5/JIS B5: 				"12.00 12.12 503.88 715.92"
+*ko.ImageableArea B5/JIS B5: ""
+*zh_CN.ImageableArea B5/JIS B5: ""
+*zh_TW.ImageableArea B5/JIS B5: ""
+
 *ImageableArea B4/B4 (JIS):				"12.00 12.00 716.88 1019.90"
+*ko.ImageableArea B4/JIS B4: ""
+*zh_CN.ImageableArea B4/JIS B4: ""
+*zh_TW.ImageableArea B4/JIS B4: ""
+
 *ImageableArea w612h936/Executive (JIS): 		"12.00 12.12 599.76 923.76"
+*ko.ImageableArea w612h936/Executive (JIS): ""
+*zh_CN.ImageableArea w612h936/Executive (JIS): ""
+*zh_TW.ImageableArea w612h936/Executive (JIS): ""
+
 *ImageableArea DoublePostcardRotated/Double Japan Postcard Rotated: "12.00 12.12 407.28 554.64"
+*ko.ImageableArea DoublePostcardRotated/양면 규격 엽서 회전: ""
+*zh_CN.ImageableArea DoublePostcardRotated/双面旋转日本明信片: ""
+*zh_TW.ImageableArea DoublePostcardRotated/旋轉雙面日式明信片: ""
+
 *ImageableArea DoublePostcard/Double Postcard (JIS): 	"12.00 12.12 407.28 554.64"
+*ko.ImageableArea DoublePostcard/양면 엽서 (JIS): ""
+*zh_CN.ImageableArea DoublePostcard/大号明信片 (JIS): ""
+*zh_TW.ImageableArea DoublePostcard/雙面明信片 (JIS): ""
+
 *ImageableArea w765h1106/8K 270x390 mm: 		"12.00 12.12 753.00 1093.88"
+*ko.ImageableArea w765h1106/8K (270x390 mm): ""
+*zh_CN.ImageableArea w765h1106/8K (270x390 毫米): ""
+*zh_TW.ImageableArea w765h1106/8K (270x390 公釐): ""
+
 *ImageableArea w553h765/16K 195x270 mm: 		"12.00 12.12 541.00 752.88"
+*ko.ImageableArea w553h765/16K (195x270 mm): ""
+*zh_CN.ImageableArea w553h765/16K (195x270 毫米): ""
+*zh_TW.ImageableArea w553h765/16K (195x270 公釐): ""
+
 *ImageableArea w737h1043/8K 260x368 mm:			"12.00 12.12 725.00 1030.88"
+*ko.ImageableArea w737h1043/8K (260x368 mm): ""
+*zh_CN.ImageableArea w737h1043/8K (260x368 毫米): ""
+*zh_TW.ImageableArea w737h1043/8K (260x368 公釐): ""
+
 *ImageableArea w522h737/16K 184x260 mm:			"12.00 12.12 510.00 724.88"
+*ko.ImageableArea w522h737/16K (184x260 mm): ""
+*zh_CN.ImageableArea w522h737/16K (184x260 毫米): ""
+*zh_TW.ImageableArea w522h737/16K (184x260 公釐): ""
+
 *ImageableArea w774h1116/8K 10.75x15.50 in.:		"12.00 12.12 762.00 1103.88"
+*ko.ImageableArea w774h1116/8K: ""
+*zh_CN.ImageableArea w774h1116/8K: ""
+*zh_TW.ImageableArea w774h1116/8K: ""
+
 *ImageableArea w558h774/16K 7.75x10.75 in.: 		"12.00 12.12 545.76 761.76"
+*ko.ImageableArea w558h774/IMAGEABLEAREA_W558H774_1: ""
+*zh_CN.ImageableArea w558h774/IMAGEABLEAREA_W558H774_1: ""
+*zh_TW.ImageableArea w558h774/IMAGEABLEAREA_W558H774_1: ""
+
 *ImageableArea Env10/Env Comm10: 			"12.00 12.12 284.76 672.00"
+*ko.ImageableArea Env10/Comm10 봉투: ""
+*zh_CN.ImageableArea Env10/信封 Comm10: ""
+*zh_TW.ImageableArea Env10/Comm10 信封: ""
+
 *ImageableArea EnvMonarch/Env Monarch: 			"12.00 12.12 266.76 528.00"
+*ko.ImageableArea EnvMonarch/Monarch 봉투: ""
+*zh_CN.ImageableArea EnvMonarch/信封 Monarch: ""
+*zh_TW.ImageableArea EnvMonarch/Monarch 信封: ""
+
 *ImageableArea EnvDL/Env DL: 				"12.00 12.12 299.64 611.52"
+*ko.ImageableArea EnvDL/DL 봉투: ""
+*zh_CN.ImageableArea EnvDL/信封 DL: ""
+*zh_TW.ImageableArea EnvDL/DL 信封: ""
+
 *ImageableArea EnvC5/Env C5: 				"12.00 12.12 447.00 636.96"
+*ko.ImageableArea EnvC5/C5 봉투: ""
+*zh_CN.ImageableArea EnvC5/信封 C5: ""
+*zh_TW.ImageableArea EnvC5/C5 信封: ""
+
 *ImageableArea EnvISOB5/Env ISO B5: 			"12.00 12.12 486.60 696.48"
+*ko.ImageableArea EnvISOB5/ISO B5 봉투: ""
+*zh_CN.ImageableArea EnvISOB5/信封 ISO B5: ""
+*zh_TW.ImageableArea EnvISOB5/ISO B5 信封: ""
+
 *?ImageableArea: "
   save
    /cvp { (                ) cvs print ( ) print } bind def
@@ -593,35 +1054,151 @@ EWS;;http://%s/
 *% =================================
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
+*ko.PaperDimension Letter/레터: ""
+*zh_CN.PaperDimension Letter/信纸: ""
+*zh_TW.PaperDimension Letter/Letter: ""
+
 *PaperDimension Legal/Legal: "612 1008"
+*ko.PaperDimension Legal/리갈: ""
+*zh_CN.PaperDimension Legal/Legal: ""
+*zh_TW.PaperDimension Legal/Legal: ""
+
 *PaperDimension Executive/Executive: "522 756"
+*ko.PaperDimension Executive/Executive: ""
+*zh_CN.PaperDimension Executive/Executive: ""
+*zh_TW.PaperDimension Executive/Executive: ""
+
 *PaperDimension HalfLetter/Statement:	"396 612"
+*ko.PaperDimension HalfLetter/2절 레터: ""
+*zh_CN.PaperDimension HalfLetter/结算单: ""
+*zh_TW.PaperDimension HalfLetter/Statement: ""
+
 *PaperDimension w612h935/8.5x13: "612 935"
+*ko.PaperDimension w612h935/8.5x13: ""
+*zh_CN.PaperDimension w612h935/8.5x13: ""
+*zh_TW.PaperDimension w612h935/8.5x13: ""
+
 *PaperDimension Tabloid/11x17:		"792 1224"
+*ko.PaperDimension Tabloid/11x17: ""
+*zh_CN.PaperDimension Tabloid/11x17: ""
+*zh_TW.PaperDimension Tabloid/11x17 : ""
+
 *PaperDimension 12X18/12x18:		"864 1296"
+*ko.PaperDimension 12X18/12x18: ""
+*zh_CN.PaperDimension 12X18/12x18: ""
+*zh_TW.PaperDimension 12X18/12x18: ""
+
 *PaperDimension A3/A3:			"842 1191"
+*ko.PaperDimension A3/A3: ""
+*zh_CN.PaperDimension A3/A3: ""
+*zh_TW.PaperDimension A3/A3: ""
+
 *PaperDimension A4/A4: "595 842"
+*ko.PaperDimension A4/A4: ""
+*zh_CN.PaperDimension A4/A4: ""
+*zh_TW.PaperDimension A4/A4: ""
+
 *PaperDimension A5/A5: "420 595"
+*ko.PaperDimension A5/A5: ""
+*zh_CN.PaperDimension A5/A5: ""
+*zh_TW.PaperDimension A5/A5: ""
+
 *PaperDimension A6/A6:		"297 420"
+*ko.PaperDimension A6/A6: ""
+*zh_CN.PaperDimension A6/A6: ""
+*zh_TW.PaperDimension A6/A6: ""
+
 
 *PaperDimension RA3/RA3:		"865 1219"
+*ko.PaperDimension RA3/RA3: ""
+*zh_CN.PaperDimension RA3/RA3: ""
+*zh_TW.PaperDimension RA3/RA3: ""
+
 *PaperDimension B6/JIS B6:		"363 516"
+*ko.PaperDimension B6/JIS B6: ""
+*zh_CN.PaperDimension B6/JIS B6: ""
+*zh_TW.PaperDimension B6/JIS B6: ""
+
 *PaperDimension B5/JIS B5: "516 729"
+*ko.PaperDimension B5/JIS B5: ""
+*zh_CN.PaperDimension B5/JIS B5: ""
+*zh_TW.PaperDimension B5/JIS B5: ""
+
 *PaperDimension B4/B4 (JIS):		"729 1032"
+*ko.PaperDimension B4/JIS B4: ""
+*zh_CN.PaperDimension B4/JIS B4: ""
+*zh_TW.PaperDimension B4/JIS B4: ""
+
 *PaperDimension w612h936/Executive (JIS): "612 936"
+*ko.PaperDimension w612h936/Executive (JIS): ""
+*zh_CN.PaperDimension w612h936/Executive (JIS): ""
+*zh_TW.PaperDimension w612h936/Executive (JIS): ""
+
 *PaperDimension DoublePostcardRotated/Double Japan Postcard Rotated: "567 419.5"
+*ko.PaperDimension DoublePostcardRotated/양면 규격 엽서 회전: ""
+*zh_CN.PaperDimension DoublePostcardRotated/双面旋转日本明信片: ""
+*zh_TW.PaperDimension DoublePostcardRotated/旋轉雙面日式明信片: ""
+
 *PaperDimension DoublePostcard/Double Postcard (JIS): "419.5 567"
+*ko.PaperDimension DoublePostcard/양면 엽서 (JIS): ""
+*zh_CN.PaperDimension DoublePostcard/大号明信片 (JIS): ""
+*zh_TW.PaperDimension DoublePostcard/雙面明信片 (JIS): ""
+
 *PaperDimension w765h1106/8K 270x390 mm: "765 1106"
+*ko.PaperDimension w765h1106/8K (270x390 mm): ""
+*zh_CN.PaperDimension w765h1106/8K (270x390 毫米): ""
+*zh_TW.PaperDimension w765h1106/8K (270x390 公釐): ""
+
 *PaperDimension w553h765/16K 195x270 mm: "553 765"
+*ko.PaperDimension w553h765/16K (195x270 mm): ""
+*zh_CN.PaperDimension w553h765/16K (195x270 毫米): ""
+*zh_TW.PaperDimension w553h765/16K (195x270 公釐): ""
+
 *PaperDimension w737h1043/8K 260x368 mm: "737 1043"
+*ko.PaperDimension w737h1043/8K (260x368 mm): ""
+*zh_CN.PaperDimension w737h1043/8K (260x368 毫米): ""
+*zh_TW.PaperDimension w737h1043/8K (260x368 公釐): ""
+
 *PaperDimension w522h737/16K 184x260 mm: "522 737"
+*ko.PaperDimension w522h737/16K (184x260 mm): ""
+*zh_CN.PaperDimension w522h737/16K (184x260 毫米): ""
+*zh_TW.PaperDimension w522h737/16K (184x260 公釐): ""
+
 *PaperDimension w774h1116/8K 10.75x15.50 in.: "774 1116"
+*ko.PaperDimension w774h1116/8K: ""
+*zh_CN.PaperDimension w774h1116/8K: ""
+*zh_TW.PaperDimension w774h1116/8K: ""
+
 *PaperDimension w558h774/16K 7.75x10.75 in.: "558 774"
+*ko.PaperDimension w558h774/PAPERDIMENSION_W558H774_1: ""
+*zh_CN.PaperDimension w558h774/PAPERDIMENSION_W558H774_1: ""
+*zh_TW.PaperDimension w558h774/PAPERDIMENSION_W558H774_1: ""
+
 *PaperDimension Env10/Env Comm10: "297 684"
+*ko.PaperDimension Env10/Comm10 봉투: ""
+*zh_CN.PaperDimension Env10/信封 Comm10: ""
+*zh_TW.PaperDimension Env10/Comm10 信封: ""
+
 *PaperDimension EnvMonarch/Env Monarch: "279 540"
+*ko.PaperDimension EnvMonarch/Monarch 봉투: ""
+*zh_CN.PaperDimension EnvMonarch/信封 Monarch: ""
+*zh_TW.PaperDimension EnvMonarch/Monarch 信封: ""
+
 *PaperDimension EnvDL/Env DL: "312 624"
+*ko.PaperDimension EnvDL/DL 봉투: ""
+*zh_CN.PaperDimension EnvDL/信封 DL: ""
+*zh_TW.PaperDimension EnvDL/DL 信封: ""
+
 *PaperDimension EnvC5/Env C5: "459 649"
+*ko.PaperDimension EnvC5/C5 봉투: ""
+*zh_CN.PaperDimension EnvC5/信封 C5: ""
+*zh_TW.PaperDimension EnvC5/C5 信封: ""
+
 *PaperDimension EnvISOB5/Env ISO B5: "499 709"
+*ko.PaperDimension EnvISOB5/ISO B5 봉투: ""
+*zh_CN.PaperDimension EnvISOB5/信封 ISO B5: ""
+*zh_TW.PaperDimension EnvISOB5/ISO B5 信封: ""
+
 
 *LandscapeOrientation: Plus90
 
@@ -635,10 +1212,11 @@ EWS;;http://%s/
 *LeadingEdge PreferLong: ""
 *DefaultLeadingEdge: PreferLong
 
-*% Smallest = 3x5, Largest = 8.5 x 14
-*MaxMediaWidth:  "612"
-*MaxMediaHeight: "1008"
+*% Smallest = 3x5, Largest = 12.28 x 18.5
+*MaxMediaWidth:  "884.16"
+*MaxMediaHeight: "1332"
 *HWMargins:      12 12 12 12
+*%CustomPageRegion True: ""
 *CustomPageSize True: "
   pop pop pop
   <</DeferredMediaSelection true /PageSize [ 7 -2 roll ] /ImagingBBox null >>
@@ -646,8 +1224,9 @@ EWS;;http://%s/
 "
 *End
 
-*ParamCustomPageSize Width:        1 points 216 612
-*ParamCustomPageSize Height:       2 points 360 1008
+
+*ParamCustomPageSize Width:        1 points 216 884.16
+*ParamCustomPageSize Height:       2 points 360 1332
 *ParamCustomPageSize WidthOffset:  3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation:  5 int 0 0
@@ -660,54 +1239,122 @@ EWS;;http://%s/
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 20 AnySetup *MediaType
 *DefaultMediaType: None
+*ko.Translation MediaType/용지 종류: ""
+*zh_CN.Translation MediaType/介质类型: ""
+*zh_TW.Translation MediaType/媒體類型: ""
+
 *MediaType None/None:  "
     <</ManualFeed false /MediaType null >> setpagedevice"
 *End
+*ko.MediaType None/없음: ""
+*zh_CN.MediaType None/无: ""
+*zh_TW.MediaType None/無: ""
+
 *MediaType Plain/Plain:  "
     <</ManualFeed false /MediaType (Plain)>> setpagedevice"
 *End
+*ko.MediaType Plain/일반용지: ""
+*zh_CN.MediaType Plain/普通纸: ""
+*zh_TW.MediaType Plain/素面紙: ""
+
 *MediaType Preprinted/Preprinted:  "
     <</ManualFeed false /MediaType (Preprinted)>> setpagedevice"
 *End
+*ko.MediaType Preprinted/미리 인쇄: ""
+*zh_CN.MediaType Preprinted/预先打印纸: ""
+*zh_TW.MediaType Preprinted/預印的: ""
+
 *MediaType Letterhead/Letterhead:  "
     <</ManualFeed false /MediaType (Letterhead)>> setpagedevice"
 *End
+*ko.MediaType Letterhead/레터헤드: ""
+*zh_CN.MediaType Letterhead/信头纸: ""
+*zh_TW.MediaType Letterhead/信頭紙: ""
+
 *MediaType Transparency/Transparency:  "
     <</ManualFeed false /MediaType (Transparency)>> setpagedevice"
 *End
+*ko.MediaType Transparency/투명 용지: ""
+*zh_CN.MediaType Transparency/透明胶片: ""
+*zh_TW.MediaType Transparency/投影片: ""
+
 *MediaType Prepunched/Prepunched:  "
     <</ManualFeed false /MediaType (Prepunched)>> setpagedevice"
 *End
+*ko.MediaType Prepunched/천공 용지: ""
+*zh_CN.MediaType Prepunched/预先打孔纸: ""
+*zh_TW.MediaType Prepunched/打孔過的: ""
+
 *MediaType Labels/Labels:  "
     <</ManualFeed false /MediaType (Labels)>> setpagedevice"
 *End
+*ko.MediaType Labels/레이블: ""
+*zh_CN.MediaType Labels/标签: ""
+*zh_TW.MediaType Labels/標籤: ""
+
 *MediaType Bond/Bond:  "
     <</ManualFeed false /MediaType (Bond)>> setpagedevice"
 *End
+*ko.MediaType Bond/본드지: ""
+*zh_CN.MediaType Bond/证券纸: ""
+*zh_TW.MediaType Bond/雪銅紙: ""
+
 *MediaType Recycled/Recycled:  "
     <</ManualFeed false /MediaType (Recycled)>> setpagedevice"
 *End
+*ko.MediaType Recycled/재활용지: ""
+*zh_CN.MediaType Recycled/再生纸: ""
+*zh_TW.MediaType Recycled/再生紙: ""
+
 *MediaType Color/Color:  "
     <</ManualFeed false /MediaType (Color)>> setpagedevice"
 *End
+*ko.MediaType Color/색: ""
+*zh_CN.MediaType Color/颜色: ""
+*zh_TW.MediaType Color/顏色: ""
+
 *MediaType Light/Light (60-75 g/m2):  "
     <</ManualFeed false /MediaType (Light)>> setpagedevice"
 *End
+*ko.MediaType Light/경량지 (60-75 g/m2): ""
+*zh_CN.MediaType Light/轻磅 (60-75 g/m2): ""
+*zh_TW.MediaType Light/輕磅紙 (60-75 g/m2): ""
+
 *MediaType Cardstock164200/Card Stock (164-200 g/m2):  "
     <</ManualFeed false /MediaType (Card Stock)>> setpagedevice"
 *End
+*ko.MediaType Cardstock164200/카드 용지 (164-200 g/m2): ""
+*zh_CN.MediaType Cardstock164200/卡片纸 (164-200 g/m2): ""
+*zh_TW.MediaType Cardstock164200/卡片紙 (164-200 g/m2): ""
+
 *MediaType Rough/Rough:  "
     <</ManualFeed false /MediaType (Rough)>> setpagedevice"
 *End
+*ko.MediaType Rough/거친 용지: ""
+*zh_CN.MediaType Rough/粗糙: ""
+*zh_TW.MediaType Rough/粗糙紙: ""
+
 *MediaType ToughPaper/Tough Paper:  "
     <</ManualFeed false /MediaType (Gloss Film)>> setpagedevice"
 *End
+*ko.MediaType ToughPaper/질긴 용지: ""
+*zh_CN.MediaType ToughPaper/HP ToughPaper 胶片: ""
+*zh_TW.MediaType ToughPaper/粗糙紙: ""
+
 *MediaType Vellum/Vellum:  "
     <</MediaType (Vellum)>> setpagedevice"
 *End
+*ko.MediaType Vellum/모조 피지: ""
+*zh_CN.MediaType Vellum/仿羊皮纸: ""
+*zh_TW.MediaType Vellum/羊皮紙: ""
+
 *MediaType Envelope/Envelope:  "
     <</ManualFeed false /MediaType (Envelope)>> setpagedevice"
 *End
+*ko.MediaType Envelope/봉투: ""
+*zh_CN.MediaType Envelope/信封: ""
+*zh_TW.MediaType Envelope/信封: ""
+
 *?MediaType: "
   save
     currentpagedevice /InputAttributes get dup
@@ -725,12 +1372,30 @@ EWS;;http://%s/
 *%=================================================
 *%		 Paper Sources
 *%=================================================
-*OpenUI *InputSlot: PickOne
+*OpenUI *InputSlot/Paper Source: PickOne
 *OrderDependency: 20 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic: "<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*InputSlot Auto/Automatic: "
+	<</ManualFeed false /MediaPosition 7>> setpagedevice"
+*End
+*ko.InputSlot Auto/자동: ""
+*zh_CN.InputSlot Auto/自动: ""
+*zh_TW.InputSlot Auto/自動: ""
+
+*ko.Translation InputSlot/용지함: ""
+*zh_CN.Translation InputSlot/纸张来源: ""
+*zh_TW.Translation InputSlot/紙張來源: ""
+
 *InputSlot Tray1/Tray 1: "<</ManualFeed false /MediaPosition 3>> setpagedevice"
+*ko.InputSlot Tray1/용지함 1: ""
+*zh_CN.InputSlot Tray1/纸盒 1: ""
+*zh_TW.InputSlot Tray1/1 號紙匣: ""
+
 *InputSlot Tray2/Tray 2: "<</ManualFeed false /MediaPosition 0>> setpagedevice"
+*ko.InputSlot Tray2/용지함 2: ""
+*zh_CN.InputSlot Tray2/纸盒 2: ""
+*zh_TW.InputSlot Tray2/2 號紙匣: ""
+
 *?InputSlot: "
    save
      [(Tray2) (None)(Tray1)]
@@ -745,12 +1410,24 @@ EWS;;http://%s/
 *OpenUI *ManualFeed/Tray 1 (Manual): Boolean
 *OrderDependency: 20 AnySetup *ManualFeed
 *DefaultManualFeed: False
+*ko.Translation ManualFeed/용지함 1(수동): ""
+*zh_CN.Translation ManualFeed/纸盒1 (手工): ""
+*zh_TW.Translation ManualFeed/紙匣1 ( 手動): ""
+
 *ManualFeed True/True: "
 	<</ManualFeed true>> setpagedevice"
 *End
+*ko.ManualFeed True/참: ""
+*zh_CN.ManualFeed True/真: ""
+*zh_TW.ManualFeed True/真: ""
+
 *ManualFeed False/False: "
 	<</ManualFeed false>> setpagedevice"
 *End
+*ko.ManualFeed False/거짓: ""
+*zh_CN.ManualFeed False/伪: ""
+*zh_TW.ManualFeed False/假: ""
+
 *?ManualFeed: "
 	save
 		currentpagedevice /ManualFeed get
@@ -764,122 +1441,101 @@ EWS;;http://%s/
 *% Manual Duplex
 *% ================================================
 *%The following are here for the Manual Duplex plugin
-*HPDisallowManualFeedForManualDuplex: True
+*UIConstraints: *ManualFeed True *HPManualDuplexSwitch True
+*UIConstraints: *HPManualDuplexSwitch True *ManualFeed True
+
 *HPManDupTumbleFirstSides: False
-*HPManualDuplexSupport:    True
 
 
 *HPPaperSizeFeedEdge Letter: either
 *HPPaperSizeFeedEdge A4: either
-
-
-
 *% ===================================
 *% Supported unicode ranges
 *% ===================================
 *HPSupportedUnicodeRanges: "
 		*% 1 Base Latin
 	0x0020 0x0027, 0x002A 0x007f
-
 		*% 2 Latin 1 Supplement
 	0x00A1 0x00ff
-		
 		*% 3 Latin Extended A
 	0x0100 0x017f
-		
 		*% 4 Latin Extended B (*)
 	0x0180 0x01f5, 0x01fa 0x0217
-		
 		*% 5 IPA Extensions (*)
 	0x0250 0x02a8
-		
 		*% 6 Spacing Modifiers (*)
 	0x02b0 0x02de, 0x02e0 0x02e9
-		
 		*% 7 Diacritical Marks
 	0x0300 0x0345
-				
 		*% 9 Cyrillic
 	0x0401 0x040c, 0x040e 0x044f, 0x0451 0x045c, 0x045e 0x0486, 0x0490 0x04c4,
 	0x04c7 0x04c8, 0x04cb 0x04cc, 0x04d0 0x04eb, 0x04ef 0x04f5, 0x04f8 0x04f9   
-		
 		*% 10 Armenian
 	0x0531 0x0556, 0x0559 0x0587, 0x0589 0x0589
-		
 		*% 12 Lao (*)
 	0x0e81 0x0e82, 0x0e84 0x0e84, 0x0e87 0x0e88, 0x0e8a 0x0e8a, 0x0e8d 0x0e8d, 0x0e94 0x0e97,
 	0x0e99 0x0ea0, 0x0ea2 0x0ea3, 0x0ea5 0x0ea5, 0x0ea7 0x0ea7, 0x0eaa 0x0eab, 0x0ead 0x0eb9
 	0x0ebb 0x0ec4, 0x0ec6 0x0ec6, 0x0ec8 0x0ecd, 0x0ed0 0x0ed9, 0x0edc 0x0edd
-		
 		*% 13 Tibetan (*)
 	0x0f00 0x0f63, 0x0f65 0x0f69, 0x0f71 0x0f8b, 0x0f90 0x0f95, 0x0f97 0x0f97, 0x0f99 0x0fad
 	0x0fb2 0x0fb7, 0x0fb9 0x0fb9
-		
 		*% 14 Georgian (*)
 	0x10a0 0x10c5, 0x10d0 0x0f6, 0x10fb 0x10fb
-		
 		*% 15 Hangul Jamo (*)
 	0x1100 0x1159, 0x115f 0x11a2, 0x11a8 0x11f9
-		
 		*% 16 Latin Ext. Additional (*)
 	0x1e00 0x1e9b, 0x1ea0 0x1ef9
-		
 		*% 17 Greek Extended (*)
 	0x1f00 0x1f15, 0x1f18 0x1f1d, 0x1f20 0x1f45, 0x1f48 0x1f4d, 0x1f50 0x1f57, 0x1f59 0x1f59, 
 	0x1f5b 0x1f5b, 0x1f5d 0x1f5d, 0x1f5f 0x1f7d, 0x1f80 0x1fb4, 0x1fb6 0x1fc4, 0x1fc6 0x1fd3,
 	0x1fd6 0x1fef, 0x1ff2 0x1ff4, 0x1ff6 0x1ffe
-		
 		*% 18 General Puntuation
 	0x2000 0x2046
-		
 		*% 19 Currency Symbols
 	0x20a0 0x20ab	
-		
 		*% 20 Letterlike Symbols
 	0x2100 0x2138
-		
 		*% 21 Number Forms
 	0x2153 0x2182
-		
 		*% 22 Mathematical Operators
 	0x2200 0x22f1
-		
 		*% 23 Hiragana(*)
 	0x3041 0x3094, 0x3099 0x309e
-		
 		*% 24 Katakana
 	0x30a1 0x30fe
-		
 		*% 25 Bopomofo
 	0x3105 0x312c
-		
 		*% 26 Hangul Jamo
 	0x3131 0x318e
-		
 		*% 27 Kanbun
 	0x3190 0x319f
-		
 		*% 28 CJK Compatibility (*)
 	0x3300 0x3376, 0x337b 0x33dd, 0x33e0 0x33fe
-		
 		*% 29 CJK Unified Ideographs (*)
 	0x4e00 0x9fa5
-		
 		*% 30 Hangul Syllables (*)
 	0xac00 0xd7a3
-		
 		*% 31 CJK Comp. Ideographs
 	0xf900 0xfa2d
 	"
+*End
 *OpenGroup: HPJobRetention/Job Storage
+*ko.Translation HPJobRetention/작업 저장: ""
+*zh_CN.Translation HPJobRetention/作业存储: ""
+*zh_TW.Translation HPJobRetention/工作儲存: ""
+
 
 *% =================================
 *% Job Retention
 *% =================================
 *% The UserName setting is obtained from the print job. This may not work on non-Mac drivers.
-*OpenUI *HPJobRetentionOption/Job Storage: PickOne
+*OpenUI *HPJobRetentionOption/Mode: PickOne
 *OrderDependency: 13 Prolog *HPJobRetentionOption
 *DefaultHPJobRetentionOption: HPJobRetentionOff
+*ko.Translation HPJobRetentionOption/모드: ""
+*zh_CN.Translation HPJobRetentionOption/模式: ""
+*zh_TW.Translation HPJobRetentionOption/模式: ""
+
 
 *HPJobRetentionOption HPJobRetentionProof/Proof and Hold: "
 	<< /Collate true /CollateDetails
@@ -887,6 +1543,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPJobRetentionOption HPJobRetentionProof/교정쇄 및 보유: ""
+*zh_CN.HPJobRetentionOption HPJobRetentionProof/审校待打印: ""
+*zh_TW.HPJobRetentionOption HPJobRetentionProof/校對和暫停: ""
+
 
 *HPJobRetentionOption HPJobRetentionPrivate/Private Job: "
 	<< /Collate true /CollateDetails
@@ -894,13 +1554,18 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
-
-
+*ko.HPJobRetentionOption HPJobRetentionPrivate/PIN 필요 작업: ""
+*zh_CN.HPJobRetentionOption HPJobRetentionPrivate/私人的作业: ""
+*zh_TW.HPJobRetentionOption HPJobRetentionPrivate/個人的工作: ""
 *HPJobRetentionOption HPJobRetentionOff/Off: "
 	<< /CollateDetails
 	<< /Type 8 /Hold 0 >> >> setpagedevice
 "
 *End
+*ko.HPJobRetentionOption HPJobRetentionOff/끄기: ""
+*zh_CN.HPJobRetentionOption HPJobRetentionOff/关: ""
+*zh_TW.HPJobRetentionOption HPJobRetentionOff/關: ""
+
 *CloseUI: *HPJobRetentionOption
 
 *% ================= Job Storage Descriptions ====================
@@ -916,15 +1581,27 @@ EWS;;http://%s/
 *OpenUI *HPDuplicateJobMode/If Job Name Exists: PickOne
 *OrderDependency: 14 Prolog *HPDuplicateJobMode
 *DefaultHPDuplicateJobMode: Unique
+*ko.Translation HPDuplicateJobMode/작업명이 있는 경우: ""
+*zh_CN.Translation HPDuplicateJobMode/如果作业名存在: ""
+*zh_TW.Translation HPDuplicateJobMode/如果工作名稱存在: ""
 
-*HPDuplicateJobMode Unique/Use Job Name + (1 - 99): "
+
+*HPDuplicateJobMode Unique/Use Job Name + (1-99): "
 	<< /CollateDetails << /Type 8 /DuplicateJob 0 >> >> setpagedevice
 "
 *End
+*ko.HPDuplicateJobMode Unique/작업명 + (1-99) 사용: ""
+*zh_CN.HPDuplicateJobMode Unique/使用作业名 + (1-99): ""
+*zh_TW.HPDuplicateJobMode Unique/使用工作名稱 + (1-99): ""
+
 *HPDuplicateJobMode Overwrite/Replace Existing File: "
 	<< /CollateDetails << /Type 8 /DuplicateJob 1 >> >> setpagedevice
 "
 *End
+*ko.HPDuplicateJobMode Overwrite/기존 파일 바꾸기: ""
+*zh_CN.HPDuplicateJobMode Overwrite/替换现有文件: ""
+*zh_TW.HPDuplicateJobMode Overwrite/更換現有檔案: ""
+
 *CloseUI: *HPDuplicateJobMode
 
 
@@ -937,6 +1614,10 @@ EWS;;http://%s/
 *% For example, all forms could be stored under UserName "Forms".
 *OrderDependency: 16 Prolog *HPUserName
 *DefaultHPUserName: FileSharingName
+*ko.Translation HPUserName/사용자 이름: ""
+*zh_CN.Translation HPUserName/用户名称: ""
+*zh_TW.Translation HPUserName/使用者名稱: ""
+
 *HPUserName FileSharingName/Use File Sharing Name: "
 	<< /CollateDetails
 		<< /Type 8
@@ -957,6 +1638,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPUserName FileSharingName/파일 공유 이름 사용: ""
+*zh_CN.HPUserName FileSharingName/使用文件共享名: ""
+*zh_TW.HPUserName FileSharingName/使用檔案分享名稱: ""
+
 *HPUserName Forms/Forms: "
 	<< /CollateDetails
 		<< /Type 8
@@ -970,6 +1655,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPUserName Forms/양식: ""
+*zh_CN.HPUserName Forms/表格: ""
+*zh_TW.HPUserName Forms/表格: ""
+
 *HPUserName Set/Custom User Name: "
 	<< /CollateDetails
 		<< /Type 8
@@ -990,6 +1679,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPUserName Set/사용자 정의 사용자 이름: ""
+*zh_CN.HPUserName Set/自定义用户名称: ""
+*zh_TW.HPUserName Set/自訂使用者名稱: ""
+
 *CloseUI: *HPUserName
 *% Allows LW 8.5.1 and above to use custom strings
 *RBISetHPUserName Data: "() 80"
@@ -1014,6 +1707,10 @@ EWS;;http://%s/
 *% If the driver does not support text entry UI the JobMgrName will always be obtained from the print job.
 *OrderDependency: 17 Prolog *HPJobName
 *DefaultHPJobName: DocName
+*ko.Translation HPJobName/작업명: ""
+*zh_CN.Translation HPJobName/作业名称: ""
+*zh_TW.Translation HPJobName/列印工作名稱: ""
+
 *HPJobName DocName/Use Document Name: "
 	<< /CollateDetails
 		<< /Type 8
@@ -1050,6 +1747,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPJobName DocName/문서명 사용: ""
+*zh_CN.HPJobName DocName/使用文档名称: ""
+*zh_TW.HPJobName DocName/使用文件名稱: ""
+
 *HPJobName Set/User Specified Job Name: "
 	<< /CollateDetails
 		<< /Type 8
@@ -1086,6 +1787,10 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*ko.HPJobName Set/사용자 정의 작업명: ""
+*zh_CN.HPJobName Set/自定义作业名称: ""
+*zh_TW.HPJobName Set/自訂列印工作名稱: ""
+
 *CloseUI: *HPJobName
 *% Allows LW 8.5.1 and above to use custom strings
 *RBISetHPJobName Data: "() 80"
@@ -1113,41 +1818,423 @@ EWS;;http://%s/
 	>> setpagedevice
 "
 *End
+*HPCustomUserName Title/User Name: ""
+*ko.HPCustomUserName Title/사용자 이름: ""
+*zh_CN.HPCustomUserName Title/用户名称: ""
+*zh_TW.HPCustomUserName Title/使用者名稱: ""
+
+*HPCustomUserName Range: 1 15
+*HPCustomUserName Type: string
+
+*HPCustomJobName Title/Job Name: ""
+*ko.HPCustomJobName Title/작업명: ""
+*zh_CN.HPCustomJobName Title/作业名称: ""
+*zh_TW.HPCustomJobName Title/列印工作名稱: ""
+
+*HPCustomJobName Range: 1 15
+*HPCustomJobName Type: string
+
+*HPPinToPrint Title/PIN To Print: ""
+*ko.HPPinToPrint Title/인쇄 PIN: ""
+*zh_CN.HPPinToPrint Title/打印 PIN: ""
+*zh_TW.HPPinToPrint Title/列印的 PIN: ""
+
+*HPPinToPrint Range: 1 4
+*HPPinToPrint Type: string
+*HPPinToPrint Default: "0000"
+*HPPinToPrint CharSet: "0x0030 0x0039"
+
 *CloseGroup: HPJobRetention
 
-*HPStraightPaperPath: True
 
 *OpenGroup: HPFinishing/Finishing
+*ko.Translation HPFinishing/완료: ""
+*zh_CN.Translation HPFinishing/完成选项: ""
+*zh_TW.Translation HPFinishing/外觀選項: ""
+
 
 *OpenUI *HPRotate180/Rotate Page 180 deg: Boolean
 *OrderDependency: 48 AnySetup *HPRotate180
 *DefaultHPRotate180: False
+*ko.Translation HPRotate180/180도 회전된 방향: ""
+*zh_CN.Translation HPRotate180/方向旋转 180 度: ""
+*zh_TW.Translation HPRotate180/旋轉 180 度: ""
+
 *HPRotate180 False/Off:  ""
+*ko.HPRotate180 False/꺼짐: ""
+*zh_CN.HPRotate180 False/关: ""
+*zh_TW.HPRotate180 False/關閉: ""
+
 *HPRotate180 True/On: "
 <<	/BeginPage
 	{ userdict begin
+		pop
 		currentpagedevice /PageSize get dup 0 get exch 1 get translate
 		0 0 moveto
 		180 rotate
 	end } bind
 >> setpagedevice"
 *End
+*ko.HPRotate180 True/켜짐: ""
+*zh_CN.HPRotate180 True/开: ""
+*zh_TW.HPRotate180 True/開啟: ""
+
 *CloseUI: *HPRotate180
 
-*CloseGroup: HPFinishing
+*OpenUI *HPStraightPaperPath/Use Straight Paper Path: Boolean
+*DefaultHPStraightPaperPath: False
+*ko.Translation HPStraightPaperPath/곧은 용지 경로를 사용하십시오: ""
+*zh_CN.Translation HPStraightPaperPath/使用直线馈纸路径: ""
+*zh_TW.Translation HPStraightPaperPath/使用直接出紙路徑: ""
 
+*HPStraightPaperPath True/On: ""
+*ko.HPStraightPaperPath True/켜짐: ""
+*zh_CN.HPStraightPaperPath True/开: ""
+*zh_TW.HPStraightPaperPath True/開啟: ""
+
+*HPStraightPaperPath False/Off: ""
+*ko.HPStraightPaperPath False/꺼짐: ""
+*zh_CN.HPStraightPaperPath False/关: ""
+*zh_TW.HPStraightPaperPath False/關閉: ""
+
+*CloseUI: *HPStraightPaperPath
+*HPStraightPaperPathDS True: "HPSTRAIGHTPAPERPATH_DS"
+*HPStraightPaperPathDS False: "HPSTRAIGHTPAPERPATH_DS"
+
+
+*% ================================================
+*% Manual Duplex
+*% ================================================
+
+*% Booklet printing is not allowed without Manual Duplex turned on
+*HPConstraints: *HPManualDuplexSwitch False *HPBookletFilter True
+*OpenUI *HPManualDuplexSwitch/Manual Duplex: Boolean
+*OrderDependency: 57 AnySetup *HPManualDuplexSwitch
+*DefaultHPManualDuplexSwitch: False
+*ko.Translation HPManualDuplexSwitch/수동 양면 인쇄: ""
+*zh_CN.Translation HPManualDuplexSwitch/手动双面打印: ""
+*zh_TW.Translation HPManualDuplexSwitch/手動雙面列印: ""
+
+*HPManualDuplexSwitch True/Yes: ""
+*ko.HPManualDuplexSwitch True/켜짐: ""
+*zh_CN.HPManualDuplexSwitch True/开: ""
+*zh_TW.HPManualDuplexSwitch True/開啟: ""
+
+*HPManualDuplexSwitch False/No: ""
+*ko.HPManualDuplexSwitch False/꺼짐: ""
+*zh_CN.HPManualDuplexSwitch False/关: ""
+*zh_TW.HPManualDuplexSwitch False/關閉: ""
+
+*CloseUI: *HPManualDuplexSwitch
+
+*%== Mac OS X specific begin ==
+*% ================= Manual Duplex Descriptions ===================
+
+*HPManualDuplexSwitchDS True: "HPMANUALDUPLEXSWITCH_DS"
+*HPManualDuplexSwitchDS False: "HPMANUALDUPLEXSWITCH_DS"
+
+*% ===========================================================
+*%== Mac OS X specific end ==
+
+
+*OpenUI *HPManualDuplexPrintGuide/Print Reinsertion Guide: Boolean
+*OrderDependency: 58 AnySetup *HPManualDuplexPrintGuide
+*DefaultHPManualDuplexPrintGuide: False
+*ko.Translation HPManualDuplexPrintGuide/재삽입 설명서 인쇄: ""
+*zh_CN.Translation HPManualDuplexPrintGuide/打印重新插入指南: ""
+*zh_TW.Translation HPManualDuplexPrintGuide/列印重新插入指南: ""
+
+*HPManualDuplexPrintGuide True/Yes: ""
+*ko.HPManualDuplexPrintGuide True/켜짐: ""
+*zh_CN.HPManualDuplexPrintGuide True/开: ""
+*zh_TW.HPManualDuplexPrintGuide True/開啟: ""
+
+*HPManualDuplexPrintGuide False/No: ""
+*ko.HPManualDuplexPrintGuide False/꺼짐: ""
+*zh_CN.HPManualDuplexPrintGuide False/关: ""
+*zh_TW.HPManualDuplexPrintGuide False/關閉: ""
+
+*CloseUI: *HPManualDuplexPrintGuide
+
+*OpenUI *HPManualDuplexOrientation/Binding: PickOne
+*OrderDependency: 59 AnySetup *HPManualDuplexOrientation
+*DefaultHPManualDuplexOrientation: DuplexNoTumble
+*ko.Translation HPManualDuplexOrientation/제본선: ""
+*zh_CN.Translation HPManualDuplexOrientation/装订: ""
+*zh_TW.Translation HPManualDuplexOrientation/裝訂: ""
+
+*HPManualDuplexOrientation DuplexNoTumble/Long-Edge Binding: ""
+*ko.HPManualDuplexOrientation DuplexNoTumble/긴-가장자리 제본선: ""
+*zh_CN.HPManualDuplexOrientation DuplexNoTumble/长边装订: ""
+*zh_TW.HPManualDuplexOrientation DuplexNoTumble/沿長邊裝訂: ""
+
+*HPManualDuplexOrientation DuplexTumble/Short-Edge Binding: ""
+*ko.HPManualDuplexOrientation DuplexTumble/짧은-가장자리 제본선: ""
+*zh_CN.HPManualDuplexOrientation DuplexTumble/短边装订: ""
+*zh_TW.HPManualDuplexOrientation DuplexTumble/沿短邊裝訂: ""
+
+*CloseUI: *HPManualDuplexOrientation
+
+*% ================================================
+*% Booklet
+*% ================================================
+
+*OpenUI *HPBookletFilter/Format Output As Booklet: Boolean
+*OrderDependency: 60 AnySetup *HPBookletFilter
+*DefaultHPBookletFilter: False
+*ko.Translation HPBookletFilter/소책자 형식으로 출력: ""
+*zh_CN.Translation HPBookletFilter/以小册子格式输出: ""
+*zh_TW.Translation HPBookletFilter/輸出格式為手冊: ""
+
+*HPBookletFilter True/Yes: ""
+*ko.HPBookletFilter True/켜짐: ""
+*zh_CN.HPBookletFilter True/开: ""
+*zh_TW.HPBookletFilter True/開啟: ""
+
+*HPBookletFilter False/No: ""
+*ko.HPBookletFilter False/꺼짐: ""
+*zh_CN.HPBookletFilter False/关: ""
+*zh_TW.HPBookletFilter False/關閉: ""
+
+*CloseUI: *HPBookletFilter
+
+*OpenUI *HPBookletBackCover/Last Page Is Back Cover: Boolean
+*OrderDependency: 61 AnySetup *HPBookletBackCover
+*DefaultHPBookletBackCover: False
+*ko.Translation HPBookletBackCover/마지막 페이지는 뒤 표지입니다: ""
+*zh_CN.Translation HPBookletBackCover/最后一页是封底: ""
+*zh_TW.Translation HPBookletBackCover/最後一頁為封底: ""
+
+*HPBookletBackCover True/Yes: ""
+*ko.HPBookletBackCover True/켜짐: ""
+*zh_CN.HPBookletBackCover True/开: ""
+*zh_TW.HPBookletBackCover True/開啟: ""
+
+*HPBookletBackCover False/No: ""
+*ko.HPBookletBackCover False/꺼짐: ""
+*zh_CN.HPBookletBackCover False/关: ""
+*zh_TW.HPBookletBackCover False/關閉: ""
+
+*CloseUI: *HPBookletBackCover
+
+*OpenUI *HPBookletPageOrder/Page Order: PickOne
+*OrderDependency: 62 AnySetup *HPBookletPageOrder
+*DefaultHPBookletPageOrder: Normal
+*ko.Translation HPBookletPageOrder/페이지 순서: ""
+*zh_CN.Translation HPBookletPageOrder/页面顺序: ""
+*zh_TW.Translation HPBookletPageOrder/頁序: ""
+
+*HPBookletPageOrder Normal/Pages Bound on the Left: ""
+*ko.HPBookletPageOrder Normal/왼쪽 제본 페이지: ""
+*zh_CN.HPBookletPageOrder Normal/左侧装订: ""
+*zh_TW.HPBookletPageOrder Normal/左邊裝訂: ""
+
+*HPBookletPageOrder Asian/Pages Bound on the Right: ""
+*ko.HPBookletPageOrder Asian/오른쪽 제본 페이지: ""
+*zh_CN.HPBookletPageOrder Asian/右侧装订: ""
+*zh_TW.HPBookletPageOrder Asian/右邊裝訂: ""
+
+*CloseUI: *HPBookletPageOrder
+
+*OpenUI *HPBookletScaling/Scaling: PickOne
+*OrderDependency: 63 AnySetup *HPBookletScaling
+*DefaultHPBookletScaling: Proportional
+*ko.Translation HPBookletScaling/스케일링: ""
+*zh_CN.Translation HPBookletScaling/缩放: ""
+*zh_TW.Translation HPBookletScaling/縮放: ""
+
+*HPBookletScaling Proportional/Proportional: ""
+*ko.HPBookletScaling Proportional/비례: ""
+*zh_CN.HPBookletScaling Proportional/按比例: ""
+*zh_TW.HPBookletScaling Proportional/比例: ""
+
+*HPBookletScaling FitPage/Fit To Page: ""
+*ko.HPBookletScaling FitPage/페이지에 맞춤: ""
+*zh_CN.HPBookletScaling FitPage/适合页面: ""
+*zh_TW.HPBookletScaling FitPage/符合頁面: ""
+
+*CloseUI: *HPBookletScaling
+
+*% These values are set of PageSize settings so we need find
+*% the way to refer on to PageSize values 
+
+
+
+*OpenUI *HPBookletPageSize/Paper For Booklet: PickOne
+*OrderDependency: 66 AnySetup *HPBookletPageSize
+*DefaultHPBookletPageSize: Letter
+*ko.Translation HPBookletPageSize/소책자용 용지: ""
+*zh_CN.Translation HPBookletPageSize/用于小册子的纸张: ""
+*zh_TW.Translation HPBookletPageSize/用於手冊的紙張: ""
+
+
+*HPBookletPageSize Letter/Letter: ""
+*ko.HPBookletPageSize Letter/레터: ""
+*zh_CN.HPBookletPageSize Letter/信纸: ""
+*zh_TW.HPBookletPageSize Letter/Letter: ""
+
+*HPBookletPageSize Legal/Legal: ""
+*ko.HPBookletPageSize Legal/리갈: ""
+*zh_CN.HPBookletPageSize Legal/Legal: ""
+*zh_TW.HPBookletPageSize Legal/Legal: ""
+
+*HPBookletPageSize Executive/Executive: ""
+*ko.HPBookletPageSize Executive/Executive: ""
+*zh_CN.HPBookletPageSize Executive/Executive: ""
+*zh_TW.HPBookletPageSize Executive/Executive: ""
+
+*HPBookletPageSize HalfLetter/Statement: ""
+*ko.HPBookletPageSize HalfLetter/2절 레터: ""
+*zh_CN.HPBookletPageSize HalfLetter/结算单: ""
+*zh_TW.HPBookletPageSize HalfLetter/Statement: ""
+
+*HPBookletPageSize w612h935/8.5x13: ""
+*ko.HPBookletPageSize w612h935/8.5x13: ""
+*zh_CN.HPBookletPageSize w612h935/8.5x13: ""
+*zh_TW.HPBookletPageSize w612h935/8.5x13: ""
+
+*HPBookletPageSize Tabloid/11x17: ""
+*ko.HPBookletPageSize Tabloid/11x17: ""
+*zh_CN.HPBookletPageSize Tabloid/11x17: ""
+*zh_TW.HPBookletPageSize Tabloid/11x17 : ""
+
+*HPBookletPageSize 12X18/12x18: ""
+*ko.HPBookletPageSize 12X18/12x18: ""
+*zh_CN.HPBookletPageSize 12X18/12x18: ""
+*zh_TW.HPBookletPageSize 12X18/12x18: ""
+
+*HPBookletPageSize A3/A3: ""
+*ko.HPBookletPageSize A3/A3: ""
+*zh_CN.HPBookletPageSize A3/A3: ""
+*zh_TW.HPBookletPageSize A3/A3: ""
+
+*HPBookletPageSize A4/A4: ""
+*ko.HPBookletPageSize A4/A4: ""
+*zh_CN.HPBookletPageSize A4/A4: ""
+*zh_TW.HPBookletPageSize A4/A4: ""
+
+*HPBookletPageSize A5/A5: ""
+*ko.HPBookletPageSize A5/A5: ""
+*zh_CN.HPBookletPageSize A5/A5: ""
+*zh_TW.HPBookletPageSize A5/A5: ""
+
+*HPBookletPageSize A6/A6: ""
+*ko.HPBookletPageSize A6/A6: ""
+*zh_CN.HPBookletPageSize A6/A6: ""
+*zh_TW.HPBookletPageSize A6/A6: ""
+
+*HPBookletPageSize RA3/RA3: ""
+*ko.HPBookletPageSize RA3/RA3: ""
+*zh_CN.HPBookletPageSize RA3/RA3: ""
+*zh_TW.HPBookletPageSize RA3/RA3: ""
+
+*HPBookletPageSize B6/JIS B6: ""
+*ko.HPBookletPageSize B6/JIS B6: ""
+*zh_CN.HPBookletPageSize B6/JIS B6: ""
+*zh_TW.HPBookletPageSize B6/JIS B6: ""
+
+*HPBookletPageSize B5/JIS B5: ""
+*ko.HPBookletPageSize B5/JIS B5: ""
+*zh_CN.HPBookletPageSize B5/JIS B5: ""
+*zh_TW.HPBookletPageSize B5/JIS B5: ""
+
+*HPBookletPageSize B4/B4 (JIS): ""
+*ko.HPBookletPageSize B4/JIS B4: ""
+*zh_CN.HPBookletPageSize B4/JIS B4: ""
+*zh_TW.HPBookletPageSize B4/JIS B4: ""
+
+*HPBookletPageSize w612h936/Executive (JIS): ""
+*ko.HPBookletPageSize w612h936/Executive (JIS): ""
+*zh_CN.HPBookletPageSize w612h936/Executive (JIS): ""
+*zh_TW.HPBookletPageSize w612h936/Executive (JIS): ""
+
+*HPBookletPageSize DoublePostcardRotated/Double Japan Postcard Rotated: ""
+*ko.HPBookletPageSize DoublePostcardRotated/양면 규격 엽서 회전: ""
+*zh_CN.HPBookletPageSize DoublePostcardRotated/双面旋转日本明信片: ""
+*zh_TW.HPBookletPageSize DoublePostcardRotated/旋轉雙面日式明信片: ""
+
+*HPBookletPageSize DoublePostcard/Japanese Postcard: ""
+*ko.HPBookletPageSize DoublePostcard/양면 엽서 (JIS): ""
+*zh_CN.HPBookletPageSize DoublePostcard/大号明信片 (JIS): ""
+*zh_TW.HPBookletPageSize DoublePostcard/雙面明信片 (JIS): ""
+
+*HPBookletPageSize w765h1106/8K 270x390 mm: ""
+*ko.HPBookletPageSize w765h1106/8K (270x390 mm): ""
+*zh_CN.HPBookletPageSize w765h1106/8K (270x390 毫米): ""
+*zh_TW.HPBookletPageSize w765h1106/8K (270x390 公釐): ""
+
+*HPBookletPageSize w553h765/16K 195x270 mm: ""
+*ko.HPBookletPageSize w553h765/16K (195x270 mm): ""
+*zh_CN.HPBookletPageSize w553h765/16K (195x270 毫米): ""
+*zh_TW.HPBookletPageSize w553h765/16K (195x270 公釐): ""
+
+*HPBookletPageSize w737h1043/8K 260x368 mm: ""
+*ko.HPBookletPageSize w737h1043/8K (260x368 mm): ""
+*zh_CN.HPBookletPageSize w737h1043/8K (260x368 毫米): ""
+*zh_TW.HPBookletPageSize w737h1043/8K (260x368 公釐): ""
+
+*HPBookletPageSize w522h737/16K 184x260 mm: ""
+*ko.HPBookletPageSize w522h737/16K (184x260 mm): ""
+*zh_CN.HPBookletPageSize w522h737/16K (184x260 毫米): ""
+*zh_TW.HPBookletPageSize w522h737/16K (184x260 公釐): ""
+
+*HPBookletPageSize w774h1116/8K 10.75x15.50 in.: ""
+*ko.HPBookletPageSize w774h1116/8K: ""
+*zh_CN.HPBookletPageSize w774h1116/8K: ""
+*zh_TW.HPBookletPageSize w774h1116/8K: ""
+
+*HPBookletPageSize w558h774/16K 7.75x10.75 in.: ""
+*ko.HPBookletPageSize w558h774/16K (7.75x10.75 in): ""
+*zh_CN.HPBookletPageSize w558h774/16K (7.75x10.75 英寸): ""
+*zh_TW.HPBookletPageSize w558h774/16K (7.75x10.75 英吋): ""
+
+*CloseUI: *HPBookletPageSize
+
+*%Constraints on HPBookletPageSize
+*%=============================================
+*UIConstraints: *HPBookletPageSize DoublePostcard  		*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize DoublePostcardRotated  	*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize HalfLetter      		*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize 12X18  	    		*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize A6     	 		*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize RA3      	    		*InputSlot Tray2
+*UIConstraints: *HPBookletPageSize B6            		*InputSlot Tray2
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize DoublePostcard
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize DoublePostcardRotated
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize HalfLetter
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 12X18
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize A6
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize RA3
+*UIConstraints: *InputSlot Tray2 *HPBookletPageSize B6
+
+
+
+
+*CloseGroup: HPFinishing
 *%====================================
 *%         Collation
 *%====================================
 *OpenUI *Collate/Collate:  Boolean
 *OrderDependency: 12 AnySetup *Collate
 *DefaultCollate: False
+*ko.Translation Collate/한 부씩 인쇄: ""
+*zh_CN.Translation Collate/分页: ""
+*zh_TW.Translation Collate/自動分頁: ""
+
 *Collate True/On (turn off in application): "
     <</Collate true>> setpagedevice"
 *End
+*ko.Collate True/켬(응용 프로그램에서 마치기): ""
+*zh_CN.Collate True/开 (在应用程序关闭): ""
+*zh_TW.Collate True/開 (從應用程式關閉): ""
+
 *Collate False/Off: "
     <</Collate false>> setpagedevice"
 *End
+*ko.Collate False/끔: ""
+*zh_CN.Collate False/关: ""
+*zh_TW.Collate False/關: ""
+
 *?Collate: "
   save
     currentpagedevice /Collate get
@@ -1158,6 +2245,10 @@ EWS;;http://%s/
 *CloseUI: *Collate
 
 *OpenGroup: HPImagingOptions/Image Quality
+*ko.Translation HPImagingOptions/이미지 옵션: ""
+*zh_CN.Translation HPImagingOptions/图象选项: ""
+*zh_TW.Translation HPImagingOptions/影像選項: ""
+
 
 *% ===================================
 *%      Gray Levels and Halftone
@@ -1167,11 +2258,35 @@ EWS;;http://%s/
 *ScreenAngle: "45.0"
 
 *ResScreenFreq 300x300dpi/300 dpi:  "60.0"
+*ko.ResScreenFreq 300x300dpi/300 dpi: ""
+*zh_CN.ResScreenFreq 300x300dpi/300 dpi: ""
+*zh_TW.ResScreenFreq 300x300dpi/300 dpi: ""
+
 *ResScreenAngle 300x300dpi/300 dpi: "45.0"
+*ko.ResScreenAngle 300x300dpi/300 dpi: ""
+*zh_CN.ResScreenAngle 300x300dpi/300 dpi: ""
+*zh_TW.ResScreenAngle 300x300dpi/300 dpi: ""
+
 *ResScreenFreq 600x600dpi/600 dpi:  "106.0"
+*ko.ResScreenFreq 600x600dpi/600 dpi: ""
+*zh_CN.ResScreenFreq 600x600dpi/600 dpi: ""
+*zh_TW.ResScreenFreq 600x600dpi/600 dpi: ""
+
 *ResScreenAngle 600x600dpi/600 dpi: "45.0"
+*ko.ResScreenAngle 600x600dpi/600 dpi: ""
+*zh_CN.ResScreenAngle 600x600dpi/600 dpi: ""
+*zh_TW.ResScreenAngle 600x600dpi/600 dpi: ""
+
 *ResScreenFreq 1200x1200dpi/1200 dpi:  "212.0"
+*ko.ResScreenFreq 1200x1200dpi/1200 dpi: ""
+*zh_CN.ResScreenFreq 1200x1200dpi/1200 dpi: ""
+*zh_TW.ResScreenFreq 1200x1200dpi/1200 dpi: ""
+
 *ResScreenAngle 1200x1200dpi/1200 dpi: "45.0"
+*ko.ResScreenAngle 1200x1200dpi/1200 dpi: ""
+*zh_CN.ResScreenAngle 1200x1200dpi/1200 dpi: ""
+*zh_TW.ResScreenAngle 1200x1200dpi/1200 dpi: ""
+
 
 *DefaultScreenProc: Dot
 *ScreenProc HPEnhanced: "
@@ -1195,7 +2310,15 @@ EWS;;http://%s/
 *OpenUI *HPHalftone/Levels of Gray: PickOne
 *OrderDependency: 10 DocumentSetup *HPHalftone
 *DefaultHPHalftone: PrinterDefault
+*ko.Translation HPHalftone/중간 색조: ""
+*zh_CN.Translation HPHalftone/半色调: ""
+*zh_TW.Translation HPHalftone/半色調: ""
+
 *HPHalftone PrinterDefault/Printer's Current Setting: ""
+*ko.HPHalftone PrinterDefault/프린터 기본값: ""
+*zh_CN.HPHalftone PrinterDefault/打印机的当前设置: ""
+*zh_TW.HPHalftone PrinterDefault/印表機目前的設定值: ""
+
 *HPHalftone Enhanced/Enhanced: "
    << /Install {
      currentpagedevice /HWResolution get
@@ -1217,6 +2340,10 @@ EWS;;http://%s/
    /sethalftone { pop } def
 "
 *End
+*ko.HPHalftone Enhanced/해상도 향상: ""
+*zh_CN.HPHalftone Enhanced/分辨率增强: ""
+*zh_TW.HPHalftone Enhanced/解析度增強: ""
+
 *HPHalftone Standard/Standard: "
    << /Install {
      currentpagedevice /HWResolution get
@@ -1237,6 +2364,10 @@ EWS;;http://%s/
    } if
 "
 *End
+*ko.HPHalftone Standard/역호환성: ""
+*zh_CN.HPHalftone Standard/标准: ""
+*zh_TW.HPHalftone Standard/標準: ""
+
 *?HPHalftone: "
    save
       currenthalftone /HalftoneType get 9 eq
@@ -1252,14 +2383,26 @@ EWS;;http://%s/
 *%===================================
 *% Select Printer Resolution
 *OpenUI *Resolution/Printer Resolution: PickOne
-*DefaultResolution: 600x1200dpi
+*DefaultResolution: 1200dpi
+*ko.Translation Resolution/프린터 해상도: ""
+*zh_CN.Translation Resolution/打印机分辨率: ""
+*zh_TW.Translation Resolution/印表機解析度: ""
+
 *OrderDependency: 5 DocumentSetup  *Resolution
-*Resolution 600x1200dpi/FastRes 1200: "
+*Resolution 1200dpi/FastRes 1200: "
 	<</HWResolution [600 600] /PreRenderingEnhance true>> setpagedevice"
 *End
+*ko.Resolution 1200dpi/FastRes 1200: ""
+*zh_CN.Resolution 1200dpi/FastRes 1200: ""
+*zh_TW.Resolution 1200dpi/FastRes 1200: ""
+
 *Resolution 600x600dpi/600 dpi: "
     <</HWResolution [600 600] /PreRenderingEnhance false>> setpagedevice"
 *End
+*ko.Resolution 600x600dpi/600 dpi: ""
+*zh_CN.Resolution 600x600dpi/600 dpi: ""
+*zh_TW.Resolution 600x600dpi/600 dpi: ""
+
 *?Resolution: "
   save
     currentpagedevice /HWResolution get
@@ -1277,14 +2420,30 @@ EWS;;http://%s/
 *%==================================
 *OpenUI *HPEconoMode/Economode: PickOne
 *DefaultHPEconoMode: PrinterDefault
+*ko.Translation HPEconoMode/EconoMode: ""
+*zh_CN.Translation HPEconoMode/EconoMode: ""
+*zh_TW.Translation HPEconoMode/EconoMode: ""
+
 *OrderDependency: 10 AnySetup *HPEconoMode
 *HPEconoMode PrinterDefault/Printer's Current Setting: ""
+*ko.HPEconoMode PrinterDefault/프린터 기본값: ""
+*zh_CN.HPEconoMode PrinterDefault/打印机的当前设置: ""
+*zh_TW.HPEconoMode PrinterDefault/印表機目前的設定值: ""
+
 *HPEconoMode True/Save Toner: "
     <</EconoMode true>> setpagedevice"
 *End
+*ko.HPEconoMode True/토너 절약: ""
+*zh_CN.HPEconoMode True/节省碳粉: ""
+*zh_TW.HPEconoMode True/節約碳粉: ""
+
 *HPEconoMode False/Highest Quality: "
     <</EconoMode false>> setpagedevice"
 *End
+*ko.HPEconoMode False/최고품질: ""
+*zh_CN.HPEconoMode False/最高质量: ""
+*zh_TW.HPEconoMode False/最高品質: ""
+
 *?HPEconoMode: "
   save
     currentpagedevice /HPEconoMode get
@@ -1299,17 +2458,33 @@ EWS;;http://%s/
 *OpenUI *Smoothing/Resolution Enhancement:  PickOne
 *OrderDependency: 20 DocumentSetup *Smoothing
 *DefaultSmoothing: PrinterDefault
+*ko.Translation Smoothing/해상도 향상: ""
+*zh_CN.Translation Smoothing/分辨率增强: ""
+*zh_TW.Translation Smoothing/解析度增強: ""
+
 *Smoothing PrinterDefault/Printer's Current Setting: ""
+*ko.Smoothing PrinterDefault/프린터 기본값: ""
+*zh_CN.Smoothing PrinterDefault/打印机的当前设置: ""
+*zh_TW.Smoothing PrinterDefault/印表機目前的設定值: ""
+
 *Smoothing On/On: "
 << /PostRenderingEnhance true
     /PostRenderingEnhanceDetails << /REValue 2 /Type 8 >>
 >>  setpagedevice"
 *End
+*ko.Smoothing On/켜짐: ""
+*zh_CN.Smoothing On/开: ""
+*zh_TW.Smoothing On/開啟: ""
+
 *Smoothing Off/Off: "
 << /PostRenderingEnhance true
     /PostRenderingEnhanceDetails << /REValue 0 /Type 8 >>
 >>  setpagedevice"
 *End
+*ko.Smoothing Off/끔: ""
+*zh_CN.Smoothing Off/关: ""
+*zh_TW.Smoothing Off/關閉: ""
+
 *?Smoothing: "
   save
     currentpagedevice /PostRenderingEnhanceDetails get /REValue get
@@ -1333,29 +2508,49 @@ EWS;;http://%s/
 
 *%  For 60 lpi / 300 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.60lpi.300dpi/60 lpi / 300 dpi: "45"
+
 *ColorSepScreenAngle CustomColor.60lpi.300dpi/60 lpi / 300 dpi: "45"
+
 *ColorSepScreenAngle ProcessCyan.60lpi.300dpi/60 lpi / 300 dpi: "15"
+
 *ColorSepScreenAngle ProcessMagenta.60lpi.300dpi/60 lpi / 300 dpi: "75"
+
 *ColorSepScreenAngle ProcessYellow.60lpi.300dpi/60 lpi / 300 dpi: "0"
 
+
 *ColorSepScreenFreq ProcessBlack.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq CustomColor.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessCyan.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessMagenta.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 *ColorSepScreenFreq ProcessYellow.60lpi.300dpi/60 lpi / 300 dpi: "60"
+
 
 *%  For 85 lpi / 600 dpi  (5,5,2,6,6,2,20/3,0) ====
 *ColorSepScreenAngle ProcessBlack.85lpi.600dpi/85 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.85lpi.600dpi/85 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.85lpi.600dpi/85 lpi / 600 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.85lpi.600dpi/85 lpi / 600 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "0.0"
 
+
 *ColorSepScreenFreq ProcessBlack.85lpi.600dpi/85 lpi / 600 dpi: "84.8528"
+
 *ColorSepScreenFreq CustomColor.85lpi.600dpi/85 lpi / 600 dpi: "84.8528"
+
 *ColorSepScreenFreq ProcessCyan.85lpi.600dpi/85 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.85lpi.600dpi/85 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "30.0"
+
 *ColorSepScreenProc ProcessYellow.85lpi.600dpi/85 lpi / 600 dpi: "
 {1 add 2 div 3 mul dup floor sub 2 mul 1 sub exch
 1 add 2 div 3 mul dup floor sub 2 mul 1 sub exch
@@ -1363,44 +2558,75 @@ abs exch abs 2 copy add 1 gt {1 sub dup mul exch 1 sub dup mul add 1
 sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *End
 
+
 *%  For 106 lpi / 300 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.106lpi.300dpi/106 lpi / 300 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.106lpi.300dpi/106 lpi / 300 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.106lpi.300dpi/106 lpi / 300 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.106lpi.300dpi/106 lpi / 300 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.106lpi.300dpi/106 lpi / 300 dpi: "0.0"
 
+
 *ColorSepScreenFreq ProcessBlack.106lpi.300dpi/106 lpi / 300 dpi: "106.066"
+
 *ColorSepScreenFreq CustomColor.106lpi.300dpi/106 lpi / 300 dpi: "106.066"
+
 *ColorSepScreenFreq ProcessCyan.106lpi.300dpi/106 lpi / 300 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.106lpi.300dpi/106 lpi / 300 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.106lpi.300dpi/106 lpi / 300 dpi: "100.0"
+
 
 *%  For 106 lpi / 600 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.106lpi.600dpi/106 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.106lpi.600dpi/106 lpi / 600 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.106lpi.600dpi/106 lpi / 600 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.106lpi.600dpi/106 lpi / 600 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.106lpi.600dpi/106 lpi / 600 dpi: "0.0"
 
+
 *ColorSepScreenFreq ProcessBlack.106lpi.600dpi/106 lpi / 600 dpi: "106.066"
+
 *ColorSepScreenFreq CustomColor.106lpi.600dpi/106 lpi / 600 dpi: "106.066"
+
 *ColorSepScreenFreq ProcessCyan.106lpi.600dpi/106 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessMagenta.106lpi.600dpi/106 lpi / 600 dpi: "94.8683"
+
 *ColorSepScreenFreq ProcessYellow.106lpi.600dpi/106 lpi / 600 dpi: "100.0"
+
 
 *%  For 212 lpi / 1200 dpi  =========================
 *ColorSepScreenAngle ProcessBlack.212lpi.1200dpi/212 lpi / 1200 dpi: "45.0"
+
 *ColorSepScreenAngle CustomColor.212lpi.1200dpi/212 lpi / 1200 dpi: "45.0"
+
 *ColorSepScreenAngle ProcessCyan.212lpi.1200dpi/212 lpi / 1200 dpi: "71.5651"
+
 *ColorSepScreenAngle ProcessMagenta.212lpi.1200dpi/212 lpi / 1200 dpi: "18.4349"
+
 *ColorSepScreenAngle ProcessYellow.212lpi.1200dpi/212 lpi / 1200 dpi: "0.0"
 
+
 *ColorSepScreenFreq ProcessBlack.212lpi.1200dpi/212 lpi / 1200 dpi: "212"
+
 *ColorSepScreenFreq CustomColor.212lpi.1200dpi/212 lpi / 1200 dpi: "212"
+
 *ColorSepScreenFreq ProcessCyan.212lpi.1200dpi/212 lpi / 1200 dpi: "190"
+
 *ColorSepScreenFreq ProcessMagenta.212lpi.1200dpi/212 lpi / 1200 dpi: "190"
+
 *ColorSepScreenFreq ProcessYellow.212lpi.1200dpi/212 lpi / 1200 dpi: "200"
+
 
 *% =================================
 *%		 Font Information
@@ -1677,284 +2903,437 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 *End
 
 *%The following are here for the Mac OS X Watermark plugin
-*HPwmSupport: True
+
 
 *OpenGroup: HPWaterMarks/Watermark/Overlay
+*ko.Translation HPWaterMarks/OGHPWATERMARKS: ""
+*zh_CN.Translation HPWaterMarks/OGHPWATERMARKS: ""
+*zh_TW.Translation HPWaterMarks/OGHPWATERMARKS: ""
+
 
 *% =================================
 *%  Watermark Printing
 *% =================================
-*OpenUI *HPwmSwitch/Watermark/Overlay:  PickOne
+*OpenUI *HPwmSwitch/Mode:  PickOne
 *OrderDependency: 10000 AnySetup *HPwmSwitch
 *DefaultHPwmSwitch: Off
+*ko.Translation HPwmSwitch/모드: ""
+*zh_CN.Translation HPwmSwitch/模式: ""
+*zh_TW.Translation HPwmSwitch/模式: ""
+
 *HPwmSwitch Off/None: ""
-*HPwmSwitch Watermark/Watermark: "
-% (c) Copyright 1997-2006 Hewlett-Packard Development Company, L.P..
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
-  end
+*ko.HPwmSwitch Off/없음: ""
+*zh_CN.HPwmSwitch Off/无: ""
+*zh_TW.HPwmSwitch Off/無: ""
 
-  /HPwminitialize
-	{ HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /normland where {
-	      	pop /normland load dup type /booleantype eq { { 90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-   } bind def
-  /md where {
-  	pop /initializepage where {
-  		/LWinitializepage /initializepage load def
-  		/initializepage { HPwminitialize LWinitializepage } put
-  	}if
-  } if
+*HPwmSwitch Watermark/Watermark: ""
+*ko.HPwmSwitch Watermark/워터마크: ""
+*zh_CN.HPwmSwitch Watermark/水印: ""
+*zh_TW.HPwmSwitch Watermark/浮水印: ""
 
-  /LWinitializepage where { pop }{
-  <<
-  /BeginPage
-  { pop HPwminitialize } bind
-  >> setpagedevice
-  } ifelse
-} ifelse"
-*End
-*HPwmSwitch Overlay/Overlay: "
-% (c) Copyright 1997-2006 Hewlett-Packard Development Company, L.P..
-/HPwm where { pop }{
-  userdict begin
-  true setglobal /HPwm 5 dict dup begin /HPwmOn true def end def false setglobal
-  userdict /HPwmLocation known not {/HPwmLocation true def} if
-  userdict /HPwmText known not {/HPwmText (Draft) def} if
-  FontDirectory /HPwmFont known not {
-    /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-    end
-    /HPwmFont exch definefont pop
-  } if
-  userdict /HPwmSize known not {/HPwmSize 48 def} if
-  userdict /HPwmAngle known not {/HPwmAngle 45 def} if
-  userdict /HPwmSaturation known not
-  { /HPwmSaturation
-    { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } def
-  } if
-  userdict /HPwmColor known not
-  { /HPwmColor { 0 setgray HPwmSaturation } def
-  } if
-  userdict /HPwmStyle known not
-  {/HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } def
-  } if
- end
-  <<
-  /EndPage
-    {
-  	  2 eq { pop false }{
-  		pop HPwm /HPwmOn get
-	    { gsave
-	      initmatrix
-	      0 setgray 1 setlinewidth true setstrokeadjust 0 setlinejoin 0 setlinecap [] 0 setdash
-	      currentpagedevice /PageSize get aload pop 2 div exch 2 div exch translate
-	      HPwmAngle rotate
-	      /normland where {
-	      	pop /normland load dup type /booleantype eq { { 90 rotate } if } if
-	      } if
-	      /HPwmFont HPwmSize selectfont
-	      HPwmText stringwidth 2 div neg exch 2 div neg exch HPwmSize .25 mul sub moveto
-	      HPwmStyle HPwmLocation not {true setglobal HPwm /HPwmOn false put false setglobal} if
-	      grestore
-	    } if
-	    true
-	  } ifelse
-    } bind
-  >> setpagedevice
-} ifelse"
-*End
+*HPwmSwitch Overlay/Overlay: ""
+*ko.HPwmSwitch Overlay/중첩: ""
+*zh_CN.HPwmSwitch Overlay/覆盖: ""
+*zh_TW.HPwmSwitch Overlay/重疊: ""
+
 *CloseUI: *HPwmSwitch
 
 *% =================================
 *%  Watermark Pages
 *% =================================
-*OpenUI *HPwmPages/Watermark Pages:  PickOne
+*OpenUI *HPwmPages/Pages:  PickOne
 *OrderDependency: 67 AnySetup *HPwmPages
 *DefaultHPwmPages: AllPages
-*HPwmPages AllPages/All: "userdict /HPwmLocation true put"
-*HPwmPages FirstPage/First Only: "userdict /HPwmLocation false put"
+*ko.Translation HPwmPages/페이지: ""
+*zh_CN.Translation HPwmPages/页面: ""
+*zh_TW.Translation HPwmPages/頁數: ""
+
+*HPwmPages AllPages/All Pages: ""
+*ko.HPwmPages AllPages/모든 페이지: ""
+*zh_CN.HPwmPages AllPages/所有页: ""
+*zh_TW.HPwmPages AllPages/所有頁: ""
+
+*HPwmPages FirstPage/First Only: ""
+*ko.HPwmPages FirstPage/첫 페이지: ""
+*zh_CN.HPwmPages FirstPage/第一页: ""
+*zh_TW.HPwmPages FirstPage/第一頁: ""
+
 *CloseUI: *HPwmPages
 
 *% =================================
 *%  Watermark Text
 *% =================================
-*OpenUI *HPwmTextMessage/Watermark Text:  PickOne
+*OpenUI *HPwmTextMessage/Text:  PickOne
 *OrderDependency: 65 AnySetup *HPwmTextMessage
 *DefaultHPwmTextMessage: Draft
-*HPwmTextMessage Draft/Draft: "userdict /HPwmText (Draft) put"
-*HPwmTextMessage CompanyConfidential/Company Confidential: "userdict /HPwmText (Company Confidential) put"
-*HPwmTextMessage CompanyProprietary/Company Proprietary: "userdict /HPwmText (Company Proprietary) put"
-*HPwmTextMessage CompanyPrivate/Company Private: "userdict /HPwmText (Company Private) put"
-*HPwmTextMessage Confidential/Confidential: "userdict /HPwmText (Confidential) put"
-*HPwmTextMessage Copy/Copy: "userdict /HPwmText (Copy) put"
-*HPwmTextMessage Copyright/Copyright: "userdict /HPwmText (Copyright) put"
-*HPwmTextMessage FileCopy/File Copy: "userdict /HPwmText (File Copy) put"
-*HPwmTextMessage Final/Final: "userdict /HPwmText (Final) put"
-*HPwmTextMessage ForInternalUse/For Internal Use Only: "userdict /HPwmText (For Internal Use Only) put"
-*HPwmTextMessage Preliminary/Preliminary: "userdict /HPwmText (Preliminary) put"
-*HPwmTextMessage Proof/Proof: "userdict /HPwmText (Proof) put"
-*HPwmTextMessage ReviewCopy/Review Copy: "userdict /HPwmText (Review Copy) put"
-*HPwmTextMessage Sample/Sample: "userdict /HPwmText (Sample) put"
-*HPwmTextMessage TopSecret/Top Secret: "userdict /HPwmText (Top Secret) put"
-*HPwmTextMessage Urgent/Urgent: "userdict /HPwmText (Urgent) put"
-*HPwmTextMessage Set/Custom: "userdict /HPwmText (Custom) put"
+*ko.Translation HPwmTextMessage/문자: ""
+*zh_CN.Translation HPwmTextMessage/文本: ""
+*zh_TW.Translation HPwmTextMessage/文字: ""
+
+*HPwmTextMessage Draft/Draft: ""
+*ko.HPwmTextMessage Draft/초안: ""
+*zh_CN.HPwmTextMessage Draft/草稿: ""
+*zh_TW.HPwmTextMessage Draft/草稿: ""
+
+*HPwmTextMessage CompanyConfidential/Company Confidential: ""
+*ko.HPwmTextMessage CompanyConfidential/대외비: ""
+*zh_CN.HPwmTextMessage CompanyConfidential/公司机密: ""
+*zh_TW.HPwmTextMessage CompanyConfidential/公司機密: ""
+
+*HPwmTextMessage CompanyProprietary/Company Proprietary: ""
+*ko.HPwmTextMessage CompanyProprietary/회사 소유: ""
+*zh_CN.HPwmTextMessage CompanyProprietary/公司专有: ""
+*zh_TW.HPwmTextMessage CompanyProprietary/公司專有: ""
+
+*HPwmTextMessage CompanyPrivate/Company Private: ""
+*ko.HPwmTextMessage CompanyPrivate/회사 비밀: ""
+*zh_CN.HPwmTextMessage CompanyPrivate/公司专用: ""
+*zh_TW.HPwmTextMessage CompanyPrivate/公司私有資料: ""
+
+*HPwmTextMessage Confidential/Confidential: ""
+*ko.HPwmTextMessage Confidential/기밀 문서: ""
+*zh_CN.HPwmTextMessage Confidential/机密: ""
+*zh_TW.HPwmTextMessage Confidential/機密文件: ""
+
+*HPwmTextMessage Copy/Copy: ""
+*ko.HPwmTextMessage Copy/사본: ""
+*zh_CN.HPwmTextMessage Copy/拷贝: ""
+*zh_TW.HPwmTextMessage Copy/副本: ""
+
+*HPwmTextMessage Copyright/Copyright: ""
+*ko.HPwmTextMessage Copyright/저작권: ""
+*zh_CN.HPwmTextMessage Copyright/版权所有: ""
+*zh_TW.HPwmTextMessage Copyright/著作權: ""
+
+*HPwmTextMessage FileCopy/File Copy: ""
+*ko.HPwmTextMessage FileCopy/파일 사본: ""
+*zh_CN.HPwmTextMessage FileCopy/文件拷贝: ""
+*zh_TW.HPwmTextMessage FileCopy/檔案拷貝: ""
+
+*HPwmTextMessage Final/Final: ""
+*ko.HPwmTextMessage Final/최종: ""
+*zh_CN.HPwmTextMessage Final/终稿: ""
+*zh_TW.HPwmTextMessage Final/最終定稿: ""
+
+*HPwmTextMessage ForInternalUse/For Internal Use Only: ""
+*ko.HPwmTextMessage ForInternalUse/내부용: ""
+*zh_CN.HPwmTextMessage ForInternalUse/仅限内部使用: ""
+*zh_TW.HPwmTextMessage ForInternalUse/僅供內部使用: ""
+
+*HPwmTextMessage Preliminary/Preliminary: ""
+*ko.HPwmTextMessage Preliminary/준비용: ""
+*zh_CN.HPwmTextMessage Preliminary/初稿: ""
+*zh_TW.HPwmTextMessage Preliminary/初稿: ""
+
+*HPwmTextMessage Proof/Proof: ""
+*ko.HPwmTextMessage Proof/교정용: ""
+*zh_CN.HPwmTextMessage Proof/校样: ""
+*zh_TW.HPwmTextMessage Proof/校對稿: ""
+
+*HPwmTextMessage ReviewCopy/Review Copy: ""
+*ko.HPwmTextMessage ReviewCopy/검토 사본: ""
+*zh_CN.HPwmTextMessage ReviewCopy/审阅稿: ""
+*zh_TW.HPwmTextMessage ReviewCopy/審閱稿: ""
+
+*HPwmTextMessage Sample/Sample: ""
+*ko.HPwmTextMessage Sample/견본: ""
+*zh_CN.HPwmTextMessage Sample/样本: ""
+*zh_TW.HPwmTextMessage Sample/樣本: ""
+
+*HPwmTextMessage TopSecret/Top Secret: ""
+*ko.HPwmTextMessage TopSecret/일급 비밀: ""
+*zh_CN.HPwmTextMessage TopSecret/绝密: ""
+*zh_TW.HPwmTextMessage TopSecret/最高機密: ""
+
+*HPwmTextMessage Urgent/Urgent: ""
+*ko.HPwmTextMessage Urgent/긴급: ""
+*zh_CN.HPwmTextMessage Urgent/急件: ""
+*zh_TW.HPwmTextMessage Urgent/緊急的: ""
+
+*HPwmTextMessage Set/Custom: ""
+*ko.HPwmTextMessage Set/사용자 정의: ""
+*zh_CN.HPwmTextMessage Set/这是自定义颜色设置: ""
+*zh_TW.HPwmTextMessage Set/自訂: ""
+
 *CloseUI: *HPwmTextMessage
 
-*% Allows LW 8.5.1 to use custom strings
-*RBISetHPwmTextMessage Data: "(Custom) 50"
-*RBISetHPwmTextMessage Code: "userdict /HPwmText 3 -1 roll put"
 
+*% ========================================================
+*% Custom support text field for HPwmTextMessage Set/Custom
+*% ========================================================
+
+*HPwmCustomText Title: ""
+*HPwmCustomText Range: 1 50
+*HPwmCustomText Type: string
+*HPwmCustomText Default: ""
 *% =================================
 *%  Watermark Font
 *% =================================
-*OpenUI *HPwmFontName/Watermark Font: PickOne
+*OpenUI *HPwmFontName/Font: PickOne
 *OrderDependency: 65 AnySetup *HPwmFontName
 *DefaultHPwmFontName: HelveticaB
-*HPwmFontName CourierB/Courier Bold: "
-  /Courier-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName HelveticaB/Helvetica Bold: "
-  /Helvetica-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
-*HPwmFontName TimesB/Times Bold: "
-  /Times-Bold findfont dup length dict begin
-    {1 index /FID ne {def} {pop pop} ifelse} forall
-    /MacEncoding where
-    { pop /Encoding MacEncoding def }
-    { /Encoding ISOLatin1Encoding def } ifelse
-    currentdict
-  end
-  /HPwmFont exch definefont pop"
-*End
+*ko.Translation HPwmFontName/폰트: ""
+*zh_CN.Translation HPwmFontName/字体: ""
+*zh_TW.Translation HPwmFontName/字型: ""
+
+*HPwmFontName CourierB/Courier Bold: ""
+*ko.HPwmFontName CourierB/Courier Bold: ""
+*zh_CN.HPwmFontName CourierB/Courier 黑体: ""
+*zh_TW.HPwmFontName CourierB/Courier 粗體: ""
+
+*HPwmFontName HelveticaB/Helvetica Bold: ""
+*ko.HPwmFontName HelveticaB/Helvetica Bold: ""
+*zh_CN.HPwmFontName HelveticaB/Helvetica 黑体: ""
+*zh_TW.HPwmFontName HelveticaB/Helvetica 粗體: ""
+
+*HPwmFontName TimesB/Times Bold: ""
+*ko.HPwmFontName TimesB/Times Bold: ""
+*zh_CN.HPwmFontName TimesB/Times 黑体: ""
+*zh_TW.HPwmFontName TimesB/Times 粗體: ""
+
 *CloseUI: *HPwmFontName
 
 *% =================================
 *%  Watermark Size
 *% =================================
-*OpenUI *HPwmFontSize/Watermark Size (points):  PickOne
+*OpenUI *HPwmFontSize/Size:  PickOne
 *OrderDependency: 65 AnySetup *HPwmFontSize
 *DefaultHPwmFontSize: pt48
-*HPwmFontSize pt24/24: "userdict /HPwmSize 24 put"
-*HPwmFontSize pt30/30: "userdict /HPwmSize 30 put"
-*HPwmFontSize pt36/36: "userdict /HPwmSize 36 put"
-*HPwmFontSize pt42/42: "userdict /HPwmSize 42 put"
-*HPwmFontSize pt48/48: "userdict /HPwmSize 48 put"
-*HPwmFontSize pt54/54: "userdict /HPwmSize 54 put"
-*HPwmFontSize pt60/60: "userdict /HPwmSize 60 put"
-*HPwmFontSize pt66/66: "userdict /HPwmSize 66 put"
-*HPwmFontSize pt72/72: "userdict /HPwmSize 72 put"
-*HPwmFontSize pt78/78: "userdict /HPwmSize 78 put"
-*HPwmFontSize pt84/84: "userdict /HPwmSize 84 put"
-*HPwmFontSize pt90/90: "userdict /HPwmSize 90 put"
+*ko.Translation HPwmFontSize/크기(포인트): ""
+*zh_CN.Translation HPwmFontSize/字号（磅）: ""
+*zh_TW.Translation HPwmFontSize/大小 (以點數計): ""
+
+*HPwmFontSize pt24/24: ""
+*ko.HPwmFontSize pt24/24: ""
+*zh_CN.HPwmFontSize pt24/24: ""
+*zh_TW.HPwmFontSize pt24/24: ""
+
+*HPwmFontSize pt30/30: ""
+*ko.HPwmFontSize pt30/30: ""
+*zh_CN.HPwmFontSize pt30/30: ""
+*zh_TW.HPwmFontSize pt30/30: ""
+
+*HPwmFontSize pt36/36: ""
+*ko.HPwmFontSize pt36/36: ""
+*zh_CN.HPwmFontSize pt36/36: ""
+*zh_TW.HPwmFontSize pt36/36: ""
+
+*HPwmFontSize pt42/42: ""
+*ko.HPwmFontSize pt42/42: ""
+*zh_CN.HPwmFontSize pt42/42: ""
+*zh_TW.HPwmFontSize pt42/42: ""
+
+*HPwmFontSize pt48/48: ""
+*ko.HPwmFontSize pt48/48: ""
+*zh_CN.HPwmFontSize pt48/48: ""
+*zh_TW.HPwmFontSize pt48/48: ""
+
+*HPwmFontSize pt54/54: ""
+*ko.HPwmFontSize pt54/54: ""
+*zh_CN.HPwmFontSize pt54/54: ""
+*zh_TW.HPwmFontSize pt54/54: ""
+
+*HPwmFontSize pt60/60: ""
+*ko.HPwmFontSize pt60/60: ""
+*zh_CN.HPwmFontSize pt60/60: ""
+*zh_TW.HPwmFontSize pt60/60: ""
+
+*HPwmFontSize pt66/66: ""
+*ko.HPwmFontSize pt66/66: ""
+*zh_CN.HPwmFontSize pt66/66: ""
+*zh_TW.HPwmFontSize pt66/66: ""
+
+*HPwmFontSize pt72/72: ""
+*ko.HPwmFontSize pt72/72: ""
+*zh_CN.HPwmFontSize pt72/72: ""
+*zh_TW.HPwmFontSize pt72/72: ""
+
+*HPwmFontSize pt78/78: ""
+*ko.HPwmFontSize pt78/78: ""
+*zh_CN.HPwmFontSize pt78/78: ""
+*zh_TW.HPwmFontSize pt78/78: ""
+
+*HPwmFontSize pt84/84: ""
+*ko.HPwmFontSize pt84/84: ""
+*zh_CN.HPwmFontSize pt84/84: ""
+*zh_TW.HPwmFontSize pt84/84: ""
+
+*HPwmFontSize pt90/90: ""
+*ko.HPwmFontSize pt90/90: ""
+*zh_CN.HPwmFontSize pt90/90: ""
+*zh_TW.HPwmFontSize pt90/90: ""
+
 *CloseUI: *HPwmFontSize
 
 *% =================================
 *%  Watermark Angle
 *% =================================
-*OpenUI *HPwmTextAngle/Watermark Angle:  PickOne
+*OpenUI *HPwmTextAngle/Angle:  PickOne
 *OrderDependency: 65 AnySetup *HPwmTextAngle
 *DefaultHPwmTextAngle: Deg45
-*HPwmTextAngle Deg90/90<B0>: "userdict /HPwmAngle 90 put"
-*HPwmTextAngle Deg75/75<B0>: "userdict /HPwmAngle 75 put"
-*HPwmTextAngle Deg60/60<B0>: "userdict /HPwmAngle 60 put"
-*HPwmTextAngle Deg45/45<B0>: "userdict /HPwmAngle 45 put"
-*HPwmTextAngle Deg30/30<B0>: "userdict /HPwmAngle 30 put"
-*HPwmTextAngle Deg15/15<B0>: "userdict /HPwmAngle 15 put"
-*HPwmTextAngle Deg0/0<B0>: "userdict /HPwmAngle 0 put"
-*HPwmTextAngle DegN15/<B0>15<B0>: "userdict /HPwmAngle -15 put"
-*HPwmTextAngle DegN30/<B0>30<B0>: "userdict /HPwmAngle -30 put"
-*HPwmTextAngle DegN45/<B0>45<B0>: "userdict /HPwmAngle -45 put"
-*HPwmTextAngle DegN60/<B0>60<B0>: "userdict /HPwmAngle -60 put"
-*HPwmTextAngle DegN75/<B0>75<B0>: "userdict /HPwmAngle -75 put"
-*HPwmTextAngle DegN90/<B0>90<B0>: "userdict /HPwmAngle -90 put"
+*ko.Translation HPwmTextAngle/각도: ""
+*zh_CN.Translation HPwmTextAngle/角度: ""
+*zh_TW.Translation HPwmTextAngle/角度: ""
+
+*HPwmTextAngle Deg90/90: ""
+*ko.HPwmTextAngle Deg90/90°: ""
+*zh_CN.HPwmTextAngle Deg90/90°: ""
+*zh_TW.HPwmTextAngle Deg90/90°: ""
+
+*HPwmTextAngle Deg75/75: ""
+*ko.HPwmTextAngle Deg75/75°: ""
+*zh_CN.HPwmTextAngle Deg75/75°: ""
+*zh_TW.HPwmTextAngle Deg75/75°: ""
+
+*HPwmTextAngle Deg60/60: ""
+*ko.HPwmTextAngle Deg60/60°: ""
+*zh_CN.HPwmTextAngle Deg60/60°: ""
+*zh_TW.HPwmTextAngle Deg60/60°: ""
+
+*HPwmTextAngle Deg45/45: ""
+*ko.HPwmTextAngle Deg45/45°: ""
+*zh_CN.HPwmTextAngle Deg45/45°: ""
+*zh_TW.HPwmTextAngle Deg45/45°: ""
+
+*HPwmTextAngle Deg30/30: ""
+*ko.HPwmTextAngle Deg30/30°: ""
+*zh_CN.HPwmTextAngle Deg30/30°: ""
+*zh_TW.HPwmTextAngle Deg30/30°: ""
+
+*HPwmTextAngle Deg15/15: ""
+*ko.HPwmTextAngle Deg15/15°: ""
+*zh_CN.HPwmTextAngle Deg15/15°: ""
+*zh_TW.HPwmTextAngle Deg15/15°: ""
+
+*HPwmTextAngle Deg0/0: ""
+*ko.HPwmTextAngle Deg0/0°: ""
+*zh_CN.HPwmTextAngle Deg0/0°: ""
+*zh_TW.HPwmTextAngle Deg0/0°: ""
+
+*HPwmTextAngle DegN15/-15: ""
+*ko.HPwmTextAngle DegN15/-15°: ""
+*zh_CN.HPwmTextAngle DegN15/-15°: ""
+*zh_TW.HPwmTextAngle DegN15/-15°: ""
+
+*HPwmTextAngle DegN30/-30: ""
+*ko.HPwmTextAngle DegN30/-30°: ""
+*zh_CN.HPwmTextAngle DegN30/-30°: ""
+*zh_TW.HPwmTextAngle DegN30/-30°: ""
+
+*HPwmTextAngle DegN45/-45: ""
+*ko.HPwmTextAngle DegN45/-45°: ""
+*zh_CN.HPwmTextAngle DegN45/-45°: ""
+*zh_TW.HPwmTextAngle DegN45/-45°: ""
+
+*HPwmTextAngle DegN60/-60: ""
+*ko.HPwmTextAngle DegN60/-60°: ""
+*zh_CN.HPwmTextAngle DegN60/-60°: ""
+*zh_TW.HPwmTextAngle DegN60/-60°: ""
+
+*HPwmTextAngle DegN75/-75: ""
+*ko.HPwmTextAngle DegN75/-75°: ""
+*zh_CN.HPwmTextAngle DegN75/-75°: ""
+*zh_TW.HPwmTextAngle DegN75/-75°: ""
+
+*HPwmTextAngle DegN90/-90: ""
+*ko.HPwmTextAngle DegN90/-90°: ""
+*zh_CN.HPwmTextAngle DegN90/-90°: ""
+*zh_TW.HPwmTextAngle DegN90/-90°: ""
+
 *CloseUI: *HPwmTextAngle
 
 *% =================================
 *%  Watermark Style
 *% =================================
-*OpenUI *HPwmTextStyle/Watermark Style:  PickOne
+*OpenUI *HPwmTextStyle/Style:  PickOne
 *OrderDependency: 65 AnySetup *HPwmTextStyle
 *DefaultHPwmTextStyle: Medium
-*HPwmTextStyle Thin/Thin Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .24 setlinewidth stroke } bind put"
-*HPwmTextStyle Medium/Medium Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .48 setlinewidth stroke } bind put"
-*HPwmTextStyle Thick/Thick Outline: "userdict /HPwmStyle { HPwmText false charpath HPwmColor .96 setlinewidth stroke } bind put"
-*HPwmTextStyle Halo/Thick Outline with Halo: "userdict /HPwmStyle
-     { HPwmText false charpath gsave /DeviceGray setcolorspace 1 setgray 1.8 setlinewidth stroke grestore
-     HPwmColor .96 setlinewidth stroke } bind put"
-*End
-*HPwmTextStyle Fill/Filled: "userdict /HPwmStyle { HPwmColor HPwmText show } bind put"
+*ko.Translation HPwmTextStyle/스타일: ""
+*zh_CN.Translation HPwmTextStyle/样式: ""
+*zh_TW.Translation HPwmTextStyle/樣式: ""
+
+*HPwmTextStyle Thin/Thin Outline: ""
+*ko.HPwmTextStyle Thin/얇은 외곽선: ""
+*zh_CN.HPwmTextStyle Thin/细轮廓: ""
+*zh_TW.HPwmTextStyle Thin/細框: ""
+
+*HPwmTextStyle Medium/Medium Outline: ""
+*ko.HPwmTextStyle Medium/중간 외곽선: ""
+*zh_CN.HPwmTextStyle Medium/中轮廓: ""
+*zh_TW.HPwmTextStyle Medium/中等輪廓線: ""
+
+*HPwmTextStyle Thick/Thick Outline: ""
+*ko.HPwmTextStyle Thick/두꺼운 외곽선: ""
+*zh_CN.HPwmTextStyle Thick/粗轮廓: ""
+*zh_TW.HPwmTextStyle Thick/粗框: ""
+
+*HPwmTextStyle Halo/Thick Outline with Halo: ""
+*ko.HPwmTextStyle Halo/무리가 있는 두꺼운 외곽선: ""
+*zh_CN.HPwmTextStyle Halo/粗轮廓，带晕圈: ""
+*zh_TW.HPwmTextStyle Halo/粗框，並有光暈環繞效果: ""
+
+*HPwmTextStyle Fill/Filled: ""
+*ko.HPwmTextStyle Fill/채워짐: ""
+*zh_CN.HPwmTextStyle Fill/填充: ""
+*zh_TW.HPwmTextStyle Fill/填滿: ""
+
 *CloseUI: *HPwmTextStyle
 
 *% =================================
 *%  WaterMark Brightness
 *% =================================
-*OpenUI *HPwmBrightness/Watermark Intensity:  PickOne
+*OpenUI *HPwmBrightness/Intensity:  PickOne
 *OrderDependency: 63 AnySetup *HPwmBrightness
 *DefaultHPwmBrightness: Medium
-*HPwmBrightness Darkest/Darkest: "userdict /HPwmSaturation { null pop } put"
-*HPwmBrightness Darker/Darker: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .88 mul } forall setcolor } put"
-*HPwmBrightness Dark/Dark: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .77 mul } forall setcolor } put"
-*HPwmBrightness MediumDark/Medium Dark: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .66 mul } forall setcolor } put"
-*HPwmBrightness Medium/Medium: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .55 mul } forall setcolor } put"
-*HPwmBrightness MediumLight/Medium Light: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .44 mul } forall setcolor } put"
-*HPwmBrightness Light/Light: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .33 mul } forall setcolor } put"
-*HPwmBrightness Lighter/Lighter: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .22 mul } forall setcolor } put"
-*HPwmBrightness Lightest/Lightest: "userdict /HPwmSaturation { [ currentcmykcolor ] /DeviceCMYK setcolorspace { .11 mul } forall setcolor } put"
+*ko.Translation HPwmBrightness/강도: ""
+*zh_CN.Translation HPwmBrightness/浓度: ""
+*zh_TW.Translation HPwmBrightness/濃度: ""
+
+*HPwmBrightness Darkest/Darkest: ""
+*ko.HPwmBrightness Darkest/가장 어두움: ""
+*zh_CN.HPwmBrightness Darkest/最深: ""
+*zh_TW.HPwmBrightness Darkest/最深: ""
+
+*HPwmBrightness Darker/Darker: ""
+*ko.HPwmBrightness Darker/아주 어두움: ""
+*zh_CN.HPwmBrightness Darker/很深: ""
+*zh_TW.HPwmBrightness Darker/很深: ""
+
+*HPwmBrightness Dark/Dark: ""
+*ko.HPwmBrightness Dark/어둡게: ""
+*zh_CN.HPwmBrightness Dark/深: ""
+*zh_TW.HPwmBrightness Dark/深: ""
+
+*HPwmBrightness MediumDark/Medium Dark: ""
+*ko.HPwmBrightness MediumDark/중간 어두음: ""
+*zh_CN.HPwmBrightness MediumDark/中等深: ""
+*zh_TW.HPwmBrightness MediumDark/較淡的深色: ""
+
+*HPwmBrightness Medium/Medium: ""
+*ko.HPwmBrightness Medium/중간: ""
+*zh_CN.HPwmBrightness Medium/中等: ""
+*zh_TW.HPwmBrightness Medium/中等: ""
+
+*HPwmBrightness MediumLight/Medium Light: ""
+*ko.HPwmBrightness MediumLight/중간 밝음: ""
+*zh_CN.HPwmBrightness MediumLight/中等淡: ""
+*zh_TW.HPwmBrightness MediumLight/較深的淡色: ""
+
+*HPwmBrightness Light/Light: ""
+*ko.HPwmBrightness Light/밝게: ""
+*zh_CN.HPwmBrightness Light/淡: ""
+*zh_TW.HPwmBrightness Light/淡: ""
+
+*HPwmBrightness Lighter/Lighter: ""
+*ko.HPwmBrightness Lighter/아주 밝음: ""
+*zh_CN.HPwmBrightness Lighter/很淡: ""
+*zh_TW.HPwmBrightness Lighter/很淡: ""
+
+*HPwmBrightness Lightest/Lightest: ""
+*ko.HPwmBrightness Lightest/가장 밝음: ""
+*zh_CN.HPwmBrightness Lightest/最淡: ""
+*zh_TW.HPwmBrightness Lightest/最淡: ""
+
 *CloseUI: *HPwmBrightness
 *CloseGroup: HPWaterMarks
 
