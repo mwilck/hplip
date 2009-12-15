@@ -100,6 +100,36 @@ public:
     VIPCDDVDMode ();
 }; // VIPCDDVDMode
 
+class VIPBrochureNormalMode : public PrintMode
+{
+public:
+    VIPBrochureNormalMode ();
+}; // VIPBrochureNormalMode
+
+class VIPPremiumNormalMode : public PrintMode
+{
+public:
+    VIPPremiumNormalMode ();
+}; // VIPPremiumNormalMode
+
+class VIPPlainBestMode : public PrintMode
+{
+public:
+    VIPPlainBestMode ();
+}; // VIPPlainBestMode
+
+class VIPBrochureBestMode : public PrintMode
+{
+public:
+    VIPBrochureBestMode ();
+}; // VIPBrochureBestMode
+
+class VIPPremiumBestMode : public PrintMode
+{
+public:
+    VIPPremiumBestMode ();
+}; // VIPPremiumBestMode
+
 #if defined(APDK_DJGENERICVIP) && defined (APDK_DJ9xxVIP)
 //! DJGenericVIPProxy
 /*!

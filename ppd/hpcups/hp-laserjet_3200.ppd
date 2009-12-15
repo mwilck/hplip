@@ -1,17 +1,17 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP LaserJet 3200m with CUPS.
+*% PPD file for HP LaserJet 3200 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.10.72"
+*FileVersion: "hpcups 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
-*PCFileName: "hp-laserjet_3200m.ppd"
-*Product: "(HP LaserJet 3200m All-in-one Printer)"
+*PCFileName: "hp-laserjet_3200.ppd"
+*Product: "(HP LaserJet 3200 All-in-one Printer)"
 *Manufacturer: "HP"
-*ModelName: "HP LaserJet 3200m"
-*ShortNickName: "HP LaserJet 3200m"
-*NickName: "HP LaserJet 3200m, hpcups 3.9.10.72"
+*ModelName: "HP LaserJet 3200"
+*ShortNickName: "HP LaserJet 3200"
+*NickName: "HP LaserJet 3200, hpcups 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -28,7 +28,7 @@
 *cupsEvenDuplex: True
 *hpPrinterLanguage: "ljmono"
 *cupsModelName: "HP LaserJet"
-*1284DeviceID: "MFG:HP;MDL:hp laserjet 3200m;DES:hp laserjet 3200m;"
+*1284DeviceID: "MFG:HP;MDL:hp laserjet 3200;DES:hp laserjet 3200;"
 *cupsVersion: 1.3
 *cupsModelNumber: 0
 *cupsManualCopies: True
@@ -160,7 +160,7 @@
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *Duplex/Double-Sided Printing: PickOne
-*OrderDependency: 10.0 PageSetup *Duplex
+*OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
@@ -239,4 +239,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_3200m.ppd, 14945 bytes.
+*% End of hp-laserjet_3200.ppd, 14935 bytes.

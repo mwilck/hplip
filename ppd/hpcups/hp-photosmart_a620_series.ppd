@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.10.72"
+*FileVersion: "hpcups 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a620_series.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a620 Series"
 *ShortNickName: "HP Photosmart a620 Series"
-*NickName: "HP Photosmart a620 Series, hpcups 3.9.10.72"
+*NickName: "HP Photosmart a620 Series, hpcups 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -46,8 +46,6 @@
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Photo5x7.FB
-*PageSize Card3x5/Index Card 3x5in: "<</PageSize [216 360]/ImagingBBox null>>setpagedevice"
-*PageSize Card3x5.FB/Index Card Borderless 3x5in: "<</PageSize [226 370]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 420]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</PageSize[294 430]/ImagingBBox null>>setpagedevice"
 *PageSize Photo4x6/Photo 4x6in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
@@ -57,14 +55,9 @@
 *PageSize Photo5x7/Photo 5x7in: "<</PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageSize Photo5x7.FB/Photo Borderless 5x7in: "<</PageSize[370 514]/ImagingBBox null>>setpagedevice"
 *PageSize Card5x8/Index Card 5x8in: "<</PageSize[360 576]/ImagingBBox null>>setpagedevice"
-*PageSize Oufuku/Oufuku-Hagaki 148x200mm: "<</PageSize[567 420]/ImagingBBox null>>setpagedevice"
-*PageSize Oufuku.FB/Oufuku-Hagaki Borderless 148x200mm: "<</PageSize[577 430]/ImagingBBox null>>setpagedevice"
-*PageSize A5/A5 148x210mm: "<</PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
-*PageSize A5.FB/A5 Borderless 148x210mm: "<</PageSize[430 605]/ImagingBBox null>>setpagedevice"
 *PageSize EnvA2/A2 Envelope 4.37x5.75in: "<</PageSize[314.64 414]/ImagingBBox null>>setpagedevice"
 *PageSize EnvC6/C6 Envelope 114x162mm: "<</PageSize[323.28 459.36]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou4/#4 Japanese Envelope 90x205mm: "<</PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
-*PageSize EnvMonarch/Monarch Envelope 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize EnvDL/DL Envelope 110x220mm: "<</PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageSize Env10/#10 Envelope 4.12x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou3/#3 Japanese Envelope 120x235mm: "<</PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
@@ -72,8 +65,6 @@
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Photo5x7.FB
-*PageRegion Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
-*PageRegion Card3x5.FB/Index Card Borderless 3x5in: "<</cupsInteger0 78/PageSize[226 370]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 420]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[294 430]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
@@ -83,21 +74,14 @@
 *PageRegion Photo5x7/Photo 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo5x7.FB/Photo Borderless 5x7in: "<</cupsInteger0 122/PageSize[370 514]/ImagingBBox null>>setpagedevice"
 *PageRegion Card5x8/Index Card 5x8in: "<</cupsInteger0 75/PageSize[360 576]/ImagingBBox null>>setpagedevice"
-*PageRegion Oufuku/Oufuku-Hagaki 148x200mm: "<</cupsInteger0 72/PageSize[567 420]/ImagingBBox null>>setpagedevice"
-*PageRegion Oufuku.FB/Oufuku-Hagaki Borderless 148x200mm: "<</cupsInteger0 72/PageSize[577 430]/ImagingBBox null>>setpagedevice"
-*PageRegion A5/A5 148x210mm: "<</cupsInteger0 25/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
-*PageRegion A5.FB/A5 Borderless 148x210mm: "<</cupsInteger0 25/PageSize[430 605]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvA2/A2 Envelope 4.37x5.75in: "<</cupsInteger0 109/PageSize[314.64 414]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC6/C6 Envelope 114x162mm: "<</cupsInteger0 92/PageSize[323.28 459.36]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou4/#4 Japanese Envelope 90x205mm: "<</cupsInteger0 111/PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageRegion Env10/#10 Envelope 4.12x9.5in: "<</cupsInteger0 81/PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Photo5x7.FB
-*ImageableArea Card3x5/Index Card 3x5in: "9.00 9.00 207.00 351.00"
-*ImageableArea Card3x5.FB/Index Card Borderless 3x5in: "0.00 0.00 226.00 370.00"
 *ImageableArea Hagaki/Hagaki 100x148mm: "9.00 9.00 275.00 411.00"
 *ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0.00 0.00 294.00 430.00"
 *ImageableArea Photo4x6/Photo 4x6in: "9.00 9.00 279.00 423.00"
@@ -107,20 +91,13 @@
 *ImageableArea Photo5x7/Photo 5x7in: "9.00 9.00 351.00 495.00"
 *ImageableArea Photo5x7.FB/Photo Borderless 5x7in: "0.00 0.00 370.00 514.00"
 *ImageableArea Card5x8/Index Card 5x8in: "9.00 9.00 351.00 567.00"
-*ImageableArea Oufuku/Oufuku-Hagaki 148x200mm: "9.00 9.00 558.00 411.00"
-*ImageableArea Oufuku.FB/Oufuku-Hagaki Borderless 148x200mm: "0.00 0.00 577.00 430.00"
-*ImageableArea A5/A5 148x210mm: "9.00 9.00 410.76 586.44"
-*ImageableArea A5.FB/A5 Borderless 148x210mm: "0.00 0.00 430.00 605.00"
 *ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9.00 42.00 305.64 405.00"
 *ImageableArea EnvC6/C6 Envelope 114x162mm: "9.00 39.00 314.28 450.36"
 *ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.00 41.00 245.88 572.04"
-*ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "9.00 41.00 270.00 531.00"
 *ImageableArea EnvDL/DL Envelope 110x220mm: "9.00 41.00 302.76 614.52"
 *ImageableArea Env10/#10 Envelope 4.12x9.5in: "9.00 41.00 288.00 675.00"
 *ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "9.00 41.00 330.84 657.00"
 *DefaultPaperDimension: Photo5x7.FB
-*PaperDimension Card3x5/Index Card 3x5in: "216.00 360.00"
-*PaperDimension Card3x5.FB/Index Card Borderless 3x5in: "226.00 370.00"
 *PaperDimension Hagaki/Hagaki 100x148mm: "284.00 420.00"
 *PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "294.00 430.00"
 *PaperDimension Photo4x6/Photo 4x6in: "288.00 432.00"
@@ -130,14 +107,9 @@
 *PaperDimension Photo5x7/Photo 5x7in: "360.00 504.00"
 *PaperDimension Photo5x7.FB/Photo Borderless 5x7in: "370.00 514.00"
 *PaperDimension Card5x8/Index Card 5x8in: "360.00 576.00"
-*PaperDimension Oufuku/Oufuku-Hagaki 148x200mm: "567.00 420.00"
-*PaperDimension Oufuku.FB/Oufuku-Hagaki Borderless 148x200mm: "577.00 430.00"
-*PaperDimension A5/A5 148x210mm: "419.76 595.44"
-*PaperDimension A5.FB/A5 Borderless 148x210mm: "430.00 605.00"
 *PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.64 414.00"
 *PaperDimension EnvC6/C6 Envelope 114x162mm: "323.28 459.36"
 *PaperDimension EnvChou4/#4 Japanese Envelope 90x205mm: "254.88 581.04"
-*PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279.00 540.00"
 *PaperDimension EnvDL/DL Envelope 110x220mm: "311.76 623.52"
 *PaperDimension Env10/#10 Envelope 4.12x9.5in: "297.00 684.00"
 *PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "339.84 666.00"
@@ -220,4 +192,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_a620_series.ppd, 14074 bytes.
+*% End of hp-photosmart_a620_series.ppd, 11580 bytes.

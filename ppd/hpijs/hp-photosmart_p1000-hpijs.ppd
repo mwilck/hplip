@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.9.10.72"
+*FileVersion: "hpijs 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_p1000-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart p1000 hpijs"
 *ShortNickName: "HP Photosmart p1000 hpijs"
-*NickName: "HP Photosmart p1000 hpijs, 3.9.10.72"
+*NickName: "HP Photosmart p1000 hpijs, 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

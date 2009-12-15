@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.10.72"
+*FileVersion: "hpcups 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_series_570.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Series 570"
 *ShortNickName: "HP Officejet Series 570"
-*NickName: "HP Officejet Series 570, hpcups 3.9.10.72"
+*NickName: "HP Officejet Series 570, hpcups 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -68,12 +68,12 @@
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Letter
 *PageRegion Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
-*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 420]/ImagingBBox null>>setpagedevice"
-*PageRegion Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageRegion A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
+*PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 101/PageSize[284 420]/ImagingBBox null>>setpagedevice"
+*PageRegion Photo4x6/Photo 4x6in: "<</cupsInteger0 101/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion A6/A6 105x148mm: "<</cupsInteger0 101/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo5x7/Photo 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
-*PageRegion Card5x8/Index Card 5x8in: "<</cupsInteger0 75/PageSize[360 576]/ImagingBBox null>>setpagedevice"
-*PageRegion Oufuku/Oufuku-Hagaki 148x200mm: "<</cupsInteger0 72/PageSize[567 420]/ImagingBBox null>>setpagedevice"
+*PageRegion Card5x8/Index Card 5x8in: "<</cupsInteger0 101/PageSize[360 576]/ImagingBBox null>>setpagedevice"
+*PageRegion Oufuku/Oufuku-Hagaki 148x200mm: "<</cupsInteger0 101/PageSize[567 420]/ImagingBBox null>>setpagedevice"
 *PageRegion A5/A5 148x210mm: "<</cupsInteger0 25/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 176x250mm: "<</cupsInteger0 65/PageSize[498.96 708.48]/ImagingBBox null>>setpagedevice"
 *PageRegion JB5/JB5 182x257mm: "<</cupsInteger0 45/PageSize [516.24 728.64]/ImagingBBox null>>setpagedevice"
@@ -90,7 +90,7 @@
 *PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageRegion Env10/#10 Envelope 4.12x9.5in: "<</cupsInteger0 81/PageSize[297 684]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 101/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 100/PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
@@ -220,4 +220,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_series_570.ppd, 14618 bytes.
+*% End of hp-officejet_series_570.ppd, 14623 bytes.

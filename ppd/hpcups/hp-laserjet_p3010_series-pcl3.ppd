@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.10.72"
+*FileVersion: "hpcups 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_p3010_series-pcl3.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet p3010 Series"
 *ShortNickName: "HP LaserJet p3010 Series"
-*NickName: "HP LaserJet p3010 Series pcl3, hpcups 3.9.10.72"
+*NickName: "HP LaserJet p3010 Series pcl3, hpcups 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -161,7 +161,7 @@
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *Duplex/Double-Sided Printing: PickOne
-*OrderDependency: 10.0 PageSetup *Duplex
+*OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
@@ -240,4 +240,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_p3010_series-pcl3.ppd, 15045 bytes.
+*% End of hp-laserjet_p3010_series-pcl3.ppd, 15044 bytes.

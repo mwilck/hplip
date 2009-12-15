@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.9.10.72"
+*FileVersion: "hpcups 3.9.12.29"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_2230.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 2230"
 *ShortNickName: "HP Business Inkjet 2230"
-*NickName: "HP Business Inkjet 2230, hpcups 3.9.10.72"
+*NickName: "HP Business Inkjet 2230, hpcups 3.9.12.29"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -160,8 +160,8 @@
 *PageRegion Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 783]/ImagingBBox null>>setpagedevice"
 *PageRegion A4/A4 210x297mm: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
 *PageRegion A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[595 833]/ImagingBBox null>>setpagedevice"
-*PageRegion ExecutiveJIS/Executive (JIS) 8.5x12.986in: "<</cupsInteger0 10/PageSize[612 936]/ImagingBBox null>>setpagedevice"
-*PageRegion FLSA/American Foolscap 8.5x13in: "<</cupsInteger0 10/PageSize[612 936]/ImagingBBox null>>setpagedevice"
+*PageRegion ExecutiveJIS/Executive (JIS) 8.5x12.986in: "<</cupsInteger0 101/PageSize[612 936]/ImagingBBox null>>setpagedevice"
+*PageRegion FLSA/American Foolscap 8.5x13in: "<</cupsInteger0 101/PageSize[612 936]/ImagingBBox null>>setpagedevice"
 *PageRegion Legal/Legal 8.5x14in: "<</cupsInteger0 3/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageRegion Legal.Duplex/Legal AutoDuplex 8.5x14in: "<</cupsInteger0 3/PageSize[612 999]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvA2/A2 Envelope 4.37x5.75in: "<</cupsInteger0 109/PageSize[314.64 414]/ImagingBBox null>>setpagedevice"
@@ -261,7 +261,7 @@
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *Duplex/Double-Sided Printing: PickOne
-*OrderDependency: 10.0 PageSetup *Duplex
+*OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
@@ -343,4 +343,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-business_inkjet_2230.ppd, 21753 bytes.
+*% End of hp-business_inkjet_2230.ppd, 21754 bytes.
