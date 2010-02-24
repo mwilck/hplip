@@ -30,6 +30,8 @@
 ./fax/ppd/HP-Fax2-hpcups.ppd
 ./fax/ppd/HP-Fax2-hpijs.ppd
 ./fax/ppd/HP-Fax2-hplip.ppd
+./fax/ppd/HP-Fax3-hpcups.ppd
+./fax/ppd/HP-Fax3-hpijs.ppd
 ./fax/ppd/HP-Fax-hpcups.ppd
 ./fax/ppd/HP-Fax-hpijs.ppd
 ./fax/ppd/HP-Fax-hplip.ppd
@@ -506,6 +508,8 @@
 ./ppd/hpcups/hp-officejet_4200_series.ppd
 ./ppd/hpcups/hp-officejet_4255.ppd
 ./ppd/hpcups/hp-officejet_4300_series.ppd
+./ppd/hpcups/hp-officejet_4500_g510a-f.ppd
+./ppd/hpcups/hp-officejet_4500_g510g-m.ppd
 ./ppd/hpcups/hp-officejet_5100_series.ppd
 ./ppd/hpcups/hp-officejet_5105.ppd
 ./ppd/hpcups/hp-officejet_5110.ppd
@@ -643,6 +647,7 @@
 ./ppd/hpcups/hp-photosmart_a710_series.ppd
 ./ppd/hpcups/hp-photosmart_a820_series.ppd
 ./ppd/hpcups/hp-photosmart_b109a-m.ppd
+./ppd/hpcups/hp-photosmart_b109a_series.ppd
 ./ppd/hpcups/hp-photosmart_b8500_series.ppd
 ./ppd/hpcups/hp-photosmart_c309a_series.ppd
 ./ppd/hpcups/hp-photosmart_c3100_series.ppd
@@ -1254,6 +1259,8 @@
 ./ppd/hpijs/hp-officejet_4200_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4255-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4300_series-hpijs.ppd
+./ppd/hpijs/hp-officejet_4500_g510a-f-hpijs.ppd
+./ppd/hpijs/hp-officejet_4500_g510g-m-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5100_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5105-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5110-hpijs.ppd
@@ -1391,6 +1398,7 @@
 ./ppd/hpijs/hp-photosmart_a710_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_a820_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_b109a-m-hpijs.ppd
+./ppd/hpijs/hp-photosmart_b109a_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_b8500_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_c309a_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_c3100_series-hpijs.ppd
@@ -1937,8 +1945,11 @@
 ./prnt/ps/hp-designjet_4020ps-ps.ppd
 ./prnt/ps/hp-designjet_4520mfp-ps.ppd
 ./prnt/ps/hp-designjet_4520ps-ps.ppd
+./prnt/ps/hp-designjet_t1120ps_24in-ps.ppd
+./prnt/ps/hp-designjet_t1120ps_44in-ps.ppd
 ./prnt/ps/hp-designjet_t1200_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t770_postscript-ps.ppd
+./prnt/ps/hp-designjet_t770ps_24in-ps.ppd
 ./prnt/ps/hp-laserjet_1200n-ps.ppd
 ./prnt/ps/hp-laserjet_1200-ps.ppd
 ./prnt/ps/HP_LaserJet_1200-ps.ppd
