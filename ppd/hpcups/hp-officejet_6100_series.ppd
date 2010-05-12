@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.2rc1.9"
+*FileVersion: "hpcups 3.10.4.16"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6100_series.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6100 Series"
 *ShortNickName: "HP Officejet 6100 Series"
-*NickName: "HP Officejet 6100 Series, hpcups 3.10.2rc1.9"
+*NickName: "HP Officejet 6100 Series, hpcups 3.10.4.16"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -422,4 +422,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6100_series.ppd, 28077 bytes.
+*% End of hp-officejet_6100_series.ppd, 28073 bytes.
