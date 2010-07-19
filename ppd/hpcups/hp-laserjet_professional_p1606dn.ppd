@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.4.16"
+*FileVersion: "hpcups 3.10.6.15"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_p1606dn.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Professional p1606dn"
 *ShortNickName: "HP LJ Professional p1606dn"
-*NickName: "HP LaserJet Professional p1606dn, hpcups 3.10.4.16, requires proprietary plugin"
+*NickName: "HP LaserJet Professional p1606dn, hpcups 3.10.6.15, requires proprietary plugin"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -25,6 +25,7 @@
 *TTRasterizer: Type42
 *% Driver-defined attributes...
 *RequiresPageRegion All: True
+*cupsEvenDuplex: True
 *hpPrinterLanguage: "ljzjstream"
 *cupsIPPReason hplip.plugin-error/printer requires a binary plugin, run hp-setup: ""
 *cupsModelName: "HP LaserJet 1018"
@@ -33,6 +34,44 @@
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
+*UIConstraints: *Duplex *OptionDuplex False
+*UIConstraints: *OptionDuplex False *Duplex
+*UIConstraints: *PageSize A6 *Duplex
+*UIConstraints: *Duplex *PageSize A6
+*UIConstraints: *PageSize A5 *Duplex
+*UIConstraints: *Duplex *PageSize A5
+*UIConstraints: *PageSize Postcard *Duplex
+*UIConstraints: *Duplex *PageSize Postcard
+*UIConstraints: *PageSize DoublePostcard *Duplex
+*UIConstraints: *Duplex *PageSize DoublePostcard
+*UIConstraints: *PageSize JB5 *Duplex
+*UIConstraints: *Duplex *PageSize JB5
+*UIConstraints: *PageSize Executive *Duplex
+*UIConstraints: *Duplex *PageSize Executive
+*UIConstraints: *PageSize 16k195x270 *Duplex
+*UIConstraints: *Duplex *PageSize 16k195x270
+*UIConstraints: *PageSize 16k184x260 *Duplex
+*UIConstraints: *Duplex *PageSize 16k184x260
+*UIConstraints: *PageSize 16k197x273 *Duplex
+*UIConstraints: *Duplex *PageSize 16k197x273
+*UIConstraints: *PageSize Letter *Duplex
+*UIConstraints: *Duplex *PageSize Letter
+*UIConstraints: *PageSize A4 *Duplex
+*UIConstraints: *Duplex *PageSize A4
+*UIConstraints: *PageSize FLSA *Duplex
+*UIConstraints: *Duplex *PageSize FLSA
+*UIConstraints: *PageSize Legal *Duplex
+*UIConstraints: *Duplex *PageSize Legal
+*UIConstraints: *PageSize EnvMonarch *Duplex
+*UIConstraints: *Duplex *PageSize EnvMonarch
+*UIConstraints: *PageSize EnvDL *Duplex
+*UIConstraints: *Duplex *PageSize EnvDL
+*UIConstraints: *PageSize Env10 *Duplex
+*UIConstraints: *Duplex *PageSize Env10
+*UIConstraints: *PageSize EnvC5 *Duplex
+*UIConstraints: *Duplex *PageSize EnvC5
+*UIConstraints: *PageSize EnvB5 *Duplex
+*UIConstraints: *Duplex *PageSize EnvB5
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -46,9 +85,13 @@
 *PageSize 16k184x260/16k 184x260mm: "<</PageSize[522 737]/ImagingBBox null>>setpagedevice"
 *PageSize 16k197x273/16k 197x273mm: "<</PageSize[558 774]/ImagingBBox null>>setpagedevice"
 *PageSize Letter/Letter 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</PageSize[612 780]/ImagingBBox null>>setpagedevice"
 *PageSize A4/A4 210x297mm: "<</PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize A4.Duplex/A4 AutoDuplex 210x297mm: "<</PageSize[595.44 829.68]/ImagingBBox null>>setpagedevice"
 *PageSize FLSA/American Foolscap 8.5x13in: "<</PageSize[612 936]/ImagingBBox null>>setpagedevice"
+*PageSize FLSA.Duplex/American Foolscap AutoDuplex 8.5x13in: "<</PageSize[612 924]/ImagingBBox null>>setpagedevice"
 *PageSize Legal/Legal 8.5x14in: "<</PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize Legal.Duplex/Legal AutoDuplex 8.5x14in: "<</PageSize[612 996]/ImagingBBox null>>setpagedevice"
 *PageSize EnvMonarch/Monarch Envelope 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize EnvDL/DL Envelope 110x220mm: "<</PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageSize Env10/#10 Envelope 4.12x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
@@ -68,9 +111,13 @@
 *PageRegion 16k184x260/16k 184x260mm: "<</cupsInteger0 89/PageSize[522 737]/ImagingBBox null>>setpagedevice"
 *PageRegion 16k197x273/16k 197x273mm: "<</cupsInteger0 17/PageSize[558 774]/ImagingBBox null>>setpagedevice"
 *PageRegion Letter/Letter 8.5x11in: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 780]/ImagingBBox null>>setpagedevice"
 *PageRegion A4/A4 210x297mm: "<</cupsInteger0 9/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 9/PageSize[595.44 829.68]/ImagingBBox null>>setpagedevice"
 *PageRegion FLSA/American Foolscap 8.5x13in: "<</cupsInteger0 10/PageSize[612 936]/ImagingBBox null>>setpagedevice"
+*PageRegion FLSA.Duplex/American Foolscap AutoDuplex 8.5x13in: "<</cupsInteger0 10/PageSize[612 924]/ImagingBBox null>>setpagedevice"
 *PageRegion Legal/Legal 8.5x14in: "<</cupsInteger0 3/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion Legal.Duplex/Legal AutoDuplex 8.5x14in: "<</cupsInteger0 3/PageSize[612 996]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 96/PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 27/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageRegion Env10/#10 Envelope 4.12x9.5in: "<</cupsInteger0 81/PageSize[297 684]/ImagingBBox null>>setpagedevice"
@@ -88,9 +135,13 @@
 *ImageableArea 16k184x260/16k 184x260mm: "12.00 12.00 510.00 725.00"
 *ImageableArea 16k197x273/16k 197x273mm: "12.00 12.00 546.00 762.00"
 *ImageableArea Letter/Letter 8.5x11in: "12.00 12.00 600.00 780.00"
+*ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "12.00 12.00 600.00 768.00"
 *ImageableArea A4/A4 210x297mm: "18.00 15.50 577.44 826.18"
+*ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "18.00 15.50 577.44 814.18"
 *ImageableArea FLSA/American Foolscap 8.5x13in: "12.00 12.00 600.00 924.00"
+*ImageableArea FLSA.Duplex/American Foolscap AutoDuplex 8.5x13in: "12.00 12.00 600.00 912.00"
 *ImageableArea Legal/Legal 8.5x14in: "12.00 12.00 600.00 996.00"
+*ImageableArea Legal.Duplex/Legal AutoDuplex 8.5x14in: "12.00 12.00 600.00 984.00"
 *ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "18.00 15.50 261.00 524.50"
 *ImageableArea EnvDL/DL Envelope 110x220mm: "18.00 15.50 293.76 608.02"
 *ImageableArea Env10/#10 Envelope 4.12x9.5in: "12.00 12.00 285.00 672.00"
@@ -107,9 +158,13 @@
 *PaperDimension 16k184x260/16k 184x260mm: "522.00 737.00"
 *PaperDimension 16k197x273/16k 197x273mm: "558.00 774.00"
 *PaperDimension Letter/Letter 8.5x11in: "612.00 792.00"
+*PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612.00 780.00"
 *PaperDimension A4/A4 210x297mm: "595.44 841.68"
+*PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.44 829.68"
 *PaperDimension FLSA/American Foolscap 8.5x13in: "612.00 936.00"
+*PaperDimension FLSA.Duplex/American Foolscap AutoDuplex 8.5x13in: "612.00 924.00"
 *PaperDimension Legal/Legal 8.5x14in: "612.00 1008.00"
+*PaperDimension Legal.Duplex/Legal AutoDuplex 8.5x14in: "612.00 996.00"
 *PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279.00 540.00"
 *PaperDimension EnvDL/DL Envelope 110x220mm: "311.76 623.52"
 *PaperDimension Env10/#10 Envelope 4.12x9.5in: "297.00 684.00"
@@ -125,6 +180,13 @@
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
+*OpenUI *Duplex/Double-Sided Printing: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
+*Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
+*CloseUI: *Duplex
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
@@ -147,6 +209,14 @@
 *OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
 *OutputMode Draft: "<</OutputType(-1)/HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
+*OpenGroup: InstallableOptions/Installable Options
+*OpenUI *OptionDuplex/Duplexer Installed: Boolean
+*OrderDependency: 10.0 AnySetup *OptionDuplex
+*DefaultOptionDuplex: False
+*OptionDuplex False/Not Installed: ""
+*OptionDuplex True/Installed: ""
+*CloseUI: *OptionDuplex
+*CloseGroup: InstallableOptions
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -183,4 +253,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_professional_p1606dn.ppd, 11043 bytes.
+*% End of hp-laserjet_professional_p1606dn.ppd, 14882 bytes.

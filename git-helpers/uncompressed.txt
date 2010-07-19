@@ -187,6 +187,7 @@
 ./ppd/hpcups/hp-color_laserjet_cp5225-pcl3.ppd
 ./ppd/hpcups/hp-color_laserjet_cp6015-pcl3.ppd
 ./ppd/hpcups/hp-cp1160.ppd
+./ppd/hpcups/hp-deskjet_1050_j410_series.ppd
 ./ppd/hpcups/hp-deskjet_1100.ppd
 ./ppd/hpcups/hp-deskjet_1120.ppd
 ./ppd/hpcups/hp-deskjet_1125.ppd
@@ -196,6 +197,7 @@
 ./ppd/hpcups/hp-deskjet_1600cm.ppd
 ./ppd/hpcups/hp-deskjet_1600cn.ppd
 ./ppd/hpcups/hp-deskjet_1600c.ppd
+./ppd/hpcups/hp-deskjet_2050_j510_series.ppd
 ./ppd/hpcups/hp-deskjet_3320.ppd
 ./ppd/hpcups/hp-deskjet_3325.ppd
 ./ppd/hpcups/hp-deskjet_3420.ppd
@@ -502,6 +504,7 @@
 ./ppd/hpcups/hp-laserjet_p4515xm.ppd
 ./ppd/hpcups/hp-laserjet_p4515x.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1132_mfp.ppd
+./ppd/hpcups/hp-laserjet_professional_m1136_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1212nf_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102w.ppd
@@ -520,6 +523,8 @@
 ./ppd/hpcups/hp-officejet_4400_k410.ppd
 ./ppd/hpcups/hp-officejet_4500_g510a-f.ppd
 ./ppd/hpcups/hp-officejet_4500_g510g-m.ppd
+./ppd/hpcups/hp-officejet_4500_g510n-z.ppd
+./ppd/hpcups/hp-officejet_4500_k710.ppd
 ./ppd/hpcups/hp-officejet_5100_series.ppd
 ./ppd/hpcups/hp-officejet_5105.ppd
 ./ppd/hpcups/hp-officejet_5110.ppd
@@ -535,10 +540,12 @@
 ./ppd/hpcups/hp-officejet_6500_e709a.ppd
 ./ppd/hpcups/hp-officejet_6500_e709n.ppd
 ./ppd/hpcups/hp-officejet_7000_e809a.ppd
+./ppd/hpcups/hp-officejet_7000_e809a_series.ppd
 ./ppd/hpcups/hp-officejet_7100_series.ppd
 ./ppd/hpcups/hp-officejet_7200_series.ppd
 ./ppd/hpcups/hp-officejet_7300_series.ppd
 ./ppd/hpcups/hp-officejet_7400_series.ppd
+./ppd/hpcups/hp-officejet_7500_e910.ppd
 ./ppd/hpcups/hp-officejet_9100_series-pcl3.ppd
 ./ppd/hpcups/hp-officejet_d_series.ppd
 ./ppd/hpcups/hp-officejet_g55.ppd
@@ -656,8 +663,10 @@
 ./ppd/hpcups/hp-photosmart_a640_series.ppd
 ./ppd/hpcups/hp-photosmart_a710_series.ppd
 ./ppd/hpcups/hp-photosmart_a820_series.ppd
+./ppd/hpcups/hp-photosmart_b010_series.ppd
 ./ppd/hpcups/hp-photosmart_b109a-m.ppd
 ./ppd/hpcups/hp-photosmart_b109a_series.ppd
+./ppd/hpcups/hp-photosmart_b110_series.ppd
 ./ppd/hpcups/hp-photosmart_b8500_series.ppd
 ./ppd/hpcups/hp-photosmart_c309a_series.ppd
 ./ppd/hpcups/hp-photosmart_c3100_series.ppd
@@ -949,6 +958,7 @@
 ./ppd/hpijs/hp-color_laserjet_cp5225n-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-color_laserjet_cp6015-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-cp1160-hpijs.ppd
+./ppd/hpijs/hp-deskjet_1050_j410_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1100-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1120-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1125-hpijs.ppd
@@ -958,6 +968,7 @@
 ./ppd/hpijs/hp-deskjet_1600c-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1600cm-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1600cn-hpijs.ppd
+./ppd/hpijs/hp-deskjet_2050_j510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3320-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3325-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3420-hpijs.ppd
@@ -1264,6 +1275,7 @@
 ./ppd/hpijs/hp-laserjet_p4515x-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_p4515xm-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1132_mfp-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_m1136_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1212nf_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102w-hpijs.ppd
@@ -1282,6 +1294,8 @@
 ./ppd/hpijs/hp-officejet_4400_k410-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4500_g510a-f-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4500_g510g-m-hpijs.ppd
+./ppd/hpijs/hp-officejet_4500_g510n-z-hpijs.ppd
+./ppd/hpijs/hp-officejet_4500_k710-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5100_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5105-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5110-hpijs.ppd
@@ -1297,10 +1311,12 @@
 ./ppd/hpijs/hp-officejet_6500_e709a-hpijs.ppd
 ./ppd/hpijs/hp-officejet_6500_e709n-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7000_e809a-hpijs.ppd
+./ppd/hpijs/hp-officejet_7000_e809a_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7100_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7200_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7300_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7400_series-hpijs.ppd
+./ppd/hpijs/hp-officejet_7500_e910-hpijs.ppd
 ./ppd/hpijs/hp-officejet_9100_series-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-officejet_d_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_g55-hpijs.ppd
@@ -1418,8 +1434,10 @@
 ./ppd/hpijs/hp-photosmart_a640_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_a710_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_a820_series-hpijs.ppd
+./ppd/hpijs/hp-photosmart_b010_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_b109a-m-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_b109a_series-hpijs.ppd
+./ppd/hpijs/hp-photosmart_b110_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_b8500_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_c309a_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_c3100_series-hpijs.ppd
