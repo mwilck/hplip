@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.6.15"
+*FileVersion: "hpcups 3.10.9.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_m1132_mfp.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Professional m1132 MFP"
 *ShortNickName: "HP LJ Professional m1132 MFP"
-*NickName: "HP LaserJet Professional m1132 MFP, hpcups 3.10.6.15"
+*NickName: "HP LaserJet Professional m1132 MFP, hpcups 3.10.9.11, requires proprietary plugin"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -183,4 +183,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_professional_m1132_mfp.ppd, 11042 bytes.
+*% End of hp-laserjet_professional_m1132_mfp.ppd, 11071 bytes.

@@ -7051,24 +7051,24 @@ globaldict /HPTextCMYKInkSetEmulation known {
 *% ==================================
 *%  ColorSmart Manual Settings
 *% ==================================
-*OpenUI *HPTextNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPTextNeutralGrays/Text Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPTextNeutralGrays
 *DefaultHPTextNeutralGrays: Black
-*da.Translation HPTextNeutralGrays/Neutral gråtoner: ""
-*de.Translation HPTextNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPTextNeutralGrays/Grises neutros: ""
-*fi.Translation HPTextNeutralGrays/Neutraali harmaa: ""
-*fr.Translation HPTextNeutralGrays/Gris neutres: ""
-*it.Translation HPTextNeutralGrays/Grigi neutri: ""
-*ja.Translation HPTextNeutralGrays/グレー中間色: ""
-*ko.Translation HPTextNeutralGrays/순 회색: ""
-*nl.Translation HPTextNeutralGrays/Neutrale grijstinten: ""
-*nb.Translation HPTextNeutralGrays/Nøytrale gråtoner: ""
-*pt.Translation HPTextNeutralGrays/Cinzas neutros: ""
-*ru.Translation HPTextNeutralGrays/Нейтральный серый: ""
-*sv.Translation HPTextNeutralGrays/Neutral gråskala: ""
-*zh_CN.Translation HPTextNeutralGrays/中性灰色: ""
-*zh_TW.Translation HPTextNeutralGrays/中性灰色: ""
+*da.Translation HPTextNeutralGrays/Tekst Neutral gråtoner: ""
+*de.Translation HPTextNeutralGrays/Text Neutrale Graustufen: ""
+*es.Translation HPTextNeutralGrays/Texto Grises neutros: ""
+*fi.Translation HPTextNeutralGrays/Teksti Neutraali harmaa: ""
+*fr.Translation HPTextNeutralGrays/Texte Gris neutres: ""
+*it.Translation HPTextNeutralGrays/Testo Grigi neutri: ""
+*ja.Translation HPTextNeutralGrays/文字 グレー中間色: ""
+*ko.Translation HPTextNeutralGrays/문자 순 회색: ""
+*nl.Translation HPTextNeutralGrays/Tekst Neutrale grijstinten: ""
+*nb.Translation HPTextNeutralGrays/Tekst Nøytrale gråtoner: ""
+*pt.Translation HPTextNeutralGrays/Texto Cinzas neutros: ""
+*ru.Translation HPTextNeutralGrays/Текст Нейтральный серый: ""
+*sv.Translation HPTextNeutralGrays/Text Neutral gråskala: ""
+*zh_CN.Translation HPTextNeutralGrays/文本 中性灰色: ""
+*zh_TW.Translation HPTextNeutralGrays/文字 中性灰色: ""
 
 *HPTextNeutralGrays Black/Black Only: "
 globaldict /HPTextNeutralAxis known {
@@ -7116,24 +7116,24 @@ globaldict /HPTextNeutralAxis known {
 
 *CloseUI: *HPTextNeutralGrays
 
-*OpenUI *HPTextHalftone/Halftone:  PickOne
+*OpenUI *HPTextHalftone/Text Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPTextHalftone
 *DefaultHPTextHalftone: Detail
-*da.Translation HPTextHalftone/Halvtone: ""
-*de.Translation HPTextHalftone/Halbton: ""
-*es.Translation HPTextHalftone/Medios tonos: ""
-*fi.Translation HPTextHalftone/Puolisävy: ""
-*fr.Translation HPTextHalftone/Demi-teinte: ""
-*it.Translation HPTextHalftone/Mezzitoni: ""
-*ja.Translation HPTextHalftone/ハーフトーン: ""
-*ko.Translation HPTextHalftone/중간 색조: ""
-*nl.Translation HPTextHalftone/Halftonen: ""
-*nb.Translation HPTextHalftone/Halvtone: ""
-*pt.Translation HPTextHalftone/Meio-tom: ""
-*ru.Translation HPTextHalftone/Полутона: ""
-*sv.Translation HPTextHalftone/Halvton: ""
-*zh_CN.Translation HPTextHalftone/半色调: ""
-*zh_TW.Translation HPTextHalftone/半色調: ""
+*da.Translation HPTextHalftone/Tekst Halvtone: ""
+*de.Translation HPTextHalftone/Text Halbton: ""
+*es.Translation HPTextHalftone/Texto Medios tonos: ""
+*fi.Translation HPTextHalftone/Teksti Puolisävy: ""
+*fr.Translation HPTextHalftone/Texte Demi-teinte: ""
+*it.Translation HPTextHalftone/Testo Mezzitoni: ""
+*ja.Translation HPTextHalftone/文字 ハーフトーン: ""
+*ko.Translation HPTextHalftone/문자 중간 색조: ""
+*nl.Translation HPTextHalftone/Tekst Halftonen: ""
+*nb.Translation HPTextHalftone/Tekst Halvtone: ""
+*pt.Translation HPTextHalftone/Texto Meio-tom: ""
+*ru.Translation HPTextHalftone/Текст Полутона: ""
+*sv.Translation HPTextHalftone/Text Halvton: ""
+*zh_CN.Translation HPTextHalftone/文本 半色调: ""
+*zh_TW.Translation HPTextHalftone/文字 半色調: ""
 
 *HPTextHalftone Smooth/Smooth: "
 globaldict /ColorSmartColorMatching known {
@@ -7181,24 +7181,24 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPTextHalftone
 
-*OpenUI *HPTextRGB/RGB Color:  PickOne
+*OpenUI *HPTextRGB/Text RGB Color:  PickOne
 *OrderDependency: 57 AnySetup *HPTextRGB
 *DefaultHPTextRGB: sRGB
-*da.Translation HPTextRGB/RGB-farve: ""
-*de.Translation HPTextRGB/RGB-Farbe: ""
-*es.Translation HPTextRGB/Color RGB: ""
-*fi.Translation HPTextRGB/RGB-väri: ""
-*fr.Translation HPTextRGB/Couleur RGB: ""
-*it.Translation HPTextRGB/Colore RGB: ""
-*ja.Translation HPTextRGB/RGB カラー: ""
-*ko.Translation HPTextRGB/RGB 事雌: ""
-*nl.Translation HPTextRGB/RGB-kleuren: ""
-*nb.Translation HPTextRGB/RGB-farge: ""
-*pt.Translation HPTextRGB/Cores RGB: ""
-*ru.Translation HPTextRGB/Цвет RGB: ""
-*sv.Translation HPTextRGB/RGB-färger: ""
-*zh_CN.Translation HPTextRGB/RGB 颜色: ""
-*zh_TW.Translation HPTextRGB/RGB 色彩: ""
+*da.Translation HPTextRGB/Tekst RGB-farve: ""
+*de.Translation HPTextRGB/Text RGB-Farbe: ""
+*es.Translation HPTextRGB/Texto Color RGB: ""
+*fi.Translation HPTextRGB/Teksti RGB-väri: ""
+*fr.Translation HPTextRGB/Texte Couleur RGB: ""
+*it.Translation HPTextRGB/Testo Colore RGB: ""
+*ja.Translation HPTextRGB/文字 RGB カラー: ""
+*ko.Translation HPTextRGB/문자 RGB 事雌: ""
+*nl.Translation HPTextRGB/Tekst RGB-kleuren: ""
+*nb.Translation HPTextRGB/Tekst RGB-farge: ""
+*pt.Translation HPTextRGB/Texto Cores RGB: ""
+*ru.Translation HPTextRGB/Текст Цвет RGB: ""
+*sv.Translation HPTextRGB/Text RGB-färger: ""
+*zh_CN.Translation HPTextRGB/文本 RGB 颜色: ""
+*zh_TW.Translation HPTextRGB/文字 RGB 色彩: ""
 
 *HPTextRGB sRGB/Default (sRGB): "
 globaldict /ColorSmartColorMatching known {
@@ -7317,24 +7317,24 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPTextRGB
 
-*OpenUI *HPGraphicsNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPGraphicsNeutralGrays/Graphics Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPGraphicsNeutralGrays
 *DefaultHPGraphicsNeutralGrays: Black
-*da.Translation HPGraphicsNeutralGrays/Neutral gråtoner: ""
-*de.Translation HPGraphicsNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPGraphicsNeutralGrays/Grises neutros: ""
-*fi.Translation HPGraphicsNeutralGrays/Neutraali harmaa: ""
-*fr.Translation HPGraphicsNeutralGrays/Gris neutres: ""
-*it.Translation HPGraphicsNeutralGrays/Grigi neutri: ""
-*ja.Translation HPGraphicsNeutralGrays/グレー中間色: ""
+*da.Translation HPGraphicsNeutralGrays/Grafik Neutral gråtoner: ""
+*de.Translation HPGraphicsNeutralGrays/Grafik Neutrale Graustufen: ""
+*es.Translation HPGraphicsNeutralGrays/Gpafica Grises neutros: ""
+*fi.Translation HPGraphicsNeutralGrays/Grafiikka Neutraali harmaa: ""
+*fr.Translation HPGraphicsNeutralGrays/Graphique Gris neutres: ""
+*it.Translation HPGraphicsNeutralGrays/Grafica Grigi neutri: ""
+*ja.Translation HPGraphicsNeutralGrays/グラフィックス グレー中間色: ""
 *ko.Translation HPGraphicsNeutralGrays/순 회색: ""
-*nl.Translation HPGraphicsNeutralGrays/Neutrale grijstinten: ""
-*nb.Translation HPGraphicsNeutralGrays/Nøytrale gråtoner: ""
-*pt.Translation HPGraphicsNeutralGrays/Cinzas neutros: ""
-*ru.Translation HPGraphicsNeutralGrays/Нейтральный серый: ""
-*sv.Translation HPGraphicsNeutralGrays/Neutral gråskala: ""
-*zh_CN.Translation HPGraphicsNeutralGrays/中性灰色: ""
-*zh_TW.Translation HPGraphicsNeutralGrays/中性灰色: ""
+*nl.Translation HPGraphicsNeutralGrays/Grafiek Neutrale grijstinten: ""
+*nb.Translation HPGraphicsNeutralGrays/Grafikk Nøytrale gråtoner: ""
+*pt.Translation HPGraphicsNeutralGrays/Gráficos Cinzas neutros: ""
+*ru.Translation HPGraphicsNeutralGrays/Графика Нейтральный серый: ""
+*sv.Translation HPGraphicsNeutralGrays/Grafik Neutral gråskala: ""
+*zh_CN.Translation HPGraphicsNeutralGrays/图像 中性灰色: ""
+*zh_TW.Translation HPGraphicsNeutralGrays/圖片 中性灰色: ""
 
 *HPGraphicsNeutralGrays Black/Black Only: "
 globaldict /HPGraphicsNeutralAxis known {
@@ -7382,24 +7382,24 @@ globaldict /HPGraphicsNeutralAxis known {
 
 *CloseUI: *HPGraphicsNeutralGrays
 
-*OpenUI *HPGraphicsHalftone/Halftone:  PickOne
+*OpenUI *HPGraphicsHalftone/Graphics Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPGraphicsHalftone
 *DefaultHPGraphicsHalftone: Detail
-*da.Translation HPGraphicsHalftone/Halvtone: ""
-*de.Translation HPGraphicsHalftone/Halbton: ""
-*es.Translation HPGraphicsHalftone/Medios tonos: ""
-*fi.Translation HPGraphicsHalftone/Puolisävy: ""
-*fr.Translation HPGraphicsHalftone/Demi-teinte: ""
-*it.Translation HPGraphicsHalftone/Mezzitoni: ""
-*ja.Translation HPGraphicsHalftone/ハーフトーン: ""
-*ko.Translation HPGraphicsHalftone/중간 색조: ""
-*nl.Translation HPGraphicsHalftone/Halftonen: ""
-*nb.Translation HPGraphicsHalftone/Halvtone: ""
-*pt.Translation HPGraphicsHalftone/Meio-tom: ""
-*ru.Translation HPGraphicsHalftone/Полутона: ""
-*sv.Translation HPGraphicsHalftone/Halvton: ""
-*zh_CN.Translation HPGraphicsHalftone/半色调: ""
-*zh_TW.Translation HPGraphicsHalftone/半色調: ""
+*da.Translation HPGraphicsHalftone/Grafik Halvtone: ""
+*de.Translation HPGraphicsHalftone/Grafik Halbton: ""
+*es.Translation HPGraphicsHalftone/Gpafica Medios tonos: ""
+*fi.Translation HPGraphicsHalftone/Grafiikka Puolisävy: ""
+*fr.Translation HPGraphicsHalftone/Graphique Demi-teinte: ""
+*it.Translation HPGraphicsHalftone/Grafica Mezzitoni: ""
+*ja.Translation HPGraphicsHalftone/グラフィックス ハーフトーン: ""
+*ko.Translation HPGraphicsHalftone/그래픽 도표 중간 색조: ""
+*nl.Translation HPGraphicsHalftone/Grafiek Halftonen: ""
+*nb.Translation HPGraphicsHalftone/Grafikk Halvtone: ""
+*pt.Translation HPGraphicsHalftone/Gráficos Meio-tom: ""
+*ru.Translation HPGraphicsHalftone/Графика Полутона: ""
+*sv.Translation HPGraphicsHalftone/Grafik Halvton: ""
+*zh_CN.Translation HPGraphicsHalftone/图像 半色调: ""
+*zh_TW.Translation HPGraphicsHalftone/圖片 半色調: ""
 
 *HPGraphicsHalftone Smooth/Smooth: "
 globaldict /ColorSmartColorMatching known {
@@ -7447,24 +7447,24 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPGraphicsHalftone
 
-*OpenUI *HPGraphicsRGB/RGB Color:  PickOne
+*OpenUI *HPGraphicsRGB/Graphics RGB Color:  PickOne
 *OrderDependency: 57 AnySetup *HPGraphicsRGB
 *DefaultHPGraphicsRGB: sRGB
-*da.Translation HPGraphicsRGB/RGB-farve: ""
-*de.Translation HPGraphicsRGB/RGB-Farbe: ""
-*es.Translation HPGraphicsRGB/Color RGB: ""
-*fi.Translation HPGraphicsRGB/RGB-väri: ""
-*fr.Translation HPGraphicsRGB/Couleur RGB: ""
-*it.Translation HPGraphicsRGB/Colore RGB: ""
-*ja.Translation HPGraphicsRGB/RGB カラー: ""
-*ko.Translation HPGraphicsRGB/RGB 事雌: ""
-*nl.Translation HPGraphicsRGB/RGB-kleuren: ""
-*nb.Translation HPGraphicsRGB/RGB-farge: ""
-*pt.Translation HPGraphicsRGB/Cores RGB: ""
-*ru.Translation HPGraphicsRGB/Цвет RGB: ""
-*sv.Translation HPGraphicsRGB/RGB-färger: ""
-*zh_CN.Translation HPGraphicsRGB/RGB 颜色: ""
-*zh_TW.Translation HPGraphicsRGB/RGB 色彩: ""
+*da.Translation HPGraphicsRGB/Grafik RGB-farve: ""
+*de.Translation HPGraphicsRGB/Grafik RGB-Farbe: ""
+*es.Translation HPGraphicsRGB/Gpafica Color RGB: ""
+*fi.Translation HPGraphicsRGB/Grafiikka RGB-väri: ""
+*fr.Translation HPGraphicsRGB/Graphique Couleur RGB: ""
+*it.Translation HPGraphicsRGB/Grafica Colore RGB: ""
+*ja.Translation HPGraphicsRGB/グラフィックス RGB カラー: ""
+*ko.Translation HPGraphicsRGB/그래픽 RGB 事雌: ""
+*nl.Translation HPGraphicsRGB/Grafiek RGB-kleuren: ""
+*nb.Translation HPGraphicsRGB/Grafikk RGB-farge: ""
+*pt.Translation HPGraphicsRGB/Gráficos Cores RGB: ""
+*ru.Translation HPGraphicsRGB/Графика Цвет RGB: ""
+*sv.Translation HPGraphicsRGB/Grafik RGB-färger: ""
+*zh_CN.Translation HPGraphicsRGB/图像 RGB 颜色: ""
+*zh_TW.Translation HPGraphicsRGB/圖片 RGB 色彩: ""
 
 
 *HPGraphicsRGB sRGB/Default (sRGB): "
@@ -7584,24 +7584,24 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPGraphicsRGB
 
-*OpenUI *HPPhotoNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPPhotoNeutralGrays/Photo Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPPhotoNeutralGrays
 *DefaultHPPhotoNeutralGrays: ProcessBlack
-*da.Translation HPPhotoNeutralGrays/Neutral gråtoner: ""
-*de.Translation HPPhotoNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPPhotoNeutralGrays/Grises neutros: ""
-*fi.Translation HPPhotoNeutralGrays/Neutraali harmaa: ""
-*fr.Translation HPPhotoNeutralGrays/Gris neutres: ""
-*it.Translation HPPhotoNeutralGrays/Grigi neutri: ""
-*ja.Translation HPPhotoNeutralGrays/グレー中間色: ""
-*ko.Translation HPPhotoNeutralGrays/순 회색: ""
-*nl.Translation HPPhotoNeutralGrays/Neutrale grijstinten: ""
-*nb.Translation HPPhotoNeutralGrays/Nøytrale gråtoner: ""
-*pt.Translation HPPhotoNeutralGrays/Cinzas neutros: ""
-*ru.Translation HPPhotoNeutralGrays/Нейтральный серый: ""
-*sv.Translation HPPhotoNeutralGrays/Neutral gråskala: ""
-*zh_CN.Translation HPPhotoNeutralGrays/中性灰色: ""
-*zh_TW.Translation HPPhotoNeutralGrays/中性灰色: ""
+*da.Translation HPPhotoNeutralGrays/Foto Neutral gråtoner: ""
+*de.Translation HPPhotoNeutralGrays/Foto Neutrale Graustufen: ""
+*es.Translation HPPhotoNeutralGrays/Fotografía Grises neutros: ""
+*fi.Translation HPPhotoNeutralGrays/Valokuva Neutraali harmaa: ""
+*fr.Translation HPPhotoNeutralGrays/Photo Gris neutres: ""
+*it.Translation HPPhotoNeutralGrays/Foto Grigi neutri: ""
+*ja.Translation HPPhotoNeutralGrays/フォト グレー中間色: ""
+*ko.Translation HPPhotoNeutralGrays/사진 순 회색: ""
+*nl.Translation HPPhotoNeutralGrays/Foto Neutrale grijstinten: ""
+*nb.Translation HPPhotoNeutralGrays/Foto Nøytrale gråtoner: ""
+*pt.Translation HPPhotoNeutralGrays/Foto Cinzas neutros: ""
+*ru.Translation HPPhotoNeutralGrays/Фото Нейтральный серый: ""
+*sv.Translation HPPhotoNeutralGrays/Foto Neutral gråskala: ""
+*zh_CN.Translation HPPhotoNeutralGrays/照片 中性灰色: ""
+*zh_TW.Translation HPPhotoNeutralGrays/相紙 中性灰色: ""
 
 *HPPhotoNeutralGrays Black/Black Only: "
 globaldict /HPImageNeutralAxis known {
@@ -7649,24 +7649,24 @@ globaldict /HPImageNeutralAxis known {
 
 *CloseUI: *HPPhotoNeutralGrays
 
-*OpenUI *HPPhotoHalftone/Halftone:  PickOne
+*OpenUI *HPPhotoHalftone/Photo Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPPhotoHalftone
 *DefaultHPPhotoHalftone: Detail
-*da.Translation HPPhotoHalftone/Halvtone: ""
-*de.Translation HPPhotoHalftone/Halbton: ""
-*es.Translation HPPhotoHalftone/Medios tonos: ""
-*fi.Translation HPPhotoHalftone/Puolisävy: ""
-*fr.Translation HPPhotoHalftone/Demi-teinte: ""
-*it.Translation HPPhotoHalftone/Mezzitoni: ""
-*ja.Translation HPPhotoHalftone/ハーフトーン: ""
-*ko.Translation HPPhotoHalftone/중간 색조: ""
-*nl.Translation HPPhotoHalftone/Halftonen: ""
-*nb.Translation HPPhotoHalftone/Halvtone: ""
-*pt.Translation HPPhotoHalftone/Meio-tom: ""
-*ru.Translation HPPhotoHalftone/Полутона: ""
-*sv.Translation HPPhotoHalftone/Halvton: ""
-*zh_CN.Translation HPPhotoHalftone/半色调: ""
-*zh_TW.Translation HPPhotoHalftone/半色調: ""
+*da.Translation HPPhotoHalftone/Foto Halvtone: ""
+*de.Translation HPPhotoHalftone/Foto Halbton: ""
+*es.Translation HPPhotoHalftone/Fotografía Medios tonos: ""
+*fi.Translation HPPhotoHalftone/Valokuva Puolisävy: ""
+*fr.Translation HPPhotoHalftone/Photo Demi-teinte: ""
+*it.Translation HPPhotoHalftone/Foto Mezzitoni: ""
+*ja.Translation HPPhotoHalftone/フォト ハーフトーン: ""
+*ko.Translation HPPhotoHalftone/사진 중간 색조: ""
+*nl.Translation HPPhotoHalftone/Foto Halftonen: ""
+*nb.Translation HPPhotoHalftone/Foto Halvtone: ""
+*pt.Translation HPPhotoHalftone/Foto Meio-tom: ""
+*ru.Translation HPPhotoHalftone/Фото Полутона: ""
+*sv.Translation HPPhotoHalftone/Foto Halvton: ""
+*zh_CN.Translation HPPhotoHalftone/照片 半色调: ""
+*zh_TW.Translation HPPhotoHalftone/相紙 半色調: ""
 
 *HPPhotoHalftone Smooth/Smooth: "
 globaldict /ColorSmartColorMatching known {
@@ -7714,24 +7714,24 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPPhotoHalftone
 
-*OpenUI *HPPhotoRGB/RGB Color:  PickOne
+*OpenUI *HPPhotoRGB/Photo RGB Color:  PickOne
 *OrderDependency: 57 AnySetup *HPPhotoRGB
 *DefaultHPPhotoRGB: sRGB
-*da.Translation HPPhotoRGB/RGB-farve: ""
-*de.Translation HPPhotoRGB/RGB-Farbe: ""
-*es.Translation HPPhotoRGB/Color RGB: ""
-*fi.Translation HPPhotoRGB/RGB-väri: ""
-*fr.Translation HPPhotoRGB/Couleur RGB: ""
-*it.Translation HPPhotoRGB/Colore RGB: ""
-*ja.Translation HPPhotoRGB/RGB カラー: ""
-*ko.Translation HPPhotoRGB/RGB 事雌: ""
-*nl.Translation HPPhotoRGB/RGB-kleuren: ""
-*nb.Translation HPPhotoRGB/RGB-farge: ""
-*pt.Translation HPPhotoRGB/Cores RGB: ""
-*ru.Translation HPPhotoRGB/Цвет RGB: ""
-*sv.Translation HPPhotoRGB/RGB-färger: ""
-*zh_CN.Translation HPPhotoRGB/RGB 颜色: ""
-*zh_TW.Translation HPPhotoRGB/RGB 色彩: ""
+*da.Translation HPPhotoRGB/Foto RGB-farve: ""
+*de.Translation HPPhotoRGB/Foto RGB-Farbe: ""
+*es.Translation HPPhotoRGB/Fotografía Color RGB: ""
+*fi.Translation HPPhotoRGB/Valokuva RGB-väri: ""
+*fr.Translation HPPhotoRGB/Photo Couleur RGB: ""
+*it.Translation HPPhotoRGB/Foto Colore RGB: ""
+*ja.Translation HPPhotoRGB/フォト RGB カラー: ""
+*ko.Translation HPPhotoRGB/사진 RGB 事雌: ""
+*nl.Translation HPPhotoRGB/Foto RGB-kleuren: ""
+*nb.Translation HPPhotoRGB/Foto RGB-farge: ""
+*pt.Translation HPPhotoRGB/Foto Cores RGB: ""
+*ru.Translation HPPhotoRGB/Фото Цвет RGB: ""
+*sv.Translation HPPhotoRGB/Foto RGB-färger: ""
+*zh_CN.Translation HPPhotoRGB/照片 RGB 颜色: ""
+*zh_TW.Translation HPPhotoRGB/相紙 RGB 色彩: ""
 
 
 *HPPhotoRGB sRGB/Default (sRGB): "

@@ -1835,14 +1835,14 @@ globaldict /HPTextCMYKInkSetEmulation known {
 *% ==================================
 *%  ColorOptions Manual Settings
 *% ==================================
-*OpenUI *HPTextHalftone/Halftone:  PickOne
+*OpenUI *HPTextHalftone/Text Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPTextHalftone
 *DefaultHPTextHalftone: Detail
-*de.Translation HPTextHalftone/Halbton: ""
-*es.Translation HPTextHalftone/Medios tonos: ""
-*fr.Translation HPTextHalftone/Demi-teinte: ""
-*it.Translation HPTextHalftone/Mezzitoni: ""
-*nl.Translation HPTextHalftone/Halftonen: ""
+*de.Translation HPTextHalftone/Text Halbton: ""
+*es.Translation HPTextHalftone/Texto Medios tonos: ""
+*fr.Translation HPTextHalftone/Texte Demi-teinte: ""
+*it.Translation HPTextHalftone/Testo Mezzitoni: ""
+*nl.Translation HPTextHalftone/Tekst Halftonen: ""
 
 *HPTextHalftone Detail/Detail: "
 globaldict /ColorSmartColorMatching known {
@@ -1870,14 +1870,14 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPTextHalftone
 
-*OpenUI *HPTextNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPTextNeutralGrays/Text Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPTextNeutralGrays
 *DefaultHPTextNeutralGrays: Black
-*de.Translation HPTextNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPTextNeutralGrays/Grises neutros: ""
-*fr.Translation HPTextNeutralGrays/Gris neutres: ""
-*it.Translation HPTextNeutralGrays/Grigi neutri: ""
-*nl.Translation HPTextNeutralGrays/Neutrale grijstinten: ""
+*de.Translation HPTextNeutralGrays/Text Neutrale Graustufen: ""
+*es.Translation HPTextNeutralGrays/Texto Grises neutros: ""
+*fr.Translation HPTextNeutralGrays/Texte Gris neutres: ""
+*it.Translation HPTextNeutralGrays/Testo Grigi neutri: ""
+*nl.Translation HPTextNeutralGrays/Tekst Neutrale grijstinten: ""
 
 *HPTextNeutralGrays Black/Black Only: "
 globaldict /HPTextNeutralAxis known {
@@ -1905,14 +1905,14 @@ globaldict /HPTextNeutralAxis known {
 
 *CloseUI: *HPTextNeutralGrays
 
-*OpenUI *HPGraphicsHalftone/Halftone:  PickOne
+*OpenUI *HPGraphicsHalftone/Graphics Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPGraphicsHalftone
 *DefaultHPGraphicsHalftone: Detail
-*de.Translation HPGraphicsHalftone/Halbton: ""
-*es.Translation HPGraphicsHalftone/Medios tonos: ""
-*fr.Translation HPGraphicsHalftone/Demi-teinte: ""
-*it.Translation HPGraphicsHalftone/Mezzitoni: ""
-*nl.Translation HPGraphicsHalftone/Halftonen: ""
+*de.Translation HPGraphicsHalftone/Grafik Halbton: ""
+*es.Translation HPGraphicsHalftone/Gpafica Medios tonos: ""
+*fr.Translation HPGraphicsHalftone/Graphique Demi-teinte: ""
+*it.Translation HPGraphicsHalftone/Grafica Mezzitoni: ""
+*nl.Translation HPGraphicsHalftone/Grafiek Halftonen: ""
 
 *HPGraphicsHalftone Detail/Detail: "
 globaldict /ColorSmartColorMatching known {
@@ -1940,14 +1940,14 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPGraphicsHalftone
 
-*OpenUI *HPGraphicsNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPGraphicsNeutralGrays/Graphics Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPGraphicsNeutralGrays
 *DefaultHPGraphicsNeutralGrays: Black
-*de.Translation HPGraphicsNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPGraphicsNeutralGrays/Grises neutros: ""
-*fr.Translation HPGraphicsNeutralGrays/Gris neutres: ""
-*it.Translation HPGraphicsNeutralGrays/Grigi neutri: ""
-*nl.Translation HPGraphicsNeutralGrays/Neutrale grijstinten: ""
+*de.Translation HPGraphicsNeutralGrays/Grafik Neutrale Graustufen: ""
+*es.Translation HPGraphicsNeutralGrays/Gpafica Grises neutros: ""
+*fr.Translation HPGraphicsNeutralGrays/Graphique Gris neutres: ""
+*it.Translation HPGraphicsNeutralGrays/Grafica Grigi neutri: ""
+*nl.Translation HPGraphicsNeutralGrays/Grafiek Neutrale grijstinten: ""
 
 *HPGraphicsNeutralGrays Black/Black Only: "
 globaldict /HPGraphicsNeutralAxis known {
@@ -1975,14 +1975,14 @@ globaldict /HPGraphicsNeutralAxis known {
 
 *CloseUI: *HPGraphicsNeutralGrays
 
-*OpenUI *HPPhotoHalftone/Halftone:  PickOne
+*OpenUI *HPPhotoHalftone/Photo Halftone:  PickOne
 *OrderDependency: 57 AnySetup *HPPhotoHalftone
 *DefaultHPPhotoHalftone: Detail
-*de.Translation HPPhotoHalftone/Halbton: ""
-*es.Translation HPPhotoHalftone/Medios tonos: ""
-*fr.Translation HPPhotoHalftone/Demi-teinte: ""
-*it.Translation HPPhotoHalftone/Mezzitoni: ""
-*nl.Translation HPPhotoHalftone/Halftonen: ""
+*de.Translation HPPhotoHalftone/Foto Halbton: ""
+*es.Translation HPPhotoHalftone/Fotografía Medios tonos: ""
+*fr.Translation HPPhotoHalftone/Photo Demi-teinte: ""
+*it.Translation HPPhotoHalftone/Foto Mezzitoni: ""
+*nl.Translation HPPhotoHalftone/Foto Halftonen: ""
 
 *HPPhotoHalftone Detail/Detail: "
 globaldict /ColorSmartColorMatching known {
@@ -2010,14 +2010,14 @@ globaldict /ColorSmartColorMatching known {
 
 *CloseUI: *HPPhotoHalftone
 
-*OpenUI *HPPhotoNeutralGrays/Neutral Grays:  PickOne
+*OpenUI *HPPhotoNeutralGrays/Photo Neutral Grays:  PickOne
 *OrderDependency: 57 AnySetup *HPPhotoNeutralGrays
 *DefaultHPPhotoNeutralGrays: ProcessBlack
-*de.Translation HPPhotoNeutralGrays/Neutrale Graustufen: ""
-*es.Translation HPPhotoNeutralGrays/Grises neutros: ""
-*fr.Translation HPPhotoNeutralGrays/Gris neutres: ""
-*it.Translation HPPhotoNeutralGrays/Grigi neutri: ""
-*nl.Translation HPPhotoNeutralGrays/Neutrale grijstinten: ""
+*de.Translation HPPhotoNeutralGrays/Foto Neutrale Graustufen: ""
+*es.Translation HPPhotoNeutralGrays/Fotografía Grises neutros: ""
+*fr.Translation HPPhotoNeutralGrays/Photo Gris neutres: ""
+*it.Translation HPPhotoNeutralGrays/Foto Grigi neutri: ""
+*nl.Translation HPPhotoNeutralGrays/Foto Neutrale grijstinten: ""
 
 *HPPhotoNeutralGrays Black/Black Only: "
 globaldict /HPImageNeutralAxis known {

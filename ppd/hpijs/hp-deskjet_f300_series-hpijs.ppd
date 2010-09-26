@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.10.6.15"
+*FileVersion: "hpijs 3.10.9.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f300_series-hpijs.ppd"
@@ -24,7 +24,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f300 Series hpijs"
 *ShortNickName: "HP Deskjet f300 Series hpijs"
-*NickName: "HP Deskjet f300 Series hpijs, 3.10.6.15"
+*NickName: "HP Deskjet f300 Series hpijs, 3.10.9.11"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

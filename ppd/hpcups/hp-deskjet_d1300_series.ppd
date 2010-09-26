@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.6.15"
+*FileVersion: "hpcups 3.10.9.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_d1300_series.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet d1300 Series"
 *ShortNickName: "HP Deskjet d1300 Series"
-*NickName: "HP Deskjet d1300 Series, hpcups 3.10.6.15"
+*NickName: "HP Deskjet d1300 Series, hpcups 3.10.9.11"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

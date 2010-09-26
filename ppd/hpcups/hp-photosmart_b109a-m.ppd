@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.6.15"
+*FileVersion: "hpcups 3.10.9.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_b109a-m.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart b109a-m"
 *ShortNickName: "HP Photosmart b109a-m"
-*NickName: "HP Photosmart b109a-m, hpcups 3.10.6.15"
+*NickName: "HP Photosmart b109a-m, hpcups 3.10.9.11"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
