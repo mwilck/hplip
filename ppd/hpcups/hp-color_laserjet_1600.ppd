@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.9.11"
+*FileVersion: "hpcups 3.11.1.19"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_1600.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet 1600"
 *ShortNickName: "HP Color LaserJet 1600"
-*NickName: "HP Color LaserJet 1600, hpcups 3.10.9.11, requires proprietary plugin"
+*NickName: "HP Color LaserJet 1600, hpcups 3.11.1.19, requires proprietary plugin"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -74,7 +74,7 @@
 *PageRegion A6/A6 105x148mm: "<</cupsInteger0 96/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo5x7/Photo 5x7in: "<</cupsInteger0 96/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageRegion Card5x8/Index Card 5x8in: "<</cupsInteger0 96/PageSize[360 576]/ImagingBBox null>>setpagedevice"
-*PageRegion Oufuku/Oufuku-Hagaki 148x200mm: "<</cupsInteger0 43/PageSize[567 420]/ImagingBBox null>>setpagedevice"
+*PageRegion Oufuku/Oufuku-Hagaki 148x200mm: "<</cupsInteger0 101/PageSize[567 420]/ImagingBBox null>>setpagedevice"
 *PageRegion A5/A5 148x210mm: "<</cupsInteger0 11/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 176x250mm: "<</cupsInteger0 357/PageSize[498.96 708.48]/ImagingBBox null>>setpagedevice"
 *PageRegion JB5/JB5 182x257mm: "<</cupsInteger0 96/PageSize [516.24 728.64]/ImagingBBox null>>setpagedevice"
@@ -159,6 +159,24 @@
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
+*OpenUI *ColorModel/Output Mode: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: RGB
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 3/cupsRowStep 2>>setpagedevice"
+*ColorModel RGB/Color: "<</cupsColorSpace 17/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 0>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *MediaType/Media Type: PickOne
+*OrderDependency: 10.0 AnySetup *MediaType
+*DefaultMediaType: Plain
+*MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
+*MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
+*CloseUI: *MediaType
+*OpenUI *OutputMode/Print Quality: PickOne
+*OrderDependency: 10.0 AnySetup *OutputMode
+*DefaultOutputMode: Normal
+*OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Draft: "<</OutputType(-1)/HWResolution[600 600]>>setpagedevice"
+*CloseUI: *OutputMode
 *OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
@@ -178,24 +196,6 @@
 *InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
 *InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
 *CloseUI: *InputSlot
-*OpenUI *ColorModel/Output Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: RGB
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 3/cupsRowStep 2>>setpagedevice"
-*ColorModel RGB/Color: "<</cupsColorSpace 17/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 0>>setpagedevice"
-*CloseUI: *ColorModel
-*OpenUI *MediaType/Media Type: PickOne
-*OrderDependency: 10.0 AnySetup *MediaType
-*DefaultMediaType: Plain
-*MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
-*MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
-*CloseUI: *MediaType
-*OpenUI *OutputMode/Print Quality: PickOne
-*OrderDependency: 10.0 AnySetup *OutputMode
-*DefaultOutputMode: Normal
-*OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
-*OutputMode Draft: "<</OutputType(-1)/HWResolution[600 600]>>setpagedevice"
-*CloseUI: *OutputMode
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionDuplex/Duplexer Installed: Boolean
 *OrderDependency: 10.0 AnySetup *OptionDuplex
@@ -240,4 +240,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_laserjet_1600.ppd, 15132 bytes.
+*% End of hp-color_laserjet_1600.ppd, 15133 bytes.

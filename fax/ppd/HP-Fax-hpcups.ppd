@@ -26,7 +26,7 @@
 *LandscapeOrientation: Plus90
 *VariablePaperSize: False
 *TTRasterizer:	Type42
-*HWMargins: "18 36 18 18"
+*HWMargins: "9 9 9 9"
 *1284DeviceID: "MFG:HP;MDL:Fax;DES:HP Fax;"
 
 *OpenUI *PageSize/Page Size: PickOne
@@ -46,9 +46,9 @@
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
-*ImageableArea Letter/US Letter:    "36   36 594    756"
-*ImageableArea A4/A4:               "9.72 36 586.28 833"
-*ImageableArea Legal/Legal:         "18   36 594    999"
+*ImageableArea Letter/US Letter:    "9 9 594    756"
+*ImageableArea A4/A4:               "9 9 586.28 833"
+*ImageableArea Legal/Legal:         "9 9 594    999"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/US Letter:   "612 792"
@@ -65,7 +65,7 @@
 
 *OpenUI *Encoding/Fax Encoding: PickOne
 *OrderDependency: 20 AnySetup *Encoding
-*DefaultEncoding: Auto
+*DefaultEncoding: MMR
 *Encoding Auto/Auto: "<</cupsCompression 99>>setpagedevice"
 *Encoding MH/MH:     "<</cupsCompression 2>>setpagedevice"
 *Encoding MMR/MMR:   "<</cupsComperssion 4>>setpagedevice"

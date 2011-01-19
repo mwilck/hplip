@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.10.9.11"
+*FileVersion: "hpcups 3.11.1.19"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "apollo-2100.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "Apollo"
 *ModelName: "Apollo 2100"
 *ShortNickName: "Apollo 2100"
-*NickName: "Apollo 2100, hpcups 3.10.9.11"
+*NickName: "Apollo 2100, hpcups 3.11.1.19"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.10.9.11"
+*FileVersion: "hpijs 3.11.1.19"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-dj450-hpijs.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP dj450 hpijs"
 *ShortNickName: "HP dj450 hpijs"
-*NickName: "HP dj450 hpijs, 3.10.9.11"
+*NickName: "HP dj450 hpijs, 3.11.1.19"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
