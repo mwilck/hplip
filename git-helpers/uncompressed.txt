@@ -545,6 +545,7 @@
 ./ppd/hpcups/hp-laserjet_professional_p1606dn.ppd
 ./ppd/hpcups/hp-mopier_240-pcl3.ppd
 ./ppd/hpcups/hp-mopier_320-pcl3.ppd
+./ppd/hpcups/hp-officejet_100_mobile_l411.ppd
 ./ppd/hpcups/hp-officejet_150_mobile_l511.ppd
 ./ppd/hpcups/hp-officejet_4000_k210.ppd
 ./ppd/hpcups/hp-officejet_4100_series.ppd
@@ -1355,6 +1356,7 @@
 ./ppd/hpijs/hp-laserjet_professional_p1606dn-hpijs.ppd
 ./ppd/hpijs/hp-mopier_240-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-mopier_320-hpijs-pcl3.ppd
+./ppd/hpijs/hp-officejet_100_mobile_l411-hpijs.ppd
 ./ppd/hpijs/hp-officejet_150_mobile_l511-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4000_k210-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4100_series-hpijs.ppd
@@ -2064,6 +2066,7 @@
 ./prnt/ps/HP_Color_LaserJet_CP6015-ps.ppd
 ./prnt/ps/hp-color_laserjet-ps.ppd
 ./prnt/ps/HP_Color_LaserJet-ps.ppd
+./prnt/ps/hp-designjet_4000ps.ppd
 ./prnt/ps/hp-designjet_4020ps-ps.ppd
 ./prnt/ps/hp-designjet_4500mfp.ppd
 ./prnt/ps/hp-designjet_4500ps.ppd
@@ -2074,8 +2077,15 @@
 ./prnt/ps/hp-designjet_t1120ps_24in-ps.ppd
 ./prnt/ps/hp-designjet_t1120ps_44in-ps.ppd
 ./prnt/ps/hp-designjet_t1200_postscript-ps.ppd
+./prnt/ps/hp-designjet_t2300_postscript-ps.ppd
+./prnt/ps/hp-designjet_t7100ps_monochrome-ps.ppd
+./prnt/ps/hp-designjet_t7100ps-ps.ppd
 ./prnt/ps/hp-designjet_t770_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t770ps_24in-ps.ppd
+./prnt/ps/hp-designjet_z6100ps_42in_photo-ps.ppd
+./prnt/ps/hp-designjet_z6100ps_60in_photo-ps.ppd
+./prnt/ps/hp-designjet_z6200_42in_photo-ps.ppd
+./prnt/ps/hp-designjet_z6200_60in_photo-ps.ppd
 ./prnt/ps/hp-laserjet_1200n-ps.ppd
 ./prnt/ps/hp-laserjet_1200-ps.ppd
 ./prnt/ps/HP_LaserJet_1200-ps.ppd
@@ -2202,11 +2212,14 @@
 ./prnt/ps/HP_LaserJet_9055_9065_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_9055mfp-ps.ppd
 ./prnt/ps/hp-laserjet_9065mfp-ps.ppd
+./prnt/ps/hp-laserjet_cm1410_series-ps.ppd
 ./prnt/ps/hp-laserjet_cm1415fnw-ps.ppd
+./prnt/ps/hp-laserjet_cp1520_series-ps.ppd
 ./prnt/ps/hp-laserjet_m1522_mfp-ps.ppd
 ./prnt/ps/HP_LaserJet_M1522_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m1522nf_mfp-ps.ppd
 ./prnt/ps/hp-laserjet_m1522n_mfp-ps.ppd
+./prnt/ps/hp-laserjet_m1530_mfp_series-ps.ppd
 ./prnt/ps/hp-laserjet_m1536dnf_mfp-ps.ppd
 ./prnt/ps/hp-laserjet_m2727_mfp-ps.ppd
 ./prnt/ps/HP_LaserJet_M2727_MFP-ps.ppd
@@ -2261,3 +2274,4 @@
 ./prnt/ps/hp-mopier_320-ps.ppd
 ./prnt/ps/HP_Mopier_320-ps.ppd
 ./prnt/ps/hp_officejet_9100_series-ps.ppd
+./prnt/ps/hp-officejet_pro_8000_enterprise_a811a-ps.ppd

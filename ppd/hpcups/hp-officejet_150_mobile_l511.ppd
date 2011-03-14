@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.1.19"
+*FileVersion: "hpcups 3.11.3.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_150_mobile_l511.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 150 Mobile l511"
 *ShortNickName: "HP Officejet 150 Mobile l511"
-*NickName: "HP Officejet 150 Mobile l511, hpcups 3.11.1.19"
+*NickName: "HP Officejet 150 Mobile l511, hpcups 3.11.3.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -44,8 +44,6 @@
 *UIConstraints: *OutputMode Photo *ColorModel CMYGray
 *UIConstraints: *MediaType Automatic *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Automatic
-*UIConstraints: *MediaType Automatic *PageSize Oufuku.Duplex
-*UIConstraints: *PageSize Oufuku.Duplex *MediaType Automatic
 *UIConstraints: *MediaType Glossy *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Glossy
 *UIConstraints: *MediaType Glossy *OutputMode Draft
@@ -62,6 +60,24 @@
 *UIConstraints: *MediaType Glossy *InputSlot CDDVDTray
 *UIConstraints: *InputSlot CDDVDTray *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *InputSlot CDDVDTray
+*UIConstraints: *MediaType Automatic *PageSize Oufuku.Duplex
+*UIConstraints: *PageSize Oufuku.Duplex *MediaType Automatic
+*UIConstraints: *PageSize Oufuku *Duplex
+*UIConstraints: *Duplex *PageSize Oufuku
+*UIConstraints: *PageSize Hagaki *Duplex
+*UIConstraints: *Duplex *PageSize Hagaki
+*UIConstraints: *PageSize FLSA *Duplex
+*UIConstraints: *Duplex *PageSize FLSA
+*UIConstraints: *PageSize ExecutiveJIS *Duplex
+*UIConstraints: *Duplex *PageSize ExecutiveJIS
+*UIConstraints: *PageSize 16k *Duplex
+*UIConstraints: *Duplex *PageSize 16k
+*UIConstraints: *PageSize Card5x8 *Duplex
+*UIConstraints: *Duplex *PageSize Card5x8
+*UIConstraints: *PageSize EnvB5 *Duplex
+*UIConstraints: *Duplex *PageSize EnvB5
+*UIConstraints: *PageSize B5 *Duplex
+*UIConstraints: *Duplex *PageSize B5
 *UIConstraints: *PageSize Letter *Duplex
 *UIConstraints: *Duplex *PageSize Letter
 *UIConstraints: *PageSize A4 *Duplex
@@ -76,24 +92,10 @@
 *UIConstraints: *Duplex *PageSize A5
 *UIConstraints: *PageSize A6 *Duplex
 *UIConstraints: *Duplex *PageSize A6
-*UIConstraints: *PageSize B5 *Duplex
-*UIConstraints: *Duplex *PageSize B5
-*UIConstraints: *PageSize Oufuku *Duplex
-*UIConstraints: *Duplex *PageSize Oufuku
-*UIConstraints: *PageSize Hagaki *Duplex
-*UIConstraints: *Duplex *PageSize Hagaki
 *UIConstraints: *PageSize Executive *Duplex
 *UIConstraints: *Duplex *PageSize Executive
-*UIConstraints: *PageSize FLSA *Duplex
-*UIConstraints: *Duplex *PageSize FLSA
-*UIConstraints: *PageSize ExecutiveJIS *Duplex
-*UIConstraints: *Duplex *PageSize ExecutiveJIS
-*UIConstraints: *PageSize 16k *Duplex
-*UIConstraints: *Duplex *PageSize 16k
 *UIConstraints: *PageSize Card3x5 *Duplex
 *UIConstraints: *Duplex *PageSize Card3x5
-*UIConstraints: *PageSize Card5x8 *Duplex
-*UIConstraints: *Duplex *PageSize Card5x8
 *UIConstraints: *PageSize Env10 *Duplex
 *UIConstraints: *Duplex *PageSize Env10
 *UIConstraints: *PageSize EnvA2 *Duplex
@@ -104,8 +106,6 @@
 *UIConstraints: *Duplex *PageSize EnvDL
 *UIConstraints: *PageSize EnvC5 *Duplex
 *UIConstraints: *Duplex *PageSize EnvC5
-*UIConstraints: *PageSize EnvB5 *Duplex
-*UIConstraints: *Duplex *PageSize EnvB5
 *UIConstraints: *PageSize EnvChou3 *Duplex
 *UIConstraints: *Duplex *PageSize EnvChou3
 *UIConstraints: *PageSize EnvChou4 *Duplex
@@ -295,19 +295,6 @@
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
 *Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
 *CloseUI: *Duplex
-*OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 10.0 AnySetup *InputSlot
-*DefaultInputSlot: Auto
-*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
-*InputSlot PhotoTray/Photo Tray: "<</MediaPosition 6>>setpagedevice"
-*InputSlot Upper/Upper Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Lower/Lower Tray: "<</MediaPosition 4>>setpagedevice"
-*InputSlot Envelope/Envelope Feeder: "<</MediaPosition 3>>setpagedevice"
-*InputSlot LargeCapacity/Large Capacity Tray: "<</MediaPosition 5>>setpagedevice"
-*InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
-*InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot CDDVDTray/CD or DVD Tray: "<</MediaPosition 14>>setpagedevice"
-*CloseUI: *InputSlot
 *OpenUI *ColorModel/Output Mode: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: RGB
@@ -333,6 +320,19 @@
 *OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
 *OutputMode FastDraft/Fast Draft: "<</OutputType(-2)/HWResolution[300 300]>>setpagedevice"
 *CloseUI: *OutputMode
+*OpenUI *InputSlot/Media Source: PickOne
+*OrderDependency: 10.0 AnySetup *InputSlot
+*DefaultInputSlot: Auto
+*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
+*InputSlot PhotoTray/Photo Tray: "<</MediaPosition 6>>setpagedevice"
+*InputSlot Upper/Upper Tray: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Lower/Lower Tray: "<</MediaPosition 4>>setpagedevice"
+*InputSlot Envelope/Envelope Feeder: "<</MediaPosition 3>>setpagedevice"
+*InputSlot LargeCapacity/Large Capacity Tray: "<</MediaPosition 5>>setpagedevice"
+*InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
+*InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
+*InputSlot CDDVDTray/CD or DVD Tray: "<</MediaPosition 14>>setpagedevice"
+*CloseUI: *InputSlot
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionDuplex/Duplexer Installed: Boolean
 *OrderDependency: 10.0 AnySetup *OptionDuplex

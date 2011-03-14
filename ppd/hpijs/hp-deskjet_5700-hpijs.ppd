@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.11.1.19"
+*FileVersion: "hpijs 3.11.3.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_5700-hpijs.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 5700 hpijs"
 *ShortNickName: "HP Deskjet 5700 hpijs"
-*NickName: "HP Deskjet 5700 hpijs, 3.11.1.19"
+*NickName: "HP Deskjet 5700 hpijs, 3.11.3.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

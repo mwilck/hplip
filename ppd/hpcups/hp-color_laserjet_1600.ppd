@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.1.19"
+*FileVersion: "hpcups 3.11.3.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_1600.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet 1600"
 *ShortNickName: "HP Color LaserJet 1600"
-*NickName: "HP Color LaserJet 1600, hpcups 3.11.1.19, requires proprietary plugin"
+*NickName: "HP Color LaserJet 1600, hpcups 3.11.3.26, requires proprietary plugin"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

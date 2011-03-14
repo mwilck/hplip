@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.11.1.19"
+*FileVersion: "hpijs 3.11.3.26"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_4600_series-hpijs.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet 4600 Series hpijs"
 *ShortNickName: "HP Color LJ 4600 Series hpijs"
-*NickName: "HP Color LaserJet 4600 Series hpijs, 3.11.1.19"
+*NickName: "HP Color LaserJet 4600 Series hpijs, 3.11.3.26"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
