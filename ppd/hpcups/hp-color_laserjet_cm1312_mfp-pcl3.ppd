@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.3.26"
+*FileVersion: "hpcups 3.11.3a"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_cm1312_mfp-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet cm1312 MFP"
 *ShortNickName: "HP Color LaserJet cm1312 MFP"
-*NickName: "HP Color LaserJet cm1312 MFP pcl3, hpcups 3.11.3.26"
+*NickName: "HP Color LaserJet cm1312 MFP pcl3, hpcups 3.11.3a"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -241,4 +241,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_laserjet_cm1312_mfp-pcl3.ppd, 15240 bytes.
+*% End of hp-color_laserjet_cm1312_mfp-pcl3.ppd, 15236 bytes.
