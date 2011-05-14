@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.3a"
+*FileVersion: "hpcups 3.11.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a310_series.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a310 Series"
 *ShortNickName: "HP Photosmart a310 Series"
-*NickName: "HP Photosmart a310 Series, hpcups 3.11.3a"
+*NickName: "HP Photosmart a310 Series, hpcups 3.11.5"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -41,13 +41,13 @@
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Photo4x6.FB
-*PageSize Hagaki/Hagaki 100x148mm: "<</PageSize[284 420]/ImagingBBox null>>setpagedevice"
-*PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</PageSize[294 430]/ImagingBBox null>>setpagedevice"
-*PageSize Photo4x6/Photo 4x6in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageSize Photo4x6.FB/Photo Borderless 4x6 in: "<</PageSize[298 442]/ImagingBBox null>>setpagedevice"
-*PageSize A6/A6 105x148mm: "<</PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
-*PageSize A6.FB/A6 Borderless 105x148mm: "<</PageSize[307 430]/ImagingBBox null>>setpagedevice"
-*PageSize EnvChou4/#4 Japanese Envelope 90x205mm: "<</PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
+*PageSize Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[284 420]/ImagingBBox null>>setpagedevice"
+*PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[294 430]/ImagingBBox null>>setpagedevice"
+*PageSize Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize Photo4x6.FB/Photo Borderless 4x6 in: "<</cupsInteger0 74/PageSize[298 442]/ImagingBBox null>>setpagedevice"
+*PageSize A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.36 419.76]/ImagingBBox null>>setpagedevice"
+*PageSize A6.FB/A6 Borderless 105x148mm: "<</cupsInteger0 73/PageSize[307 430]/ImagingBBox null>>setpagedevice"
+*PageSize EnvChou4/#4 Japanese Envelope 90x205mm: "<</cupsInteger0 111/PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -156,4 +156,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_a310_series.ppd, 08594 bytes.
+*% End of hp-photosmart_a310_series.ppd, 08705 bytes.

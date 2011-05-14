@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.11.3a"
+*FileVersion: "hpijs 3.11.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_7350-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 7350 hpijs"
 *ShortNickName: "HP Photosmart 7350 hpijs"
-*NickName: "HP Photosmart 7350 hpijs, 3.11.3a"
+*NickName: "HP Photosmart 7350 hpijs, 3.11.5"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -452,4 +452,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_7350-hpijs.ppd, 23583 bytes.
+*% End of hp-photosmart_7350-hpijs.ppd, 23581 bytes.
