@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.5"
+*FileVersion: "hpcups 3.11.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_prem_c410_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart Prem c410 Series"
 *ShortNickName: "HP Photosmart Prem c410 Series"
-*NickName: "HP Photosmart Prem c410 Series, hpcups 3.11.5"
+*NickName: "HP Photosmart Prem c410 Series, hpcups 3.11.7"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

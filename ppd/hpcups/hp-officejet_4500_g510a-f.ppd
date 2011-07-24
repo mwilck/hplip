@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.5"
+*FileVersion: "hpcups 3.11.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4500_g510a-f.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4500 g510a-f"
 *ShortNickName: "HP Officejet 4500 g510a-f"
-*NickName: "HP Officejet 4500 g510a-f, hpcups 3.11.5"
+*NickName: "HP Officejet 4500 g510a-f, hpcups 3.11.7"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

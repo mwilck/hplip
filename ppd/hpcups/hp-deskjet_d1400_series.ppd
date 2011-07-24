@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.5"
+*FileVersion: "hpcups 3.11.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_d1400_series.ppd"
@@ -18,7 +18,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet d1400 Series"
 *ShortNickName: "HP Deskjet d1400 Series"
-*NickName: "HP Deskjet d1400 Series, hpcups 3.11.5"
+*NickName: "HP Deskjet d1400 Series, hpcups 3.11.7"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

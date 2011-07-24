@@ -205,6 +205,7 @@
 ./ppd/hpcups/hp-deskjet_2000_j210_series.ppd
 ./ppd/hpcups/hp-deskjet_2050_j510_series.ppd
 ./ppd/hpcups/hp-deskjet_3000_j310_series.ppd
+./ppd/hpcups/hp-deskjet_3050a_j611_series.ppd
 ./ppd/hpcups/hp-deskjet_3050_j610_series.ppd
 ./ppd/hpcups/hp-deskjet_3320.ppd
 ./ppd/hpcups/hp-deskjet_3325.ppd
@@ -539,7 +540,9 @@
 ./ppd/hpcups/hp-laserjet_professional_m1212nf_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1213nf_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1214nfh_mfp.ppd
+./ppd/hpcups/hp-laserjet_professional_m1216nfh_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1217nfw_mfp.ppd
+./ppd/hpcups/hp-laserjet_professional_m1219nf_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102.ppd
 ./ppd/hpcups/hp-laserjet_professional_p_1102w.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102w.ppd
@@ -1018,6 +1021,7 @@
 ./ppd/hpijs/hp-deskjet_2000_j210_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2050_j510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3000_j310_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_3050a_j611_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3050_j610_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3320-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3325-hpijs.ppd
@@ -1352,7 +1356,9 @@
 ./ppd/hpijs/hp-laserjet_professional_m1212nf_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1213nf_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1214nfh_mfp-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_m1216nfh_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1217nfw_mfp-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_m1219nf_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p_1102w-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102w-hpijs.ppd
@@ -2093,6 +2099,7 @@
 ./prnt/ps/hp-designjet_z6100ps_60in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_42in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_60in_photo-ps.ppd
+./prnt/ps/hp-laserjet_100_color_mfp_m175-ps.ppd
 ./prnt/ps/hp-laserjet_1200n-ps.ppd
 ./prnt/ps/hp-laserjet_1200-ps.ppd
 ./prnt/ps/HP_LaserJet_1200-ps.ppd

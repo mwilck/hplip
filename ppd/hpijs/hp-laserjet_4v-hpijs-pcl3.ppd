@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.11.5"
+*FileVersion: "hpijs 3.11.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_4v-hpijs-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 4v hpijs"
 *ShortNickName: "HP LaserJet 4v hpijs"
-*NickName: "HP LaserJet 4v hpijs pcl3, 3.11.5"
+*NickName: "HP LaserJet 4v hpijs pcl3, 3.11.7"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
