@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.7"
+*FileVersion: "hpcups 3.11.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_850c.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 850c"
 *ShortNickName: "HP Deskjet 850c"
-*NickName: "HP Deskjet 850c, hpcups 3.11.7"
+*NickName: "HP Deskjet 850c, hpcups 3.11.10"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -176,9 +176,9 @@
 *OrderDependency: 10.0 AnySetup *OutputMode
 *DefaultOutputMode: NormalRGB
 *OutputMode NormalRGB/Normal: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(0)/cupsString0(PlainNormalColor)/HWResolution[300 300]>>setpagedevice"
-*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/cupsString0(PlainNormalGrayK)/OutputType(0)/HWResolution[300 300]>>setpagedevice"
+*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/cupsString0(PlainNormalGrayK)/OutputType(0)/HWResolution[300 300]>>setpagedevice"
 *OutputMode DraftRGB/Draft: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(-1)/cupsString0(PlainDraftColor)/HWResolution[300 300]>>setpagedevice"
-*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/OutputType(-1)/cupsString0(PlainDraftGrayK)/HWResolution[300 300]>>setpagedevice"
+*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(-1)/cupsString0(PlainDraftGrayK)/HWResolution[300 300]>>setpagedevice"
 *CloseUI: *OutputMode
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
@@ -216,4 +216,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_850c.ppd, 14473 bytes.
+*% End of hp-deskjet_850c.ppd, 14475 bytes.
