@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.10"
+*FileVersion: "hpcups 3.11.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_5.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet 5"
 *ShortNickName: "HP Color LaserJet 5"
-*NickName: "HP Color LaserJet 5, hpcups 3.11.10"
+*NickName: "HP Color LaserJet 5, hpcups 3.11.12"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -188,18 +188,6 @@
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
 *Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
 *CloseUI: *Duplex
-*OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 10.0 AnySetup *InputSlot
-*DefaultInputSlot: Auto
-*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
-*InputSlot PhotoTray/Photo Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Upper/Upper Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Lower/Lower Tray: "<</MediaPosition 4>>setpagedevice"
-*InputSlot Envelope/Envelope Feeder: "<</MediaPosition 3>>setpagedevice"
-*InputSlot LargeCapacity/Large Capacity Tray: "<</MediaPosition 5>>setpagedevice"
-*InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
-*InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
-*CloseUI: *InputSlot
 *OpenUI *ColorModel/Output Mode: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: RGB
@@ -263,4 +251,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_laserjet_5.ppd, 17252 bytes.
+*% End of hp-color_laserjet_5.ppd, 16561 bytes.

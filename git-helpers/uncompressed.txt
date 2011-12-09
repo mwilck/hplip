@@ -681,6 +681,7 @@
 ./ppd/hpcups/hp-photosmart_380_series.ppd
 ./ppd/hpcups/hp-photosmart_420_series.ppd
 ./ppd/hpcups/hp-photosmart_470_series.ppd
+./ppd/hpcups/hp-photosmart_5510d_series.ppd
 ./ppd/hpcups/hp-photosmart_5510_series.ppd
 ./ppd/hpcups/hp-photosmart_6510_series.ppd
 ./ppd/hpcups/hp-photosmart_7150.ppd
@@ -1504,6 +1505,7 @@
 ./ppd/hpijs/hp-photosmart_380_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_420_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_470_series-hpijs.ppd
+./ppd/hpijs/hp-photosmart_5510d_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_5510_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_6510_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7150-hpijs.ppd
@@ -2130,6 +2132,7 @@
 ./prnt/ps/hp-laserjet_1320_series-ps.ppd
 ./prnt/ps/HP_LaserJet_1320_Series-ps.ppd
 ./prnt/ps/hp-laserjet_1320tn-ps.ppd
+./prnt/ps/hp-laserjet_200_colormfp_m275-ps.ppd
 ./prnt/ps/hp-laserjet_2100-ps.ppd
 ./prnt/ps/hp-laserjet_2100_series-ps.ppd
 ./prnt/ps/HP_LaserJet_2100_Series-ps.ppd
@@ -2216,6 +2219,7 @@
 ./prnt/ps/HP_LaserJet_5Si_Mopier-ps.ppd
 ./prnt/ps/hp-laserjet_5si-ps.ppd
 ./prnt/ps/HP_LaserJet_5Si-ps.ppd
+./prnt/ps/hp-laserjet_600_m601_m602_m603-ps.ppd
 ./prnt/ps/hp-laserjet_6mp-ps.ppd
 ./prnt/ps/HP_LaserJet_6MP-ps.ppd
 ./prnt/ps/hp-laserjet_6p-ps.ppd

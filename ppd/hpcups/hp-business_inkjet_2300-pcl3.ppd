@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.10"
+*FileVersion: "hpcups 3.11.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_2300-pcl3.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 2300"
 *ShortNickName: "HP Business Inkjet 2300"
-*NickName: "HP Business Inkjet 2300 pcl3, hpcups 3.11.10"
+*NickName: "HP Business Inkjet 2300 pcl3, hpcups 3.11.12"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -168,18 +168,6 @@
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
 *Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
 *CloseUI: *Duplex
-*OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 10.0 AnySetup *InputSlot
-*DefaultInputSlot: Auto
-*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
-*InputSlot PhotoTray/Photo Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Upper/Upper Tray: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Lower/Lower Tray: "<</MediaPosition 4>>setpagedevice"
-*InputSlot Envelope/Envelope Feeder: "<</MediaPosition 3>>setpagedevice"
-*InputSlot LargeCapacity/Large Capacity Tray: "<</MediaPosition 5>>setpagedevice"
-*InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
-*InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
-*CloseUI: *InputSlot
 *OpenUI *ColorModel/Output Mode: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: RGB
@@ -199,6 +187,18 @@
 *OutputMode Draft: "<</OutputType(-1)/HWResolution[150 150]>>setpagedevice"
 *OutputMode Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
+*OpenUI *InputSlot/Media Source: PickOne
+*OrderDependency: 10.0 AnySetup *InputSlot
+*DefaultInputSlot: Auto
+*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
+*InputSlot PhotoTray/Photo Tray: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Upper/Upper Tray: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Lower/Lower Tray: "<</MediaPosition 4>>setpagedevice"
+*InputSlot Envelope/Envelope Feeder: "<</MediaPosition 3>>setpagedevice"
+*InputSlot LargeCapacity/Large Capacity Tray: "<</MediaPosition 5>>setpagedevice"
+*InputSlot Manual/Manual Feeder: "<</MediaPosition 2>>setpagedevice"
+*InputSlot MPTray/Multi Purpose Tray: "<</MediaPosition 1>>setpagedevice"
+*CloseUI: *InputSlot
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionDuplex/Duplexer Installed: Boolean
 *OrderDependency: 10.0 AnySetup *OptionDuplex

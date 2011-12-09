@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.10"
+*FileVersion: "hpcups 3.11.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_p1606dn.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Professional p1606dn"
 *ShortNickName: "HP LJ Professional p1606dn"
-*NickName: "HP LaserJet Professional p1606dn, hpcups 3.11.10, requires proprietary plugin"
+*NickName: "HP LaserJet Professional p1606dn, hpcups 3.11.12, requires proprietary plugin"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -29,7 +29,9 @@
 *cupsBackSide: "Rotated"
 *cupsFlipDuplex: True
 *hpPrinterLanguage: "ljzjstream"
-*cupsIPPReason hplip.plugin-error/printer requires a binary plugin, run hp-setup: ""
+*hpPrinterPlatform: "ljzjsmono"
+*hpReverseRasterPages: "1"
+*cupsIPPReason hplip.plugin-error/HP Device requires a proprietary binary Plug-in, run hp-plugin: ""
 *cupsModelName: "HP LaserJet 1018"
 *1284DeviceID: "MFG:HP;MDL:hp laserjet professional p1606dn;DES:hp laserjet professional p1606dn;"
 *cupsVersion: 1.3
@@ -253,4 +255,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_professional_p1606dn.ppd, 15197 bytes.
+*% End of hp-laserjet_professional_p1606dn.ppd, 15272 bytes.

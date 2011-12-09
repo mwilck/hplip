@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.11.10"
+*FileVersion: "hpijs 3.11.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4255-hpijs.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4255 hpijs"
 *ShortNickName: "HP Officejet 4255 hpijs"
-*NickName: "HP Officejet 4255 hpijs, 3.11.10"
+*NickName: "HP Officejet 4255 hpijs, 3.11.12"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

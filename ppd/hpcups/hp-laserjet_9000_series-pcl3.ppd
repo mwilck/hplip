@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.10"
+*FileVersion: "hpcups 3.11.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_9000_series-pcl3.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 9000 Series"
 *ShortNickName: "HP LaserJet 9000 Series"
-*NickName: "HP LaserJet 9000 Series pcl3, hpcups 3.11.10"
+*NickName: "HP LaserJet 9000 Series pcl3, hpcups 3.11.12"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
