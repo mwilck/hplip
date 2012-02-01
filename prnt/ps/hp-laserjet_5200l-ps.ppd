@@ -47,8 +47,6 @@
 *HPPDEPanel: "HPFinishingPanel"
 
 *HPPDEPanel: "HPImagingOptions"
-*HPPDEPanel: "HPJobRetention"
-*HPPDEPanel: "HPWatermarks"
 *HPPDEPanel: "HPServices"
 
 
@@ -387,11 +385,7 @@ EWS;;http://%s/
 
 *% Job Storage & Mopier constraints
 *%------------------------------------------------------------
-*UIConstraints: *HPCollateSupported False 	*HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *HPCollateSupported False 	*HPJobRetentionOption HPJobRetentionPrivate
 
-*UIConstraints: *HPJobRetentionOption HPJobRetentionProof *HPCollateSupported False
-*UIConstraints: *HPJobRetentionOption HPJobRetentionPrivate *HPCollateSupported False
 
 
 *UIConstraints: *HPCollateSupported False	*Collate True
@@ -403,13 +397,8 @@ EWS;;http://%s/
 
 *% Fills not allowed with overlays
 *%------------------------------------------------------------
-*UIConstraints: *HPwmSwitch Overlay 		*HPwmTextStyle Fill
-*UIConstraints: *HPwmTextStyle Fill 		*HPwmSwitch Overlay
 
-*% Halo style does not work with Watermarks
 *%------------------------------------------------------------
-*UIConstraints: *HPwmSwitch Watermark 		*HPwmTextStyle Halo
-*UIConstraints: *HPwmTextStyle Halo 		*HPwmSwitch Watermark
 
 
 *% ===================================
@@ -1519,332 +1508,6 @@ EWS;;http://%s/
 	0xf900 0xfa2d
 	"
 *End
-*OpenGroup: HPJobRetention/Job Storage
-*ko.Translation HPJobRetention/작업 저장: ""
-*zh_CN.Translation HPJobRetention/作业存储: ""
-*zh_TW.Translation HPJobRetention/工作儲存: ""
-
-
-*% =================================
-*% Job Retention
-*% =================================
-*% The UserName setting is obtained from the print job. This may not work on non-Mac drivers.
-*OpenUI *HPJobRetentionOption/Mode: PickOne
-*OrderDependency: 13 Prolog *HPJobRetentionOption
-*DefaultHPJobRetentionOption: HPJobRetentionOff
-*ko.Translation HPJobRetentionOption/모드: ""
-*zh_CN.Translation HPJobRetentionOption/模式: ""
-*zh_TW.Translation HPJobRetentionOption/模式: ""
-
-
-*HPJobRetentionOption HPJobRetentionProof/Proof and Hold: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 3 >>
-	>> setpagedevice
-"
-*End
-*ko.HPJobRetentionOption HPJobRetentionProof/교정쇄 및 보유: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionProof/审校待打印: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionProof/校對和暫停: ""
-
-
-*HPJobRetentionOption HPJobRetentionPrivate/Private Job: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 1 /HoldType 1 >>
-	>> setpagedevice
-"
-*End
-*ko.HPJobRetentionOption HPJobRetentionPrivate/PIN 필요 작업: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionPrivate/私人的作业: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionPrivate/個人的工作: ""
-*HPJobRetentionOption HPJobRetentionOff/Off: "
-	<< /CollateDetails
-	<< /Type 8 /Hold 0 >> >> setpagedevice
-"
-*End
-*ko.HPJobRetentionOption HPJobRetentionOff/끄기: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionOff/关: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionOff/關: ""
-
-*CloseUI: *HPJobRetentionOption
-
-*% ================= Job Storage Descriptions ====================
-
-*HPJobRetentionOptionDS HPJobRetentionProof: HPJOBRETENTIONOPTION_PROOFANDPRINT_DS
-
-*HPJobRetentionOptionDS HPJobRetentionPrivate: HPJOBRETENTIONOPTION_PRIVATE_DS
-
-
-*HPJobRetentionOptionDS HPJobRetentionOff: HPJOBRETENTIONOPTION_OFF_DS
-
-*% ===========================================================
-*OpenUI *HPDuplicateJobMode/If Job Name Exists: PickOne
-*OrderDependency: 14 Prolog *HPDuplicateJobMode
-*DefaultHPDuplicateJobMode: Unique
-*ko.Translation HPDuplicateJobMode/작업명이 있는 경우: ""
-*zh_CN.Translation HPDuplicateJobMode/如果作业名存在: ""
-*zh_TW.Translation HPDuplicateJobMode/如果工作名稱存在: ""
-
-
-*HPDuplicateJobMode Unique/Use Job Name + (1-99): "
-	<< /CollateDetails << /Type 8 /DuplicateJob 0 >> >> setpagedevice
-"
-*End
-*ko.HPDuplicateJobMode Unique/작업명 + (1-99) 사용: ""
-*zh_CN.HPDuplicateJobMode Unique/使用作业名 + (1-99): ""
-*zh_TW.HPDuplicateJobMode Unique/使用工作名稱 + (1-99): ""
-
-*HPDuplicateJobMode Overwrite/Replace Existing File: "
-	<< /CollateDetails << /Type 8 /DuplicateJob 1 >> >> setpagedevice
-"
-*End
-*ko.HPDuplicateJobMode Overwrite/기존 파일 바꾸기: ""
-*zh_CN.HPDuplicateJobMode Overwrite/替换现有文件: ""
-*zh_TW.HPDuplicateJobMode Overwrite/更換現有檔案: ""
-
-*CloseUI: *HPDuplicateJobMode
-
-
-*OpenUI *HPUserName/User Name: PickOne
-*% The UserName setting is obtained from the print job. This will not work unchanged on non-Mac drivers.
-*% The PS code has been written to put in default user and job names if they are not available from the job.
-*% User specification of UserName works only with LW 8.5.1 or later. It will not work with non-Mac drivers.
-*% If the driver does not support text entry UI the UserName will always be obtained from the print job.
-*% The user is allowed to set the user name to allow organization of jobs in the printer.
-*% For example, all forms could be stored under UserName "Forms".
-*OrderDependency: 16 Prolog *HPUserName
-*DefaultHPUserName: FileSharingName
-*ko.Translation HPUserName/사용자 이름: ""
-*zh_CN.Translation HPUserName/用户名称: ""
-*zh_TW.Translation HPUserName/使用者名稱: ""
-
-*HPUserName FileSharingName/Use File Sharing Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName /dscInfo where
-				{ /dscInfo get dup /For known
-					{/For get}
-					{pop (No User Name)} ifelse}
-				{(No User Name)}ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*ko.HPUserName FileSharingName/파일 공유 이름 사용: ""
-*zh_CN.HPUserName FileSharingName/使用文件共享名: ""
-*zh_TW.HPUserName FileSharingName/使用檔案分享名稱: ""
-
-*HPUserName Forms/Forms: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName (Forms)
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*ko.HPUserName Forms/양식: ""
-*zh_CN.HPUserName Forms/表格: ""
-*zh_TW.HPUserName Forms/表格: ""
-
-*HPUserName Set/Custom User Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/UserName /dscInfo where
-				{ /dscInfo get dup /For known
-					{/For get}
-					{pop (No User Name)} ifelse}
-				{(No User Name)}ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*ko.HPUserName Set/사용자 정의 사용자 이름: ""
-*zh_CN.HPUserName Set/自定义用户名称: ""
-*zh_TW.HPUserName Set/自訂使用者名稱: ""
-
-*CloseUI: *HPUserName
-*% Allows LW 8.5.1 and above to use custom strings
-*RBISetHPUserName Data: "() 80"
-*RBISetHPUserName Code: "
-	<< /CollateDetails
-		<< /Type 8 /UserName 7 -1 roll
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop (No User Name) } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-
-*OpenUI *HPJobName/Job Name: PickOne
-*% The JobMgrName setting is obtained from the print job. This may not work on non-Mac drivers.
-*% User specification of Jobname works only with LW 8.5.1 or later. It will not work with non-Mac drivers.
-*% If the driver does not support text entry UI the JobMgrName will always be obtained from the print job.
-*OrderDependency: 17 Prolog *HPJobName
-*DefaultHPJobName: DocName
-*ko.Translation HPJobName/작업명: ""
-*zh_CN.Translation HPJobName/作业名称: ""
-*zh_TW.Translation HPJobName/列印工作名稱: ""
-
-*HPJobName DocName/Use Document Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/JobMgrName /dscInfo where
-				{ /dscInfo get dup /Title known
-					{/Title get}
-					{pop ()} ifelse}
-				{()}ifelse
-			/dscInfo where
-				{ /dscInfo get dup /Creator known
-					{
-						/Creator get dup 0 exch
-						{ dup 32 eq exch dup 64 gt exch 122 le and or { 1 add } { exit } ifelse } forall
-						0 exch getinterval anchorsearch { pop } if
-					}
-					{pop} ifelse
-				} if
-			{ (:) search
-				{ pop pop }
-				{ exit }
-				ifelse
-			} loop
-			dup 0 exch { false ( -) { 2 index eq or } forall exch pop { 1 add } { exit } ifelse } forall
-			dup 0 eq { pop } { dup 2 index length exch sub getinterval } ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*ko.HPJobName DocName/문서명 사용: ""
-*zh_CN.HPJobName DocName/使用文档名称: ""
-*zh_TW.HPJobName DocName/使用文件名稱: ""
-
-*HPJobName Set/User Specified Job Name: "
-	<< /CollateDetails
-		<< /Type 8
-			/JobMgrName /dscInfo where
-				{ /dscInfo get dup /Title known
-					{/Title get}
-					{pop ()} ifelse}
-				{()}ifelse
-			/dscInfo where
-				{ /dscInfo get dup /Creator known
-					{
-						/Creator get dup 0 exch
-						{ dup 32 eq exch dup 64 gt exch 122 le and or { 1 add } { exit } ifelse } forall
-						0 exch getinterval anchorsearch { pop } if
-					}
-					{pop} ifelse
-				} if
-			{ (:) search
-				{ pop pop }
-				{ exit }
-				ifelse
-			} loop
-			dup 0 exch { false ( -) { 2 index eq or } forall exch pop { 1 add } { exit } ifelse } forall
-			dup 0 eq { pop } { dup 2 index length exch sub getinterval } ifelse
-			dup length 80 gt { 0 80 getinterval } if
-			dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*ko.HPJobName Set/사용자 정의 작업명: ""
-*zh_CN.HPJobName Set/自定义作业名称: ""
-*zh_TW.HPJobName Set/自訂列印工作名稱: ""
-
-*CloseUI: *HPJobName
-*% Allows LW 8.5.1 and above to use custom strings
-*RBISetHPJobName Data: "() 80"
-*RBISetHPJobName Code: "
-	<< /CollateDetails
-		<< /Type 8 /JobMgrName 7 -1 roll
-			{ (:) search
-				{ pop pop
-					{ ( ) anchorsearch
-						{ pop }
-						{ exit }
-						ifelse
-					} loop
-				}
-				{ exit }
-				ifelse
-			} loop dup true exch { 32 eq not { false exch pop } if } forall
-			{ pop () } if
-			0 1 2 index length 1 sub
-			{ dup 2 index exch get dup 97 ge 1 index 122 le and
-				{ 32 sub 2 index 3 1 roll put }
-				{ pop pop } ifelse
-			} for
-		>>
-	>> setpagedevice
-"
-*End
-*HPCustomUserName Title/User Name: ""
-*ko.HPCustomUserName Title/사용자 이름: ""
-*zh_CN.HPCustomUserName Title/用户名称: ""
-*zh_TW.HPCustomUserName Title/使用者名稱: ""
-
-*HPCustomUserName Range: 1 15
-*HPCustomUserName Type: string
-
-*HPCustomJobName Title/Job Name: ""
-*ko.HPCustomJobName Title/작업명: ""
-*zh_CN.HPCustomJobName Title/作业名称: ""
-*zh_TW.HPCustomJobName Title/列印工作名稱: ""
-
-*HPCustomJobName Range: 1 15
-*HPCustomJobName Type: string
-
-*HPPinToPrint Title/PIN To Print: ""
-*ko.HPPinToPrint Title/인쇄 PIN: ""
-*zh_CN.HPPinToPrint Title/打印 PIN: ""
-*zh_TW.HPPinToPrint Title/列印的 PIN: ""
-
-*HPPinToPrint Range: 1 4
-*HPPinToPrint Type: string
-*HPPinToPrint Default: "0000"
-*HPPinToPrint CharSet: "0x0030 0x0039"
-
-*CloseGroup: HPJobRetention
 
 
 *OpenGroup: HPFinishing/Finishing
@@ -2902,440 +2565,109 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }"
 "
 *End
 
-*%The following are here for the Mac OS X Watermark plugin
 
 
-*OpenGroup: HPWaterMarks/Watermark/Overlay
-*ko.Translation HPWaterMarks/OGHPWATERMARKS: ""
-*zh_CN.Translation HPWaterMarks/OGHPWATERMARKS: ""
-*zh_TW.Translation HPWaterMarks/OGHPWATERMARKS: ""
 
 
 *% =================================
-*%  Watermark Printing
 *% =================================
-*OpenUI *HPwmSwitch/Mode:  PickOne
-*OrderDependency: 10000 AnySetup *HPwmSwitch
-*DefaultHPwmSwitch: Off
-*ko.Translation HPwmSwitch/모드: ""
-*zh_CN.Translation HPwmSwitch/模式: ""
-*zh_TW.Translation HPwmSwitch/模式: ""
 
-*HPwmSwitch Off/None: ""
-*ko.HPwmSwitch Off/없음: ""
-*zh_CN.HPwmSwitch Off/无: ""
-*zh_TW.HPwmSwitch Off/無: ""
 
-*HPwmSwitch Watermark/Watermark: ""
-*ko.HPwmSwitch Watermark/워터마크: ""
-*zh_CN.HPwmSwitch Watermark/水印: ""
-*zh_TW.HPwmSwitch Watermark/浮水印: ""
 
-*HPwmSwitch Overlay/Overlay: ""
-*ko.HPwmSwitch Overlay/중첩: ""
-*zh_CN.HPwmSwitch Overlay/覆盖: ""
-*zh_TW.HPwmSwitch Overlay/重疊: ""
 
-*CloseUI: *HPwmSwitch
 
 *% =================================
-*%  Watermark Pages
 *% =================================
-*OpenUI *HPwmPages/Pages:  PickOne
-*OrderDependency: 67 AnySetup *HPwmPages
-*DefaultHPwmPages: AllPages
-*ko.Translation HPwmPages/페이지: ""
-*zh_CN.Translation HPwmPages/页面: ""
-*zh_TW.Translation HPwmPages/頁數: ""
 
-*HPwmPages AllPages/All Pages: ""
-*ko.HPwmPages AllPages/모든 페이지: ""
-*zh_CN.HPwmPages AllPages/所有页: ""
-*zh_TW.HPwmPages AllPages/所有頁: ""
 
-*HPwmPages FirstPage/First Only: ""
-*ko.HPwmPages FirstPage/첫 페이지: ""
-*zh_CN.HPwmPages FirstPage/第一页: ""
-*zh_TW.HPwmPages FirstPage/第一頁: ""
 
-*CloseUI: *HPwmPages
 
 *% =================================
-*%  Watermark Text
 *% =================================
-*OpenUI *HPwmTextMessage/Text:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextMessage
-*DefaultHPwmTextMessage: Draft
-*ko.Translation HPwmTextMessage/문자: ""
-*zh_CN.Translation HPwmTextMessage/文本: ""
-*zh_TW.Translation HPwmTextMessage/文字: ""
 
-*HPwmTextMessage Draft/Draft: ""
-*ko.HPwmTextMessage Draft/초안: ""
-*zh_CN.HPwmTextMessage Draft/草稿: ""
-*zh_TW.HPwmTextMessage Draft/草稿: ""
 
-*HPwmTextMessage CompanyConfidential/Company Confidential: ""
-*ko.HPwmTextMessage CompanyConfidential/대외비: ""
-*zh_CN.HPwmTextMessage CompanyConfidential/公司机密: ""
-*zh_TW.HPwmTextMessage CompanyConfidential/公司機密: ""
 
-*HPwmTextMessage CompanyProprietary/Company Proprietary: ""
-*ko.HPwmTextMessage CompanyProprietary/회사 소유: ""
-*zh_CN.HPwmTextMessage CompanyProprietary/公司专有: ""
-*zh_TW.HPwmTextMessage CompanyProprietary/公司專有: ""
 
-*HPwmTextMessage CompanyPrivate/Company Private: ""
-*ko.HPwmTextMessage CompanyPrivate/회사 비밀: ""
-*zh_CN.HPwmTextMessage CompanyPrivate/公司专用: ""
-*zh_TW.HPwmTextMessage CompanyPrivate/公司私有資料: ""
 
-*HPwmTextMessage Confidential/Confidential: ""
-*ko.HPwmTextMessage Confidential/기밀 문서: ""
-*zh_CN.HPwmTextMessage Confidential/机密: ""
-*zh_TW.HPwmTextMessage Confidential/機密文件: ""
 
-*HPwmTextMessage Copy/Copy: ""
-*ko.HPwmTextMessage Copy/사본: ""
-*zh_CN.HPwmTextMessage Copy/拷贝: ""
-*zh_TW.HPwmTextMessage Copy/副本: ""
 
-*HPwmTextMessage Copyright/Copyright: ""
-*ko.HPwmTextMessage Copyright/저작권: ""
-*zh_CN.HPwmTextMessage Copyright/版权所有: ""
-*zh_TW.HPwmTextMessage Copyright/著作權: ""
 
-*HPwmTextMessage FileCopy/File Copy: ""
-*ko.HPwmTextMessage FileCopy/파일 사본: ""
-*zh_CN.HPwmTextMessage FileCopy/文件拷贝: ""
-*zh_TW.HPwmTextMessage FileCopy/檔案拷貝: ""
 
-*HPwmTextMessage Final/Final: ""
-*ko.HPwmTextMessage Final/최종: ""
-*zh_CN.HPwmTextMessage Final/终稿: ""
-*zh_TW.HPwmTextMessage Final/最終定稿: ""
 
-*HPwmTextMessage ForInternalUse/For Internal Use Only: ""
-*ko.HPwmTextMessage ForInternalUse/내부용: ""
-*zh_CN.HPwmTextMessage ForInternalUse/仅限内部使用: ""
-*zh_TW.HPwmTextMessage ForInternalUse/僅供內部使用: ""
 
-*HPwmTextMessage Preliminary/Preliminary: ""
-*ko.HPwmTextMessage Preliminary/준비용: ""
-*zh_CN.HPwmTextMessage Preliminary/初稿: ""
-*zh_TW.HPwmTextMessage Preliminary/初稿: ""
 
-*HPwmTextMessage Proof/Proof: ""
-*ko.HPwmTextMessage Proof/교정용: ""
-*zh_CN.HPwmTextMessage Proof/校样: ""
-*zh_TW.HPwmTextMessage Proof/校對稿: ""
 
-*HPwmTextMessage ReviewCopy/Review Copy: ""
-*ko.HPwmTextMessage ReviewCopy/검토 사본: ""
-*zh_CN.HPwmTextMessage ReviewCopy/审阅稿: ""
-*zh_TW.HPwmTextMessage ReviewCopy/審閱稿: ""
 
-*HPwmTextMessage Sample/Sample: ""
-*ko.HPwmTextMessage Sample/견본: ""
-*zh_CN.HPwmTextMessage Sample/样本: ""
-*zh_TW.HPwmTextMessage Sample/樣本: ""
 
-*HPwmTextMessage TopSecret/Top Secret: ""
-*ko.HPwmTextMessage TopSecret/일급 비밀: ""
-*zh_CN.HPwmTextMessage TopSecret/绝密: ""
-*zh_TW.HPwmTextMessage TopSecret/最高機密: ""
 
-*HPwmTextMessage Urgent/Urgent: ""
-*ko.HPwmTextMessage Urgent/긴급: ""
-*zh_CN.HPwmTextMessage Urgent/急件: ""
-*zh_TW.HPwmTextMessage Urgent/緊急的: ""
 
-*HPwmTextMessage Set/Custom: ""
-*ko.HPwmTextMessage Set/사용자 정의: ""
-*zh_CN.HPwmTextMessage Set/这是自定义颜色设置: ""
-*zh_TW.HPwmTextMessage Set/自訂: ""
 
-*CloseUI: *HPwmTextMessage
 
 
 *% ========================================================
-*% Custom support text field for HPwmTextMessage Set/Custom
 *% ========================================================
 
-*HPwmCustomText Title: ""
-*HPwmCustomText Range: 1 50
-*HPwmCustomText Type: string
-*HPwmCustomText Default: ""
 *% =================================
-*%  Watermark Font
 *% =================================
-*OpenUI *HPwmFontName/Font: PickOne
-*OrderDependency: 65 AnySetup *HPwmFontName
-*DefaultHPwmFontName: HelveticaB
-*ko.Translation HPwmFontName/폰트: ""
-*zh_CN.Translation HPwmFontName/字体: ""
-*zh_TW.Translation HPwmFontName/字型: ""
 
-*HPwmFontName CourierB/Courier Bold: ""
-*ko.HPwmFontName CourierB/Courier Bold: ""
-*zh_CN.HPwmFontName CourierB/Courier 黑体: ""
-*zh_TW.HPwmFontName CourierB/Courier 粗體: ""
 
-*HPwmFontName HelveticaB/Helvetica Bold: ""
-*ko.HPwmFontName HelveticaB/Helvetica Bold: ""
-*zh_CN.HPwmFontName HelveticaB/Helvetica 黑体: ""
-*zh_TW.HPwmFontName HelveticaB/Helvetica 粗體: ""
 
-*HPwmFontName TimesB/Times Bold: ""
-*ko.HPwmFontName TimesB/Times Bold: ""
-*zh_CN.HPwmFontName TimesB/Times 黑体: ""
-*zh_TW.HPwmFontName TimesB/Times 粗體: ""
 
-*CloseUI: *HPwmFontName
 
 *% =================================
-*%  Watermark Size
 *% =================================
-*OpenUI *HPwmFontSize/Size:  PickOne
-*OrderDependency: 65 AnySetup *HPwmFontSize
-*DefaultHPwmFontSize: pt48
-*ko.Translation HPwmFontSize/크기(포인트): ""
-*zh_CN.Translation HPwmFontSize/字号（磅）: ""
-*zh_TW.Translation HPwmFontSize/大小 (以點數計): ""
 
-*HPwmFontSize pt24/24: ""
-*ko.HPwmFontSize pt24/24: ""
-*zh_CN.HPwmFontSize pt24/24: ""
-*zh_TW.HPwmFontSize pt24/24: ""
 
-*HPwmFontSize pt30/30: ""
-*ko.HPwmFontSize pt30/30: ""
-*zh_CN.HPwmFontSize pt30/30: ""
-*zh_TW.HPwmFontSize pt30/30: ""
 
-*HPwmFontSize pt36/36: ""
-*ko.HPwmFontSize pt36/36: ""
-*zh_CN.HPwmFontSize pt36/36: ""
-*zh_TW.HPwmFontSize pt36/36: ""
 
-*HPwmFontSize pt42/42: ""
-*ko.HPwmFontSize pt42/42: ""
-*zh_CN.HPwmFontSize pt42/42: ""
-*zh_TW.HPwmFontSize pt42/42: ""
 
-*HPwmFontSize pt48/48: ""
-*ko.HPwmFontSize pt48/48: ""
-*zh_CN.HPwmFontSize pt48/48: ""
-*zh_TW.HPwmFontSize pt48/48: ""
 
-*HPwmFontSize pt54/54: ""
-*ko.HPwmFontSize pt54/54: ""
-*zh_CN.HPwmFontSize pt54/54: ""
-*zh_TW.HPwmFontSize pt54/54: ""
 
-*HPwmFontSize pt60/60: ""
-*ko.HPwmFontSize pt60/60: ""
-*zh_CN.HPwmFontSize pt60/60: ""
-*zh_TW.HPwmFontSize pt60/60: ""
 
-*HPwmFontSize pt66/66: ""
-*ko.HPwmFontSize pt66/66: ""
-*zh_CN.HPwmFontSize pt66/66: ""
-*zh_TW.HPwmFontSize pt66/66: ""
 
-*HPwmFontSize pt72/72: ""
-*ko.HPwmFontSize pt72/72: ""
-*zh_CN.HPwmFontSize pt72/72: ""
-*zh_TW.HPwmFontSize pt72/72: ""
 
-*HPwmFontSize pt78/78: ""
-*ko.HPwmFontSize pt78/78: ""
-*zh_CN.HPwmFontSize pt78/78: ""
-*zh_TW.HPwmFontSize pt78/78: ""
 
-*HPwmFontSize pt84/84: ""
-*ko.HPwmFontSize pt84/84: ""
-*zh_CN.HPwmFontSize pt84/84: ""
-*zh_TW.HPwmFontSize pt84/84: ""
 
-*HPwmFontSize pt90/90: ""
-*ko.HPwmFontSize pt90/90: ""
-*zh_CN.HPwmFontSize pt90/90: ""
-*zh_TW.HPwmFontSize pt90/90: ""
 
-*CloseUI: *HPwmFontSize
 
 *% =================================
-*%  Watermark Angle
 *% =================================
-*OpenUI *HPwmTextAngle/Angle:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextAngle
-*DefaultHPwmTextAngle: Deg45
-*ko.Translation HPwmTextAngle/각도: ""
-*zh_CN.Translation HPwmTextAngle/角度: ""
-*zh_TW.Translation HPwmTextAngle/角度: ""
 
-*HPwmTextAngle Deg90/90: ""
-*ko.HPwmTextAngle Deg90/90°: ""
-*zh_CN.HPwmTextAngle Deg90/90°: ""
-*zh_TW.HPwmTextAngle Deg90/90°: ""
 
-*HPwmTextAngle Deg75/75: ""
-*ko.HPwmTextAngle Deg75/75°: ""
-*zh_CN.HPwmTextAngle Deg75/75°: ""
-*zh_TW.HPwmTextAngle Deg75/75°: ""
 
-*HPwmTextAngle Deg60/60: ""
-*ko.HPwmTextAngle Deg60/60°: ""
-*zh_CN.HPwmTextAngle Deg60/60°: ""
-*zh_TW.HPwmTextAngle Deg60/60°: ""
 
-*HPwmTextAngle Deg45/45: ""
-*ko.HPwmTextAngle Deg45/45°: ""
-*zh_CN.HPwmTextAngle Deg45/45°: ""
-*zh_TW.HPwmTextAngle Deg45/45°: ""
 
-*HPwmTextAngle Deg30/30: ""
-*ko.HPwmTextAngle Deg30/30°: ""
-*zh_CN.HPwmTextAngle Deg30/30°: ""
-*zh_TW.HPwmTextAngle Deg30/30°: ""
 
-*HPwmTextAngle Deg15/15: ""
-*ko.HPwmTextAngle Deg15/15°: ""
-*zh_CN.HPwmTextAngle Deg15/15°: ""
-*zh_TW.HPwmTextAngle Deg15/15°: ""
 
-*HPwmTextAngle Deg0/0: ""
-*ko.HPwmTextAngle Deg0/0°: ""
-*zh_CN.HPwmTextAngle Deg0/0°: ""
-*zh_TW.HPwmTextAngle Deg0/0°: ""
 
-*HPwmTextAngle DegN15/-15: ""
-*ko.HPwmTextAngle DegN15/-15°: ""
-*zh_CN.HPwmTextAngle DegN15/-15°: ""
-*zh_TW.HPwmTextAngle DegN15/-15°: ""
 
-*HPwmTextAngle DegN30/-30: ""
-*ko.HPwmTextAngle DegN30/-30°: ""
-*zh_CN.HPwmTextAngle DegN30/-30°: ""
-*zh_TW.HPwmTextAngle DegN30/-30°: ""
 
-*HPwmTextAngle DegN45/-45: ""
-*ko.HPwmTextAngle DegN45/-45°: ""
-*zh_CN.HPwmTextAngle DegN45/-45°: ""
-*zh_TW.HPwmTextAngle DegN45/-45°: ""
 
-*HPwmTextAngle DegN60/-60: ""
-*ko.HPwmTextAngle DegN60/-60°: ""
-*zh_CN.HPwmTextAngle DegN60/-60°: ""
-*zh_TW.HPwmTextAngle DegN60/-60°: ""
 
-*HPwmTextAngle DegN75/-75: ""
-*ko.HPwmTextAngle DegN75/-75°: ""
-*zh_CN.HPwmTextAngle DegN75/-75°: ""
-*zh_TW.HPwmTextAngle DegN75/-75°: ""
 
-*HPwmTextAngle DegN90/-90: ""
-*ko.HPwmTextAngle DegN90/-90°: ""
-*zh_CN.HPwmTextAngle DegN90/-90°: ""
-*zh_TW.HPwmTextAngle DegN90/-90°: ""
 
-*CloseUI: *HPwmTextAngle
 
 *% =================================
-*%  Watermark Style
 *% =================================
-*OpenUI *HPwmTextStyle/Style:  PickOne
-*OrderDependency: 65 AnySetup *HPwmTextStyle
-*DefaultHPwmTextStyle: Medium
-*ko.Translation HPwmTextStyle/스타일: ""
-*zh_CN.Translation HPwmTextStyle/样式: ""
-*zh_TW.Translation HPwmTextStyle/樣式: ""
 
-*HPwmTextStyle Thin/Thin Outline: ""
-*ko.HPwmTextStyle Thin/얇은 외곽선: ""
-*zh_CN.HPwmTextStyle Thin/细轮廓: ""
-*zh_TW.HPwmTextStyle Thin/細框: ""
 
-*HPwmTextStyle Medium/Medium Outline: ""
-*ko.HPwmTextStyle Medium/중간 외곽선: ""
-*zh_CN.HPwmTextStyle Medium/中轮廓: ""
-*zh_TW.HPwmTextStyle Medium/中等輪廓線: ""
 
-*HPwmTextStyle Thick/Thick Outline: ""
-*ko.HPwmTextStyle Thick/두꺼운 외곽선: ""
-*zh_CN.HPwmTextStyle Thick/粗轮廓: ""
-*zh_TW.HPwmTextStyle Thick/粗框: ""
 
-*HPwmTextStyle Halo/Thick Outline with Halo: ""
-*ko.HPwmTextStyle Halo/무리가 있는 두꺼운 외곽선: ""
-*zh_CN.HPwmTextStyle Halo/粗轮廓，带晕圈: ""
-*zh_TW.HPwmTextStyle Halo/粗框，並有光暈環繞效果: ""
 
-*HPwmTextStyle Fill/Filled: ""
-*ko.HPwmTextStyle Fill/채워짐: ""
-*zh_CN.HPwmTextStyle Fill/填充: ""
-*zh_TW.HPwmTextStyle Fill/填滿: ""
 
-*CloseUI: *HPwmTextStyle
 
 *% =================================
-*%  WaterMark Brightness
 *% =================================
-*OpenUI *HPwmBrightness/Intensity:  PickOne
-*OrderDependency: 63 AnySetup *HPwmBrightness
-*DefaultHPwmBrightness: Medium
-*ko.Translation HPwmBrightness/강도: ""
-*zh_CN.Translation HPwmBrightness/浓度: ""
-*zh_TW.Translation HPwmBrightness/濃度: ""
 
-*HPwmBrightness Darkest/Darkest: ""
-*ko.HPwmBrightness Darkest/가장 어두움: ""
-*zh_CN.HPwmBrightness Darkest/最深: ""
-*zh_TW.HPwmBrightness Darkest/最深: ""
 
-*HPwmBrightness Darker/Darker: ""
-*ko.HPwmBrightness Darker/아주 어두움: ""
-*zh_CN.HPwmBrightness Darker/很深: ""
-*zh_TW.HPwmBrightness Darker/很深: ""
 
-*HPwmBrightness Dark/Dark: ""
-*ko.HPwmBrightness Dark/어둡게: ""
-*zh_CN.HPwmBrightness Dark/深: ""
-*zh_TW.HPwmBrightness Dark/深: ""
 
-*HPwmBrightness MediumDark/Medium Dark: ""
-*ko.HPwmBrightness MediumDark/중간 어두음: ""
-*zh_CN.HPwmBrightness MediumDark/中等深: ""
-*zh_TW.HPwmBrightness MediumDark/較淡的深色: ""
 
-*HPwmBrightness Medium/Medium: ""
-*ko.HPwmBrightness Medium/중간: ""
-*zh_CN.HPwmBrightness Medium/中等: ""
-*zh_TW.HPwmBrightness Medium/中等: ""
 
-*HPwmBrightness MediumLight/Medium Light: ""
-*ko.HPwmBrightness MediumLight/중간 밝음: ""
-*zh_CN.HPwmBrightness MediumLight/中等淡: ""
-*zh_TW.HPwmBrightness MediumLight/較深的淡色: ""
 
-*HPwmBrightness Light/Light: ""
-*ko.HPwmBrightness Light/밝게: ""
-*zh_CN.HPwmBrightness Light/淡: ""
-*zh_TW.HPwmBrightness Light/淡: ""
 
-*HPwmBrightness Lighter/Lighter: ""
-*ko.HPwmBrightness Lighter/아주 밝음: ""
-*zh_CN.HPwmBrightness Lighter/很淡: ""
-*zh_TW.HPwmBrightness Lighter/很淡: ""
 
-*HPwmBrightness Lightest/Lightest: ""
-*ko.HPwmBrightness Lightest/가장 밝음: ""
-*zh_CN.HPwmBrightness Lightest/最淡: ""
-*zh_TW.HPwmBrightness Lightest/最淡: ""
 
-*CloseUI: *HPwmBrightness
-*CloseGroup: HPWaterMarks
 
 
 *%=================================================

@@ -173,6 +173,7 @@
 ./ppd/hpcups/hp-color_laserjet_cm6040_mfp.ppd
 ./ppd/hpcups/hp-color_laserjet_cm6049_mfp.ppd
 ./ppd/hpcups/hp-color_laserjet_cp1215.ppd
+./ppd/hpcups/hp-color_laserjet_cp1217.ppd
 ./ppd/hpcups/hp-color_laserjet_cp1514n-pcl3.ppd
 ./ppd/hpcups/hp-color_laserjet_cp1515n-pcl3.ppd
 ./ppd/hpcups/hp-color_laserjet_cp1518ni-pcl3.ppd
@@ -546,8 +547,11 @@
 ./ppd/hpcups/hp-laserjet_professional_m1217nfw_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_m1219nf_mfp.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102.ppd
+./ppd/hpcups/hp-laserjet_professional_p1102s.ppd
 ./ppd/hpcups/hp-laserjet_professional_p_1102w.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1102w.ppd
+./ppd/hpcups/hp-laserjet_professional_p1106.ppd
+./ppd/hpcups/hp-laserjet_professional_p1108.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1566.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1606dn.ppd
 ./ppd/hpcups/hp-mopier_240-pcl3.ppd
@@ -997,6 +1001,7 @@
 ./ppd/hpijs/hp-color_laserjet_cm6040_mfp-hpijs.ppd
 ./ppd/hpijs/hp-color_laserjet_cm6049_mfp-hpijs.ppd
 ./ppd/hpijs/hp-color_laserjet_cp1215-hpijs.ppd
+./ppd/hpijs/hp-color_laserjet_cp1217-hpijs.ppd
 ./ppd/hpijs/hp-color_laserjet_cp1514n-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-color_laserjet_cp1515n-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-color_laserjet_cp1518ni-hpijs-pcl3.ppd
@@ -1370,8 +1375,11 @@
 ./ppd/hpijs/hp-laserjet_professional_m1217nfw_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_m1219nf_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_p1102s-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p_1102w-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1102w-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_p1106-hpijs.ppd
+./ppd/hpijs/hp-laserjet_professional_p1108-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1566-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1606dn-hpijs.ppd
 ./ppd/hpijs/hp-mopier_240-hpijs-pcl3.ppd
@@ -2306,6 +2314,8 @@
 ./prnt/ps/hp-laserjet_p4515tn-ps.ppd
 ./prnt/ps/hp-laserjet_p4515xm-ps.ppd
 ./prnt/ps/hp-laserjet_p4515x-ps.ppd
+./prnt/ps/hp-lj_300_400_color_m351_m451-ps.ppd
+./prnt/ps/hp-lj_300_400_color_mfp_m375_m475-ps.ppd
 ./prnt/ps/hp-mopier_240-ps.ppd
 ./prnt/ps/HP_Mopier_240-ps.ppd
 ./prnt/ps/hp-mopier_320-ps.ppd

@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.12"
+*FileVersion: "hpcups 3.12.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f4400_series.ppd"
@@ -20,7 +20,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f4400 Series"
 *ShortNickName: "HP Deskjet f4400 Series"
-*NickName: "HP Deskjet f4400 Series, hpcups 3.11.12"
+*NickName: "HP Deskjet f4400 Series, hpcups 3.12.2"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -363,4 +363,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_f4400_series.ppd, 26271 bytes.
+*% End of hp-deskjet_f4400_series.ppd, 26269 bytes.

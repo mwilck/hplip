@@ -46,7 +46,6 @@
 
 
 *HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPJobRetention"
 *HPPDEPanel: "HPImagingOptions"
 
 
@@ -934,23 +933,11 @@
 
 *% Job Storage & Mopier constraints
 *%------------------------------------------------------------
-*UIConstraints: *InstalledMemory Mem32_47 	*HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *InstalledMemory Mem32_47 	*HPJobRetentionOption HPJobRetentionStore
-*UIConstraints: *InstalledMemory Mem48_63 	*HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *InstalledMemory Mem48_63 	*HPJobRetentionOption HPJobRetentionStore
-*UIConstraints: *InstalledMemory Mem64_79 	*HPJobRetentionOption HPJobRetentionProof
-*UIConstraints: *InstalledMemory Mem64_79 	*HPJobRetentionOption HPJobRetentionStore
 
 *UIConstraints: *InstalledMemory Mem32_47 *Collate True
 *UIConstraints: *InstalledMemory Mem48_63 *Collate True
 *UIConstraints: *InstalledMemory Mem64_79 *Collate True
 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionProof *InstalledMemory Mem32_47 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionStore *InstalledMemory Mem32_47 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionProof *InstalledMemory Mem48_63 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionStore *InstalledMemory Mem48_63 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionProof *InstalledMemory Mem64_79 
-*UIConstraints:	*HPJobRetentionOption HPJobRetentionStore *InstalledMemory Mem64_79 
 
 *UIConstraints: *Collate True *InstalledMemory Mem32_47
 *UIConstraints: *Collate True *InstalledMemory Mem48_63
@@ -984,7 +971,6 @@
 *% Fills not allowed with overlays
 *%------------------------------------------------------------
 
-*% Halo style does not work with Watermarks
 *%------------------------------------------------------------
 
 
@@ -3685,162 +3671,6 @@
 
 
 
-*OpenGroup: HPJobRetention/Job Storage
-*da.Translation HPJobRetention/Joblagring: ""
-*de.Translation HPJobRetention/Jobspeicherung: ""
-*es.Translation HPJobRetention/Almacenamiento de trabajos: ""
-*fi.Translation HPJobRetention/Työn säilytys: ""
-*fr.Translation HPJobRetention/Stockage des tâches: ""
-*it.Translation HPJobRetention/Memorizzazione processo: ""
-*ja.Translation HPJobRetention/Job Storage: ""
-*ko.Translation HPJobRetention/Job Storage: ""
-*nl.Translation HPJobRetention/Taakopslag: ""
-*nb.Translation HPJobRetention/Jobblagring: ""
-*pt.Translation HPJobRetention/Armazenamento de trabalhos: ""
-*sv.Translation HPJobRetention/Lagra utskrift: ""
-*zh_CN.Translation HPJobRetention/Job Storage: ""
-*zh_TW.Translation HPJobRetention/Job Storage: ""
-
-
-*% =================================
-*% Job Storage
-*% =================================
-*% ======================================================================
-*% Job Storage (NOTE: JOB Retention was changed to Job Storage in EC 4.0,
-*% but the JobRetention keyword was kept to work with the OS X PDEs.
-*% the UI does say "Job storage though".
-*% ================================================================
-*% The UserName setting is obtained from the print job. This may not work on non-Mac drivers.
-*OpenUI *HPJobRetentionOption/Mode: PickOne
-*OrderDependency: 13 Prolog *HPJobRetentionOption
-*DefaultHPJobRetentionOption: HPJobRetentionOff
-*da.Translation HPJobRetentionOption/Tilstand: ""
-*de.Translation HPJobRetentionOption/Modus: ""
-*es.Translation HPJobRetentionOption/Modo: ""
-*fi.Translation HPJobRetentionOption/Tila: ""
-*fr.Translation HPJobRetentionOption/Mode: ""
-*it.Translation HPJobRetentionOption/Modalità: ""
-*ja.Translation HPJobRetentionOption/モード: ""
-*ko.Translation HPJobRetentionOption/모드: ""
-*nl.Translation HPJobRetentionOption/Modus: ""
-*nb.Translation HPJobRetentionOption/Modus: ""
-*pt.Translation HPJobRetentionOption/Modo: ""
-*sv.Translation HPJobRetentionOption/Läge: ""
-*zh_CN.Translation HPJobRetentionOption/模式: ""
-*zh_TW.Translation HPJobRetentionOption/模式: ""
-
-*HPJobRetentionOption HPJobRetentionOff/Off: "
-	<< /CollateDetails
-	<< /Type 8 /Hold 0 >> >> setpagedevice
-"
-*End
-*da.HPJobRetentionOption HPJobRetentionOff/Fra: ""
-*de.HPJobRetentionOption HPJobRetentionOff/Aus: ""
-*es.HPJobRetentionOption HPJobRetentionOff/No: ""
-*fi.HPJobRetentionOption HPJobRetentionOff/Ei: ""
-*fr.HPJobRetentionOption HPJobRetentionOff/Désactivé: ""
-*it.HPJobRetentionOption HPJobRetentionOff/Disattivata: ""
-*ja.HPJobRetentionOption HPJobRetentionOff/オフ: ""
-*ko.HPJobRetentionOption HPJobRetentionOff/끄기: ""
-*nl.HPJobRetentionOption HPJobRetentionOff/Uit: ""
-*nb.HPJobRetentionOption HPJobRetentionOff/Av: ""
-*pt.HPJobRetentionOption HPJobRetentionOff/Desligado: ""
-*sv.HPJobRetentionOption HPJobRetentionOff/Av: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionOff/关: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionOff/關: ""
-
-*HPJobRetentionOption HPJobRetentionProof/Proof and Hold: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 3 >>
-	>> setpagedevice
-"
-*End
-*da.HPJobRetentionOption HPJobRetentionProof/Udskriv korrekturkopi og tilbagehold job: ""
-*de.HPJobRetentionOption HPJobRetentionProof/Prüfen und aufbewahren: ""
-*es.HPJobRetentionOption HPJobRetentionProof/Imprimir galerada y esperar: ""
-*fi.HPJobRetentionOption HPJobRetentionProof/Tarkista ja säilytä: ""
-*fr.HPJobRetentionOption HPJobRetentionProof/Mise en attente après la 1ère page: ""
-*it.HPJobRetentionOption HPJobRetentionProof/Prova e trattieni: ""
-*ja.HPJobRetentionOption HPJobRetentionProof/校正用印刷: ""
-*ko.HPJobRetentionOption HPJobRetentionProof/교정쇄 및 보유: ""
-*nl.HPJobRetentionOption HPJobRetentionProof/Controleren en aanhouden: ""
-*nb.HPJobRetentionOption HPJobRetentionProof/Korrektur og hold: ""
-*pt.HPJobRetentionOption HPJobRetentionProof/Prova com espera: ""
-*sv.HPJobRetentionOption HPJobRetentionProof/Korrektur och vänta: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionProof/审校待打印: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionProof/校對和暫停: ""
-
-*HPJobRetentionOption HPJobRetentionStore/Stored Job: "
-	<< /Collate true /CollateDetails
-		<< /Type 8 /Hold 2 >>
-	>> setpagedevice
-"
-*End
-*da.HPJobRetentionOption HPJobRetentionStore/Lagret job: ""
-*de.HPJobRetentionOption HPJobRetentionStore/Gespeicherter Job: ""
-*es.HPJobRetentionOption HPJobRetentionStore/Trabajo almacenado: ""
-*fi.HPJobRetentionOption HPJobRetentionStore/Tallennettu työ: ""
-*fr.HPJobRetentionOption HPJobRetentionStore/Tâche en mémoire: ""
-*it.HPJobRetentionOption HPJobRetentionStore/Processo memorizzato: ""
-*ja.HPJobRetentionOption HPJobRetentionStore/保存ジョブ: ""
-*ko.HPJobRetentionOption HPJobRetentionStore/인쇄 작업 저장: ""
-*nl.HPJobRetentionOption HPJobRetentionStore/Opgeslagen taak: ""
-*nb.HPJobRetentionOption HPJobRetentionStore/Lagret jobb: ""
-*pt.HPJobRetentionOption HPJobRetentionStore/Trabalho armazenado: ""
-*sv.HPJobRetentionOption HPJobRetentionStore/Lagrad utskrift: ""
-*zh_CN.HPJobRetentionOption HPJobRetentionStore/存储的作业: ""
-*zh_TW.HPJobRetentionOption HPJobRetentionStore/已儲存的列印: ""
-
-
-*CloseUI: *HPJobRetentionOption
-
-*% ================= Job Storage Descriptions ====================
-*HPJobRetentionOptionDS HPJobRetentionProof: HPJOBRETENTIONOPTION_PROOFANDPRINT_DS
-
-*HPJobRetentionOptionDS HPJobRetentionStore: HPJOBRETENTIONOPTION_STOREDJOB_DS
-
-*% ===========================================================
-
-
-*HPCustomUserName Title/User Name: ""
-*da.HPCustomUserName Title/Brugernavn: ""
-*de.HPCustomUserName Title/Benutzername: ""
-*es.HPCustomUserName Title/Nombre de usuario: ""
-*fi.HPCustomUserName Title/Käyttäjänimi: ""
-*fr.HPCustomUserName Title/Nom d’utilisateur: ""
-*it.HPCustomUserName Title/Nome utente: ""
-*ja.HPCustomUserName Title/ﾕｰｻﾞｰ名: ""
-*ko.HPCustomUserName Title/사용자 이름: ""
-*nl.HPCustomUserName Title/Gebruikersnaam: ""
-*nb.HPCustomUserName Title/Brukernavn: ""
-*pt.HPCustomUserName Title/Nome do usuário: ""
-*sv.HPCustomUserName Title/Användarnamn: ""
-*zh_CN.HPCustomUserName Title/用户名称: ""
-*zh_TW.HPCustomUserName Title/使用者名稱: ""
-
-*HPCustomUserName Range: 1 15
-*HPCustomUserName Type: string
-
-*HPCustomJobName Title/Job Name: ""
-*da.HPCustomJobName Title/Jobnavn: ""
-*de.HPCustomJobName Title/Jobname: ""
-*es.HPCustomJobName Title/Nombre del trabajo: ""
-*fi.HPCustomJobName Title/Työn nimi: ""
-*fr.HPCustomJobName Title/Nom de tâche: ""
-*it.HPCustomJobName Title/Nome processo: ""
-*ja.HPCustomJobName Title/ｼﾞｮﾌﾞ名: ""
-*ko.HPCustomJobName Title/작업명: ""
-*nl.HPCustomJobName Title/Taaknaam: ""
-*nb.HPCustomJobName Title/Jobbnavn: ""
-*pt.HPCustomJobName Title/Nome do trabalho: ""
-*sv.HPCustomJobName Title/Dokumentnamn: ""
-*zh_CN.HPCustomJobName Title/作业名称: ""
-*zh_TW.HPCustomJobName Title/列印工作名稱: ""
-
-*HPCustomJobName Range: 1 15
-*HPCustomJobName Type: string
-
-*CloseGroup: HPJobRetention
 
 *%====================================
 *%         Collation

@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.11.12"
+*FileVersion: "hpcups 3.12.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-business_inkjet_1200.ppd"
@@ -15,7 +15,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Business Inkjet 1200"
 *ShortNickName: "HP Business Inkjet 1200"
-*NickName: "HP Business Inkjet 1200, hpcups 3.11.12"
+*NickName: "HP Business Inkjet 1200, hpcups 3.12.2"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -379,4 +379,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-business_inkjet_1200.ppd, 24789 bytes.
+*% End of hp-business_inkjet_1200.ppd, 24787 bytes.

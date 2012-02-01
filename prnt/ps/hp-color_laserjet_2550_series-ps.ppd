@@ -591,7 +591,6 @@
 
 *% Fills not allowed with overlays
 *%===========================================================
-*% Halo style does not work with Watermarks
 
 *% =================================
 *% Media Selection
@@ -3564,24 +3563,7 @@ globaldict /PostRenderingEnhance known {
 *CloseGroup: HPColorOptionsPanel
 
 *% =================================
-*%  Watermark Printing
 *% =================================
-*OpenGroup: HPWaterOverlayPanel/Watermark/Overlay
-*da.Translation HPWaterOverlayPanel/Vandmærke/maske: ""
-*de.Translation HPWaterOverlayPanel/Wasserzeichen/Überlagerung: ""
-*es.Translation HPWaterOverlayPanel/Filigrana/Cubierta: ""
-*fi.Translation HPWaterOverlayPanel/Vesileima/peitto: ""
-*fr.Translation HPWaterOverlayPanel/Filigrane/Superposition: ""
-*it.Translation HPWaterOverlayPanel/Filigrana/sovrapposizione: ""
-*ja.Translation HPWaterOverlayPanel/Watermark/Overlay: ""
-*ko.Translation HPWaterOverlayPanel/Watermark/Overlay: ""
-*nl.Translation HPWaterOverlayPanel/Watermerk/sjabloon: ""
-*nb.Translation HPWaterOverlayPanel/Vannmerke/overlegg: ""
-*pt.Translation HPWaterOverlayPanel/Marca d'água/decalque: ""
-*sv.Translation HPWaterOverlayPanel/Vattenstämpel/tangentmall: ""
-*zh_CN.Translation HPWaterOverlayPanel/Watermark/Overlay: ""
-*zh_TW.Translation HPWaterOverlayPanel/Watermark/Overlay: ""
-*CloseGroup: HPWaterOverlayPanel
 
 *% =================================
 *%  Control

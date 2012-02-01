@@ -397,18 +397,7 @@
 *CloseGroup: HPResolutionOptions
 
 *% =================================
-*%  Watermark Printing
 *% =================================
-*OpenGroup: HPWaterOverlayPanel/Watermark/Overlay
-*de.Translation HPWaterOverlayPanel/Wasserzeichen/Überlagerung: ""
-*es.Translation HPWaterOverlayPanel/Filigrana/Superposición: ""
-*fr.Translation HPWaterOverlayPanel/Filigrane/Recouvrement: ""
-*it.Translation HPWaterOverlayPanel/Filigrana/Sovrapposizione: ""
-*ja.Translation HPWaterOverlayPanel/Watermark/Overlay: ""
-*nl.Translation HPWaterOverlayPanel/Watermerk/Sjabloon: ""
-*pt.Translation HPWaterOverlayPanel/Marca d’água/Deacalque: ""
-*sv.Translation HPWaterOverlayPanel/Vattenstämpel/Överlägg: ""
-*CloseGroup: HPWaterOverlayPanel
 
 
 *FreeVM: "4000000"
