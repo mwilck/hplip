@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.2"
+*FileVersion: "hpcups 3.12.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_5si_mopier-pcl3.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 5si Mopier"
 *ShortNickName: "HP LaserJet 5si Mopier"
-*NickName: "HP LaserJet 5si Mopier pcl3, hpcups 3.12.2"
+*NickName: "HP LaserJet 5si Mopier pcl3, hpcups 3.12.4"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"

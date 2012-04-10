@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.3.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.12.2"
+*FileVersion: "hpijs 3.12.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_k550-hpijs.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro k550 hpijs"
 *ShortNickName: "HP Officejet Pro k550 hpijs"
-*NickName: "HP Officejet Pro k550 hpijs, 3.12.2"
+*NickName: "HP Officejet Pro k550 hpijs, 3.12.4"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
