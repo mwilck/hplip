@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP Officejet Pro 8500 a909g with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.3.
+*%%%% PPD file for HP Officejet Pro 8500 a909g with CUPS.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.4"
+*FileVersion: "hpcups 3.12.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_8500_a909g.ppd"
@@ -11,11 +11,8 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro 8500 a909g"
 *ShortNickName: "HP Officejet Pro 8500 a909g"
-*NickName: "HP Officejet Pro 8500 a909g, hpcups 3.12.4"
-*PSVersion: "(3010.000) 705"
-*PSVersion: "(3010.000) 707"
-*PSVersion: "(3010.000) 815"
-*PSVersion: "(3010.000) 853"
+*NickName: "HP Officejet Pro 8500 a909g, hpcups 3.12.6"
+*PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
 *DefaultColorSpace: RGB
@@ -31,10 +28,11 @@
 *hpPrinterLanguage: "pcl3gui2"
 *HPMechOffset: "130"
 *1284DeviceID: "MFG:HP;MDL:officejet pro 8500 a909g;DES:officejet pro 8500 a909g;"
-*cupsVersion: 1.3
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
+*cupsLanguages: "en"
 *UIConstraints: *Duplex *OptionDuplex False
 *UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *ColorModel KGray *OutputMode Photo
@@ -258,154 +256,153 @@
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.36 649.44]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Card3x5/Index Card 3x5in: "9.36 9.36 206.64 350.64"
-*ImageableArea L/L 89x127mm: "9.36 9.36 242.64 350.64"
-*ImageableArea L.FB/L Borderless 89x127mm: "0.00 0.00 264.96 371.16"
-*ImageableArea Hagaki/Hagaki 100x148mm: "9.36 9.36 274.32 410.40"
-*ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0.00 0.00 296.64 430.20"
-*ImageableArea Card4x6/Index Card 4x6in: "9.36 9.36 278.64 422.64"
-*ImageableArea Card4x6.Duplex/Index Card AutoDuplex 4x6in: "9.36 25.56 278.64 388.44"
-*ImageableArea Photo4x6/Photo 4x6in: "9.36 9.36 278.64 422.64"
-*ImageableArea Photo4x6.FB/Photo Borderless 4x6in: "0.00 0.00 300.96 442.44"
-*ImageableArea A6/A6 105x148mm: "9.36 9.36 288.00 410.40"
-*ImageableArea A6.FB/A6 Borderless 105x148mm: "0.00 0.00 310.32 430.92"
-*ImageableArea A6.Duplex/A6 AutoDuplex 105x148mm: "9.36 25.56 288.00 376.20"
-*ImageableArea Photo5x7/Photo 5x7in: "9.36 9.36 350.64 494.64"
-*ImageableArea Photo5x7.FB/Photo Borderless 5x7in: "0.00 0.00 372.96 515.60"
-*ImageableArea Photo2L/Photo 2L 127x178mm: "9.36 9.36 350.64 494.64"
-*ImageableArea Photo2L.FB/Photo 2L Borderless 127x178mm: "0.00 0.00 372.96 515.16"
-*ImageableArea Oufuku/Oufuku-Hagaki 200x148mm: "9.36 9.36 557.28 410.40"
-*ImageableArea Card5x8/Index Card 5x8in: "9.36 9.36 350.64 566.64"
-*ImageableArea Card5x8.Duplex/Index Card AutoDuplex 5x8in: "9.36 25.56 350.64 532.44"
-*ImageableArea Statement/Statement 5.5x8.5in: "9.36 9.36 386.64 602.64"
-*ImageableArea A5/A5 148x210mm: "9.36 9.36 410.40 586.08"
-*ImageableArea A5.FB/A5 Borderless 148x210mm: "0.00 0.00 432.72 606.60"
-*ImageableArea A5.Duplex/A5 AutoDuplex 148x210mm: "9.36 25.56 410.40 551.88"
-*ImageableArea 6x8/6x8in: "9.36 9.36 422.64 566.64"
-*ImageableArea 6x8.Duplex/AutoDuplex 6x8in: "9.36 25.56 422.64 532.44"
-*ImageableArea JB5/JB5 182x257mm: "9.36 9.36 506.88 719.28"
-*ImageableArea JB5.FB/JB5 Borderless 182x257mm: "0.00 0.00 529.20 739.80"
-*ImageableArea JB5.Duplex/JB5 AutoDuplex 182x257mm: "9.36 24.84 506.88 685.80"
-*ImageableArea Executive/Executive 7.25x10.5in: "9.36 9.36 512.64 746.64"
-*ImageableArea Executive.Duplex/Executive AutoDuplex 7.25x10.5in: "9.36 25.56 512.64 712.44"
-*ImageableArea 8x10/8x10in: "9.36 9.36 566.64 710.64"
-*ImageableArea 8x10.FB/Borderless 8x10in: "0.00 0.00 584.64 731.16"
-*ImageableArea Letter/Letter 8.5x11in: "9.36 9.36 602.64 782.64"
-*ImageableArea Letter.FB/Letter Borderless 8.5x11in: "0.00 0.00 624.96 803.16"
-*ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.36 24.84 602.64 749.16"
-*ImageableArea A4/A4 210x297mm: "9.36 9.36 586.08 832.32"
-*ImageableArea A4.FB/A4 Borderless 210x297mm: "0.00 0.00 608.40 852.84"
-*ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "9.36 24.84 586.08 798.84"
-*ImageableArea 8.5x13/8.5x13in: "9.36 9.36 602.64 926.64"
-*ImageableArea Legal/Legal 8.5x14in: "9.36 9.36 602.64 998.64"
-*ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9.36 46.80 305.28 367.20"
-*ImageableArea EnvCard/Card Envelope 4.4x6in: "9.36 46.80 306.00 385.20"
-*ImageableArea EnvC6/C6 Envelope 114x162mm: "9.36 46.80 313.92 412.56"
-*ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.36 46.80 245.52 534.24"
-*ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "9.36 46.80 269.64 493.20"
-*ImageableArea EnvDL/DL Envelope 110x220mm: "9.36 46.80 302.40 576.72"
-*ImageableArea Env10/#10 Envelope 4.125x9.5in: "9.36 46.80 287.64 637.20"
-*ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "9.36 46.80 330.48 619.20"
-*ImageableArea EnvC5/C5 Envelope 162x229mm: "9.36 46.80 450.00 602.64"
+*ImageableArea Card3x5/Index Card 3x5in: "9.359999656677 9.359999656677 206.640000343323 350.640000343323"
+*ImageableArea L/L 89x127mm: "9.359999656677 9.359999656677 242.640000343323 350.640000343323"
+*ImageableArea L.FB/L Borderless 89x127mm: "0 0 264.959991455078 371.160003662109"
+*ImageableArea Hagaki/Hagaki 100x148mm: "9.359999656677 9.359999656677 274.319993019104 410.400010108948"
+*ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0 0 296.640014648438 430.200012207031"
+*ImageableArea Card4x6/Index Card 4x6in: "9.359999656677 9.359999656677 278.640000343323 422.640000343323"
+*ImageableArea Card4x6.Duplex/Index Card AutoDuplex 4x6in: "9.359999656677 25.559999465942 278.640000343323 388.439998626709"
+*ImageableArea Photo4x6/Photo 4x6in: "9.359999656677 9.359999656677 278.640000343323 422.640000343323"
+*ImageableArea Photo4x6.FB/Photo Borderless 4x6in: "0 0 300.959991455078 442.440002441406"
+*ImageableArea A6/A6 105x148mm: "9.359999656677 9.359999656677 287.999985694885 410.400010108948"
+*ImageableArea A6.FB/A6 Borderless 105x148mm: "0 0 310.320007324219 430.920013427734"
+*ImageableArea A6.Duplex/A6 AutoDuplex 105x148mm: "9.359999656677 25.559999465942 287.999985694885 376.200008392334"
+*ImageableArea Photo5x7/Photo 5x7in: "9.359999656677 9.359999656677 350.640000343323 494.640000343323"
+*ImageableArea Photo5x7.FB/Photo Borderless 5x7in: "0 0 372.959991455078 515.599975585938"
+*ImageableArea Photo2L/Photo 2L 127x178mm: "9.359999656677 9.359999656677 350.640000343323 494.640000343323"
+*ImageableArea Photo2L.FB/Photo 2L Borderless 127x178mm: "0 0 372.959991455078 515.159973144531"
+*ImageableArea Oufuku/Oufuku-Hagaki 200x148mm: "9.359999656677 9.359999656677 557.28001499176 410.400010108948"
+*ImageableArea Card5x8/Index Card 5x8in: "9.359999656677 9.359999656677 350.640000343323 566.640000343323"
+*ImageableArea Card5x8.Duplex/Index Card AutoDuplex 5x8in: "9.359999656677 25.559999465942 350.640000343323 532.439998626709"
+*ImageableArea Statement/Statement 5.5x8.5in: "9.359999656677 9.359999656677 386.640000343323 602.640000343323"
+*ImageableArea A5/A5 148x210mm: "9.359999656677 9.359999656677 410.400010108948 586.080002784729"
+*ImageableArea A5.FB/A5 Borderless 148x210mm: "0 0 432.720001220703 606.599975585938"
+*ImageableArea A5.Duplex/A5 AutoDuplex 148x210mm: "9.359999656677 25.559999465942 410.400010108948 551.880001068115"
+*ImageableArea 6x8/6x8in: "9.359999656677 9.359999656677 422.640000343323 566.640000343323"
+*ImageableArea 6x8.Duplex/AutoDuplex 6x8in: "9.359999656677 25.559999465942 422.640000343323 532.439998626709"
+*ImageableArea JB5/JB5 182x257mm: "9.359999656677 9.359999656677 506.879990577698 719.28001499176"
+*ImageableArea JB5.FB/JB5 Borderless 182x257mm: "0 0 529.200012207031 739.799987792969"
+*ImageableArea JB5.Duplex/JB5 AutoDuplex 182x257mm: "9.359999656677 24.840000152588 506.879990577698 685.80001449585"
+*ImageableArea Executive/Executive 7.25x10.5in: "9.359999656677 9.359999656677 512.640000343323 746.640000343323"
+*ImageableArea Executive.Duplex/Executive AutoDuplex 7.25x10.5in: "9.359999656677 25.559999465942 512.640000343323 712.439998626709"
+*ImageableArea 8x10/8x10in: "9.359999656677 9.359999656677 566.640000343323 710.640000343323"
+*ImageableArea 8x10.FB/Borderless 8x10in: "0 0 584.640014648438 731.159973144531"
+*ImageableArea Letter/Letter 8.5x11in: "9.359999656677 9.359999656677 602.640000343323 782.640000343323"
+*ImageableArea Letter.FB/Letter Borderless 8.5x11in: "0 0 624.960021972656 803.159973144531"
+*ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.359999656677 24.840000152588 602.640000343323 749.159999847412"
+*ImageableArea A4/A4 210x297mm: "9.359999656677 9.359999656677 586.080002784729 832.319993019104"
+*ImageableArea A4.FB/A4 Borderless 210x297mm: "0 0 608.400024414062 852.840026855469"
+*ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "9.359999656677 24.840000152588 586.080002784729 798.839992523193"
+*ImageableArea 8.5x13/8.5x13in: "9.359999656677 9.359999656677 602.640000343323 926.640000343323"
+*ImageableArea Legal/Legal 8.5x14in: "9.359999656677 9.359999656677 602.640000343323 998.640000343323"
+*ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9.359999656677 46.799999237061 305.28001499176 367.200000762939"
+*ImageableArea EnvCard/Card Envelope 4.4x6in: "9.359999656677 46.799999237061 305.999985694885 385.200000762939"
+*ImageableArea EnvC6/C6 Envelope 114x162mm: "9.359999656677 46.799999237061 313.91999912262 412.559986114502"
+*ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.359999656677 46.799999237061 245.520005226135 534.239978790283"
+*ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "9.359999656677 46.799999237061 269.640000343323 493.200000762939"
+*ImageableArea EnvDL/DL Envelope 110x220mm: "9.359999656677 46.799999237061 302.400010108948 576.720020294189"
+*ImageableArea Env10/#10 Envelope 4.125x9.5in: "9.359999656677 46.799999237061 287.640000343323 637.200000762939"
+*ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "9.359999656677 46.799999237061 330.479996681213 619.200000762939"
+*ImageableArea EnvC5/C5 Envelope 162x229mm: "9.359999656677 46.799999237061 449.999985694885 602.640003204346"
 *DefaultPaperDimension: Letter
-*PaperDimension Card3x5/Index Card 3x5in: "216.00 360.00"
-*PaperDimension L/L 89x127mm: "252.00 360.00"
-*PaperDimension L.FB/L Borderless 89x127mm: "264.96 371.16"
-*PaperDimension Hagaki/Hagaki 100x148mm: "283.68 419.76"
-*PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "296.64 430.20"
-*PaperDimension Card4x6/Index Card 4x6in: "288.00 432.00"
-*PaperDimension Card4x6.Duplex/Index Card AutoDuplex 4x6in: "288.00 423.00"
-*PaperDimension Photo4x6/Photo 4x6in: "288.00 432.00"
-*PaperDimension Photo4x6.FB/Photo Borderless 4x6in: "300.96 442.44"
-*PaperDimension A6/A6 105x148mm: "297.36 419.76"
-*PaperDimension A6.FB/A6 Borderless 105x148mm: "310.32 430.92"
-*PaperDimension A6.Duplex/A6 AutoDuplex 105x148mm: "297.36 410.76"
-*PaperDimension Photo5x7/Photo 5x7in: "360.00 504.00"
-*PaperDimension Photo5x7.FB/Photo Borderless 5x7in: "372.96 515.60"
-*PaperDimension Photo2L/Photo 2L 127x178mm: "360.00 504.00"
-*PaperDimension Photo2L.FB/Photo 2L Borderless 127x178mm: "372.96 515.16"
-*PaperDimension Oufuku/Oufuku-Hagaki 200x148mm: "566.64 419.76"
-*PaperDimension Card5x8/Index Card 5x8in: "360.00 576.00"
-*PaperDimension Card5x8.Duplex/Index Card AutoDuplex 5x8in: "360.00 567.00"
-*PaperDimension Statement/Statement 5.5x8.5in: "396.00 612.00"
-*PaperDimension A5/A5 148x210mm: "419.76 595.44"
-*PaperDimension A5.FB/A5 Borderless 148x210mm: "432.72 606.60"
-*PaperDimension A5.Duplex/A5 AutoDuplex 148x210mm: "419.76 586.44"
-*PaperDimension 6x8/6x8in: "432.00 576.00"
-*PaperDimension 6x8.Duplex/AutoDuplex 6x8in: "432.00 567.00"
-*PaperDimension JB5/JB5 182x257mm: "516.24 728.64"
-*PaperDimension JB5.FB/JB5 Borderless 182x257mm: "529.20 739.80"
-*PaperDimension JB5.Duplex/JB5 AutoDuplex 182x257mm: "516.24 719.64"
-*PaperDimension Executive/Executive 7.25x10.5in: "522.00 756.00"
-*PaperDimension Executive.Duplex/Executive AutoDuplex 7.25x10.5in: "522.00 747.00"
-*PaperDimension 8x10/8x10in: "576.00 720.00"
-*PaperDimension 8x10.FB/Borderless 8x10in: "584.64 731.16"
-*PaperDimension Letter/Letter 8.5x11in: "612.00 792.00"
-*PaperDimension Letter.FB/Letter Borderless 8.5x11in: "624.96 803.16"
-*PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612.00 783.00"
-*PaperDimension A4/A4 210x297mm: "595.44 841.68"
-*PaperDimension A4.FB/A4 Borderless 210x297mm: "608.40 852.84"
-*PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.44 832.68"
-*PaperDimension 8.5x13/8.5x13in: "612.00 936.00"
-*PaperDimension Legal/Legal 8.5x14in: "612.00 1008.00"
-*PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.64 414.00"
-*PaperDimension EnvCard/Card Envelope 4.4x6in: "315.36 432.00"
-*PaperDimension EnvC6/C6 Envelope 114x162mm: "323.28 459.36"
-*PaperDimension EnvChou4/#4 Japanese Envelope 90x205mm: "254.88 581.04"
-*PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279.00 540.00"
-*PaperDimension EnvDL/DL Envelope 110x220mm: "311.76 623.52"
-*PaperDimension Env10/#10 Envelope 4.125x9.5in: "297.00 684.00"
-*PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "339.84 666.00"
-*PaperDimension EnvC5/C5 Envelope 162x229mm: "459.36 649.44"
-*MaxMediaWidth: "612.00"
-*MaxMediaHeight: "1008.00"
-*HWMargins: 9.36 9.36 9.36 9.36
+*PaperDimension Card3x5/Index Card 3x5in: "216 360"
+*PaperDimension L/L 89x127mm: "252 360"
+*PaperDimension L.FB/L Borderless 89x127mm: "264.959991455078 371.160003662109"
+*PaperDimension Hagaki/Hagaki 100x148mm: "283.679992675781 419.760009765625"
+*PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "296.640014648438 430.200012207031"
+*PaperDimension Card4x6/Index Card 4x6in: "288 432"
+*PaperDimension Card4x6.Duplex/Index Card AutoDuplex 4x6in: "288 423"
+*PaperDimension Photo4x6/Photo 4x6in: "288 432"
+*PaperDimension Photo4x6.FB/Photo Borderless 4x6in: "300.959991455078 442.440002441406"
+*PaperDimension A6/A6 105x148mm: "297.359985351562 419.760009765625"
+*PaperDimension A6.FB/A6 Borderless 105x148mm: "310.320007324219 430.920013427734"
+*PaperDimension A6.Duplex/A6 AutoDuplex 105x148mm: "297.359985351562 410.760009765625"
+*PaperDimension Photo5x7/Photo 5x7in: "360 504"
+*PaperDimension Photo5x7.FB/Photo Borderless 5x7in: "372.959991455078 515.599975585938"
+*PaperDimension Photo2L/Photo 2L 127x178mm: "360 504"
+*PaperDimension Photo2L.FB/Photo 2L Borderless 127x178mm: "372.959991455078 515.159973144531"
+*PaperDimension Oufuku/Oufuku-Hagaki 200x148mm: "566.640014648438 419.760009765625"
+*PaperDimension Card5x8/Index Card 5x8in: "360 576"
+*PaperDimension Card5x8.Duplex/Index Card AutoDuplex 5x8in: "360 567"
+*PaperDimension Statement/Statement 5.5x8.5in: "396 612"
+*PaperDimension A5/A5 148x210mm: "419.760009765625 595.440002441406"
+*PaperDimension A5.FB/A5 Borderless 148x210mm: "432.720001220703 606.599975585938"
+*PaperDimension A5.Duplex/A5 AutoDuplex 148x210mm: "419.760009765625 586.440002441406"
+*PaperDimension 6x8/6x8in: "432 576"
+*PaperDimension 6x8.Duplex/AutoDuplex 6x8in: "432 567"
+*PaperDimension JB5/JB5 182x257mm: "516.239990234375 728.640014648438"
+*PaperDimension JB5.FB/JB5 Borderless 182x257mm: "529.200012207031 739.799987792969"
+*PaperDimension JB5.Duplex/JB5 AutoDuplex 182x257mm: "516.239990234375 719.640014648438"
+*PaperDimension Executive/Executive 7.25x10.5in: "522 756"
+*PaperDimension Executive.Duplex/Executive AutoDuplex 7.25x10.5in: "522 747"
+*PaperDimension 8x10/8x10in: "576 720"
+*PaperDimension 8x10.FB/Borderless 8x10in: "584.640014648438 731.159973144531"
+*PaperDimension Letter/Letter 8.5x11in: "612 792"
+*PaperDimension Letter.FB/Letter Borderless 8.5x11in: "624.960021972656 803.159973144531"
+*PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612 783"
+*PaperDimension A4/A4 210x297mm: "595.440002441406 841.679992675781"
+*PaperDimension A4.FB/A4 Borderless 210x297mm: "608.400024414062 852.840026855469"
+*PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.440002441406 832.679992675781"
+*PaperDimension 8.5x13/8.5x13in: "612 936"
+*PaperDimension Legal/Legal 8.5x14in: "612 1008"
+*PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.640014648438 414"
+*PaperDimension EnvCard/Card Envelope 4.4x6in: "315.359985351562 432"
+*PaperDimension EnvC6/C6 Envelope 114x162mm: "323.279998779297 459.359985351562"
+*PaperDimension EnvChou4/#4 Japanese Envelope 90x205mm: "254.880004882812 581.039978027344"
+*PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279 540"
+*PaperDimension EnvDL/DL Envelope 110x220mm: "311.760009765625 623.52001953125"
+*PaperDimension Env10/#10 Envelope 4.125x9.5in: "297 684"
+*PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "339.839996337891 666"
+*PaperDimension EnvC5/C5 Envelope 162x229mm: "459.359985351562 649.440002441406"
+*MaxMediaWidth: "612"
+*MaxMediaHeight: "1008"
+*HWMargins: 9.359999656677 9.359999656677 9.359999656677 9.359999656677
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 216.00 612.00
-*ParamCustomPageSize Height: 2 points 360.00 1008.00
+*ParamCustomPageSize Width: 1 points 216 612
+*ParamCustomPageSize Height: 2 points 360 1008
 *ParamCustomPageSize WidthOffset: 3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
-*RequiresPageRegion All: True
 *OpenUI *Duplex/Double-Sided Printing: PickOne
-*OrderDependency: 10.0 AnySetup *Duplex
+*OrderDependency: 10 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
 *Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
 *Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
 *CloseUI: *Duplex
 *OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 10.0 AnySetup *InputSlot
+*OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Auto
 *InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
 *InputSlot Tray1/Tray 1: "<</MediaPosition 1>>setpagedevice"
 *InputSlot Tray2/Tray 2: "<</MediaPosition 4>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *ColorModel/Output Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
+*OrderDependency: 10 AnySetup *ColorModel
 *DefaultColorModel: RGB
 *ColorModel RGB/Color: "<</cupsColorSpace 17/cupsBitsPerColor 8/cupsRowStep 0>>setpagedevice"
 *ColorModel CMYGray/High Quality Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 1>>setpagedevice"
 *ColorModel KGray/Black Only Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *MediaType/Media Type: PickOne
-*OrderDependency: 10.0 AnySetup *MediaType
+*OrderDependency: 10 AnySetup *MediaType
 *DefaultMediaType: Plain
 *MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
 *MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
 *MediaType TransparencyFilm/Transparency Film: "<</MediaType(TransparencyFilm)/cupsMediaType 4>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
-*OrderDependency: 10.0 AnySetup *OutputMode
+*OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: Normal
-*OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
-*OutputMode Draft: "<</OutputType(-1)/HWResolution[300 300]>>setpagedevice"
-*OutputMode Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Draft/Draft: "<</OutputType(-1)/HWResolution[300 300]>>setpagedevice"
+*OutputMode Best/Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
 *OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
 *CloseUI: *OutputMode
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionDuplex/Duplexer Installed: Boolean
-*OrderDependency: 10.0 AnySetup *OptionDuplex
+*OrderDependency: 10 AnySetup *OptionDuplex
 *DefaultOptionDuplex: False
 *OptionDuplex False/Not Installed: ""
 *OptionDuplex True/Installed: ""
@@ -447,4 +444,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_8500_a909g.ppd, 29671 bytes.
+*% End of hp-officejet_pro_8500_a909g.ppd, 31675 bytes.

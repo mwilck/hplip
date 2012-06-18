@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP Deskjet f2400 Series with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.3.
+*%%%% PPD file for HP Deskjet f2400 Series with CUPS.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.4"
+*FileVersion: "hpcups 3.12.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f2400_series.ppd"
@@ -22,11 +22,8 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f2400 Series"
 *ShortNickName: "HP Deskjet f2400 Series"
-*NickName: "HP Deskjet f2400 Series, hpcups 3.12.4"
-*PSVersion: "(3010.000) 705"
-*PSVersion: "(3010.000) 707"
-*PSVersion: "(3010.000) 815"
-*PSVersion: "(3010.000) 853"
+*NickName: "HP Deskjet f2400 Series, hpcups 3.12.6"
+*PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
 *DefaultColorSpace: RGB
@@ -39,10 +36,11 @@
 *hpPrinterLanguage: "pcl3gui2"
 *HPMechOffset: "70"
 *1284DeviceID: "MFG:HP;MDL:deskjet f2400 series;DES:deskjet f2400 series;"
-*cupsVersion: 1.3
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
+*cupsLanguages: "en"
 *UIConstraints: *ColorModel KGray *OutputMode Photo
 *UIConstraints: *OutputMode Photo *ColorModel KGray
 *UIConstraints: *ColorModel CMYGray *OutputMode Photo
@@ -112,85 +110,84 @@
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.36 649.44]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Card3x5/Index Card 3x5in: "9.00 36.00 207.00 355.03"
-*ImageableArea Card4x6/Card 4x6in: "9.00 36.00 279.00 427.03"
-*ImageableArea Photo4x6/Photo 4x6in: "9.00 36.00 279.00 423.00"
-*ImageableArea Photo4x6tab/Photo 4x6in (tab): "9.00 9.00 279.00 423.00"
-*ImageableArea Photo4x6tab.FB/Photo Borderless 4x6in (tab): "0.00 0.00 303.55 443.01"
-*ImageableArea A6/A6 105x148mm: "9.00 36.00 288.36 414.79"
-*ImageableArea Cabinet/Cabinet Size 120x165mm: "9.00 36.00 330.84 463.03"
-*ImageableArea Photo5x7/Photo 5x7in: "9.00 36.00 351.00 495.00"
-*ImageableArea Card5x8/Index Card 5x8in: "9.00 36.00 351.00 571.03"
-*ImageableArea A5/A5 148x210mm: "9.00 36.00 410.76 590.47"
-*ImageableArea B5/B5 176x250mm: "9.00 36.00 489.96 703.51"
-*ImageableArea JB5/JB5 182x257mm: "9.00 36.00 507.24 723.67"
-*ImageableArea Executive/Executive 7.25x10.5in: "18.00 36.00 504.00 751.03"
-*ImageableArea 8x10/8x10in: "9.00 36.00 567.00 711.00"
-*ImageableArea Letter/Letter 8.5x11in: "9.00 36.00 603.00 787.03"
-*ImageableArea A4/A4 210x297mm: "9.00 36.00 586.44 836.71"
-*ImageableArea Legal/Legal 8.5x14in: "18.00 36.00 594.00 1003.03"
-*ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9.00 36.00 305.64 409.03"
-*ImageableArea EnvC6/C6 Envelope 114x162mm: "9.00 36.00 314.28 454.39"
-*ImageableArea EnvDL/DL Envelope 110x220mm: "9.00 36.00 302.76 618.55"
-*ImageableArea Env10/#10 Envelope 4.125x9.5in: "9.00 36.00 288.00 679.03"
-*ImageableArea EnvC5/C5 Envelope 162x229mm: "9.00 36.00 450.36 644.47"
+*ImageableArea Card3x5/Index Card 3x5in: "9 36 207 355.03200006485"
+*ImageableArea Card4x6/Card 4x6in: "9 36 279 427.03200006485"
+*ImageableArea Photo4x6/Photo 4x6in: "9 36 279 423"
+*ImageableArea Photo4x6tab/Photo 4x6in (tab): "9 9 279 423"
+*ImageableArea Photo4x6tab.FB/Photo Borderless 4x6in (tab): "0 0 303.549987792969 443.010009765625"
+*ImageableArea A6/A6 105x148mm: "9 36 288.359985351562 414.792009830475"
+*ImageableArea Cabinet/Cabinet Size 120x165mm: "9 36 330.839996337891 463.03200006485"
+*ImageableArea Photo5x7/Photo 5x7in: "9 36 351 495"
+*ImageableArea Card5x8/Index Card 5x8in: "9 36 351 571.03200006485"
+*ImageableArea A5/A5 148x210mm: "9 36 410.760009765625 590.472002506256"
+*ImageableArea B5/B5 176x250mm: "9 36 489.959991455078 703.5119805336"
+*ImageableArea JB5/JB5 182x257mm: "9 36 507.239990234375 723.672014713287"
+*ImageableArea Executive/Executive 7.25x10.5in: "18 36 504 751.03200006485"
+*ImageableArea 8x10/8x10in: "9 36 567 711"
+*ImageableArea Letter/Letter 8.5x11in: "9 36 603 787.03200006485"
+*ImageableArea A4/A4 210x297mm: "9 36 586.440002441406 836.711992740631"
+*ImageableArea Legal/Legal 8.5x14in: "18 36 594 1003.03200006485"
+*ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9 36 305.640014648438 409.03200006485"
+*ImageableArea EnvC6/C6 Envelope 114x162mm: "9 36 314.279998779297 454.391985416412"
+*ImageableArea EnvDL/DL Envelope 110x220mm: "9 36 302.760009765625 618.5520195961"
+*ImageableArea Env10/#10 Envelope 4.125x9.5in: "9 36 288 679.03200006485"
+*ImageableArea EnvC5/C5 Envelope 162x229mm: "9 36 450.359985351562 644.472002506256"
 *DefaultPaperDimension: Letter
-*PaperDimension Card3x5/Index Card 3x5in: "216.00 360.00"
-*PaperDimension Card4x6/Card 4x6in: "288.00 432.00"
-*PaperDimension Photo4x6/Photo 4x6in: "288.00 432.00"
-*PaperDimension Photo4x6tab/Photo 4x6in (tab): "288.00 432.00"
-*PaperDimension Photo4x6tab.FB/Photo Borderless 4x6in (tab): "303.55 443.01"
-*PaperDimension A6/A6 105x148mm: "297.36 419.76"
-*PaperDimension Cabinet/Cabinet Size 120x165mm: "339.84 468.00"
-*PaperDimension Photo5x7/Photo 5x7in: "360.00 504.00"
-*PaperDimension Card5x8/Index Card 5x8in: "360.00 576.00"
-*PaperDimension A5/A5 148x210mm: "419.76 595.44"
-*PaperDimension B5/B5 176x250mm: "498.96 708.48"
-*PaperDimension JB5/JB5 182x257mm: "516.24 728.64"
-*PaperDimension Executive/Executive 7.25x10.5in: "522.00 756.00"
-*PaperDimension 8x10/8x10in: "576.00 720.00"
-*PaperDimension Letter/Letter 8.5x11in: "612.00 792.00"
-*PaperDimension A4/A4 210x297mm: "595.44 841.68"
-*PaperDimension Legal/Legal 8.5x14in: "612.00 1008.00"
-*PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.64 414.00"
-*PaperDimension EnvC6/C6 Envelope 114x162mm: "323.28 459.36"
-*PaperDimension EnvDL/DL Envelope 110x220mm: "311.76 623.52"
-*PaperDimension Env10/#10 Envelope 4.125x9.5in: "297.00 684.00"
-*PaperDimension EnvC5/C5 Envelope 162x229mm: "459.36 649.44"
-*MaxMediaWidth: "612.00"
-*MaxMediaHeight: "2160.00"
-*HWMargins: 18.00 36.00 18.00 5.04
+*PaperDimension Card3x5/Index Card 3x5in: "216 360"
+*PaperDimension Card4x6/Card 4x6in: "288 432"
+*PaperDimension Photo4x6/Photo 4x6in: "288 432"
+*PaperDimension Photo4x6tab/Photo 4x6in (tab): "288 432"
+*PaperDimension Photo4x6tab.FB/Photo Borderless 4x6in (tab): "303.549987792969 443.010009765625"
+*PaperDimension A6/A6 105x148mm: "297.359985351562 419.760009765625"
+*PaperDimension Cabinet/Cabinet Size 120x165mm: "339.839996337891 468"
+*PaperDimension Photo5x7/Photo 5x7in: "360 504"
+*PaperDimension Card5x8/Index Card 5x8in: "360 576"
+*PaperDimension A5/A5 148x210mm: "419.760009765625 595.440002441406"
+*PaperDimension B5/B5 176x250mm: "498.959991455078 708.47998046875"
+*PaperDimension JB5/JB5 182x257mm: "516.239990234375 728.640014648438"
+*PaperDimension Executive/Executive 7.25x10.5in: "522 756"
+*PaperDimension 8x10/8x10in: "576 720"
+*PaperDimension Letter/Letter 8.5x11in: "612 792"
+*PaperDimension A4/A4 210x297mm: "595.440002441406 841.679992675781"
+*PaperDimension Legal/Legal 8.5x14in: "612 1008"
+*PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.640014648438 414"
+*PaperDimension EnvC6/C6 Envelope 114x162mm: "323.279998779297 459.359985351562"
+*PaperDimension EnvDL/DL Envelope 110x220mm: "311.760009765625 623.52001953125"
+*PaperDimension Env10/#10 Envelope 4.125x9.5in: "297 684"
+*PaperDimension EnvC5/C5 Envelope 162x229mm: "459.359985351562 649.440002441406"
+*MaxMediaWidth: "612"
+*MaxMediaHeight: "2160"
+*HWMargins: 18 36 18 5.039999961853
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 216.00 612.00
-*ParamCustomPageSize Height: 2 points 288.00 2160.00
+*ParamCustomPageSize Width: 1 points 216 612
+*ParamCustomPageSize Height: 2 points 288 2160
 *ParamCustomPageSize WidthOffset: 3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
-*RequiresPageRegion All: True
 *OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 10.0 AnySetup *InputSlot
+*OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Auto
 *InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *ColorModel/Output Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
+*OrderDependency: 10 AnySetup *ColorModel
 *DefaultColorModel: RGB
 *ColorModel RGB/Color: "<</cupsColorSpace 17/cupsBitsPerColor 8/cupsRowStep 0>>setpagedevice"
 *ColorModel CMYGray/High Quality Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 1>>setpagedevice"
 *ColorModel KGray/Black Only Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *MediaType/Media Type: PickOne
-*OrderDependency: 10.0 AnySetup *MediaType
+*OrderDependency: 10 AnySetup *MediaType
 *DefaultMediaType: Plain
 *MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
 *MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
 *MediaType TransparencyFilm/Transparency Film: "<</MediaType(TransparencyFilm)/cupsMediaType 4>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
-*OrderDependency: 10.0 AnySetup *OutputMode
+*OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: Normal
-*OutputMode Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
-*OutputMode Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Best/Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
 *OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
 *OutputMode FastDraft/Fast Draft: "<</OutputType(-2)/HWResolution[300 300]>>setpagedevice"
 *CloseUI: *OutputMode
@@ -230,4 +227,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_f2400_series.ppd, 14496 bytes.
+*% End of hp-deskjet_f2400_series.ppd, 14622 bytes.

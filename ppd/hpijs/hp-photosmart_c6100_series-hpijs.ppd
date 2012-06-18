@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP Photosmart c6100 Series hpijs with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.3.
+*%%%% PPD file for HP Photosmart c6100 Series hpijs with CUPS.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.12.4"
+*FileVersion: "hpijs 3.12.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c6100_series-hpijs.ppd"
@@ -19,11 +19,8 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c6100 Series hpijs"
 *ShortNickName: "HP PS c6100 Series hpijs"
-*NickName: "HP Photosmart c6100 Series hpijs, 3.12.4"
-*PSVersion: "(3010.000) 705"
-*PSVersion: "(3010.000) 707"
-*PSVersion: "(3010.000) 815"
-*PSVersion: "(3010.000) 853"
+*NickName: "HP Photosmart c6100 Series hpijs, 3.12.6"
+*PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
 *DefaultColorSpace: RGB
@@ -235,11 +232,12 @@ jsParams=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
 lity:PenSet=2,Quality:FullBleed=1"
 *End
 *1284DeviceID: "MFG:HP;MDL:photosmart c6100 series;DES:photosmart c6100 series;"
-*cupsVersion: 1.3
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip-hplip"
 *cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip-hplip"
+*cupsLanguages: "en"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -301,70 +299,70 @@ lity:PenSet=2,Quality:FullBleed=1"
 *PageRegion w612h935/Executive (JIS): "%% FoomaticRIPOptionSetting: PageSize=w612h935"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter: "18.00 36.00 594.00 783.00"
-*ImageableArea A4/A4: "9.72 36.00 585.28 833.00"
-*ImageableArea Photo/Photo or 4x6 inch index card: "0.00 36.00 288.00 432.00"
-*ImageableArea Photo5x7/Photo or 5x7 inch index card: "0.00 36.00 360.00 504.00"
-*ImageableArea PhotoTearOff/Photo with tear-off tab: "0.00 0.00 288.00 432.00"
-*ImageableArea 3x5/3x5 inch index card: "0.00 36.00 216.00 360.00"
-*ImageableArea 5x8/5x8 inch index card: "0.00 36.00 360.00 576.00"
-*ImageableArea A5/A5: "9.00 36.00 411.00 586.00"
-*ImageableArea A6/A6: "0.00 36.00 297.00 420.00"
-*ImageableArea A6TearOff/A6 with tear-off tab: "0.00 0.00 297.00 420.00"
-*ImageableArea B5JIS/B5 (JIS): "18.00 36.00 498.00 720.00"
-*ImageableArea CDDVD80/CD or DVD 80 mm: "0.00 36.00 237.00 237.00"
-*ImageableArea CDDVD120/CD or DVD 120 mm: "0.00 36.00 360.00 360.00"
-*ImageableArea Env10/Envelope #10: "0.00 36.00 297.00 684.00"
-*ImageableArea EnvC5/Envelope C5: "18.00 36.00 441.00 640.00"
-*ImageableArea EnvC6/Envelope C6: "0.00 36.00 323.00 459.00"
-*ImageableArea EnvDL/Envelope DL: "0.00 36.00 312.00 624.00"
-*ImageableArea EnvISOB5/Envelope B5: "18.00 36.00 481.00 700.00"
-*ImageableArea EnvMonarch/Envelope Monarch: "0.00 36.00 279.00 540.00"
-*ImageableArea Executive/Executive: "18.00 36.00 504.00 747.00"
-*ImageableArea FLSA/American Foolscap: "18.00 36.00 594.00 927.00"
-*ImageableArea Hagaki/Hagaki: "0.00 36.00 283.00 420.00"
-*ImageableArea Legal/Legal: "18.00 36.00 594.00 999.00"
-*ImageableArea Oufuku/Oufuku-Hagaki: "0.00 36.00 567.00 420.00"
-*ImageableArea w558h774/16K: "18.00 36.00 540.00 765.00"
-*ImageableArea w612h935/Executive (JIS): "18.00 36.00 594.00 926.00"
+*ImageableArea Letter/Letter: "18 36 594 783"
+*ImageableArea A4/A4: "9.720000267029 36 585.279999732971 833"
+*ImageableArea Photo/Photo or 4x6 inch index card: "0 36 288 432"
+*ImageableArea Photo5x7/Photo or 5x7 inch index card: "0 36 360 504"
+*ImageableArea PhotoTearOff/Photo with tear-off tab: "0 0 288 432"
+*ImageableArea 3x5/3x5 inch index card: "0 36 216 360"
+*ImageableArea 5x8/5x8 inch index card: "0 36 360 576"
+*ImageableArea A5/A5: "9 36 411 586"
+*ImageableArea A6/A6: "0 36 297 420"
+*ImageableArea A6TearOff/A6 with tear-off tab: "0 0 297 420"
+*ImageableArea B5JIS/B5 (JIS): "18 36 498 720"
+*ImageableArea CDDVD80/CD or DVD 80 mm: "0 36 237 237"
+*ImageableArea CDDVD120/CD or DVD 120 mm: "0 36 360 360"
+*ImageableArea Env10/Envelope #10: "0 36 297 684"
+*ImageableArea EnvC5/Envelope C5: "18 36 441 640"
+*ImageableArea EnvC6/Envelope C6: "0 36 323 459"
+*ImageableArea EnvDL/Envelope DL: "0 36 312 624"
+*ImageableArea EnvISOB5/Envelope B5: "18 36 481 700"
+*ImageableArea EnvMonarch/Envelope Monarch: "0 36 279 540"
+*ImageableArea Executive/Executive: "18 36 504 747"
+*ImageableArea FLSA/American Foolscap: "18 36 594 927"
+*ImageableArea Hagaki/Hagaki: "0 36 283 420"
+*ImageableArea Legal/Legal: "18 36 594 999"
+*ImageableArea Oufuku/Oufuku-Hagaki: "0 36 567 420"
+*ImageableArea w558h774/16K: "18 36 540 765"
+*ImageableArea w612h935/Executive (JIS): "18 36 594 926"
 *DefaultPaperDimension: Letter
-*PaperDimension Letter/Letter: "612.00 792.00"
-*PaperDimension A4/A4: "595.00 842.00"
-*PaperDimension Photo/Photo or 4x6 inch index card: "288.00 432.00"
-*PaperDimension Photo5x7/Photo or 5x7 inch index card: "360.00 504.00"
-*PaperDimension PhotoTearOff/Photo with tear-off tab: "288.00 432.00"
-*PaperDimension 3x5/3x5 inch index card: "216.00 360.00"
-*PaperDimension 5x8/5x8 inch index card: "360.00 576.00"
-*PaperDimension A5/A5: "420.00 595.00"
-*PaperDimension A6/A6: "297.00 420.00"
-*PaperDimension A6TearOff/A6 with tear-off tab: "297.00 420.00"
-*PaperDimension B5JIS/B5 (JIS): "516.00 729.00"
-*PaperDimension CDDVD80/CD or DVD 80 mm: "237.00 237.00"
-*PaperDimension CDDVD120/CD or DVD 120 mm: "360.00 360.00"
-*PaperDimension Env10/Envelope #10: "297.00 684.00"
-*PaperDimension EnvC5/Envelope C5: "459.00 649.00"
-*PaperDimension EnvC6/Envelope C6: "323.00 459.00"
-*PaperDimension EnvDL/Envelope DL: "312.00 624.00"
-*PaperDimension EnvISOB5/Envelope B5: "499.00 709.00"
-*PaperDimension EnvMonarch/Envelope Monarch: "279.00 540.00"
-*PaperDimension Executive/Executive: "522.00 756.00"
-*PaperDimension FLSA/American Foolscap: "612.00 936.00"
-*PaperDimension Hagaki/Hagaki: "283.00 420.00"
-*PaperDimension Legal/Legal: "612.00 1008.00"
-*PaperDimension Oufuku/Oufuku-Hagaki: "567.00 420.00"
-*PaperDimension w558h774/16K: "558.00 774.00"
-*PaperDimension w612h935/Executive (JIS): "612.00 935.00"
-*MaxMediaWidth: "936.00"
-*MaxMediaHeight: "1368.00"
-*HWMargins: 18.00 36.00 18.00 9.00
+*PaperDimension Letter/Letter: "612 792"
+*PaperDimension A4/A4: "595 842"
+*PaperDimension Photo/Photo or 4x6 inch index card: "288 432"
+*PaperDimension Photo5x7/Photo or 5x7 inch index card: "360 504"
+*PaperDimension PhotoTearOff/Photo with tear-off tab: "288 432"
+*PaperDimension 3x5/3x5 inch index card: "216 360"
+*PaperDimension 5x8/5x8 inch index card: "360 576"
+*PaperDimension A5/A5: "420 595"
+*PaperDimension A6/A6: "297 420"
+*PaperDimension A6TearOff/A6 with tear-off tab: "297 420"
+*PaperDimension B5JIS/B5 (JIS): "516 729"
+*PaperDimension CDDVD80/CD or DVD 80 mm: "237 237"
+*PaperDimension CDDVD120/CD or DVD 120 mm: "360 360"
+*PaperDimension Env10/Envelope #10: "297 684"
+*PaperDimension EnvC5/Envelope C5: "459 649"
+*PaperDimension EnvC6/Envelope C6: "323 459"
+*PaperDimension EnvDL/Envelope DL: "312 624"
+*PaperDimension EnvISOB5/Envelope B5: "499 709"
+*PaperDimension EnvMonarch/Envelope Monarch: "279 540"
+*PaperDimension Executive/Executive: "522 756"
+*PaperDimension FLSA/American Foolscap: "612 936"
+*PaperDimension Hagaki/Hagaki: "283 420"
+*PaperDimension Legal/Legal: "612 1008"
+*PaperDimension Oufuku/Oufuku-Hagaki: "567 420"
+*PaperDimension w558h774/16K: "558 774"
+*PaperDimension w612h935/Executive (JIS): "612 935"
+*MaxMediaWidth: "936"
+*MaxMediaHeight: "1368"
+*HWMargins: 18 36 18 9
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 72.00 936.00
-*ParamCustomPageSize Height: 2 points 288.00 1368.00
+*ParamCustomPageSize Width: 1 points 72 936
+*ParamCustomPageSize Height: 2 points 288 1368
 *ParamCustomPageSize WidthOffset: 3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *PrintoutMode/Printout Mode: PickOne
-*OrderDependency: 10.0 AnySetup *PrintoutMode
+*OrderDependency: 10 AnySetup *PrintoutMode
 *DefaultPrintoutMode: Normal
 *PrintoutMode Draft/Draft (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Draft"
 *PrintoutMode Draft.Gray/Draft Grayscale (auto-detect paper type): "%% FoomaticRIPOptionSetting: PrintoutMode=Draft.Gray"
@@ -375,7 +373,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *PrintoutMode Photo/Photo (on photo paper): "%% FoomaticRIPOptionSetting: PrintoutMode=Photo"
 *CloseUI: *PrintoutMode
 *OpenUI *InputSlot/Media Source: PickOne
-*OrderDependency: 100.0 AnySetup *InputSlot
+*OrderDependency: 100 AnySetup *InputSlot
 *DefaultInputSlot: Default
 *InputSlot Default/Printer default: "%% FoomaticRIPOptionSetting: InputSlot=Default"
 *InputSlot PhotoTray/Photo Tray: "%% FoomaticRIPOptionSetting: InputSlot=PhotoTray"
@@ -388,14 +386,14 @@ lity:PenSet=2,Quality:FullBleed=1"
 *InputSlot MPTray/Multi Purpose Tray: "%% FoomaticRIPOptionSetting: InputSlot=MPTray"
 *CloseUI: *InputSlot
 *OpenUI *Duplex/Double-Sided Printing: PickOne
-*OrderDependency: 120.0 AnySetup *Duplex
+*OrderDependency: 120 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex DuplexNoTumble/Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=DuplexNoTumble"
 *Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
 *Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
 *CloseUI: *Duplex
 *OpenUI *DryTime/Additional Dry Time: PickOne
-*OrderDependency: 120.0 AnySetup *DryTime
+*OrderDependency: 120 AnySetup *DryTime
 *DefaultDryTime: Zero
 *DryTime Zero/Printer Default: "%% FoomaticRIPOptionSetting: DryTime=Zero"
 *DryTime Five/5 Seconds: "%% FoomaticRIPOptionSetting: DryTime=Five"
@@ -407,7 +405,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *CloseUI: *DryTime
 *OpenGroup: PrintoutMode/Printout Mode
 *OpenUI *Quality/Resolution, Quality, Ink Type, Media Type: PickOne
-*OrderDependency: 100.0 AnySetup *Quality
+*OrderDependency: 100 AnySetup *Quality
 *DefaultQuality: FromPrintoutMode
 *Quality FromPrintoutMode/Controlled by 'Printout Mode': "%% FoomaticRIPOptionSetting: Quality=@PrintoutMode"
 *Quality 300ColorCMYK/300 dpi, Color, Black + Color Cartr.: "%% FoomaticRIPOptionSetting: Quality=300ColorCMYK"
@@ -460,4 +458,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c6100_series-hpijs.ppd, 24064 bytes.
+*% End of hp-photosmart_c6100_series-hpijs.ppd, 23525 bytes.

@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
-*% PPD file for HP Photosmart a630 Series hpijs with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.3.
+*%%%% PPD file for HP Photosmart a630 Series hpijs with CUPS.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.12.4"
+*FileVersion: "hpijs 3.12.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a630_series-hpijs.ppd"
@@ -12,11 +12,8 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a630 Series hpijs"
 *ShortNickName: "HP Photosmart a630 Series hpijs"
-*NickName: "HP Photosmart a630 Series hpijs, 3.12.4"
-*PSVersion: "(3010.000) 705"
-*PSVersion: "(3010.000) 707"
-*PSVersion: "(3010.000) 815"
-*PSVersion: "(3010.000) 853"
+*NickName: "HP Photosmart a630 Series hpijs, 3.12.6"
+*PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
 *DefaultColorSpace: RGB
@@ -100,11 +97,12 @@ Bleed=1"
 *FoomaticRIPOptionSetting RedEye=off: ",RedEye=0"
 *FoomaticRIPOptionSetting RedEye=on: ",RedEye=1"
 *1284DeviceID: "MFG:HP;MDL:photosmart a630 series;DES:photosmart a630 series;"
-*cupsVersion: 1.3
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip-hplip"
 *cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip-hplip"
+*cupsLanguages: "en"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Automatic
@@ -126,60 +124,60 @@ Bleed=1"
 *PageRegion 4x12/4x12in, 10x30cm: "%% FoomaticRIPOptionSetting: PageSize=4x12"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Automatic
-*ImageableArea Automatic/Automatic: "0.00 0.00 288.00 432.00"
-*ImageableArea 4x6/4x6in, 10x15cm, A6, Hagaki : "0.00 0.00 288.00 432.00"
-*ImageableArea 5x7/5x7in, 13x18cm, 2L: "0.00 0.00 360.00 504.00"
-*ImageableArea L/3.5x5in, L: "0.00 0.00 252.00 360.00"
-*ImageableArea 4x8/4x8in, 10x20cm: "0.00 0.00 288.00 576.00"
-*ImageableArea 4x12/4x12in, 10x30cm: "0.00 0.00 288.00 864.00"
+*ImageableArea Automatic/Automatic: "0 0 288 432"
+*ImageableArea 4x6/4x6in, 10x15cm, A6, Hagaki : "0 0 288 432"
+*ImageableArea 5x7/5x7in, 13x18cm, 2L: "0 0 360 504"
+*ImageableArea L/3.5x5in, L: "0 0 252 360"
+*ImageableArea 4x8/4x8in, 10x20cm: "0 0 288 576"
+*ImageableArea 4x12/4x12in, 10x30cm: "0 0 288 864"
 *DefaultPaperDimension: Automatic
-*PaperDimension Automatic/Automatic: "288.00 432.00"
-*PaperDimension 4x6/4x6in, 10x15cm, A6, Hagaki : "288.00 432.00"
-*PaperDimension 5x7/5x7in, 13x18cm, 2L: "360.00 504.00"
-*PaperDimension L/3.5x5in, L: "252.00 360.00"
-*PaperDimension 4x8/4x8in, 10x20cm: "288.00 576.00"
-*PaperDimension 4x12/4x12in, 10x30cm: "288.00 864.00"
-*MaxMediaWidth: "360.00"
-*MaxMediaHeight: "504.00"
-*HWMargins: 0.00 0.00 0.00 0.00
+*PaperDimension Automatic/Automatic: "288 432"
+*PaperDimension 4x6/4x6in, 10x15cm, A6, Hagaki : "288 432"
+*PaperDimension 5x7/5x7in, 13x18cm, 2L: "360 504"
+*PaperDimension L/3.5x5in, L: "252 360"
+*PaperDimension 4x8/4x8in, 10x20cm: "288 576"
+*PaperDimension 4x12/4x12in, 10x30cm: "288 864"
+*MaxMediaWidth: "360"
+*MaxMediaHeight: "504"
+*HWMargins: 0 0 0 0
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 72.00 360.00
-*ParamCustomPageSize Height: 2 points 288.00 504.00
+*ParamCustomPageSize Width: 1 points 72 360
+*ParamCustomPageSize Height: 2 points 288 504
 *ParamCustomPageSize WidthOffset: 3 points 0 0
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *MediaType/Media Type : PickOne
-*OrderDependency: 105.0 AnySetup *MediaType
+*OrderDependency: 105 AnySetup *MediaType
 *DefaultMediaType: Automatic
-*MediaType Automatic: "%% FoomaticRIPOptionSetting: MediaType=Automatic"
+*MediaType Automatic/Automatic: "%% FoomaticRIPOptionSetting: MediaType=Automatic"
 *MediaType APhoto/HP Advanced Photo: "%% FoomaticRIPOptionSetting: MediaType=APhoto"
 *MediaType PPhoto/HP Premium Photo: "%% FoomaticRIPOptionSetting: MediaType=PPhoto"
-*MediaType Plain: "%% FoomaticRIPOptionSetting: MediaType=Plain"
+*MediaType Plain/Plain: "%% FoomaticRIPOptionSetting: MediaType=Plain"
 *MediaType OPhoto/Other Photo: "%% FoomaticRIPOptionSetting: MediaType=OPhoto"
 *CloseUI: *MediaType
 *OpenUI *PrintQuality/Print Quality : PickOne
-*OrderDependency: 105.0 AnySetup *PrintQuality
+*OrderDependency: 105 AnySetup *PrintQuality
 *DefaultPrintQuality: Automatic
-*PrintQuality Automatic: "%% FoomaticRIPOptionSetting: MediaType=Automatic"
-*PrintQuality Best: "%% FoomaticRIPOptionSetting: MediaType=Best"
-*PrintQuality Normal: "%% FoomaticRIPOptionSetting: MediaType=Normal"
-*PrintQuality FastNormal: "%% FoomaticRIPOptionSetting: MediaType=FastNormal"
+*PrintQuality Automatic/Automatic: "%% FoomaticRIPOptionSetting: MediaType=Automatic"
+*PrintQuality Best/Best: "%% FoomaticRIPOptionSetting: MediaType=Best"
+*PrintQuality Normal/Normal: "%% FoomaticRIPOptionSetting: MediaType=Normal"
+*PrintQuality FastNormal/FastNormal: "%% FoomaticRIPOptionSetting: MediaType=FastNormal"
 *CloseUI: *PrintQuality
 *OpenUI *Borderless/Borderless Printing: Boolean
-*OrderDependency: 105.0 AnySetup *Borderless
+*OrderDependency: 105 AnySetup *Borderless
 *DefaultBorderless: Enable
-*Borderless Disable: "%% FoomaticRIPOptionSetting: Borderless=off"
-*Borderless Enable: "%% FoomaticRIPOptionSetting: Borderless=on"
+*Borderless Disable/Disable: "%% FoomaticRIPOptionSetting: Borderless=off"
+*Borderless Enable/Enable: "%% FoomaticRIPOptionSetting: Borderless=on"
 *CloseUI: *Borderless
 *OpenGroup: RLT/HP Real Life Technologies
 *OpenUI *PhotoFix/Photo Fix: Boolean
-*OrderDependency: 105.0 AnySetup *PhotoFix
+*OrderDependency: 105 AnySetup *PhotoFix
 *DefaultPhotoFix: off
 *PhotoFix off/Disable: "%% FoomaticRIPOptionSetting: PhotoFix=off"
 *PhotoFix on/Enable: "%% FoomaticRIPOptionSetting: PhotoFix=on"
 *CloseUI: *PhotoFix
 *OpenUI *RedEye/Red Eye Removal: Boolean
-*OrderDependency: 105.0 AnySetup *RedEye
+*OrderDependency: 105 AnySetup *RedEye
 *DefaultRedEye: on
 *RedEye off/Disable: "%% FoomaticRIPOptionSetting: RedEye=off"
 *RedEye on/Enable: "%% FoomaticRIPOptionSetting: RedEye=on"
@@ -221,4 +219,4 @@ Bleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_a630_series-hpijs.ppd, 09918 bytes.
+*% End of hp-photosmart_a630_series-hpijs.ppd, 09777 bytes.
