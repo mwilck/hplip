@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_p2014n-zxs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet p2014n"
 *ShortNickName: "HP LaserJet p2014n"
-*NickName: "HP LaserJet p2014n zxs, hpcups 3.12.6, requires proprietary plugin"
+*NickName: "HP LaserJet p2014n zxs, hpcups 3.12.9, requires proprietary plugin"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -30,8 +30,6 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -226,4 +224,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_p2014n-zxs.ppd, 14672 bytes.
+*% End of hp-laserjet_p2014n-zxs.ppd, 14584 bytes.

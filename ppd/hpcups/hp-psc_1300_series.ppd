@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-psc_1300_series.ppd"
@@ -17,7 +17,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PSC 1300 Series"
 *ShortNickName: "HP PSC 1300 Series"
-*NickName: "HP PSC 1300 Series, hpcups 3.12.6"
+*NickName: "HP PSC 1300 Series, hpcups 3.12.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -38,8 +38,6 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *MediaType Glossy *OutputMode DraftRGB
 *UIConstraints: *OutputMode DraftRGB *MediaType Glossy
 *UIConstraints: *MediaType Glossy *OutputMode DraftGray
@@ -264,4 +262,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-psc_1300_series.ppd, 17600 bytes.
+*% End of hp-psc_1300_series.ppd, 17512 bytes.

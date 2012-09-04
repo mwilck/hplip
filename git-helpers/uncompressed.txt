@@ -216,6 +216,7 @@
 ./ppd/hpcups/hp-deskjet_3425.ppd
 ./ppd/hpcups/hp-deskjet_3450.ppd
 ./ppd/hpcups/hp-deskjet_3500.ppd
+./ppd/hpcups/hp-deskjet_3510_series.ppd
 ./ppd/hpcups/hp-deskjet_3520_series.ppd
 ./ppd/hpcups/hp-deskjet_3550.ppd
 ./ppd/hpcups/hp-deskjet_3600.ppd
@@ -269,6 +270,7 @@
 ./ppd/hpcups/hp-deskjet_640c.ppd
 ./ppd/hpcups/hp-deskjet_648c.ppd
 ./ppd/hpcups/hp-deskjet_6500.ppd
+./ppd/hpcups/hp-deskjet_6520_series.ppd
 ./ppd/hpcups/hp-deskjet_656c.ppd
 ./ppd/hpcups/hp-deskjet_6600.ppd
 ./ppd/hpcups/hp-deskjet_660.ppd
@@ -716,12 +718,14 @@
 ./ppd/hpcups/hp-photosmart_5510_series.ppd
 ./ppd/hpcups/hp-photosmart_5520_series.ppd
 ./ppd/hpcups/hp-photosmart_6510_series.ppd
+./ppd/hpcups/hp-photosmart_6520_series.ppd
 ./ppd/hpcups/hp-photosmart_7150.ppd
 ./ppd/hpcups/hp-photosmart_7200_series.ppd
 ./ppd/hpcups/hp-photosmart_7345.ppd
 ./ppd/hpcups/hp-photosmart_7350.ppd
 ./ppd/hpcups/hp-photosmart_7400_series.ppd
 ./ppd/hpcups/hp-photosmart_7510_series.ppd
+./ppd/hpcups/hp-photosmart_7520_series.ppd
 ./ppd/hpcups/hp-photosmart_7550.ppd
 ./ppd/hpcups/hp-photosmart_7600_series.ppd
 ./ppd/hpcups/hp-photosmart_7700_series.ppd
@@ -1072,6 +1076,7 @@
 ./ppd/hpijs/hp-deskjet_3425-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3450-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3500-hpijs.ppd
+./ppd/hpijs/hp-deskjet_3510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3520_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3550-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3600-hpijs.ppd
@@ -1125,6 +1130,7 @@
 ./ppd/hpijs/hp-deskjet_640c-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_648c-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_6500-hpijs.ppd
+./ppd/hpijs/hp-deskjet_6520_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_656c-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_6600-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_660-hpijs.ppd
@@ -1572,12 +1578,14 @@
 ./ppd/hpijs/hp-photosmart_5510_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_5520_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_6510_series-hpijs.ppd
+./ppd/hpijs/hp-photosmart_6520_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7150-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7200_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7345-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7350-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7400_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7510_series-hpijs.ppd
+./ppd/hpijs/hp-photosmart_7520_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7550-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7600_series-hpijs.ppd
 ./ppd/hpijs/hp-photosmart_7700_series-hpijs.ppd
@@ -2196,7 +2204,9 @@
 ./prnt/ps/hp-laserjet_1320_series-ps.ppd
 ./prnt/ps/HP_LaserJet_1320_Series-ps.ppd
 ./prnt/ps/hp-laserjet_1320tn-ps.ppd
+./prnt/ps/hp-laserjet_200_color_m251-ps.ppd
 ./prnt/ps/hp-laserjet_200_colormfp_m275-ps.ppd
+./prnt/ps/hp-laserjet_200_colormfp_m276-ps.ppd
 ./prnt/ps/hp-laserjet_2100-ps.ppd
 ./prnt/ps/hp-laserjet_2100_series-ps.ppd
 ./prnt/ps/HP_LaserJet_2100_Series-ps.ppd

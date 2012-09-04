@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_380_series.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 380 Series"
 *ShortNickName: "HP Photosmart 380 Series"
-*NickName: "HP Photosmart 380 Series, hpcups 3.12.6"
+*NickName: "HP Photosmart 380 Series, hpcups 3.12.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

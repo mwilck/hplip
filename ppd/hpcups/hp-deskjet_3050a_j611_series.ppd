@@ -3,15 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_3050a_j611_series.ppd"
 *Product: "(HP Deskjet 3050a j611 Series)"
+*Product: "(HP Deskjet 3055a E-all-in-one Printer j611n)"
+*Product: "(HP Deskjet 3057a E-all-in-one Printer j611n)"
+*Product: "(HP Deskjet 3059a E-all-in-one Printer j611n)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 3050a j611 Series"
 *ShortNickName: "HP Deskjet 3050a j611 Series"
-*NickName: "HP Deskjet 3050a j611 Series, hpcups 3.12.6"
+*NickName: "HP Deskjet 3050a j611 Series, hpcups 3.12.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -230,4 +233,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_3050a_j611_series.ppd, 15937 bytes.
+*% End of hp-deskjet_3050a_j611_series.ppd, 16111 bytes.

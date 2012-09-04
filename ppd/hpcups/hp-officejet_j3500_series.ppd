@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_j3500_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet j3500 Series"
 *ShortNickName: "HP Officejet j3500 Series"
-*NickName: "HP Officejet j3500 Series, hpcups 3.12.6"
+*NickName: "HP Officejet j3500 Series, hpcups 3.12.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -32,8 +32,6 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *MediaType Glossy *OutputMode DraftRGB
 *UIConstraints: *OutputMode DraftRGB *MediaType Glossy
 *UIConstraints: *MediaType Glossy *OutputMode DraftGray
@@ -258,4 +256,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_j3500_series.ppd, 17390 bytes.
+*% End of hp-officejet_j3500_series.ppd, 17302 bytes.

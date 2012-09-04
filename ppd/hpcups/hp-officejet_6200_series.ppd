@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.6"
+*FileVersion: "hpcups 3.12.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6200_series.ppd"
@@ -19,7 +19,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6200 Series"
 *ShortNickName: "HP Officejet 6200 Series"
-*NickName: "HP Officejet 6200 Series, hpcups 3.12.6"
+*NickName: "HP Officejet 6200 Series, hpcups 3.12.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -42,8 +42,6 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *Duplex *OptionDuplex False
-*UIConstraints: *OptionDuplex False *Duplex
 *UIConstraints: *ColorModel KGray *OutputMode Photo
 *UIConstraints: *OutputMode Photo *ColorModel KGray
 *UIConstraints: *ColorModel CMYGray *OutputMode Photo
@@ -424,4 +422,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6200_series.ppd, 28584 bytes.
+*% End of hp-officejet_6200_series.ppd, 28496 bytes.
