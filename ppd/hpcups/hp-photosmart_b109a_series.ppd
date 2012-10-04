@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.9"
+*FileVersion: "hpcups 3.12.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_b109a_series.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart b109a Series"
 *ShortNickName: "HP Photosmart b109a Series"
-*NickName: "HP Photosmart b109a Series, hpcups 3.12.9"
+*NickName: "HP Photosmart b109a Series, hpcups 3.12.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -299,4 +299,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_b109a_series.ppd, 21828 bytes.
+*% End of hp-photosmart_b109a_series.ppd, 21830 bytes.
