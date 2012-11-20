@@ -43,7 +43,7 @@
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt ru sv zh_CN zh_TW"
-*cupsFilter: "application/vnd.cups-postscript 0 hplipjs"
+*cupsFilter: "application/vnd.cups-postscript 0 hpps"
 *LanguageVersion: English
 *PCFileName: "HPM9050.PPD"
 *%== Mac OS X specific begin ==

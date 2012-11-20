@@ -48,12 +48,12 @@
 *TTRasterizer: Type42
 *% Driver-defined attributes...
 *Protocols: TBCP PJL
-*JCLBegin: "<1B>%-12345X@PJL JOB<0A>"
-*JCLToPSInterpreter: "@PJL ENTER LANGUAGE = PostScript <0A>"
-*JCLEnd: "<1B>%-12345X@PJL EOJ <0A><1B>%-12345X"
+*%JCLBegin: "<1B>%-12345X@PJL JOB<0A>"
+*%JCLToPSInterpreter: "@PJL ENTER LANGUAGE = PostScript <0A>"
+*%JCLEnd: "<1B>%-12345X@PJL EOJ <0A><1B>%-12345X"
 *cupsPJLCharset: "UTF-8"
 *HPBOD: "1"
-*HPAccountingInfo: "4"
+*HPAccountingInfo: "1"
 *HPJobAttirubtesEncoding: "UTF8"
 *HPPDEPanel: "HPPaperQualityLaserjetsPanel"
 *HPPDEPanel: "HPBookletPanel"
@@ -377,12 +377,14 @@
 *CloseUI: *MediaType
 *CloseGroup: HPFinishingPanel
 *OpenGroup: HPColorOptionsPanel/Color Options
-*OpenUI *HPEconoMode/EconoMode: Boolean
-*OrderDependency: 20 JCLSetup *HPEconoMode
-*DefaultHPEconoMode: False
-*HPEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
-*HPEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
-*CloseUI: *HPEconoMode
+*OpenUI *HPPJLEconoMode/EconoMode: Boolean
+*OrderDependency: 20 JCLSetup *HPPJLEconoMode
+*DefaultHPPJLEconoMode: False
+*HPPJLEconoMode True/On: "%%"
+*HPPJLEconoMode False/Off: "%%"
+*%HPPJLEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
+*%HPPJLEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
+*CloseUI: *HPPJLEconoMode
 *CloseGroup: HPColorOptionsPanel
 *OpenGroup: HPBookletPanel/Booklet Printing
 *OpenUI *HPBookletFilter/Format Output as Booklet: Boolean

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.10a"
+*FileVersion: "hpcups 3.12.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c309a_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c309a Series"
 *ShortNickName: "HP Photosmart c309a Series"
-*NickName: "HP Photosmart c309a Series, hpcups 3.12.10a"
+*NickName: "HP Photosmart c309a Series, hpcups 3.12.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -485,4 +485,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c309a_series.ppd, 34474 bytes.
+*% End of hp-photosmart_c309a_series.ppd, 34472 bytes.

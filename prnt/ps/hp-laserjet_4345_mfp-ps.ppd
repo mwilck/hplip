@@ -46,13 +46,14 @@
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
+*cupsFilter: "application/vnd.cups-postscript 0 hpps"
 
 *PCFileName: "HP4345_1.PPD"
 
 
 *HPPDEPanel: "HPFinishingPanel"
 *HPPDEPanel: "HPImagingOptions"
-
+*HPAccountingInfo: "1"
 
 *% Product Version Information
 

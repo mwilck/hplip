@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.10a"
+*FileVersion: "hpcups 3.12.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_k550.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro k550"
 *ShortNickName: "HP Officejet Pro k550"
-*NickName: "HP Officejet Pro k550, hpcups 3.12.10a"
+*NickName: "HP Officejet Pro k550, hpcups 3.12.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -373,4 +373,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_k550.ppd, 24293 bytes.
+*% End of hp-officejet_pro_k550.ppd, 24291 bytes.
