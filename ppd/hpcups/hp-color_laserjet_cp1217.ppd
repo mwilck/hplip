@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.11"
+*FileVersion: "hpcups 3.13.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_cp1217.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet cp1217"
 *ShortNickName: "HP Color LaserJet cp1217"
-*NickName: "HP Color LaserJet cp1217, hpcups 3.12.11, requires proprietary plugin"
+*NickName: "HP Color LaserJet cp1217, hpcups 3.13.2, requires proprietary plugin"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -59,7 +59,7 @@
 *PageSize Env10/#10 Envelope 4.12x9.5in: "<</cupsInteger0 20/PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 96/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
 *PageSize EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 96/PageSize[459 649]/ImagingBBox null>>setpagedevice"
-*PageSize EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 96/PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageSize EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 96/PageSize[498.96 708.48]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -89,7 +89,7 @@
 *PageRegion Env10/#10 Envelope 4.12x9.5in: "<</cupsInteger0 20/PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 96/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 96/PageSize[459 649]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 96/PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvB5/B5 Envelope 176x250mm: "<</cupsInteger0 96/PageSize[498.96 708.48]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "12.960000038147 14.39999961853 203.039999961853 345.60000038147"
@@ -117,7 +117,7 @@
 *ImageableArea Env10/#10 Envelope 4.12x9.5in: "18 14.39999961853 279 669.60000038147"
 *ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "18 14 321.839996337891 652"
 *ImageableArea EnvC5/C5 Envelope 162x229mm: "18.299999237061 14.39999961853 440.700000762939 634.60000038147"
-*ImageableArea EnvB5/B5 Envelope 176x250mm: "18 14.39999961853 481 694.60000038147"
+*ImageableArea EnvB5/B5 Envelope 176x250mm: "19.079999923706 14 479.879991531372 694.47998046875"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
 *PaperDimension Hagaki/Hagaki 100x148mm: "284 420"
@@ -144,7 +144,7 @@
 *PaperDimension Env10/#10 Envelope 4.12x9.5in: "297 684"
 *PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "339.839996337891 666"
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459 649"
-*PaperDimension EnvB5/B5 Envelope 176x250mm: "499 709"
+*PaperDimension EnvB5/B5 Envelope 176x250mm: "498.959991455078 708.47998046875"
 *MaxMediaWidth: "612"
 *MaxMediaHeight: "1008"
 *HWMargins: 18 14 18 14
@@ -235,4 +235,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_laserjet_cp1217.ppd, 16045 bytes.
+*% End of hp-color_laserjet_cp1217.ppd, 16094 bytes.

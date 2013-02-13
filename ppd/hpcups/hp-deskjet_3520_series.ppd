@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.11"
+*FileVersion: "hpcups 3.13.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_3520_series.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 3520 Series"
 *ShortNickName: "HP Deskjet 3520 Series"
-*NickName: "HP Deskjet 3520 Series, hpcups 3.12.11"
+*NickName: "HP Deskjet 3520 Series, hpcups 3.13.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -475,4 +475,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_3520_series.ppd, 34855 bytes.
+*% End of hp-deskjet_3520_series.ppd, 34853 bytes.

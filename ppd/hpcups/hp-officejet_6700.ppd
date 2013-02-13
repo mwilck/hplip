@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.12.11"
+*FileVersion: "hpcups 3.13.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6700.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6700"
 *ShortNickName: "HP Officejet 6700"
-*NickName: "HP Officejet 6700, hpcups 3.12.11"
+*NickName: "HP Officejet 6700, hpcups 3.13.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -145,7 +145,7 @@
 *PageSize A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.65 419.54]/ImagingBBox null>>setpagedevice"
 *PageSize A6.FB/A6 Borderless 105x148mm: "<</cupsInteger0 73/PageSize[310.392 433.656]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki/Hagaki card 100x148mm: "<</cupsInteger0 71/PageSize[283.46 419.54]/ImagingBBox null>>setpagedevice"
-*PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[297.864 433.656]/ImagingBBox    null>>setpagedevice"
+*PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[298 433]/ImagingBBox    null>>setpagedevice"
 *PageSize Photo3x5/Photo 3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
 *PageSize Photo5x7/Photo 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageSize Photo13x18/Photo 13x18cm: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
@@ -183,10 +183,10 @@
 *PageSize Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297.36 684]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[340.128 666.144]/ImagingBBox null>>setpagedevice"
 *PageSize EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.216 649.152]/ImagingBBox null>>setpagedevice"
-*PageSize A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[595.29 799.34]/ImagingBBox null>>setpagedevice"
-*PageSize Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 749.44]/ImagingBBox null>>setpagedevice"
-*PageSize CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 799.13]/ImagingBBox null>>setpagedevice"
-*PageSize CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 749.44]/ImagingBBox null>>setpagedevice"
+*PageSize A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[ 595.29 841.896]/ImagingBBox null>>setpagedevice"
+*PageSize Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -200,7 +200,7 @@
 *PageRegion A6/A6 105x148mm: "<</cupsInteger0 73/PageSize[297.65 419.54]/ImagingBBox null>>setpagedevice"
 *PageRegion A6.FB/A6 Borderless 105x148mm: "<</cupsInteger0 73/cupsReal0 .079/cupsReal1 .098/PageSize[310.392 433.656]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki/Hagaki card 100x148mm: "<</cupsInteger0 71/PageSize[283.46 419.54]/ImagingBBox null>>setpagedevice"
-*PageRegion Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[297.864 433.656]/ImagingBBox null>>setpagedevice"
+*PageRegion Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[298 433]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo3x5/Photo 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo5x7/Photo 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo13x18/Photo 13x18cm: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
@@ -238,10 +238,10 @@
 *PageRegion Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297.36 684]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[340.128 666.144]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.216 649.152]/ImagingBBox null>>setpagedevice"
-*PageRegion A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[595.29 799.34]/ImagingBBox null>>setpagedevice"
-*PageRegion Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 749.44]/ImagingBBox null>>setpagedevice"
-*PageRegion CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 799.13]/ImagingBBox null>>setpagedevice"
-*PageRegion CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 749.44]/ImagingBBox null>>setpagedevice"
+*PageRegion A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[ 595.29 841.896]/ImagingBBox null>>setpagedevice"
+*PageRegion Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "9.359999656677 9.359999656677 206.640000343323 350.640000343323"
@@ -253,7 +253,7 @@
 *ImageableArea A6/A6 105x148mm: "9.359999656677 9.359999656677 288.289994239807 410.180008888245"
 *ImageableArea A6.FB/A6 Borderless 105x148mm: "0 0 310.391998291016 433.656005859375"
 *ImageableArea Hagaki/Hagaki card 100x148mm: "9.359999656677 9.359999656677 274.099991798401 410.180008888245"
-*ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0 0 297.864013671875 433.656005859375"
+*ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0 0 298 433"
 *ImageableArea Photo3x5/Photo 3x5in: "9.359999656677 9.359999656677 206.640000343323 350.640000343323"
 *ImageableArea Photo5x7/Photo 5x7in: "9.359999656677 9.359999656677 350.640000343323 494.640000343323"
 *ImageableArea Photo13x18/Photo 13x18cm: "9.359999656677 9.359999656677 350.640000343323 494.640000343323"
@@ -291,10 +291,10 @@
 *ImageableArea Env10/#10 Envelope 4.125x9.5in: "9.359999656677 46.799999237061 287.999985694885 637.200000762939"
 *ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "9.359999656677 46.799999237061 330.767991065979 619.343982696533"
 *ImageableArea EnvC5/C5 Envelope 162x229mm: "9.359999656677 46.799999237061 449.856003761292 602.351978302002"
-*ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "9.359999656677 33.192001342773 585.929978370667 789.980027198792"
-*ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.359999656677 33.192001342773 602.640000343323 740.080002784729"
-*ImageableArea CardA4/Index Card A4 210x297mm AutoDuplex: "9.359999656677 33.192001342773 586.080002784729 789.770005226135"
-*ImageableArea CardLetter/Index Card Letter 8.5x11in AutoDuplex: "9.359999656677 33.192001342773 602.640000343323 740.080002784729"
+*ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "9.359999656677 33.192001342773 585.929978370667 799.343997955322"
+*ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.359999656677 33.192001342773 602.640000343323 749.448001861572"
+*ImageableArea CardA4/Index Card A4 210x297mm AutoDuplex: "9.359999656677 33.192001342773 586.080002784729 799.127994537354"
+*ImageableArea CardLetter/Index Card Letter 8.5x11in AutoDuplex: "9.359999656677 33.192001342773 602.640000343323 749.448001861572"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
 *PaperDimension Card4x6/Index Card 4x6in: "288 432"
@@ -305,7 +305,7 @@
 *PaperDimension A6/A6 105x148mm: "297.649993896484 419.540008544922"
 *PaperDimension A6.FB/A6 Borderless 105x148mm: "310.391998291016 433.656005859375"
 *PaperDimension Hagaki/Hagaki card 100x148mm: "283.459991455078 419.540008544922"
-*PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "297.864013671875 433.656005859375"
+*PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "298 433"
 *PaperDimension Photo3x5/Photo 3x5in: "216 360"
 *PaperDimension Photo5x7/Photo 5x7in: "360 504"
 *PaperDimension Photo13x18/Photo 13x18cm: "360 504"
@@ -343,10 +343,10 @@
 *PaperDimension Env10/#10 Envelope 4.125x9.5in: "297.359985351562 684"
 *PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "340.127990722656 666.143981933594"
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459.216003417969 649.151977539062"
-*PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.289978027344 799.340026855469"
-*PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612 749.440002441406"
-*PaperDimension CardA4/Index Card A4 210x297mm AutoDuplex: "595.440002441406 799.130004882812"
-*PaperDimension CardLetter/Index Card Letter 8.5x11in AutoDuplex: "612 749.440002441406"
+*PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.289978027344 841.89599609375"
+*PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612 792"
+*PaperDimension CardA4/Index Card A4 210x297mm AutoDuplex: "595.440002441406 841.679992675781"
+*PaperDimension CardLetter/Index Card Letter 8.5x11in AutoDuplex: "612 792"
 *MaxMediaWidth: "612"
 *MaxMediaHeight: "1008"
 *HWMargins: 9.359999656677 9.359999656677 9.359999656677 9.359999656677
@@ -434,4 +434,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6700.ppd, 31685 bytes.
+*% End of hp-officejet_6700.ppd, 31580 bytes.
