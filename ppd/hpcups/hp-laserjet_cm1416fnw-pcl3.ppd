@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.2"
+*FileVersion: "hpcups 3.13.3"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_cm1416fnw-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet cm1416fnw"
 *ShortNickName: "HP LaserJet cm1416fnw"
-*NickName: "HP LaserJet cm1416fnw pcl3, hpcups 3.13.2"
+*NickName: "HP LaserJet cm1416fnw pcl3, hpcups 3.13.3"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
