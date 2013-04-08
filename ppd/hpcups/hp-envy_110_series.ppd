@@ -3,15 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.3"
+*FileVersion: "3.13.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-envy_110_series.ppd"
 *Product: "(HP Envy 110 E-all-in-one)"
+*Product: "(HP Envy 111 E-all-in-one)"
+*Product: "(HP Envy 114 E-all-in-one)"
 *Manufacturer: "HP"
 *ModelName: "HP Envy 110 Series"
 *ShortNickName: "HP Envy 110 Series"
-*NickName: "HP Envy 110 Series, hpcups 3.13.3"
+*NickName: "HP Envy 110 Series, hpcups 3.13.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -33,8 +35,6 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *MediaType Automatic *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType Automatic
 *UIConstraints: *MediaType Glossy *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Glossy
 *UIConstraints: *MediaType TransparencyFilm *OutputMode FastDraft
@@ -55,8 +55,6 @@
 *UIConstraints: *OutputMode Photo *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *OutputMode Best
 *UIConstraints: *OutputMode Best *MediaType TransparencyFilm
-*UIConstraints: *PageSize PhotoL.FB *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *PageSize PhotoL.FB
 *UIConstraints: *PageSize Photo4x6.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize Photo4x6.FB
 *UIConstraints: *PageSize A6.FB *OutputMode FastDraft
@@ -79,10 +77,6 @@
 *UIConstraints: *OutputMode FastDraft *PageSize HV.FB
 *UIConstraints: *PageSize Card3x5 *Duplex
 *UIConstraints: *Duplex *PageSize Card3x5
-*UIConstraints: *PageSize PhotoL *Duplex
-*UIConstraints: *Duplex *PageSize PhotoL
-*UIConstraints: *PageSize PhotoL.FB *Duplex
-*UIConstraints: *Duplex *PageSize PhotoL.FB
 *UIConstraints: *PageSize Hagaki *Duplex
 *UIConstraints: *Duplex *PageSize Hagaki
 *UIConstraints: *PageSize Hagaki.FB *Duplex
@@ -105,10 +99,6 @@
 *UIConstraints: *Duplex *PageSize Photo5x7
 *UIConstraints: *PageSize Photo5x7.FB *Duplex
 *UIConstraints: *Duplex *PageSize Photo5x7.FB
-*UIConstraints: *PageSize Photo2L *Duplex
-*UIConstraints: *Duplex *PageSize Photo2L
-*UIConstraints: *PageSize Photo2L.FB *Duplex
-*UIConstraints: *Duplex *PageSize Photo2L.FB
 *UIConstraints: *PageSize Card5x8 *Duplex
 *UIConstraints: *Duplex *PageSize Card5x8
 *UIConstraints: *PageSize Oufuku *Duplex
@@ -139,8 +129,6 @@
 *UIConstraints: *Duplex *PageSize A4
 *UIConstraints: *PageSize A4.FB *Duplex
 *UIConstraints: *Duplex *PageSize A4.FB
-*UIConstraints: *PageSize Legal *Duplex
-*UIConstraints: *Duplex *PageSize Legal
 *UIConstraints: *PageSize EnvA2 *Duplex
 *UIConstraints: *Duplex *PageSize EnvA2
 *UIConstraints: *PageSize EnvC6 *Duplex
@@ -169,8 +157,6 @@
 *UIConstraints: *OutputMode FastDraft *PageSize JB5.FB
 *UIConstraints: *PageSize 2L.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize 2L.FB
-*UIConstraints: *PageSize Mutsugiri.FB *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *PageSize Mutsugiri.FB
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -485,4 +471,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-envy_110_series.ppd, 33825 bytes.
+*% End of hp-envy_110_series.ppd, 33116 bytes.

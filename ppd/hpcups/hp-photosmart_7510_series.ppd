@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.3"
+*FileVersion: "3.13.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_7510_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 7510 Series"
 *ShortNickName: "HP Photosmart 7510 Series"
-*NickName: "HP Photosmart 7510 Series, hpcups 3.13.3"
+*NickName: "HP Photosmart 7510 Series, hpcups 3.13.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -61,10 +61,6 @@
 *UIConstraints: *Duplex *PageSize A6
 *UIConstraints: *PageSize A6.FB *Duplex
 *UIConstraints: *Duplex *PageSize A6.FB
-*UIConstraints: *PageSize HV *Duplex
-*UIConstraints: *Duplex *PageSize HV
-*UIConstraints: *PageSize HV.FB *Duplex
-*UIConstraints: *Duplex *PageSize HV.FB
 *UIConstraints: *PageSize Photo5x7 *Duplex
 *UIConstraints: *Duplex *PageSize Photo5x7
 *UIConstraints: *PageSize Photo5x7.FB *Duplex
@@ -75,12 +71,8 @@
 *UIConstraints: *Duplex *PageSize Photo2L.FB
 *UIConstraints: *PageSize Card5x8 *Duplex
 *UIConstraints: *Duplex *PageSize Card5x8
-*UIConstraints: *PageSize Oufuku *Duplex
-*UIConstraints: *Duplex *PageSize Oufuku
-*UIConstraints: *PageSize Cabinet *Duplex
-*UIConstraints: *Duplex *PageSize Cabinet
-*UIConstraints: *PageSize Cabinet.FB *Duplex
-*UIConstraints: *Duplex *PageSize Cabinet.FB
+*UIConstraints: *PageSize Ofuku *Duplex
+*UIConstraints: *Duplex *PageSize Ofuku
 *UIConstraints: *PageSize A5 *Duplex
 *UIConstraints: *Duplex *PageSize A5
 *UIConstraints: *PageSize A5.FB *Duplex
@@ -89,8 +81,6 @@
 *UIConstraints: *Duplex *PageSize B5
 *UIConstraints: *PageSize JB5 *Duplex
 *UIConstraints: *Duplex *PageSize JB5
-*UIConstraints: *PageSize JB5.FB *Duplex
-*UIConstraints: *Duplex *PageSize JB5.FB
 *UIConstraints: *PageSize Executive *Duplex
 *UIConstraints: *Duplex *PageSize Executive
 *UIConstraints: *PageSize 8x10 *Duplex
@@ -135,22 +125,22 @@
 *UIConstraints: *OutputMode FastDraft *PageSize Photo4x6.FB
 *UIConstraints: *PageSize A6.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize A6.FB
-*UIConstraints: *PageSize HV.FB *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *PageSize HV.FB
 *UIConstraints: *PageSize Photo5x7.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize Photo5x7.FB
 *UIConstraints: *PageSize Photo2L.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize Photo2L.FB
-*UIConstraints: *PageSize Cabinet.FB *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *PageSize Cabinet.FB
 *UIConstraints: *PageSize A5.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize A5.FB
-*UIConstraints: *PageSize JB5.FB *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *PageSize JB5.FB
 *UIConstraints: *PageSize Letter.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize Letter.FB
 *UIConstraints: *PageSize A4.FB *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *PageSize A4.FB
+*UIConstraints: *PageSize Cabinet *Duplex
+*UIConstraints: *Duplex *PageSize Cabinet
+*UIConstraints: *PageSize Cabinet.FB *Duplex
+*UIConstraints: *Duplex *PageSize Cabinet.FB
+*UIConstraints: *PageSize Cabinet.FB *OutputMode FastDraft
+*UIConstraints: *OutputMode FastDraft *PageSize Cabinet.FB
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -472,4 +462,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_7510_series.ppd, 33527 bytes.
+*% End of hp-photosmart_7510_series.ppd, 33064 bytes.

@@ -37,9 +37,6 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HPW23006.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *% Product Name and Version Information
@@ -2608,324 +2605,20 @@ restore
 *End
 *CloseUI: *MediaType
 *% ================================================
-*% Constraints on MediaType for Booklet printing
 *% ================================================
 
-*UIConstraints: *HPOption_Duplexer False *HPBookletFilter True
 *% ================================================
-*% Booklet
 *% ================================================
-*% Booklet printing is not allowed without Auto Duplex turned on
-*UIConstraints: *HPBookletFilter True *Duplex None
-*UIConstraints: *Duplex None *HPBookletFilter True
-*OpenUI *HPBookletFilter/Format Output As Booklet: Boolean
-*OrderDependency: 60 AnySetup *HPBookletFilter
-*DefaultHPBookletFilter: False
-*de.Translation HPBookletFilter/Ausgabeformat als Broschüre: ""
-*es.Translation HPBookletFilter/Formatear impr. como folleto: ""
-*fr.Translation HPBookletFilter/Formate la sortie comme brochure: ""
-*it.Translation HPBookletFilter/Output in formato di opuscolo: ""
-*ja.Translation HPBookletFilter/ブックレット印刷用フォーマット: ""
-*ko.Translation HPBookletFilter/소책자 형식으로 출력: ""
-*nl.Translation HPBookletFilter/Opmaakuitvoer als brochure: ""
-*pt.Translation HPBookletFilter/Formatar saída como folheto: ""
-*sv.Translation HPBookletFilter/Broschyr som utskriftsformat: ""
-*zh_CN.Translation HPBookletFilter/以小册子格式输出: ""
-*zh_TW.Translation HPBookletFilter/輸出格式為手冊: ""
 
-*HPBookletFilter True/Yes: ""
-*de.HPBookletFilter True/Ein: ""
-*es.HPBookletFilter True/Activado: ""
-*fr.HPBookletFilter True/Activé: ""
-*it.HPBookletFilter True/Attiva: ""
-*ja.HPBookletFilter True/オン: ""
-*ko.HPBookletFilter True/켜짐: ""
-*nl.HPBookletFilter True/Aan: ""
-*pt.HPBookletFilter True/Ativado: ""
-*sv.HPBookletFilter True/På: ""
-*zh_CN.HPBookletFilter True/开: ""
-*zh_TW.HPBookletFilter True/開啟: ""
 
-*HPBookletFilter False/No: ""
-*de.HPBookletFilter False/Aus: ""
-*es.HPBookletFilter False/Desactivado: ""
-*fr.HPBookletFilter False/Désactivé: ""
-*it.HPBookletFilter False/Disattivata: ""
-*ja.HPBookletFilter False/オフ: ""
-*ko.HPBookletFilter False/꺼짐: ""
-*nl.HPBookletFilter False/Uit: ""
-*pt.HPBookletFilter False/Desativado: ""
-*sv.HPBookletFilter False/Av: ""
-*zh_CN.HPBookletFilter False/关: ""
-*zh_TW.HPBookletFilter False/關閉: ""
 
-*CloseUI: *HPBookletFilter
-
-*OpenUI *HPBookletBackCover/Last Page Is Back Cover: Boolean
-*OrderDependency: 61 AnySetup *HPBookletBackCover
-*DefaultHPBookletBackCover: False
-*de.Translation HPBookletBackCover/Endseite = Broschürenrücken: ""
-*es.Translation HPBookletBackCover/La últ. pág. es la contraport.: ""
-*fr.Translation HPBookletBackCover/Dernière page page de garde: ""
-*it.Translation HPBookletBackCover/Ultima pag come retrocopertina: ""
-*ja.Translation HPBookletBackCover/最後のページを背表紙にする: ""
-*ko.Translation HPBookletBackCover/마지막 페이지는 뒤 표지입니다: ""
-*nl.Translation HPBookletBackCover/Laatste pagina is achterblad: ""
-*pt.Translation HPBookletBackCover/A última pág. é a quarta capa: ""
-*sv.Translation HPBookletBackCover/Sista sidan är bakre omslag: ""
-*zh_CN.Translation HPBookletBackCover/最后一页是封底: ""
-*zh_TW.Translation HPBookletBackCover/最後一頁為封底: ""
-
-*HPBookletBackCover True/Yes: ""
-*de.HPBookletBackCover True/Ein: ""
-*es.HPBookletBackCover True/Activado: ""
-*fr.HPBookletBackCover True/Activé: ""
-*it.HPBookletBackCover True/Attiva: ""
-*ja.HPBookletBackCover True/オン: ""
-*ko.HPBookletBackCover True/켜짐: ""
-*nl.HPBookletBackCover True/Aan: ""
-*pt.HPBookletBackCover True/Ativado: ""
-*sv.HPBookletBackCover True/På: ""
-*zh_CN.HPBookletBackCover True/开: ""
-*zh_TW.HPBookletBackCover True/開啟: ""
-
-*HPBookletBackCover False/No: ""
-*de.HPBookletBackCover False/Aus: ""
-*es.HPBookletBackCover False/Desactivado: ""
-*fr.HPBookletBackCover False/Désactivé: ""
-*it.HPBookletBackCover False/Disattivata: ""
-*ja.HPBookletBackCover False/オフ: ""
-*ko.HPBookletBackCover False/꺼짐: ""
-*nl.HPBookletBackCover False/Uit: ""
-*pt.HPBookletBackCover False/Desativado: ""
-*sv.HPBookletBackCover False/Av: ""
-*zh_CN.HPBookletBackCover False/关: ""
-*zh_TW.HPBookletBackCover False/關閉: ""
-
-*CloseUI: *HPBookletBackCover
-
-*OpenUI *HPBookletPageOrder/Page Order: PickOne
-*OrderDependency: 62 AnySetup *HPBookletPageOrder
-*DefaultHPBookletPageOrder: Normal
-*de.Translation HPBookletPageOrder/Seitenreihenfolge: ""
-*es.Translation HPBookletPageOrder/Orden de páginas: ""
-*fr.Translation HPBookletPageOrder/Ordre des pages: ""
-*it.Translation HPBookletPageOrder/Ordine delle pagine: ""
-*ja.Translation HPBookletPageOrder/ページ方向: ""
-*ko.Translation HPBookletPageOrder/페이지 순서: ""
-*nl.Translation HPBookletPageOrder/Paginavolgorde: ""
-*pt.Translation HPBookletPageOrder/Ordem das páginas: ""
-*sv.Translation HPBookletPageOrder/Sidföljd: ""
-*zh_CN.Translation HPBookletPageOrder/页面顺序: ""
-*zh_TW.Translation HPBookletPageOrder/頁序: ""
-
-*HPBookletPageOrder Normal/Pages Bound on the Left: ""
-*de.HPBookletPageOrder Normal/Seiten links gebunden: ""
-*es.HPBookletPageOrder Normal/Encuadernación a la izquierda: ""
-*fr.HPBookletPageOrder Normal/Pages reliées sur la gauche: ""
-*it.HPBookletPageOrder Normal/Pagine rilegate a sinistra: ""
-*ja.HPBookletPageOrder Normal/とじしろ左: ""
-*ko.HPBookletPageOrder Normal/왼쪽 제본 페이지: ""
-*nl.HPBookletPageOrder Normal/Links gebonden pagina’s: ""
-*pt.HPBookletPageOrder Normal/Páginas encadernadas à esquerda: ""
-*sv.HPBookletPageOrder Normal/Sidorna binds i vänsterkanten: ""
-*zh_CN.HPBookletPageOrder Normal/左侧装订: ""
-*zh_TW.HPBookletPageOrder Normal/左邊裝訂: ""
-
-*HPBookletPageOrder Asian/Pages Bound on the Right: ""
-*de.HPBookletPageOrder Asian/Seiten rechts gebunden: ""
-*es.HPBookletPageOrder Asian/Encuadernación a la derecha: ""
-*fr.HPBookletPageOrder Asian/Pages reliées sur la droite: ""
-*it.HPBookletPageOrder Asian/Pagine rilegate a destra: ""
-*ja.HPBookletPageOrder Asian/とじしろ右: ""
-*ko.HPBookletPageOrder Asian/오른쪽 제본 페이지: ""
-*nl.HPBookletPageOrder Asian/Rechts gebonden pagina’s: ""
-*pt.HPBookletPageOrder Asian/Páginas encadernadas à direita: ""
-*sv.HPBookletPageOrder Asian/Sidorna binds i högerkanten: ""
-*zh_CN.HPBookletPageOrder Asian/右侧装订: ""
-*zh_TW.HPBookletPageOrder Asian/右邊裝訂: ""
-
-*CloseUI: *HPBookletPageOrder
-
-*OpenUI *HPBookletScaling/Scaling: PickOne
-*OrderDependency: 63 AnySetup *HPBookletScaling
-*DefaultHPBookletScaling: Proportional
-*de.Translation HPBookletScaling/Skalierung: ""
-*es.Translation HPBookletScaling/Cambio de escala: ""
-*fr.Translation HPBookletScaling/Mise à l'échelle: ""
-*it.Translation HPBookletScaling/Scala: ""
-*ja.Translation HPBookletScaling/拡大縮小: ""
-*ko.Translation HPBookletScaling/스케일링: ""
-*nl.Translation HPBookletScaling/Schaal aanpassen: ""
-*pt.Translation HPBookletScaling/Escalonando: ""
-*sv.Translation HPBookletScaling/Skalning: ""
-*zh_CN.Translation HPBookletScaling/缩放: ""
-*zh_TW.Translation HPBookletScaling/縮放: ""
-
-*HPBookletScaling Proportional/Proportional: ""
-*de.HPBookletScaling Proportional/Proportional: ""
-*es.HPBookletScaling Proportional/Proporcional: ""
-*fr.HPBookletScaling Proportional/Proportionnel: ""
-*it.HPBookletScaling Proportional/Proporzionale: ""
-*ja.HPBookletScaling Proportional/自動均等調整: ""
-*ko.HPBookletScaling Proportional/비례: ""
-*nl.HPBookletScaling Proportional/Proportioneel: ""
-*pt.HPBookletScaling Proportional/Proporcional: ""
-*sv.HPBookletScaling Proportional/Proportionellt: ""
-*zh_CN.HPBookletScaling Proportional/按比例: ""
-*zh_TW.HPBookletScaling Proportional/比例: ""
-
-*HPBookletScaling FitPage/Fit To Page: ""
-*de.HPBookletScaling FitPage/Seite anpassen: ""
-*es.HPBookletScaling FitPage/Ajustar página: ""
-*fr.HPBookletScaling FitPage/Ajuster la page: ""
-*it.HPBookletScaling FitPage/Adattamento pagina: ""
-*ja.HPBookletScaling FitPage/全体表示: ""
-*ko.HPBookletScaling FitPage/페이지에 맞춤: ""
-*nl.HPBookletScaling FitPage/Passend op pagina: ""
-*pt.HPBookletScaling FitPage/Ajuste a página: ""
-*sv.HPBookletScaling FitPage/Anpassa sida: ""
-*zh_CN.HPBookletScaling FitPage/适合页面: ""
-*zh_TW.HPBookletScaling FitPage/符合頁面: ""
-
-*CloseUI: *HPBookletScaling
 
 *% These values are set of PageSize settings so we need find
 *% the way to refer on to PageSize values 
 
 
-*OpenUI *HPBookletPageSize/Paper For Booklet: PickOne
-*OrderDependency: 66 AnySetup *HPBookletPageSize
-*DefaultHPBookletPageSize: Letter
-*de.Translation HPBookletPageSize/Papier für Broschüre: ""
-*es.Translation HPBookletPageSize/Papel para folleto: ""
-*fr.Translation HPBookletPageSize/Papier pour brochure: ""
-*it.Translation HPBookletPageSize/Carta per opuscolo: ""
-*ja.Translation HPBookletPageSize/ブックレットの用紙: ""
-*ko.Translation HPBookletPageSize/소책자용 용지: ""
-*nl.Translation HPBookletPageSize/Papier voor brochure: ""
-*pt.Translation HPBookletPageSize/Papel para folheto: ""
-*sv.Translation HPBookletPageSize/Papper för broschyr: ""
-*zh_CN.Translation HPBookletPageSize/用于小册子的纸张: ""
-*zh_TW.Translation HPBookletPageSize/用於手冊的紙張: ""
 
-
-*HPBookletPageSize Letter/Letter: ""
-*de.HPBookletPageSize Letter/Letter: ""
-*es.HPBookletPageSize Letter/Letter: ""
-*fr.HPBookletPageSize Letter/Lettre: ""
-*it.HPBookletPageSize Letter/Letter: ""
-*ja.HPBookletPageSize Letter/レター: ""
-*ko.HPBookletPageSize Letter/레터: ""
-*nl.HPBookletPageSize Letter/Letter: ""
-*pt.HPBookletPageSize Letter/carta: ""
-*sv.HPBookletPageSize Letter/Letter: ""
-*zh_CN.HPBookletPageSize Letter/信纸: ""
-*zh_TW.HPBookletPageSize Letter/Letter: ""
-
-*HPBookletPageSize Executive/Executive: ""
-*de.HPBookletPageSize Executive/Executive: ""
-*es.HPBookletPageSize Executive/Ejecutivo: ""
-*fr.HPBookletPageSize Executive/Exécutif: ""
-*it.HPBookletPageSize Executive/Executive: ""
-*ja.HPBookletPageSize Executive/エグゼクティブ: ""
-*ko.HPBookletPageSize Executive/Executive: ""
-*nl.HPBookletPageSize Executive/Executive: ""
-*pt.HPBookletPageSize Executive/executivo: ""
-*sv.HPBookletPageSize Executive/Executive: ""
-*zh_CN.HPBookletPageSize Executive/Executive: ""
-*zh_TW.HPBookletPageSize Executive/Executive: ""
-
-*HPBookletPageSize A4/A4: ""
-*de.HPBookletPageSize A4/A4: ""
-*es.HPBookletPageSize A4/A4: ""
-*fr.HPBookletPageSize A4/A4: ""
-*it.HPBookletPageSize A4/A4: ""
-*ja.HPBookletPageSize A4/A4: ""
-*ko.HPBookletPageSize A4/A4: ""
-*nl.HPBookletPageSize A4/A4: ""
-*pt.HPBookletPageSize A4/A4: ""
-*sv.HPBookletPageSize A4/A4: ""
-*zh_CN.HPBookletPageSize A4/A4: ""
-*zh_TW.HPBookletPageSize A4/A4: ""
-
-*HPBookletPageSize A5/A5: ""
-*de.HPBookletPageSize A5/A5: ""
-*es.HPBookletPageSize A5/A5: ""
-*fr.HPBookletPageSize A5/A5: ""
-*it.HPBookletPageSize A5/A5: ""
-*ja.HPBookletPageSize A5/A5: ""
-*ko.HPBookletPageSize A5/A5: ""
-*nl.HPBookletPageSize A5/A5: ""
-*pt.HPBookletPageSize A5/A5: ""
-*sv.HPBookletPageSize A5/A5: ""
-*zh_CN.HPBookletPageSize A5/A5: ""
-*zh_TW.HPBookletPageSize A5/A5: ""
-
-*HPBookletPageSize B5/B5 (JIS): ""
-*de.HPBookletPageSize B5/B5 (JIS): ""
-*es.HPBookletPageSize B5/JIS B5: ""
-*fr.HPBookletPageSize B5/JIS B5: ""
-*it.HPBookletPageSize B5/JIS B5: ""
-*ja.HPBookletPageSize B5/B5 (JIS): ""
-*ko.HPBookletPageSize B5/B5(JIS): ""
-*nl.HPBookletPageSize B5/JIS B5: ""
-*pt.HPBookletPageSize B5/B5 JIS: ""
-*sv.HPBookletPageSize B5/JIS B5: ""
-*zh_CN.HPBookletPageSize B5/JIS B5: ""
-*zh_TW.HPBookletPageSize B5/JIS B5: ""
-
-*HPBookletPageSize ISOB5/B5 (ISO): ""
-*de.HPBookletPageSize ISOB5/B5 (ISO): ""
-*es.HPBookletPageSize ISOB5/B5 (ISO): ""
-*fr.HPBookletPageSize ISOB5/B5 (ISO): ""
-*it.HPBookletPageSize ISOB5/B5 (ISO): ""
-*ja.HPBookletPageSize ISOB5/B5 (ISO): ""
-*ko.HPBookletPageSize ISOB5/B5(ISO): ""
-*nl.HPBookletPageSize ISOB5/B5 (ISO): ""
-*pt.HPBookletPageSize ISOB5/B5 (ISO): ""
-*sv.HPBookletPageSize ISOB5/B5 (ISO): ""
-*zh_CN.HPBookletPageSize ISOB5/B5 (ISO): ""
-*zh_TW.HPBookletPageSize ISOB5/B5 (ISO): ""
-
-*HPBookletPageSize 5x8/Index Card 5x8: ""
-*de.HPBookletPageSize 5x8/Karteikarte 127 x 203 mm: ""
-*es.HPBookletPageSize 5x8/ficha 5 x 8 pulg.: ""
-*fr.HPBookletPageSize 5x8/Fiche Bristol 5 x 8 pouces: ""
-*it.HPBookletPageSize 5x8/Scheda 127x203 mm: ""
-*ja.HPBookletPageSize 5x8/インデックス カード 5 x 8: ""
-*ko.HPBookletPageSize 5x8/색인 카드 5x8in.: ""
-*nl.HPBookletPageSize 5x8/indexkaart 5x8 inch: ""
-*pt.HPBookletPageSize 5x8/cartão de índice 5 x 8: ""
-*sv.HPBookletPageSize 5x8/Registerkort 127 x 203 mm: ""
-*zh_CN.HPBookletPageSize 5x8/索引卡 5x8: ""
-*zh_TW.HPBookletPageSize 5x8/5x8 索引卡: ""
-
-*HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*de.HPBookletPageSize JPostD/Oufuku-Hagaki: ""
-*es.HPBookletPageSize JPostD/Ofuku Hagaki 200 x 148 mm: ""
-*fr.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*it.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*ja.HPBookletPageSize JPostD/往復ハガキ: ""
-*ko.HPBookletPageSize JPostD/오푸쿠 엽서: ""
-*nl.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*pt.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*sv.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*zh_CN.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-*zh_TW.HPBookletPageSize JPostD/Ofuku Hagaki: ""
-
-*CloseUI: *HPBookletPageSize
-
-*%Constraints on HPBookletPageSize
 *%=============================================
-*UIConstraints: *HPBookletPageSize A5                      *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 5x8                     *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize JPostD                  *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize ISOB5		              *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize A5
-*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize 5x8
-*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize JPostD
-*UIConstraints: *InputSlot Tray2                  *HPBookletPageSize ISOB5
 
 
 *% ===================================
@@ -3031,7 +2724,6 @@ restore
 *End
 *CloseUI: *OutputMode
 *% =================================
-*%  Watermark Printing - Remove for Mac OSX
 *% =================================
 *% =================================
 *% Font Information

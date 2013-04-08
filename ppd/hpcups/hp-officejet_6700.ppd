@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.3"
+*FileVersion: "3.13.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6700.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6700"
 *ShortNickName: "HP Officejet 6700"
-*NickName: "HP Officejet 6700, hpcups 3.13.3"
+*NickName: "HP Officejet 6700, hpcups 3.13.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -33,18 +33,10 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *MediaType Plain *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Plain
-*UIConstraints: *MediaType Glossy *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType Glossy
-*UIConstraints: *MediaType Glossy *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Glossy
-*UIConstraints: *MediaType TransparencyFilm *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType TransparencyFilm
-*UIConstraints: *MediaType TransparencyFilm *OutputMode Best
-*UIConstraints: *OutputMode Best *MediaType TransparencyFilm
-*UIConstraints: *MediaType TransparencyFilm *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType TransparencyFilm
+*UIConstraints: *MediaType Plain *OutputMode Photo
+*UIConstraints: *OutputMode Photo *MediaType Plain
+*UIConstraints: *MediaType Glossy *OutputMode Draft
+*UIConstraints: *OutputMode Draft *MediaType Glossy
 *UIConstraints: *PageSize Card3x5 *Duplex
 *UIConstraints: *Duplex *PageSize Card3x5
 *UIConstraints: *PageSize L *Duplex
@@ -75,24 +67,18 @@
 *UIConstraints: *Duplex *PageSize Photo2L.FB
 *UIConstraints: *PageSize Card5x8 *Duplex
 *UIConstraints: *Duplex *PageSize Card5x8
-*UIConstraints: *PageSize Oufuku *Duplex
-*UIConstraints: *Duplex *PageSize Oufuku
 *UIConstraints: *PageSize A5 *Duplex
 *UIConstraints: *Duplex *PageSize A5
 *UIConstraints: *PageSize A5.FB *Duplex
 *UIConstraints: *Duplex *PageSize A5.FB
-*UIConstraints: *PageSize B5 *Duplex
-*UIConstraints: *Duplex *PageSize B5
 *UIConstraints: *PageSize B5.FB *Duplex
 *UIConstraints: *Duplex *PageSize B5.FB
 *UIConstraints: *PageSize JB5 *Duplex
 *UIConstraints: *Duplex *PageSize JB5
-*UIConstraints: *PageSize JB5.FB *Duplex
-*UIConstraints: *Duplex *PageSize JB5.FB
 *UIConstraints: *PageSize Executive *Duplex
 *UIConstraints: *Duplex *PageSize Executive
-*UIConstraints: *PageSize 8x10 *Duplex
-*UIConstraints: *Duplex *PageSize 8x10
+*UIConstraints: *PageSize Photo8x10 *Duplex
+*UIConstraints: *Duplex *PageSize Photo8x10
 *UIConstraints: *PageSize 8x10.FB *Duplex
 *UIConstraints: *Duplex *PageSize 8x10.FB
 *UIConstraints: *PageSize Letter.FB *Duplex
@@ -185,8 +171,8 @@
 *PageSize EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.216 649.152]/ImagingBBox null>>setpagedevice"
 *PageSize A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[ 595.29 841.896]/ImagingBBox null>>setpagedevice"
 *PageSize Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
-*PageSize CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
-*PageSize CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize CardA4.Duplex/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize CardLetter.Duplex/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -240,8 +226,8 @@
 *PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459.216 649.152]/ImagingBBox null>>setpagedevice"
 *PageRegion A4.Duplex/A4 AutoDuplex 210x297mm: "<</cupsInteger0 26/PageSize[ 595.29 841.896]/ImagingBBox null>>setpagedevice"
 *PageRegion Letter.Duplex/Letter AutoDuplex 8.5x11in: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
-*PageRegion CardA4/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
-*PageRegion CardLetter/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion CardA4.Duplex/Index Card A4 210x297mm AutoDuplex: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion CardLetter.Duplex/Index Card Letter 8.5x11in AutoDuplex: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "9.359999656677 9.359999656677 206.640000343323 350.640000343323"
@@ -293,8 +279,8 @@
 *ImageableArea EnvC5/C5 Envelope 162x229mm: "9.359999656677 46.799999237061 449.856003761292 602.351978302002"
 *ImageableArea A4.Duplex/A4 AutoDuplex 210x297mm: "9.359999656677 33.192001342773 585.929978370667 799.343997955322"
 *ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.359999656677 33.192001342773 602.640000343323 749.448001861572"
-*ImageableArea CardA4/Index Card A4 210x297mm AutoDuplex: "9.359999656677 33.192001342773 586.080002784729 799.127994537354"
-*ImageableArea CardLetter/Index Card Letter 8.5x11in AutoDuplex: "9.359999656677 33.192001342773 602.640000343323 749.448001861572"
+*ImageableArea CardA4.Duplex/Index Card A4 210x297mm AutoDuplex: "9.359999656677 33.192001342773 586.080002784729 799.127994537354"
+*ImageableArea CardLetter.Duplex/Index Card Letter 8.5x11in AutoDuplex: "9.359999656677 33.192001342773 602.640000343323 749.448001861572"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
 *PaperDimension Card4x6/Index Card 4x6in: "288 432"
@@ -345,8 +331,8 @@
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459.216003417969 649.151977539062"
 *PaperDimension A4.Duplex/A4 AutoDuplex 210x297mm: "595.289978027344 841.89599609375"
 *PaperDimension Letter.Duplex/Letter AutoDuplex 8.5x11in: "612 792"
-*PaperDimension CardA4/Index Card A4 210x297mm AutoDuplex: "595.440002441406 841.679992675781"
-*PaperDimension CardLetter/Index Card Letter 8.5x11in AutoDuplex: "612 792"
+*PaperDimension CardA4.Duplex/Index Card A4 210x297mm AutoDuplex: "595.440002441406 841.679992675781"
+*PaperDimension CardLetter.Duplex/Index Card Letter 8.5x11in AutoDuplex: "612 792"
 *MaxMediaWidth: "612"
 *MaxMediaHeight: "1008"
 *HWMargins: 9.359999656677 9.359999656677 9.359999656677 9.359999656677
@@ -368,7 +354,6 @@
 *DefaultMediaType: Plain
 *MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
 *MediaType Glossy/Photo Paper: "<</MediaType(Glossy)/cupsMediaType 3>>setpagedevice"
-*MediaType TransparencyFilm/Transparency Film: "<</MediaType(TransparencyFilm)/cupsMediaType 4>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
@@ -434,4 +419,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6700.ppd, 31580 bytes.
+*% End of hp-officejet_6700.ppd, 30794 bytes.

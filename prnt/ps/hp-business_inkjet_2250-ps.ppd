@@ -40,9 +40,6 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP2250.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *% Product Name and Version Information

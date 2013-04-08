@@ -2200,6 +2200,7 @@
 ./prnt/ps/hp-designjet_t790ps_24in-ps.ppd
 ./prnt/ps/hp-designjet_t790ps_44in-ps.ppd
 ./prnt/ps/hp-designjet_t800_t2000_premium-ps.ppd
+./prnt/ps/hp-designjet_z5200_postscript-ps.ppd
 ./prnt/ps/hp-designjet_z6100ps_42in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6100ps_60in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_42in_photo-ps.ppd

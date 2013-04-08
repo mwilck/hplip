@@ -29,7 +29,7 @@
 *% PPD for both 300 & 600 dpi
 *% ===================================
 
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
@@ -43,8 +43,6 @@
 *Manufacturer:	"HP"
 *PSVersion: "(2014.103) 0"
 
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *ColorDevice: False

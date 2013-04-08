@@ -32,15 +32,12 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *LanguageVersion: English
 *cupsLanguages: "de es fr it ko zh_CN zh_TW"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP3000.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *% Product Name and Version Information

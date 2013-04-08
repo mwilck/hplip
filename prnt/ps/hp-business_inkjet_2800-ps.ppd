@@ -24,7 +24,6 @@
 *%
 *% Adobe Systems PostScript(R) Printer Description File
 *% (c) Copyright 2004-2009 Hewlett-Packard Development Company, L.P.
-*% PPD Version For Mac OS X
 
 *% Date Code: 20040704
 *% =================================
@@ -46,11 +45,7 @@
 *NickName: "HP Business Inkjet 2800 PS v3010.107 Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
 *% ====================================== 
-*% For Mac OS 10.3 and higher 
 *% ====================================== 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 *% =================================
 *% Basic Device Capabilities

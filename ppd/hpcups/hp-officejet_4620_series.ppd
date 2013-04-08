@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.3"
+*FileVersion: "3.13.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4620_series.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4620 Series"
 *ShortNickName: "HP Officejet 4620 Series"
-*NickName: "HP Officejet 4620 Series, hpcups 3.13.3"
+*NickName: "HP Officejet 4620 Series, hpcups 3.13.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -31,20 +31,16 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *MediaType Plain *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Plain
+*UIConstraints: *MediaType Plain *OutputMode Photo
+*UIConstraints: *OutputMode Photo *MediaType Plain
 *UIConstraints: *MediaType Glossy *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Glossy
-*UIConstraints: *MediaType Glossy *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Glossy
 *UIConstraints: *MediaType TransparencyFilm *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *OutputMode Best
 *UIConstraints: *OutputMode Best *MediaType TransparencyFilm
-*UIConstraints: *MediaType TransparencyFilm *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType TransparencyFilm
-*UIConstraints: *PageSize Statement *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Statement
+*UIConstraints: *MediaType TransparencyFilm *OutputMode Photo
+*UIConstraints: *OutputMode Photo *MediaType TransparencyFilm
 *UIConstraints: *PageSize A5 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize A5
 *UIConstraints: *PageSize JB5 *MediaType Glossy
@@ -59,32 +55,20 @@
 *UIConstraints: *MediaType Glossy *PageSize Legal
 *UIConstraints: *PageSize A6 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize A6
-*UIConstraints: *PageSize EnvChou4 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvChou4
-*UIConstraints: *PageSize EnvMonarch *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvMonarch
-*UIConstraints: *PageSize Env10 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Env10
-*UIConstraints: *PageSize EnvDL *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvDL
-*UIConstraints: *PageSize EnvA2 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvA2
-*UIConstraints: *PageSize EnvC6 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvC6
-*UIConstraints: *PageSize EnvChou3 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvChou3
-*UIConstraints: *PageSize EnvC5 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvC5
-*UIConstraints: *PageSize EnvC5 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvC5
 *UIConstraints: *PageSize Card3x5 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Card3x5
 *UIConstraints: *PageSize Card4x6 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Card4x6
 *UIConstraints: *PageSize Card5x8 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Card5x8
-*UIConstraints: *PageSize 8.5x13 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize 8.5x13
+*UIConstraints: *PageSize EnvMonarch *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvMonarch
+*UIConstraints: *PageSize Env10 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Env10
+*UIConstraints: *PageSize EnvDL *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvDL
+*UIConstraints: *PageSize EnvC5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvC5
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -341,4 +325,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_4620_series.ppd, 25066 bytes.
+*% End of hp-officejet_4620_series.ppd, 24227 bytes.

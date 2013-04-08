@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpcups 3.13.3"
+*FileVersion: "3.13.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_6520_series.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 6520 Series"
 *ShortNickName: "HP Photosmart 6520 Series"
-*NickName: "HP Photosmart 6520 Series, hpcups 3.13.3"
+*NickName: "HP Photosmart 6520 Series, hpcups 3.13.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -52,22 +52,18 @@
 *UIConstraints: *Duplex *PageSize Hagaki
 *UIConstraints: *PageSize Oufuku *Duplex
 *UIConstraints: *Duplex *PageSize Oufuku
-*UIConstraints: *MediaType Plain *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Plain
+*UIConstraints: *MediaType Plain *OutputMode Photo
+*UIConstraints: *OutputMode Photo *MediaType Plain
 *UIConstraints: *MediaType Glossy *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType Glossy
-*UIConstraints: *MediaType Glossy *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType Glossy
 *UIConstraints: *MediaType TransparencyFilm *OutputMode FastDraft
 *UIConstraints: *OutputMode FastDraft *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *OutputMode Best
 *UIConstraints: *OutputMode Best *MediaType TransparencyFilm
-*UIConstraints: *MediaType TransparencyFilm *OutputMode MaxDPI
-*UIConstraints: *OutputMode MaxDPI *MediaType TransparencyFilm
+*UIConstraints: *MediaType TransparencyFilm *OutputMode Photo
+*UIConstraints: *OutputMode Photo *MediaType TransparencyFilm
 *UIConstraints: *PageSize PhotoL.FB *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize PhotoL.FB
-*UIConstraints: *PageSize Photo3.5x5.FB *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo3.5x5.FB
 *UIConstraints: *PageSize Photo4x6.FB *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize Photo4x6.FB
 *UIConstraints: *PageSize Photo4x6tab.FB *MediaType Plain
@@ -78,8 +74,6 @@
 *UIConstraints: *MediaType Plain *PageSize Photo10x15tab.FB
 *UIConstraints: *PageSize Photo10x15tab.FB *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize Photo10x15tab.FB
-*UIConstraints: *PageSize Photo3x5 *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo3x5
 *UIConstraints: *PageSize PhotoL *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize PhotoL
 *UIConstraints: *PageSize Photo3.5x5 *MediaType Plain
@@ -100,8 +94,6 @@
 *UIConstraints: *MediaType Plain *PageSize Photo5x7
 *UIConstraints: *PageSize Photo8x10 *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize Photo8x10
-*UIConstraints: *PageSize Statement *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Statement
 *UIConstraints: *PageSize A5 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize A5
 *UIConstraints: *PageSize JB5 *MediaType Glossy
@@ -140,8 +132,8 @@
 *UIConstraints: *MediaType Glossy *PageSize Card4x6
 *UIConstraints: *PageSize Card5x8 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Card5x8
-*UIConstraints: *PageSize 8.5x13 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize 8.5x13
+*UIConstraints: *PageSize Statement *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Statement
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -416,6 +408,7 @@
 *OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
 *OutputMode FastDraft/Fast Draft: "<</OutputType(-2)/HWResolution[300 300]>>setpagedevice"
 *OutputMode Best/Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
 *CloseUI: *OutputMode
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
@@ -468,4 +461,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_6520_series.ppd, 34187 bytes.
+*% End of hp-photosmart_6520_series.ppd, 33849 bytes.

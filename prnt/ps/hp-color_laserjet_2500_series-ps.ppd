@@ -32,15 +32,13 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *HPBuildNumber: "009"
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP2500.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
 
 
 *% Product Name and Version Information
@@ -698,7 +696,6 @@ userdict/HP_updated_defaultCRD known not
 
 *% Fills not allowed with overlays
 *%===========================================================
-*% Halo style does not work with Watermarks
 
 *% =================================
 *% Media Selection
@@ -3094,7 +3091,6 @@ globaldict /HPColorTrapping known {
 *CloseUI: *HPEdgeControl
 
 *% =================================
-*%  Watermark Printing
 *% =================================
 
 *% =================================

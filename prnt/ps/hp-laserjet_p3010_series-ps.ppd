@@ -33,7 +33,7 @@
 *% ===================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *HPBuildNumber: "001"
 *LanguageEncoding: ISOLatin1
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW ru"
@@ -42,13 +42,7 @@
 *LanguageVersion: English
 *PCFileName: "HP3010.PPD"
 
-*%== Mac OS X specific begin ==
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
-*HPPDEPanel: "HPServices"
 
-*APAutoSetupTool: "/Library/Printers/hp/filter/hpPostProcessing.bundle/Contents/MacOS/hpAutoSetupTool"
-*%== Mac OS X specific end ==
 
 *% Product Version Information
 *Product: "(HP LaserJet P3015)"
@@ -475,9 +469,7 @@ restore
 
 *CloseGroup: InstallableOptions
 
-*%== Mac OS X specific begin ==
 *HPAccountingInfo: 1
-*%== Mac OS X specific end ==
 
 *%==============================================
 *% Secure Printing
@@ -490,7 +482,38 @@ restore
 *DefaultHPPinPrnt: False
 
 *HPPinPrnt True/On: "%%"
+*ru.HPPinPrnt True/Установлен: ""
+*da.HPPinPrnt True/På: ""
+*de.HPPinPrnt True/Ein: ""
+*es.HPPinPrnt True/Activado: ""
+*fi.HPPinPrnt True/Käytössä: ""
+*fr.HPPinPrnt True/Activé: ""
+*it.HPPinPrnt True/Attiva: ""
+*ja.HPPinPrnt True/オン: ""
+*ko.HPPinPrnt True/켜짐: ""
+*nl.HPPinPrnt True/Aan: ""
+*nb.HPPinPrnt True/På: ""
+*pt.HPPinPrnt True/Ativado: ""
+*sv.HPPinPrnt True/På: ""
+*zh_CN.HPPinPrnt True/开: ""
+*zh_TW.HPPinPrnt True/開啟: ""
+
 *HPPinPrnt False/Off: "%%"
+*ru.HPPinPrnt False/Нет: ""
+*da.HPPinPrnt False/Fra: ""
+*de.HPPinPrnt False/Aus: ""
+*es.HPPinPrnt False/Desactivado: ""
+*fi.HPPinPrnt False/Ei käytössä: ""
+*fr.HPPinPrnt False/Désactivé: ""
+*it.HPPinPrnt False/Disattivata: ""
+*ja.HPPinPrnt False/オフ: ""
+*ko.HPPinPrnt False/꺼짐: ""
+*nl.HPPinPrnt False/Uit: ""
+*nb.HPPinPrnt False/Av: ""
+*pt.HPPinPrnt False/Desativado: ""
+*sv.HPPinPrnt False/Av: ""
+*zh_CN.HPPinPrnt False/关: ""
+*zh_TW.HPPinPrnt False/關閉: ""
 
 *CloseUI: *HPPinPrnt
 
@@ -561,6 +584,97 @@ restore
 *HPFTDigit 9/9: "%%"
 
 *CloseUI: *HPFTDigit
+
+*ru.Translation HPPinPrnt/HPPinPrnt: ""
+*ru.Translation HPFIDigit/HPFIDigit: ""
+*ru.Translation HPSEDigit/HPSEDigit: ""
+*ru.Translation HPTHDigit/HPTHDigit: ""
+*ru.Translation HPFTDigit/HPFTDigit: ""
+
+*da.Translation HPPinPrnt/HPPinPrnt: ""
+*da.Translation HPFIDigit/HPFIDigit: ""
+*da.Translation HPSEDigit/HPSEDigit: ""
+*da.Translation HPTHDigit/HPTHDigit: ""
+*da.Translation HPFTDigit/HPFTDigit: ""
+
+*de.Translation HPPinPrnt/HPPinPrnt: ""
+*de.Translation HPFIDigit/HPFIDigit: ""
+*de.Translation HPSEDigit/HPSEDigit: ""
+*de.Translation HPTHDigit/HPTHDigit: ""
+*de.Translation HPFTDigit/HPFTDigit: ""
+
+*es.Translation HPPinPrnt/HPPinPrnt: ""
+*es.Translation HPFIDigit/HPFIDigit: ""
+*es.Translation HPSEDigit/HPSEDigit: ""
+*es.Translation HPTHDigit/HPTHDigit: ""
+*es.Translation HPFTDigit/HPFTDigit: ""
+
+*fi.Translation HPPinPrnt/HPPinPrnt: ""
+*fi.Translation HPFIDigit/HPFIDigit: ""
+*fi.Translation HPSEDigit/HPSEDigit: ""
+*fi.Translation HPTHDigit/HPTHDigit: ""
+*fi.Translation HPFTDigit/HPFTDigit: ""
+
+*fr.Translation HPPinPrnt/HPPinPrnt: ""
+*fr.Translation HPFIDigit/HPFIDigit: ""
+*fr.Translation HPSEDigit/HPSEDigit: ""
+*fr.Translation HPTHDigit/HPTHDigit: ""
+*fr.Translation HPFTDigit/HPFTDigit: ""
+
+*it.Translation HPPinPrnt/HPPinPrnt: ""
+*it.Translation HPFIDigit/HPFIDigit: ""
+*it.Translation HPSEDigit/HPSEDigit: ""
+*it.Translation HPTHDigit/HPTHDigit: ""
+*it.Translation HPFTDigit/HPFTDigit: ""
+
+*ja.Translation HPPinPrnt/HPPinPrnt: ""
+*ja.Translation HPFIDigit/HPFIDigit: ""
+*ja.Translation HPSEDigit/HPSEDigit: ""
+*ja.Translation HPTHDigit/HPTHDigit: ""
+*ja.Translation HPFTDigit/HPFTDigit: ""
+
+*ko.Translation HPPinPrnt/HPPinPrnt: ""
+*ko.Translation HPFIDigit/HPFIDigit: ""
+*ko.Translation HPSEDigit/HPSEDigit: ""
+*ko.Translation HPTHDigit/HPTHDigit: ""
+*ko.Translation HPFTDigit/HPFTDigit: ""
+
+*nl.Translation HPPinPrnt/HPPinPrnt: ""
+*nl.Translation HPFIDigit/HPFIDigit: ""
+*nl.Translation HPSEDigit/HPSEDigit: ""
+*nl.Translation HPTHDigit/HPTHDigit: ""
+*nl.Translation HPFTDigit/HPFTDigit: ""
+
+*nb.Translation HPPinPrnt/HPPinPrnt: ""
+*nb.Translation HPFIDigit/HPFIDigit: ""
+*nb.Translation HPSEDigit/HPSEDigit: ""
+*nb.Translation HPTHDigit/HPTHDigit: ""
+*nb.Translation HPFTDigit/HPFTDigit: ""
+
+*pt.Translation HPPinPrnt/HPPinPrnt: ""
+*pt.Translation HPFIDigit/HPFIDigit: ""
+*pt.Translation HPSEDigit/HPSEDigit: ""
+*pt.Translation HPTHDigit/HPTHDigit: ""
+*pt.Translation HPFTDigit/HPFTDigit: ""
+
+*sv.Translation HPPinPrnt/HPPinPrnt: ""
+*sv.Translation HPFIDigit/HPFIDigit: ""
+*sv.Translation HPSEDigit/HPSEDigit: ""
+*sv.Translation HPTHDigit/HPTHDigit: ""
+*sv.Translation HPFTDigit/HPFTDigit: ""
+
+*zh_CN.Translation HPPinPrnt/HPPinPrnt: ""
+*zh_CN.Translation HPFIDigit/HPFIDigit: ""
+*zh_CN.Translation HPSEDigit/HPSEDigit: ""
+*zh_CN.Translation HPTHDigit/HPTHDigit: ""
+*zh_CN.Translation HPFTDigit/HPFTDigit: ""
+
+*zh_TW.Translation HPPinPrnt/HPPinPrnt: ""
+*zh_TW.Translation HPFIDigit/HPFIDigit: ""
+*zh_TW.Translation HPSEDigit/HPSEDigit: ""
+*zh_TW.Translation HPTHDigit/HPTHDigit: ""
+*zh_TW.Translation HPFTDigit/HPFTDigit: ""
+
 
 *CloseGroup: SecPin
 
@@ -745,7 +859,6 @@ EWS;;http://%s/
 "
 *End
 
-*%== Mac OS X specific end ==
 
 
 *% ===================================
@@ -763,70 +876,22 @@ EWS;;http://%s/
 *% Constraints on Custom User and Job Name per User and Job Name
 *%------------------------------------------------------
 
-*HPConstraints: *Duplex DuplexTumble *HPManualDuplexSwitch True
-*HPConstraints: *Duplex DuplexNoTumble *HPManualDuplexSwitch True
-
-*HPConstraints: *HPBookletFilter False *HPBookletBackCover
-*HPConstraints: *HPBookletFilter False *HPBookletScaling
-*HPConstraints: *HPBookletFilter False *HPBookletPageSize
-*HPConstraints: *HPBookletFilter False *HPBookletPageOrder 
-
-*HPConstraints: *HPManualDuplexSwitch False *HPManualDuplexOrientation
-*HPConstraints: *HPManualDuplexSwitch False *HPManualDuplexPrintGuide
 
 
 
 
-*HPConstraints: *HPUsePINToPrint False *HPPinToPrint
 
-*HPConstraints: *MediaType Labels *HPManualDuplexSwitch
-*HPConstraints: *MediaType Envelope *HPManualDuplexSwitch
-*HPConstraints: *MediaType MonoTransparency *HPManualDuplexSwitch
 
-*HPConstraints: *HPManualDuplexSwitch *MediaType Labels 
-*HPConstraints: *HPManualDuplexSwitch *MediaType Envelope
-*HPConstraints: *HPManualDuplexSwitch *MediaType MonoTransparency
 
-*HPConstraints: *Orientation 2 *HPBookletPageOrder Asian
-*HPConstraints: *Orientation 4 *HPBookletPageOrder Asian
+
+
 *% ============================================
-*% Constraints on MediaType for Booklet printing
 *% ================================================
-*UIConstraints: *MediaType Labels *HPBookletFilter True
-*UIConstraints: *MediaType Envelope *HPBookletFilter True
-*UIConstraints: *MediaType MonoTransparency *HPBookletFilter True
 
-*UIConstraints: *HPBookletFilter True *MediaType Labels
-*UIConstraints: *HPBookletFilter True *MediaType Envelope
-*UIConstraints: *HPBookletFilter True *MediaType MonoTransparency
 
-*HPConstraints: *MediaType ExtraHeavy131175 *HPManualDuplexSwitch False *HPBookletFilter True
-*HPConstraints: *MediaType Cardstock *HPManualDuplexSwitch False *HPBookletFilter True
 
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletFilter True *MediaType ExtraHeavy131175
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletFilter True *MediaType Cardstock
 
-*UIConstraints: *PageSize Env10 *HPManualDuplexSwitch True
-*UIConstraints: *PageRegion Env10 *HPManualDuplexSwitch True
-*UIConstraints: *PageSize EnvMonarch *HPManualDuplexSwitch True
-*UIConstraints: *PageRegion EnvMonarch *HPManualDuplexSwitch True
-*UIConstraints: *PageSize EnvISOB5 *HPManualDuplexSwitch True
-*UIConstraints: *PageRegion EnvISOB5 *HPManualDuplexSwitch True
-*UIConstraints: *PageSize EnvC5 *HPManualDuplexSwitch True
-*UIConstraints: *PageRegion EnvC5 *HPManualDuplexSwitch True
-*UIConstraints: *PageSize EnvDL *HPManualDuplexSwitch True
-*UIConstraints: *PageRegion EnvDL *HPManualDuplexSwitch True
 
-*UIConstraints: *HPManualDuplexSwitch True *PageSize Env10
-*UIConstraints: *HPManualDuplexSwitch True *PageRegion Env10
-*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvMonarch
-*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvMonarch
-*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvISOB5
-*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvISOB5
-*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvC5
-*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvC5
-*UIConstraints: *HPManualDuplexSwitch True *PageSize EnvDL
-*UIConstraints: *HPManualDuplexSwitch True *PageRegion EnvDL
 
 *UIConstraints: *HPOption_Tray3 False *HPOption_Tray4 True
 
@@ -852,7 +917,7 @@ EWS;;http://%s/
 *UIConstraints: *PageSize EnvISOB5 *InputSlot Tray2
 *UIConstraints: *PageSize EnvC5 *InputSlot Tray2
 *UIConstraints: *PageSize EnvDL *InputSlot Tray2
-*UIConstraints: *PageSize w283h425 *InputSlot Tray2
+*UIConstraints: *PageSize w288h432 *InputSlot Tray2
 
 *UIConstraints: *InputSlot Tray2 *PageSize 3x5
 *UIConstraints: *InputSlot Tray2 *PageSize 4x6
@@ -864,7 +929,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray2 *PageSize EnvISOB5
 *UIConstraints: *InputSlot Tray2 *PageSize EnvC5
 *UIConstraints: *InputSlot Tray2 *PageSize EnvDL
-*UIConstraints: *InputSlot Tray2 *PageSize w283h425
+*UIConstraints: *InputSlot Tray2 *PageSize w288h432
 
 *UIConstraints: *PageRegion 3x5 *InputSlot Tray2
 *UIConstraints: *PageRegion 4x6 *InputSlot Tray2
@@ -876,7 +941,7 @@ EWS;;http://%s/
 *UIConstraints: *PageRegion EnvISOB5 *InputSlot Tray2
 *UIConstraints: *PageRegion EnvC5 *InputSlot Tray2
 *UIConstraints: *PageRegion EnvDL *InputSlot Tray2
-*UIConstraints: *PageRegion w283h425 *InputSlot Tray2
+*UIConstraints: *PageRegion w288h432 *InputSlot Tray2
 
 *UIConstraints: *InputSlot Tray2 *PageRegion 3x5
 *UIConstraints: *InputSlot Tray2 *PageRegion 4x6
@@ -888,7 +953,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray2 *PageRegion EnvISOB5
 *UIConstraints: *InputSlot Tray2 *PageRegion EnvC5
 *UIConstraints: *InputSlot Tray2 *PageRegion EnvDL
-*UIConstraints: *InputSlot Tray2 *PageRegion w283h425
+*UIConstraints: *InputSlot Tray2 *PageRegion w288h432
 
 *% Tray3
 *%========
@@ -902,7 +967,7 @@ EWS;;http://%s/
 *UIConstraints: *PageSize EnvISOB5 *InputSlot Tray3
 *UIConstraints: *PageSize EnvC5 *InputSlot Tray3
 *UIConstraints: *PageSize EnvDL *InputSlot Tray3
-*UIConstraints: *PageSize w283h425 *InputSlot Tray3
+*UIConstraints: *PageSize w288h432 *InputSlot Tray3
 
 *UIConstraints: *InputSlot Tray3 *PageSize 3x5
 *UIConstraints: *InputSlot Tray3 *PageSize 4x6
@@ -914,7 +979,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray3 *PageSize EnvISOB5
 *UIConstraints: *InputSlot Tray3 *PageSize EnvC5
 *UIConstraints: *InputSlot Tray3 *PageSize EnvDL
-*UIConstraints: *InputSlot Tray3 *PageSize w283h425
+*UIConstraints: *InputSlot Tray3 *PageSize w288h432
 
 *UIConstraints: *PageRegion 3x5 *InputSlot Tray3
 *UIConstraints: *PageRegion 4x6 *InputSlot Tray3
@@ -926,7 +991,7 @@ EWS;;http://%s/
 *UIConstraints: *PageRegion EnvISOB5 *InputSlot Tray3
 *UIConstraints: *PageRegion EnvC5 *InputSlot Tray3
 *UIConstraints: *PageRegion EnvDL *InputSlot Tray3
-*UIConstraints: *PageRegion w283h425 *InputSlot Tray3
+*UIConstraints: *PageRegion w288h432 *InputSlot Tray3
 
 *UIConstraints: *InputSlot Tray3 *PageRegion 3x5
 *UIConstraints: *InputSlot Tray3 *PageRegion 4x6
@@ -938,7 +1003,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray3 *PageRegion EnvISOB5
 *UIConstraints: *InputSlot Tray3 *PageRegion EnvC5
 *UIConstraints: *InputSlot Tray3 *PageRegion EnvDL
-*UIConstraints: *InputSlot Tray3 *PageRegion w283h425
+*UIConstraints: *InputSlot Tray3 *PageRegion w288h432
 
 *% Tray4
 *%========
@@ -952,7 +1017,7 @@ EWS;;http://%s/
 *UIConstraints: *PageSize EnvISOB5 *InputSlot Tray4
 *UIConstraints: *PageSize EnvC5 *InputSlot Tray4
 *UIConstraints: *PageSize EnvDL *InputSlot Tray4
-*UIConstraints: *PageSize w283h425 *InputSlot Tray4
+*UIConstraints: *PageSize w288h432 *InputSlot Tray4
 
 *UIConstraints: *InputSlot Tray4 *PageSize 3x5
 *UIConstraints: *InputSlot Tray4 *PageSize 4x6
@@ -964,7 +1029,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray4 *PageSize EnvISOB5
 *UIConstraints: *InputSlot Tray4 *PageSize EnvC5
 *UIConstraints: *InputSlot Tray4 *PageSize EnvDL
-*UIConstraints: *InputSlot Tray4 *PageSize w283h425
+*UIConstraints: *InputSlot Tray4 *PageSize w288h432
 
 *UIConstraints: *PageRegion 3x5 *InputSlot Tray4
 *UIConstraints: *PageRegion 4x6 *InputSlot Tray4
@@ -976,7 +1041,7 @@ EWS;;http://%s/
 *UIConstraints: *PageRegion EnvISOB5 *InputSlot Tray4
 *UIConstraints: *PageRegion EnvC5 *InputSlot Tray4
 *UIConstraints: *PageRegion EnvDL *InputSlot Tray4
-*UIConstraints: *PageRegion w283h425 *InputSlot Tray4
+*UIConstraints: *PageRegion w288h432 *InputSlot Tray4
 
 *UIConstraints: *InputSlot Tray4 *PageRegion 3x5
 *UIConstraints: *InputSlot Tray4 *PageRegion 4x6
@@ -988,7 +1053,7 @@ EWS;;http://%s/
 *UIConstraints: *InputSlot Tray4 *PageRegion EnvISOB5
 *UIConstraints: *InputSlot Tray4 *PageRegion EnvC5
 *UIConstraints: *InputSlot Tray4 *PageRegion EnvDL
-*UIConstraints: *InputSlot Tray4 *PageRegion w283h425
+*UIConstraints: *InputSlot Tray4 *PageRegion w288h432
 
 *% Duplex
 *%========
@@ -1002,7 +1067,7 @@ EWS;;http://%s/
 *UIConstraints: *PageSize A6 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize B5 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize B6 *Duplex DuplexNoTumble
-*UIConstraints: *PageSize w283h425 *Duplex DuplexNoTumble
+*UIConstraints: *PageSize w288h432 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize w553h765 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize w522h737 *Duplex DuplexNoTumble
 *UIConstraints: *PageSize w558h774 *Duplex DuplexNoTumble
@@ -1023,7 +1088,7 @@ EWS;;http://%s/
 *UIConstraints: *Duplex DuplexNoTumble *PageSize A6
 *UIConstraints: *Duplex DuplexNoTumble *PageSize B5
 *UIConstraints: *Duplex DuplexNoTumble *PageSize B6
-*UIConstraints: *Duplex DuplexNoTumble *PageSize w283h425
+*UIConstraints: *Duplex DuplexNoTumble *PageSize w288h432
 *UIConstraints: *Duplex DuplexNoTumble *PageSize w553h765
 *UIConstraints: *Duplex DuplexNoTumble *PageSize w522h737
 *UIConstraints: *Duplex DuplexNoTumble *PageSize w558h774
@@ -1044,7 +1109,7 @@ EWS;;http://%s/
 *UIConstraints: *PageRegion A6 *Duplex DuplexNoTumble
 *UIConstraints: *PageRegion B5 *Duplex DuplexNoTumble
 *UIConstraints: *PageRegion B6 *Duplex DuplexNoTumble
-*UIConstraints: *PageRegion w283h425 *Duplex DuplexNoTumble
+*UIConstraints: *PageRegion w288h432 *Duplex DuplexNoTumble
 *UIConstraints: *PageRegion w553h765 *Duplex DuplexNoTumble
 *UIConstraints: *PageRegion w522h737 *Duplex DuplexNoTumble
 *UIConstraints: *PageRegion w558h774 *Duplex DuplexNoTumble
@@ -1065,7 +1130,7 @@ EWS;;http://%s/
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion A6
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion B5
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion B6
-*UIConstraints: *Duplex DuplexNoTumble *PageRegion w283h425
+*UIConstraints: *Duplex DuplexNoTumble *PageRegion w288h432
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion w553h765
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion w522h737
 *UIConstraints: *Duplex DuplexNoTumble *PageRegion w558h774
@@ -1086,7 +1151,7 @@ EWS;;http://%s/
 *UIConstraints: *PageSize A6 *Duplex DuplexTumble
 *UIConstraints: *PageSize B5 *Duplex DuplexTumble
 *UIConstraints: *PageSize B6 *Duplex DuplexTumble
-*UIConstraints: *PageSize w283h425 *Duplex DuplexTumble
+*UIConstraints: *PageSize w288h432 *Duplex DuplexTumble
 *UIConstraints: *PageSize w553h765 *Duplex DuplexTumble
 *UIConstraints: *PageSize w522h737 *Duplex DuplexTumble
 *UIConstraints: *PageSize w558h774 *Duplex DuplexTumble
@@ -1107,7 +1172,7 @@ EWS;;http://%s/
 *UIConstraints: *Duplex DuplexTumble *PageSize A6
 *UIConstraints: *Duplex DuplexTumble *PageSize B5
 *UIConstraints: *Duplex DuplexTumble *PageSize B6
-*UIConstraints: *Duplex DuplexTumble *PageSize w283h425
+*UIConstraints: *Duplex DuplexTumble *PageSize w288h432
 *UIConstraints: *Duplex DuplexTumble *PageSize w553h765
 *UIConstraints: *Duplex DuplexTumble *PageSize w522h737
 *UIConstraints: *Duplex DuplexTumble *PageSize w558h774
@@ -1128,7 +1193,7 @@ EWS;;http://%s/
 *UIConstraints: *PageRegion A6 *Duplex DuplexTumble
 *UIConstraints: *PageRegion B5 *Duplex DuplexTumble
 *UIConstraints: *PageRegion B6 *Duplex DuplexTumble
-*UIConstraints: *PageRegion w283h425 *Duplex DuplexTumble
+*UIConstraints: *PageRegion w288h432 *Duplex DuplexTumble
 *UIConstraints: *PageRegion w553h765 *Duplex DuplexTumble
 *UIConstraints: *PageRegion w522h737 *Duplex DuplexTumble
 *UIConstraints: *PageRegion w558h774 *Duplex DuplexTumble
@@ -1149,7 +1214,7 @@ EWS;;http://%s/
 *UIConstraints: *Duplex DuplexTumble *PageRegion A6
 *UIConstraints: *Duplex DuplexTumble *PageRegion B5
 *UIConstraints: *Duplex DuplexTumble *PageRegion B6
-*UIConstraints: *Duplex DuplexTumble *PageRegion w283h425
+*UIConstraints: *Duplex DuplexTumble *PageRegion w288h432
 *UIConstraints: *Duplex DuplexTumble *PageRegion w553h765
 *UIConstraints: *Duplex DuplexTumble *PageRegion w522h737
 *UIConstraints: *Duplex DuplexTumble *PageRegion w558h774
@@ -1237,9 +1302,7 @@ EWS;;http://%s/
 
 
 
-*HPConstraints: *HPCollateSupported False128 *HPOption_Disk None *Collate True
 
-*%== Mac OS X specific begin ==
 
 *% ===================================
 *% Supported unicode ranges
@@ -1316,20 +1379,13 @@ EWS;;http://%s/
 	0xf900 0xfa2d
 	"
 *End
-*%== Mac OS X specific end ==
 
-*%== Mac OS X specific begin ==
 
 *% ================================================
-*% Manual Duplex
 *% ================================================
-*%The following are here for the Manual Duplex plugin
-*UIConstraints: *InputSlot Tray1_Man *HPManualDuplexSwitch True
-*UIConstraints: *HPManualDuplexSwitch True *InputSlot Tray1_Man
 
 *HPGuidePageExtraTumble: False
 
-*%== Mac OS X specific end ==
 
 *OpenGroup: HPFinishingPanel/Finishing Panel
 *da.Translation HPFinishingPanel/Finisher-indstillinger: ""
@@ -1350,902 +1406,34 @@ EWS;;http://%s/
 
 
 *% ================================================
-*% Manual Duplex
 *% ================================================
 
-*% Booklet printing is not allowed without either Manual Duplex or Auto Duplex turned on
-*HPConstraints: *Duplex None *HPManualDuplexSwitch False *HPBookletFilter True
-*OpenUI *HPManualDuplexSwitch/Manual Duplex: Boolean
-*OrderDependency: 57 AnySetup *HPManualDuplexSwitch
-*DefaultHPManualDuplexSwitch: False
-*da.Translation HPManualDuplexSwitch/Manuel Dupleks: ""
-*de.Translation HPManualDuplexSwitch/Manueller Duplexdruck: ""
-*es.Translation HPManualDuplexSwitch/Impresión a dos caras manual: ""
-*fi.Translation HPManualDuplexSwitch/Kaksipuolinen, Manuaalinen: ""
-*fr.Translation HPManualDuplexSwitch/Recto verso manuel: ""
-*it.Translation HPManualDuplexSwitch/Stampa duplex manuale: ""
-*ja.Translation HPManualDuplexSwitch/手動両面印刷: ""
-*ko.Translation HPManualDuplexSwitch/수동 양면 인쇄: ""
-*nl.Translation HPManualDuplexSwitch/Handmatige duplex: ""
-*nb.Translation HPManualDuplexSwitch/Manuell tosidig utskrift: ""
-*pt.Translation HPManualDuplexSwitch/Dúplex manual: ""
-*sv.Translation HPManualDuplexSwitch/Manuell dubbelsidig utskrift: ""
-*zh_CN.Translation HPManualDuplexSwitch/手动双面打印: ""
-*zh_TW.Translation HPManualDuplexSwitch/手動雙面列印: ""
-*ru.Translation HPManualDuplexSwitch/Ручной дуплекс: ""
 
-*HPManualDuplexSwitch True/Yes: ""
-*da.HPManualDuplexSwitch True/På: ""
-*de.HPManualDuplexSwitch True/Ein: ""
-*es.HPManualDuplexSwitch True/Activado: ""
-*fi.HPManualDuplexSwitch True/käytössä: ""
-*fr.HPManualDuplexSwitch True/Activé: ""
-*it.HPManualDuplexSwitch True/Attiva: ""
-*ja.HPManualDuplexSwitch True/オン: ""
-*ko.HPManualDuplexSwitch True/켜짐: ""
-*nl.HPManualDuplexSwitch True/Aan: ""
-*nb.HPManualDuplexSwitch True/På: ""
-*pt.HPManualDuplexSwitch True/Ativado: ""
-*sv.HPManualDuplexSwitch True/På: ""
-*zh_CN.HPManualDuplexSwitch True/开: ""
-*zh_TW.HPManualDuplexSwitch True/開啟: ""
-*ru.HPManualDuplexSwitch True/Да: ""
 
-*HPManualDuplexSwitch False/No: ""
-*da.HPManualDuplexSwitch False/Fra: ""
-*de.HPManualDuplexSwitch False/Aus: ""
-*es.HPManualDuplexSwitch False/Desactivado: ""
-*fi.HPManualDuplexSwitch False/Ei käytössä: ""
-*fr.HPManualDuplexSwitch False/Désactivé: ""
-*it.HPManualDuplexSwitch False/Disattivata: ""
-*ja.HPManualDuplexSwitch False/オフ: ""
-*ko.HPManualDuplexSwitch False/꺼짐: ""
-*nl.HPManualDuplexSwitch False/Uit: ""
-*nb.HPManualDuplexSwitch False/Av: ""
-*pt.HPManualDuplexSwitch False/Desativado: ""
-*sv.HPManualDuplexSwitch False/Av: ""
-*zh_CN.HPManualDuplexSwitch False/关: ""
-*zh_TW.HPManualDuplexSwitch False/關閉: ""
-*ru.HPManualDuplexSwitch False/Нет: ""
 
-*CloseUI: *HPManualDuplexSwitch
 
-*%== Mac OS X specific begin ==
-*% ================= Manual Duplex Descriptions ===================
 
-*HPManualDuplexSwitchDS True: "HPMANUALDUPLEXSWITCH_DS"
-*HPManualDuplexSwitchDS False: "HPMANUALDUPLEXSWITCH_DS"
 
 *% ===========================================================
-*%== Mac OS X specific end ==
 
 
-*OpenUI *HPManualDuplexPrintGuide/Print Reinsertion Guide: Boolean
-*OrderDependency: 58 AnySetup *HPManualDuplexPrintGuide
-*DefaultHPManualDuplexPrintGuide: False
-*da.Translation HPManualDuplexPrintGuide/Udskriv genilæggelsesguide: ""
-*de.Translation HPManualDuplexPrintGuide/Info zum Neueinfügen drucken: ""
-*es.Translation HPManualDuplexPrintGuide/Imprimir guía de inserción: ""
-*fi.Translation HPManualDuplexPrintGuide/Tulosta uudelleensyöttöopas: ""
-*fr.Translation HPManualDuplexPrintGuide/Guide de réinsertion: ""
-*it.Translation HPManualDuplexPrintGuide/Stampa Guida al reinserimento: ""
-*ja.Translation HPManualDuplexPrintGuide/再挿入ガイドの印刷: ""
-*ko.Translation HPManualDuplexPrintGuide/재삽입 설명서 인쇄: ""
-*nl.Translation HPManualDuplexPrintGuide/Invoegaanwijzingen afdrukken: ""
-*nb.Translation HPManualDuplexPrintGuide/Skriv ut veiledning: ""
-*pt.Translation HPManualDuplexPrintGuide/Imprimir Guia de Reinserção: ""
-*sv.Translation HPManualDuplexPrintGuide/Skriv ut guide för isättning: ""
-*zh_CN.Translation HPManualDuplexPrintGuide/打印重新插入指南: ""
-*zh_TW.Translation HPManualDuplexPrintGuide/列印重新插入指南: ""
-*ru.Translation HPManualDuplexPrintGuide/Печать рук-ва по повт. уст.: ""
 
-*HPManualDuplexPrintGuide True/Yes: ""
-*da.HPManualDuplexPrintGuide True/På: ""
-*de.HPManualDuplexPrintGuide True/Ein: ""
-*es.HPManualDuplexPrintGuide True/Activado: ""
-*fi.HPManualDuplexPrintGuide True/käytössä: ""
-*fr.HPManualDuplexPrintGuide True/Activé: ""
-*it.HPManualDuplexPrintGuide True/Attiva: ""
-*ja.HPManualDuplexPrintGuide True/オン: ""
-*ko.HPManualDuplexPrintGuide True/켜짐: ""
-*nl.HPManualDuplexPrintGuide True/Aan: ""
-*nb.HPManualDuplexPrintGuide True/På: ""
-*pt.HPManualDuplexPrintGuide True/Ativado: ""
-*sv.HPManualDuplexPrintGuide True/På: ""
-*zh_CN.HPManualDuplexPrintGuide True/开: ""
-*zh_TW.HPManualDuplexPrintGuide True/開啟: ""
-*ru.HPManualDuplexPrintGuide True/Да: ""
 
-*HPManualDuplexPrintGuide False/No: ""
-*da.HPManualDuplexPrintGuide False/Fra: ""
-*de.HPManualDuplexPrintGuide False/Aus: ""
-*es.HPManualDuplexPrintGuide False/Desactivado: ""
-*fi.HPManualDuplexPrintGuide False/Ei käytössä: ""
-*fr.HPManualDuplexPrintGuide False/Désactivé: ""
-*it.HPManualDuplexPrintGuide False/Disattivata: ""
-*ja.HPManualDuplexPrintGuide False/オフ: ""
-*ko.HPManualDuplexPrintGuide False/꺼짐: ""
-*nl.HPManualDuplexPrintGuide False/Uit: ""
-*nb.HPManualDuplexPrintGuide False/Av: ""
-*pt.HPManualDuplexPrintGuide False/Desativado: ""
-*sv.HPManualDuplexPrintGuide False/Av: ""
-*zh_CN.HPManualDuplexPrintGuide False/关: ""
-*zh_TW.HPManualDuplexPrintGuide False/關閉: ""
-*ru.HPManualDuplexPrintGuide False/Нет: ""
 
-*CloseUI: *HPManualDuplexPrintGuide
 
-*OpenUI *HPManualDuplexOrientation/Binding: PickOne
-*OrderDependency: 59 AnySetup *HPManualDuplexOrientation
-*DefaultHPManualDuplexOrientation: DuplexNoTumble
-*da.Translation HPManualDuplexOrientation/Indbinding: ""
-*de.Translation HPManualDuplexOrientation/Bindung: ""
-*es.Translation HPManualDuplexOrientation/Encuadernación: ""
-*fi.Translation HPManualDuplexOrientation/Sidonta: ""
-*fr.Translation HPManualDuplexOrientation/Reliure: ""
-*it.Translation HPManualDuplexOrientation/Rilegatura: ""
-*ja.Translation HPManualDuplexOrientation/製本: ""
-*ko.Translation HPManualDuplexOrientation/제본선: ""
-*nl.Translation HPManualDuplexOrientation/Binden: ""
-*nb.Translation HPManualDuplexOrientation/Innbinding: ""
-*pt.Translation HPManualDuplexOrientation/Encadernação: ""
-*sv.Translation HPManualDuplexOrientation/Häftning: ""
-*zh_CN.Translation HPManualDuplexOrientation/装订: ""
-*zh_TW.Translation HPManualDuplexOrientation/裝訂: ""
-*ru.Translation HPManualDuplexOrientation/Переплет: ""
 
-*HPManualDuplexOrientation DuplexNoTumble/Long-Edge Binding: ""
-*da.HPManualDuplexOrientation DuplexNoTumble/Indbinding på den lange led: ""
-*de.HPManualDuplexOrientation DuplexNoTumble/Bindung oben: ""
-*es.HPManualDuplexOrientation DuplexNoTumble/Encuadernación de borde largo: ""
-*fi.HPManualDuplexOrientation DuplexNoTumble/Sidonta-pitkäreuna: ""
-*fr.HPManualDuplexOrientation DuplexNoTumble/Reliure côté long: ""
-*it.HPManualDuplexOrientation DuplexNoTumble/Rilegatura con taglio largo: ""
-*ja.HPManualDuplexOrientation DuplexNoTumble/長辺とじ: ""
-*ko.HPManualDuplexOrientation DuplexNoTumble/긴-가장자리 제본선: ""
-*nl.HPManualDuplexOrientation DuplexNoTumble/Lange kant binden: ""
-*nb.HPManualDuplexOrientation DuplexNoTumble/Innbinding på langsiden: ""
-*pt.HPManualDuplexOrientation DuplexNoTumble/Encadernação com Margem Longa: ""
-*sv.HPManualDuplexOrientation DuplexNoTumble/Häftning långsida: ""
-*zh_CN.HPManualDuplexOrientation DuplexNoTumble/长边装订: ""
-*zh_TW.HPManualDuplexOrientation DuplexNoTumble/沿長邊裝訂: ""
-*ru.HPManualDuplexOrientation DuplexNoTumble/Прошивка вдоль длинного края: ""
 
-*HPManualDuplexOrientation DuplexTumble/Short-Edge Binding: ""
-*da.HPManualDuplexOrientation DuplexTumble/Indbinding på den korte led: ""
-*de.HPManualDuplexOrientation DuplexTumble/Bindung links: ""
-*es.HPManualDuplexOrientation DuplexTumble/Encuadernación de borde corto: ""
-*fi.HPManualDuplexOrientation DuplexTumble/Sidonta-lyhytreuna: ""
-*fr.HPManualDuplexOrientation DuplexTumble/Reliure côté court: ""
-*it.HPManualDuplexOrientation DuplexTumble/Rilegatura con taglio stretto: ""
-*ja.HPManualDuplexOrientation DuplexTumble/短辺とじ: ""
-*ko.HPManualDuplexOrientation DuplexTumble/짧은-가장자리 제본선: ""
-*nl.HPManualDuplexOrientation DuplexTumble/Korte kant binden: ""
-*nb.HPManualDuplexOrientation DuplexTumble/Innbinding på kortsiden: ""
-*pt.HPManualDuplexOrientation DuplexTumble/Encadernação com Margem Curta: ""
-*sv.HPManualDuplexOrientation DuplexTumble/Häftning kortsida: ""
-*zh_CN.HPManualDuplexOrientation DuplexTumble/短边装订: ""
-*zh_TW.HPManualDuplexOrientation DuplexTumble/沿短邊裝訂: ""
-*ru.HPManualDuplexOrientation DuplexTumble/Прошивка вдоль короткого края: ""
 
-*CloseUI: *HPManualDuplexOrientation
 
 *% ================================================
-*% Booklet
 *% ================================================
 
-*OpenUI *HPBookletFilter/Format Output As Booklet: Boolean
-*OrderDependency: 60 AnySetup *HPBookletFilter
-*DefaultHPBookletFilter: False
-*da.Translation HPBookletFilter/Formater Udskrift Som Brochure: ""
-*de.Translation HPBookletFilter/Ausgabeformat als Broschüre: ""
-*es.Translation HPBookletFilter/Formatear impr. como folleto: ""
-*fi.Translation HPBookletFilter/Tulostetaan kirjasena: ""
-*fr.Translation HPBookletFilter/Formate la sortie comme brochure: ""
-*it.Translation HPBookletFilter/Output in formato di opuscolo: ""
-*ja.Translation HPBookletFilter/ブックレット印刷用フォーマット: ""
-*ko.Translation HPBookletFilter/소책자 형식으로 출력: ""
-*nl.Translation HPBookletFilter/Opmaakuitvoer als brochure: ""
-*nb.Translation HPBookletFilter/Formater utskrift som hefte: ""
-*pt.Translation HPBookletFilter/Formatar saída como folheto: ""
-*sv.Translation HPBookletFilter/Broschyr som utskriftsformat: ""
-*zh_CN.Translation HPBookletFilter/以小册子格式输出: ""
-*zh_TW.Translation HPBookletFilter/輸出格式為手冊: ""
-*ru.Translation HPBookletFilter/Формат вывода - брошюра: ""
-
-*HPBookletFilter True/Yes: ""
-*da.HPBookletFilter True/På: ""
-*de.HPBookletFilter True/Ein: ""
-*es.HPBookletFilter True/Activado: ""
-*fi.HPBookletFilter True/käytössä: ""
-*fr.HPBookletFilter True/Activé: ""
-*it.HPBookletFilter True/Attiva: ""
-*ja.HPBookletFilter True/オン: ""
-*ko.HPBookletFilter True/켜짐: ""
-*nl.HPBookletFilter True/Aan: ""
-*nb.HPBookletFilter True/På: ""
-*pt.HPBookletFilter True/Ativado: ""
-*sv.HPBookletFilter True/På: ""
-*zh_CN.HPBookletFilter True/开: ""
-*zh_TW.HPBookletFilter True/開啟: ""
-*ru.HPBookletFilter True/Да: ""
-
-*HPBookletFilter False/No: ""
-*da.HPBookletFilter False/Fra: ""
-*de.HPBookletFilter False/Aus: ""
-*es.HPBookletFilter False/Desactivado: ""
-*fi.HPBookletFilter False/Ei käytössä: ""
-*fr.HPBookletFilter False/Désactivé: ""
-*it.HPBookletFilter False/Disattivata: ""
-*ja.HPBookletFilter False/オフ: ""
-*ko.HPBookletFilter False/꺼짐: ""
-*nl.HPBookletFilter False/Uit: ""
-*nb.HPBookletFilter False/Av: ""
-*pt.HPBookletFilter False/Desativado: ""
-*sv.HPBookletFilter False/Av: ""
-*zh_CN.HPBookletFilter False/关: ""
-*zh_TW.HPBookletFilter False/關閉: ""
-*ru.HPBookletFilter False/Нет: ""
-
-*CloseUI: *HPBookletFilter
-
-*OpenUI *HPBookletBackCover/Last Page Is Back Cover: Boolean
-*OrderDependency: 61 AnySetup *HPBookletBackCover
-*DefaultHPBookletBackCover: False
-*da.Translation HPBookletBackCover/Sidste Side Er Bagomslag: ""
-*de.Translation HPBookletBackCover/Endseite = Broschürenrücken: ""
-*es.Translation HPBookletBackCover/La últ. pág. es la contraport.: ""
-*fi.Translation HPBookletBackCover/Viimeinen sivu on takakansi: ""
-*fr.Translation HPBookletBackCover/Dernière page page de garde: ""
-*it.Translation HPBookletBackCover/Ultima pag come retrocopertina: ""
-*ja.Translation HPBookletBackCover/最後のページを背表紙にする: ""
-*ko.Translation HPBookletBackCover/마지막 페이지는 뒤 표지입니다: ""
-*nl.Translation HPBookletBackCover/Laatste pagina is achterblad: ""
-*nb.Translation HPBookletBackCover/Siste side er bakside: ""
-*pt.Translation HPBookletBackCover/A última pág. é a quarta capa: ""
-*sv.Translation HPBookletBackCover/Sista sidan är bakre omslag: ""
-*zh_CN.Translation HPBookletBackCover/最后一页是封底: ""
-*zh_TW.Translation HPBookletBackCover/最後一頁為封底: ""
-*ru.Translation HPBookletBackCover/Последняя стр.-задняя обложка: ""
-
-*HPBookletBackCover True/Yes: ""
-*da.HPBookletBackCover True/På: ""
-*de.HPBookletBackCover True/Ein: ""
-*es.HPBookletBackCover True/Activado: ""
-*fi.HPBookletBackCover True/käytössä: ""
-*fr.HPBookletBackCover True/Activé: ""
-*it.HPBookletBackCover True/Attiva: ""
-*ja.HPBookletBackCover True/オン: ""
-*ko.HPBookletBackCover True/켜짐: ""
-*nl.HPBookletBackCover True/Aan: ""
-*nb.HPBookletBackCover True/På: ""
-*pt.HPBookletBackCover True/Ativado: ""
-*sv.HPBookletBackCover True/På: ""
-*zh_CN.HPBookletBackCover True/开: ""
-*zh_TW.HPBookletBackCover True/開啟: ""
-*ru.HPBookletBackCover True/Да: ""
-
-*HPBookletBackCover False/No: ""
-*da.HPBookletBackCover False/Fra: ""
-*de.HPBookletBackCover False/Aus: ""
-*es.HPBookletBackCover False/Desactivado: ""
-*fi.HPBookletBackCover False/Ei käytössä: ""
-*fr.HPBookletBackCover False/Désactivé: ""
-*it.HPBookletBackCover False/Disattivata: ""
-*ja.HPBookletBackCover False/オフ: ""
-*ko.HPBookletBackCover False/꺼짐: ""
-*nl.HPBookletBackCover False/Uit: ""
-*nb.HPBookletBackCover False/Av: ""
-*pt.HPBookletBackCover False/Desativado: ""
-*sv.HPBookletBackCover False/Av: ""
-*zh_CN.HPBookletBackCover False/关: ""
-*zh_TW.HPBookletBackCover False/關閉: ""
-*ru.HPBookletBackCover False/Нет: ""
-
-*CloseUI: *HPBookletBackCover
-
-*OpenUI *HPBookletPageOrder/Page Order: PickOne
-*OrderDependency: 62 AnySetup *HPBookletPageOrder
-*DefaultHPBookletPageOrder: Normal
-*da.Translation HPBookletPageOrder/Siderækkefølge: ""
-*de.Translation HPBookletPageOrder/Seitenreihenfolge: ""
-*es.Translation HPBookletPageOrder/Orden de páginas: ""
-*fi.Translation HPBookletPageOrder/Sivujärjestys: ""
-*fr.Translation HPBookletPageOrder/Ordre des pages: ""
-*it.Translation HPBookletPageOrder/Ordine delle pagine: ""
-*ja.Translation HPBookletPageOrder/ページ方向: ""
-*ko.Translation HPBookletPageOrder/페이지 순서: ""
-*nl.Translation HPBookletPageOrder/Paginavolgorde: ""
-*nb.Translation HPBookletPageOrder/Siderekkefølge: ""
-*pt.Translation HPBookletPageOrder/Ordem das páginas: ""
-*sv.Translation HPBookletPageOrder/Sidföljd: ""
-*zh_CN.Translation HPBookletPageOrder/页面顺序: ""
-*zh_TW.Translation HPBookletPageOrder/頁序: ""
-*ru.Translation HPBookletPageOrder/Порядок страниц: ""
-
-*HPBookletPageOrder Normal/Pages Bound on the Left: ""
-*da.HPBookletPageOrder Normal/Sider bundet i venstre side: ""
-*de.HPBookletPageOrder Normal/Seiten links gebunden: ""
-*es.HPBookletPageOrder Normal/Encuadernación a la izquierda: ""
-*fi.HPBookletPageOrder Normal/Sivut sidottu vasemmalle: ""
-*fr.HPBookletPageOrder Normal/Pages reliées sur la gauche: ""
-*it.HPBookletPageOrder Normal/Pagine rilegate a sinistra: ""
-*ja.HPBookletPageOrder Normal/とじしろ左: ""
-*ko.HPBookletPageOrder Normal/왼쪽 제본 페이지: ""
-*nl.HPBookletPageOrder Normal/Links gebonden pagina’s: ""
-*nb.HPBookletPageOrder Normal/Sider bundet på venstre side: ""
-*pt.HPBookletPageOrder Normal/Páginas encadernadas à esquerda: ""
-*sv.HPBookletPageOrder Normal/Sidorna binds i vänsterkanten: ""
-*zh_CN.HPBookletPageOrder Normal/左侧装订: ""
-*zh_TW.HPBookletPageOrder Normal/左邊裝訂: ""
-*ru.HPBookletPageOrder Normal/Страницы сшиваются слева: ""
-
-*HPBookletPageOrder Asian/Pages Bound on the Right: ""
-*da.HPBookletPageOrder Asian/Sider bundet i højre side: ""
-*de.HPBookletPageOrder Asian/Seiten rechts gebunden: ""
-*es.HPBookletPageOrder Asian/Encuadernación a la derecha: ""
-*fi.HPBookletPageOrder Asian/Sivut sidottu oikealle: ""
-*fr.HPBookletPageOrder Asian/Pages reliées sur la droite: ""
-*it.HPBookletPageOrder Asian/Pagine rilegate a destra: ""
-*ja.HPBookletPageOrder Asian/とじしろ右: ""
-*ko.HPBookletPageOrder Asian/오른쪽 제본 페이지: ""
-*nl.HPBookletPageOrder Asian/Rechts gebonden pagina’s: ""
-*nb.HPBookletPageOrder Asian/Sider bundet på høyre side: ""
-*pt.HPBookletPageOrder Asian/Páginas encadernadas à direita: ""
-*sv.HPBookletPageOrder Asian/Sidorna binds i högerkanten: ""
-*zh_CN.HPBookletPageOrder Asian/右侧装订: ""
-*zh_TW.HPBookletPageOrder Asian/右邊裝訂: ""
-*ru.HPBookletPageOrder Asian/Страницы сшиваются справа: ""
-
-*CloseUI: *HPBookletPageOrder
-
-*OpenUI *HPBookletScaling/Scaling: PickOne
-*OrderDependency: 63 AnySetup *HPBookletScaling
-*DefaultHPBookletScaling: Proportional
-*da.Translation HPBookletScaling/Skalering: ""
-*de.Translation HPBookletScaling/Skalierung: ""
-*es.Translation HPBookletScaling/Cambio de escala: ""
-*fi.Translation HPBookletScaling/Skaalaus: ""
-*fr.Translation HPBookletScaling/Mise à l'échelle: ""
-*it.Translation HPBookletScaling/Scala: ""
-*ja.Translation HPBookletScaling/拡大縮小: ""
-*ko.Translation HPBookletScaling/스케일링: ""
-*nl.Translation HPBookletScaling/Schaal aanpassen: ""
-*nb.Translation HPBookletScaling/Skalering: ""
-*pt.Translation HPBookletScaling/Escalonando: ""
-*sv.Translation HPBookletScaling/Skalning: ""
-*zh_CN.Translation HPBookletScaling/缩放: ""
-*zh_TW.Translation HPBookletScaling/縮放: ""
-*ru.Translation HPBookletScaling/Масштаб: ""
-
-*HPBookletScaling Proportional/Proportional: ""
-*da.HPBookletScaling Proportional/Proportional: ""
-*de.HPBookletScaling Proportional/Proportional: ""
-*es.HPBookletScaling Proportional/Proporcional: ""
-*fi.HPBookletScaling Proportional/Suhteutettu: ""
-*fr.HPBookletScaling Proportional/Proportionnel: ""
-*it.HPBookletScaling Proportional/Proporzionale: ""
-*ja.HPBookletScaling Proportional/自動均等調整: ""
-*ko.HPBookletScaling Proportional/비례: ""
-*nl.HPBookletScaling Proportional/Proportioneel: ""
-*nb.HPBookletScaling Proportional/Proporsjonal: ""
-*pt.HPBookletScaling Proportional/Proporcional: ""
-*sv.HPBookletScaling Proportional/Proportionellt: ""
-*zh_CN.HPBookletScaling Proportional/按比例: ""
-*zh_TW.HPBookletScaling Proportional/比例: ""
-*ru.HPBookletScaling Proportional/Пропорциональный: ""
-
-*HPBookletScaling FitPage/Fit To Page: ""
-*da.HPBookletScaling FitPage/Tilpas Til Side: ""
-*de.HPBookletScaling FitPage/Seite anpassen: ""
-*es.HPBookletScaling FitPage/Ajustar página: ""
-*fi.HPBookletScaling FitPage/Sovita sivu: ""
-*fr.HPBookletScaling FitPage/Ajuster la page: ""
-*it.HPBookletScaling FitPage/Adattamento pagina: ""
-*ja.HPBookletScaling FitPage/全体表示: ""
-*ko.HPBookletScaling FitPage/페이지에 맞춤: ""
-*nl.HPBookletScaling FitPage/Passend op pagina: ""
-*nb.HPBookletScaling FitPage/Tilpass til siden: ""
-*pt.HPBookletScaling FitPage/Ajuste a página: ""
-*sv.HPBookletScaling FitPage/Anpassa sida: ""
-*zh_CN.HPBookletScaling FitPage/适合页面: ""
-*zh_TW.HPBookletScaling FitPage/符合頁面: ""
-*ru.HPBookletScaling FitPage/Страница целиком: ""
-
-*CloseUI: *HPBookletScaling
-
-*OpenUI *HPBookletPageSize/Paper For Booklet: PickOne
-*OrderDependency: 66 AnySetup *HPBookletPageSize
-*DefaultHPBookletPageSize: Letter
-*da.Translation HPBookletPageSize/Format På Brochure: ""
-*de.Translation HPBookletPageSize/Papier für Broschüre: ""
-*es.Translation HPBookletPageSize/Papel para folleto: ""
-*fi.Translation HPBookletPageSize/Kirjasen paperi: ""
-*fr.Translation HPBookletPageSize/Papier pour brochure: ""
-*it.Translation HPBookletPageSize/Carta per opuscolo: ""
-*ja.Translation HPBookletPageSize/ブックレットの用紙: ""
-*ko.Translation HPBookletPageSize/소책자용 용지: ""
-*nl.Translation HPBookletPageSize/Papier voor brochure: ""
-*nb.Translation HPBookletPageSize/Papir for hefte: ""
-*pt.Translation HPBookletPageSize/Papel para folheto: ""
-*sv.Translation HPBookletPageSize/Papper för broschyr: ""
-*zh_CN.Translation HPBookletPageSize/用于小册子的纸张: ""
-*zh_TW.Translation HPBookletPageSize/用於手冊的紙張: ""
-*ru.Translation HPBookletPageSize/Бумага для брошюры: ""
 
 
-*HPBookletPageSize Letter/Letter: ""
-*da.HPBookletPageSize Letter/Letter: ""
-*de.HPBookletPageSize Letter/Letter: ""
-*es.HPBookletPageSize Letter/Carta: ""
-*fi.HPBookletPageSize Letter/Letter: ""
-*fr.HPBookletPageSize Letter/Lettre: ""
-*it.HPBookletPageSize Letter/Lettera: ""
-*ja.HPBookletPageSize Letter/レター: ""
-*ko.HPBookletPageSize Letter/레터: ""
-*nl.HPBookletPageSize Letter/Letter: ""
-*nb.HPBookletPageSize Letter/Letter: ""
-*pt.HPBookletPageSize Letter/Carta: ""
-*sv.HPBookletPageSize Letter/Letter: ""
-*zh_CN.HPBookletPageSize Letter/信纸: ""
-*zh_TW.HPBookletPageSize Letter/Letter: ""
-*ru.HPBookletPageSize Letter/Letter: ""
 
 
-*HPBookletPageSize Legal/Legal: ""
-*da.HPBookletPageSize Legal/Legal: ""
-*de.HPBookletPageSize Legal/Legal: ""
-*es.HPBookletPageSize Legal/Legal: ""
-*fi.HPBookletPageSize Legal/Legal: ""
-*fr.HPBookletPageSize Legal/Légal: ""
-*it.HPBookletPageSize Legal/Legale: ""
-*ja.HPBookletPageSize Legal/リーガル: ""
-*ko.HPBookletPageSize Legal/리갈: ""
-*nl.HPBookletPageSize Legal/Legal: ""
-*nb.HPBookletPageSize Legal/Legal: ""
-*pt.HPBookletPageSize Legal/Ofício: ""
-*sv.HPBookletPageSize Legal/Legal: ""
-*zh_CN.HPBookletPageSize Legal/Legal: ""
-*zh_TW.HPBookletPageSize Legal/Legal: ""
-*ru.HPBookletPageSize Legal/Legal: ""
 
-
-*HPBookletPageSize Executive/Executive: ""
-*da.HPBookletPageSize Executive/Executive: ""
-*de.HPBookletPageSize Executive/Executive: ""
-*es.HPBookletPageSize Executive/Ejecutivo: ""
-*fi.HPBookletPageSize Executive/Executive: ""
-*fr.HPBookletPageSize Executive/Exécutif: ""
-*it.HPBookletPageSize Executive/Executive: ""
-*ja.HPBookletPageSize Executive/エグゼクティブ: ""
-*ko.HPBookletPageSize Executive/Executive: ""
-*nl.HPBookletPageSize Executive/Executive: ""
-*nb.HPBookletPageSize Executive/Executive: ""
-*pt.HPBookletPageSize Executive/Executivo: ""
-*sv.HPBookletPageSize Executive/Executive: ""
-*zh_CN.HPBookletPageSize Executive/Executive: ""
-*zh_TW.HPBookletPageSize Executive/Executive: ""
-*ru.HPBookletPageSize Executive/Executive: ""
-
-
-*HPBookletPageSize HalfLetter/Statement: ""
-*da.HPBookletPageSize HalfLetter/Statement: ""
-*de.HPBookletPageSize HalfLetter/Statement: ""
-*es.HPBookletPageSize HalfLetter/Declaración: ""
-*fi.HPBookletPageSize HalfLetter/Statement: ""
-*fr.HPBookletPageSize HalfLetter/Relevé: ""
-*it.HPBookletPageSize HalfLetter/Dichiarazione: ""
-*ja.HPBookletPageSize HalfLetter/Statement: ""
-*ko.HPBookletPageSize HalfLetter/2절 레터: ""
-*nl.HPBookletPageSize HalfLetter/1/2 Letter : ""
-*nb.HPBookletPageSize HalfLetter/1/2 Letter: ""
-*pt.HPBookletPageSize HalfLetter/Statement: ""
-*sv.HPBookletPageSize HalfLetter/Statement: ""
-*zh_CN.HPBookletPageSize HalfLetter/结算单: ""
-*zh_TW.HPBookletPageSize HalfLetter/Statement: ""
-*ru.HPBookletPageSize HalfLetter/Statement: ""
-
-
-*HPBookletPageSize w612h935/8.5x13: ""
-*da.HPBookletPageSize w612h935/8.5x13: ""
-*de.HPBookletPageSize w612h935/8.5x13: ""
-*es.HPBookletPageSize w612h935/8.5x13: ""
-*fi.HPBookletPageSize w612h935/8.5x13: ""
-*fr.HPBookletPageSize w612h935/8.5x13: ""
-*it.HPBookletPageSize w612h935/8.5x13: ""
-*ja.HPBookletPageSize w612h935/8.5x13: ""
-*ko.HPBookletPageSize w612h935/8.5x13: ""
-*nl.HPBookletPageSize w612h935/8.5x13: ""
-*nb.HPBookletPageSize w612h935/8.5x13: ""
-*pt.HPBookletPageSize w612h935/8.5x13: ""
-*sv.HPBookletPageSize w612h935/8.5x13: ""
-*zh_CN.HPBookletPageSize w612h935/8.5x13: ""
-*zh_TW.HPBookletPageSize w612h935/8.5x13: ""
-*ru.HPBookletPageSize w612h935/8.5X13: ""
-
-
-*HPBookletPageSize 3x5/3 X 5: ""
-*da.HPBookletPageSize 3x5/3 X 5: ""
-*de.HPBookletPageSize 3x5/3 X 5: ""
-*es.HPBookletPageSize 3x5/3 X 5: ""
-*fi.HPBookletPageSize 3x5/3 X 5: ""
-*fr.HPBookletPageSize 3x5/3 X 5: ""
-*it.HPBookletPageSize 3x5/3 X 5: ""
-*ja.HPBookletPageSize 3x5/3 X 5: ""
-*ko.HPBookletPageSize 3x5/3 X 5: ""
-*nl.HPBookletPageSize 3x5/3 X 5: ""
-*nb.HPBookletPageSize 3x5/3 X 5: ""
-*pt.HPBookletPageSize 3x5/3 X 5: ""
-*sv.HPBookletPageSize 3x5/3 X 5: ""
-*zh_CN.HPBookletPageSize 3x5/3 X 5: ""
-*zh_TW.HPBookletPageSize 3x5/3 X 5: ""
-*ru.HPBookletPageSize 3x5/3 X 5: ""
-
-
-*HPBookletPageSize 4x6/4x6: ""
-*da.HPBookletPageSize 4x6/4x6: ""
-*de.HPBookletPageSize 4x6/4x6: ""
-*es.HPBookletPageSize 4x6/4x6: ""
-*fi.HPBookletPageSize 4x6/4x6: ""
-*fr.HPBookletPageSize 4x6/4x6: ""
-*it.HPBookletPageSize 4x6/4x6: ""
-*ja.HPBookletPageSize 4x6/4x6: ""
-*ko.HPBookletPageSize 4x6/4x6: ""
-*nl.HPBookletPageSize 4x6/4x6: ""
-*nb.HPBookletPageSize 4x6/4x6: ""
-*pt.HPBookletPageSize 4x6/4x6: ""
-*sv.HPBookletPageSize 4x6/4x6: ""
-*zh_CN.HPBookletPageSize 4x6/4x6: ""
-*zh_TW.HPBookletPageSize 4x6/4x6: ""
-*ru.HPBookletPageSize 4x6/4 x 6: ""
-
-
-*HPBookletPageSize 5x7/5x7: ""
-*da.HPBookletPageSize 5x7/5x7: ""
-*de.HPBookletPageSize 5x7/5x7: ""
-*es.HPBookletPageSize 5x7/5x7: ""
-*fi.HPBookletPageSize 5x7/5x7: ""
-*fr.HPBookletPageSize 5x7/5x7: ""
-*it.HPBookletPageSize 5x7/5x7: ""
-*ja.HPBookletPageSize 5x7/5x7: ""
-*ko.HPBookletPageSize 5x7/5x7: ""
-*nl.HPBookletPageSize 5x7/5x7: ""
-*nb.HPBookletPageSize 5x7/5x7: ""
-*pt.HPBookletPageSize 5x7/5x7: ""
-*sv.HPBookletPageSize 5x7/5x7: ""
-*zh_CN.HPBookletPageSize 5x7/5x7: ""
-*zh_TW.HPBookletPageSize 5x7/5x7: ""
-*ru.HPBookletPageSize 5x7/5 x 7: ""
-
-
-*HPBookletPageSize 5x8/5x8: ""
-*da.HPBookletPageSize 5x8/5x8: ""
-*de.HPBookletPageSize 5x8/5x8: ""
-*es.HPBookletPageSize 5x8/5x8: ""
-*fi.HPBookletPageSize 5x8/5x8: ""
-*fr.HPBookletPageSize 5x8/5x8: ""
-*it.HPBookletPageSize 5x8/5x8: ""
-*ja.HPBookletPageSize 5x8/5x8: ""
-*ko.HPBookletPageSize 5x8/5x8: ""
-*nl.HPBookletPageSize 5x8/5x8: ""
-*nb.HPBookletPageSize 5x8/5x8: ""
-*pt.HPBookletPageSize 5x8/5x8: ""
-*sv.HPBookletPageSize 5x8/5x8: ""
-*zh_CN.HPBookletPageSize 5x8/5x8: ""
-*zh_TW.HPBookletPageSize 5x8/5x8: ""
-*ru.HPBookletPageSize 5x8/5 x 8: ""
-
-
-*HPBookletPageSize A4/A4: ""
-*da.HPBookletPageSize A4/A4: ""
-*de.HPBookletPageSize A4/A4: ""
-*es.HPBookletPageSize A4/A4: ""
-*fi.HPBookletPageSize A4/A4: ""
-*fr.HPBookletPageSize A4/A4: ""
-*it.HPBookletPageSize A4/A4: ""
-*ja.HPBookletPageSize A4/A4: ""
-*ko.HPBookletPageSize A4/A4: ""
-*nl.HPBookletPageSize A4/A4: ""
-*nb.HPBookletPageSize A4/A4: ""
-*pt.HPBookletPageSize A4/A4: ""
-*sv.HPBookletPageSize A4/A4: ""
-*zh_CN.HPBookletPageSize A4/A4: ""
-*zh_TW.HPBookletPageSize A4/A4: ""
-*ru.HPBookletPageSize A4/A4: ""
-
-
-*HPBookletPageSize A5/A5: ""
-*da.HPBookletPageSize A5/A5: ""
-*de.HPBookletPageSize A5/A5: ""
-*es.HPBookletPageSize A5/A5: ""
-*fi.HPBookletPageSize A5/A5: ""
-*fr.HPBookletPageSize A5/A5: ""
-*it.HPBookletPageSize A5/A5: ""
-*ja.HPBookletPageSize A5/A5: ""
-*ko.HPBookletPageSize A5/A5: ""
-*nl.HPBookletPageSize A5/A5: ""
-*nb.HPBookletPageSize A5/A5: ""
-*pt.HPBookletPageSize A5/A5: ""
-*sv.HPBookletPageSize A5/A5: ""
-*zh_CN.HPBookletPageSize A5/A5: ""
-*zh_TW.HPBookletPageSize A5/A5: ""
-*ru.HPBookletPageSize A5/A5: ""
-
-
-*HPBookletPageSize A6/A6: ""
-*da.HPBookletPageSize A6/A6: ""
-*de.HPBookletPageSize A6/A6: ""
-*es.HPBookletPageSize A6/A6: ""
-*fi.HPBookletPageSize A6/A6: ""
-*fr.HPBookletPageSize A6/A6: ""
-*it.HPBookletPageSize A6/A6: ""
-*ja.HPBookletPageSize A6/A6: ""
-*ko.HPBookletPageSize A6/A6: ""
-*nl.HPBookletPageSize A6/A6: ""
-*nb.HPBookletPageSize A6/A6: ""
-*pt.HPBookletPageSize A6/A6: ""
-*sv.HPBookletPageSize A6/A6: ""
-*zh_CN.HPBookletPageSize A6/A6: ""
-*zh_TW.HPBookletPageSize A6/A6: ""
-*ru.HPBookletPageSize A6/A6: ""
-
-
-*HPBookletPageSize B5/B5 (JIS): ""
-*da.HPBookletPageSize B5/JIS B5: ""
-*de.HPBookletPageSize B5/B5 (JIS): ""
-*es.HPBookletPageSize B5/JIS B5: ""
-*fi.HPBookletPageSize B5/JIS B5: ""
-*fr.HPBookletPageSize B5/JIS B5: ""
-*it.HPBookletPageSize B5/JIS B5: ""
-*ja.HPBookletPageSize B5/B5 (JIS): ""
-*ko.HPBookletPageSize B5/JIS B5: ""
-*nl.HPBookletPageSize B5/JIS B5: ""
-*nb.HPBookletPageSize B5/JIS B5: ""
-*pt.HPBookletPageSize B5/B5 JIS: ""
-*sv.HPBookletPageSize B5/JIS B5: ""
-*zh_CN.HPBookletPageSize B5/JIS B5: ""
-*zh_TW.HPBookletPageSize B5/JIS B5: ""
-*ru.HPBookletPageSize B5/B5 (JIS): ""
-
-
-*HPBookletPageSize B6/B6 (JIS): ""
-*da.HPBookletPageSize B6/JIS B6: ""
-*de.HPBookletPageSize B6/B6 (JIS): ""
-*es.HPBookletPageSize B6/JIS B6: ""
-*fi.HPBookletPageSize B6/JIS B6: ""
-*fr.HPBookletPageSize B6/JIS B6: ""
-*it.HPBookletPageSize B6/JIS B6: ""
-*ja.HPBookletPageSize B6/B6 (JIS): ""
-*ko.HPBookletPageSize B6/JIS B6: ""
-*nl.HPBookletPageSize B6/JIS B6: ""
-*nb.HPBookletPageSize B6/JIS B6: ""
-*pt.HPBookletPageSize B6/B6 JIS: ""
-*sv.HPBookletPageSize B6/JIS B6: ""
-*zh_CN.HPBookletPageSize B6/JIS B6: ""
-*zh_TW.HPBookletPageSize B6/JIS B6: ""
-*ru.HPBookletPageSize B6/B6 (JIS): ""
-
-
-*HPBookletPageSize w283h425/10x15cm: ""
-*da.HPBookletPageSize w283h425/10x15cm: ""
-*de.HPBookletPageSize w283h425/10x15cm: ""
-*es.HPBookletPageSize w283h425/10x15cm: ""
-*fi.HPBookletPageSize w283h425/10x15cm: ""
-*fr.HPBookletPageSize w283h425/10x15cm: ""
-*it.HPBookletPageSize w283h425/10x15cm: ""
-*ja.HPBookletPageSize w283h425/10x15cm: ""
-*ko.HPBookletPageSize w283h425/10x15cm: ""
-*nl.HPBookletPageSize w283h425/10x15cm: ""
-*nb.HPBookletPageSize w283h425/10x15cm: ""
-*pt.HPBookletPageSize w283h425/10x15cm: ""
-*sv.HPBookletPageSize w283h425/10x15cm: ""
-*zh_CN.HPBookletPageSize w283h425/10x15cm: ""
-*zh_TW.HPBookletPageSize w283h425/10x15cm: ""
-*ru.HPBookletPageSize w283h425/10 x 15 см: ""
-
-
-*HPBookletPageSize w553h765/16K 195x270 mm: ""
-*da.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*de.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*es.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*fi.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*fr.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*it.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*ja.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*ko.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*nl.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*nb.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*pt.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*sv.HPBookletPageSize w553h765/16K 195x270 mm: ""
-*zh_CN.HPBookletPageSize w553h765/16K 195x270 毫米: ""
-*zh_TW.HPBookletPageSize w553h765/16K 195x270 公釐: ""
-*ru.HPBookletPageSize w553h765/16K 195 x 270 мм: ""
-
-
-*HPBookletPageSize w522h737/16K 184x260 mm: ""
-*da.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*de.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*es.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*fi.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*fr.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*it.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*ja.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*ko.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*nl.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*nb.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*pt.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*sv.HPBookletPageSize w522h737/16K 184x260 mm: ""
-*zh_CN.HPBookletPageSize w522h737/16K 184x260 毫米: ""
-*zh_TW.HPBookletPageSize w522h737/16K 184x260 公釐: ""
-*ru.HPBookletPageSize w522h737/16K 184 x 260 мм: ""
-
-
-*HPBookletPageSize w558h774/16K 197x273 mm: ""
-*da.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*de.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*es.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*fi.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*fr.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*it.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*ja.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*ko.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*nl.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*nb.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*pt.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*sv.HPBookletPageSize w558h774/16K 197x273 mm: ""
-*zh_CN.HPBookletPageSize w558h774/16K 197x273 毫米: ""
-*zh_TW.HPBookletPageSize w558h774/16K 197x273 公釐: ""
-*ru.HPBookletPageSize w558h774/16K 197 x 273 мм: ""
-
-
-*HPBookletPageSize DoublePostcard/Double Postcard (JIS): ""
-*da.HPBookletPageSize DoublePostcard/Dobbelt postkort (JIS): ""
-*de.HPBookletPageSize DoublePostcard/Doppelte Postkarte (JIS): ""
-*es.HPBookletPageSize DoublePostcard/Tarjeta postal doble (JIS): ""
-*fi.HPBookletPageSize DoublePostcard/Kaksinkert. postikortti (JIS): ""
-*fr.HPBookletPageSize DoublePostcard/Carte postale double (JIS): ""
-*it.HPBookletPageSize DoublePostcard/Cartolina doppia (JIS): ""
-*ja.HPBookletPageSize DoublePostcard/往復はがき (JIS): ""
-*ko.HPBookletPageSize DoublePostcard/양면 엽서 (JIS): ""
-*nl.HPBookletPageSize DoublePostcard/Dubbele briefkaart (JIS): ""
-*nb.HPBookletPageSize DoublePostcard/Dobbelt postkort (JIS): ""
-*pt.HPBookletPageSize DoublePostcard/Postal duplo (JIS): ""
-*sv.HPBookletPageSize DoublePostcard/Dubbelt brevkort (JIS): ""
-*zh_CN.HPBookletPageSize DoublePostcard/大号明信片 (JIS): ""
-*zh_TW.HPBookletPageSize DoublePostcard/雙面明信片 (JIS): ""
-*ru.HPBookletPageSize DoublePostcard/Двойная почтовая карточка (JIS): ""
-
-
-*CloseUI: *HPBookletPageSize
-
-*%Constraints on HPBookletPageSize
 *%=============================================
-*UIConstraints: *HPBookletPageSize 3x5 *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 4x6 *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 5x7 *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 5x8 *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize DoublePostcard *InputSlot Tray2
-*UIConstraints: *HPBookletPageSize w283h425 *InputSlot Tray2
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 3x5
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 4x6
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 5x7
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 5x8
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize DoublePostcard
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize w283h425
-*UIConstraints: *HPBookletPageSize 3x5 *InputSlot Tray3
-*UIConstraints: *HPBookletPageSize 4x6 *InputSlot Tray3
-*UIConstraints: *HPBookletPageSize 5x7 *InputSlot Tray3
-*UIConstraints: *HPBookletPageSize 5x8 *InputSlot Tray3
-*UIConstraints: *HPBookletPageSize DoublePostcard *InputSlot Tray3
-*UIConstraints: *HPBookletPageSize w283h425 *InputSlot Tray3
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize 3x5
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize 4x6
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize 5x7
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize 5x8
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize DoublePostcard
-*UIConstraints: *InputSlot Tray3 *HPBookletPageSize w283h425
-*UIConstraints: *HPBookletPageSize 3x5 *InputSlot Tray4
-*UIConstraints: *HPBookletPageSize 4x6 *InputSlot Tray4
-*UIConstraints: *HPBookletPageSize 5x7 *InputSlot Tray4
-*UIConstraints: *HPBookletPageSize 5x8 *InputSlot Tray4
-*UIConstraints: *HPBookletPageSize DoublePostcard *InputSlot Tray4
-*UIConstraints: *HPBookletPageSize w283h425 *InputSlot Tray4
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize 3x5
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize 4x6
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize 5x7
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize 5x8
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize DoublePostcard
-*UIConstraints: *InputSlot Tray4 *HPBookletPageSize w283h425
-*UIConstraints: *HPBookletPageSize Executive *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize HalfLetter *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 3x5 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 4x6 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 5x7 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 5x8 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize A5 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize A6 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize B5 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize B6 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize w283h425 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize w553h765 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize w522h737 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize w558h774 *Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize DoublePostcard *Duplex DuplexNoTumble
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize Executive
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize HalfLetter
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize 3x5
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize 4x6
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize 5x7
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize 5x8
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize A5
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize A6
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize B5
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize B6
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize w283h425
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize w553h765
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize w522h737
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize w558h774
-*UIConstraints: *Duplex DuplexNoTumble *HPBookletPageSize DoublePostcard
-*UIConstraints: *HPBookletPageSize Executive *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize HalfLetter *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 3x5 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 4x6 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 5x7 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 5x8 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize A5 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize A6 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize B5 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize B6 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize w283h425 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize w553h765 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize w522h737 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize w558h774 *Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize DoublePostcard *Duplex DuplexTumble
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize Executive
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize HalfLetter
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize 3x5
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize 4x6
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize 5x7
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize 5x8
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize A5
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize A6
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize B5
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize B6
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize w283h425
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize w553h765
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize w522h737
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize w558h774
-*UIConstraints: *Duplex DuplexTumble *HPBookletPageSize DoublePostcard
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize Executive
-*HPConstraints: *HPBookletPageSize Executive *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize HalfLetter
-*HPConstraints: *HPBookletPageSize HalfLetter *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize 3x5
-*HPConstraints: *HPBookletPageSize 3x5 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize 4x6
-*HPConstraints: *HPBookletPageSize 4x6 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize 5x7
-*HPConstraints: *HPBookletPageSize 5x7 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize 5x8
-*HPConstraints: *HPBookletPageSize 5x8 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize A5
-*HPConstraints: *HPBookletPageSize A5 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize A6
-*HPConstraints: *HPBookletPageSize A6 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize B5
-*HPConstraints: *HPBookletPageSize B5 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize B6
-*HPConstraints: *HPBookletPageSize B6 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize w283h425
-*HPConstraints: *HPBookletPageSize w283h425 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize w553h765
-*HPConstraints: *HPBookletPageSize w553h765 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize w522h737
-*HPConstraints: *HPBookletPageSize w522h737 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize w558h774
-*HPConstraints: *HPBookletPageSize w558h774 *HPManualDuplexSwitch False
-*HPConstraints: *HPManualDuplexSwitch False *HPBookletPageSize DoublePostcard
-*HPConstraints: *HPBookletPageSize DoublePostcard *HPManualDuplexSwitch False
 
 *OpenUI *HPRotate180/Rotate Page 180 deg: Boolean
 *OrderDependency: 48 AnySetup *HPRotate180
@@ -3058,24 +2246,24 @@ EWS;;http://%s/
 *zh_TW.PageSize HalfLetter/Statement: ""
 *ru.PageSize HalfLetter/Statement: ""
 
-*PageSize w612h935/8.5x13: "
+*PageSize w612h936/8.5x13: "
   	<</DeferredMediaSelection true /PageSize [612 936] /ImagingBBox null /MediaClass (8.5X13)>> setpagedevice"
 *End
-*da.PageSize w612h935/8.5x13: ""
-*de.PageSize w612h935/8.5x13: ""
-*es.PageSize w612h935/8.5x13: ""
-*fi.PageSize w612h935/8.5x13: ""
-*fr.PageSize w612h935/8.5x13: ""
-*it.PageSize w612h935/8.5x13: ""
-*ja.PageSize w612h935/8.5x13: ""
-*ko.PageSize w612h935/8.5x13: ""
-*nl.PageSize w612h935/8.5x13: ""
-*nb.PageSize w612h935/8.5x13: ""
-*pt.PageSize w612h935/8.5x13: ""
-*sv.PageSize w612h935/8.5x13: ""
-*zh_CN.PageSize w612h935/8.5x13: ""
-*zh_TW.PageSize w612h935/8.5x13: ""
-*ru.PageSize w612h935/8.5X13: ""
+*da.PageSize w612h936/8.5x13: ""
+*de.PageSize w612h936/8.5x13: ""
+*es.PageSize w612h936/8.5x13: ""
+*fi.PageSize w612h936/8.5x13: ""
+*fr.PageSize w612h936/8.5x13: ""
+*it.PageSize w612h936/8.5x13: ""
+*ja.PageSize w612h936/8.5x13: ""
+*ko.PageSize w612h936/8.5x13: ""
+*nl.PageSize w612h936/8.5x13: ""
+*nb.PageSize w612h936/8.5x13: ""
+*pt.PageSize w612h936/8.5x13: ""
+*sv.PageSize w612h936/8.5x13: ""
+*zh_CN.PageSize w612h936/8.5x13: ""
+*zh_TW.PageSize w612h936/8.5x13: ""
+*ru.PageSize w612h936/8.5X13: ""
 
 *PageSize 3x5/3 X 5: "
 	<</PageSize [216 360] /ImagingBBox null>> setpagedevice"
@@ -3250,24 +2438,24 @@ EWS;;http://%s/
 *zh_TW.PageSize B6/JIS B6: ""
 *ru.PageSize B6/B6 (JIS): ""
 
-*PageSize w283h425/10x15cm: "
+*PageSize w288h432/10x15cm: "
     <</DeferredMediaSelection true /PageSize [288 432] /MediaClass (10x15cm)>> setpagedevice"
 *End
-*da.PageSize w283h425/10x15cm: ""
-*de.PageSize w283h425/10x15cm: ""
-*es.PageSize w283h425/10x15cm: ""
-*fi.PageSize w283h425/10x15cm: ""
-*fr.PageSize w283h425/10x15cm: ""
-*it.PageSize w283h425/10x15cm: ""
-*ja.PageSize w283h425/10x15cm: ""
-*ko.PageSize w283h425/10x15cm: ""
-*nl.PageSize w283h425/10x15cm: ""
-*nb.PageSize w283h425/10x15cm: ""
-*pt.PageSize w283h425/10x15cm: ""
-*sv.PageSize w283h425/10x15cm: ""
-*zh_CN.PageSize w283h425/10x15cm: ""
-*zh_TW.PageSize w283h425/10x15cm: ""
-*ru.PageSize w283h425/10 x 15 см: ""
+*da.PageSize w288h432/10x15cm: ""
+*de.PageSize w288h432/10x15cm: ""
+*es.PageSize w288h432/10x15cm: ""
+*fi.PageSize w288h432/10x15cm: ""
+*fr.PageSize w288h432/10x15cm: ""
+*it.PageSize w288h432/10x15cm: ""
+*ja.PageSize w288h432/10x15cm: ""
+*ko.PageSize w288h432/10x15cm: ""
+*nl.PageSize w288h432/10x15cm: ""
+*nb.PageSize w288h432/10x15cm: ""
+*pt.PageSize w288h432/10x15cm: ""
+*sv.PageSize w288h432/10x15cm: ""
+*zh_CN.PageSize w288h432/10x15cm: ""
+*zh_TW.PageSize w288h432/10x15cm: ""
+*ru.PageSize w288h432/10 x 15 см: ""
 
 *PageSize w553h765/16K 195x270 mm: "
   	<</DeferredMediaSelection true /PageSize [553 765] /ImagingBBox null /MediaClass null >> setpagedevice"
@@ -3451,7 +2639,7 @@ EWS;;http://%s/
    dup [612 1008] (Legal) put
    dup [522 756] (Executive) put
    dup [396 792]  (HalfLetter) put
-   dup [612 936] (w612h935) put
+   dup [612 936] (w612h936) put
    dup [216 360] (3x5) put
    dup [288 432] (4x6) put
    dup [360 504] (5x7) put
@@ -3461,7 +2649,7 @@ EWS;;http://%s/
    dup [298 420] (A6) put
    dup [516 729] (B5) put
    dup [363 516] (B6) put
-   dup [288 432] (w283h425) put
+   dup [288 432] (w288h432) put
    dup [553 765] (w553h765) put
    dup [522 737] (w522h737) put
    dup [558 774] (w558h774) put
@@ -3576,24 +2764,24 @@ EWS;;http://%s/
 *zh_TW.PageRegion HalfLetter/Statement: ""
 *ru.PageRegion HalfLetter/Statement: ""
 
-*PageRegion w612h935/8.5x13: "
+*PageRegion w612h936/8.5x13: "
   	<</DeferredMediaSelection true /PageSize [612 936] /ImagingBBox null /MediaClass (8.5X13)>> setpagedevice"
 *End
-*da.PageRegion w612h935/8.5x13: ""
-*de.PageRegion w612h935/8.5x13: ""
-*es.PageRegion w612h935/8.5x13: ""
-*fi.PageRegion w612h935/8.5x13: ""
-*fr.PageRegion w612h935/8.5x13: ""
-*it.PageRegion w612h935/8.5x13: ""
-*ja.PageRegion w612h935/8.5x13: ""
-*ko.PageRegion w612h935/8.5x13: ""
-*nl.PageRegion w612h935/8.5x13: ""
-*nb.PageRegion w612h935/8.5x13: ""
-*pt.PageRegion w612h935/8.5x13: ""
-*sv.PageRegion w612h935/8.5x13: ""
-*zh_CN.PageRegion w612h935/8.5x13: ""
-*zh_TW.PageRegion w612h935/8.5x13: ""
-*ru.PageRegion w612h935/8.5X13: ""
+*da.PageRegion w612h936/8.5x13: ""
+*de.PageRegion w612h936/8.5x13: ""
+*es.PageRegion w612h936/8.5x13: ""
+*fi.PageRegion w612h936/8.5x13: ""
+*fr.PageRegion w612h936/8.5x13: ""
+*it.PageRegion w612h936/8.5x13: ""
+*ja.PageRegion w612h936/8.5x13: ""
+*ko.PageRegion w612h936/8.5x13: ""
+*nl.PageRegion w612h936/8.5x13: ""
+*nb.PageRegion w612h936/8.5x13: ""
+*pt.PageRegion w612h936/8.5x13: ""
+*sv.PageRegion w612h936/8.5x13: ""
+*zh_CN.PageRegion w612h936/8.5x13: ""
+*zh_TW.PageRegion w612h936/8.5x13: ""
+*ru.PageRegion w612h936/8.5X13: ""
 
 *PageRegion 3x5/3 X 5: "
 	<</PageSize [216 360] /ImagingBBox null>> setpagedevice"
@@ -3767,24 +2955,24 @@ EWS;;http://%s/
 *zh_TW.PageRegion B6/JIS B6: ""
 *ru.PageRegion B6/B6 (JIS): ""
 
-*PageRegion w283h425/10x15cm: "
+*PageRegion w288h432/10x15cm: "
     <</DeferredMediaSelection true /PageSize [288 432] /MediaClass (10x15cm)>> setpagedevice"
 *End
-*da.PageRegion w283h425/10x15cm: ""
-*de.PageRegion w283h425/10x15cm: ""
-*es.PageRegion w283h425/10x15cm: ""
-*fi.PageRegion w283h425/10x15cm: ""
-*fr.PageRegion w283h425/10x15cm: ""
-*it.PageRegion w283h425/10x15cm: ""
-*ja.PageRegion w283h425/10x15cm: ""
-*ko.PageRegion w283h425/10x15cm: ""
-*nl.PageRegion w283h425/10x15cm: ""
-*nb.PageRegion w283h425/10x15cm: ""
-*pt.PageRegion w283h425/10x15cm: ""
-*sv.PageRegion w283h425/10x15cm: ""
-*zh_CN.PageRegion w283h425/10x15cm: ""
-*zh_TW.PageRegion w283h425/10x15cm: ""
-*ru.PageRegion w283h425/10 x 15 см: ""
+*da.PageRegion w288h432/10x15cm: ""
+*de.PageRegion w288h432/10x15cm: ""
+*es.PageRegion w288h432/10x15cm: ""
+*fi.PageRegion w288h432/10x15cm: ""
+*fr.PageRegion w288h432/10x15cm: ""
+*it.PageRegion w288h432/10x15cm: ""
+*ja.PageRegion w288h432/10x15cm: ""
+*ko.PageRegion w288h432/10x15cm: ""
+*nl.PageRegion w288h432/10x15cm: ""
+*nb.PageRegion w288h432/10x15cm: ""
+*pt.PageRegion w288h432/10x15cm: ""
+*sv.PageRegion w288h432/10x15cm: ""
+*zh_CN.PageRegion w288h432/10x15cm: ""
+*zh_TW.PageRegion w288h432/10x15cm: ""
+*ru.PageRegion w288h432/10 x 15 см: ""
 
 *PageRegion w553h765/16K 195x270 mm: "
   	<</DeferredMediaSelection true /PageSize [553 765] /ImagingBBox null /MediaClass null >> setpagedevice"
@@ -4028,22 +3216,22 @@ EWS;;http://%s/
 *zh_TW.ImageableArea HalfLetter/Statement: ""
 *ru.ImageableArea HalfLetter/Statement: ""
 
-*ImageableArea w612h935/8.5x13:				"12.00 12.00 600.00 924.00"
-*da.ImageableArea w612h935/8.5x13: ""
-*de.ImageableArea w612h935/8.5x13: ""
-*es.ImageableArea w612h935/8.5x13: ""
-*fi.ImageableArea w612h935/8.5x13: ""
-*fr.ImageableArea w612h935/8.5x13: ""
-*it.ImageableArea w612h935/8.5x13: ""
-*ja.ImageableArea w612h935/8.5x13: ""
-*ko.ImageableArea w612h935/8.5x13: ""
-*nl.ImageableArea w612h935/8.5x13: ""
-*nb.ImageableArea w612h935/8.5x13: ""
-*pt.ImageableArea w612h935/8.5x13: ""
-*sv.ImageableArea w612h935/8.5x13: ""
-*zh_CN.ImageableArea w612h935/8.5x13: ""
-*zh_TW.ImageableArea w612h935/8.5x13: ""
-*ru.ImageableArea w612h935/8.5X13: ""
+*ImageableArea w612h936/8.5x13:				"12.00 12.00 600.00 924.00"
+*da.ImageableArea w612h936/8.5x13: ""
+*de.ImageableArea w612h936/8.5x13: ""
+*es.ImageableArea w612h936/8.5x13: ""
+*fi.ImageableArea w612h936/8.5x13: ""
+*fr.ImageableArea w612h936/8.5x13: ""
+*it.ImageableArea w612h936/8.5x13: ""
+*ja.ImageableArea w612h936/8.5x13: ""
+*ko.ImageableArea w612h936/8.5x13: ""
+*nl.ImageableArea w612h936/8.5x13: ""
+*nb.ImageableArea w612h936/8.5x13: ""
+*pt.ImageableArea w612h936/8.5x13: ""
+*sv.ImageableArea w612h936/8.5x13: ""
+*zh_CN.ImageableArea w612h936/8.5x13: ""
+*zh_TW.ImageableArea w612h936/8.5x13: ""
+*ru.ImageableArea w612h936/8.5X13: ""
 
 *ImageableArea 3x5/3 X 5:                                 "9.6 33.12 206.4 357"
 *da.ImageableArea 3x5/3 X 5: ""
@@ -4198,22 +3386,22 @@ EWS;;http://%s/
 *zh_TW.ImageableArea B6/JIS B6: ""
 *ru.ImageableArea B6/B6 (JIS): ""
 
-*ImageableArea w283h425/10x15cm: 			"12.00 12.12 276.00 420.00"
-*da.ImageableArea w283h425/10x15cm: ""
-*de.ImageableArea w283h425/10x15cm: ""
-*es.ImageableArea w283h425/10x15cm: ""
-*fi.ImageableArea w283h425/10x15cm: ""
-*fr.ImageableArea w283h425/10x15cm: ""
-*it.ImageableArea w283h425/10x15cm: ""
-*ja.ImageableArea w283h425/10x15cm: ""
-*ko.ImageableArea w283h425/10x15cm: ""
-*nl.ImageableArea w283h425/10x15cm: ""
-*nb.ImageableArea w283h425/10x15cm: ""
-*pt.ImageableArea w283h425/10x15cm: ""
-*sv.ImageableArea w283h425/10x15cm: ""
-*zh_CN.ImageableArea w283h425/10x15cm: ""
-*zh_TW.ImageableArea w283h425/10x15cm: ""
-*ru.ImageableArea w283h425/10 x 15 см: ""
+*ImageableArea w288h432/10x15cm: 			"12.00 12.12 276.00 420.00"
+*da.ImageableArea w288h432/10x15cm: ""
+*de.ImageableArea w288h432/10x15cm: ""
+*es.ImageableArea w288h432/10x15cm: ""
+*fi.ImageableArea w288h432/10x15cm: ""
+*fr.ImageableArea w288h432/10x15cm: ""
+*it.ImageableArea w288h432/10x15cm: ""
+*ja.ImageableArea w288h432/10x15cm: ""
+*ko.ImageableArea w288h432/10x15cm: ""
+*nl.ImageableArea w288h432/10x15cm: ""
+*nb.ImageableArea w288h432/10x15cm: ""
+*pt.ImageableArea w288h432/10x15cm: ""
+*sv.ImageableArea w288h432/10x15cm: ""
+*zh_CN.ImageableArea w288h432/10x15cm: ""
+*zh_TW.ImageableArea w288h432/10x15cm: ""
+*ru.ImageableArea w288h432/10 x 15 см: ""
 
 *ImageableArea w553h765/16K 195x270 mm:			"12.00 12.00 541.00 753.00"
 *da.ImageableArea w553h765/16K 195x270 mm: ""
@@ -4449,22 +3637,22 @@ EWS;;http://%s/
 *zh_TW.PaperDimension HalfLetter/Statement: ""
 *ru.PaperDimension HalfLetter/Statement: ""
 
-*PaperDimension w612h935/8.5x13:			"612 936"
-*da.PaperDimension w612h935/8.5x13: ""
-*de.PaperDimension w612h935/8.5x13: ""
-*es.PaperDimension w612h935/8.5x13: ""
-*fi.PaperDimension w612h935/8.5x13: ""
-*fr.PaperDimension w612h935/8.5x13: ""
-*it.PaperDimension w612h935/8.5x13: ""
-*ja.PaperDimension w612h935/8.5x13: ""
-*ko.PaperDimension w612h935/8.5x13: ""
-*nl.PaperDimension w612h935/8.5x13: ""
-*nb.PaperDimension w612h935/8.5x13: ""
-*pt.PaperDimension w612h935/8.5x13: ""
-*sv.PaperDimension w612h935/8.5x13: ""
-*zh_CN.PaperDimension w612h935/8.5x13: ""
-*zh_TW.PaperDimension w612h935/8.5x13: ""
-*ru.PaperDimension w612h935/8.5X13: ""
+*PaperDimension w612h936/8.5x13:			"612 936"
+*da.PaperDimension w612h936/8.5x13: ""
+*de.PaperDimension w612h936/8.5x13: ""
+*es.PaperDimension w612h936/8.5x13: ""
+*fi.PaperDimension w612h936/8.5x13: ""
+*fr.PaperDimension w612h936/8.5x13: ""
+*it.PaperDimension w612h936/8.5x13: ""
+*ja.PaperDimension w612h936/8.5x13: ""
+*ko.PaperDimension w612h936/8.5x13: ""
+*nl.PaperDimension w612h936/8.5x13: ""
+*nb.PaperDimension w612h936/8.5x13: ""
+*pt.PaperDimension w612h936/8.5x13: ""
+*sv.PaperDimension w612h936/8.5x13: ""
+*zh_CN.PaperDimension w612h936/8.5x13: ""
+*zh_TW.PaperDimension w612h936/8.5x13: ""
+*ru.PaperDimension w612h936/8.5X13: ""
 
 *PaperDimension 3x5/3 X 5:				"216 360"
 *da.PaperDimension 3x5/3 X 5: ""
@@ -4619,22 +3807,22 @@ EWS;;http://%s/
 *zh_TW.PaperDimension B6/JIS B6: ""
 *ru.PaperDimension B6/B6 (JIS): ""
 
-*PaperDimension w283h425/10x15cm: 			"288 432"
-*da.PaperDimension w283h425/10x15cm: ""
-*de.PaperDimension w283h425/10x15cm: ""
-*es.PaperDimension w283h425/10x15cm: ""
-*fi.PaperDimension w283h425/10x15cm: ""
-*fr.PaperDimension w283h425/10x15cm: ""
-*it.PaperDimension w283h425/10x15cm: ""
-*ja.PaperDimension w283h425/10x15cm: ""
-*ko.PaperDimension w283h425/10x15cm: ""
-*nl.PaperDimension w283h425/10x15cm: ""
-*nb.PaperDimension w283h425/10x15cm: ""
-*pt.PaperDimension w283h425/10x15cm: ""
-*sv.PaperDimension w283h425/10x15cm: ""
-*zh_CN.PaperDimension w283h425/10x15cm: ""
-*zh_TW.PaperDimension w283h425/10x15cm: ""
-*ru.PaperDimension w283h425/10 x 15 см: ""
+*PaperDimension w288h432/10x15cm: 			"288 432"
+*da.PaperDimension w288h432/10x15cm: ""
+*de.PaperDimension w288h432/10x15cm: ""
+*es.PaperDimension w288h432/10x15cm: ""
+*fi.PaperDimension w288h432/10x15cm: ""
+*fr.PaperDimension w288h432/10x15cm: ""
+*it.PaperDimension w288h432/10x15cm: ""
+*ja.PaperDimension w288h432/10x15cm: ""
+*ko.PaperDimension w288h432/10x15cm: ""
+*nl.PaperDimension w288h432/10x15cm: ""
+*nb.PaperDimension w288h432/10x15cm: ""
+*pt.PaperDimension w288h432/10x15cm: ""
+*sv.PaperDimension w288h432/10x15cm: ""
+*zh_CN.PaperDimension w288h432/10x15cm: ""
+*zh_TW.PaperDimension w288h432/10x15cm: ""
+*ru.PaperDimension w288h432/10 x 15 см: ""
 
 
 *PaperDimension w553h765/16K 195x270 mm:		"553 765"
@@ -5535,14 +4723,12 @@ EWS;;http://%s/
 "
 *End
 
-*%== Mac OS X specific begin ==
 *% =================================
 *% =================================
 
 *% =================================
 *% =================================
 
-*%== Mac OS X specific end ==
 
 *% ===================================
 *%           Printer Messages

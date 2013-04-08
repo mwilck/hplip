@@ -36,15 +36,13 @@
 *%=================================================
 *% 		 PPD File Version Information
 *%=================================================
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
 *PCFileName: "HP1200_6.PPD"
 
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *%=================================================
@@ -392,11 +390,9 @@
 *% Fills not allowed with overlays
 *%------------------------------------------------------------
 
-*% Halo style does not work with Watermarks
 *%------------------------------------------------------------
 
 *% =================================
-*%  Watermark Printing
 *% =================================
 
 *%=================================================

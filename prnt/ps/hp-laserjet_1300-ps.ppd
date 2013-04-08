@@ -36,15 +36,13 @@
 *%=================================================
 *% 		 PPD File Version Information
 *%=================================================
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
 *PCFileName: "HP1300_6.PPD"
 
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *%=================================================
@@ -592,7 +590,6 @@
 *% Fills not allowed with overlays
 *%------------------------------------------------------------
 
-*% Halo style does not work with Watermarks
 *%------------------------------------------------------------
 
 *%=================================================
@@ -796,23 +793,23 @@
 *zh_CN.PageSize B5/JIS B5: ""
 *zh_TW.PageSize B5/JIS B5: ""
 
-*PageSize w612h935/Executive (JIS): "
+*PageSize w612h936/Executive (JIS): "
   <</PageSize [612 936] /ImagingBBox null>> setpagedevice"
 *End
-*da.PageSize w612h935/Executive (JIS): ""
-*de.PageSize w612h935/Executive (JIS): ""
-*es.PageSize w612h935/Exec (JIS): ""
-*fi.PageSize w612h935/Executive (JIS): ""
-*fr.PageSize w612h935/Executive (JIS): ""
-*it.PageSize w612h935/Executive (JIS): ""
-*ja.PageSize w612h935/エグゼクティブ (JIS): ""
-*ko.PageSize w612h935/Executive (JIS): ""
-*nl.PageSize w612h935/Executive (JIS): ""
-*nb.PageSize w612h935/Executive (JIS): ""
-*pt.PageSize w612h935/Executivo (JIS): ""
-*sv.PageSize w612h935/Executive (JIS): ""
-*zh_CN.PageSize w612h935/Executive (JIS): ""
-*zh_TW.PageSize w612h935/Executive (JIS): ""
+*da.PageSize w612h936/Executive (JIS): ""
+*de.PageSize w612h936/Executive (JIS): ""
+*es.PageSize w612h936/Exec (JIS): ""
+*fi.PageSize w612h936/Executive (JIS): ""
+*fr.PageSize w612h936/Executive (JIS): ""
+*it.PageSize w612h936/Executive (JIS): ""
+*ja.PageSize w612h936/エグゼクティブ (JIS): ""
+*ko.PageSize w612h936/Executive (JIS): ""
+*nl.PageSize w612h936/Executive (JIS): ""
+*nb.PageSize w612h936/Executive (JIS): ""
+*pt.PageSize w612h936/Executivo (JIS): ""
+*sv.PageSize w612h936/Executive (JIS): ""
+*zh_CN.PageSize w612h936/Executive (JIS): ""
+*zh_TW.PageSize w612h936/Executive (JIS): ""
 
 *PageSize Postcard/Postcard (JIS): "
   <</PageSize [284 419] /ImagingBBox null>> setpagedevice"
@@ -971,7 +968,7 @@
    dup [420 595]  (A5) put
    dup [297 420]  (A6) put
    dup [516 729]  (B5) put
-   dup [612 936]  (w612h935) put
+   dup [612 936]  (w612h936) put
    dup [284 419]  (Postcard) put
    dup [419.5 567] (DoublePostcard) put
    dup [558 774]  (w558h774) put
@@ -1188,23 +1185,23 @@
 *zh_CN.PageRegion B5/JIS B5: ""
 *zh_TW.PageRegion B5/JIS B5: ""
 
-*PageRegion w612h935/Executive (JIS): "
+*PageRegion w612h936/Executive (JIS): "
   <</PageSize [612 936] /ImagingBBox null>> setpagedevice"
 *End
-*da.PageRegion w612h935/Executive (JIS): ""
-*de.PageRegion w612h935/Executive (JIS): ""
-*es.PageRegion w612h935/Exec (JIS): ""
-*fi.PageRegion w612h935/Executive (JIS): ""
-*fr.PageRegion w612h935/Executive (JIS): ""
-*it.PageRegion w612h935/Executive (JIS): ""
-*ja.PageRegion w612h935/エグゼクティブ (JIS): ""
-*ko.PageRegion w612h935/Executive (JIS): ""
-*nl.PageRegion w612h935/Executive (JIS): ""
-*nb.PageRegion w612h935/Executive (JIS): ""
-*pt.PageRegion w612h935/Executivo (JIS): ""
-*sv.PageRegion w612h935/Executive (JIS): ""
-*zh_CN.PageRegion w612h935/Executive (JIS): ""
-*zh_TW.PageRegion w612h935/Executive (JIS): ""
+*da.PageRegion w612h936/Executive (JIS): ""
+*de.PageRegion w612h936/Executive (JIS): ""
+*es.PageRegion w612h936/Exec (JIS): ""
+*fi.PageRegion w612h936/Executive (JIS): ""
+*fr.PageRegion w612h936/Executive (JIS): ""
+*it.PageRegion w612h936/Executive (JIS): ""
+*ja.PageRegion w612h936/エグゼクティブ (JIS): ""
+*ko.PageRegion w612h936/Executive (JIS): ""
+*nl.PageRegion w612h936/Executive (JIS): ""
+*nb.PageRegion w612h936/Executive (JIS): ""
+*pt.PageRegion w612h936/Executivo (JIS): ""
+*sv.PageRegion w612h936/Executive (JIS): ""
+*zh_CN.PageRegion w612h936/Executive (JIS): ""
+*zh_TW.PageRegion w612h936/Executive (JIS): ""
 
 *PageRegion Postcard/Postcard (JIS): "
   <</PageSize [284 419] /ImagingBBox null>> setpagedevice"
@@ -1513,21 +1510,21 @@
 *zh_CN.ImageableArea B5/JIS B5: ""
 *zh_TW.ImageableArea B5/JIS B5: ""
 
-*ImageableArea w612h935/Executive (JIS): "12.00 12.00 599.76 923.76"
-*da.ImageableArea w612h935/Executive (JIS): ""
-*de.ImageableArea w612h935/Executive (JIS): ""
-*es.ImageableArea w612h935/Exec (JIS): ""
-*fi.ImageableArea w612h935/Executive (JIS): ""
-*fr.ImageableArea w612h935/Executive (JIS): ""
-*it.ImageableArea w612h935/Executive (JIS): ""
-*ja.ImageableArea w612h935/エグゼクティブ (JIS): ""
-*ko.ImageableArea w612h935/Executive (JIS): ""
-*nl.ImageableArea w612h935/Executive (JIS): ""
-*nb.ImageableArea w612h935/Executive (JIS): ""
-*pt.ImageableArea w612h935/Executivo (JIS): ""
-*sv.ImageableArea w612h935/Executive (JIS): ""
-*zh_CN.ImageableArea w612h935/Executive (JIS): ""
-*zh_TW.ImageableArea w612h935/Executive (JIS): ""
+*ImageableArea w612h936/Executive (JIS): "12.00 12.00 599.76 923.76"
+*da.ImageableArea w612h936/Executive (JIS): ""
+*de.ImageableArea w612h936/Executive (JIS): ""
+*es.ImageableArea w612h936/Exec (JIS): ""
+*fi.ImageableArea w612h936/Executive (JIS): ""
+*fr.ImageableArea w612h936/Executive (JIS): ""
+*it.ImageableArea w612h936/Executive (JIS): ""
+*ja.ImageableArea w612h936/エグゼクティブ (JIS): ""
+*ko.ImageableArea w612h936/Executive (JIS): ""
+*nl.ImageableArea w612h936/Executive (JIS): ""
+*nb.ImageableArea w612h936/Executive (JIS): ""
+*pt.ImageableArea w612h936/Executivo (JIS): ""
+*sv.ImageableArea w612h936/Executive (JIS): ""
+*zh_CN.ImageableArea w612h936/Executive (JIS): ""
+*zh_TW.ImageableArea w612h936/Executive (JIS): ""
 
 *ImageableArea Postcard/Postcard (JIS): "12.00 12.00 271.20 407.28"
 *da.ImageableArea Postcard/Postkort (JIS): ""
@@ -1830,21 +1827,21 @@
 *zh_CN.PaperDimension B5/JIS B5: ""
 *zh_TW.PaperDimension B5/JIS B5: ""
 
-*PaperDimension w612h935/Executive (JIS): "612 936"
-*da.PaperDimension w612h935/Executive (JIS): ""
-*de.PaperDimension w612h935/Executive (JIS): ""
-*es.PaperDimension w612h935/Exec (JIS): ""
-*fi.PaperDimension w612h935/Executive (JIS): ""
-*fr.PaperDimension w612h935/Executive (JIS): ""
-*it.PaperDimension w612h935/Executive (JIS): ""
-*ja.PaperDimension w612h935/エグゼクティブ (JIS): ""
-*ko.PaperDimension w612h935/Executive (JIS): ""
-*nl.PaperDimension w612h935/Executive (JIS): ""
-*nb.PaperDimension w612h935/Executive (JIS): ""
-*pt.PaperDimension w612h935/Executivo (JIS): ""
-*sv.PaperDimension w612h935/Executive (JIS): ""
-*zh_CN.PaperDimension w612h935/Executive (JIS): ""
-*zh_TW.PaperDimension w612h935/Executive (JIS): ""
+*PaperDimension w612h936/Executive (JIS): "612 936"
+*da.PaperDimension w612h936/Executive (JIS): ""
+*de.PaperDimension w612h936/Executive (JIS): ""
+*es.PaperDimension w612h936/Exec (JIS): ""
+*fi.PaperDimension w612h936/Executive (JIS): ""
+*fr.PaperDimension w612h936/Executive (JIS): ""
+*it.PaperDimension w612h936/Executive (JIS): ""
+*ja.PaperDimension w612h936/エグゼクティブ (JIS): ""
+*ko.PaperDimension w612h936/Executive (JIS): ""
+*nl.PaperDimension w612h936/Executive (JIS): ""
+*nb.PaperDimension w612h936/Executive (JIS): ""
+*pt.PaperDimension w612h936/Executivo (JIS): ""
+*sv.PaperDimension w612h936/Executive (JIS): ""
+*zh_CN.PaperDimension w612h936/Executive (JIS): ""
+*zh_TW.PaperDimension w612h936/Executive (JIS): ""
 
 *PaperDimension Postcard/Postcard (JIS): "284 419"
 *da.PaperDimension Postcard/Postkort (JIS): ""

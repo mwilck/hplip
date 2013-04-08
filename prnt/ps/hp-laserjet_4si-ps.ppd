@@ -35,13 +35,11 @@
 
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *LanguageEncoding: ISOLatin1
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it nl nb sv"
 *PCFileName: "HP4SI6_1.PPD"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 *% Product Version Information
 *Product: "(HP LaserJet 4Si)"

@@ -38,9 +38,6 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HPWM5228.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *% Product Name and Version Information

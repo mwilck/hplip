@@ -39,9 +39,6 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP2600.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *% Product Name and Version Information
@@ -1436,231 +1433,20 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *End
 *CloseUI: *MediaType
 *% ================================================
-*% Constraints on MediaType for Booklet printing
 *% ================================================
 
-*UIConstraints: *HPOption_Duplexer False *HPBookletFilter True
 *% ================================================
-*% Booklet
 *% ================================================
-*% Booklet printing is not allowed without Auto Duplex turned on
-*UIConstraints: *HPBookletFilter True *Duplex None
-*UIConstraints: *Duplex None *HPBookletFilter True
-*OpenUI *HPBookletFilter/Format Output As Booklet: Boolean
-*OrderDependency: 60 AnySetup *HPBookletFilter
-*DefaultHPBookletFilter: False
-*de.Translation HPBookletFilter/Ausgabeformat als Broschüre: ""
-*es.Translation HPBookletFilter/Formatear impr. como folleto: ""
-*fr.Translation HPBookletFilter/Formate la sortie comme brochure: ""
-*it.Translation HPBookletFilter/Output in formato di opuscolo: ""
 
-*HPBookletFilter True/Yes: ""
-*de.HPBookletFilter True/Ein: ""
-*es.HPBookletFilter True/Activado: ""
-*fr.HPBookletFilter True/Activé: ""
-*it.HPBookletFilter True/Attiva: ""
 
-*HPBookletFilter False/No: ""
-*de.HPBookletFilter False/Aus: ""
-*es.HPBookletFilter False/Desactivado: ""
-*fr.HPBookletFilter False/Désactivé: ""
-*it.HPBookletFilter False/Disattivata: ""
 
-*CloseUI: *HPBookletFilter
-
-*OpenUI *HPBookletBackCover/Last Page Is Back Cover: Boolean
-*OrderDependency: 61 AnySetup *HPBookletBackCover
-*DefaultHPBookletBackCover: False
-*de.Translation HPBookletBackCover/Endseite = Broschürenrücken: ""
-*es.Translation HPBookletBackCover/La últ. pág. es la contraport.: ""
-*fr.Translation HPBookletBackCover/Dernière page page de garde: ""
-*it.Translation HPBookletBackCover/Ultima pag come retrocopertina: ""
-
-*HPBookletBackCover True/Yes: ""
-*de.HPBookletBackCover True/Ein: ""
-*es.HPBookletBackCover True/Activado: ""
-*fr.HPBookletBackCover True/Activé: ""
-*it.HPBookletBackCover True/Attiva: ""
-
-*HPBookletBackCover False/No: ""
-*de.HPBookletBackCover False/Aus: ""
-*es.HPBookletBackCover False/Desactivado: ""
-*fr.HPBookletBackCover False/Désactivé: ""
-*it.HPBookletBackCover False/Disattivata: ""
-
-*CloseUI: *HPBookletBackCover
-
-*OpenUI *HPBookletPageOrder/Page Order: PickOne
-*OrderDependency: 62 AnySetup *HPBookletPageOrder
-*DefaultHPBookletPageOrder: Normal
-*de.Translation HPBookletPageOrder/Seitenreihenfolge: ""
-*es.Translation HPBookletPageOrder/Orden de páginas: ""
-*fr.Translation HPBookletPageOrder/Ordre des pages: ""
-*it.Translation HPBookletPageOrder/Ordine delle pagine: ""
-
-*HPBookletPageOrder Normal/Pages Bound on the Left: ""
-*de.HPBookletPageOrder Normal/Seiten links gebunden: ""
-*es.HPBookletPageOrder Normal/Encuadernación a la izquierda: ""
-*fr.HPBookletPageOrder Normal/Pages reliées sur la gauche: ""
-*it.HPBookletPageOrder Normal/Pagine rilegate a sinistra: ""
-
-*HPBookletPageOrder Asian/Pages Bound on the Right: ""
-*de.HPBookletPageOrder Asian/Seiten rechts gebunden: ""
-*es.HPBookletPageOrder Asian/Encuadernación a la derecha: ""
-*fr.HPBookletPageOrder Asian/Pages reliées sur la droite: ""
-*it.HPBookletPageOrder Asian/Pagine rilegate a destra: ""
-
-*CloseUI: *HPBookletPageOrder
-
-*OpenUI *HPBookletScaling/Scaling: PickOne
-*OrderDependency: 63 AnySetup *HPBookletScaling
-*DefaultHPBookletScaling: Proportional
-*de.Translation HPBookletScaling/Skalierung: ""
-*es.Translation HPBookletScaling/Cambio de escala: ""
-*fr.Translation HPBookletScaling/Mise à l'échelle: ""
-*it.Translation HPBookletScaling/Scala: ""
-
-*HPBookletScaling Proportional/Proportional: ""
-*de.HPBookletScaling Proportional/Proportional: ""
-*es.HPBookletScaling Proportional/Proporcional: ""
-*fr.HPBookletScaling Proportional/Proportionnel: ""
-*it.HPBookletScaling Proportional/Proporzionale: ""
-
-*HPBookletScaling FitPage/Fit To Page: ""
-*de.HPBookletScaling FitPage/Seite anpassen: ""
-*es.HPBookletScaling FitPage/Ajustar página: ""
-*fr.HPBookletScaling FitPage/Ajuster la page: ""
-*it.HPBookletScaling FitPage/Adattamento pagina: ""
-
-*CloseUI: *HPBookletScaling
 
 *% These values are set of PageSize settings so we need find
 *% the way to refer on to PageSize values 
 
 
-*OpenUI *HPBookletPageSize/Paper For Booklet: PickOne
-*OrderDependency: 66 AnySetup *HPBookletPageSize
-*DefaultHPBookletPageSize: LetterPaper
-*de.Translation HPBookletPageSize/Papier für Broschüre: ""
-*es.Translation HPBookletPageSize/Papel para folleto: ""
-*fr.Translation HPBookletPageSize/Papier pour brochure: ""
-*it.Translation HPBookletPageSize/Carta per opuscolo: ""
 
-
-*HPBookletPageSize LetterPaper/Letter: ""
-*de.HPBookletPageSize LetterPaper/US-Letter: ""
-*es.HPBookletPageSize LetterPaper/Letter : ""
-*fr.HPBookletPageSize LetterPaper/Letter US: ""
-*it.HPBookletPageSize LetterPaper/US Letter: ""
-
-*HPBookletPageSize TabloidPaper/11x17: ""
-*de.HPBookletPageSize TabloidPaper/11x17: ""
-*es.HPBookletPageSize TabloidPaper/11x17: ""
-*fr.HPBookletPageSize TabloidPaper/11x17: ""
-*it.HPBookletPageSize TabloidPaper/11x17: ""
-
-*HPBookletPageSize LegalPaper/Legal: ""
-*de.HPBookletPageSize LegalPaper/US-Legal: ""
-*es.HPBookletPageSize LegalPaper/Legal: ""
-*fr.HPBookletPageSize LegalPaper/Légal US: ""
-*it.HPBookletPageSize LegalPaper/US Legal: ""
-
-*HPBookletPageSize ExecutivePaper/Executive: ""
-*de.HPBookletPageSize ExecutivePaper/US-Executive: ""
-*es.HPBookletPageSize ExecutivePaper/Ejecutivo: ""
-*fr.HPBookletPageSize ExecutivePaper/Executive: ""
-*it.HPBookletPageSize ExecutivePaper/Executive: ""
-
-*HPBookletPageSize StatePaper/Statement: ""
-*de.HPBookletPageSize StatePaper/US-Statement: ""
-*es.HPBookletPageSize StatePaper/Statement: ""
-*fr.HPBookletPageSize StatePaper/Relevé US: ""
-*it.HPBookletPageSize StatePaper/Statement: ""
-
-*HPBookletPageSize SuperB/Super B (13 x 19 in.): ""
-*de.HPBookletPageSize SuperB/Super B (330 x 483 mm): ""
-*es.HPBookletPageSize SuperB/Super B (13 x 19  pulg.): ""
-*fr.HPBookletPageSize SuperB/Super B (13 x 19 pouces): ""
-*it.HPBookletPageSize SuperB/Super B (13 x 19 pollici): ""
-
-*HPBookletPageSize A4/A4: ""
-*de.HPBookletPageSize A4/A4: ""
-*es.HPBookletPageSize A4/A4: ""
-*fr.HPBookletPageSize A4/A4: ""
-*it.HPBookletPageSize A4/A4: ""
-
-*HPBookletPageSize A3/A3: ""
-*de.HPBookletPageSize A3/A3: ""
-*es.HPBookletPageSize A3/A3: ""
-*fr.HPBookletPageSize A3/A3: ""
-*it.HPBookletPageSize A3/A3: ""
-
-*HPBookletPageSize A5/A5: ""
-*de.HPBookletPageSize A5/A5: ""
-*es.HPBookletPageSize A5/A5: ""
-*fr.HPBookletPageSize A5/A5: ""
-*it.HPBookletPageSize A5/A5: ""
-
-*HPBookletPageSize A3+/A3+: ""
-*de.HPBookletPageSize A3+/A3+: ""
-*es.HPBookletPageSize A3+/A3+: ""
-*fr.HPBookletPageSize A3+/A3+: ""
-*it.HPBookletPageSize A3+/A3+: ""
-
-*HPBookletPageSize B4/B4 (JIS): ""
-*de.HPBookletPageSize B4/B4 (JIS): ""
-*es.HPBookletPageSize B4/B4 (JIS): ""
-*fr.HPBookletPageSize B4/B4 (JIS): ""
-*it.HPBookletPageSize B4/B4 (JIS): ""
-
-*HPBookletPageSize B5/B5 (JIS): ""
-*de.HPBookletPageSize B5/B5 (JIS): ""
-*es.HPBookletPageSize B5/JIS B5: ""
-*fr.HPBookletPageSize B5/JIS B5: ""
-*it.HPBookletPageSize B5/JIS B5: ""
-
-*HPBookletPageSize 4x6/Index Card (4 x 6 in.): ""
-*de.HPBookletPageSize 4x6/Karteikarte (102 x 152 mm): ""
-*es.HPBookletPageSize 4x6/Ficha (4 x 8 pulg.): ""
-*fr.HPBookletPageSize 4x6/Fiche Bristol (4 x 6 pouces): ""
-*it.HPBookletPageSize 4x6/Scheda (4 x 6 pollici): ""
-
-*HPBookletPageSize 5x8/Index Card (5 x 8 in.): ""
-*de.HPBookletPageSize 5x8/Karteikarte (127 x 203 mm): ""
-*es.HPBookletPageSize 5x8/Ficha (5 x 8 pulg.): ""
-*fr.HPBookletPageSize 5x8/Fiche Bristol (5 x 8 pouces): ""
-*it.HPBookletPageSize 5x8/Scheda (5 x 8 pollici): ""
-
-*HPBookletPageSize A6card/A6 Card: ""
-*de.HPBookletPageSize A6card/Karte A6: ""
-*es.HPBookletPageSize A6card/Tarjeta A6: ""
-*fr.HPBookletPageSize A6card/Carte A6: ""
-*it.HPBookletPageSize A6card/Scheda A6: ""
-
-*CloseUI: *HPBookletPageSize
-
-*%Constraints on HPBookletPageSize
 *%=============================================
-*UIConstraints: *HPBookletPageSize StatePaper 		*InputSlot Tray2
-*UIConstraints: *HPBookletPageSize A5 			*InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 4x6 			*InputSlot Tray2
-*UIConstraints: *HPBookletPageSize 5x8 			*InputSlot Tray2
-*UIConstraints: *HPBookletPageSize A6card 			*InputSlot Tray2
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize StatePaper
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize A5
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 4x6
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize 5x8
-*UIConstraints: *InputSlot Tray2 *HPBookletPageSize A6card
-*UIConstraints: *HPBookletPageSize StatePaper		*Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize A5 			*Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 4x6			*Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize 5x8			*Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize A6card 			*Duplex DuplexNoTumble
-*UIConstraints: *HPBookletPageSize StatePaper		*Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize A5 			*Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 4x6			*Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize 5x8			*Duplex DuplexTumble
-*UIConstraints: *HPBookletPageSize A6card 			*Duplex DuplexTumble
 
 *%================================
 *% Two-sided Printing (Duplex)

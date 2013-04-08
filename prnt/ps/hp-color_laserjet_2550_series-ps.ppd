@@ -32,15 +32,13 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *HPBuildNumber: "009"
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP2550.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
 
 
 *% Product Name and Version Information
@@ -580,13 +578,7 @@
 *UIConstraints: *InputSlot Tray2 *MediaType ToughPaper
 *UIConstraints: *InputSlot Tray3 *MediaType ToughPaper
 
-*UIConstraints: *MediaType Transparency *HPManualDuplex True
-*UIConstraints: *MediaType Labels *HPManualDuplex True
-*UIConstraints: *MediaType Envelope *HPManualDuplex True
 
-*UIConstraints: *HPManualDuplex True *MediaType Transparency
-*UIConstraints: *HPManualDuplex True *MediaType Labels
-*UIConstraints: *HPManualDuplex True *MediaType Envelope
 
 
 *% Fills not allowed with overlays
@@ -2602,7 +2594,6 @@ restore
 *CloseUI: *InputSlot
 
 *% ================================================
-*% Manual Duplex
 *% ================================================
 *OpenGroup: HPFinishing/Finishing
 *da.Translation HPFinishing/Finisher-indstillinger: ""
@@ -2621,58 +2612,9 @@ restore
 *zh_TW.Translation HPFinishing/外觀選項: ""
 
 
-*OpenUI *HPManualDuplex/Manually Print on 2nd Side: Boolean
-*OrderDependency: 35 AnySetup *HPManualDuplex
-*DefaultHPManualDuplex: False
-*da.Translation HPManualDuplex/Udskriv manuelt på side 2: ""
-*de.Translation HPManualDuplex/Beidseitiger Druck (manuell): ""
-*es.Translation HPManualDuplex/Imp. manual en la segunda cara: ""
-*fi.Translation HPManualDuplex/Tulosta manuaal. 2. puolelle: ""
-*fr.Translation HPManualDuplex/Impress. man. sur 2ième face: ""
-*it.Translation HPManualDuplex/Stampa manualmente sul retro: ""
-*ja.Translation HPManualDuplex/裏面の手差し印刷: ""
-*ko.Translation HPManualDuplex/수동 양면 인쇄: ""
-*nl.Translation HPManualDuplex/Handmatig afdr. op 2e zijde: ""
-*nb.Translation HPManualDuplex/Skriv ut manuelt på bakside: ""
-*pt.Translation HPManualDuplex/Impr. manual no segundo lado: ""
-*sv.Translation HPManualDuplex/Manuell Dubbelsidig Utskrift: ""
-*zh_CN.Translation HPManualDuplex/手动双面打印: ""
-*zh_TW.Translation HPManualDuplex/以手動方式列印第二面: ""
 
-*HPManualDuplex True/Yes: "<< /PrintOnBackside true >> setpagedevice"
-*da.HPManualDuplex True/Sandt: ""
-*de.HPManualDuplex True/Ein: ""
-*es.HPManualDuplex True/Sí: ""
-*fi.HPManualDuplex True/Kyllä: ""
-*fr.HPManualDuplex True/Oui: ""
-*it.HPManualDuplex True/Attiva: ""
-*ja.HPManualDuplex True/オン: ""
-*ko.HPManualDuplex True/예: ""
-*nl.HPManualDuplex True/Ja: ""
-*nb.HPManualDuplex True/Ja: ""
-*pt.HPManualDuplex True/Ativo: ""
-*sv.HPManualDuplex True/Ja: ""
-*zh_CN.HPManualDuplex True/是: ""
-*zh_TW.HPManualDuplex True/是: ""
 
-*HPManualDuplex False/No: "<< /PrintOnBackside false >> setpagedevice"
-*da.HPManualDuplex False/Falsk: ""
-*de.HPManualDuplex False/Aus: ""
-*es.HPManualDuplex False/No: ""
-*fi.HPManualDuplex False/Ei: ""
-*fr.HPManualDuplex False/Non: ""
-*it.HPManualDuplex False/Disattiva: ""
-*ja.HPManualDuplex False/オフ: ""
-*ko.HPManualDuplex False/아니오: ""
-*nl.HPManualDuplex False/Nee: ""
-*nb.HPManualDuplex False/Nei: ""
-*pt.HPManualDuplex False/Inativo: ""
-*sv.HPManualDuplex False/Nej: ""
-*zh_CN.HPManualDuplex False/否: ""
-*zh_TW.HPManualDuplex False/否: ""
 
-*?HPManualDuplex: "(False) == flush"
-*CloseUI: *HPManualDuplex
 
 *OpenUI *HPStraightPaperPath/Use Straight Paper Path: Boolean
 *DefaultHPStraightPaperPath: False

@@ -36,7 +36,7 @@
 *%=================================================
 *% 		 PPD File Version Information
 *%=================================================
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *HPBuildNumber: "002"
 *FormatVersion: "4.3"
 *LanguageEncoding: ISOLatin1
@@ -59,8 +59,6 @@
 *Manufacturer: "HP"
 *PSVersion: "(2014.116) 0"
 
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *%=================================================

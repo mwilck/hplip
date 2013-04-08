@@ -33,7 +33,7 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *HPBuildNumber: "002"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
@@ -200,25 +200,7 @@
 
 *% Do not manual duplex envelopes
 *%=============================================
-*UIConstraints: *HPManualDuplex True *PageRegion EnvISOB5
-*UIConstraints: *HPManualDuplex True *PageRegion Env10
-*UIConstraints: *HPManualDuplex True *PageRegion EnvC5
-*UIConstraints: *HPManualDuplex True *PageRegion EnvDL
-*UIConstraints: *HPManualDuplex True *PageRegion EnvMonarch
-*UIConstraints: *HPManualDuplex True *MediaType Transparency
-*UIConstraints: *HPManualDuplex True *MediaType Labels
-*UIConstraints: *HPManualDuplex True *MediaType ToughPaper
-*UIConstraints: *HPManualDuplex True *MediaType Envelope
 
-*UIConstraints: *PageRegion EnvISOB5 *HPManualDuplex True
-*UIConstraints: *PageRegion Env10 *HPManualDuplex True
-*UIConstraints: *PageRegion EnvC5 *HPManualDuplex True
-*UIConstraints: *PageRegion EnvDL *HPManualDuplex True
-*UIConstraints: *PageRegion EnvMonarch *HPManualDuplex True
-*UIConstraints: *MediaType Transparency *HPManualDuplex True
-*UIConstraints: *MediaType Labels *HPManualDuplex True
-*UIConstraints: *MediaType ToughPaper *HPManualDuplex True
-*UIConstraints: *MediaType Envelope *HPManualDuplex True
 
 *% ### The following lines are left in for visibility but commented out because though it
 *% ### seems like requiring a PIN for a private job is the thing to do, the way it works
@@ -603,23 +585,13 @@ sub }{dup mul exch dup mul add 1 exch sub }ifelse }
 *CloseUI: *MediaType
 
 
-*%The following are here for the Manual Duplex plugin
 *HPDisallowManualFeedForManualDuplex: True
 *HPManualFeedPrintsOnBottom: True
 
 *% ================================================
-*% Manual Duplex
 *% ================================================
 *OpenGroup: HPFinishingPanel/Finishing
 
-*OpenUI *HPManualDuplex/Manually Print on 2nd Side: Boolean
-*OrderDependency: 35 AnySetup *HPManualDuplex
-*DefaultHPManualDuplex: False
-*HPManualDuplex True/Yes: "<< /PrintOnBackside true >> setpagedevice"
-*HPManualDuplex False/No: "<< /PrintOnBackside false >> setpagedevice"
-*?HPManualDuplex: "(False) == flush"
-*CloseUI: *HPManualDuplex
-*HPManualDuplexSupport:    True
 
 *CloseGroup: HPFinishingPanel
 

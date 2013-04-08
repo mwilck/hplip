@@ -29,7 +29,7 @@
 *% ===================================
 
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr nb pt sv"
 *LanguageEncoding: ISOLatin1
@@ -49,8 +49,6 @@
 *FileSystem: False
 *Throughput: "12"
 
-*HPPDEPanel: "HPFinishingPanel"
-*HPPDEPanel: "HPImagingOptions"
 
 
 *OpenGroup: InstallableOptions

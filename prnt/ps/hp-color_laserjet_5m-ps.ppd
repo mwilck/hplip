@@ -31,14 +31,12 @@
 *% =================================
 *% PPD File Version Information
 *FormatVersion: "4.3"
-*FileVersion: "PPD-VERSION-STRING"
+*FileVersion: "1.1"
 *LanguageVersion: English
 *cupsLanguages: "da de es fi fr it nl nb pt sv"
 *LanguageEncoding: ISOLatin1
 *PCFileName: "HP__CLJ5.PPD"
 
-*HPPDEPanel: "HPColorOptionsPanel"
-*HPPDEPanel: "HPFinishingPanel"
 
 
 *% Product Name and Version Information
