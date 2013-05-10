@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.4"
+*FileVersion: "hpijs 3.13.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_premium_c309g-m-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart Premium c309g-m hpijs"
 *ShortNickName: "HP PS Premium c309g-m hpijs"
-*NickName: "HP Photosmart Premium c309g-m hpijs, 3.13.4"
+*NickName: "HP Photosmart Premium c309g-m hpijs, 3.13.5"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
