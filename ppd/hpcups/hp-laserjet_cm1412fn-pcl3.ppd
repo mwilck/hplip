@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.5"
+*FileVersion: "3.13.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_cm1412fn-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet cm1412fn"
 *ShortNickName: "HP LaserJet cm1412fn"
-*NickName: "HP LaserJet cm1412fn pcl3, hpcups 3.13.5"
+*NickName: "HP LaserJet cm1412fn pcl3, hpcups 3.13.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

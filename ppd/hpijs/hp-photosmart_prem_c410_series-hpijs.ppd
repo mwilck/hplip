@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.5"
+*FileVersion: "hpijs 3.13.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_prem_c410_series-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart Prem c410 Series hpijs"
 *ShortNickName: "HP PS Prem c410 Series hpijs"
-*NickName: "HP Photosmart Prem c410 Series hpijs, 3.13.5"
+*NickName: "HP Photosmart Prem c410 Series hpijs, 3.13.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
