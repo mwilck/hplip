@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.6"
+*FileVersion: "hpijs 3.13.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_p1102-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Professional p1102 hpijs"
 *ShortNickName: "HP LJ Professional p1102 hpijs"
-*NickName: "HP LaserJet Professional p1102 hpijs, 3.13.6, requires proprietary plugin"
+*NickName: "HP LaserJet Professional p1102 hpijs, 3.13.7, requires proprietary plugin"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
