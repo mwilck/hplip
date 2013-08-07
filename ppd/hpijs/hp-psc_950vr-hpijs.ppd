@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.7"
+*FileVersion: "hpijs 3.13.8"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-psc_950vr-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PSC 950vr hpijs"
 *ShortNickName: "HP PSC 950vr hpijs"
-*NickName: "HP PSC 950vr hpijs, 3.13.7"
+*NickName: "HP PSC 950vr hpijs, 3.13.8"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

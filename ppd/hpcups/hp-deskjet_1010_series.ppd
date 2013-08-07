@@ -3,16 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.7"
+*FileVersion: "3.13.8"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_1010_series.ppd"
 *Product: "(HP Deskjet 1010 Printer)"
 *Product: "(HP Deskjet 1012 Printer)"
+*Product: "(HP Deskjet Ink Advantage 1010 Printer Series)"
+*Product: "(HP Deskjet Ink Advantage 1015 Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 1010 Series"
 *ShortNickName: "HP Deskjet 1010 Series"
-*NickName: "HP Deskjet 1010 Series, hpcups 3.13.7"
+*NickName: "HP Deskjet 1010 Series, hpcups 3.13.8"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -243,4 +245,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_1010_series.ppd, 16846 bytes.
+*% End of hp-deskjet_1010_series.ppd, 16957 bytes.
