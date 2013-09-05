@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.8"
+*FileVersion: "3.13.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f4500_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f4500 Series"
 *ShortNickName: "HP Deskjet f4500 Series"
-*NickName: "HP Deskjet f4500 Series, hpcups 3.13.8"
+*NickName: "HP Deskjet f4500 Series, hpcups 3.13.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -80,7 +80,7 @@
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
 *PageSize Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
-*PageSize Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize [288 432]/ImagingBBox null>>setpagedevice"
 *PageSize PhotoL/Photo 3.5x5in: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
 *PageSize PhotoL.FB/Photo Borderless 3.5x5in: "<</cupsInteger0 121/PageSize[264.74 370.36]/ImagingBBox null>>setpagedevice"
 *PageSize Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
@@ -132,7 +132,7 @@
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Letter
 *PageRegion Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
-*PageRegion Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize[306 450]/ImagingBBox null>>setpagedevice"
+*PageRegion Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
 *PageRegion PhotoL/Photo 3.5x5in: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
 *PageRegion PhotoL.FB/Photo Borderless 3.5x5in: "<</cupsInteger0 121/cupsReal0 .079/cupsReal1 .051/PageSize[264.74 370.36]/ImagingBBox null>>setpagedevice"
 *PageRegion Photo4x6/Photo 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
@@ -182,7 +182,7 @@
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "9 9 207 351"
-*ImageableArea Card4x6/Index Card 4x6in: "9 9 297 441"
+*ImageableArea Card4x6/Index Card 4x6in: "9 9 279 423"
 *ImageableArea PhotoL/Photo 3.5x5in: "9 9 243 351"
 *ImageableArea PhotoL.FB/Photo Borderless 3.5x5in: "0 0 264.739990234375 370.359985351562"
 *ImageableArea Photo4x6/Photo 4x6in: "9 9 279 423"
@@ -231,7 +231,7 @@
 *ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9 40.535999298096 245.880004882812 572.039978027344"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
-*PaperDimension Card4x6/Index Card 4x6in: "306 450"
+*PaperDimension Card4x6/Index Card 4x6in: "288 432"
 *PaperDimension PhotoL/Photo 3.5x5in: "252 360"
 *PaperDimension PhotoL.FB/Photo Borderless 3.5x5in: "264.739990234375 370.359985351562"
 *PaperDimension Photo4x6/Photo 4x6in: "288 432"

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.8"
+*FileVersion: "hpijs 3.13.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_a710_series-hpijs.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart a710 Series hpijs"
 *ShortNickName: "HP Photosmart a710 Series hpijs"
-*NickName: "HP Photosmart a710 Series hpijs, 3.13.8"
+*NickName: "HP Photosmart a710 Series hpijs, 3.13.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

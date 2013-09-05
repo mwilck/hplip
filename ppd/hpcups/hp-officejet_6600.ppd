@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.8"
+*FileVersion: "3.13.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6600.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6600"
 *ShortNickName: "HP Officejet 6600"
-*NickName: "HP Officejet 6600, hpcups 3.13.8"
+*NickName: "HP Officejet 6600, hpcups 3.13.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -78,7 +78,7 @@
 *PageSize EnvA2/A2 Envelope 4.37x5.75in: "<</cupsInteger0 109/PageSize[314.64 413.856]/ImagingBBox null>>setpagedevice"
 *PageSize EnvC6/C6 Envelope 114x162mm: "<</cupsInteger0 92/PageSize[323.136 459.216]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou4/#4 Japanese Envelope 90x205mm: "<</cupsInteger0 111/PageSize[255.096 581.112]/ImagingBBox null>>setpagedevice"
-*PageSize EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[316.8 432]/ImagingBBox null>>setpagedevice"
+*PageSize EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[315 432]/ImagingBBox null>>setpagedevice"
 *PageSize EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279.36 540]/ImagingBBox null>>setpagedevice"
 *PageSize EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.832 623.592]/ImagingBBox null>>setpagedevice"
 *PageSize Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297.36 684]/ImagingBBox null>>setpagedevice"
@@ -129,7 +129,7 @@
 *PageRegion EnvA2/A2 Envelope 4.37x5.75in: "<</cupsInteger0 109/PageSize[314.64 413.856]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC6/C6 Envelope 114x162mm: "<</cupsInteger0 92/PageSize[323.136 459.216]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou4/#4 Japanese Envelope 90x205mm: "<</cupsInteger0 111/PageSize[255.096 581.112]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[316.8 432]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[315 432]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279.36 540]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.832 623.592]/ImagingBBox null>>setpagedevice"
 *PageRegion Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297.36 684]/ImagingBBox null>>setpagedevice"
@@ -178,7 +178,7 @@
 *ImageableArea EnvA2/A2 Envelope 4.37x5.75in: "9.359999656677 46.799999237061 305.28001499176 367.055988311768"
 *ImageableArea EnvC6/C6 Envelope 114x162mm: "9.359999656677 46.799999237061 313.775986671448 412.416004180908"
 *ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9.359999656677 46.799999237061 245.735993385315 534.312000274658"
-*ImageableArea EnvCard/Card Envelope 4.4x6in: "9.359999656677 46.799999237061 307.439988136292 385.200000762939"
+*ImageableArea EnvCard/Card Envelope 4.4x6in: "9.359999656677 46.799999237061 305.640000343323 385.200000762939"
 *ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "9.359999656677 46.799999237061 269.999985694885 493.200000762939"
 *ImageableArea EnvDL/DL Envelope 110x220mm: "9.359999656677 46.799999237061 302.472001075745 576.791980743408"
 *ImageableArea Env10/#10 Envelope 4.125x9.5in: "9.359999656677 46.799999237061 287.999985694885 637.200000762939"
@@ -226,7 +226,7 @@
 *PaperDimension EnvA2/A2 Envelope 4.37x5.75in: "314.640014648438 413.855987548828"
 *PaperDimension EnvC6/C6 Envelope 114x162mm: "323.135986328125 459.216003417969"
 *PaperDimension EnvChou4/#4 Japanese Envelope 90x205mm: "255.095993041992 581.111999511719"
-*PaperDimension EnvCard/Card Envelope 4.4x6in: "316.799987792969 432"
+*PaperDimension EnvCard/Card Envelope 4.4x6in: "315 432"
 *PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279.359985351562 540"
 *PaperDimension EnvDL/DL Envelope 110x220mm: "311.832000732422 623.591979980469"
 *PaperDimension Env10/#10 Envelope 4.125x9.5in: "297.359985351562 684"
@@ -303,4 +303,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6600.ppd, 24720 bytes.
+*% End of hp-officejet_6600.ppd, 24703 bytes.

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.8"
+*FileVersion: "3.13.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-envy_110_series.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Envy 110 Series"
 *ShortNickName: "HP Envy 110 Series"
-*NickName: "HP Envy 110 Series, hpcups 3.13.8"
+*NickName: "HP Envy 110 Series, hpcups 3.13.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -161,7 +161,7 @@
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
 *PageSize Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
-*PageSize Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize [288 432]/ImagingBBox null>>setpagedevice"
 *PageSize Card4x6.Duplex/Index Card AutoDuplex 4x6in: "<</cupsInteger0 74/PageSize[288 423]/ImagingBBox null>>setpagedevice"
 *PageSize L/L 89x127mm: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
 *PageSize L.FB/L Borderless 89x127mm: "<</cupsInteger0 121/PageSize[264.74 370.36]/ImagingBBox null>>setpagedevice"
@@ -201,7 +201,7 @@
 *PageSize Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize Env6/#6 Envelope 3.63x6.5in: "<</cupsInteger0 83/PageSize[261.36 468]/ImagingBBox null>>setpagedevice"
 *PageSize EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[315 432]/ImagingBBox null>>setpagedevice"
-*PageSize EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[457.92 649.44]/ImagingBBox null>>setpagedevice"
+*PageSize EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459 649.44]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[283.68 419.76]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki.Duplex/Hagaki AutoDuplex 100x148mm: "<</cupsInteger0 71/PageSize[283.68 410.76]/ImagingBBox null>>setpagedevice"
 *PageSize Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/PageSize[296.42 430.12]/ImagingBBox null>>setpagedevice"
@@ -219,7 +219,7 @@
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Letter
 *PageRegion Card3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
-*PageRegion Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize[306 450]/ImagingBBox null>>setpagedevice"
+*PageRegion Card4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
 *PageRegion Card4x6.Duplex/Index Card AutoDuplex 4x6in: "<</cupsInteger0 74/PageSize[288 423]/ImagingBBox null>>setpagedevice"
 *PageRegion L/L 89x127mm: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
 *PageRegion L.FB/L Borderless 89x127mm: "<</cupsInteger0 121/cupsReal0 .079/cupsReal1 .051/PageSize[264.74 370.36]/ImagingBBox null>>setpagedevice"
@@ -259,7 +259,7 @@
 *PageRegion Env10/#10 Envelope 4.125x9.5in: "<</cupsInteger0 81/PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion Env6/#6 Envelope 3.63x6.5in: "<</cupsInteger0 83/PageSize[261.36 468]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvCard/Card Envelope 4.4x6in: "<</cupsInteger0 114/PageSize[315 432]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[457.92 649.44]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvC5/C5 Envelope 162x229mm: "<</cupsInteger0 91/PageSize[459 649.44]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki/Hagaki 100x148mm: "<</cupsInteger0 71/PageSize[283.68 419.76]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki.Duplex/Hagaki AutoDuplex 100x148mm: "<</cupsInteger0 71/PageSize[283.68 410.76]/ImagingBBox null>>setpagedevice"
 *PageRegion Hagaki.FB/Hagaki Borderless 100x148mm: "<</cupsInteger0 71/cupsReal0 .098/cupsReal1 .051/PageSize[296.42 430.12]/ImagingBBox null>>setpagedevice"
@@ -275,7 +275,7 @@
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "9 9 207 351"
-*ImageableArea Card4x6/Index Card 4x6in: "9 9 297 441"
+*ImageableArea Card4x6/Index Card 4x6in: "9 9 279 423"
 *ImageableArea Card4x6.Duplex/Index Card AutoDuplex 4x6in: "9 27 279 387"
 *ImageableArea L/L 89x127mm: "9 9 243 351"
 *ImageableArea L.FB/L Borderless 89x127mm: "0 0 264.739990234375 370.359985351562"
@@ -315,7 +315,7 @@
 *ImageableArea Env10/#10 Envelope 4.125x9.5in: "9 40.535999298096 288 675"
 *ImageableArea Env6/#6 Envelope 3.63x6.5in: "9 40.535999298096 252.359985351562 459"
 *ImageableArea EnvCard/Card Envelope 4.4x6in: "9 40.535999298096 306 423"
-*ImageableArea EnvC5/C5 Envelope 162x229mm: "9 42.189998626709 448.920013427734 640.440002441406"
+*ImageableArea EnvC5/C5 Envelope 162x229mm: "9 42.189998626709 450 640.440002441406"
 *ImageableArea Hagaki/Hagaki 100x148mm: "9 9 274.679992675781 410.760009765625"
 *ImageableArea Hagaki.Duplex/Hagaki AutoDuplex 100x148mm: "9 27 274.679992675781 374.760009765625"
 *ImageableArea Hagaki.FB/Hagaki Borderless 100x148mm: "0 0 296.420013427734 430.119995117188"
@@ -330,7 +330,7 @@
 *ImageableArea EnvChou4/#4 Japanese Envelope 90x205mm: "9 40.535999298096 245.880004882812 572.039978027344"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
-*PaperDimension Card4x6/Index Card 4x6in: "306 450"
+*PaperDimension Card4x6/Index Card 4x6in: "288 432"
 *PaperDimension Card4x6.Duplex/Index Card AutoDuplex 4x6in: "288 423"
 *PaperDimension L/L 89x127mm: "252 360"
 *PaperDimension L.FB/L Borderless 89x127mm: "264.739990234375 370.359985351562"
@@ -370,7 +370,7 @@
 *PaperDimension Env10/#10 Envelope 4.125x9.5in: "297 684"
 *PaperDimension Env6/#6 Envelope 3.63x6.5in: "261.359985351562 468"
 *PaperDimension EnvCard/Card Envelope 4.4x6in: "315 432"
-*PaperDimension EnvC5/C5 Envelope 162x229mm: "457.920013427734 649.440002441406"
+*PaperDimension EnvC5/C5 Envelope 162x229mm: "459 649.440002441406"
 *PaperDimension Hagaki/Hagaki 100x148mm: "283.679992675781 419.760009765625"
 *PaperDimension Hagaki.Duplex/Hagaki AutoDuplex 100x148mm: "283.679992675781 410.760009765625"
 *PaperDimension Hagaki.FB/Hagaki Borderless 100x148mm: "296.420013427734 430.119995117188"
@@ -471,4 +471,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-envy_110_series.ppd, 33116 bytes.
+*% End of hp-envy_110_series.ppd, 33084 bytes.
