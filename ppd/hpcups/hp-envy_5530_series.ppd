@@ -3,16 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.13.9"
+*FileVersion: "3.13.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-envy_5530_series.ppd"
 *Product: "(HP Envy 5530 E-all-in-one Printer)"
 *Product: "(HP Envy 5535 E-all-in-one Printer)"
+*Product: "(HP Envy 5532 E-all-in-one Printer)"
+*Product: "(HP Envy 5531 E-all-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Envy 5530 Series"
 *ShortNickName: "HP Envy 5530 Series"
-*NickName: "HP Envy 5530 Series, hpcups 3.13.9"
+*NickName: "HP Envy 5530 Series, hpcups 3.13.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -487,4 +489,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-envy_5530_series.ppd, 34859 bytes.
+*% End of hp-envy_5530_series.ppd, 34957 bytes.

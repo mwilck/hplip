@@ -211,6 +211,7 @@
 ./ppd/hpcups/hp-deskjet_2510_series.ppd
 ./ppd/hpcups/hp-deskjet_2520_series.ppd
 ./ppd/hpcups/hp-deskjet_2540_series.ppd
+./ppd/hpcups/hp-deskjet_2640_series.ppd
 ./ppd/hpcups/hp-deskjet_3000_j310_series.ppd
 ./ppd/hpcups/hp-deskjet_3050a_j611_series.ppd
 ./ppd/hpcups/hp-deskjet_3050_j610_series.ppd
@@ -1090,6 +1091,7 @@
 ./ppd/hpijs/hp-deskjet_2510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2520_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2540_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_2640_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3000_j310_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3050a_j611_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3050_j610_series-hpijs.ppd
@@ -2216,6 +2218,7 @@
 ./prnt/ps/hp-designjet_t1300_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t1500-postscript.ppd
 ./prnt/ps/hp-designjet_t2300_postscript-ps.ppd
+./prnt/ps/hp-designjet_t2500-postscript.ppd
 ./prnt/ps/hp-designjet_t7100ps_monochrome-ps.ppd
 ./prnt/ps/hp-designjet_t7100ps-ps.ppd
 ./prnt/ps/hp-designjet_t770_postscript-ps.ppd
@@ -2377,6 +2380,7 @@
 ./prnt/ps/hp-laserjet_color_flow_mfp_m575-ps.ppd
 ./prnt/ps/hp-laserjet_cp1520_series-ps.ppd
 ./prnt/ps/hp-laserjet_flow_mfp_m525-ps.ppd
+./prnt/ps/hp-laserjet_flow_mfp_m830-ps.ppd
 ./prnt/ps/hp-laserjet_m1522_mfp-ps.ppd
 ./prnt/ps/HP_LaserJet_M1522_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m1522nf_mfp-ps.ppd
@@ -2400,6 +2404,7 @@
 ./prnt/ps/HP_LaserJet_M5025_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m5035_mfp-ps.ppd
 ./prnt/ps/HP_LaserJet_M5035_MFP-ps.ppd
+./prnt/ps/hp-laserjet_m806-ps.ppd
 ./prnt/ps/HP_LaserJet_M9040_M9050_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m9040_mfp-ps.ppd
 ./prnt/ps/hp-laserjet_m9050_mfp-ps.ppd
