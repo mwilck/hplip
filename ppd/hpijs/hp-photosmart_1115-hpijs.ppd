@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.13.10"
+*FileVersion: "hpijs 3.13.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_1115-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 1115 hpijs"
 *ShortNickName: "HP Photosmart 1115 hpijs"
-*NickName: "HP Photosmart 1115 hpijs, 3.13.10"
+*NickName: "HP Photosmart 1115 hpijs, 3.13.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
