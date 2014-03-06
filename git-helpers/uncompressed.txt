@@ -248,6 +248,7 @@
 ./ppd/hpcups/hp-deskjet_460.ppd
 ./ppd/hpcups/hp-deskjet_4610_series.ppd
 ./ppd/hpcups/hp-deskjet_4620_series.ppd
+./ppd/hpcups/hp-deskjet_4640_series.ppd
 ./ppd/hpcups/hp-deskjet_500c.ppd
 ./ppd/hpcups/hp-deskjet_500.ppd
 ./ppd/hpcups/hp-deskjet_505j.ppd
@@ -595,7 +596,13 @@
 ./ppd/hpcups/hp-laserjet_professional_p1607dn.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1608dn.ppd
 ./ppd/hpcups/hp-laserjet_professional_p1609dn.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m125a.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m125nw.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m125rnw.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m126a.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m126nw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m127fn.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m127fp.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m127fw.ppd
 ./ppd/hpcups/hp-mopier_240-pcl3.ppd
 ./ppd/hpcups/hp-mopier_320-pcl3.ppd
@@ -1133,6 +1140,7 @@
 ./ppd/hpijs/hp-deskjet_460-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_4610_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_4620_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_4640_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_500c-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_500-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_505j-hpijs.ppd
@@ -1480,7 +1488,13 @@
 ./ppd/hpijs/hp-laserjet_professional_p1607dn-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1608dn-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_professional_p1609dn-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m125a-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m125nw-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m125rnw-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m126a-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m126nw-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m127fn-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m127fp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m127fw-hpijs.ppd
 ./ppd/hpijs/hp-mopier_240-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-mopier_320-hpijs-pcl3.ppd

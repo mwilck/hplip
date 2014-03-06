@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.14.1"
+*FileVersion: "3.14.3"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_7110_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 7110 Series"
 *ShortNickName: "HP Officejet 7110 Series"
-*NickName: "HP Officejet 7110 Series, hpcups 3.14.1"
+*NickName: "HP Officejet 7110 Series, hpcups 3.14.3"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -184,6 +184,7 @@
 *PageSize SuperBSM/SuperB 13x19in SmallMargins: "<</cupsInteger0 16/PageSize[936 1363]/ImagingBBox null>>setpagedevice"
 *PageSize A3SM/A3 297x420mm SmallMargins: "<</cupsInteger0 27/PageSize[841.68 1185.88]/ImagingBBox null>>setpagedevice"
 *PageSize A3+SM/A3+ 330x483mm SmallMargins: "<</cupsInteger0 16/PageSize[935.424 1364.152]/ImagingBBox null>>setpagedevice"
+*PageSize Env6/#6 Envelope 3.63x6.5in: "<</cupsInteger0 83/PageSize[261.36 468]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -250,6 +251,7 @@
 *PageRegion SuperBSM/SuperB 13x19in SmallMargins: "<</cupsInteger0 16/PageSize[936 1368]/ImagingBBox null>>setpagedevice"
 *PageRegion A3SM/A3 297x420mm SmallMargins: "<</cupsInteger0 27/PageSize[841.68 1190.88]/ImagingBBox null>>setpagedevice"
 *PageRegion A3+SM/A3+ 330x483mm SmallMargins: "<</cupsInteger0 16/PageSize[935.424 1369.152]/ImagingBBox null>>setpagedevice"
+*PageRegion Env6/#6 Envelope 3.63x6.5in: "<</cupsInteger0 83/PageSize[261.36 468]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card3x5/Index Card 3x5in: "9.359999656677 9.359999656677 206.640000343323 350.640000343323"
@@ -314,6 +316,7 @@
 *ImageableArea SuperBSM/SuperB 13x19in SmallMargins: "14.184000015259 14.184000015259 921.815999984741 1348.815999984741"
 *ImageableArea A3SM/A3 297x420mm SmallMargins: "14.184000015259 14.184000015259 827.495992660522 1171.696004867554"
 *ImageableArea A3+SM/A3+ 330x483mm SmallMargins: "14.184000015259 14.184000015259 921.24001121521 1349.967977523804"
+*ImageableArea Env6/#6 Envelope 3.63x6.5in: "9.359999656677 46.799999237061 251.999985694885 421.200000762939"
 *DefaultPaperDimension: Letter
 *PaperDimension Card3x5/Index Card 3x5in: "216 360"
 *PaperDimension Card4x6/Index Card 4x6in: "288 432"
@@ -377,6 +380,7 @@
 *PaperDimension SuperBSM/SuperB 13x19in SmallMargins: "936 1363"
 *PaperDimension A3SM/A3 297x420mm SmallMargins: "841.679992675781 1185.880004882812"
 *PaperDimension A3+SM/A3+ 330x483mm SmallMargins: "935.424011230469 1364.151977539062"
+*PaperDimension Env6/#6 Envelope 3.63x6.5in: "261.359985351562 468"
 *MaxMediaWidth: "612"
 *MaxMediaHeight: "1008"
 *HWMargins: 9.359999656677 9.359999656677 9.359999656677 9.359999656677
@@ -463,4 +467,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_7110_series.ppd, 35238 bytes.
+*% End of hp-officejet_7110_series.ppd, 35645 bytes.
