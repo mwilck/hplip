@@ -3,17 +3,20 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.14.3"
+*FileVersion: "3.14.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4630_series.ppd"
-*Product: "(HP Officejet 4630 E-all-in-one)"
+*Product: "(HP Officejet 4630 E-all-in-one Printer)"
+*Product: "(HP Officejet 4631 E-all-in-one Printer)"
 *Product: "(HP Officejet 4632 E-all-in-one Printer)"
+*Product: "(HP Officejet 4634 E-all-in-one Printer)"
 *Product: "(HP Officejet 4635 E-all-in-one Printer)"
+*Product: "(HP Officejet 4636 E-all-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4630 Series"
 *ShortNickName: "HP Officejet 4630 Series"
-*NickName: "HP Officejet 4630 Series, hpcups 3.14.3"
+*NickName: "HP Officejet 4630 Series, hpcups 3.14.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -488,4 +491,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_4630_series.ppd, 34954 bytes.
+*% End of hp-officejet_4630_series.ppd, 35121 bytes.

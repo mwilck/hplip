@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.14.3"
+*FileVersion: "hpijs 3.14.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_3820-hpijs.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 3820 hpijs"
 *ShortNickName: "HP Deskjet 3820 hpijs"
-*NickName: "HP Deskjet 3820 hpijs, 3.14.3"
+*NickName: "HP Deskjet 3820 hpijs, 3.14.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
