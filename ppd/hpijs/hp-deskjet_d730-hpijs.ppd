@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.14.4"
+*FileVersion: "hpijs 3.14.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_d730-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet d730 hpijs"
 *ShortNickName: "HP Deskjet d730 hpijs"
-*NickName: "HP Deskjet d730 hpijs, 3.14.4"
+*NickName: "HP Deskjet d730 hpijs, 3.14.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
