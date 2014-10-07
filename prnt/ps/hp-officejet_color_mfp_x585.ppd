@@ -22,14 +22,13 @@
 *%
 *% [this is the MIT open source license -- please see www.opensource.org]
 *%
-*%%%% Created by the CUPS PPD Compiler CUPS v1.6.2.
-*% Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.7.2.
+*% Copyright (c) 2013-2014 Hewlett-Packard Development Company, L.P.
 *FormatVersion: "4.3"
-*FileVersion: "19.9"
+*FileVersion: "19.12"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
-*PCFileName: "HPP00040.PPD"
-
+*PCFileName: "HPP00039.PPD"
 *Product: "(HP Officejet Color MFP X585)"
 *Product: "(HP Officejet Color FlowMFP X585)"
 *Manufacturer: "HP"
@@ -840,37 +839,37 @@
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 20 AnySetup *MediaType
 *DefaultMediaType: Unspecified
-*MediaType Unspecified/Unspecified: "<</ManualFeed false /MediaType null >> setpagedevice"
-*MediaType Plain/Plain: "<</ManualFeed false /MediaType (Plain)>> setpagedevice"
-*MediaType HPEcoSMARTLite/HP EcoSMART Lite: "<</ManualFeed false /MediaType (HPEcoSmartLite)>> setpagedevice"
+*MediaType Unspecified/Unspecified: "<</MediaType null >> setpagedevice"
+*MediaType Plain/Plain: "<</MediaType (Plain)>> setpagedevice"
+*MediaType HPEcoSMARTLite/HP EcoSMART Lite: "<</MediaType (HPEcoSmartLite)>> setpagedevice"
 *MediaType HPPremiumPresentationMatte120/HP Premium Presentation Matte 120g: "
-		<</ManualFeed false /MediaType (HPPremMatte)>> setpagedevice"
+		<</MediaType (HPPremMatte)>> setpagedevice"
 *End
 *MediaType HPBrochureMatte180/HP Brochure Matte 180g: "
-		<</ManualFeed false /MediaType (matteBrochure)>> setpagedevice"
+		<</MediaType (matteBrochure)>> setpagedevice"
 *End
 *MediaType HPBrochureGlossy180/HP Brochure Glossy 180g: "
-		<</ManualFeed false /MediaType (glossyBrochure)>> setpagedevice"
+		<</MediaType (glossyBrochure)>> setpagedevice"
 *End
 *MediaType HPAdvancedPhotoPapers/HP Advanced Photo Papers: "
-		<</ManualFeed false /MediaType (HPAdvancedPhoto)>> setpagedevice"
+		<</MediaType (HPAdvancedPhoto)>> setpagedevice"
 *End
-*MediaType Light6074/Light 60-74g: "<</ManualFeed false /MediaType (Light)>> setpagedevice"
-*MediaType Intermediate8595/Intermediate 85-95g: "<</ManualFeed false /MediaType (Intermediate)>> setpagedevice"
-*MediaType MidWeight96110/Mid-Weight 96-110g: "<</ManualFeed false /MediaType (Mid Weight)>> setpagedevice"
-*MediaType Heavy111130/Heavy 111-130g: "<</ManualFeed false /MediaType (Heavy)>> setpagedevice"
-*MediaType ExtraHeavy131175/Extra Heavy 131-175g: "<</ManualFeed false /MediaType (Extra Heavy)>> setpagedevice"
-*MediaType Cardstock176220/Cardstock 176-220g: "<</ManualFeed false /MediaType (Card Stock)>> setpagedevice"
-*MediaType Labels/Labels: "<</ManualFeed false /MediaType (Labels)>> setpagedevice"
-*MediaType Letterhead/Letterhead: "<</ManualFeed false /MediaType (Letterhead)>> setpagedevice"
-*MediaType Envelope/Envelope: "<</ManualFeed false /MediaType (Envelope)>> setpagedevice"
-*MediaType HeavyEnvelope/Heavy Envelope: "<</ManualFeed false /MediaType (Heavy Envelope)>> setpagedevice"
-*MediaType Preprinted/Preprinted: "<</ManualFeed false /MediaType (Preprinted)>> setpagedevice"
-*MediaType Prepunched/Prepunched: "<</ManualFeed false /MediaType (Prepunched)>> setpagedevice"
-*MediaType Colored/Colored: "<</ManualFeed false /MediaType (Color)>> setpagedevice"
-*MediaType Bond/Bond: "<</ManualFeed false /MediaType (Bond)>> setpagedevice"
-*MediaType Recycled/Recycled: "<</ManualFeed false /MediaType (Recycled)>> setpagedevice"
-*MediaType Rough/Rough: "<</ManualFeed false /MediaType (Rough)>> setpagedevice"
+*MediaType Light6074/Light 60-74g: "<</MediaType (Light)>> setpagedevice"
+*MediaType Intermediate8595/Intermediate 85-95g: "<</MediaType (Intermediate)>> setpagedevice"
+*MediaType MidWeight96110/Mid-Weight 96-110g: "<</MediaType (Mid Weight)>> setpagedevice"
+*MediaType Heavy111130/Heavy 111-130g: "<</MediaType (Heavy)>> setpagedevice"
+*MediaType ExtraHeavy131175/Extra Heavy 131-175g: "<</MediaType (Extra Heavy)>> setpagedevice"
+*MediaType Cardstock176220/Cardstock 176-220g: "<</MediaType (Card Stock)>> setpagedevice"
+*MediaType Labels/Labels: "<</MediaType (Labels)>> setpagedevice"
+*MediaType Letterhead/Letterhead: "<</MediaType (Letterhead)>> setpagedevice"
+*MediaType Envelope/Envelope: "<</MediaType (Envelope)>> setpagedevice"
+*MediaType HeavyEnvelope/Heavy Envelope: "<</MediaType (Heavy Envelope)>> setpagedevice"
+*MediaType Preprinted/Preprinted: "<</MediaType (Preprinted)>> setpagedevice"
+*MediaType Prepunched/Prepunched: "<</MediaType (Prepunched)>> setpagedevice"
+*MediaType Colored/Colored: "<</MediaType (Color)>> setpagedevice"
+*MediaType Bond/Bond: "<</MediaType (Bond)>> setpagedevice"
+*MediaType Recycled/Recycled: "<</MediaType (Recycled)>> setpagedevice"
+*MediaType Rough/Rough: "<</MediaType (Rough)>> setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *HPEdgeToEdge/Edge-To-Edge Printing: Boolean
 *OrderDependency: 5 DocumentSetup *HPEdgeToEdge
@@ -898,8 +897,8 @@
 *CloseUI: *HPColorAsGray
 *OpenUI *HPCMYKInks/CMYK Color: PickOne
 *OrderDependency: 110 AnySetup *HPCMYKInks
-*DefaultHPCMYKInks: DefaultCMYK_Plus
-*HPCMYKInks DefaultCMYK_Plus/Default CMYK+: "
+*DefaultHPCMYKInks: SWOP
+*HPCMYKInks DefaultCMYK_Plus/CMYK+: "
 		globaldict /HPTextCMYKInkSetEmulation known {
 			(CMYKPlus) HPTextCMYKInkSetEmulation
 			(CMYKPlus) HPGraphicsCMYKInkSetEmulation
@@ -1257,7 +1256,7 @@
 *da.HPColorAsGray True/Til: ""
 *da.HPColorAsGray False/Fra: ""
 *da.Translation HPCMYKInks/CMYK-farve: ""
-*da.HPCMYKInks DefaultCMYK_Plus/Standard CMYK+: ""
+*da.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *da.HPCMYKInks SWOP/SWOP: ""
 *da.HPCMYKInks Euro/Euroscale: ""
 *da.HPCMYKInks DIC/DIC: ""
@@ -1417,7 +1416,7 @@
 *de.HPColorAsGray True/Ein: ""
 *de.HPColorAsGray False/Aus: ""
 *de.Translation HPCMYKInks/CMYK-Farbe: ""
-*de.HPCMYKInks DefaultCMYK_Plus/Standard CMYK+: ""
+*de.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *de.HPCMYKInks SWOP/SWOP: ""
 *de.HPCMYKInks Euro/Euroscale: ""
 *de.HPCMYKInks DIC/DIC: ""
@@ -1577,7 +1576,7 @@
 *es.HPColorAsGray True/Activado: ""
 *es.HPColorAsGray False/Desactivado: ""
 *es.Translation HPCMYKInks/Color CMYK: ""
-*es.HPCMYKInks DefaultCMYK_Plus/CMYK+ predeterminado: ""
+*es.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *es.HPCMYKInks SWOP/SWOP: ""
 *es.HPCMYKInks Euro/Euroscale: ""
 *es.HPCMYKInks DIC/DIC: ""
@@ -1737,7 +1736,7 @@
 *fi.HPColorAsGray True/Käytössä: ""
 *fi.HPColorAsGray False/Ei käytössä: ""
 *fi.Translation HPCMYKInks/CMYK-väri: ""
-*fi.HPCMYKInks DefaultCMYK_Plus/CMYK+-oletus: ""
+*fi.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *fi.HPCMYKInks SWOP/SWOP: ""
 *fi.HPCMYKInks Euro/Euroscale: ""
 *fi.HPCMYKInks DIC/DIC: ""
@@ -1897,7 +1896,7 @@
 *fr.HPColorAsGray True/Activé: ""
 *fr.HPColorAsGray False/Désactivé: ""
 *fr.Translation HPCMYKInks/Couleur CMYK: ""
-*fr.HPCMYKInks DefaultCMYK_Plus/Par défaut CMYK+: ""
+*fr.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *fr.HPCMYKInks SWOP/SWOP: ""
 *fr.HPCMYKInks Euro/Euroscale: ""
 *fr.HPCMYKInks DIC/DIC: ""
@@ -2057,7 +2056,7 @@
 *it.HPColorAsGray True/Attivato: ""
 *it.HPColorAsGray False/Disattivato: ""
 *it.Translation HPCMYKInks/Colore CMYK: ""
-*it.HPCMYKInks DefaultCMYK_Plus/Predefinito CMYK+: ""
+*it.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *it.HPCMYKInks SWOP/SWOP: ""
 *it.HPCMYKInks Euro/Euroscale: ""
 *it.HPCMYKInks DIC/DIC: ""
@@ -2217,7 +2216,7 @@
 *ja.HPColorAsGray True/オン: ""
 *ja.HPColorAsGray False/オフ: ""
 *ja.Translation HPCMYKInks/CMYK カラー: ""
-*ja.HPCMYKInks DefaultCMYK_Plus/デフォルト CMYK+: ""
+*ja.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *ja.HPCMYKInks SWOP/SWOP: ""
 *ja.HPCMYKInks Euro/Euroscale: ""
 *ja.HPCMYKInks DIC/DIC: ""
@@ -2377,7 +2376,7 @@
 *ko.HPColorAsGray True/켜짐: ""
 *ko.HPColorAsGray False/꺼짐: ""
 *ko.Translation HPCMYKInks/CMYK 색상: ""
-*ko.HPCMYKInks DefaultCMYK_Plus/기본 CMYK+: ""
+*ko.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *ko.HPCMYKInks SWOP/SWOP: ""
 *ko.HPCMYKInks Euro/Euroscale: ""
 *ko.HPCMYKInks DIC/DIC: ""
@@ -2537,7 +2536,7 @@
 *no.HPColorAsGray True/På: ""
 *no.HPColorAsGray False/Av: ""
 *no.Translation HPCMYKInks/CMYK-farge: ""
-*no.HPCMYKInks DefaultCMYK_Plus/Standard CMYK+: ""
+*no.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *no.HPCMYKInks SWOP/SWOP: ""
 *no.HPCMYKInks Euro/Euroscale: ""
 *no.HPCMYKInks DIC/DIC: ""
@@ -2697,7 +2696,7 @@
 *nl.HPColorAsGray True/Aan: ""
 *nl.HPColorAsGray False/Uit: ""
 *nl.Translation HPCMYKInks/CMYK-kleur: ""
-*nl.HPCMYKInks DefaultCMYK_Plus/Standaard CMYK+: ""
+*nl.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *nl.HPCMYKInks SWOP/SWOP: ""
 *nl.HPCMYKInks Euro/Euroscale: ""
 *nl.HPCMYKInks DIC/DIC: ""
@@ -2857,7 +2856,7 @@
 *pt.HPColorAsGray True/Ativado: ""
 *pt.HPColorAsGray False/Desativado: ""
 *pt.Translation HPCMYKInks/Cor CMYK: ""
-*pt.HPCMYKInks DefaultCMYK_Plus/CMYK+ padrão: ""
+*pt.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *pt.HPCMYKInks SWOP/SWOP: ""
 *pt.HPCMYKInks Euro/Euroscale: ""
 *pt.HPCMYKInks DIC/DIC: ""
@@ -3017,7 +3016,7 @@
 *ru.HPColorAsGray True/Вкл.: ""
 *ru.HPColorAsGray False/Выкл.: ""
 *ru.Translation HPCMYKInks/Цвет CMYK: ""
-*ru.HPCMYKInks DefaultCMYK_Plus/CMYK+ по умолчанию: ""
+*ru.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *ru.HPCMYKInks SWOP/SWOP: ""
 *ru.HPCMYKInks Euro/Euroscale: ""
 *ru.HPCMYKInks DIC/DIC: ""
@@ -3177,7 +3176,7 @@
 *sv.HPColorAsGray True/På: ""
 *sv.HPColorAsGray False/Av: ""
 *sv.Translation HPCMYKInks/CMYK-färg: ""
-*sv.HPCMYKInks DefaultCMYK_Plus/Standard-CMYK+: ""
+*sv.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *sv.HPCMYKInks SWOP/SWOP: ""
 *sv.HPCMYKInks Euro/Euroscale: ""
 *sv.HPCMYKInks DIC/DIC: ""
@@ -3337,7 +3336,7 @@
 *zh_CN.HPColorAsGray True/开: ""
 *zh_CN.HPColorAsGray False/关: ""
 *zh_CN.Translation HPCMYKInks/CMYK 颜色: ""
-*zh_CN.HPCMYKInks DefaultCMYK_Plus/默认 CMYK+: ""
+*zh_CN.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *zh_CN.HPCMYKInks SWOP/SWOP: ""
 *zh_CN.HPCMYKInks Euro/Euroscale: ""
 *zh_CN.HPCMYKInks DIC/DIC: ""
@@ -3497,7 +3496,7 @@
 *zh_TW.HPColorAsGray True/開啟: ""
 *zh_TW.HPColorAsGray False/關閉: ""
 *zh_TW.Translation HPCMYKInks/CMYK 色彩: ""
-*zh_TW.HPCMYKInks DefaultCMYK_Plus/預設 CMYK+: ""
+*zh_TW.HPCMYKInks DefaultCMYK_Plus/CMYK+: ""
 *zh_TW.HPCMYKInks SWOP/SWOP: ""
 *zh_TW.HPCMYKInks Euro/Euroscale: ""
 *zh_TW.HPCMYKInks DIC/DIC: ""

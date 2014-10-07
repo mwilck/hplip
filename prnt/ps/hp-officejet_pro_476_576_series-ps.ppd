@@ -664,8 +664,6 @@
 *InputSlot Tray3/Tray 3: "<</MediaPosition 1 /ManualFeed false>> setpagedevice"
 *InputSlot Tray1_Man/Tray 1 (Manual): "<</MediaPosition 3 /ManualFeed true>> setpagedevice"
 *CloseUI: *InputSlot
-
-
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 20 AnySetup *MediaType
 *DefaultMediaType: Unspecified
@@ -695,6 +693,7 @@
 *MediaType Envelope/Envelope: "<</ManualFeed false /MediaType (Envelope)>> setpagedevice"
 *MediaType HeavyEnvelope/Heavy Envelope: "<</ManualFeed false /MediaType (Heavy Envelope)>> setpagedevice"
 *CloseUI: *MediaType
+
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *HPOption_Tray3/Tray 3: Boolean
 *OrderDependency: 0 AnySetup *HPOption_Tray3
@@ -708,10 +707,10 @@
 *OpenUI *HPPJLOutputMode/Print Quality: PickOne
 *OrderDependency: 5 JCLSetup *HPPJLOutputMode
 *DefaultHPPJLOutputMode: Professional
-*HPPJLOutputMode GeneralOffice/General Office: " "
-*HPPJLOutputMode Professional/Professional: " "
-*HPPJLOutputMode Presentation/Presentation: " "
-*HPPJLOutputMode MaximumDPI/Maximum dpi: " "
+*HPPJLOutputMode GeneralOffice/General Office: ""
+*HPPJLOutputMode Professional/Professional: ""
+*HPPJLOutputMode Presentation/Presentation: ""
+*HPPJLOutputMode MaximumDPI/Maximum dpi: ""
 *CloseUI: *HPPJLOutputMode
 *CloseGroup: HPPaperQualityPanel
 *OpenGroup: HPColorOptionsPanel/Color
@@ -719,36 +718,35 @@
 *OpenUI *HPPJLDryTime/Dry Time: PickOne
 *OrderDependency: 70 JCLSetup *HPPJLDryTime
 *DefaultHPPJLDryTime: 0
-*HPPJLDryTime 0/0: " "
-*HPPJLDryTime Medium/Medium: " "
-*HPPJLDryTime Long/Long: " "
+*HPPJLDryTime 0/0: ""
+*HPPJLDryTime Medium/Medium: ""
+*HPPJLDryTime Long/Long: ""
 *CloseUI: *HPPJLDryTime
 
 *OpenUI *HPPJLSaturation/Saturation: PickOne
 *OrderDependency: 70 JCLSetup *HPPJLSaturation
 *DefaultHPPJLSaturation: 0
-*HPPJLSaturation -2/-2: " "
-*HPPJLSaturation -1/-1: " "
-*HPPJLSaturation 0/0: " "
-*HPPJLSaturation +1/+1: " "
-*HPPJLSaturation +2/+2: " "
+*HPPJLSaturation -2/-2: ""
+*HPPJLSaturation -1/-1: ""
+*HPPJLSaturation 0/0: ""
+*HPPJLSaturation +1/+1: ""
+*HPPJLSaturation +2/+2: ""
 *CloseUI: *HPPJLSaturation
-
 
 *OpenUI *HPPJLInkBleed/Black Ink Spread: PickOne
 *OrderDependency: 70 JCLSetup *HPPJLInkBleed
 *DefaultHPPJLInkBleed: Default
-*HPPJLInkBleed Least/Least: " "
-*HPPJLInkBleed Less/Less: " "
-*HPPJLInkBleed Default/Default: " "
+*HPPJLInkBleed Least/Least: ""
+*HPPJLInkBleed Less/Less: ""
+*HPPJLInkBleed Default/Default: ""
 *CloseUI: *HPPJLInkBleed
 
 *OpenUI *HPPJLColorAsGray/Print Color as Gray: Boolean
 *OrderDependency: 20 JCLSetup *HPPJLColorAsGray
 *DefaultHPPJLColorAsGray: False
-*HPPJLColorAsGray False/Off: " "
-*HPPJLColorAsGray HighQuality/High Quality: " "
-*HPPJLColorAsGray BlackInkOnly/Black Ink Only: " "
+*HPPJLColorAsGray False/Off: ""
+*HPPJLColorAsGray HighQuality/High Quality: ""
+*HPPJLColorAsGray BlackInkOnly/Black Ink Only: ""
 *CloseUI: *HPPJLColorAsGray
 
 *OpenUI *HPRGBEmulation/RGB Color: PickOne
