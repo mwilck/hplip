@@ -35,6 +35,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro X451-X551 Printer"
 *ShortNickName: "HP Officejet X451-X551 Printer"
+*1284DeviceID: "MFG:HP;MDL:hp officejet pro x551dw printer;"
 *NickName: "HP Officejet Pro X451-X551 Printer Postscript (recommended)"
 *PSVersion: "(3010.107) 0"
 *LanguageLevel: "3"
@@ -740,7 +741,7 @@
 *HPPJLInkBleed Default/Default: ""
 *CloseUI: *HPPJLInkBleed
 
-*OpenUI *HPPJLColorAsGray/Print Color as Gray: Boolean
+*OpenUI *HPPJLColorAsGray/Print Color as Gray: PickOne
 *OrderDependency: 20 JCLSetup *HPPJLColorAsGray
 *DefaultHPPJLColorAsGray: False
 *HPPJLColorAsGray False/Off: ""

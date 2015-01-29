@@ -61,6 +61,7 @@
 
 *ModelName: "HP LaserJet M4345 MFP"
 *ShortNickName: "HP LaserJet M4345 MFP"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet m4345 mfp;"
 *NickName: "HP LaserJet M4345 MFP Postscript (recommended)"
 
 *PSVersion: "(3010.107) 0"

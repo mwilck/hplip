@@ -37,6 +37,7 @@
 *ModelName: "HP LaserJet 5P"
 *NickName: "HP LaserJet 5MP Postscript (recommended)"
 *ShortNickName: "HP LaserJet 5MP"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 5p;"
 *PCFileName: "HPLJ5P_1.PPD"
 *Product: "(HP LaserJet 5P)"
 *Product: "(Hewlett-Packard HP LaserJet 5P)"

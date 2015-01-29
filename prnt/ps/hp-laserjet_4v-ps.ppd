@@ -49,6 +49,7 @@
 *ModelName:  	"HP LaserJet 4V/4MV"
 *NickName:  	"HP LaserJet 4V/4MV PostScript"
 *ShortNickName: "HP LaserJet 4V/4MV"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 4v;"
 
 *% ===================================
 *% Basic Device Capabilities

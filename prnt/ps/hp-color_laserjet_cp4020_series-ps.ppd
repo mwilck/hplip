@@ -54,6 +54,7 @@
 
 *ModelName:	"HP Color LaserJet CP4020-CP4520 Series"
 *ShortNickName: "HP Color LaserJet CP4020-CP4520"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp color laserjet cp4020 series;"
 *NickName: "HP Color LaserJet CP4020-CP4520 Series Postscript (recommended)"
 *PSVersion:	"(3010.107) 0"
 

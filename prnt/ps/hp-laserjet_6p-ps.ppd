@@ -36,6 +36,7 @@
 *cupsLanguages: "da de es fi fr it ja ko nl nb pt sv zh_CN zh_TW"
 *ModelName: "HP LaserJet 6P/6MP"
 *ShortNickName: "HP LaserJet 6P/6MP - PostScript"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 6p;"
 *NickName: "HP LaserJet 6P/6MP - PostScript"
 *PCFileName: "HPLJ6P_1.PPD"
 *Product: "(HP LaserJet 6P)"

@@ -41,6 +41,7 @@
 *ModelName: "HP LaserJet 4ML"
 *NickName: "HP LaserJet 4ML v2013.003 Postscript (recommended)"
 *ShortNickName: "HP LaserJet"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 4ml;"
 *LanguageLevel: "2"
 *ColorDevice: False
 *DefaultColorSpace: Gray

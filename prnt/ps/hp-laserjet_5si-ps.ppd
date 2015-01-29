@@ -49,6 +49,7 @@
 *PSVersion:		"(2014.108) 1"
 *ModelName:		"HP LaserJet 5Si"
 *ShortNickName: "HP LaserJet 5Si/5Si MX PS"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 5si;"
 *NickName:		"HP LaserJet 5Si/5Si MX PostScript"
 
 *PageStackOrder Upper: Normal

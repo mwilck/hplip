@@ -41,6 +41,7 @@
 *ModelName: "HP LaserJet 4 Plus"
 *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
 *ShortNickName: "HP LaserJet 4 Plus"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet 4 plus;"
 *LanguageLevel: "2"
 *Protocols: TBCP
 *ColorDevice: False

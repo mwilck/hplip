@@ -35,6 +35,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro X476-X576 MFP"
 *ShortNickName: "HP Officejet Pro X476-X576 MFP"
+*1284DeviceID: "MFG:HP;MDL:hp officejet pro x476dn mfp;"
 *NickName: "HP Officejet Pro X476-X576 MFP Postscript (recommended)"
 *PSVersion: "(3010.107) 0"
 *LanguageLevel: "3"
@@ -741,7 +742,7 @@
 *HPPJLInkBleed Default/Default: ""
 *CloseUI: *HPPJLInkBleed
 
-*OpenUI *HPPJLColorAsGray/Print Color as Gray: Boolean
+*OpenUI *HPPJLColorAsGray/Print Color as Gray: PickOne
 *OrderDependency: 20 JCLSetup *HPPJLColorAsGray
 *DefaultHPPJLColorAsGray: False
 *HPPJLColorAsGray False/Off: ""

@@ -60,6 +60,7 @@
 
 *ModelName: "HP LaserJet M4349 MFP"
 *ShortNickName: "HP LaserJet M4349 MFP"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp laserjet m4349 mfp;"
 *NickName: "HP LaserJet M4349 MFP Postscript (recommended)"
 
 *PSVersion: "(3010.107) 0"
