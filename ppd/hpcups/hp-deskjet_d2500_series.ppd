@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.15.2"
+*FileVersion: "3.15.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_d2500_series.ppd"
@@ -16,7 +16,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet d2500 Series"
 *ShortNickName: "HP Deskjet d2500 Series"
-*NickName: "HP Deskjet d2500 Series, hpcups 3.15.2"
+*NickName: "HP Deskjet d2500 Series, hpcups 3.15.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -61,12 +61,6 @@
 *UIConstraints: *MediaType Glossy *InputSlot CDDVDTray
 *UIConstraints: *InputSlot CDDVDTray *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *InputSlot CDDVDTray
-*UIConstraints: *PageSize Letter *Duplex
-*UIConstraints: *Duplex *PageSize Letter
-*UIConstraints: *PageSize A4 *Duplex
-*UIConstraints: *Duplex *PageSize A4
-*UIConstraints: *PageSize Legal *Duplex
-*UIConstraints: *Duplex *PageSize Legal
 *UIConstraints: *PageSize Photo4x6 *Duplex
 *UIConstraints: *Duplex *PageSize Photo4x6
 *UIConstraints: *PageSize Photo5x7 *Duplex
@@ -81,12 +75,6 @@
 *UIConstraints: *Duplex *PageSize Oufuku
 *UIConstraints: *PageSize Hagaki *Duplex
 *UIConstraints: *Duplex *PageSize Hagaki
-*UIConstraints: *PageSize Executive *Duplex
-*UIConstraints: *Duplex *PageSize Executive
-*UIConstraints: *PageSize FLSA *Duplex
-*UIConstraints: *Duplex *PageSize FLSA
-*UIConstraints: *PageSize ExecutiveJIS *Duplex
-*UIConstraints: *Duplex *PageSize ExecutiveJIS
 *UIConstraints: *PageSize 16k *Duplex
 *UIConstraints: *Duplex *PageSize 16k
 *UIConstraints: *PageSize Card3x5 *Duplex
@@ -419,4 +407,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_d2500_series.ppd, 28253 bytes.
+*% End of hp-deskjet_d2500_series.ppd, 27757 bytes.

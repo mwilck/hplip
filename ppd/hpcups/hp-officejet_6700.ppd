@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.15.2"
+*FileVersion: "3.15.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6700.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6700"
 *ShortNickName: "HP Officejet 6700"
-*NickName: "HP Officejet 6700, hpcups 3.15.2"
+*NickName: "HP Officejet 6700, hpcups 3.15.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -75,8 +75,6 @@
 *UIConstraints: *Duplex *PageSize B5.FB
 *UIConstraints: *PageSize JB5 *Duplex
 *UIConstraints: *Duplex *PageSize JB5
-*UIConstraints: *PageSize Executive *Duplex
-*UIConstraints: *Duplex *PageSize Executive
 *UIConstraints: *PageSize Photo8x10 *Duplex
 *UIConstraints: *Duplex *PageSize Photo8x10
 *UIConstraints: *PageSize 8x10.FB *Duplex
@@ -117,8 +115,6 @@
 *UIConstraints: *Duplex *PageSize Photo13x18.FB
 *UIConstraints: *PageSize 6X8 *Duplex
 *UIConstraints: *Duplex *PageSize 6X8
-*UIConstraints: *PageSize 8.5X13 *Duplex
-*UIConstraints: *Duplex *PageSize 8.5X13
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -419,4 +415,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6700.ppd, 30777 bytes.
+*% End of hp-officejet_6700.ppd, 30607 bytes.

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.15.2"
+*FileVersion: "3.15.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_8500_a909n.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro 8500 a909n"
 *ShortNickName: "HP Officejet Pro 8500 a909n"
-*NickName: "HP Officejet Pro 8500 a909n, hpcups 3.15.2"
+*NickName: "HP Officejet Pro 8500 a909n, hpcups 3.15.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -45,12 +45,6 @@
 *UIConstraints: *OutputMode Best *MediaType TransparencyFilm
 *UIConstraints: *MediaType TransparencyFilm *OutputMode Photo
 *UIConstraints: *OutputMode Photo *MediaType TransparencyFilm
-*UIConstraints: *PageSize Letter *Duplex
-*UIConstraints: *Duplex *PageSize Letter
-*UIConstraints: *PageSize Legal *Duplex
-*UIConstraints: *Duplex *PageSize Legal
-*UIConstraints: *PageSize A4 *Duplex
-*UIConstraints: *Duplex *PageSize A4
 *UIConstraints: *PageSize Photo5x7 *Duplex
 *UIConstraints: *Duplex *PageSize Photo5x7
 *UIConstraints: *PageSize Photo4x6 *Duplex
@@ -63,8 +57,6 @@
 *UIConstraints: *Duplex *PageSize A6
 *UIConstraints: *PageSize JB5 *Duplex
 *UIConstraints: *Duplex *PageSize JB5
-*UIConstraints: *PageSize Executive *Duplex
-*UIConstraints: *Duplex *PageSize Executive
 *UIConstraints: *PageSize Card5x8 *Duplex
 *UIConstraints: *Duplex *PageSize Card5x8
 *UIConstraints: *PageSize Oufuku *Duplex
@@ -79,8 +71,6 @@
 *UIConstraints: *Duplex *PageSize Card3x5
 *UIConstraints: *PageSize Photo2L *Duplex
 *UIConstraints: *Duplex *PageSize Photo2L
-*UIConstraints: *PageSize 8.5x13 *Duplex
-*UIConstraints: *Duplex *PageSize 8.5x13
 *UIConstraints: *PageSize L *Duplex
 *UIConstraints: *Duplex *PageSize L
 *UIConstraints: *PageSize 8x10 *Duplex
@@ -442,4 +432,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_8500_a909n.ppd, 31579 bytes.
+*% End of hp-officejet_pro_8500_a909n.ppd, 31173 bytes.

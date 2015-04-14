@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.15.2"
+*FileVersion: "3.15.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_premium_c309g-m.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart Premium c309g-m"
 *ShortNickName: "HP Photosmart Premium c309g-m"
-*NickName: "HP Photosmart Premium c309g-m, hpcups 3.15.2"
+*NickName: "HP Photosmart Premium c309g-m, hpcups 3.15.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -92,20 +92,12 @@
 *UIConstraints: *Duplex *PageSize JB5
 *UIConstraints: *PageSize JB5.FB *Duplex
 *UIConstraints: *Duplex *PageSize JB5.FB
-*UIConstraints: *PageSize Executive *Duplex
-*UIConstraints: *Duplex *PageSize Executive
 *UIConstraints: *PageSize 8x10 *Duplex
 *UIConstraints: *Duplex *PageSize 8x10
-*UIConstraints: *PageSize Letter *Duplex
-*UIConstraints: *Duplex *PageSize Letter
 *UIConstraints: *PageSize Letter.FB *Duplex
 *UIConstraints: *Duplex *PageSize Letter.FB
-*UIConstraints: *PageSize A4 *Duplex
-*UIConstraints: *Duplex *PageSize A4
 *UIConstraints: *PageSize A4.FB *Duplex
 *UIConstraints: *Duplex *PageSize A4.FB
-*UIConstraints: *PageSize Legal *Duplex
-*UIConstraints: *Duplex *PageSize Legal
 *UIConstraints: *PageSize EnvA2 *Duplex
 *UIConstraints: *Duplex *PageSize EnvA2
 *UIConstraints: *PageSize EnvC6 *Duplex
@@ -468,4 +460,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_premium_c309g-m.ppd, 33127 bytes.
+*% End of hp-photosmart_premium_c309g-m.ppd, 32803 bytes.
