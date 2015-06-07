@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.15.4"
+*FileVersion: "hpijs 3.15.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_5551-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 5551 hpijs"
 *ShortNickName: "HP Deskjet 5551 hpijs"
-*NickName: "HP Deskjet 5551 hpijs, 3.15.4"
+*NickName: "HP Deskjet 5551 hpijs, 3.15.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
