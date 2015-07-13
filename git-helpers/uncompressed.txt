@@ -198,6 +198,7 @@
 ./ppd/hpcups/hp-deskjet_1010_series.ppd
 ./ppd/hpcups/hp-deskjet_1050_j410_series.ppd
 ./ppd/hpcups/hp-deskjet_1100.ppd
+./ppd/hpcups/hp-deskjet_1110_series.ppd
 ./ppd/hpcups/hp-deskjet_1120.ppd
 ./ppd/hpcups/hp-deskjet_1125.ppd
 ./ppd/hpcups/hp-deskjet_1200c.ppd
@@ -238,6 +239,7 @@
 ./ppd/hpcups/hp-deskjet_3819.ppd
 ./ppd/hpcups/hp-deskjet_3820.ppd
 ./ppd/hpcups/hp-deskjet_3822.ppd
+./ppd/hpcups/hp-deskjet_3830_series.ppd
 ./ppd/hpcups/hp-deskjet_3840.ppd
 ./ppd/hpcups/hp-deskjet_3870.ppd
 ./ppd/hpcups/hp-deskjet_3900.ppd
@@ -619,6 +621,7 @@
 ./ppd/hpcups/hp-officejet_100_mobile_l411.ppd
 ./ppd/hpcups/hp-officejet_150_mobile_l511.ppd
 ./ppd/hpcups/hp-officejet_2620_series.ppd
+./ppd/hpcups/hp-officejet_3830_series.ppd
 ./ppd/hpcups/hp-officejet_4000_k210.ppd
 ./ppd/hpcups/hp-officejet_4100_series.ppd
 ./ppd/hpcups/hp-officejet_4105.ppd
@@ -663,6 +666,7 @@
 ./ppd/hpcups/hp-officejet_7300_series.ppd
 ./ppd/hpcups/hp-officejet_7400_series.ppd
 ./ppd/hpcups/hp-officejet_7500_e910.ppd
+./ppd/hpcups/hp-officejet_7510_series.ppd
 ./ppd/hpcups/hp-officejet_7610_series.ppd
 ./ppd/hpcups/hp-officejet_8040_series.ppd
 ./ppd/hpcups/hp-officejet_9100_series-pcl3.ppd
@@ -1110,6 +1114,7 @@
 ./ppd/hpijs/hp-deskjet_1010_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1050_j410_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1100-hpijs.ppd
+./ppd/hpijs/hp-deskjet_1110_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1120-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1125-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_1200c-hpijs.ppd
@@ -1150,6 +1155,7 @@
 ./ppd/hpijs/hp-deskjet_3819-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3820-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3822-hpijs.ppd
+./ppd/hpijs/hp-deskjet_3830_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3840-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3870-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3900-hpijs.ppd
@@ -1531,6 +1537,7 @@
 ./ppd/hpijs/hp-officejet_100_mobile_l411-hpijs.ppd
 ./ppd/hpijs/hp-officejet_150_mobile_l511-hpijs.ppd
 ./ppd/hpijs/hp-officejet_2620_series-hpijs.ppd
+./ppd/hpijs/hp-officejet_3830_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4000_k210-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4100_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4105-hpijs.ppd
@@ -1575,6 +1582,7 @@
 ./ppd/hpijs/hp-officejet_7300_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7400_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7500_e910-hpijs.ppd
+./ppd/hpijs/hp-officejet_7510_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_7610_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_8040_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_9100_series-hpijs-pcl3.ppd
