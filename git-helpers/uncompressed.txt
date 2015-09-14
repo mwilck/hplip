@@ -381,7 +381,10 @@
 ./ppd/hpcups/hp-envy_110_series.ppd
 ./ppd/hpcups/hp-envy_120_series.ppd
 ./ppd/hpcups/hp-envy_4500_series.ppd
+./ppd/hpcups/hp-envy_4510_series.ppd
+./ppd/hpcups/hp-envy_4520_series.ppd
 ./ppd/hpcups/hp-envy_5530_series.ppd
+./ppd/hpcups/hp-envy_5540_series.ppd
 ./ppd/hpcups/hp-envy_5640_series.ppd
 ./ppd/hpcups/hp-envy_5660_series.ppd
 ./ppd/hpcups/hp-envy_7640_series.ppd
@@ -637,6 +640,7 @@
 ./ppd/hpcups/hp-officejet_4610_series.ppd
 ./ppd/hpcups/hp-officejet_4620_series.ppd
 ./ppd/hpcups/hp-officejet_4630_series.ppd
+./ppd/hpcups/hp-officejet_4650_series.ppd
 ./ppd/hpcups/hp-officejet_5100_series.ppd
 ./ppd/hpcups/hp-officejet_5105.ppd
 ./ppd/hpcups/hp-officejet_5110.ppd
@@ -1297,7 +1301,10 @@
 ./ppd/hpijs/hp-envy_110_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_120_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_4500_series-hpijs.ppd
+./ppd/hpijs/hp-envy_4510_series-hpijs.ppd
+./ppd/hpijs/hp-envy_4520_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_5530_series-hpijs.ppd
+./ppd/hpijs/hp-envy_5540_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_5640_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_5660_series-hpijs.ppd
 ./ppd/hpijs/hp-envy_7640_series-hpijs.ppd
@@ -1553,6 +1560,7 @@
 ./ppd/hpijs/hp-officejet_4610_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4620_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_4630_series-hpijs.ppd
+./ppd/hpijs/hp-officejet_4650_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5100_series-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5105-hpijs.ppd
 ./ppd/hpijs/hp-officejet_5110-hpijs.ppd
