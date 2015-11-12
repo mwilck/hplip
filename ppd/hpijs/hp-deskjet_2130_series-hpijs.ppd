@@ -1,15 +1,16 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Deskjet 2130 Series hpijs with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
-*% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
+*% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.15.9"
+*FileVersion: "hpijs 3.15.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_2130_series-hpijs.ppd"
 *Product: "(HP Deskjet 2130 All-in-one Printer Series)"
 *Product: "(HP Deskjet 2131 All-in-one Printer)"
 *Product: "(HP Deskjet 2132 All-in-one Printer)"
+*Product: "(HP Deskjet 2134 All-in-one Printer)"
 *Product: "(HP Deskjet Ink Advantage 2130 All-in One Printer)"
 *Product: "(HP Deskjet Ink Advantage 2135 All-in One Printer)"
 *Product: "(HP Deskjet Ink Advantage 2136 All-in One Printer)"
@@ -17,7 +18,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 2130 Series hpijs"
 *ShortNickName: "HP Deskjet 2130 Series hpijs"
-*NickName: "HP Deskjet 2130 Series hpijs, 3.15.9"
+*NickName: "HP Deskjet 2130 Series hpijs, 3.15.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -441,4 +442,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_2130_series-hpijs.ppd, 22924 bytes.
+*% End of hp-deskjet_2130_series-hpijs.ppd, 22962 bytes.

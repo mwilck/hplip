@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Officejet 6100 Series hpijs with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
-*% (c) 2004-2008 Copyright Hewlett-Packard Development Company, LP
+*% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.15.9"
+*FileVersion: "hpijs 3.15.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6100_series-hpijs.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6100 Series hpijs"
 *ShortNickName: "HP Officejet 6100 Series hpijs"
-*NickName: "HP Officejet 6100 Series hpijs, 3.15.9"
+*NickName: "HP Officejet 6100 Series hpijs, 3.15.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -453,4 +453,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6100_series-hpijs.ppd, 23247 bytes.
+*% End of hp-officejet_6100_series-hpijs.ppd, 23236 bytes.

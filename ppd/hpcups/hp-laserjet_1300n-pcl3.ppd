@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP LaserJet 1300n with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
-*% (c) 2008 Copyright Hewlett-Packard Development Company, LP
+*% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.15.9"
+*FileVersion: "3.15.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_1300n-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet 1300n"
 *ShortNickName: "HP LaserJet 1300n"
-*NickName: "HP LaserJet 1300n pcl3, hpcups 3.15.9"
+*NickName: "HP LaserJet 1300n pcl3, hpcups 3.15.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -234,4 +234,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_1300n-pcl3.ppd, 15158 bytes.
+*% End of hp-laserjet_1300n-pcl3.ppd, 15147 bytes.
