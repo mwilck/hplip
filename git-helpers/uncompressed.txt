@@ -620,6 +620,7 @@
 ./ppd/hpcups/hp-laserjet_pro_mfp_m126nw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m127fn.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m127fp.ppd
+./ppd/hpcups/hp-laserjet_pro_mfp_m127fs.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m127fw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m128fn.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m128fp.ppd
@@ -1546,6 +1547,7 @@
 ./ppd/hpijs/hp-laserjet_pro_mfp_m126nw-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m127fn-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m127fp-hpijs.ppd
+./ppd/hpijs/hp-laserjet_pro_mfp_m127fs-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m127fw-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m128fn-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_pro_mfp_m128fp-hpijs.ppd
