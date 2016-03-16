@@ -276,6 +276,8 @@
 ./ppd/hpcups/hp-deskjet_5652.ppd
 ./ppd/hpcups/hp-deskjet_5700.ppd
 ./ppd/hpcups/hp-deskjet_5800.ppd
+./ppd/hpcups/hp-deskjet_5810_series.ppd
+./ppd/hpcups/hp-deskjet_5820_series.ppd
 ./ppd/hpcups/hp-deskjet_5850.ppd
 ./ppd/hpcups/hp-deskjet_5900_series.ppd
 ./ppd/hpcups/hp-deskjet_600.ppd
@@ -1203,6 +1205,8 @@
 ./ppd/hpijs/hp-deskjet_5652-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_5700-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_5800-hpijs.ppd
+./ppd/hpijs/hp-deskjet_5810_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_5820_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_5850-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_5900_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_600-hpijs.ppd
@@ -2587,3 +2591,7 @@
 ./prnt/ps/hp-officejet_pro_476_576_series-ps.ppd
 ./prnt/ps/hp-officejet_pro_551_series-ps.ppd
 ./prnt/ps/hp-officejet_pro_8000_enterprise_a811a-ps.ppd
+./prnt/ps/hp-pagewide_pro_452_printer-ps.ppd
+./prnt/ps/hp-pagewide_pro_477_mfp-ps.ppd
+./prnt/ps/hp-pagewide_pro_552_printer-ps.ppd
+./prnt/ps/hp-pagewide_pro_577_mfp-ps.ppd
