@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.3"
+*FileVersion: "hpijs 3.16.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_laserjet_cp2025x-hpijs-pcl3.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Color LaserJet cp2025x hpijs"
 *ShortNickName: "HP Color LaserJet cp2025x hpijs"
-*NickName: "HP Color LaserJet cp2025x hpijs pcl3, 3.16.3"
+*NickName: "HP Color LaserJet cp2025x hpijs pcl3, 3.16.5"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

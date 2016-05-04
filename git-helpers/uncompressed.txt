@@ -631,6 +631,7 @@
 ./ppd/hpcups/hp-mopier_320-pcl3.ppd
 ./ppd/hpcups/hp-officejet_100_mobile_l411.ppd
 ./ppd/hpcups/hp-officejet_150_mobile_l511.ppd
+./ppd/hpcups/hp-officejet_200_mobile_series.ppd
 ./ppd/hpcups/hp-officejet_2620_series.ppd
 ./ppd/hpcups/hp-officejet_3830_series.ppd
 ./ppd/hpcups/hp-officejet_4000_k210.ppd
@@ -722,6 +723,8 @@
 ./ppd/hpcups/hp-officejet_pro_8630.ppd
 ./ppd/hpcups/hp-officejet_pro_8640.ppd
 ./ppd/hpcups/hp-officejet_pro_8660.ppd
+./ppd/hpcups/hp-officejet_pro_8710.ppd
+./ppd/hpcups/hp-officejet_pro_8720.ppd
 ./ppd/hpcups/hp-officejet_pro_k5300.ppd
 ./ppd/hpcups/hp-officejet_pro_k5400.ppd
 ./ppd/hpcups/hp-officejet_pro_k550.ppd
@@ -2572,6 +2575,8 @@
 ./prnt/ps/hp-laserjet_pro_m201_m202-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m402_m403d-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m402_m403-ps.ppd
+./prnt/ps/hp-laserjet_pro_m501dn-ps.ppd
+./prnt/ps/hp-laserjet_pro_m501n-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m701-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m706-ps.ppd
 ./prnt/ps/hp-laserjet_pro_mfp_m225_m226-ps.ppd
@@ -2591,6 +2596,7 @@
 ./prnt/ps/hp-officejet_pro_476_576_series-ps.ppd
 ./prnt/ps/hp-officejet_pro_551_series-ps.ppd
 ./prnt/ps/hp-officejet_pro_8000_enterprise_a811a-ps.ppd
+./prnt/ps/hp-officejet_pro_8730-ps.ppd
 ./prnt/ps/hp-pagewide_pro_452_printer-ps.ppd
 ./prnt/ps/hp-pagewide_pro_477_mfp-ps.ppd
 ./prnt/ps/hp-pagewide_pro_552_printer-ps.ppd

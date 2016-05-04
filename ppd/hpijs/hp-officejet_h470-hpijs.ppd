@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.3"
+*FileVersion: "hpijs 3.16.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_h470-hpijs.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet h470 hpijs"
 *ShortNickName: "HP Officejet h470 hpijs"
-*NickName: "HP Officejet h470 hpijs, 3.16.3"
+*NickName: "HP Officejet h470 hpijs, 3.16.5"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
