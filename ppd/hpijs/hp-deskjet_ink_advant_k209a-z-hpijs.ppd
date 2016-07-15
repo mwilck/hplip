@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.5"
+*FileVersion: "hpijs 3.16.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_ink_advant_k209a-z-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet Ink Advant k209a-z hpijs"
 *ShortNickName: "HP DJ Ink Advant k209a-z hpijs"
-*NickName: "HP Deskjet Ink Advant k209a-z hpijs, 3.16.5"
+*NickName: "HP Deskjet Ink Advant k209a-z hpijs, 3.16.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
