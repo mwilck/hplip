@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Officejet 6000 e609n hpijs with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.7"
+*FileVersion: "hpijs 3.16.8"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6000_e609n-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6000 e609n hpijs"
 *ShortNickName: "HP Officejet 6000 e609n hpijs"
-*NickName: "HP Officejet 6000 e609n hpijs, 3.16.7"
+*NickName: "HP Officejet 6000 e609n hpijs, 3.16.8"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -224,7 +224,7 @@ jsParams=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
 lity:PenSet=2,Quality:FullBleed=1"
 *End
 *1284DeviceID: "MFG:HP;MDL:officejet 6000 e609n;DES:officejet 6000 e609n;"
-*cupsVersion: 1.5
+*cupsVersion: 2.1
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip-hplip"
@@ -292,7 +292,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "18 36 594 783"
-*ImageableArea A4/A4: "9.720000267029 36 585.279999732971 833"
+*ImageableArea A4/A4: "9.720000267029 36 585.280029296875 833"
 *ImageableArea Photo/Photo or 4x6 inch index card: "0 36 288 432"
 *ImageableArea Photo5x7/Photo or 5x7 inch index card: "0 36 360 504"
 *ImageableArea PhotoTearOff/Photo with tear-off tab: "0 0 288 432"
