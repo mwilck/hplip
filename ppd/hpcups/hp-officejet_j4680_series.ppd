@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Officejet j4680 Series with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.16.8"
+*FileVersion: "3.16.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_j4680_series.ppd"
@@ -13,7 +13,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet j4680 Series"
 *ShortNickName: "HP Officejet j4680 Series"
-*NickName: "HP Officejet j4680 Series, hpcups 3.16.8"
+*NickName: "HP Officejet j4680 Series, hpcups 3.16.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -31,7 +31,7 @@
 *HPMechOffset: "70"
 *cupsModelName: "deskjet 5600"
 *1284DeviceID: "MFG:HP;MDL:officejet j4680 series;DES:officejet j4680 series;"
-*cupsVersion: 2.1
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"

@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Photosmart 470 Series hpijs with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.8"
+*FileVersion: "hpijs 3.16.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_470_series-hpijs.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 470 Series hpijs"
 *ShortNickName: "HP Photosmart 470 Series hpijs"
-*NickName: "HP Photosmart 470 Series hpijs, 3.16.8"
+*NickName: "HP Photosmart 470 Series hpijs, 3.16.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -102,7 +102,7 @@ sParams=Quality:Quality=3,Quality:ColorMode=2,Quality:MediaType=2,Qual&&
 ity:PenSet=1,Quality:FullBleed=1"
 *End
 *1284DeviceID: "MFG:HP;MDL:photosmart 470 series;DES:photosmart 470 series;"
-*cupsVersion: 2.1
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip-hplip"
