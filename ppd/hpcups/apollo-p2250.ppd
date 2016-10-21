@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for Apollo p2250 with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.16.9"
+*FileVersion: "3.16.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "apollo-p2250.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "Apollo"
 *ModelName: "Apollo p2250"
 *ShortNickName: "Apollo p2250"
-*NickName: "Apollo p2250, hpcups 3.16.9"
+*NickName: "Apollo p2250, hpcups 3.16.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -27,7 +27,7 @@
 *HPMechOffset: "40"
 *cupsModelName: "APOLLO P-2200"
 *1284DeviceID: "MFG:Apollo;MDL:apollo p2250;DES:apollo p2250;"
-*cupsVersion: 1.5
+*cupsVersion: 2.1
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
@@ -225,4 +225,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of apollo-p2250.ppd, 15375 bytes.
+*% End of apollo-p2250.ppd, 15377 bytes.

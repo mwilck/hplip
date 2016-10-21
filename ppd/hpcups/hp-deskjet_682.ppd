@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Deskjet 682 with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.16.9"
+*FileVersion: "3.16.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_682.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 682"
 *ShortNickName: "HP Deskjet 682"
-*NickName: "HP Deskjet 682, hpcups 3.16.9"
+*NickName: "HP Deskjet 682, hpcups 3.16.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -27,7 +27,7 @@
 *HPMechOffset: "40"
 *cupsModelName: "DESKJET 660"
 *1284DeviceID: "MFG:HP;MDL:deskjet 682;DES:deskjet 682;"
-*cupsVersion: 1.5
+*cupsVersion: 2.1
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
@@ -217,4 +217,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_682.ppd, 14817 bytes.
+*% End of hp-deskjet_682.ppd, 14819 bytes.

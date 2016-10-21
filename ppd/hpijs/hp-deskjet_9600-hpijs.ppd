@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Deskjet 9600 hpijs with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.9"
+*FileVersion: "hpijs 3.16.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_9600-hpijs.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 9600 hpijs"
 *ShortNickName: "HP Deskjet 9600 hpijs"
-*NickName: "HP Deskjet 9600 hpijs, 3.16.9"
+*NickName: "HP Deskjet 9600 hpijs, 3.16.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -227,7 +227,7 @@ jsParams=Quality:Quality=2,Quality:ColorMode=2,Quality:MediaType=2,Qua&&
 lity:PenSet=2,Quality:FullBleed=1"
 *End
 *1284DeviceID: "MFG:HP;MDL:deskjet 9600;DES:deskjet 9600;"
-*cupsVersion: 1.5
+*cupsVersion: 2.1
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip-hplip"
@@ -305,7 +305,7 @@ lity:PenSet=2,Quality:FullBleed=1"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "18 36 594 783"
-*ImageableArea A4/A4: "9.720000267029 36 585.279999732971 833"
+*ImageableArea A4/A4: "9.720000267029 36 585.280029296875 833"
 *ImageableArea Photo/Photo or 4x6 inch index card: "0 36 288 432"
 *ImageableArea Photo5x7/Photo or 5x7 inch index card: "0 36 360 504"
 *ImageableArea PhotoTearOff/Photo with tear-off tab: "0 0 288 432"
@@ -331,8 +331,8 @@ lity:PenSet=2,Quality:FullBleed=1"
 *ImageableArea w558h774/16K: "18 36 540 765"
 *ImageableArea w612h935/Executive (JIS): "18 36 594 926"
 *ImageableArea B4JIS/B4 (JIS): "18 36 711 1024"
-*ImageableArea Ledger/Ledger: "14.39999961853 36 777.60000038147 1215"
-*ImageableArea SuperB/Super B: "14.39999961853 36 921.60000038147 1359"
+*ImageableArea Ledger/Ledger: "14.39999961853 36 777.599975585938 1215"
+*ImageableArea SuperB/Super B: "14.39999961853 36 921.599975585938 1359"
 *ImageableArea w774h1116/8K: "18 36 756 1107"
 *ImageableArea A3/A3: "18 36 824 1181"
 *DefaultPaperDimension: Letter
@@ -473,4 +473,4 @@ lity:PenSet=2,Quality:FullBleed=1"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_9600-hpijs.ppd, 24300 bytes.
+*% End of hp-deskjet_9600-hpijs.ppd, 24304 bytes.

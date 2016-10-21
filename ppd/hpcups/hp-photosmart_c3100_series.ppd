@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Photosmart c3100 Series with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.16.9"
+*FileVersion: "3.16.10"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c3100_series.ppd"
@@ -24,7 +24,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c3100 Series"
 *ShortNickName: "HP Photosmart c3100 Series"
-*NickName: "HP Photosmart c3100 Series, hpcups 3.16.9"
+*NickName: "HP Photosmart c3100 Series, hpcups 3.16.10"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -42,7 +42,7 @@
 *HPMechOffset: "70"
 *cupsModelName: "deskjet 5600"
 *1284DeviceID: "MFG:HP;MDL:photosmart c3100 series;DES:photosmart c3100 series;"
-*cupsVersion: 1.5
+*cupsVersion: 2.1
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
@@ -415,4 +415,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c3100_series.ppd, 28276 bytes.
+*% End of hp-photosmart_c3100_series.ppd, 28278 bytes.
