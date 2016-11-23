@@ -1,9 +1,9 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for HP Photosmart b109a-m with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v2.1.3.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.16.10"
+*FileVersion: "3.16.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_b109a-m.ppd"
@@ -14,7 +14,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart b109a-m"
 *ShortNickName: "HP Photosmart b109a-m"
-*NickName: "HP Photosmart b109a-m, hpcups 3.16.10"
+*NickName: "HP Photosmart b109a-m, hpcups 3.16.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -28,7 +28,7 @@
 *hpPrinterLanguage: "pcl3gui2"
 *HPMechOffset: "70"
 *1284DeviceID: "MFG:HP;MDL:photosmart b109a-m;DES:photosmart b109a-m;"
-*cupsVersion: 2.1
+*cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"

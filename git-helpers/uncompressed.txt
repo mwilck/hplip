@@ -519,6 +519,7 @@
 ./ppd/hpcups/hp-laserjet_cp1027nw.ppd
 ./ppd/hpcups/hp-laserjet_cp1028nw.ppd
 ./ppd/hpcups/hp-laserjet_m1005.ppd
+./ppd/hpcups/hp-laserjet_m101-m106.ppd
 ./ppd/hpcups/hp-laserjet_m1120_mfp.ppd
 ./ppd/hpcups/hp-laserjet_m1120n_mfp.ppd
 ./ppd/hpcups/hp-laserjet_m1319f_mfp.ppd
@@ -538,6 +539,7 @@
 ./ppd/hpcups/hp-laserjet_m9040_mfp-pcl3.ppd
 ./ppd/hpcups/hp-laserjet_m9050_mfp-pcl3.ppd
 ./ppd/hpcups/hp-laserjet_m9059_mfp-pcl3.ppd
+./ppd/hpcups/hp-laserjet_mfp_m129-m134.ppd
 ./ppd/hpcups/hp-laserjet_p1005.ppd
 ./ppd/hpcups/hp-laserjet_p1006.ppd
 ./ppd/hpcups/hp-laserjet_p1007.ppd
@@ -1460,6 +1462,7 @@
 ./ppd/hpijs/hp-laserjet_cp1027nw-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_cp1028nw-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_m1005-hpijs.ppd
+./ppd/hpijs/hp-laserjet_m101-m106-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_m1120_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_m1120n_mfp-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_m1319f_mfp-hpijs.ppd
@@ -1479,6 +1482,7 @@
 ./ppd/hpijs/hp-laserjet_m9040_mfp-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-laserjet_m9050_mfp-hpijs-pcl3.ppd
 ./ppd/hpijs/hp-laserjet_m9059_mfp-hpijs-pcl3.ppd
+./ppd/hpijs/hp-laserjet_mfp_m129-m134-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_p1005-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_p1006-hpijs.ppd
 ./ppd/hpijs/hp-laserjet_p1007-hpijs.ppd
@@ -2589,6 +2593,7 @@
 ./prnt/ps/hp-laserjet_p4515xm-ps.ppd
 ./prnt/ps/hp-laserjet_p4515x-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m201_m202-ps.ppd
+./prnt/ps/hp-laserjet_pro_m203_m206-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m402_m403d-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m402_m403-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m501dn-ps.ppd
@@ -2596,6 +2601,7 @@
 ./prnt/ps/hp-laserjet_pro_m701-ps.ppd
 ./prnt/ps/hp-laserjet_pro_m706-ps.ppd
 ./prnt/ps/hp-laserjet_pro_mfp_m225_m226-ps.ppd
+./prnt/ps/hp-laserjet_pro_mfp_m227-m231-ps.ppd
 ./prnt/ps/hp-laserjet_pro_mfp_m435-ps.ppd
 ./prnt/ps/hp-lj_300_400_color_m351_m451-ps.ppd
 ./prnt/ps/hp-lj_300_400_color_mfp_m375_m475-ps.ppd
