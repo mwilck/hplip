@@ -47,9 +47,6 @@
 *% Driver-defined attributes...
 *cupsSingleFile: True
 *Protocols: TBCP PJL
-*JCLBegin: "<1B>%-12345X@PJL JOB<0A>"
-*JCLToPSInterpreter: "@PJL ENTER LANGUAGE = PostScript <0A>"
-*JCLEnd: "<1B>%-12345X@PJL EOJ <0A><1B>%-12345X"
 *cupsPJLCharset: "UTF-8"
 *HPAccountingInfo: "4"
 *HPJobAttirubtesEncoding: "UTF8"

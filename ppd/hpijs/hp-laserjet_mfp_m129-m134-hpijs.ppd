@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.16.11"
+*FileVersion: "hpijs 3.17.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_mfp_m129-m134-hpijs.ppd"
@@ -15,10 +15,14 @@
 *Product: "(HP LaserJet Pro MFP m132fn)"
 *Product: "(HP LaserJet Pro MFP m132fp)"
 *Product: "(HP LaserJet Pro MFP m134fn)"
+*Product: "(HP LaserJet Pro MFP m130a)"
+*Product: "(HP LaserJet Pro MFP m130nw)"
+*Product: "(HP LaserJet Pro MFP m130fn)"
+*Product: "(HP LaserJet Pro MFP m130fw)"
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet MFP m129-m134 hpijs"
 *ShortNickName: "HP LaserJet MFP m129-m134 hpijs"
-*NickName: "HP LaserJet MFP m129-m134 hpijs, 3.16.11"
+*NickName: "HP LaserJet MFP m129-m134 hpijs, 3.17.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -317,4 +321,4 @@ Transparency"
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_mfp_m129-m134-hpijs.ppd, 16442 bytes.
+*% End of hp-laserjet_mfp_m129-m134-hpijs.ppd, 16603 bytes.

@@ -2556,6 +2556,10 @@
 ./prnt/ps/hp-laserjet_m9040_mfp-ps.ppd
 ./prnt/ps/hp-laserjet_m9050_mfp-ps.ppd
 ./prnt/ps/hp-laserjet_m9059_mfp-ps.ppd
+./prnt/ps/hp-laserjet_mfp_e72525-25-30-35-ps.ppd
+./prnt/ps/hp-laserjet_mfp_e77822-25-30-ps.ppd
+./prnt/ps/hp-laserjet_mfp_e82540-50-60-ps.ppd
+./prnt/ps/hp-laserjet_mfp_e87640-50-60-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m426_m427-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m521-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m527-ps.ppd
