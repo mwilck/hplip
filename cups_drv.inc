@@ -479,6 +479,12 @@ cups_ppd_printers = \
    ppd/hpcups/hp-laserjet_pro_mfp_m128fn.ppd.gz \
    ppd/hpcups/hp-laserjet_pro_mfp_m128fp.ppd.gz \
    ppd/hpcups/hp-laserjet_pro_mfp_m128fw.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m25a.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m25nw.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m26a.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m26nw.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m27c.ppd.gz \
+   ppd/hpcups/hp-laserjet_pro_mfp_m27cnw.ppd.gz \
    ppd/hpcups/hp-laserjet_professional_m1132_mfp.ppd.gz \
    ppd/hpcups/hp-laserjet_professional_m1136_mfp.ppd.gz \
    ppd/hpcups/hp-laserjet_professional_m1137_mfp.ppd.gz \

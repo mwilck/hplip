@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.17.4"
+*FileVersion: "hpijs 3.17.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_m1218nfg_mfp-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Professional m1218nfg MFP hpijs"
 *ShortNickName: "HP LJ Pro m1218nfg MFP hpijs"
-*NickName: "HP LaserJet Professional m1218nfg MFP hpijs, 3.17.4, requires proprietary plugin"
+*NickName: "HP LaserJet Professional m1218nfg MFP hpijs, 3.17.6, requires proprietary plugin"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

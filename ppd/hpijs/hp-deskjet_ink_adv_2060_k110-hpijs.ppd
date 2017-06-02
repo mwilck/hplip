@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.17.4"
+*FileVersion: "hpijs 3.17.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_ink_adv_2060_k110-hpijs.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet Ink Adv 2060 k110 hpijs"
 *ShortNickName: "HP DJ Ink Adv 2060 k110 hpijs"
-*NickName: "HP Deskjet Ink Adv 2060 k110 hpijs, 3.17.4"
+*NickName: "HP Deskjet Ink Adv 2060 k110 hpijs, 3.17.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

@@ -20411,6 +20411,54 @@ Group "RLT/HP Real Life Technologies"
      Attribute "Product" "" "(HP LaserJet Pro MFP m130fn)"
      Attribute "Product" "" "(HP LaserJet Pro MFP m130fw)"
    }
+   {
+     ModelName "HP LaserJet Pro MFP m25nw"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m25nw, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m25nw"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m25nw;DES:hp laserjet pro mfp m25nw;"
+     PCFileName "hp-laserjet_pro_mfp_m25nw.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m25nw)"
+   }
+   {
+     ModelName "HP LaserJet Pro MFP m25a"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m25a, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m25a"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m25a;DES:hp laserjet pro mfp m25a;"
+     PCFileName "hp-laserjet_pro_mfp_m25a.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m25a)"
+   }
+   {
+     ModelName "HP LaserJet Pro MFP m26nw"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m26nw, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m26nw"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m26nw;DES:hp laserjet pro mfp m26nw;"
+     PCFileName "hp-laserjet_pro_mfp_m26nw.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m26nw)"
+   }
+   {
+     ModelName "HP LaserJet Pro MFP m26a"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m26a, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m26a"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m26a;DES:hp laserjet pro mfp m26a;"
+     PCFileName "hp-laserjet_pro_mfp_m26a.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m26a)"
+   }
+   {
+     ModelName "HP LaserJet Pro MFP m27cnw"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m27cnw, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m27cnw"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m27cnw;DES:hp laserjet pro mfp m27cnw;"
+     PCFileName "hp-laserjet_pro_mfp_m27cnw.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m27cnw)"
+   }
+   {
+     ModelName "HP LaserJet Pro MFP m27c"
+     Attribute "NickName" "" "HP LaserJet Pro MFP m27c, hpcups $Version, requires proprietary plugin"
+     Attribute "ShortNickName" "" "HP LaserJet Pro MFP m27c"
+     Attribute "1284DeviceID" "" "MFG:Hewlett-Packard;MDL:hp laserjet pro mfp m27c;DES:hp laserjet pro mfp m27c;"
+     PCFileName "hp-laserjet_pro_mfp_m27c.ppd"
+     Attribute "Product" "" "(HP LaserJet Pro MFP m27c)"
+   }
   }
 
   {

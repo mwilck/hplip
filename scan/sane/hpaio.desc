@@ -82,6 +82,9 @@
 :model "HP Color LaserJet cm4730fsk Multifunction Printer"
 :status :good
 
+:model "HP Color LaserJet Flow e67560z"
+:status :good
+
 :model "HP Color LaserJet Managed Flow MFP e77822z"
 :status :good
 
@@ -317,6 +320,18 @@
 :status :good
 
 :model "HP Deskjet 3634 All-in-one Printer"
+:status :good
+
+:model "HP Deskjet 3700 All-in-one"
+:status :good
+
+:model "HP Deskjet 3720 All-in-one"
+:status :good
+
+:model "HP Deskjet 3730 All-in-one"
+:status :good
+
+:model "HP Deskjet 3755 All-in-one"
 :status :good
 
 :model "HP Deskjet f2110 All-in-one Printer"
@@ -677,6 +692,15 @@
 :status :good
 
 :model "HP Deskjet Ink Advantage 3638 All-in-one Printer"
+:status :good
+
+:model "HP Deskjet Ink Advantage 3775 All-in-one"
+:status :good
+
+:model "HP Deskjet Ink Advantage 3776 All-in-one"
+:status :good
+
+:model "HP Deskjet Ink Advantage 3785 All-in-one"
 :status :good
 
 :model "HP Deskjet Ink Advantage 3830 All-in-one Printer"
@@ -1355,6 +1379,24 @@
 :status :good
 
 :model "HP LaserJet Pro MFP m227sdn"
+:status :good
+
+:model "HP LaserJet Pro MFP m25a"
+:status :good
+
+:model "HP LaserJet Pro MFP m25nw"
+:status :good
+
+:model "HP LaserJet Pro MFP m26a"
+:status :good
+
+:model "HP LaserJet Pro MFP m26nw"
+:status :good
+
+:model "HP LaserJet Pro MFP m27c"
+:status :good
+
+:model "HP LaserJet Pro MFP m27cnw"
 :status :good
 
 :model "HP LaserJet Pro MFP m426dw"
@@ -2395,6 +2437,15 @@
 :model "HP Pagewide Managed MFP p57750dw"
 :status :good
 
+:model "HP Pagewide Managed MFP p77740zs"
+:status :good
+
+:model "HP Pagewide Managed MFP p77750z"
+:status :good
+
+:model "HP Pagewide Managed MFP p77750zs"
+:status :good
+
 :model "HP Pagewide MFP 377dw"
 :status :good
 
@@ -2408,6 +2459,9 @@
 :status :good
 
 :model "HP Pagewide Pro 577z Multifunction Printer"
+:status :good
+
+:model "HP Pagewide Pro MFP 772dw"
 :status :good
 
 :model "HP Photosmart 2570 All-in-one Printer"
