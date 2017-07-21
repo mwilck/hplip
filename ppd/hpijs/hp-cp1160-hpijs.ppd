@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2004-2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "hpijs 3.17.6"
+*FileVersion: "hpijs 3.17.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-cp1160-hpijs.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP cp1160 hpijs"
 *ShortNickName: "HP cp1160 hpijs"
-*NickName: "HP cp1160 hpijs, 3.17.6"
+*NickName: "HP cp1160 hpijs, 3.17.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

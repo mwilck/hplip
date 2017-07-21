@@ -100,6 +100,7 @@ foomatic_ppd_printers = \
     ppd/hpijs/hp-printer_scanner_copier_300-hpijs.ppd.gz \
     ppd/hpijs/hp-deskjet_3050a_j611_series-hpijs.ppd.gz \
     ppd/hpijs/hp-photosmart_8100_series-hpijs.ppd.gz \
+    ppd/hpijs/hp-deskjet_2200_series-hpijs.ppd.gz \
     ppd/hpijs/hp-officejet_pro_l7700-hpijs.ppd.gz \
     ppd/hpijs/hp-laserjet_professional_p1567-hpijs.ppd.gz \
     ppd/hpijs/hp-officejet_r40-hpijs.ppd.gz \
@@ -613,6 +614,7 @@ foomatic_ppd_printers = \
     ppd/hpijs/hp-laserjet_professional_m1216nfh_mfp-hpijs.ppd.gz \
     ppd/hpijs/hp-laserjet_1160-hpijs.ppd.gz \
     ppd/hpijs/hp-officejet_pro_8640-hpijs.ppd.gz \
+    ppd/hpijs/hp-deskjet_2600_series-hpijs.ppd.gz \
     ppd/hpijs/hp-deskjet_1125-hpijs.ppd.gz \
     ppd/hpijs/hp-deskjet_540-hpijs.ppd.gz \
     ppd/hpijs/hp-laserjet_4ml-hpijs.ppd.gz \

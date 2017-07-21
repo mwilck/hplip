@@ -212,9 +212,11 @@
 ./ppd/hpcups/hp-deskjet_2020_series.ppd
 ./ppd/hpcups/hp-deskjet_2050_j510_series.ppd
 ./ppd/hpcups/hp-deskjet_2130_series.ppd
+./ppd/hpcups/hp-deskjet_2200_series.ppd
 ./ppd/hpcups/hp-deskjet_2510_series.ppd
 ./ppd/hpcups/hp-deskjet_2520_series.ppd
 ./ppd/hpcups/hp-deskjet_2540_series.ppd
+./ppd/hpcups/hp-deskjet_2600_series.ppd
 ./ppd/hpcups/hp-deskjet_2640_series.ppd
 ./ppd/hpcups/hp-deskjet_3000_j310_series.ppd
 ./ppd/hpcups/hp-deskjet_3050a_j611_series.ppd
@@ -1161,9 +1163,11 @@
 ./ppd/hpijs/hp-deskjet_2020_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2050_j510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2130_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_2200_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2510_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2520_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2540_series-hpijs.ppd
+./ppd/hpijs/hp-deskjet_2600_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_2640_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3000_j310_series-hpijs.ppd
 ./ppd/hpijs/hp-deskjet_3050a_j611_series-hpijs.ppd
