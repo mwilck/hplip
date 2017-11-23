@@ -1,17 +1,17 @@
 *PPD-Adobe: "4.3"
-*%%%% PPD file for HP LaserJet Professional P 1102w with CUPS.
+*%%%% PPD file for HP LaserJet Professional p 1102w with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_professional_p_1102w.ppd"
-*Product: "(HP LaserJet Professional P 1102w Printer)"
+*Product: "(HP LaserJet Professional p 1102w Printer)"
 *Manufacturer: "HP"
-*ModelName: "HP LaserJet Professional P 1102w"
-*ShortNickName: "HP LJ Professional P 1102w"
-*NickName: "HP LaserJet Professional P 1102w, hpcups 3.17.10, requires proprietary plugin"
+*ModelName: "HP LaserJet Professional p 1102w"
+*ShortNickName: "hp_laserjet_professional_p_1102 hpijs"
+*NickName: "HP LaserJet Professional p 1102w, hpcups 3.17.11, requires proprietary plugin"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -180,4 +180,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_professional_p_1102w.ppd, 11065 bytes.
+*% End of hp-laserjet_professional_p_1102w.ppd, 11076 bytes.

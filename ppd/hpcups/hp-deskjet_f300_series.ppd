@@ -3,11 +3,16 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f300_series.ppd"
 *Product: "(HP Deskjet f310 All-in-one Printer)"
+*Product: "(HP Deskjet f380 All-in-one Printer)"
+*Product: "(HP Deskjet f385 All-in-one Printer)"
+*Product: "(HP Deskjet f388 All-in-one Printer)"
+*Product: "(HP Deskjet f390 All-in-one Printer)"
+*Product: "(HP Deskjet f394 All-in-one Printer)"
 *Product: "(HP Deskjet f325 All-in-one Printer)"
 *Product: "(HP Deskjet f335 All-in-one Printer)"
 *Product: "(HP Deskjet f340 All-in-one Printer)"
@@ -16,15 +21,10 @@
 *Product: "(HP Deskjet f375 All-in-one Printer)"
 *Product: "(HP Deskjet f378 All-in-one Printer)"
 *Product: "(HP Deskjet f379 All-in-one Printer)"
-*Product: "(HP Deskjet f380 All-in-one Printer)"
-*Product: "(HP Deskjet f385 All-in-one Printer)"
-*Product: "(HP Deskjet f388 All-in-one Printer)"
-*Product: "(HP Deskjet f390 All-in-one Printer)"
-*Product: "(HP Deskjet f394 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f300 Series"
-*ShortNickName: "HP Deskjet f300 Series"
-*NickName: "HP Deskjet f300 Series, hpcups 3.17.10"
+*ShortNickName: "HP Deskjet f300 Series hpijs"
+*NickName: "HP Deskjet f300 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -269,4 +269,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_f300_series.ppd, 17894 bytes.
+*% End of hp-deskjet_f300_series.ppd, 17900 bytes.

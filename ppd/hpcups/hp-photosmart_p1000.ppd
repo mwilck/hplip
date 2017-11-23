@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_p1000.ppd"
@@ -11,8 +11,8 @@
 *Product: "(HP Photosmart p1000xi Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart p1000"
-*ShortNickName: "HP Photosmart p1000"
-*NickName: "HP Photosmart p1000, hpcups 3.17.10"
+*ShortNickName: "HP Photosmart p1000 hpijs"
+*NickName: "HP Photosmart p1000, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -324,4 +324,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_p1000.ppd, 21907 bytes.
+*% End of hp-photosmart_p1000.ppd, 21913 bytes.

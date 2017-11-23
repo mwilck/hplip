@@ -3,11 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4300_series.ppd"
 *Product: "(HP Officejet 4308 All-in-one Printer)"
+*Product: "(HP Officejet 4338 All-in-one Printer)"
+*Product: "(HP Officejet 4352 All-in-one Printer)"
+*Product: "(HP Officejet 4353 All-in-one Printer)"
+*Product: "(HP Officejet 4355 All-in-one Printer)"
+*Product: "(HP Officejet 4357 All-in-one Printer)"
+*Product: "(HP Officejet 4359 All-in-one Printer)"
 *Product: "(HP Officejet 4311 All-in-one Printer)"
 *Product: "(HP Officejet 4312 All-in-one Printer)"
 *Product: "(HP Officejet 4314 All-in-one Printer)"
@@ -16,16 +22,10 @@
 *Product: "(HP Officejet 4315xi All-in-one Printer)"
 *Product: "(HP Officejet 4317 All-in-one Printer)"
 *Product: "(HP Officejet 4319 All-in-one Printer)"
-*Product: "(HP Officejet 4338 All-in-one Printer)"
-*Product: "(HP Officejet 4352 All-in-one Printer)"
-*Product: "(HP Officejet 4353 All-in-one Printer)"
-*Product: "(HP Officejet 4355 All-in-one Printer)"
-*Product: "(HP Officejet 4357 All-in-one Printer)"
-*Product: "(HP Officejet 4359 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4300 Series"
-*ShortNickName: "HP Officejet 4300 Series"
-*NickName: "HP Officejet 4300 Series, hpcups 3.17.10"
+*ShortNickName: "HP Officejet 4300 Series hpijs"
+*NickName: "HP Officejet 4300 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -262,4 +262,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_4300_series.ppd, 17255 bytes.
+*% End of hp-officejet_4300_series.ppd, 17261 bytes.

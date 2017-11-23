@@ -3,16 +3,16 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_6960.ppd"
 *Product: "(HP Officejet Pro 6960 All-in-one)"
-*Product: "(HP Officejet Pro 6968 All-in-one)"
+*Product: "(HP Officejet Pro 6968 All-in-one )"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro 6960"
-*ShortNickName: "HP Officejet Pro 6960"
-*NickName: "HP Officejet Pro 6960, hpcups 3.17.10"
+*ShortNickName: "HP Officejet Pro 6960 hpijs"
+*NickName: "HP Officejet Pro 6960, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -643,4 +643,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_6960.ppd, 43933 bytes.
+*% End of hp-officejet_pro_6960.ppd, 43940 bytes.

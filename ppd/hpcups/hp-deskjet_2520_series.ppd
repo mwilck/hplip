@@ -3,16 +3,16 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_2520_series.ppd"
-*Product: "(HP Deskjet Ink Advantage 2520hc All-in-one)"
+*Product: "(HP Deskjet Ink Advantage 2520hc  All-in-one)"
 *Product: "(HP Deskjet Ink Advantage Ultra 2529 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 2520 Series"
-*ShortNickName: "HP Deskjet 2520 Series"
-*NickName: "HP Deskjet 2520 Series, hpcups 3.17.10"
+*ShortNickName: "HP Deskjet 2520 Series hpijs"
+*NickName: "HP Deskjet 2520 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -313,4 +313,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_2520_series.ppd, 23193 bytes.
+*% End of hp-deskjet_2520_series.ppd, 23200 bytes.

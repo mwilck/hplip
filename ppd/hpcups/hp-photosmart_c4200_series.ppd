@@ -3,11 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c4200_series.ppd"
 *Product: "(HP Photosmart c4205 All-in-one Printer)"
+*Product: "(HP Photosmart c4280 All-in-one Printer)"
+*Product: "(HP Photosmart c4283 All-in-one Printer)"
+*Product: "(HP Photosmart c4285 All-in-one Printer)"
+*Product: "(HP Photosmart c4288 All-in-one Printer)"
+*Product: "(HP Photosmart c4293 All-in-one Printer)"
+*Product: "(HP Photosmart c4294 All-in-one Printer)"
 *Product: "(HP Photosmart c4210 All-in-one Printer)"
 *Product: "(HP Photosmart c4235 All-in-one Printer)"
 *Product: "(HP Photosmart c4240 All-in-one Printer)"
@@ -16,16 +22,10 @@
 *Product: "(HP Photosmart c4272 All-in-one Printer)"
 *Product: "(HP Photosmart c4273 All-in-one Printer)"
 *Product: "(HP Photosmart c4275 All-in-one Printer)"
-*Product: "(HP Photosmart c4280 All-in-one Printer)"
-*Product: "(HP Photosmart c4283 All-in-one Printer)"
-*Product: "(HP Photosmart c4285 All-in-one Printer)"
-*Product: "(HP Photosmart c4288 All-in-one Printer)"
-*Product: "(HP Photosmart c4293 All-in-one Printer)"
-*Product: "(HP Photosmart c4294 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c4200 Series"
-*ShortNickName: "HP Photosmart c4200 Series"
-*NickName: "HP Photosmart c4200 Series, hpcups 3.17.10"
+*ShortNickName: "HP Photosmart c4200 Series hpijs"
+*NickName: "HP Photosmart c4200 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -416,4 +416,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c4200_series.ppd, 28331 bytes.
+*% End of hp-photosmart_c4200_series.ppd, 28337 bytes.

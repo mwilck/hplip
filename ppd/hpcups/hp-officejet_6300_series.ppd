@@ -3,11 +3,13 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6300_series.ppd"
 *Product: "(HP Officejet 6301 All-in-one Printer)"
+*Product: "(HP Officejet 6315 All-in-one Printer)"
+*Product: "(HP Officejet 6318 All-in-one Printer)"
 *Product: "(HP Officejet 6304 All-in-one Printer)"
 *Product: "(HP Officejet 6305 All-in-one Printer)"
 *Product: "(HP Officejet 6307 All-in-one Printer)"
@@ -16,12 +18,10 @@
 *Product: "(HP Officejet 6310xi All-in-one Printer)"
 *Product: "(HP Officejet 6310v All-in-one Printer)"
 *Product: "(HP Officejet 6313 All-in-one Printer)"
-*Product: "(HP Officejet 6315 All-in-one Printer)"
-*Product: "(HP Officejet 6318 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6300 Series"
-*ShortNickName: "HP Officejet 6300 Series"
-*NickName: "HP Officejet 6300 Series, hpcups 3.17.10"
+*ShortNickName: "HP Officejet 6300 Series hpijs"
+*NickName: "HP Officejet 6300 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -412,4 +412,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6300_series.ppd, 28084 bytes.
+*% End of hp-officejet_6300_series.ppd, 28090 bytes.

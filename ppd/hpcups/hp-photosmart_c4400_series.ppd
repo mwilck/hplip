@@ -3,11 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c4400_series.ppd"
 *Product: "(HP Photosmart c4410 All-in-one Printer)"
+*Product: "(HP Photosmart c4483 All-in-one Printer)"
+*Product: "(HP Photosmart c4485 All-in-one Printer)"
+*Product: "(HP Photosmart c4486 All-in-one Printer)"
+*Product: "(HP Photosmart c4488 All-in-one Printer)"
+*Product: "(HP Photosmart c4490 All-in-one Printer)"
+*Product: "(HP Photosmart c4493 All-in-one Printer)"
+*Product: "(HP Photosmart c4494 All-in-one Printer)"
 *Product: "(HP Photosmart c4424 All-in-one Printer)"
 *Product: "(HP Photosmart c4435 All-in-one Printer)"
 *Product: "(HP Photosmart c4440 All-in-one Printer)"
@@ -16,17 +23,10 @@
 *Product: "(HP Photosmart c4472 All-in-one Printer)"
 *Product: "(HP Photosmart c4473 All-in-one Printer)"
 *Product: "(HP Photosmart c4480 All-in-one Printer)"
-*Product: "(HP Photosmart c4483 All-in-one Printer)"
-*Product: "(HP Photosmart c4485 All-in-one Printer)"
-*Product: "(HP Photosmart c4486 All-in-one Printer)"
-*Product: "(HP Photosmart c4488 All-in-one Printer)"
-*Product: "(HP Photosmart c4490 All-in-one Printer)"
-*Product: "(HP Photosmart c4493 All-in-one Printer)"
-*Product: "(HP Photosmart c4494 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c4400 Series"
-*ShortNickName: "HP Photosmart c4400 Series"
-*NickName: "HP Photosmart c4400 Series, hpcups 3.17.10"
+*ShortNickName: "HP Photosmart c4400 Series hpijs"
+*NickName: "HP Photosmart c4400 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -417,4 +417,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c4400_series.ppd, 28384 bytes.
+*% End of hp-photosmart_c4400_series.ppd, 28390 bytes.

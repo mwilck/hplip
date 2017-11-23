@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_4630_series.ppd"
@@ -15,8 +15,8 @@
 *Product: "(HP Officejet 4636 E-all-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 4630 Series"
-*ShortNickName: "HP Officejet 4630 Series"
-*NickName: "HP Officejet 4630 Series, hpcups 3.17.10"
+*ShortNickName: "HP Officejet 4630 Series hpijs"
+*NickName: "HP Officejet 4630 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -491,4 +491,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_4630_series.ppd, 35110 bytes.
+*% End of hp-officejet_4630_series.ppd, 35116 bytes.

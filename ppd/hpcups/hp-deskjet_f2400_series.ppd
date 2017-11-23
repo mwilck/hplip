@@ -3,11 +3,14 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_f2400_series.ppd"
 *Product: "(HP Deskjet f2410 All-in-one Printer)"
+*Product: "(HP Deskjet f2488 All-in-one Printer)"
+*Product: "(HP Deskjet f2492 All-in-one Printer)"
+*Product: "(HP Deskjet f2493 All-in-one Printer)"
 *Product: "(HP Deskjet f2418 All-in-one Printer)"
 *Product: "(HP Deskjet f2420 All-in-one Printer)"
 *Product: "(HP Deskjet f2423 All-in-one Printer)"
@@ -16,13 +19,10 @@
 *Product: "(HP Deskjet f2476 All-in-one Printer)"
 *Product: "(HP Deskjet f2480 All-in-one Printer)"
 *Product: "(HP Deskjet f2483 All-in-one Printer)"
-*Product: "(HP Deskjet f2488 All-in-one Printer)"
-*Product: "(HP Deskjet f2492 All-in-one Printer)"
-*Product: "(HP Deskjet f2493 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet f2400 Series"
-*ShortNickName: "HP Deskjet f2400 Series"
-*NickName: "HP Deskjet f2400 Series, hpcups 3.17.10"
+*ShortNickName: "HP Deskjet f2400 Series hpijs"
+*NickName: "HP Deskjet f2400 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -227,4 +227,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_f2400_series.ppd, 14604 bytes.
+*% End of hp-deskjet_f2400_series.ppd, 14610 bytes.

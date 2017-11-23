@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_980c.ppd"
@@ -11,8 +11,8 @@
 *Product: "(HP Deskjet 980c Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 980c"
-*ShortNickName: "HP Deskjet 980c"
-*NickName: "HP Deskjet 980c, hpcups 3.17.10"
+*ShortNickName: "HP Deskjet 980c hpijs"
+*NickName: "HP Deskjet 980c, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -334,4 +334,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_980c.ppd, 21953 bytes.
+*% End of hp-deskjet_980c.ppd, 21959 bytes.

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_9800.ppd"
@@ -17,8 +17,8 @@
 *Product: "(HP Deskjet 9868 Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 9800"
-*ShortNickName: "HP Deskjet 9800"
-*NickName: "HP Deskjet 9800, hpcups 3.17.10"
+*ShortNickName: "HP Deskjet 9800 hpijs"
+*NickName: "HP Deskjet 9800, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -447,4 +447,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_9800.ppd, 30391 bytes.
+*% End of hp-deskjet_9800.ppd, 30397 bytes.

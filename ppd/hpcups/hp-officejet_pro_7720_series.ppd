@@ -3,15 +3,15 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_pro_7720_series.ppd"
 *Product: "(HP Officejet Pro 7720 Wide Format All-in-one)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet Pro 7720 Series"
-*ShortNickName: "HP Officejet Pro 7720 Series"
-*NickName: "HP Officejet Pro 7720 Series, hpcups 3.17.10"
+*ShortNickName: "HP Officejet Pro 7720 Series hpijs"
+*NickName: "HP Officejet Pro 7720 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -123,6 +123,138 @@
 *UIConstraints: *Duplex *PageSize JapaneseEnvelopeChou#3
 *UIConstraints: *PageSize JapaneseEnvelopeChou#4 *Duplex
 *UIConstraints: *Duplex *PageSize JapaneseEnvelopeChou#4
+*UIConstraints: *MediaType Glossy *Duplex
+*UIConstraints: *Duplex *MediaType Glossy
+*UIConstraints: *MediaType FastGlossy *Duplex
+*UIConstraints: *Duplex *MediaType FastGlossy
+*UIConstraints: *MediaType BrochureHagaki *Duplex
+*UIConstraints: *Duplex *MediaType BrochureHagaki
+*UIConstraints: *PageSize 2L.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 2L.FB
+*UIConstraints: *PageSize L.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize L.FB
+*UIConstraints: *PageSize 3x5in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 3x5in.FB
+*UIConstraints: *PageSize 4x5in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 4x5in.FB
+*UIConstraints: *PageSize 4x6in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 4x6in.FB
+*UIConstraints: *PageSize 4x12in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 4x12in.FB
+*UIConstraints: *PageSize 5x7in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 5x7in.FB
+*UIConstraints: *PageSize 8x10in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 8x10in.FB
+*UIConstraints: *PageSize A6.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize A6.FB
+*UIConstraints: *PageSize JapanesePostcard.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize JapanesePostcard.FB
+*UIConstraints: *PageSize A4.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize A4.FB
+*UIConstraints: *PageSize A5.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize A5.FB
+*UIConstraints: *PageSize B5.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize B5.FB
+*UIConstraints: *PageSize B5(JIS).FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize B5(JIS).FB
+*UIConstraints: *PageSize Executive.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize Executive.FB
+*UIConstraints: *PageSize Legal.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize Legal.FB
+*UIConstraints: *PageSize Letter.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize Letter.FB
+*UIConstraints: *PageSize Tabloid.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize Tabloid.FB
+*UIConstraints: *PageSize A3.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize A3.FB
+*UIConstraints: *PageSize B4JIS.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize B4JIS.FB
+*UIConstraints: *PageSize 8.5x13in.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 8.5x13in.FB
+*UIConstraints: *PageSize 2L.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 2L.FB
+*UIConstraints: *PageSize L.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize L.FB
+*UIConstraints: *PageSize 3x5in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 3x5in.FB
+*UIConstraints: *PageSize 4x5in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 4x5in.FB
+*UIConstraints: *PageSize 4x6in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 4x6in.FB
+*UIConstraints: *PageSize 4x12in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 4x12in.FB
+*UIConstraints: *PageSize 5x7in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 5x7in.FB
+*UIConstraints: *PageSize 8x10in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 8x10in.FB
+*UIConstraints: *PageSize A6.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize A6.FB
+*UIConstraints: *PageSize JapanesePostcard.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize JapanesePostcard.FB
+*UIConstraints: *PageSize A4.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize A4.FB
+*UIConstraints: *PageSize A5.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize A5.FB
+*UIConstraints: *PageSize B5.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize B5.FB
+*UIConstraints: *PageSize B5(JIS).FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize B5(JIS).FB
+*UIConstraints: *PageSize Executive.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize Executive.FB
+*UIConstraints: *PageSize Legal.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize Legal.FB
+*UIConstraints: *PageSize Letter.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize Letter.FB
+*UIConstraints: *PageSize Tabloid.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize Tabloid.FB
+*UIConstraints: *PageSize A3.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize A3.FB
+*UIConstraints: *PageSize B4JIS.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize B4JIS.FB
+*UIConstraints: *PageSize 8.5x13in.FB *MediaType PlainThick
+*UIConstraints: *MediaType PlainThick *PageSize 8.5x13in.FB
+*UIConstraints: *PageSize 2L.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 2L.FB
+*UIConstraints: *PageSize L.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize L.FB
+*UIConstraints: *PageSize 3x5in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 3x5in.FB
+*UIConstraints: *PageSize 4x5in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 4x5in.FB
+*UIConstraints: *PageSize 4x6in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 4x6in.FB
+*UIConstraints: *PageSize 4x12in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 4x12in.FB
+*UIConstraints: *PageSize 5x7in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 5x7in.FB
+*UIConstraints: *PageSize 8x10in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 8x10in.FB
+*UIConstraints: *PageSize A6.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize A6.FB
+*UIConstraints: *PageSize JapanesePostcard.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize JapanesePostcard.FB
+*UIConstraints: *PageSize A4.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize A4.FB
+*UIConstraints: *PageSize A5.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize A5.FB
+*UIConstraints: *PageSize B5.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize B5.FB
+*UIConstraints: *PageSize B5(JIS).FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize B5(JIS).FB
+*UIConstraints: *PageSize Executive.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize Executive.FB
+*UIConstraints: *PageSize Legal.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize Legal.FB
+*UIConstraints: *PageSize Letter.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize Letter.FB
+*UIConstraints: *PageSize Tabloid.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize Tabloid.FB
+*UIConstraints: *PageSize A3.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize A3.FB
+*UIConstraints: *PageSize B4JIS.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize B4JIS.FB
+*UIConstraints: *PageSize 8.5x13in.FB *MediaType PlainPaperLight
+*UIConstraints: *MediaType PlainPaperLight *PageSize 8.5x13in.FB
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -383,17 +515,17 @@
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10 AnySetup *MediaType
 *DefaultMediaType: Plain
-*MediaType Plain/Plain Paper: "<</MediaType/cupsMediaType 0>>setpagedevice"
-*MediaType Glossy/HP Photo Papers: "<</MediaType/cupsMediaType 5>>setpagedevice"
-*MediaType CoatedBrochure/HP Matte Brochure or Professional Paper: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType CoatedMatte/HP Matte Presentation Paper: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType BrochureGlosy/HP Glossy Brochure or Professional Paper: "<</MediaType/cupsMediaType 8>>setpagedevice"
-*MediaType FastGlossy/Other photo inkjet papers: "<</MediaType/cupsMediaType 5>>setpagedevice"
-*MediaType Coated/Other matte inkjet Papers: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType Brochure/Other glossy inkjet Paper: "<</MediaType/cupsMediaType 8>>setpagedevice"
-*MediaType BrochureHagaki/Inkjet hagaki: "<</MediaType/cupsMediaType 8>>setpagedevice"
-*MediaType PlainThick/Plain Papaer, Thick: "<</MediaType/cupsMediaType 0>>setpagedevice"
-*MediaType PlainPaperLight/Plain Paper, Light/Recycled: "<</MediaType/cupsMediaType 1>>setpagedevice"
+*MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
+*MediaType Glossy/HP Photo Papers: "<</MediaType(Glossy)/cupsMediaType 5>>setpagedevice"
+*MediaType CoatedBrochure/HP Matte Brochure or Professional Paper: "<</MediaType(CoatedBrochure)/cupsMediaType 2>>setpagedevice"
+*MediaType CoatedMatte/HP Matte Presentation Paper: "<</MediaType(CoatedMatte)/cupsMediaType 2>>setpagedevice"
+*MediaType BrochureGlosy/HP Glossy Brochure or Professional Paper: "<</MediaType(BrochureGlosy)/cupsMediaType 8>>setpagedevice"
+*MediaType FastGlossy/Other photo inkjet papers: "<</MediaType(FastGlossy)/cupsMediaType 5>>setpagedevice"
+*MediaType Coated/Other matte inkjet Papers: "<</MediaType(Coated)/cupsMediaType 2>>setpagedevice"
+*MediaType Brochure/Other glossy inkjet Paper: "<</MediaType(Brochure)/cupsMediaType 8>>setpagedevice"
+*MediaType BrochureHagaki/Inkjet hagaki: "<</MediaType(BrochureHagaki)/cupsMediaType 8>>setpagedevice"
+*MediaType PlainThick/Plain Papaer, Thick: "<</MediaType(PlainThick)/cupsMediaType 0>>setpagedevice"
+*MediaType PlainPaperLight/Plain Paper, Light/Recycled: "<</MediaType(PlainPaperLight)/cupsMediaType 1>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
@@ -406,7 +538,8 @@
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Upper
-*InputSlot Upper/Main Tray: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Upper/Tray 1: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Lower/Tray 2: "<</MediaPosition 4>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10 AnySetup *Duplex
@@ -451,4 +584,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_pro_7720_series.ppd, 32565 bytes.
+*% End of hp-officejet_pro_7720_series.ppd, 40239 bytes.

@@ -3,11 +3,12 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c5100_series.ppd"
 *Product: "(HP Photosmart c5140 All-in-one Printer)"
+*Product: "(HP Photosmart c5194 All-in-one Printer)"
 *Product: "(HP Photosmart c5150 All-in-one Printer)"
 *Product: "(HP Photosmart c5170 All-in-one Printer)"
 *Product: "(HP Photosmart c5173 All-in-one Printer)"
@@ -16,11 +17,10 @@
 *Product: "(HP Photosmart c5183 All-in-one Printer)"
 *Product: "(HP Photosmart c5185 All-in-one Printer)"
 *Product: "(HP Photosmart c5188 All-in-one Printer)"
-*Product: "(HP Photosmart c5194 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c5100 Series"
-*ShortNickName: "HP Photosmart c5100 Series"
-*NickName: "HP Photosmart c5100 Series, hpcups 3.17.10"
+*ShortNickName: "HP Photosmart c5100 Series hpijs"
+*NickName: "HP Photosmart c5100 Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -411,4 +411,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c5100_series.ppd, 28066 bytes.
+*% End of hp-photosmart_c5100_series.ppd, 28072 bytes.

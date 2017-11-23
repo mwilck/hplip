@@ -3,18 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.10"
+*FileVersion: "3.17.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_t_series.ppd"
-*Product: "(HP Officejet t45 All-in-one Printer)"
-*Product: "(HP Officejet t45xi All-in-one Printer)"
-*Product: "(HP Officejet t65 All-in-one Printer)"
-*Product: "(HP Officejet t65xi All-in-one Printer)"
+*Product: "(HP Officejet t45  All-in-one Printer)"
+*Product: "(HP Officejet t45xi  All-in-one Printer)"
+*Product: "(HP Officejet t65  All-in-one Printer)"
+*Product: "(HP Officejet t65xi  All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet T Series"
-*ShortNickName: "HP Officejet T Series"
-*NickName: "HP Officejet T Series, hpcups 3.17.10"
+*ShortNickName: "HP Officejet T Series hpijs"
+*NickName: "HP Officejet T Series, hpcups 3.17.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -227,4 +227,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_t_series.ppd, 15459 bytes.
+*% End of hp-officejet_t_series.ppd, 15469 bytes.
