@@ -88,7 +88,7 @@ unsigned char CheckModelNameExsist(string model_name, MODEL_DICT_MAP &model_dict
     {
              if(it->first == model_name)
              {
-                cout << "Family PPD Name : "<< it->second<<endl;
+                cout << "Class PPD Name : "<< it->second<<endl;
                 return 1;
              }
     }
@@ -111,7 +111,7 @@ int main (int argc, char **argv)
             argument.assign(argument, 4, argument.length());
             if((CheckModelNameExsist(argument, model_dict)) != 1)
             {
-                cout<< "ERROR : findppd Invalid Model Name Passed"<<endl;
+                cout<< "ERROR : hp-locatedriver Invalid Model Name Passed"<<endl;
                 return -1;
             }
             model_dict.clear();
@@ -119,10 +119,10 @@ int main (int argc, char **argv)
         }
         if((argument.find("-h")) != std::string::npos || (argument.find("--help")) != std::string::npos)
         {
-            cout <<"./findppd [--m=model_name]"<< endl;
+            cout <<"hp-locatedriver [--m=model_name]"<< endl;
             cout <<"	--m=<model name> 			: model name for the device"<< endl;
             cout <<"EXAMPLE :"<< endl;
-            cout <<"	./findppd --m=<model name>		: Find family ppd of the model name passed"<< endl;
+            cout <<"	hp-locatedriver --m=<model name>		: Find class ppd of the model name passed"<< endl;
             model_dict.clear();
             return 1; 
         }

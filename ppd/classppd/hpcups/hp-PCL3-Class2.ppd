@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.17.11"
+*FileVersion: "3.18.3"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-PCL3-Class2.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PCL3-Class2"
 *ShortNickName: "PCL3-Class2"
-*NickName: "PCL3-Class2, hpcups 3.17.11"
+*NickName: "PCL3-Class2, hpcups 3.18.3"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -92,7 +92,7 @@
 *ImageableArea Photo4x6/Photo 4x6in: "9.359999656677 9.359999656677 278.640000343323 422.640000343323"
 *ImageableArea A6/A6 105x148mm: "9.359999656677 9.359999656677 288.288010597229 410.184006690979"
 *ImageableArea Photo5x7/Photo 5x7in: "9.359999656677 9.359999656677 350.640000343323 494.640000343323"
-*ImageableArea Letter/Letter 8.5x11in: "8.39999961853 8.39999961853 603.60000038147 756"
+*ImageableArea Letter/Letter 8.5x11in: "8.39999961853 8.39999961853 603.60000038147 783.60000038147"
 *ImageableArea Letter.Duplex/Letter AutoDuplex 8.5x11in: "9.359999656677 7.920000076294 602.640000343323 774.719999313354"
 *ImageableArea CardLetter/Index Card Letter 8.5x11in: "9.359999656677 9.359999656677 602.640000343323 782.640000343323"
 *ImageableArea A3/A3 297x420mm: "14.184000015259 45.360000610352 827.495992660522 1145.520004272461"
@@ -235,4 +235,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-PCL3-Class2.ppd, 16396 bytes.
+*% End of hp-PCL3-Class2.ppd, 16406 bytes.
