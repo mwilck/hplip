@@ -39,6 +39,12 @@ typedef int Py_ssize_t;
 #define PY_SSIZE_T_MIN INT_MIN
 #endif
 
+#if PY_MAJOR_VERSION >= 3
+#define PyString_AsStringAndSize PyBytes_AsStringAndSize
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#define PyInt_AS_LONG PyLong_AS_LONG
+#endif
+
 int verbose=0;
 
 PyObject * readsectorFunc = NULL;
@@ -81,8 +87,11 @@ int WriteSector(int sector, int nsector, void *buf, int size )
     
     if( writesectorFunc )
     {
+#if PY_MAJOR_VERSION >= 3
         result = PyObject_CallFunction( writesectorFunc, "iis#", sector, nsector, buf, size );
-        
+#else
+        result = PyObject_CallFunction( writesectorFunc, "iiy#", sector, nsector, buf, size );
+#endif
         return PyInt_AS_LONG( result );
     }
 
@@ -233,8 +242,30 @@ static PyMethodDef pcardext_methods[] =
     { NULL, NULL }
 };  
 
-
 static char pcardext_documentation[] = "Python extension for HP photocard services";
+
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef moduledef = {
+        .m_base = PyModuleDef_HEAD_INIT,
+        .m_name = "pcardext",
+        .m_doc = pcardext_documentation,
+        .m_size = -1,
+        .m_methods = pcardext_methods,
+        .m_slots = NULL,
+        .m_traverse = NULL,
+        .m_clear = NULL,
+        .m_free = NULL,
+};
+
+PyMODINIT_FUNC
+PyInit_pcardext( void )
+{
+	PyObject *module = PyModule_Create2(&moduledef, PYTHON_API_VERSION);
+
+	return module;
+}
+
+#else
 
 void initpcardext( void )
 {
@@ -246,4 +277,5 @@ void initpcardext( void )
       return;
 }
 
+#endif
 
