@@ -2385,6 +2385,8 @@
 ./prnt/ps/hp-color_laserjet_e67550_e67560-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_mfp_m680-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_mfp_m880-ps.ppd
+./prnt/ps/hp-color_laserjet_m153-m154-ps.ppd
+./prnt/ps/hp-color_laserjet_m253-m254-ps.ppd
 ./prnt/ps/hp-color_laserjet_m452d-ps.ppd
 ./prnt/ps/hp-color_laserjet_m452-ps.ppd
 ./prnt/ps/hp-color_laserjet_m552-ps.ppd
@@ -2393,7 +2395,9 @@
 ./prnt/ps/hp-color_laserjet_m652_m653-ps.ppd
 ./prnt/ps/hp-color_laserjet_m750-ps.ppd
 ./prnt/ps/hp-color_laserjet_m855-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_m178-m181-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m274-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_m278-m281-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m577-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m680-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m681_m682-ps.ppd
@@ -2419,6 +2423,8 @@
 ./prnt/ps/hp-designjet_t1200_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t1300_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t1500-postscript.ppd
+./prnt/ps/hp-designjet_t1700dr_postscript-ps.ppd
+./prnt/ps/hp-designjet_t1700_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t2300_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t2500-postscript.ppd
 ./prnt/ps/hp-designjet_t3500-ps.ppd
@@ -2706,10 +2712,12 @@
 ./prnt/ps/hp-pagewide_color_mfp_586-ps.ppd
 ./prnt/ps/hp-pagewide_color_mfp_780-785-ps.ppd
 ./prnt/ps/hp-pagewide_color_mfp_e58650-ps.ppd
+./prnt/ps/hp-pagewide_color_P75250-ps.ppd
 ./prnt/ps/hp-pagewide_mfp_p57750-ps.ppd
 ./prnt/ps/hp-pagewide_mfp_p77740-60zs-ps.ppd
 ./prnt/ps/hp-pagewide_p55250-ps.ppd
 ./prnt/ps/hp-pagewide_p75050-60-ps.ppd
+./prnt/ps/hp-pagewide_P77440_P77940-60-ps.ppd
 ./prnt/ps/hp-pagewide_pro_452_printer-ps.ppd
 ./prnt/ps/hp-pagewide_pro_477_mfp-ps.ppd
 ./prnt/ps/hp-pagewide_pro_552_printer-ps.ppd
