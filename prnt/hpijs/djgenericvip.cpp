@@ -47,7 +47,7 @@ extern uint32_t ulMapDJ600_CCM_K[ 9 * 9 * 9 ];
  */
 
 DJGenericVIP::DJGenericVIP (SystemServices* pSS, BOOL proto)
-    : DJ9xxVIP (pSS, proto)
+  : DJ9xxVIP (pSS, proto, true)
 {
 
     if (!proto && IOMode.bDevID)
