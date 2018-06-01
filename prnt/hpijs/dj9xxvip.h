@@ -42,7 +42,8 @@ APDK_BEGIN_NAMESPACE
 class DJ9xxVIP : public Printer
 {
 public:
-    DJ9xxVIP(SystemServices* pSS, BOOL proto=FALSE);
+    DJ9xxVIP(SystemServices* pSS, BOOL proto=FALSE,
+             BOOL ignore_pen_error=FALSE);
 
     Header* SelectHeader(PrintContext* pc);
     DRIVER_ERROR VerifyPenInfo();

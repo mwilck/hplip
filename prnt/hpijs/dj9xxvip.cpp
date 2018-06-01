@@ -55,7 +55,8 @@ extern MediaType MediaTypeToPcl (MEDIATYPE eMediaType);
 DJ9xxVIP::DJ9xxVIP
 (
     SystemServices* pSS,
-    BOOL proto
+    BOOL proto,
+    BOOL ignore_pen_error
 ) :
     Printer(pSS, NUM_DJ6XX_FONTS, proto),
     PCL3acceptsDriverware(TRUE)
@@ -67,7 +68,10 @@ DJ9xxVIP::DJ9xxVIP
     {
         bCheckForCancelButton = TRUE;
         constructor_error = VerifyPenInfo();
-        CERRCHECK;
+	if (!ignore_pen_error) {
+	  CERRCHECK;
+	} else
+	  ePen = BOTH_PENS;
     }
     else ePen = BOTH_PENS;    // matches default mode
 
