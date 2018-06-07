@@ -2447,7 +2447,10 @@
 ./prnt/ps/hp-designjet_z6200_42in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_60in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6600-postscript.ppd
+./prnt/ps/hp-designjet_z6610ps_60in-ps.ppd
 ./prnt/ps/hp-designjet_z6800_photo-postscript.ppd
+./prnt/ps/hp-designjet_z6810ps_42in-ps.ppd
+./prnt/ps/hp-designjet_z6810ps_60in-ps.ppd
 ./prnt/ps/hp-laserjet_100_color_mfp_m175-ps.ppd
 ./prnt/ps/hp-laserjet_1200n-ps.ppd
 ./prnt/ps/hp-laserjet_1200-ps.ppd
