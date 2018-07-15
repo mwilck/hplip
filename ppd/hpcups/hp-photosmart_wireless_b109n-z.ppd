@@ -3,17 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.6"
+*FileVersion: "3.18.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_wireless_b109n-z.ppd"
 *Product: "(HP Photosmart Wireless All-in-one Printer - b109n)"
 *Product: "(HP Photosmart Wireless All-in-one Printer - b109q)"
-*Product: "(HP Photosmart Wireless All-in-one Printer - b109q=r)"
+*Product: "(HP Photosmart Wireless All-in-one Printer - b109qr)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart Wireless b109n-z"
 *ShortNickName: "HP Photosmart Wireless b109n-z hpijs"
-*NickName: "HP Photosmart Wireless b109n-z, hpcups 3.18.6"
+*NickName: "HP Photosmart Wireless b109n-z, hpcups 3.18.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -298,4 +298,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_wireless_b109n-z.ppd, 21820 bytes.
+*% End of hp-photosmart_wireless_b109n-z.ppd, 21819 bytes.

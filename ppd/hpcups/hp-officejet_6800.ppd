@@ -3,19 +3,19 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.6"
+*FileVersion: "3.18.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6800.ppd"
 *Product: "(HP Officejet 6800 E-all-in-one)"
-*Product: "(HP Officejet 6810 E-all-in-one  Printer Series)"
-*Product: "(HP Officejet 6812 E-all-in-one  Printer)"
-*Product: "(HP Officejet 6815 E-all-in-one  Printer)"
-*Product: "(HP Officejet 6820 E-all-in-one  Printer)"
+*Product: "(HP Officejet 6810 E-all-in-one Printer Series)"
+*Product: "(HP Officejet 6812 E-all-in-one Printer)"
+*Product: "(HP Officejet 6815 E-all-in-one Printer)"
+*Product: "(HP Officejet 6820 E-all-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6800"
 *ShortNickName: "HP Officejet 6800 hpijs"
-*NickName: "HP Officejet 6800, hpcups 3.18.6"
+*NickName: "HP Officejet 6800, hpcups 3.18.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -646,4 +646,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_6800.ppd, 44079 bytes.
+*% End of hp-officejet_6800.ppd, 44075 bytes.

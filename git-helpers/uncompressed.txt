@@ -426,6 +426,9 @@
 ./ppd/hpcups/hp-envy_photo_6200_series.ppd
 ./ppd/hpcups/hp-envy_photo_7100_series.ppd
 ./ppd/hpcups/hp-envy_photo_7800_series.ppd
+./ppd/hpcups/hp-ink_tank_110_series.ppd
+./ppd/hpcups/hp-ink_tank_310_series.ppd
+./ppd/hpcups/hp-ink_tank_wireless_410_series.ppd
 ./ppd/hpcups/hp-laserjet_1000.ppd
 ./ppd/hpcups/hp-laserjet_1005_series.ppd
 ./ppd/hpcups/hp-laserjet_1010.ppd
@@ -955,6 +958,8 @@
 ./ppd/hpcups/hp-psc_950vr.ppd
 ./ppd/hpcups/hp-psc_950xi.ppd
 ./ppd/hpcups/hp-scanjet_pro_3500_f1.ppd
+./ppd/hpcups/hp-smart_tank_350_series.ppd
+./ppd/hpcups/hp-smart_tank_wireless_450_series.ppd
 ./ppd/hp-deskjet_1100-hpijs.ppd
 ./ppd/hp-deskjet_1120-hpijs.ppd
 ./ppd/hp-deskjet_1125-hpijs.ppd
@@ -2446,11 +2451,17 @@
 ./prnt/ps/hp-designjet_z6100ps_60in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_42in_photo-ps.ppd
 ./prnt/ps/hp-designjet_z6200_60in_photo-ps.ppd
+./prnt/ps/hp-designjet_Z6_24in-ps.ppd
+./prnt/ps/hp-designjet_Z6_44in-ps.ppd
 ./prnt/ps/hp-designjet_z6600-postscript.ppd
 ./prnt/ps/hp-designjet_z6610ps_60in-ps.ppd
 ./prnt/ps/hp-designjet_z6800_photo-postscript.ppd
 ./prnt/ps/hp-designjet_z6810ps_42in-ps.ppd
 ./prnt/ps/hp-designjet_z6810ps_60in-ps.ppd
+./prnt/ps/hp-designjet_Z6dr_44in-ps.ppd
+./prnt/ps/hp-designjet_Z9_24in-ps.ppd
+./prnt/ps/hp-designjet_Z9_44in-ps.ppd
+./prnt/ps/hp-designjet_Z9dr_44in-ps.ppd
 ./prnt/ps/hp-laserjet_100_color_mfp_m175-ps.ppd
 ./prnt/ps/hp-laserjet_1200n-ps.ppd
 ./prnt/ps/hp-laserjet_1200-ps.ppd

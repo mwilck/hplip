@@ -3,19 +3,19 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.6"
+*FileVersion: "3.18.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-envy_photo_6200_series.ppd"
-*Product: "(HP Envy Photo 6200 All-in-one  )"
-*Product: "(HP Envy Photo 6220 All-in-one )"
-*Product: "(HP Envy Photo 6232 All-in-one )"
+*Product: "(HP Envy Photo 6200 All-in-one)"
+*Product: "(HP Envy Photo 6220 All-in-one)"
+*Product: "(HP Envy Photo 6232 All-in-one)"
 *Product: "(HP Envy Photo 6234 All-in-one)"
 *Product: "(HP Envy Photo 6230 All-in-one)"
 *Manufacturer: "HP"
 *ModelName: "HP Envy Photo 6200 Series"
 *ShortNickName: "HP Envy Photo 6200 Series hpijs"
-*NickName: "HP Envy Photo 6200 Series, hpcups 3.18.6"
+*NickName: "HP Envy Photo 6200 Series, hpcups 3.18.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -448,4 +448,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-envy_photo_6200_series.ppd, 31895 bytes.
+*% End of hp-envy_photo_6200_series.ppd, 31891 bytes.

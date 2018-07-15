@@ -3,15 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.6"
+*FileVersion: "3.18.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_7150.ppd"
-*Product: "(HP Photosmart 7150 Series Printer)"
+*Product: "(HP Photosmart 7150 Printer)"
+*Product: "(HP Photosmart 7150v Printer)"
+*Product: "(HP Photosmart 7150w Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart 7150"
 *ShortNickName: "HP Photosmart 7150 hpijs"
-*NickName: "HP Photosmart 7150, hpcups 3.18.6"
+*NickName: "HP Photosmart 7150, hpcups 3.18.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -28,7 +30,7 @@
 *hpPrinterLanguage: "pcl3gui2"
 *HPMechOffset: "70"
 *cupsModelName: "deskjet 5600"
-*1284DeviceID: "MFG:HP;MDL:photosmart 7150~;DES:photosmart 7150~;"
+*1284DeviceID: "MFG:HP;MDL:photosmart 7150;DES:photosmart 7150;"
 *cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
@@ -402,4 +404,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_7150.ppd, 27526 bytes.
+*% End of hp-photosmart_7150.ppd, 27601 bytes.

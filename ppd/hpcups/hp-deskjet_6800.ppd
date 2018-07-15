@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.6"
+*FileVersion: "3.18.7"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_6800.ppd"
@@ -18,7 +18,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 6800"
 *ShortNickName: "HP Deskjet 6800 hpijs"
-*NickName: "HP Deskjet 6800, hpcups 3.18.6"
+*NickName: "HP Deskjet 6800, hpcups 3.18.7"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
