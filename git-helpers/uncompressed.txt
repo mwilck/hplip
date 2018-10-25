@@ -2430,6 +2430,8 @@
 ./prnt/ps/hp-designjet_t1500-postscript.ppd
 ./prnt/ps/hp-designjet_t1700dr_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t1700_postscript-ps.ppd
+./prnt/ps/hp-designjet_t1708dr_postscript-ps.ppd
+./prnt/ps/hp-designjet_t1708_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t2300_postscript-ps.ppd
 ./prnt/ps/hp-designjet_t2500-postscript.ppd
 ./prnt/ps/hp-designjet_t3500-ps.ppd
