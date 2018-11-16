@@ -841,7 +841,7 @@ def run(read_pipe):
     app.setQuitOnLastWindowClosed(False) # If not set, settings dlg closes app
 
     i = 0
-    while i < 60:
+    while i < 10:
         if QSystemTrayIcon.isSystemTrayAvailable():
             break
         time.sleep(1.0)
