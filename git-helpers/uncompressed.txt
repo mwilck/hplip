@@ -960,6 +960,7 @@
 ./ppd/hpcups/hp-scanjet_pro_3500_f1.ppd
 ./ppd/hpcups/hp-smart_tank_350_series.ppd
 ./ppd/hpcups/hp-smart_tank_wireless_450_series.ppd
+./ppd/hpcups/hp-tango.ppd
 ./ppd/hp-deskjet_1100-hpijs.ppd
 ./ppd/hp-deskjet_1120-hpijs.ppd
 ./ppd/hp-deskjet_1125-hpijs.ppd
