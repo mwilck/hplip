@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.12"
+*FileVersion: "3.19.1"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-photosmart_c4700_series.ppd"
@@ -19,8 +19,8 @@
 *Product: "(HP Photosmart c4798 All-in-one Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Photosmart c4700 Series"
-*ShortNickName: "HP Photosmart c4700 Series hpijs"
-*NickName: "HP Photosmart c4700 Series, hpcups 3.18.12"
+*ShortNickName: "HP PS c4700 Series hpijs"
+*NickName: "HP Photosmart c4700 Series, hpcups 3.19.1"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -360,4 +360,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-photosmart_c4700_series.ppd, 26994 bytes.
+*% End of hp-photosmart_c4700_series.ppd, 26984 bytes.

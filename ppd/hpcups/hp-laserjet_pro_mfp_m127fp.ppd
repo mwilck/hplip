@@ -3,15 +3,15 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.12"
+*FileVersion: "3.19.1"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_pro_mfp_m127fp.ppd"
 *Product: "(HP LaserJet Pro MFP m127fp)"
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Pro MFP m127fp"
-*ShortNickName: "HP LaserJet Pro MFP m127fp hpijs"
-*NickName: "HP LaserJet Pro MFP m127fp, hpcups 3.18.12"
+*ShortNickName: "HP LJ Pro MFP m127fp hpijs"
+*NickName: "HP LaserJet Pro MFP m127fp, hpcups 3.19.1"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -205,4 +205,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_pro_mfp_m127fp.ppd, 13402 bytes.
+*% End of hp-laserjet_pro_mfp_m127fp.ppd, 13394 bytes.

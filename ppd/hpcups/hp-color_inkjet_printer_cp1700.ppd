@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.18.12"
+*FileVersion: "3.19.1"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-color_inkjet_printer_cp1700.ppd"
@@ -12,8 +12,8 @@
 *Product: "(HP Color Inkjet cp1700d Printer)"
 *Manufacturer: "HP"
 *ModelName: "HP Color Inkjet Printer cp1700"
-*ShortNickName: "HP Color Inkjet Printer cp1700 hpijs"
-*NickName: "HP Color Inkjet Printer cp1700, hpcups 3.18.12"
+*ShortNickName: "HP CJ IJ Printer cp1700 hpijs"
+*NickName: "HP Color Inkjet Printer cp1700, hpcups 3.19.1"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -30,7 +30,7 @@
 *hpPrinterLanguage: "pcl3gui2"
 *HPMechOffset: "70"
 *cupsModelName: "DESKJET 990"
-*1284DeviceID: "MFG:HP;MDL:color inkjet printer cp1700;DES:color inkjet printer cp1700;"
+*1284DeviceID: "MFG:HP;MDL:hp color inkjet printer cp1700;DES:hp color inkjet printer cp1700;"
 *cupsVersion: 1.5
 *cupsModelNumber: 0
 *cupsManualCopies: True
@@ -373,4 +373,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-color_inkjet_printer_cp1700.ppd, 24825 bytes.
+*% End of hp-color_inkjet_printer_cp1700.ppd, 24822 bytes.

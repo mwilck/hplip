@@ -52,6 +52,8 @@
 ./ppd/classppd/hpcups/hp-PCL3-Class3B.ppd
 ./ppd/classppd/hpcups/hp-PCL3-Class3.ppd
 ./ppd/classppd/hpcups/hp-PCL4-Class1.ppd
+./ppd/classppd/hpcups/hp-PCLM_COLOR.ppd
+./ppd/classppd/hpcups/hp-PCLM_MONO.ppd
 ./ppd/classppd/hpcups/hp-PCLM.ppd
 ./ppd/classppd/ps/hp-postscript-inkjet.ppd
 ./ppd/classppd/ps/hp-postscript-laserjet.ppd
@@ -733,6 +735,7 @@
 ./ppd/hpcups/hp-officejet_7610_series.ppd
 ./ppd/hpcups/hp-officejet_8040_series.ppd
 ./ppd/hpcups/hp-officejet_8700.ppd
+./ppd/hpcups/hp-officejet_9010_series.ppd
 ./ppd/hpcups/hp-officejet_9100_series-pcl3.ppd
 ./ppd/hpcups/hp-officejet_d_series.ppd
 ./ppd/hpcups/hp-officejet_g55.ppd
@@ -781,6 +784,8 @@
 ./ppd/hpcups/hp-officejet_pro_8660.ppd
 ./ppd/hpcups/hp-officejet_pro_8710.ppd
 ./ppd/hpcups/hp-officejet_pro_8720.ppd
+./ppd/hpcups/hp-officejet_pro_9010_series.ppd
+./ppd/hpcups/hp-officejet_pro_9020_series.ppd
 ./ppd/hpcups/hp-officejet_pro_k5300.ppd
 ./ppd/hpcups/hp-officejet_pro_k5400.ppd
 ./ppd/hpcups/hp-officejet_pro_k550.ppd
