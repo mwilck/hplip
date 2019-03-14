@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.19.1"
+*FileVersion: "3.19.3"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-PCLM_COLOR.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PCLM_COLOR"
 *ShortNickName: "PCLM_COLOR"
-*NickName: "PCLM_COLOR, hpcups 3.19.1"
+*NickName: "PCLM_COLOR, hpcups 3.19.3"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -107,7 +107,14 @@
 *OrderDependency: 10 AnySetup *ColorModel
 *DefaultColorModel: RGB
 *ColorModel RGB/4-Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 0>>setpagedevice"
+*ColorModel KGray/Black Only Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2>>setpagedevice"
 *CloseUI: *ColorModel
+*OpenUI *Gray/Print in Grayscale: Boolean
+*OrderDependency: 10 AnySetup *Gray
+*DefaultGray: False
+*Gray False/Off: "<</cupsInteger3 0>>setpagedevice"
+*Gray True/On: "<</cupsInteger3 1>>setpagedevice"
+*CloseUI: *Gray
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: ImageREt2400
@@ -174,4 +181,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-PCLM_COLOR.ppd, 11149 bytes.
+*% End of hp-PCLM_COLOR.ppd, 11475 bytes.
