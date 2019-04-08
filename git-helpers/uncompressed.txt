@@ -715,8 +715,12 @@
 ./ppd/hpcups/hp-laserjet_pro_mfp_m26nw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m27cnw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m27c.ppd
+./ppd/hpcups/hp-laser_ns_1020.ppd
+./ppd/hpcups/hp-laser_ns_mfp_1005.ppd
 ./ppd/hpcups/hp-mopier_240-pcl3.ppd
 ./ppd/hpcups/hp-mopier_320-pcl3.ppd
+./ppd/hpcups/hp-neverstop_laser_100x.ppd
+./ppd/hpcups/hp-neverstop_laser_mfp_120x.ppd
 ./ppd/hpcups/hp-officejet_100_mobile_l411.ppd
 ./ppd/hpcups/hp-officejet_150_mobile_l511.ppd
 ./ppd/hpcups/hp-officejet_200_mobile_series.ppd
@@ -1008,9 +1012,12 @@
 ./ppd/hpcups/hp-psc_950xi.ppd
 ./ppd/hpcups/hp-scanjet_pro_3500_f1.ppd
 ./ppd/hpcups/hp-smart_tank_350_series.ppd
+./ppd/hpcups/hp-smart_tank_500_series.ppd
 ./ppd/hpcups/hp-smart_tank_510_series.ppd
+./ppd/hpcups/hp-smart_tank_530_series.ppd
 ./ppd/hpcups/hp-smart_tank_610_series.ppd
 ./ppd/hpcups/hp-smart_tank_plus_550_series.ppd
+./ppd/hpcups/hp-smart_tank_plus_570_series.ppd
 ./ppd/hpcups/hp-smart_tank_plus_650_series.ppd
 ./ppd/hpcups/hp-smart_tank_wireless_450_series.ppd
 ./ppd/hpcups/hp-tango.ppd
@@ -2342,6 +2349,7 @@
 ./prnt/ps/HP_CM8050_CM8060_MFP-ps.ppd
 ./prnt/ps/hp-cm8050_mfp_with_edgeline-ps.ppd
 ./prnt/ps/hp-cm8060_mfp_with_edgeline-ps.ppd
+./prnt/ps/hp-color_designjet_xl_3600-ps.ppd
 ./prnt/ps/hp-color_laserjet_2500-ps.ppd
 ./prnt/ps/hp_color_LaserJet_2500-ps.ppd
 ./prnt/ps/hp-color_laserjet_2500_series-ps.ppd
@@ -2444,6 +2452,7 @@
 ./prnt/ps/hp-color_laserjet_E65150_E65160-ps.ppd
 ./prnt/ps/hp-color_laserjet_e67550_e67560-ps.ppd
 ./prnt/ps/hp-color_laserjet_e67650_e67660-ps.ppd
+./prnt/ps/hp-color_laserjet_e75245-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_mfp_m680-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_mfp_m880-ps.ppd
 ./prnt/ps/hp-color_laserjet_m153-m154-ps.ppd
@@ -2455,6 +2464,7 @@
 ./prnt/ps/hp-color_laserjet_m651-ps.ppd
 ./prnt/ps/hp-color_laserjet_m652_m653-ps.ppd
 ./prnt/ps/hp-color_laserjet_m750-ps.ppd
+./prnt/ps/hp-color_laserjet_m751-ps.ppd
 ./prnt/ps/hp-color_laserjet_m855-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e77422-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e77428-ps.ppd
@@ -2668,13 +2678,16 @@
 ./prnt/ps/hp-laserjet_cm1415fnw-ps.ppd
 ./prnt/ps/hp-laserjet_color_flow_mfp_m575-ps.ppd
 ./prnt/ps/hp-laserjet_cp1520_series-ps.ppd
+./prnt/ps/hp-laserjet_e50145-ps.ppd
 ./prnt/ps/hp-laserjet_e60055-e60075-ps.ppd
 ./prnt/ps/hp-laserjet_e60155-ps.ppd
 ./prnt/ps/hp-laserjet_e60165-ps.ppd
 ./prnt/ps/hp-laserjet_e60175-ps.ppd
 ./prnt/ps/hp-laserjet_e62555-e62575-ps.ppd
 ./prnt/ps/hp-laserjet_e62655-e62675-ps.ppd
+./prnt/ps/hp-laserjet_flow_mfp_e52645-ps.ppd
 ./prnt/ps/hp-laserjet_flow_mfp_m525-ps.ppd
+./prnt/ps/hp-laserjet_flow_mfp_m528-ps.ppd
 ./prnt/ps/hp-laserjet_flow_mfp_m630-ps.ppd
 ./prnt/ps/hp-laserjet_flow_mfp_m830-ps.ppd
 ./prnt/ps/hp-laserjet_m1522_mfp-ps.ppd
@@ -2701,6 +2714,7 @@
 ./prnt/ps/hp-laserjet_m5035_mfp-ps.ppd
 ./prnt/ps/HP_LaserJet_M5035_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m506-ps.ppd
+./prnt/ps/hp-laserjet_m507-ps.ppd
 ./prnt/ps/hp-laserjet_m604_m605_m606-ps.ppd
 ./prnt/ps/hp-laserjet_m607_m608_m609-ps.ppd
 ./prnt/ps/hp-laserjet_m806-ps.ppd
@@ -2809,6 +2823,7 @@
 ./prnt/ps/hp-pagewide_pro_577_mfp-ps.ppd
 ./prnt/ps/hp-pagewide_pro_750-ps.ppd
 ./prnt/ps/hp-pagewide_pro_mfp_772-777-ps.ppd
+./prnt/ps/hp-pagewide_xl_3900ps_mfp-ps.ppd
 ./prnt/ps/hp-pagewide_xl_4000ps_mfp-ps.ppd
 ./prnt/ps/hp-pagewide_xl_4000ps-ps.ppd
 ./prnt/ps/hp-pagewide_xl_4100ps_mfp-ps.ppd

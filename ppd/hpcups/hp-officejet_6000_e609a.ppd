@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.19.3"
+*FileVersion: "3.19.5"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_6000_e609a.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 6000 e609a"
 *ShortNickName: "HP Officejet 6000 e609a hpijs"
-*NickName: "HP Officejet 6000 e609a, hpcups 3.19.3"
+*NickName: "HP Officejet 6000 e609a, hpcups 3.19.5"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
