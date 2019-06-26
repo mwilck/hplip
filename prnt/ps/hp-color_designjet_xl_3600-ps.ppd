@@ -37,7 +37,7 @@
 *% ======================================
 *OpenUI *Collate/Collate: PickOne
 *OrderDependency: 50 AnySetup *Collate
-*DefaultCollate: On
+*DefaultCollate: Off
 *Collate Off/Off: "/HPDict /ProcSet findresource /SetCollateScope get (None) exch exec"
 *Collate On/On: "/HPDict /ProcSet findresource /SetCollateScope get (Document) exch exec"
 *CloseUI: *Collate
@@ -512,7 +512,7 @@
 *CenterRegistered: False
 *LeadingEdge Short: ""
 *DefaultLeadingEdge: Short
-*CustomPageSize True: "
+*CustomPageSize False: "
 4 dict begin
 3 1 roll
 2 array astore /PageOffset exch def

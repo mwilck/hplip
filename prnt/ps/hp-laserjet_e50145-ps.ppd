@@ -443,9 +443,9 @@
 *OpenUI *HPPJLPrintQuality/Print Quality: PickOne
 *OrderDependency: 5 JCLSetup *HPPJLPrintQuality
 *DefaultHPPJLPrintQuality: Normal
-*HPPJLPrintQuality Normal/Normal: "@PJL SET PRINTQUALITY=NORMAL<0A>"
-*HPPJLPrintQuality FineLines/Fine Lines: "@PJL SET PRINTQUALITY=MAX<0A>"
-*HPPJLPrintQuality QuickView/Quick View: "@PJL SET PRINTQUALITY=DRAFT<0A>"
+*HPPJLPrintQuality Normal/Normal: ""
+*HPPJLPrintQuality FineLines/Fine Lines: ""
+*HPPJLPrintQuality QuickView/Quick View: ""
 *CloseUI: *HPPJLPrintQuality
 *OpenUI *HPEdgeToEdge/Edge-To-Edge Printing: Boolean
 *OrderDependency: 5 DocumentSetup *HPEdgeToEdge
