@@ -10,6 +10,7 @@
 *% End of Copyright statement
 *FormatVersion: "4.3"
 *FileVersion: "53.0"
+*LanguageEncoding: ISOLatin1
 *LanguageVersion: English
 *PCFileName: "HPPD0011.PPD"
 *PSVersion: "(3016.102) 1"
@@ -698,70 +699,6 @@
 *UIConstraints: *MediaType HeavyweightCoated *PageSize SuperDNM
 
 
-*%===Natural Tracing Paper====
-*UIConstraints: *PageSize LetterNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize LetterNM
-*UIConstraints: *PageSize LegalNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize LegalNM
-*UIConstraints: *PageSize TabloidNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize TabloidNM
-*UIConstraints: *PageSize AnsiCNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize AnsiCNM
-*UIConstraints: *PageSize AnsiDNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize AnsiDNM
-*UIConstraints: *PageSize AnsiENM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize AnsiENM
-*UIConstraints: *PageSize AnsiFNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize AnsiFNM
-*UIConstraints: *PageSize ARCHANM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHANM
-*UIConstraints: *PageSize ARCHBNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHBNM
-*UIConstraints: *PageSize ARCHENM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHENM
-*UIConstraints: *PageSize ARCHE1NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHE1NM
-*UIConstraints: *PageSize ARCHE2NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHE2NM
-*UIConstraints: *PageSize ARCHE3NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ARCHE3NM
-*UIConstraints: *MediaType NaturalTracing *PageSize A4NM
-*UIConstraints: *PageSize A3NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize A3NM
-*UIConstraints: *PageSize A2NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize A2NM
-*UIConstraints: *PageSize A1NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize A1NM
-*UIConstraints: *PageSize A0NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize A0NM
-*UIConstraints: *PageSize ISOB4NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ISOB4NM
-*UIConstraints: *PageSize ISOB3NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ISOB3NM
-*UIConstraints: *PageSize ISOB2NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ISOB2NM
-*UIConstraints: *PageSize ISOB2NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ISOB1NM
-*UIConstraints: *PageSize ISOB1NM *MediaType NaturalTracing
-*UIConstraints: *PageSize ISOB0NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize ISOB0NM
-*UIConstraints: *PageSize B4NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize B4NM
-*UIConstraints: *PageSize B3NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize B3NM
-*UIConstraints: *PageSize B2NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize B2NM
-*UIConstraints: *PageSize B1NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize B1NM
-*UIConstraints: *PageSize B0NM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize B0NM
-*UIConstraints: *PageSize SuperBNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize SuperBNM
-*UIConstraints: *PageSize SuperCNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize SuperCNM
-*UIConstraints: *PageSize SuperDNM *MediaType NaturalTracing
-*UIConstraints: *MediaType NaturalTracing *PageSize SuperDNM
-
 
 
 *%===Translucent Bond====
@@ -1299,8 +1236,6 @@
 *UIConstraints:  *HPMaxDetail True *MediaType Coated
 *UIConstraints:  *MediaType HeavyweightCoated *HPMaxDetail True
 *UIConstraints:  *HPMaxDetail True *MediaType HeavyweightCoated
-*UIConstraints:  *MediaType NaturalTracing *HPMaxDetail True
-*UIConstraints:  *HPMaxDetail True *MediaType NaturalTracing
 *UIConstraints:  *MediaType TranslucentBond *HPMaxDetail True
 *UIConstraints:  *HPMaxDetail True *MediaType TranslucentBond
 *UIConstraints:  *MediaType Vellum *HPMaxDetail True
