@@ -3,16 +3,17 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.19.12"
+*FileVersion: "3.20.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laser_ns_1020.ppd"
 *Product: "(HP Laser Ns 1020)"
 *Product: "(HP Laser Ns 1020w)"
+*Product: "(HP Laser Ns 1020n)"
 *Manufacturer: "HP"
 *ModelName: "HP Laser Ns 1020"
 *ShortNickName: "HP Laser Ns 1020 hpijs"
-*NickName: "HP Laser Ns 1020, hpcups 3.19.12"
+*NickName: "HP Laser Ns 1020, hpcups 3.20.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -206,4 +207,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laser_ns_1020.ppd, 13331 bytes.
+*% End of hp-laser_ns_1020.ppd, 13361 bytes.

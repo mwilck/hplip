@@ -3,16 +3,20 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.19.12"
+*FileVersion: "3.20.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-neverstop_laser_mfp_120x.ppd"
 *Product: "(HP Neverstop Laser MFP 1200a)"
 *Product: "(HP Neverstop Laser MFP 1200w)"
+*Product: "(HP Neverstop Laser MFP 1200n)"
+*Product: "(HP Neverstop Laser MFP 1201n)"
+*Product: "(HP Neverstop Laser MFP 1200nw)"
+*Product: "(HP Neverstop Laser MFP 1202nw)"
 *Manufacturer: "HP"
 *ModelName: "HP Neverstop Laser MFP 120x"
 *ShortNickName: "HP Neverstop Laser MFP 120x hpijs"
-*NickName: "HP Neverstop Laser MFP 120x, hpcups 3.19.12"
+*NickName: "HP Neverstop Laser MFP 120x, hpcups 3.20.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -206,4 +210,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-neverstop_laser_mfp_120x.ppd, 13442 bytes.
+*% End of hp-neverstop_laser_mfp_120x.ppd, 13614 bytes.

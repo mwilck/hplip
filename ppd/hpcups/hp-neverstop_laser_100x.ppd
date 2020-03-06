@@ -3,16 +3,18 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.19.12"
+*FileVersion: "3.20.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-neverstop_laser_100x.ppd"
 *Product: "(HP Neverstop Laser 1000a)"
 *Product: "(HP Neverstop Laser 1000w)"
+*Product: "(HP Neverstop Laser 1000n)"
+*Product: "(HP Neverstop Laser 1001nw)"
 *Manufacturer: "HP"
 *ModelName: "HP Neverstop Laser 100x"
 *ShortNickName: "HP Neverstop Laser 100x hpijs"
-*NickName: "HP Neverstop Laser 100x, hpcups 3.19.12"
+*NickName: "HP Neverstop Laser 100x, hpcups 3.20.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -206,4 +208,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-neverstop_laser_100x.ppd, 13402 bytes.
+*% End of hp-neverstop_laser_100x.ppd, 13479 bytes.
