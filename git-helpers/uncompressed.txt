@@ -264,6 +264,7 @@
 ./ppd/hpcups/hp-deskjet_1120.ppd
 ./ppd/hpcups/hp-deskjet_1125.ppd
 ./ppd/hpcups/hp-deskjet_1200c.ppd
+./ppd/hpcups/hp-deskjet_1200_series.ppd
 ./ppd/hpcups/hp-deskjet_1220c.ppd
 ./ppd/hpcups/hp-deskjet_1280.ppd
 ./ppd/hpcups/hp-deskjet_1510_series.ppd
@@ -275,11 +276,13 @@
 ./ppd/hpcups/hp-deskjet_2050_j510_series.ppd
 ./ppd/hpcups/hp-deskjet_2130_series.ppd
 ./ppd/hpcups/hp-deskjet_2200_series.ppd
+./ppd/hpcups/hp-deskjet_2300_series.ppd
 ./ppd/hpcups/hp-deskjet_2510_series.ppd
 ./ppd/hpcups/hp-deskjet_2520_series.ppd
 ./ppd/hpcups/hp-deskjet_2540_series.ppd
 ./ppd/hpcups/hp-deskjet_2600_series.ppd
 ./ppd/hpcups/hp-deskjet_2640_series.ppd
+./ppd/hpcups/hp-deskjet_2700_series.ppd
 ./ppd/hpcups/hp-deskjet_3000_j310_series.ppd
 ./ppd/hpcups/hp-deskjet_3050a_j611_series.ppd
 ./ppd/hpcups/hp-deskjet_3050_j610_series.ppd
@@ -314,6 +317,7 @@
 ./ppd/hpcups/hp-deskjet_3940.ppd
 ./ppd/hpcups/hp-deskjet_400l.ppd
 ./ppd/hpcups/hp-deskjet_400.ppd
+./ppd/hpcups/hp-deskjet_4100_series.ppd
 ./ppd/hpcups/hp-deskjet_450.ppd
 ./ppd/hpcups/hp-deskjet_4510_series.ppd
 ./ppd/hpcups/hp-deskjet_4530_series.ppd
@@ -452,6 +456,9 @@
 ./ppd/hpcups/hp-deskjet_ink_adv_2060_k110.ppd
 ./ppd/hpcups/hp-deskjet_ink_advant_k109a-z.ppd
 ./ppd/hpcups/hp-deskjet_ink_advant_k209a-z.ppd
+./ppd/hpcups/hp-deskjet_plus_4100_series.ppd
+./ppd/hpcups/hp-deskjet_plus_6000_series.ppd
+./ppd/hpcups/hp-deskjet_plus_6400_series.ppd
 ./ppd/hpcups/hp-dj350.ppd
 ./ppd/hpcups/hp-dj450.ppd
 ./ppd/hpcups/hp-envy_100_d410_series.ppd
@@ -465,11 +472,13 @@
 ./ppd/hpcups/hp-envy_5540_series.ppd
 ./ppd/hpcups/hp-envy_5640_series.ppd
 ./ppd/hpcups/hp-envy_5660_series.ppd
+./ppd/hpcups/hp-envy_6000_series.ppd
 ./ppd/hpcups/hp-envy_7640_series.ppd
 ./ppd/hpcups/hp-envy_8000_series.ppd
 ./ppd/hpcups/hp-envy_photo_6200_series.ppd
 ./ppd/hpcups/hp-envy_photo_7100_series.ppd
 ./ppd/hpcups/hp-envy_photo_7800_series.ppd
+./ppd/hpcups/hp-envy_pro_6400_series.ppd
 ./ppd/hpcups/hp-ink_tank_110_series.ppd
 ./ppd/hpcups/hp-ink_tank_310_series.ppd
 ./ppd/hpcups/hp-ink_tank_wireless_410_series.ppd
@@ -617,6 +626,7 @@
 ./ppd/hpcups/hp-laserjet_m9050_mfp-pcl3.ppd
 ./ppd/hpcups/hp-laserjet_m9059_mfp-pcl3.ppd
 ./ppd/hpcups/hp-laserjet_mfp_m129-m134.ppd
+./ppd/hpcups/hp-laserjet_mfp_m232-m237.ppd
 ./ppd/hpcups/hp-laserjet_mfp_m28-m31.ppd
 ./ppd/hpcups/hp-laserjet_p1005.ppd
 ./ppd/hpcups/hp-laserjet_p1006.ppd
@@ -2737,6 +2747,7 @@
 ./prnt/ps/hp-laserjet_m507-ps.ppd
 ./prnt/ps/hp-laserjet_m604_m605_m606-ps.ppd
 ./prnt/ps/hp-laserjet_m607_m608_m609-ps.ppd
+./prnt/ps/hp-laserJet_m610_m611_m612-ps.ppd
 ./prnt/ps/hp-laserjet_m806-ps.ppd
 ./prnt/ps/HP_LaserJet_M9040_M9050_MFP-ps.ppd
 ./prnt/ps/hp-laserjet_m9040_mfp-ps.ppd
@@ -2753,6 +2764,7 @@
 ./prnt/ps/hp-laserjet_mfp_m527-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m630-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m631_m632_m633-ps.ppd
+./prnt/ps/hp-laserjet_mfp_m634_m635_m636-ps.ppd
 ./prnt/ps/hp-laserjet_mfp_m725-ps.ppd
 ./prnt/ps/hp-laserjet_p2015dn_series-ps.ppd
 ./prnt/ps/hp-laserjet_p2015n_series-ps.ppd
