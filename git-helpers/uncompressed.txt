@@ -2487,6 +2487,9 @@
 ./prnt/ps/hp-color_laserjet_m856-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e77422-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e77428-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_e78223-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_e78228-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_e78323-25-30-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m178-m181-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m274-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m278-m281-ps.ppd
