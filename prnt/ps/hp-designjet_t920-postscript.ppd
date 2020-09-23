@@ -3345,6 +3345,76 @@ true SpotColorMatching
 
 *CloseGroup: HPFinishingOptions
 
+*cupsFilter: "application/vnd.cups-postscript 0 hpps"
+
+*%==============================================
+*% Secure Printing
+*% ============================================
+*OpenGroup: SecPin/Secure Printing
+*OpenUI *HPPinPrnt/Secure Printing: PickOne
+*OrderDependency: 50.0 AnySetup *HPPinPrnt
+*DefaultHPPinPrnt: False
+*HPPinPrnt True/On: "%%"
+*HPPinPrnt False/Off: "%%"
+*CloseUI: *HPPinPrnt
+*OpenUI *HPFIDigit/First Digit: PickOne
+*OrderDependency: 50 AnySetup *HPFIDigit
+*DefaultHPFIDigit: 0
+*HPFIDigit 0/0: "%%"
+*HPFIDigit 1/1: "%%"
+*HPFIDigit 2/2: "%%"
+*HPFIDigit 3/3: "%%"
+*HPFIDigit 4/4: "%%"
+*HPFIDigit 5/5: "%%"
+*HPFIDigit 6/6: "%%"
+*HPFIDigit 7/7: "%%"
+*HPFIDigit 8/8: "%%"
+*HPFIDigit 9/9: "%%"
+*CloseUI: *HPFIDigit
+*OpenUI *HPSEDigit/Second Digit: PickOne
+*OrderDependency: 50 AnySetup *HPSEDigit
+*DefaultHPSEDigit: 0
+*HPSEDigit 0/0: "%%"
+*HPSEDigit 1/1: "%%"
+*HPSEDigit 2/2: "%%"
+*HPSEDigit 3/3: "%%"
+*HPSEDigit 4/4: "%%"
+*HPSEDigit 5/5: "%%"
+*HPSEDigit 6/6: "%%"
+*HPSEDigit 7/7: "%%"
+*HPSEDigit 8/8: "%%"
+*HPSEDigit 9/9: "%%"
+*CloseUI: *HPSEDigit
+*OpenUI *HPTHDigit/Third Digit: PickOne
+*OrderDependency: 50 AnySetup *HPTHDigit
+*DefaultHPTHDigit: 0
+*HPTHDigit 0/0: "%%"
+*HPTHDigit 1/1: "%%"
+*HPTHDigit 2/2: "%%"
+*HPTHDigit 3/3: "%%"
+*HPTHDigit 4/4: "%%"
+*HPTHDigit 5/5: "%%"
+*HPTHDigit 6/6: "%%"
+*HPTHDigit 7/7: "%%"
+*HPTHDigit 8/8: "%%"
+*HPTHDigit 9/9: "%%"
+*CloseUI: *HPTHDigit
+*OpenUI *HPFTDigit/Fourth Digit: PickOne
+*OrderDependency: 50 AnySetup *HPFTDigit
+*DefaultHPFTDigit: 0
+*HPFTDigit 0/0: "%%"
+*HPFTDigit 1/1: "%%"
+*HPFTDigit 2/2: "%%"
+*HPFTDigit 3/3: "%%"
+*HPFTDigit 4/4: "%%"
+*HPFTDigit 5/5: "%%"
+*HPFTDigit 6/6: "%%"
+*HPFTDigit 7/7: "%%"
+*HPFTDigit 8/8: "%%"
+*HPFTDigit 9/9: "%%"
+*CloseUI: *HPFTDigit
+*CloseGroup: SecPin
+
 *% =============== Font Information =============== 
 *DefaultFont: Courier
 *Font AdobeSansMM: Standard "(001.002)" Standard ROM

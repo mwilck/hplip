@@ -3,26 +3,16 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.6"
+*FileVersion: "3.20.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_mfp_m232-m237.ppd"
-*Product: "(HP LaserJet MFP m233d)"
-*Product: "(HP LaserJet MFP m236d)"
 *Product: "(HP LaserJet MFP m234dw)"
-*Product: "(HP LaserJet MFP m236dw)"
-*Product: "(HP LaserJet MFP m233dw)"
-*Product: "(HP LaserJet MFP m234sdn)"
-*Product: "(HP LaserJet MFP m233sdn)"
-*Product: "(HP LaserJet MFP m236sdn)"
-*Product: "(HP LaserJet MFP m232sdn)"
-*Product: "(HP LaserJet MFP m234sdw)"
-*Product: "(HP LaserJet MFP m236sdw)"
-*Product: "(HP LaserJet MFP m233sdw)"
+*Product: "(HP LaserJet MFP m234dwe)"
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet MFP m232-m237"
 *ShortNickName: "HP LaserJet MFP m232-m237 hpijs"
-*NickName: "HP LaserJet MFP m232-m237, hpcups 3.20.6"
+*NickName: "HP LaserJet MFP m232-m237, hpcups 3.20.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -216,4 +206,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_mfp_m232-m237.ppd, 13800 bytes.
+*% End of hp-laserjet_mfp_m232-m237.ppd, 13426 bytes.

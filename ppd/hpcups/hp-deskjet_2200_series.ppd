@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.6"
+*FileVersion: "3.20.9"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_2200_series.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 2200 Series"
 *ShortNickName: "HP Deskjet 2200 Series hpijs"
-*NickName: "HP Deskjet 2200 Series, hpcups 3.20.6"
+*NickName: "HP Deskjet 2200 Series, hpcups 3.20.9"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -53,7 +53,6 @@
 *PageSize A6/A6 105x148.5: "<</cupsInteger0 24/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
 *PageSize B5176x250/B5 176x250: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageSize B5/B5 182x257: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
-*PageSize Custom/Custom1: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageSize Env10/#10 Envelope 4.1x9.5in: "<</cupsInteger0 81/PageSize[296.88 684]/ImagingBBox null>>setpagedevice"
 *PageSize EnvA2/A2 Envelope 111x146in: "<</cupsInteger0 109/PageSize[314.88 414]/ImagingBBox null>>setpagedevice"
 *PageSize EnvC5/C5 Envelope 162x229mm in: "<</cupsInteger0 91/PageSize[459.12 648.96]/ImagingBBox null>>setpagedevice"
@@ -92,7 +91,6 @@
 *PageRegion A6/A6 105x148.5: "<</cupsInteger0 24/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
 *PageRegion B5176x250/B5 176x250: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 182x257: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
-*PageRegion Custom/Custom1: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageRegion Env10/#10 Envelope 4.1x9.5in: "<</cupsInteger0 81/PageSize[296.88 684]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvA2/A2 Envelope 111x146in: "<</cupsInteger0 109/PageSize[314.88 414]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvC5/C5 Envelope 162x229mm in: "<</cupsInteger0 91/PageSize[459.12 648.96]/ImagingBBox null>>setpagedevice"
@@ -129,7 +127,6 @@
 *ImageableArea A6/A6 105x148.5: "8.39999961853 8.39999961853 289.43999671936 378.479988098145"
 *ImageableArea B5176x250/B5 176x250: "8.39999961853 8.39999961853 490.320001602173 667.439979553223"
 *ImageableArea B5/B5 182x257: "8.39999961853 8.39999961853 507.360010147095 687.360023498535"
-*ImageableArea Custom/Custom1: "8.39999961853 8.39999961853 603.60000038147 966.959999084473"
 *ImageableArea Env10/#10 Envelope 4.1x9.5in: "8.39999961853 8.39999961853 288.480005264282 642.959999084473"
 *ImageableArea EnvA2/A2 Envelope 111x146in: "8.39999961853 8.39999961853 306.480005264282 372.959999084473"
 *ImageableArea EnvC5/C5 Envelope 162x229mm in: "8.39999961853 8.39999961853 450.719995498657 607.920021057129"
@@ -165,7 +162,6 @@
 *PaperDimension A6/A6 105x148.5: "297.839996337891 419.519989013672"
 *PaperDimension B5176x250/B5 176x250: "498.720001220703 708.47998046875"
 *PaperDimension B5/B5 182x257: "515.760009765625 728.400024414062"
-*PaperDimension Custom/Custom1: "612 1008"
 *PaperDimension Env10/#10 Envelope 4.1x9.5in: "296.880004882812 684"
 *PaperDimension EnvA2/A2 Envelope 111x146in: "314.880004882812 414"
 *PaperDimension EnvC5/C5 Envelope 162x229mm in: "459.119995117188 648.960021972656"
@@ -254,4 +250,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_2200_series.ppd, 19160 bytes.
+*% End of hp-deskjet_2200_series.ppd, 18823 bytes.
