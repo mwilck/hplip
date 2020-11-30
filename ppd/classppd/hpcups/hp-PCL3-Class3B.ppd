@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.9"
+*FileVersion: "3.20.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-PCL3-Class3B.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PCL3-Class3B"
 *ShortNickName: "PCL3-Class3B"
-*NickName: "PCL3-Class3B, hpcups 3.20.9"
+*NickName: "PCL3-Class3B, hpcups 3.20.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -26,6 +26,7 @@
 *cupsBackSide: "Rotated"
 *cupsFlipDuplex: True
 *hpPrinterLanguage: "pcl3gui"
+*hpPrinterPlatform: "dj8x5"
 *HPMechOffset: "70"
 *1284DeviceID: "MFG:HP;MDL:PCL3-Class3B;DES:PCL3-Class3B;"
 *cupsVersion: 1.5
@@ -167,10 +168,10 @@
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: NormalRGB
-*OutputMode NormalRGB/Normal Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 1/OutputType(0)/cupsInteger2 0/HWResolution[300 300]>>setpagedevice"
-*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/OutputType(0)/cupsInteger2 1/HWResolution[600 600]>>setpagedevice"
-*OutputMode DraftRGB/Draft Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(-1)/cupsInteger2 2/HWResolution[300 300]>>setpagedevice"
-*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/OutputType(-1)/cupsInteger2 3/HWResolution[300 300]>>setpagedevice"
+*OutputMode NormalRGB/Normal Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 1/OutputType(0)/cupsString0(PlainNormalColor)/HWResolution[300 300]>>setpagedevice"
+*OutputMode NormalGray/Normal Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/OutputType(0)/cupsString0(PlainNormalGrayK)/HWResolution[600 600]>>setpagedevice"
+*OutputMode DraftRGB/Draft Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(-1)/cupsString0(PlainDraftColor)/HWResolution[300 300]>>setpagedevice"
+*OutputMode DraftGray/Draft Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/OutputType(-1)/cupsString0(PlainDraftGrayK)/HWResolution[300 300]>>setpagedevice"
 *OutputMode BestRGB/Best Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0/OutputType(1)/cupsString0(PlainBestColor)/HWResolution[600 600]>>setpagedevice"
 *OutputMode BestGray/Best Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2/cupsCompression 2/HWResolution[600 600]>>setpagedevice"
 *OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
@@ -219,4 +220,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-PCL3-Class3B.ppd, 14817 bytes.
+*% End of hp-PCL3-Class3B.ppd, 14905 bytes.

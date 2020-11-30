@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.9"
+*FileVersion: "3.20.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_5200_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 5200 Series"
 *ShortNickName: "HP Deskjet 5200 Series hpijs"
-*NickName: "HP Deskjet 5200 Series, hpcups 3.20.9"
+*NickName: "HP Deskjet 5200 Series, hpcups 3.20.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -74,10 +74,10 @@
 *UIConstraints: *Duplex *PageSize A6
 *UIConstraints: *PageSize A6.FB *Duplex
 *UIConstraints: *Duplex *PageSize A6.FB
-*UIConstraints: *PageSize Custom *Duplex
-*UIConstraints: *Duplex *PageSize Custom
-*UIConstraints: *PageSize Custom.FB *Duplex
-*UIConstraints: *Duplex *PageSize Custom.FB
+*UIConstraints: *PageSize Custom1 *Duplex
+*UIConstraints: *Duplex *PageSize Custom1
+*UIConstraints: *PageSize Custom1.FB *Duplex
+*UIConstraints: *Duplex *PageSize Custom1.FB
 *UIConstraints: *PageSize Envelope#10 *Duplex
 *UIConstraints: *Duplex *PageSize Envelope#10
 *UIConstraints: *PageSize EnvelopeC5 *Duplex
@@ -146,8 +146,8 @@
 *UIConstraints: *MediaType Plain *PageSize A6.FB
 *UIConstraints: *PageSize JB5.FB *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize JB5.FB
-*UIConstraints: *PageSize Custom.FB *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Custom.FB
+*UIConstraints: *PageSize Custom1.FB *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize Custom1.FB
 *UIConstraints: *PageSize IndexCard3x5.FB *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize IndexCard3x5.FB
 *UIConstraints: *PageSize IndexCard5x8.FB *MediaType Plain
@@ -192,8 +192,8 @@
 *PageSize B5/B5: "<</cupsInteger0 65/PageSize [498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageSize JB5/JB5: "<</cupsInteger0 45/PageSize [515.76 728.4]/ImagingBBox null>>setpagedevice"
 *PageSize JB5.FB/Borderless JB5: "<</cupsInteger0 45/PageSize [515.76 728.4]/ImagingBBox null>>setpagedevice"
-*PageSize Custom/Custom: "<</cupsInteger0 101/PageSize [612 1008]/ImagingBBox null>>setpagedevice"
-*PageSize Custom.FB/Borderless Custom: "<</cupsInteger0 101/PageSize [612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize Custom1/Custom 1: "<</cupsInteger0 101/PageSize [612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize Custom1.FB/Borderless Custom: "<</cupsInteger0 101/PageSize [612 1008]/ImagingBBox null>>setpagedevice"
 *PageSize Envelope#10/Envelope #10: "<</cupsInteger0 81/PageSize [296.88 684]/ImagingBBox null>>setpagedevice"
 *PageSize EnvelopeA2/Envelope A2: "<</cupsInteger0 109/PageSize [314.88 414]/ImagingBBox null>>setpagedevice"
 *PageSize EnvelopeC5/Envelope C5: "<</cupsInteger0 91/PageSize [459.12 648.96]/ImagingBBox null>>setpagedevice"
@@ -252,8 +252,8 @@
 *PageRegion B5/B5: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageRegion JB5/JB5: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
 *PageRegion JB5.FB/Borderless JB5: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
-*PageRegion Custom/Custom: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
-*PageRegion Custom.FB/Borderless Custom: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion Custom1/Custom 1: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion Custom1.FB/Borderless Custom: "<</cupsInteger0 101/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageRegion Envelope#10/Envelope #10: "<</cupsInteger0 81/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvelopeA2/Envelope A2: "<</cupsInteger0 109/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvelopeC5/Envelope C5: "<</cupsInteger0 91/PageSize[459.12 648.96]/ImagingBBox null>>setpagedevice"
@@ -310,8 +310,8 @@
 *ImageableArea B5/B5: "8.39999961853 8.39999961853 490.320001602173 700.07998085022"
 *ImageableArea JB5/JB5: "8.39999961853 8.39999961853 507.360010147095 720.000024795532"
 *ImageableArea JB5.FB/Borderless JB5: "0 0 515.760009765625 728.400024414062"
-*ImageableArea Custom/Custom: "8.39999961853 8.39999961853 603.60000038147 999.60000038147"
-*ImageableArea Custom.FB/Borderless Custom: "0 0 612 1008"
+*ImageableArea Custom1/Custom 1: "8.39999961853 8.39999961853 603.60000038147 999.60000038147"
+*ImageableArea Custom1.FB/Borderless Custom: "0 0 612 1008"
 *ImageableArea Envelope#10/Envelope #10: "8.39999961853 8.39999961853 288.480005264282 675.60000038147"
 *ImageableArea EnvelopeA2/Envelope A2: "8.39999961853 8.39999961853 306.480005264282 405.60000038147"
 *ImageableArea EnvelopeC5/Envelope C5: "8.39999961853 8.39999961853 450.719995498657 640.560022354126"
@@ -367,8 +367,8 @@
 *PaperDimension B5/B5: "498.720001220703 708.47998046875"
 *PaperDimension JB5/JB5: "515.760009765625 728.400024414062"
 *PaperDimension JB5.FB/Borderless JB5: "515.760009765625 728.400024414062"
-*PaperDimension Custom/Custom: "612 1008"
-*PaperDimension Custom.FB/Borderless Custom: "612 1008"
+*PaperDimension Custom1/Custom 1: "612 1008"
+*PaperDimension Custom1.FB/Borderless Custom: "612 1008"
 *PaperDimension Envelope#10/Envelope #10: "296.880004882812 684"
 *PaperDimension EnvelopeA2/Envelope A2: "314.880004882812 414"
 *PaperDimension EnvelopeC5/Envelope C5: "459.119995117188 648.960021972656"
@@ -474,4 +474,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_5200_series.ppd, 33023 bytes.
+*% End of hp-deskjet_5200_series.ppd, 33047 bytes.

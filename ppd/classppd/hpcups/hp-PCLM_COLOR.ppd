@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.9"
+*FileVersion: "3.20.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-PCLM_COLOR.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PCLM_COLOR"
 *ShortNickName: "PCLM_COLOR"
-*NickName: "PCLM_COLOR, hpcups 3.20.9"
+*NickName: "PCLM_COLOR, hpcups 3.20.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -23,6 +23,9 @@
 *% Driver-defined attributes...
 *RequiresPageRegion All: True
 *hpPrinterLanguage: "hbpl1"
+*cupsEvenDuplex: True
+*cupsBackSide: "Rotated"
+*cupsFlipDuplex: True
 *1284DeviceID: "MFG:HP;MDL:PCLM COLOR;DES:PCLM COLOR;"
 *cupsVersion: 1.5
 *cupsModelNumber: 0
@@ -91,6 +94,13 @@
 *PaperDimension EnvDL/DL Envelope 110x220mm: "312 624"
 *PaperDimension Env10/#10 Envelope 4.12x9.5in: "297 684"
 *PaperDimension EnvC5/C5 Envelope 162x229mm: "459 649"
+*OpenUI *Duplex/Double-Sided Printing: PickOne
+*OrderDependency: 10 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
+*Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
+*CloseUI: *Duplex
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: tray1
@@ -117,33 +127,32 @@
 *CloseUI: *Gray
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
-*DefaultOutputMode: ImageREt2400
-*OutputMode ImageREt2400/ImageREt 2400: "<</OutputType(ImageREt)/HWResolution[600 600]>>setpagedevice"
+*DefaultOutputMode: FastRes600
+*OutputMode FastRes600/FastRes 600: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode FastRes1200/FastRes 1200: "<</OutputType(2)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Draft/Draft: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode ImageREt2400/ImageREt 2400: "<</HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10 AnySetup *MediaType
-*DefaultMediaType: HPLaserJet90gsm
-*MediaType HPLaserJet90gsm/HP LaserJet 90g: "<</MediaType(HPLaserJet90gsm)>>setpagedevice"
-*MediaType HPColorLaser105gsm/HP Color Laser Matte 105g: "<</MediaType(HPColorLaser105gsm)>>setpagedevice"
-*MediaType HPPremium_120gsm/HP Premium Choice Matte 120g: "<</MediaType(HPPremium_120gsm)>>setpagedevice"
-*MediaType HPMatte160gsm/HP Brochure Matte 150g: "<</MediaType(HPMatte160gsm)>>setpagedevice"
-*MediaType HPMatteCover200gsm/HP Cover Matte 200g: "<</MediaType(HPMatteCover200gsm)>>setpagedevice"
-*MediaType HPMattePhoto200gsm/HP Matte Photo 200g: "<</MediaType(HPMattePhoto200gsm)>>setpagedevice"
-*MediaType HPGlossy130gsm/HP Premium Presentation Glossy 120g: "<</MediaType(HPGlossy130gsm)>>setpagedevice"
-*MediaType HPGlossy160gsm/HP Brochure Glossy 150g: "<</MediaType(HPGlossy160gsm)>>setpagedevice"
-*MediaType HPTrifoldBrochureGlossy/HP Tri-fold Brochure Glossy 150g: "<</MediaType(HPTrifoldBrochureGlossy)>>setpagedevice"
-*MediaType HPGlossPhoto220gsm/HP Brochure Glossy 200g: "<</MediaType(HPGlossPhoto220gsm)>>setpagedevice"
-*MediaType HPGlossPhoto220gsmFasterPrinting/HP Brochure Glossy 200g (faster printing): "<</MediaType(HPGlossPhoto220gsmFasterPrinting)>>setpagedevice"
-*MediaType HPGlossPhoto220gsmHigherGloss/HP Brochure Glossy 200g (higher gloss): "<</MediaType(HPGlossPhoto220gsmHigherGloss)>>setpagedevice"
-*MediaType midweightGlossy/Mid-Weight Glossy 96-110g: "<</MediaType(midweightGlossy)>>setpagedevice"
-*MediaType heavyGlossy/Heavy Glossy 111-130g: "<</MediaType(heavyGlossy)>>setpagedevice"
-*MediaType extraHeavyGloss/Extra Heavy Glossy 131-175g: "<</MediaType(extraHeavyGloss)>>setpagedevice"
-*MediaType cardstockGlossy/Card Glossy 176-220g: "<</MediaType(cardstockGlossy)>>setpagedevice"
-*MediaType transparencyColorLaser/Color Laser Transparency: "<</MediaType(transparencyColorLaser)>>setpagedevice"
-*MediaType heavyEnvelope/Heavy Envelope: "<</MediaType(heavyEnvelope)>>setpagedevice"
-*MediaType heavyRough/Heavy Rough: "<</MediaType(heavyRough)>>setpagedevice"
-*MediaType toughPaper/HP Tough Paper: "<</MediaType(toughPaper)>>setpagedevice"
-*MediaType intermediate/Intermediate 85-95g: "<</MediaType(intermediate)>>setpagedevice"
+*DefaultMediaType: Plain
+*MediaType Auto/Unspecified: "<</MediaType(auto)>>setpagedevice"
+*MediaType Plain/Plain Paper: "<</MediaType(Stationery)>>setpagedevice"
+*MediaType HPEcoSMARTLite/HP EcoSMART Lite: "<</MediaType(HPEcoSMARTLite)>>setpagedevice"
+*MediaType Light/Light 60-74g: "<</MediaType(light)>>setpagedevice"
+*MediaType Mid-Weight/Mid-Weight96-110g: "<</MediaType(midweight)>>setpagedevice"
+*MediaType Heavy/Heavy 111-130g: "<</MediaType(heavy)>>setpagedevice"
+*MediaType ExtraHeavy/Extra Heavy 131-175g: "<</MediaType(extraHeavy)>>setpagedevice"
+*MediaType Transparency/Monochrome Laser Transparency: "<</MediaType(transparencyMonoLaser)>>setpagedevice"
+*MediaType Labels/Labels: "<</MediaType(labels)>>setpagedevice"
+*MediaType Letterhead/Letterhead: "<</MediaType(stationery-letterhead)>>setpagedevice"
+*MediaType Envelope/Envelope: "<</MediaType(envelope)>>setpagedevice"
+*MediaType Preprinted/Preprinted: "<</MediaType(stationery-preprinted)>>setpagedevice"
+*MediaType Prepunched/Prepunched: "<</MediaType(stationery-prepunched)>>setpagedevice"
+*MediaType Colored/Colored: "<</MediaType(color)>>setpagedevice"
+*MediaType Bond/Bond: "<</MediaType(bond)>>setpagedevice"
+*MediaType Recycled/Recycled: "<</MediaType(recycled)>>setpagedevice"
+*MediaType Rough/Rough: "<</MediaType(rough)>>setpagedevice"
 *CloseUI: *MediaType
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
@@ -181,4 +190,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-PCLM_COLOR.ppd, 11475 bytes.
+*% End of hp-PCLM_COLOR.ppd, 11269 bytes.

@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.9"
+*FileVersion: "3.20.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-ink_tank_310_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Ink Tank 310 Series"
 *ShortNickName: "HP Ink Tank 310 Series hpijs"
-*NickName: "HP Ink Tank 310 Series, hpcups 3.20.9"
+*NickName: "HP Ink Tank 310 Series, hpcups 3.20.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -30,24 +30,14 @@
 *cupsManualCopies: True
 *cupsFilter: "application/vnd.cups-raster 0 hpcups"
 *cupsLanguages: "en"
-*UIConstraints: *MediaType Glossy *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType Glossy
-*UIConstraints: *MediaType FastGlossy *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType FastGlossy
-*UIConstraints: *MediaType BrochureGlosy *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType BrochureGlosy
-*UIConstraints: *MediaType Brochure *OutputMode FastDraft
-*UIConstraints: *OutputMode FastDraft *MediaType Brochure
-*UIConstraints: *PageSize Photo4x6 *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo4x6
-*UIConstraints: *PageSize Photo13x18 *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo13x18
-*UIConstraints: *PageSize Photo2L *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo2L
-*UIConstraints: *PageSize Photo5x7 *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo5x7
-*UIConstraints: *PageSize Photo8x10 *MediaType Plain
-*UIConstraints: *MediaType Plain *PageSize Photo8x10
+*UIConstraints: *PageSize 4x6in *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 4x6in
+*UIConstraints: *PageSize 2L *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 2L
+*UIConstraints: *PageSize 5x7in *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 5x7in
+*UIConstraints: *PageSize 8x10 *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 8x10
 *UIConstraints: *PageSize L *MediaType Plain
 *UIConstraints: *MediaType Plain *PageSize L
 *UIConstraints: *PageSize 8.5x13 *MediaType Glossy
@@ -60,36 +50,34 @@
 *UIConstraints: *MediaType Glossy *PageSize JB5
 *UIConstraints: *PageSize B5 *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize B5
-*UIConstraints: *PageSize EnvC6 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvC6
-*UIConstraints: *PageSize EnvChou3 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvChou3
-*UIConstraints: *PageSize EnvChou4 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvChou4
-*UIConstraints: *PageSize EnvMonarch *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvMonarch
-*UIConstraints: *PageSize Env10 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Env10
-*UIConstraints: *PageSize EnvDL *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvDL
-*UIConstraints: *PageSize EnvC5 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvC5
-*UIConstraints: *PageSize Env6 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Env6
-*UIConstraints: *PageSize EnvA2 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize EnvA2
+*UIConstraints: *PageSize EnvelopeC6 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeA2
 *UIConstraints: *PageSize Executive *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Executive
-*UIConstraints: *PageSize Card4x6 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Card4x6
-*UIConstraints: *PageSize Card3x5 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Card3x5
-*UIConstraints: *PageSize Card5x8 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize Card5x8
-*UIConstraints: *PageSize CardA4 *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize CardA4
-*UIConstraints: *PageSize CardLetter *MediaType Glossy
-*UIConstraints: *MediaType Glossy *PageSize CardLetter
+*UIConstraints: *PageSize IndexCard4x6 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCardLetter
 *UIConstraints: *PageSize Letter *MediaType Glossy
 *UIConstraints: *MediaType Glossy *PageSize Letter
 *UIConstraints: *PageSize Legal *MediaType Brochure
@@ -104,36 +92,34 @@
 *UIConstraints: *MediaType FastGlossy *PageSize JB5
 *UIConstraints: *PageSize B5 *MediaType FastGlossy
 *UIConstraints: *MediaType FastGlossy *PageSize B5
-*UIConstraints: *PageSize EnvC6 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvC6
-*UIConstraints: *PageSize EnvChou3 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvChou3
-*UIConstraints: *PageSize EnvChou4 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvChou4
-*UIConstraints: *PageSize EnvMonarch *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvMonarch
-*UIConstraints: *PageSize Env10 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize Env10
-*UIConstraints: *PageSize EnvDL *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvDL
-*UIConstraints: *PageSize EnvC5 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvC5
-*UIConstraints: *PageSize Env6 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize Env6
-*UIConstraints: *PageSize EnvA2 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize EnvA2
+*UIConstraints: *PageSize EnvelopeC6 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeA2
 *UIConstraints: *PageSize Executive *MediaType FastGlossy
 *UIConstraints: *MediaType FastGlossy *PageSize Executive
-*UIConstraints: *PageSize Card4x6 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize Card4x6
-*UIConstraints: *PageSize Card3x5 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize Card3x5
-*UIConstraints: *PageSize Card5x8 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize Card5x8
-*UIConstraints: *PageSize CardA4 *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize CardA4
-*UIConstraints: *PageSize CardLetter *MediaType FastGlossy
-*UIConstraints: *MediaType FastGlossy *PageSize CardLetter
+*UIConstraints: *PageSize IndexCard4x6 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCardLetter
 *UIConstraints: *PageSize Letter *MediaType FastGlossy
 *UIConstraints: *MediaType FastGlossy *PageSize Letter
 *UIConstraints: *PageSize Legal *MediaType Brochure
@@ -148,36 +134,34 @@
 *UIConstraints: *MediaType BrochureGlosy *PageSize JB5
 *UIConstraints: *PageSize B5 *MediaType BrochureGlosy
 *UIConstraints: *MediaType BrochureGlosy *PageSize B5
-*UIConstraints: *PageSize EnvC6 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvC6
-*UIConstraints: *PageSize EnvChou3 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvChou3
-*UIConstraints: *PageSize EnvChou4 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvChou4
-*UIConstraints: *PageSize EnvMonarch *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvMonarch
-*UIConstraints: *PageSize Env10 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize Env10
-*UIConstraints: *PageSize EnvDL *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvDL
-*UIConstraints: *PageSize EnvC5 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvC5
-*UIConstraints: *PageSize Env6 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize Env6
-*UIConstraints: *PageSize EnvA2 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize EnvA2
+*UIConstraints: *PageSize EnvelopeC6 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeA2
 *UIConstraints: *PageSize Executive *MediaType BrochureGlosy
 *UIConstraints: *MediaType BrochureGlosy *PageSize Executive
-*UIConstraints: *PageSize Card4x6 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize Card4x6
-*UIConstraints: *PageSize Card3x5 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize Card3x5
-*UIConstraints: *PageSize Card5x8 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize Card5x8
-*UIConstraints: *PageSize CardA4 *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize CardA4
-*UIConstraints: *PageSize CardLetter *MediaType BrochureGlosy
-*UIConstraints: *MediaType BrochureGlosy *PageSize CardLetter
+*UIConstraints: *PageSize IndexCard4x6 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCardLetter
 *UIConstraints: *PageSize Letter *MediaType BrochureGlosy
 *UIConstraints: *MediaType BrochureGlosy *PageSize Letter
 *UIConstraints: *PageSize Legal *MediaType Brochure
@@ -192,36 +176,34 @@
 *UIConstraints: *MediaType Brochure *PageSize JB5
 *UIConstraints: *PageSize B5 *MediaType Brochure
 *UIConstraints: *MediaType Brochure *PageSize B5
-*UIConstraints: *PageSize EnvC6 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvC6
-*UIConstraints: *PageSize EnvChou3 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvChou3
-*UIConstraints: *PageSize EnvChou4 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvChou4
-*UIConstraints: *PageSize EnvMonarch *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvMonarch
-*UIConstraints: *PageSize Env10 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize Env10
-*UIConstraints: *PageSize EnvDL *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvDL
-*UIConstraints: *PageSize EnvC5 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvC5
-*UIConstraints: *PageSize Env6 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize Env6
-*UIConstraints: *PageSize EnvA2 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize EnvA2
+*UIConstraints: *PageSize EnvelopeC6 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeA2
 *UIConstraints: *PageSize Executive *MediaType Brochure
 *UIConstraints: *MediaType Brochure *PageSize Executive
-*UIConstraints: *PageSize Card4x6 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize Card4x6
-*UIConstraints: *PageSize Card3x5 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize Card3x5
-*UIConstraints: *PageSize Card5x8 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize Card5x8
-*UIConstraints: *PageSize CardA4 *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize CardA4
-*UIConstraints: *PageSize CardLetter *MediaType Brochure
-*UIConstraints: *MediaType Brochure *PageSize CardLetter
+*UIConstraints: *PageSize IndexCard4x6 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCardLetter
 *UIConstraints: *PageSize Letter *MediaType Brochure
 *UIConstraints: *MediaType Brochure *PageSize Letter
 *UIConstraints: *PageSize Legal *MediaType Brochure
@@ -234,7 +216,6 @@
 *PageSize 3x5/3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
 *PageSize 4x5in/4x5in: "<</cupsInteger0 30002/PageSize [288 360]/ImagingBBox null>>setpagedevice"
 *PageSize 4x6in/4x6in (10x15cm) : "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageSize 4x6in/4x6in: "<</cupsInteger0 74/PageSize [288 432]/ImagingBBox null>>setpagedevice"
 *PageSize 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 720]/ImagingBBox null>>setpagedevice"
 *PageSize 5x7in/5x7in: "<</cupsInteger0 122/PageSize [360 504]/ImagingBBox null>>setpagedevice"
 *PageSize Envelope_No_6_75/Envelope No 6_75: "<</cupsInteger0 83/PageSize [260.88 468]/ImagingBBox null>>setpagedevice"
@@ -272,7 +253,6 @@
 *PageRegion 3x5/3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
 *PageRegion 4x5in/4x5in: "<</cupsInteger0 30002/PageSize[288 360]/ImagingBBox null>>setpagedevice"
 *PageRegion 4x6in/4x6in (10x15cm) : "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
-*PageRegion 4x6in/4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
 *PageRegion 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 720]/ImagingBBox null>>setpagedevice"
 *PageRegion 5x7in/5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageRegion Envelope_No_6_75/Envelope No 6_75: "<</cupsInteger0 83/PageSize[260.88 468]/ImagingBBox null>>setpagedevice"
@@ -308,7 +288,6 @@
 *ImageableArea 3x5/3x5in: "8.39999961853 8.39999961853 207.60000038147 351.60000038147"
 *ImageableArea 4x5in/4x5in: "8.39999961853 8.39999961853 279.60000038147 351.60000038147"
 *ImageableArea 4x6in/4x6in (10x15cm) : "8.39999961853 8.39999961853 279.60000038147 423.60000038147"
-*ImageableArea 4x6in/4x6in: "8.39999961853 8.39999961853 279.60000038147 423.60000038147"
 *ImageableArea 4x12in/4x12in (10x30cm) : "8.39999961853 8.39999961853 279.60000038147 711.60000038147"
 *ImageableArea 5x7in/5x7in: "8.39999961853 8.39999961853 351.60000038147 495.60000038147"
 *ImageableArea Envelope_No_6_75/Envelope No 6_75: "8.39999961853 8.39999961853 252.480005264282 459.60000038147"
@@ -343,7 +322,6 @@
 *PaperDimension 3x5/3x5in: "216 360"
 *PaperDimension 4x5in/4x5in: "288 360"
 *PaperDimension 4x6in/4x6in (10x15cm) : "288 432"
-*PaperDimension 4x6in/4x6in: "288 432"
 *PaperDimension 4x12in/4x12in (10x30cm) : "288 720"
 *PaperDimension 5x7in/5x7in: "360 504"
 *PaperDimension Envelope_No_6_75/Envelope No 6_75: "260.880004882812 468"
@@ -449,4 +427,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-ink_tank_310_series.ppd, 28900 bytes.
+*% End of hp-ink_tank_310_series.ppd, 28158 bytes.

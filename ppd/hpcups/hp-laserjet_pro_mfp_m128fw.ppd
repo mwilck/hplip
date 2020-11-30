@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.9"
+*FileVersion: "3.20.11"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_pro_mfp_m128fw.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet Pro MFP m128fw"
 *ShortNickName: "HP LJ Pro MFP m128fw hpijs"
-*NickName: "HP LaserJet Pro MFP m128fw, hpcups 3.20.9"
+*NickName: "HP LaserJet Pro MFP m128fw, hpcups 3.20.11"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -161,13 +161,17 @@
 *OpenUI *ColorModel/Output Mode: PickOne
 *OrderDependency: 10 AnySetup *ColorModel
 *DefaultColorModel: Gray
+*ColorModel KGray/Black Only Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 2>>setpagedevice"
 *ColorModel Gray/Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 2>>setpagedevice"
+*ColorModel Mono/Monochrome: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowCount 3/cupsRowStep 2>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: FastRes600
-*OutputMode FastRes600/FastRes 600: "<</OutputType(normal)/HWResolution[600 600]>>setpagedevice"
-*OutputMode FastRes1200/FastRes 1200: "<</OutputType(best)/HWResolution[600 600]>>setpagedevice"
+*OutputMode FastRes600/FastRes 600: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode FastRes1200/FastRes 1200: "<</OutputType(2)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Draft/Draft: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode ImageREt2400/ImageREt 2400: "<</HWResolution[600 600]>>setpagedevice"
 *CloseUI: *OutputMode
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
@@ -205,4 +209,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_pro_mfp_m128fw.ppd, 13394 bytes.
+*% End of hp-laserjet_pro_mfp_m128fw.ppd, 13790 bytes.
