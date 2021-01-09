@@ -300,8 +300,12 @@ def get_pyQt4_version():
     except ImportError:
         ver='-'
     else:
-        from PyQt4 import QtCore
-        ver = QtCore.PYQT_VERSION_STR
+        try:
+            from PyQt4 import QtCore
+        except ImportError:
+            pass
+        else:
+            ver = QtCore.PYQT_VERSION_STR
     return ver
 
 
@@ -314,8 +318,12 @@ def get_pyQt5_version():
     except ImportError:
         ver='-'
     else:
-        from PyQt5 import QtCore
-        ver = QtCore.PYQT_VERSION_STR
+        try:
+            from PyQt5 import QtCore
+        except ImportError:
+            pass
+        else:
+            ver = QtCore.PYQT_VERSION_STR
     return ver
 
 def get_reportlab_version():
