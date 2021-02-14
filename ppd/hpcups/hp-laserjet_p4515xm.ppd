@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.11"
+*FileVersion: "3.21.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_p4515xm.ppd"
@@ -11,11 +11,11 @@
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet p4515xm"
 *ShortNickName: "HP LaserJet p4515xm hpijs"
-*NickName: "HP LaserJet p4515xm, hpcups 3.20.11"
+*NickName: "HP LaserJet p4515xm, hpcups 3.21.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
-*ColorDevice: True
-*DefaultColorSpace: RGB
+*ColorDevice: False
+*DefaultColorSpace: Gray
 *FileSystem: False
 *Throughput: "1"
 *LandscapeOrientation: Plus90

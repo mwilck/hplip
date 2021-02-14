@@ -3,20 +3,51 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.20.11"
+*FileVersion: "3.21.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-laserjet_mfp_m232-m237.ppd"
 *Product: "(HP LaserJet MFP m234dw)"
 *Product: "(HP LaserJet MFP m234dwe)"
+*Product: "(HP LaserJet MFP m233d)"
+*Product: "(HP LaserJet MFP m232d)"
+*Product: "(HP LaserJet MFP m235d)"
+*Product: "(HP LaserJet MFP m237d)"
+*Product: "(HP LaserJet MFP m236d)"
+*Product: "(HP LaserJet MFP m232dw)"
+*Product: "(HP LaserJet MFP m232dwc)"
+*Product: "(HP LaserJet MFP m233dw)"
+*Product: "(HP LaserJet MFP m236dw)"
+*Product: "(HP LaserJet MFP m235dw)"
+*Product: "(HP LaserJet MFP m235dwe)"
+*Product: "(HP LaserJet MFP m237dwe)"
+*Product: "(HP LaserJet MFP m237dw)"
+*Product: "(HP LaserJet MFP m232sdn)"
+*Product: "(HP LaserJet MFP m233sdn)"
+*Product: "(HP LaserJet MFP m236sdn)"
+*Product: "(HP LaserJet MFP m234sdn)"
+*Product: "(HP LaserJet MFP m234sdne)"
+*Product: "(HP LaserJet MFP m235sdn)"
+*Product: "(HP LaserJet MFP m235sdne)"
+*Product: "(HP LaserJet MFP m237sdne)"
+*Product: "(HP LaserJet MFP m237sdn)"
+*Product: "(HP LaserJet MFP m232sdw)"
+*Product: "(HP LaserJet MFP m233sdw)"
+*Product: "(HP LaserJet MFP m236sdw)"
+*Product: "(HP LaserJet MFP m234sdw)"
+*Product: "(HP LaserJet MFP m234sdwe)"
+*Product: "(HP LaserJet MFP m235sdw)"
+*Product: "(HP LaserJet MFP m235sdwe)"
+*Product: "(HP LaserJet MFP m237sdwe)"
+*Product: "(HP LaserJet MFP m237sdw)"
 *Manufacturer: "HP"
 *ModelName: "HP LaserJet MFP m232-m237"
 *ShortNickName: "HP LaserJet MFP m232-m237 hpijs"
-*NickName: "HP LaserJet MFP m232-m237, hpcups 3.20.11"
+*NickName: "HP LaserJet MFP m232-m237, hpcups 3.21.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
-*ColorDevice: True
-*DefaultColorSpace: RGB
+*ColorDevice: False
+*DefaultColorSpace: Gray
 *FileSystem: False
 *Throughput: "1"
 *LandscapeOrientation: Plus90
@@ -220,4 +251,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-laserjet_mfp_m232-m237.ppd, 14253 bytes.
+*% End of hp-laserjet_mfp_m232-m237.ppd, 15422 bytes.
