@@ -285,7 +285,7 @@
 *sv.Translation HPEconoMode/EconoMode: ""
 
 *OrderDependency: 10 JCLSetup  *HPEconoMode
-*HPEconoMode True/On: "@PJL SET EconoMode = ON<0A>"
+*HPEconoMode True/On: "%%"
 *da.HPEconoMode True/Ja: ""
 *de.HPEconoMode True/Ein: ""
 *es.HPEconoMode True/Sí: ""
@@ -295,7 +295,7 @@
 *pt.HPEconoMode True/ATV: ""
 *sv.HPEconoMode True/På: ""
 
-*HPEconoMode False/Off: "@PJL SET EconoMode = OFF<0A>"
+*HPEconoMode False/Off: "%%"
 *da.HPEconoMode False/Nej: ""
 *de.HPEconoMode False/Aus: ""
 *es.HPEconoMode False/No: ""

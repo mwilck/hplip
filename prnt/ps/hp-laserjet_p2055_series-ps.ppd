@@ -205,7 +205,7 @@
 *OpenUI *HPEconoMode/EconoMode: Boolean
 *OrderDependency: 20 JCLSetup *HPEconoMode
 *DefaultHPEconoMode: False
-*HPEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>"
+*HPEconoMode True/On: "%%"
 *da.HPEconoMode True/På: ""
 *de.HPEconoMode True/Ein: ""
 *es.HPEconoMode True/Activado: ""
@@ -222,7 +222,7 @@
 *zh_CN.HPEconoMode True/开: ""
 *zh_TW.HPEconoMode True/開啟: ""
 
-*HPEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>"
+*HPEconoMode False/Off: "%%"
 *da.HPEconoMode False/Fra: ""
 *de.HPEconoMode False/Aus: ""
 *es.HPEconoMode False/Desactivado: ""

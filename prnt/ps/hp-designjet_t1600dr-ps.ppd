@@ -518,12 +518,12 @@ currentdict end setpagedevice"
 *% Secure Printing
 *% ============================================
 *OpenGroup: SecPin/Secure Printing
-*OpenUI *HPPinPrnt/Secure Printing: PickOne
-*OrderDependency: 50.0 AnySetup *HPPinPrnt
+*OpenUI *HPLFPPinPrnt/Secure Printing: PickOne
+*OrderDependency: 50.0 AnySetup *HPLFPPinPrnt
 *DefaultHPPinPrnt: False
-*HPPinPrnt True/On: "%%"
-*HPPinPrnt False/Off: "%%"
-*CloseUI: *HPPinPrnt
+*HPLFPPinPrnt True/On: "%%"
+*HPLFPPinPrnt False/Off: "%%"
+*CloseUI: *HPLFPPinPrnt
 *OpenUI *HPFIDigit/First Digit: PickOne
 *OrderDependency: 50 AnySetup *HPFIDigit
 *DefaultHPFIDigit: 0

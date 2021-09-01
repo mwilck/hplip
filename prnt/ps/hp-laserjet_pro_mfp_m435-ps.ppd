@@ -498,15 +498,15 @@
 *OpenUI *HPPrintQuality/Print Quality: PickOne
 *OrderDependency: 5 JCLSetup *HPPrintQuality
 *DefaultHPPrintQuality: FastRes1200
-*HPPrintQuality FastRes1200/FastRes 1200: "@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
-*HPPrintQuality 600dpi/600 dpi: "@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=1<0A>"
-*HPPrintQuality ProRes1200/ProRes 1200: "@PJL SET RESOLUTION=1200<0A>@PJL SET BITSPERPIXEL=1<0A>"
+*HPPrintQuality FastRes1200/FastRes 1200: "%%"
+*HPPrintQuality 600dpi/600 dpi: "%%"
+*HPPrintQuality ProRes1200/ProRes 1200: "%%"
 *CloseUI: *HPPrintQuality
 *OpenUI *HPEconoMode/EconoMode: Boolean
 *OrderDependency: 20 JCLSetup *HPEconoMode
 *DefaultHPEconoMode: False
-*HPEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>"
-*HPEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>"
+*HPEconoMode True/On: "%%"
+*HPEconoMode False/Off: "%%"
 *CloseUI: *HPEconoMode
 *CloseGroup: HPPaperQualityPanel
 *da.Translation Manufacturer/HP: ""

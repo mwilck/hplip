@@ -601,17 +601,17 @@
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 5 JCLSetup *OutputMode
 *DefaultOutputMode: Normal
-*OutputMode Draft/Draft: "@PJL SET PRINTQUALITY=DRAFT<0A>"
-*OutputMode Normal/Normal: "@PJL SET PRINTQUALITY=NORMAL<0A>"
-*OutputMode Best/Best: "@PJL SET PRINTQUALITY=BEST<0A>"
+*OutputMode Draft/Draft: "%%"
+*OutputMode Normal/Normal: "%%"
+*OutputMode Best/Best: "%%"
 *CloseUI: *OutputMode
 
 *OpenUI *HPColorAsGray/Print Color as Gray: PickOne
 *OrderDependency: 20 JCLSetup *HPColorAsGray
 *DefaultHPColorAsGray: Off
-*HPColorAsGray Off/Off: "@PJL SET GRAYSCALE=OFF<0A>"
-*HPColorAsGray HighQuality/High Quality GrayScale: "@PJL SET GRAYSCALE=COMPOSITE<0A>"
-*HPColorAsGray BlackInkOnly/Black Ink Only: "@PJL SET GRAYSCALE=BLACKONLY<0A>"
+*HPColorAsGray Off/Off: "%%"
+*HPColorAsGray HighQuality/High Quality GrayScale: "%%"
+*HPColorAsGray BlackInkOnly/Black Ink Only: "%%"
 *CloseUI: *HPColorAsGray
 
 

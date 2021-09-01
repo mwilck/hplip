@@ -94,7 +94,7 @@
 *sv.Translation HPEconoMode/EconoMode: ""
 
 *OrderDependency: 20 JCLSetup  *HPEconoMode
-*HPEconoMode True/On: 	"@PJL SET EconoMode = ON<0A>"
+*HPEconoMode True/On: "%%"
 *da.HPEconoMode True/Ja: ""
 *de.HPEconoMode True/Ein: ""
 *es.HPEconoMode True/Sí: ""
@@ -106,7 +106,7 @@
 *pt.HPEconoMode True/ATV: ""
 *sv.HPEconoMode True/På: ""
 
-*HPEconoMode False/Off: 	"@PJL SET EconoMode = OFF<0A>"
+*HPEconoMode False/Off: "%%"
 *da.HPEconoMode False/Nej: ""
 *de.HPEconoMode False/Aus: ""
 *es.HPEconoMode False/No: ""
@@ -135,7 +135,7 @@
 *sv.Translation Resolution/Skrivarupplösning: ""
 
 *OrderDependency: 10 JCLSetup  *Resolution
-*Resolution 300dpi/300 dpi: "@PJL SET RESOLUTION = 300<0A>"
+*Resolution 300dpi/300 dpi: "%%"
 *da.Resolution 300dpi/300 dpi: ""
 *de.Resolution 300dpi/300 dpi: ""
 *es.Resolution 300dpi/300 ppp: ""
@@ -147,7 +147,7 @@
 *pt.Resolution 300dpi/300 dpi: ""
 *sv.Resolution 300dpi/300 dpi: ""
 
-*Resolution 600dpi/600 dpi: "@PJL SET RESOLUTION = 600<0A>"
+*Resolution 600dpi/600 dpi: "%%"
 *da.Resolution 600dpi/600 dpi: ""
 *de.Resolution 600dpi/600 dpi: ""
 *es.Resolution 600dpi/600 ppp: ""

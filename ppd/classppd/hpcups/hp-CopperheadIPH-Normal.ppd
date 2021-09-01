@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.21.6"
+*FileVersion: "3.21.8"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-CopperheadIPH-Normal.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP CopperheadIPH"
 *ShortNickName: "CopperheadIPH"
-*NickName: "CopperheadIPH, hpcups 3.21.6"
+*NickName: "CopperheadIPH, hpcups 3.21.8"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -77,8 +77,6 @@
 *UIConstraints: *Duplex *PageSize Photo2L.FB
 *UIConstraints: *PageSize Photo2L *Duplex
 *UIConstraints: *Duplex *PageSize Photo2L
-*UIConstraints: *PageSize Photo4x6 *Duplex
-*UIConstraints: *Duplex *PageSize Photo4x6
 *UIConstraints: *PageSize Photo4x6.FB *Duplex
 *UIConstraints: *Duplex *PageSize Photo4x6.FB
 *UIConstraints: *PageSize Photo5x7 *Duplex
@@ -113,6 +111,8 @@
 *UIConstraints: *Duplex *PageSize EnvDL
 *UIConstraints: *PageSize EnvChou3 *Duplex
 *UIConstraints: *Duplex *PageSize EnvChou3
+*UIConstraints: *PageSize 5x5in *Duplex
+*UIConstraints: *Duplex *PageSize 5x5in
 *UIConstraints: *PageSize 8.5x13 *MediaType FastGlossy
 *UIConstraints: *MediaType FastGlossy *PageSize 8.5x13
 *UIConstraints: *PageSize A4 *MediaType FastGlossy
@@ -316,6 +316,10 @@
 *PageSize EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageSize EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
+*PageSize 5x5in/5x5in (13x13cm) : "<</cupsInteger0 30003/PageSize[360 360]/ImagingBBox null>>setpagedevice"
+*PageSize 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 720]/ImagingBBox null>>setpagedevice"
+*PageSize LSize3.5*5/LSize3.5x5in.: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageSize Env/#6 Envelope 6.63x6.5in: "<</cupsInteger0 83/PageSize[260.88 468]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -368,6 +372,10 @@
 *PageRegion EnvDL/DL Envelope 110x220mm: "<</cupsInteger0 90/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvMonarch/Monarch Envelope 3.875x7.5in: "<</cupsInteger0 80/PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvChou3/#3 Japanese Envelope 120x235mm: "<</cupsInteger0 110/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
+*PageRegion 5x5in/5x5in (13x13cm) : "<</cupsInteger0 30003/PageSize[360 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 720]/ImagingBBox null>>setpagedevice"
+*PageRegion LSize3.5*5/LSize3.5x5in.: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageRegion Env/#6 Envelope 6.63x6.5in: "<</cupsInteger0 83/PageSize[260.88 468]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
 *ImageableArea Card4x6/Index Card 4x6in: "8.39999961853 8.39999961853 279.60000038147 423.60000038147"
@@ -418,6 +426,10 @@
 *ImageableArea EnvDL/DL Envelope 110x220mm: "8.39999961853 46.799999237061 303.360010147095 576.720020294189"
 *ImageableArea EnvMonarch/Monarch Envelope 3.875x7.5in: "8.39999961853 46.799999237061 270.60000038147 493.200000762939"
 *ImageableArea EnvChou3/#3 Japanese Envelope 120x235mm: "8.39999961853 46.799999237061 331.43999671936 619.200000762939"
+*ImageableArea 5x5in/5x5in (13x13cm) : "8.39999961853 8.39999961853 351.60000038147 351.60000038147"
+*ImageableArea 4x12in/4x12in (10x30cm) : "8.39999961853 8.39999961853 279.60000038147 711.60000038147"
+*ImageableArea LSize3.5*5/LSize3.5x5in.: "8.39999961853 8.39999961853 243.60000038147 351.60000038147"
+*ImageableArea Env/#6 Envelope 6.63x6.5in: "8.39999961853 8.39999961853 252.480005264282 459.60000038147"
 *DefaultPaperDimension: Letter
 *PaperDimension Card4x6/Index Card 4x6in: "288 432"
 *PaperDimension PhotoL/Photo L 89x127mm: "252 360"
@@ -467,6 +479,10 @@
 *PaperDimension EnvDL/DL Envelope 110x220mm: "311.760009765625 623.52001953125"
 *PaperDimension EnvMonarch/Monarch Envelope 3.875x7.5in: "279 540"
 *PaperDimension EnvChou3/#3 Japanese Envelope 120x235mm: "339.839996337891 666"
+*PaperDimension 5x5in/5x5in (13x13cm) : "360 360"
+*PaperDimension 4x12in/4x12in (10x30cm) : "288 720"
+*PaperDimension LSize3.5*5/LSize3.5x5in.: "252 360"
+*PaperDimension Env/#6 Envelope 6.63x6.5in: "260.880004882812 468"
 *MaxMediaWidth: "612"
 *MaxMediaHeight: "1656"
 *HWMargins: 8.39999961853 8.39999961853 8.39999961853 8.39999961853
@@ -486,14 +502,16 @@
 *OpenUI *MediaType/Media Type: PickOne
 *OrderDependency: 10 AnySetup *MediaType
 *DefaultMediaType: Plain
-*MediaType Plain/Plain Paper: "<</MediaType/cupsMediaType 0>>setpagedevice"
-*MediaType FastGlossy/HP Photo Papers: "<</MediaType/cupsMediaType 5>>setpagedevice"
-*MediaType Coated/HP Matte Brochure or Professional Paper: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType Coated1/HP Matte Presentation Paper: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType Brochure/HP Glossy Brochure or Professional Paper: "<</MediaType/cupsMediaType 8>>setpagedevice"
-*MediaType FastGlossy1/Other photo inkjet papers: "<</MediaType/cupsMediaType 5>>setpagedevice"
-*MediaType Coated2/Other matte inkjet papers Paper: "<</MediaType/cupsMediaType 2>>setpagedevice"
-*MediaType Brochure1/Other glossy inkjet Paper: "<</MediaType/cupsMediaType 8>>setpagedevice"
+*MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0/cupsInteger6 1084>>setpagedevice"
+*MediaType FastGlossy/HP Photo Papers: "<</MediaType(FastGlossy)/cupsMediaType 5/cupsInteger6 1069>>setpagedevice"
+*MediaType Coated/HP Matte Brochure or Professional Paper: "<</MediaType(Coated)/cupsMediaType 2/cupsInteger6 1077>>setpagedevice"
+*MediaType Coated1/HP Matte Presentation Paper: "<</MediaType(Coated1)/cupsMediaType 2/cupsInteger6 1005>>setpagedevice"
+*MediaType Brochure/HP Glossy Brochure or Professional Paper: "<</MediaType(Brochure)/cupsMediaType 8/cupsInteger6 1076>>setpagedevice"
+*MediaType FastGlossy1/Other Photo Inkjet Papers: "<</MediaType(FastGlossy1)/cupsMediaType 5/cupsInteger6 1045>>setpagedevice"
+*MediaType Coated2/Other Matte Inkjet Papers: "<</MediaType(Coated2)/cupsMediaType 2/cupsInteger6 1077>>setpagedevice"
+*MediaType Brochure1/Other Glossy Inkjet Papers: "<</MediaType(Brochure1)/cupsMediaType 8/cupsInteger6 1054>>setpagedevice"
+*MediaType Brochure3/HP Matte Photo Paper: "<</MediaType(Brochure3)/cupsMediaType 4/cupsInteger6 1083>>setpagedevice"
+*MediaType Plain1/Plain Paper,Light/Recycled: "<</MediaType(Plain1)/cupsMediaType 1/cupsInteger6 1121>>setpagedevice"
 *CloseUI: *MediaType
 *OpenUI *OutputMode/Print Quality: PickOne
 *OrderDependency: 10 AnySetup *OutputMode
@@ -553,4 +571,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-CopperheadIPH-Normal.ppd, 37365 bytes.
+*% End of hp-CopperheadIPH-Normal.ppd, 39331 bytes.

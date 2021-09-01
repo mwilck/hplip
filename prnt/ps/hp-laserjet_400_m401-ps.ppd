@@ -428,8 +428,8 @@
 *OpenUI *HPEconoMode/EconoMode: Boolean
 *OrderDependency: 20 JCLSetup *HPEconoMode
 *DefaultHPEconoMode: False
-*HPEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
-*HPEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>@PJL SET RESOLUTION=600<0A>@PJL SET BITSPERPIXEL=2<0A>"
+*HPEconoMode True/On: "%%"
+*HPEconoMode False/Off: "%%"
 *CloseUI: *HPEconoMode
 *CloseGroup: HPPaperQualityPanel
 *da.Translation Manufacturer/HP: ""

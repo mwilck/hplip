@@ -388,8 +388,8 @@ restore
 *OpenUI *HPEconoMode/EconoMode: Boolean
 *OrderDependency: 20 JCLSetup *HPEconoMode
 *DefaultHPEconoMode: False
-*HPEconoMode True/On: "@PJL SET ECONOMODE=ON<0A>"
-*HPEconoMode False/Off: "@PJL SET ECONOMODE=OFF<0A>"
+*HPEconoMode True/On: "%%"
+*HPEconoMode False/Off: "%%"
 *CloseUI: *HPEconoMode
 *OpenUI *HPColorAsGray/Print Color as Gray: Boolean
 *OrderDependency: 20 DocumentSetup *HPColorAsGray
