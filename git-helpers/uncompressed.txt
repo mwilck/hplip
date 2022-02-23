@@ -802,6 +802,12 @@
 ./ppd/hpcups/hp-laserjet_pro_mfp_m26nw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m27cnw.ppd
 ./ppd/hpcups/hp-laserjet_pro_mfp_m27c.ppd
+./ppd/hpcups/hp-laserjet_tank_1020.ppd
+./ppd/hpcups/hp-laserjet_tank_150x.ppd
+./ppd/hpcups/hp-laserjet_tank_250x.ppd
+./ppd/hpcups/hp-laserjet_tank_mfp_1005.ppd
+./ppd/hpcups/hp-laserjet_tank_mfp_160x.ppd
+./ppd/hpcups/hp-laserjet_tank_mfp_260x.ppd
 ./ppd/hpcups/hp-laser_ns_1020.ppd
 ./ppd/hpcups/hp-laser_ns_mfp_1005.ppd
 ./ppd/hpcups/hp-mopier_240-pcl3.ppd
