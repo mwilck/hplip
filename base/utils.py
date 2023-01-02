@@ -2551,10 +2551,14 @@ def get_distro_name(passwordObj = None):
             name = platform.dist()[0].lower()
             ver = platform.dist()[1]
         except AttributeError:
-            import distro
-            name = distro.linux_distribution()[0].lower()
-            ver = distro.linux_distribution()[1]
-            distro_release_name = distro.distro_release_attr('name')
+            try:
+                import distro
+                name = distro.linux_distribution()[0].lower()
+                ver = distro.linux_distribution()[1]
+                distro_release_name = distro.distro_release_attr('name')
+            except (ImportError, AttributeError):
+                # Use fallback code below
+                pass
         if not name:
             found = False
             log.debug("Not able to detect distro")
