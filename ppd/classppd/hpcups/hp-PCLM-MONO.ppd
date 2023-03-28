@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v2.3.1.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.22.10"
+*FileVersion: "3.23.3"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-PCLM-MONO.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP PCLM-MONO"
 *ShortNickName: "PCLM-MONO"
-*NickName: "PCLM-MONO, hpcups 3.22.10"
+*NickName: "PCLM-MONO, hpcups 3.23.3"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False
@@ -138,6 +138,15 @@
 *PaperDimension OfukuHagaki/Japanese Postcard : "568.320007324219 419.519989013672"
 *PaperDimension 195.07x270mm/16k 195x270 mm: "552.960021972656 765.359985351562"
 *PaperDimension B5/B5 : "498.720001220703 708.47998046875"
+*MaxMediaWidth: "612"
+*MaxMediaHeight: "1008"
+*HWMargins: 14 14 14 14
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 283.679992675781 612
+*ParamCustomPageSize Height: 2 points 419.760009765625 1008
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
 *OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10 AnySetup *Duplex
 *DefaultDuplex: None
@@ -235,4 +244,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-PCLM-MONO.ppd, 15803 bytes.
+*% End of hp-PCLM-MONO.ppd, 16219 bytes.
