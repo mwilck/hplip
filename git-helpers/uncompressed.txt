@@ -2501,8 +2501,11 @@
 ./prnt/ps/hp_color_LaserJet_5500-ps.ppd
 ./prnt/ps/hp-color_laserjet_5550-ps.ppd
 ./prnt/ps/HP_Color_LaserJet_5550-ps.ppd
+./prnt/ps/hp-color_laserjet_5700-ps.ppd
 ./prnt/ps/hp-color_laserjet_5m-ps.ppd
 ./prnt/ps/HP_Color_LaserJet_5M-ps.ppd
+./prnt/ps/hp-color_laserjet_6700-ps.ppd
+./prnt/ps/hp-color_laserjet_6701-ps.ppd
 ./prnt/ps/hp-color_laserjet_8500-ps.ppd
 ./prnt/ps/HP_Color_LaserJet_8500-ps.ppd
 ./prnt/ps/hp-color_laserjet_8550-ps.ppd
@@ -2563,6 +2566,8 @@
 ./prnt/ps/hp-color_laserjet_e67650_e67660-ps.ppd
 ./prnt/ps/hp-color_laserjet_e75245-ps.ppd
 ./prnt/ps/hp-color_laserjet_e85055-ps.ppd
+./prnt/ps/hp-color_laserjet_flow_5800-ps.ppd
+./prnt/ps/hp-color_laserjet_flow_6800-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_e57540-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_e78625-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_e78630-ps.ppd
@@ -2577,6 +2582,8 @@
 ./prnt/ps/hp-color_laserjet_flow_mfp_m680-ps.ppd
 ./prnt/ps/hp-color_laserjet_flowmfp_m776-ps.ppd
 ./prnt/ps/hp-color_laserjet_flow_mfp_m880-ps.ppd
+./prnt/ps/hp-color_laserjet_flow_X57945-ps.ppd
+./prnt/ps/hp-color_laserjet_flow_X579-ps.ppd
 ./prnt/ps/hp-color_laserjet_m153-m154-ps.ppd
 ./prnt/ps/hp-color_laserjet_m155-m156-ps.ppd
 ./prnt/ps/hp-color_laserjet_m182-m185-ps.ppd
@@ -2596,6 +2603,9 @@
 ./prnt/ps/hp-color_laserjet_m751-ps.ppd
 ./prnt/ps/hp-color_laserjet_m855-ps.ppd
 ./prnt/ps/hp-color_laserjet_m856-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_5800-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_6800-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_6801-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e47528-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e57540-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_e77422-ps.ppd
@@ -2624,10 +2634,15 @@
 ./prnt/ps/hp-color_laserjet_mfp_m680-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m681_m682-ps.ppd
 ./prnt/ps/hp-color_laserjet_mfp_m776-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_x67755-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_x67765-ps.ppd
+./prnt/ps/hp-color_laserjet_mfp_x677-ps.ppd
+./prnt/ps/hp-color_laserjet_pro_4201-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_m252-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_m453-4-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_m478f-9f-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_m479-ps.ppd
+./prnt/ps/hp-color_laserjet_pro_mfp_4301-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_mfp_m277-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_mfp_m377-ps.ppd
 ./prnt/ps/hp-color_laserjet_pro_mfp_m476-ps.ppd
@@ -2635,6 +2650,10 @@
 ./prnt/ps/hp-color_laserjet_pro_mfp_m477-ps.ppd
 ./prnt/ps/hp-color_laserjet-ps.ppd
 ./prnt/ps/HP_Color_LaserJet-ps.ppd
+./prnt/ps/hp-color_laserjet_X557-ps.ppd
+./prnt/ps/hp-color_laserjet_x65455-ps.ppd
+./prnt/ps/hp-color_laserjet_x65465-ps.ppd
+./prnt/ps/hp-color_laserjet_x654-ps.ppd
 ./prnt/ps/hp-designjet_4000ps.ppd
 ./prnt/ps/hp-designjet_4020ps-ps.ppd
 ./prnt/ps/hp-designjet_4500mfp.ppd
