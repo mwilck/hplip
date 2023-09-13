@@ -353,6 +353,7 @@
 ./ppd/hpcups/hp-deskjet_2600_series.ppd
 ./ppd/hpcups/hp-deskjet_2640_series.ppd
 ./ppd/hpcups/hp-deskjet_2700_series.ppd
+./ppd/hpcups/hp-Deskjet_2800_series.ppd
 ./ppd/hpcups/hp-deskjet_3000_j310_series.ppd
 ./ppd/hpcups/hp-deskjet_3050a_j611_series.ppd
 ./ppd/hpcups/hp-deskjet_3050_j610_series.ppd
@@ -388,6 +389,7 @@
 ./ppd/hpcups/hp-deskjet_400l.ppd
 ./ppd/hpcups/hp-deskjet_400.ppd
 ./ppd/hpcups/hp-deskjet_4100_series.ppd
+./ppd/hpcups/hp-Deskjet_4200_series.ppd
 ./ppd/hpcups/hp-deskjet_450.ppd
 ./ppd/hpcups/hp-deskjet_4510_series.ppd
 ./ppd/hpcups/hp-deskjet_4530_series.ppd
@@ -398,6 +400,7 @@
 ./ppd/hpcups/hp-deskjet_4670_series.ppd
 ./ppd/hpcups/hp-deskjet_4720_series.ppd
 ./ppd/hpcups/hp-deskjet_4800_series.ppd
+./ppd/hpcups/hp-Deskjet_4900_series.ppd
 ./ppd/hpcups/hp-deskjet_5000_series.ppd
 ./ppd/hpcups/hp-deskjet_500c.ppd
 ./ppd/hpcups/hp-deskjet_500.ppd

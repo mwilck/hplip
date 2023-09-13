@@ -385,9 +385,9 @@
 *OpenUI *HPColorAsGray/Print in Grayscale: PickOne
 *OrderDependency: 20 AnySetup *HPColorAsGray
 *DefaultHPColorAsGray: None
-*HPColorAsGray None/Off: "@PJL SET GRAYSCALE=OFF<0A>@PJL SET PLANESINUSE=3<0A>"
-*HPColorAsGray BlackInkOnly/Black Only: "@PJL SET PLANESINUSE=1<0A>@PJL SET GRAYSCALE=BLACKONLY<0A>"
-*HPColorAsGray HighQuality/High Quality CMYK Grayscale: "@PJL SET PLANESINUSE=1<0A>@PJL SET GRAYSCALE=COMPOSITE<0A>"
+*HPColorAsGray None/Off: ""
+*HPColorAsGray BlackInkOnly/Black Only: ""
+*HPColorAsGray HighQuality/High Quality CMYK Grayscale: ""
 *CloseUI: *HPColorAsGray
 *OpenUI *HPRGBEmulation/RGB Color: PickOne
 *OrderDependency: 57 AnySetup *HPRGBEmulation
