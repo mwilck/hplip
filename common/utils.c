@@ -1,9 +1,14 @@
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include "utils.h"
 #include "string.h"
 #include <dlfcn.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern int errno;
 
