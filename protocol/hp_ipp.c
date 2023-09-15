@@ -18,6 +18,10 @@ Boston, MA 02110-1301, USA.
 
 \******************************************************************************/
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <cups/cups.h>
 #include <cups/language.h>
 #include <cups/ppd.h>
