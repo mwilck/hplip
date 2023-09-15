@@ -149,6 +149,7 @@ int auth_cancel_req = 0;  // 0--> authentication cancel is not requested,
 
 
 http_t*    acquireCupsInstance();
+void _releaseCupsInstance();
 const char *getCupsErrorString(int status);
 void freePrinterList(printer_t *list);
  
@@ -163,6 +164,11 @@ ipp_t *usbDoFileRequest(ipp_t *request, int iFileHandle,char *device_uri, const 
 ipp_t * networkDoRequest(ipp_t *request, char* device_uri,const char *resource);
 ipp_t * getDeviceStatusAttributes(char* device_uri,char* printer_name, int *count);
 int     getCupsPrinters(printer_t **printer_list);
+int addCupsPrinter(char *name, char *device_uri, char *location, char *ppd_file,
+		   char *model, char *info);
+int delCupsPrinter(char *pr_name);
+int setDefaultCupsPrinter(char *pr_name);
+int controlCupsPrinter(char *pr_name, int op);
 
 HPIPP_RESULT parseResponseHeader(char* header, int *content_length, int *chunked, int* header_size);
 HPIPP_RESULT prepend_http_header(raw_ipp *raw_request,const char *resource);
