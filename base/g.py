@@ -128,7 +128,7 @@ class ConfigBase(object):
             try:
                 fp = open(self.filename, "r")
                 try:
-                    self.conf.read_file(fp)
+                    self.conf.readfp(fp)
                 except AttributeError as e:
                     log.error(f"Error: {e}. Retrying with read_file")
                     try:
