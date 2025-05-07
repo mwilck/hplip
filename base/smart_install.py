@@ -155,7 +155,7 @@ def validate(mode, smart_install_run, smart_install_asc, req_checksum=''):
     calc_checksum = utils.get_checksum(open(smart_install_run, 'r').read())
     log.debug("File checksum=%s" % calc_checksum)
 
-    if req_checksum and req_checksum != calc_checksum:
+    if utils.sha256_checksum(req_checksum) != calc_checksum:
         return ERROR_FILE_CHECKSUM, queryString(ERROR_CHECKSUM_ERROR, 0, plugin_file)
 
     #Validate Digital Signature
