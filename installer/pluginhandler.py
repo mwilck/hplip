@@ -217,9 +217,9 @@ class PluginHandle(object):
     def __validatePlugin(self,plugin_file, digsig_file, req_checksum):
 
         #Validate Checksum
-        calc_checksum = get_checksum(open(plugin_file, 'rb').read())
+        calc_checksum = utils.get_checksum(open(plugin_file, 'rb').read())
         log.debug("D/L file checksum=%s" % calc_checksum)
-        if req_checksum and req_checksum != calc_checksum:
+        if utils.sha256_checksum(req_checksum) != calc_checksum:
             return ERROR_CHECKSUM_ERROR, queryString(ERROR_CHECKSUM_ERROR, 0, plugin_file)
 
         #Validate Digital Signatures

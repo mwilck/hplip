@@ -72,8 +72,18 @@ import hashlib
 def get_checksum(s):
     return hashlib.sha256(s).hexdigest()
 
+__sha1_sha256_map = {
+    "bd99405113d43447e7a37ed46d75187785774cff":
+    "9a2cf8d5661e846548dbbb595231a5448a5cb63729cc93df8d1f652dfd167a54"
+}
 
-
+def sha256_checksum(s):
+    if not s:
+        return ""
+    elif s in __sha1_sha256_map:
+        return __sha1_sha256_map[s]
+    else:
+        return s
 
 # Local
 from .g import *
