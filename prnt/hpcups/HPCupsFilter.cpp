@@ -435,7 +435,7 @@ DRIVER_ERROR HPCupsFilter::startPage (cups_page_header2_t *cups_header)
 
         if (m_JA.media_attributes.PageSizeName[0] == '\0') {
             // Copy the value of cups_header->cupsPageSizeName if it isnot null
-            if (cups_header->cupsPageSizeName != nullptr) {
+            if (cups_header->cupsPageSizeName != NULL) {
                 strncpy(m_JA.media_attributes.PageSizeName, cups_header->cupsPageSizeName, sizeof(m_JA.media_attributes.PageSizeName));
             }
         }   
