@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v2.3.1.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.25.2"
+*FileVersion: "3.25.6"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-officejet_9010_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Officejet 9010 Series"
 *ShortNickName: "HP Officejet 9010 Series hpijs"
-*NickName: "HP Officejet 9010 Series, hpcups 3.25.2"
+*NickName: "HP Officejet 9010 Series, hpcups 3.25.6"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -421,8 +421,10 @@
 *CloseUI: *OutputMode
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
-*DefaultInputSlot: Upper
-*InputSlot Upper/Main Tray: "<</MediaPosition 1>>setpagedevice"
+*DefaultInputSlot: Auto
+*InputSlot Auto/Auto-Select: "<</MediaPosition 7>>setpagedevice"
+*InputSlot Upper/Tray 1: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Lower/Tray 2: "<</MediaPosition 4>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10 AnySetup *Duplex
@@ -467,4 +469,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-officejet_9010_series.ppd, 34746 bytes.
+*% End of hp-officejet_9010_series.ppd, 34868 bytes.
