@@ -33,14 +33,14 @@ from .g import *
 from . import utils
 from .sixext import to_bytes_utf8, to_unicode, to_string_utf8
 
-prod_pat = re.compile(r"""\(\s*x-hp-prod_id\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
-mac_pat  = re.compile(r"""\(\s*x-hp-mac\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
-num_port_pat = re.compile(r"""\(\s*x-hp-num_port\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
-ip_pat =   re.compile(r"""\(\s*x-hp-ip\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
-p1_pat =   re.compile(r"""\(\s*x-hp-p1\s*=(?:\d\)|\s*(.*?)\s*\))""", re.IGNORECASE)
-p2_pat =   re.compile(r"""\(\s*x-hp-p2\s*=(?:\d\)|\s*(.*?)\s*\))""", re.IGNORECASE)
-p3_pat =   re.compile(r"""\(\s*x-hp-p3\s*=(?:\d\)|\s*(.*?)\s*\))""", re.IGNORECASE)
-hn_pat =   re.compile(r"""\(\s*x-hp-hn\s*=\s*(.*?)\s*\)""", re.IGNORECASE)
+prod_pat = re.compile(r"""\(\s*x-hp-prod_id\s*=\s*([^\s]*)\s*\)""", re.IGNORECASE)
+mac_pat  = re.compile(r"""\(\s*x-hp-mac\s*=\s*([^\s]*)\s*\)""", re.IGNORECASE)
+num_port_pat = re.compile(r"""\(\s*x-hp-num_port\s*=\s*([^\s]*)\s*\)""", re.IGNORECASE)
+ip_pat =   re.compile(r"""\(\s*x-hp-ip\s*=\s*([^\s]*)\s*\)""", re.IGNORECASE)
+p1_pat =   re.compile(r"""\(\s*x-hp-p1\s*=(?:\d\)|\s*([^\s]*)\s*\))""", re.IGNORECASE)
+p2_pat =   re.compile(r"""\(\s*x-hp-p2\s*=(?:\d\)|\s*([^\s]*)\s*\))""", re.IGNORECASE)
+p3_pat =   re.compile(r"""\(\s*x-hp-p3\s*=(?:\d\)|\s*([^\s]*)\s*\))""", re.IGNORECASE)
+hn_pat =   re.compile(r"""\(\s*x-hp-hn\s*=\s*([^\s]*)\s*\)""", re.IGNORECASE)
 
 def createSocketsWithsetOption(ttl=4):
     s=None

@@ -1368,6 +1368,7 @@ int getJobStatus(int iJobID, const char *iPrinterName, const char *iDeviceUri)
             return aRetnValue;
         }
     }
+    return HPIPP_ERROR;
 }
 
 HPIPP_RESULT sendFaxJob(const char *iDeviceUri, const char *iPrinterName, const char *iFileName, const char *iFaxNumber)

@@ -128,17 +128,26 @@ class ConfigBase(object):
             try:
                 fp = open(self.filename, "r")
                 try:
-                    self.conf.read_file(fp)
+                    self.conf.readfp(fp)
                 except AttributeError as e:
-                    log.error(f"Error: {e}. Retrying with read_file")
+                    log.error("Error: {0}. Retrying with read_file".format(e))
                     try:
                         # Attempting to use read_file as a fallback
                         self.conf.read_file(fp)
                     except Exception as e:
-                        log.error(f"Reading file with read_file also failed. Error: {e}")
+                        log.error("Reading file with read_file also failed. Error: {0}".format(e))
                 except configparser.MissingSectionHeaderError:
-                    print("")
-                    log.error("Found No Section in %s. Please set the http proxy for root and try again." % self.filename)
+                    fp.close()
+                    # Workaround for lp#2095776: skip leading whitespace in plugin.conf
+                    from StringIO import StringIO
+                    t0 = open(self.filename, "r").read()
+                    t0 = t0[t0.find("["): -1]
+                    fp = StringIO(t0)
+                    try:
+                        self.conf.readfp(fp)
+                    except Exception as e:
+                        print("")
+                        log.error("Found No Section in %s. Please set the http proxy for root and try again." % self.filename)
                 except (configparser.DuplicateOptionError):
                     log.warn("Found Duplicate Entery in %s" % self.filename)
                     self.CheckDuplicateEntries()
