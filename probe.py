@@ -93,8 +93,8 @@ try:
         elif o in ('-m', '--method'):
             method = a.lower().strip()
 
-            if method not in ('slp', 'mdns', 'bonjour'):
-                mod.usage(error_msg=["Invalid network search protocol name. Must be 'slp' or 'mdns'."])
+            if method not in ('slp', 'mdns', 'avahi'):
+                mod.usage(error_msg=["Invalid network search protocol name. Must be 'slp', 'mdns', or 'avahi'."])
             else:
                 bus = ['net']
 

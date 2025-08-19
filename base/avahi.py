@@ -37,6 +37,9 @@ def detectNetworkDevices(ttl=4, timeout=10):
     # Obtain all the resolved services which has service type '_printer._tcp' from avahi-browse
     p = Popen(['avahi-browse', '-kprt', '_printer._tcp'], stdout=PIPE)
     output = to_string_utf8(p.communicate()[0])
+    p = Popen(['avahi-browse', '-kprt', '_pdl-datastream._tcp'], stdout=PIPE)
+    output += to_string_utf8(p.communicate()[0])
+
     for line in output.splitlines():
         if line.startswith('='):
             bits = line.split(';')
@@ -55,11 +58,12 @@ def detectNetworkDevices(ttl=4, timeout=10):
                         details = bits[9].split('" "')
                         for item in details:
                             key, value = item.split('=', 1)
-                            if key == 'ty':
+                            if key == 'ty' or key == 'usb_MDL':
                                 y['mdns'] = value
                                 y['device1'] = "MFG:Hewlett-Packard;MDL:%s;CLS:PRINTER;" % value
                                 break
-                        found_devices[y['ip']] = y
+                        if y['ip'] not in found_devices:
+                            found_devices[y['ip']] = y
                         #log.debug("ip=%s hn=%s ty=%s" %(ip,y['hn'], y['mdns']))
                 except socket.gaierror:
                     pass
