@@ -43,7 +43,7 @@ def detectNetworkDevices(ttl=4, timeout=10):
     for line in output.splitlines():
         if line.startswith('='):
             bits = line.split(';')
-            if bits[2] == 'IPv4' and len(bits[7].split('.')) == 4:
+            if bits[2] == 'IPv4' and len(bits[7].split('.')) == 4 and bits[9] != "":
                 ip = bits[7]
                 port = bits[8]
                 # Run through the offered addresses and see if we have a bound local
