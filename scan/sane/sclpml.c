@@ -51,6 +51,9 @@
 #define DEBUG_DECLARE_ONLY
 #include "sanei_debug.h"
 
+/* This file is not built with _GNU_SOURCE. */
+char *strcasestr(const char *, const char *);
+
 //# define  SCLPML_DEBUG
 # ifdef SCLPML_DEBUG
    # define _DBG(args...) syslog(LOG_INFO, __FILE__ " " STRINGIZE(__LINE__) ": " args)
