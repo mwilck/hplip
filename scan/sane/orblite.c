@@ -331,6 +331,7 @@ if (option >= optCount && option < optLast)
 		return &g_handle->Options[option];
 	}
 	//return g_handle->bb_orblite_get_option_descriptor(g_handle, option);
+	return NULL;
 }
 
 
