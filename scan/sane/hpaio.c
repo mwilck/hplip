@@ -50,6 +50,7 @@
 #include "sclpml.h"
 #include "escl.h"
 #include "io.h"
+#include "orblite.h"
 #include "orblitei.h"
 
 
