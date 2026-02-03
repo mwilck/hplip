@@ -137,7 +137,7 @@ dist_rulessystem_DATA =data/rules/hplip-printer@.service
 
 # hpmud.rules
 if !HPLIP_CLASS_DRIVER
-rulesdir = /etc/udev/rules.d
+rulesdir = /usr/lib/udev/rules.d
 if UDEV_SYSFS_RULES
 dist_rules_DATA = data/rules/56-hpmud_sysfs.rules
 else
