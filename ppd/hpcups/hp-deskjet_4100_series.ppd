@@ -3,7 +3,7 @@
 *%%%% Created by the CUPS PPD Compiler CUPS v2.3.1.
 *% (c) 2008 Copyright HP Development Company, LP
 *FormatVersion: "4.3"
-*FileVersion: "3.25.8"
+*FileVersion: "3.26.4"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "hp-deskjet_4100_series.ppd"
@@ -11,7 +11,7 @@
 *Manufacturer: "HP"
 *ModelName: "HP Deskjet 4100 Series"
 *ShortNickName: "HP Deskjet 4100 Series hpijs"
-*NickName: "HP Deskjet 4100 Series, hpcups 3.25.8"
+*NickName: "HP Deskjet 4100 Series, hpcups 3.26.4"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -43,7 +43,7 @@
 *PageSize Card5x7/Card 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageSize Letter/Letter 8x10: "<</cupsInteger0 7/PageSize[576 720]/ImagingBBox null>>setpagedevice"
 *PageSize A4/A4 210x297: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
-*PageSize A5/A5 148x210: "<</cupsInteger0 25/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize A5/A5 148x210: "<</cupsInteger0 25/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
 *PageSize A6/A6 105x148.5: "<</cupsInteger0 24/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
 *PageSize B5176x250/B5 176x250: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageSize B5/B5 182x257: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
@@ -70,7 +70,7 @@
 *PageRegion Card5x7/Card 5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
 *PageRegion Letter/Letter 8x10: "<</cupsInteger0 7/PageSize[576 720]/ImagingBBox null>>setpagedevice"
 *PageRegion A4/A4 210x297: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
-*PageRegion A5/A5 148x210: "<</cupsInteger0 25/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion A5/A5 148x210: "<</cupsInteger0 25/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
 *PageRegion A6/A6 105x148.5: "<</cupsInteger0 24/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
 *PageRegion B5176x250/B5 176x250: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 182x257: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
@@ -95,7 +95,7 @@
 *ImageableArea Card5x7/Card 5x7in: "8.39999961853 8.39999961853 351.600006103516 468"
 *ImageableArea Letter/Letter 8x10: "8.39999961853 8.39999961853 567.599975585938 684"
 *ImageableArea A4/A4 210x297: "8.39999961853 8.39999961853 587.039978027344 805.679992675781"
-*ImageableArea A5/A5 148x210: "8.39999961853 8.39999961853 603.599975585938 756"
+*ImageableArea A5/A5 148x210: "8.39999961853 8.39999961853 411.360015869141 559.440002441406"
 *ImageableArea A6/A6 105x148.5: "8.39999961853 8.39999961853 289.440002441406 383.519989013672"
 *ImageableArea B5176x250/B5 176x250: "8.39999961853 8.39999961853 490.320007324219 672.47998046875"
 *ImageableArea B5/B5 182x257: "8.39999961853 8.39999961853 507.360015869141 692.400024414062"
@@ -119,7 +119,7 @@
 *PaperDimension Card5x7/Card 5x7in: "360 504"
 *PaperDimension Letter/Letter 8x10: "576 720"
 *PaperDimension A4/A4 210x297: "595.440002441406 841.679992675781"
-*PaperDimension A5/A5 148x210: "612 792"
+*PaperDimension A5/A5 148x210: "419.760009765625 595.440002441406"
 *PaperDimension A6/A6 105x148.5: "297.839996337891 419.519989013672"
 *PaperDimension B5176x250/B5 176x250: "498.720001220703 708.47998046875"
 *PaperDimension B5/B5 182x257: "515.760009765625 728.400024414062"
@@ -205,4 +205,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of hp-deskjet_4100_series.ppd, 14296 bytes.
+*% End of hp-deskjet_4100_series.ppd, 14347 bytes.
