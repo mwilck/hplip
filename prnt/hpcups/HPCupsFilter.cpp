@@ -432,6 +432,13 @@ DRIVER_ERROR HPCupsFilter::startPage (cups_page_header2_t *cups_header)
         strncpy(m_JA.media_attributes.MediaTypeName, cups_header->MediaType, sizeof(m_JA.media_attributes.MediaTypeName));
         strncpy(m_JA.quality_attributes.hbpl1_print_quality, cups_header->OutputType, sizeof(m_JA.quality_attributes.hbpl1_print_quality));
         m_JA.color_mode = cups_header->cupsRowStep;
+
+        if (m_JA.media_attributes.PageSizeName[0] == '\0') {
+            // Copy the value of cups_header->cupsPageSizeName if it isnot null
+            if (cups_header->cupsPageSizeName != nullptr) {
+                strncpy(m_JA.media_attributes.PageSizeName, cups_header->cupsPageSizeName, sizeof(m_JA.media_attributes.PageSizeName));
+            }
+        }   
     }
     else {
         m_JA.media_attributes.physical_width   = (cups_header->PageSize[0] * horz_res) / 72;
